@@ -42,7 +42,7 @@ on:
 
 jobs:
   release-prep:
-    uses: impress-org/givewp-github-actions/.github/workflows/release-prep.yml@master
+    uses: impress-org/givewp-github-actions/.github/workflows/release-prep.yml@feature/reusable-release-prep
     with:
       version_bump_type: ${{ inputs.version_bump_type }}
       release_version: ${{ inputs.release_version }}
