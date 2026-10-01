@@ -1,0 +1,58 @@
+name: "Release: Prepare Release Branch"
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_bump_type:
+        description: "Type of version bump"
+        required: true
+        type: choice
+        default: "automatic"
+        options:
+          - automatic
+          - major (X.x.x)
+          - feature (x.X.x)
+          - maintenance (x.x.X)
+          - hotfix (x.x.x.X)
+      release_version:
+        description: "Specific target version (optional; overrides bump type if entered)"
+        required: false
+        default: ""
+        type: string
+      release_branch:
+        description: "Name of the release branch (optional; e.g. release/4.17.0 or release/M26.mew. Defaults to release/<version>)"
+        required: false
+        default: ""
+        type: string
+      base_branch:
+        description: "Base branch to branch off of"
+        required: false
+        default: "develop"
+        type: string
+      release_date:
+        description: "Release date (YYYY-MM-DD or 'today')"
+        required: false
+        default: "today"
+        type: string
+      target_pr_base:
+        description: "Target base branch for the Release PR"
+        required: false
+        default: "master"
+        type: string
+
+jobs:
+  release-prep:
+    uses: impress-org/givewp-github-actions/.github/workflows/release-prep.yml@master
+    with:
+      version_bump_type: ${{ inputs.version_bump_type }}
+      release_version: ${{ inputs.release_version }}
+      release_branch: ${{ inputs.release_branch }}
+      base_branch: ${{ inputs.base_branch }}
+      release_date: ${{ inputs.release_date }}
+      target_pr_base: ${{ inputs.target_pr_base }}
+      install_npm_packages: true
+      install_composer_packages: true
+      php_version: "7.4"
+      node_version: "20"
+      reviewers: "jonwaldstein,pauloiankoski,glaubersilva"
+    secrets: inherit
