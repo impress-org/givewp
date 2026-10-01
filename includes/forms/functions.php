@@ -853,6 +853,7 @@ function give_get_form_maximum_price( $form_id = 0 ) {
 /**
  * Displays a formatted price for a donation form
  *
+ * @since TBD Escape output.
  * @since 1.0
  *
  * @param int      $form_id  ID of the form price to show
@@ -891,13 +892,13 @@ function give_price( $form_id = 0, $echo = true, $price_id = false ) {
 	}
 
 	$price           = apply_filters( 'give_form_price', give_maybe_sanitize_amount( $price ), $form_id );
-	$formatted_price = '<span class="give_price" id="give_price_' . $form_id . '">' . $price . '</span>';
+	$formatted_price = '<span class="give_price" id="give_price_' . (int) $form_id . '">' . esc_html( $price ) . '</span>';
 	$formatted_price = apply_filters( 'give_form_price_after_html', $formatted_price, $form_id, $price );
 
 	if ( $echo ) {
-		echo $formatted_price;
+		echo wp_kses_post( $formatted_price );
 	} else {
-		return $formatted_price;
+		return wp_kses_post( $formatted_price );
 	}
 }
 
@@ -983,6 +984,7 @@ function give_get_form_goal_format( $form_id = 0 ) {
 /**
  * Display/Return a formatted goal for a donation form
  *
+ * @since TBD Escape output.
  * @since 1.0
  *
  * @param int  $form_id ID of the form price to show
@@ -1007,15 +1009,15 @@ function give_goal( $form_id = 0, $echo = true ) {
 
 	$formatted_goal = sprintf(
 		'<span class="give_price" id="give_price_%1$s">%2$s</span>',
-		$form_id,
-		$goal
+		(int) $form_id,
+		esc_html( $goal )
 	);
 	$formatted_goal = apply_filters( 'give_form_price_after_html', $formatted_goal, $form_id, $goal );
 
 	if ( $echo ) {
-		echo $formatted_goal;
+		echo wp_kses_post( $formatted_goal );
 	} else {
-		return $formatted_goal;
+		return wp_kses_post( $formatted_goal );
 	}
 }
 

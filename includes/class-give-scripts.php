@@ -427,16 +427,18 @@ class Give_Scripts {
 
 	/**
 	 * Global admin head.
+	 *
+	 * @since TBD Escape output.
 	 */
 	public function global_admin_head() {
 		?>
 		<style type="text/css" media="screen">
 			@font-face {
 				font-family: 'give-icomoon';
-				src: url('<?php echo GIVE_PLUGIN_URL . 'build/assets/dist/fonts/icomoon.eot?ngjl88'; ?>');
-				src: url('<?php echo GIVE_PLUGIN_URL . 'build/assets/dist/fonts/icomoon.eot?#iefixngjl88'; ?>') format('embedded-opentype'),
-				url('<?php echo GIVE_PLUGIN_URL . 'build/assets/dist/fonts/icomoon.woff?ngjl88'; ?>') format('woff'),
-				url('<?php echo GIVE_PLUGIN_URL . 'build/assets/dist/fonts/icomoon.svg?ngjl88#icomoon'; ?>') format('svg');
+				src: url('<?php echo esc_url( GIVE_PLUGIN_URL . 'build/assets/dist/fonts/icomoon.eot?ngjl88' ); ?>');
+				src: url('<?php echo esc_url( GIVE_PLUGIN_URL . 'build/assets/dist/fonts/icomoon.eot?#iefixngjl88' ); ?>') format('embedded-opentype'),
+				url('<?php echo esc_url( GIVE_PLUGIN_URL . 'build/assets/dist/fonts/icomoon.woff?ngjl88' ); ?>') format('woff'),
+				url('<?php echo esc_url( GIVE_PLUGIN_URL . 'build/assets/dist/fonts/icomoon.svg?ngjl88#icomoon' ); ?>') format('svg');
 				font-weight: normal;
 				font-style: normal;
 			}

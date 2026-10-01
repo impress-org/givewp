@@ -53,6 +53,7 @@ class SetupFieldConfirmation
     }
 
     /**
+     * @since TBD Escape output.
      * @since 2.10.2
      *
      * @param Field $field
@@ -83,12 +84,12 @@ class SetupFieldConfirmation
             <td scope="row">
                 <strong>
                     <?php
-                    echo $field->getLabel(); ?>
+                    echo esc_html($field->getLabel()); ?>
                 </strong>
             </td>
             <td>
                 <?php
-                echo $value; ?>
+                echo esc_html($value); ?>
             </td>
         </tr>
         <?php
