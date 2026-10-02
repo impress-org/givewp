@@ -100,6 +100,21 @@ Payments have a strict client/server trust boundary. Read
 [docs/architecture/payment-gateways.md](docs/architecture/payment-gateways.md) before writing
 gateway code.
 
+## Harbor (licensing)
+
+Licensing, license keys, premium or add-on checks, platform fees, and anything calling `lw_harbor_*` go through Harbor, the library vendored at `vendor/vendor-prefixed/stellarwp/harbor/`.
+
+Hard rules, no exceptions:
+
+- A plugin distributed on WordPress.org must not validate a license key, send a request to the Commerce Portal, the Licensing API, or Herald, or install or activate anything from an entered key. That work belongs in the premium plugin.
+- Onboarding for a free plugin never requires a license key, not even as a step that can be skipped.
+- Never build a Portal URL, activation URL, or licensing request by hand. Use the `lw_harbor_*` helpers. A missing helper is a Harbor ticket.
+- Never release or QA with `composer.json` pinned to a Harbor `dev-` branch.
+- Strauss must not prefix `src/Harbor/global-functions.php`.
+- Call the license page the "Unified License Manager" in anything a user sees.
+
+Before changing any of that code, read `vendor/vendor-prefixed/stellarwp/harbor/skill/SKILL.md` for the API, hooks, and bootstrap order of the installed version. If the file is missing, run `composer install` first.
+
 ## JavaScript and React
 
 - TypeScript over plain JavaScript for anything new.
