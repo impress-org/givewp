@@ -3,6 +3,16 @@
     inline-size: 14rem;
     z-index: 2;
 
+    &.alignMenuEnd {
+        :global {
+            .searchableSelect__menu {
+                left: auto;
+                right: 0;
+                transform: translate(1px, 0);
+            }
+        }
+    }
+
     &.asyncSelect {
         :global {
             .searchableSelect {
@@ -53,7 +63,7 @@
                 border: 1px solid var(--givewp-neutral-200);
                 box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
                 margin: var(--givewp-spacing-1) 0;
-                max-width: 24rem;
+                max-width: min(24rem, calc(100vw - 2rem));
                 min-width: calc(100% + 2px);
                 transform: translate(-1px, 0);
                 width: max-content;
