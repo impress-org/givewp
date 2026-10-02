@@ -901,6 +901,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @since TBD Allow a null campaignId for donations to standalone forms
      * @since 4.13.0 Updated schema to match actual response, add schema description
      * @since 4.8.0 Change default status to complete
      * @since 4.7.0 Change title to givewp/donation and add custom fields schema
@@ -986,8 +987,8 @@ class DonationController extends WP_REST_Controller
                     'default' => false,
                 ],
                 'campaignId' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Campaign ID', 'give'),
+                    'type' => ['integer', 'null'],
+                    'description' => esc_html__('Campaign ID, or null for a donation to a standalone form', 'give'),
                 ],
                 'formId' => [
                     'type' => 'integer',

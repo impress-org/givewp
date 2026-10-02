@@ -2,6 +2,7 @@
 
 namespace Give\Tests\Unit\Revenue\Listeners;
 
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
@@ -44,6 +45,25 @@ class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
             2,
             $this->getRevenueCampaignIdForDonation($donation)
         );
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testRevenueFormIdIsUpdatedWhenDonationMovesToAnotherForm(): void
+    {
+        $donation = Donation::factory()->create([
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+        $newForm = DonationForm::factory()->create();
+
+        $donation->formId = $newForm->id;
+        $donation->save();
+
+        global $wpdb;
+        $revenue = DB::get_row("SELECT * FROM {$wpdb->give_revenue} WHERE donation_id = {$donation->id}");
+
+        $this->assertEquals($newForm->id, $revenue->form_id);
     }
 
     /**
