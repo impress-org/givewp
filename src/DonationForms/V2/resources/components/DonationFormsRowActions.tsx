@@ -6,7 +6,7 @@ import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
 import {UpgradeModalContent} from './Migration';
-import LinkToCampaignRowAction from './LinkToCampaignModal';
+import AssignCampaignRowAction from './AssignCampaignModal';
 import {createInterpolateElement} from '@wordpress/element';
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
@@ -160,11 +160,14 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                             hiddenText={item?.name}
                         />
                     )}
-                    {!isCampaignDetailsPage && !item.campaignId && (
-                        <LinkToCampaignRowAction
+                    {item.campaignType !== 'p2p' && (item.campaignId || !isCampaignDetailsPage) && (
+                        <AssignCampaignRowAction
                             formId={item.id}
                             formTitle={item?.name}
-                            onLinked={async () => {
+                            campaignId={item.campaignId}
+                            campaignTitle={item.campaignTitle}
+                            isDefaultCampaignForm={Boolean(item.isDefaultCampaignForm)}
+                            onChanged={async () => {
                                 await mutate(parameters);
                             }}
                         />

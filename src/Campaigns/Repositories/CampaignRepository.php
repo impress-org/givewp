@@ -78,6 +78,7 @@ class CampaignRepository
     }
 
     /**
+     * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
      * @since 4.0.0
      *
      * @throws Exception|InvalidArgumentException
@@ -126,7 +127,7 @@ class CampaignRepository
 
             Log::error('Failed creating a campaign', compact('campaign'));
 
-            throw new $exception('Failed creating a campaign');
+            throw $exception;
         }
 
         DB::query('COMMIT');
@@ -139,6 +140,7 @@ class CampaignRepository
     }
 
     /**
+     * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
      * @since 4.0.0
      *
      * @throws Exception|InvalidArgumentException
@@ -178,7 +180,7 @@ class CampaignRepository
 
             Log::error('Failed updating a campaign', compact('campaign'));
 
-            throw new $exception('Failed updating a campaign');
+            throw $exception;
         }
 
         DB::query('COMMIT');
@@ -187,6 +189,7 @@ class CampaignRepository
     }
 
     /**
+     * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
      * @since 4.0.0
      *
      * @throws Exception
@@ -218,7 +221,7 @@ class CampaignRepository
 
             Log::error('Failed creating a campaign form relationship', compact('campaign'));
 
-            throw new $exception('Failed creating a campaign form relationship');
+            throw $exception;
         }
 
         DB::query('COMMIT');
@@ -227,6 +230,99 @@ class CampaignRepository
     }
 
     /**
+     * Detach a form from a campaign. A campaign's default form cannot be detached; choose a
+     * new default form first. Past donations keep the campaign they were made to.
+     *
+     * @since TBD
+     *
+     * @throws InvalidArgumentException when the form is a campaign's default form
+     */
+    public function removeCampaignForm(Campaign $campaign, int $donationFormId): void
+    {
+        $this->validateFormIsNotDefault($donationFormId);
+
+        Hooks::doAction('givewp_campaign_form_relationship_deleting', $campaign, $donationFormId);
+
+        DB::table('give_campaign_forms')
+            ->where('campaign_id', $campaign->id)
+            ->where('form_id', $donationFormId)
+            ->delete();
+
+        Hooks::doAction('givewp_campaign_form_relationship_deleted', $campaign, $donationFormId);
+    }
+
+    /**
+     * Attach a form to a campaign, taking it away from the campaign it currently belongs to.
+     * A form only ever belongs to one campaign; past donations stay with the original campaign
+     * and only donations made after the move count toward the new one. A campaign's default
+     * form cannot be moved.
+     *
+     * @since TBD
+     *
+     * @return Campaign|null the campaign the form was moved out of, if any
+     *
+     * @throws InvalidArgumentException when the form is a campaign's default form
+     * @throws Exception
+     */
+    public function moveCampaignForm(Campaign $campaign, int $donationFormId): ?Campaign
+    {
+        $currentCampaign = $this->getByFormId($donationFormId);
+
+        if ( ! $currentCampaign) {
+            $this->addCampaignForm($campaign, $donationFormId);
+
+            return null;
+        }
+
+        if ($currentCampaign->id === $campaign->id) {
+            return null;
+        }
+
+        $this->validateFormIsNotDefault($donationFormId);
+
+        Hooks::doAction('givewp_campaign_form_relationship_deleting', $currentCampaign, $donationFormId);
+        Hooks::doAction('givewp_campaign_form_relationship_creating', $campaign, $donationFormId, false);
+
+        /* One update keeps the move atomic: the form is never left without a campaign. */
+        DB::table('give_campaign_forms')
+            ->where('form_id', $donationFormId)
+            ->update(['campaign_id' => $campaign->id]);
+
+        Hooks::doAction('givewp_campaign_form_relationship_deleted', $currentCampaign, $donationFormId);
+        Hooks::doAction('givewp_campaign_form_relationship_created', $campaign, $donationFormId, false);
+
+        return $currentCampaign;
+    }
+
+    /**
+     * A form that any campaign uses as its default form cannot be moved or detached. Every
+     * campaign is checked, not only the one the form is linked to, because campaigns that shared
+     * a default form before form_id was made unique still name it as their default.
+     *
+     * @since TBD
+     *
+     * @throws InvalidArgumentException
+     */
+    public function validateFormIsNotDefault(int $donationFormId): void
+    {
+        $campaign = $this->prepareQuery()
+            ->where('campaigns.form_id', $donationFormId)
+            ->get();
+
+        if ( ! $campaign) {
+            return;
+        }
+
+        throw new InvalidArgumentException(
+            sprintf(
+                __('This form is the default form for the campaign "%s". Choose a new default form for that campaign first.', 'give'),
+                $campaign->title
+            )
+        );
+    }
+
+    /**
+     * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
      * @since 4.0.0
      *
      * @throws Exception
@@ -250,7 +346,7 @@ class CampaignRepository
 
             Log::error('Failed updating the campaign default form', compact('campaign'));
 
-            throw new $exception('Failed updating the campaign default form');
+            throw $exception;
         }
 
         DB::query('COMMIT');
@@ -259,6 +355,7 @@ class CampaignRepository
     }
 
     /**
+     * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
      * @since 4.0.0
      *
      * @throws Exception
@@ -279,7 +376,7 @@ class CampaignRepository
 
             Log::error('Failed deleting a campaign', compact('campaign'));
 
-            throw new $exception('Failed deleting a campaign');
+            throw $exception;
         }
 
         DB::query('COMMIT');
@@ -290,6 +387,7 @@ class CampaignRepository
     }
 
     /**
+     * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
      * @since 4.0.0
      *
      * @throws Exception
@@ -345,7 +443,7 @@ class CampaignRepository
                 'destinationCampaign' => compact('destinationCampaign'),
             ]);
 
-            throw new $exception('Failed merging campaigns into destination campaign');
+            throw $exception;
         }
 
         DB::query('COMMIT');
