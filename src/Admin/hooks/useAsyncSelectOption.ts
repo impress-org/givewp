@@ -1,10 +1,12 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useMemo, useRef, useState} from 'react';
 import apiFetch from '@wordpress/api-fetch';
 import {UseAsyncSelectOptionReturn} from '@givewp/admin/types';
 
 /**
  * Custom hook for handling async option selection with pagination and search
  *
+ * @since TBD Work out the page from the options already loaded, so a remounted select starts at the first page.
+ * @since TBD Show a picked option right away instead of the previous one while its record loads.
  * @since 4.11.0
  */
 export function useAsyncSelectOptions({
@@ -15,30 +17,27 @@ export function useAsyncSelectOptions({
     optionFormatter,
     queryParams,
     perPage = 30,
-    resetOnChange = false,
 }: AsyncSelectOptionsConfig): UseAsyncSelectOptionReturn {
-    const [page, setPage] = useState(0);
-    const [selectedOption, setSelectedOption] = useState<Option | null>(null);
     const [error, setError] = useState<Error | null>(null);
+    const loadedOptionsByValue = useRef(new Map<number, Option>());
 
-    // Reset page when reset property changes
-    useEffect(() => {
-        if (resetOnChange !== undefined) {
-            setPage(0);
+    /* Until the record for a new selection arrives, the option picked from the menu stands in for it. */
+    const selectedOption = useMemo<Option | null>(() => {
+        if (!recordId) {
+            return null;
         }
-    }, [resetOnChange]);
 
-    useEffect(() => {
-        if (selectedOptionRecord && recordId) {
-            setSelectedOption(optionFormatter(selectedOptionRecord));
-        } else if (!recordId) {
-            setSelectedOption(null);
-        }
+        const recordOption = selectedOptionRecord ? optionFormatter(selectedOptionRecord) : null;
+
+        return Number(recordOption?.value) === Number(recordId)
+            ? recordOption
+            : loadedOptionsByValue.current.get(Number(recordId)) ?? null;
     }, [selectedOptionRecord, recordId]);
 
     // Load options function for AsyncPaginate
-    const loadOptions = useCallback(async (searchInput: string) => {
-        const currentPage = searchInput ? 1 : page + 1;
+    const loadOptions = useCallback(async (searchInput: string, loadedOptions: Option[] = []) => {
+        /* The select passes the options it holds for this search, and holds none after a remount or a new search. */
+        const currentPage = Math.floor(loadedOptions.length / perPage) + 1;
 
         const params = new URLSearchParams({
             ...queryParams,
@@ -54,14 +53,9 @@ export function useAsyncSelectOptions({
                 path: `${endpoint}?${params.toString()}`,
             }));
 
-            const newOptions = (records || []).map(optionFormatter);
+            const newOptions: Option[] = (records || []).map(optionFormatter);
 
-            // Update page state
-            if (searchInput !== '') {
-                setPage(1);
-            } else if (!searchInput) {
-                setPage(currentPage);
-            }
+            newOptions.forEach((option) => loadedOptionsByValue.current.set(Number(option.value), option));
 
             const hasMoreResults = (records?.length || 0) >= perPage;
 
@@ -79,7 +73,7 @@ export function useAsyncSelectOptions({
                 hasMore: false,
             };
         }
-    }, [page, JSON.stringify(queryParams)]);
+    }, [JSON.stringify(queryParams)]);
 
     // Map options for menu (deduplication and ordering)
     const mapOptionsForMenu = useCallback(
@@ -108,7 +102,6 @@ export type AsyncSelectOptionsConfig = {
     endpoint: string;
     queryParams: {};
     perPage?: number;
-    resetOnChange?: any;
 }
 
 export function filterOptionsForSelect(options: Option[], selectedOption: Option | null): Option[] {
