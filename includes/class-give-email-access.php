@@ -351,6 +351,7 @@ class Give_Email_Access {
 	/**
 	 * Is this a valid verify key?
 	 *
+	 * @since  TBD Verify keys expire with the same window as access tokens.
 	 * @since  4.16.7 Only accept non-empty string tokens.
 	 * @since  1.0
 	 * @access public
@@ -368,9 +369,13 @@ class Give_Email_Access {
 			return false;
 		}
 
+		// A verify key expires with the same window as an access token, so a
+		// key generated before that window can no longer be redeemed.
+		$expires = date( 'Y-m-d H:i:s', time() - $this->token_expiration );
+
 		// See if the verify_key exists.
 		$row = $wpdb->get_row(
-			$wpdb->prepare( "SELECT id, email FROM {$wpdb->donors} WHERE verify_key = %s LIMIT 1", $token )
+			$wpdb->prepare( "SELECT id, email FROM {$wpdb->donors} WHERE verify_key = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
 		);
 
 		$now = date( 'Y-m-d H:i:s' );

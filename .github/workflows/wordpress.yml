@@ -6,7 +6,6 @@ on:
     push:
         branches: [ master, develop, epic/**, release/** ]
     pull_request:
-        branches: [ master, develop, epic/**, release/** ]
 
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
@@ -26,10 +25,14 @@ jobs:
             contents: read
 
         strategy:
+            # One failing combination says nothing about the others, so let them all finish.
+            fail-fast: false
             matrix:
                 php: [7.4, 8.4]
                 mysql: [ 'mysql:5.7', 'mysql:8.0' ]
-                wordpress: [ '6.5', latest ]
+                # `minimum` is the "Requires at least" line of readme.txt, so the oldest version
+                # tested is always the oldest one the plugin says it supports.
+                wordpress: [ minimum, latest ]
 
         services:
             # --log-error-verbosity=1 keeps the server log to errors only; at the default level MySQL
@@ -59,12 +62,6 @@ jobs:
                 with:
                     # Nothing here pushes over git, and the job goes on to run third-party actions.
                     persist-credentials: false
-            -   name: Cache dependencies
-                uses: actions/cache@v6
-                with:
-                    path: ~/.composer/cache/files
-                    key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
-
             # @link https://github.com/spatie/laravel-activitylog/blob/master/.github/workflows/run-tests.yml
             -   name: Set Up PHP for build
                 uses: shivammathur/setup-php@v2
@@ -72,6 +69,18 @@ jobs:
                     php-version: 7.4
                     extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                     coverage: none
+
+            # Composer is asked where its download cache is, because the answer depends on the
+            # runner. Every job installs on the same PHP, so they all share one cache.
+            -   name: Find the Composer cache
+                id: composer-cache
+                run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+            -   name: Cache dependencies
+                uses: actions/cache@v6
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: composer-${{ hashFiles('composer.lock') }}
 
             -   name: Install composer dependencies
                 run: composer install --no-progress --no-interaction
@@ -112,10 +121,105 @@ jobs:
                   sudo apt-get install -y subversion
                   svn --version
 
+            -   name: Resolve the WordPress version
+                run: |
+                    version=latest
+                    if [ "$WORDPRESS" = minimum ]; then
+                        version=$(sed -n 's/^Requires at least: *//p' readme.txt)
+                        [[ "$version" =~ ^[0-9]+\.[0-9]+$ ]] || { echo "::error::No usable \"Requires at least\" in readme.txt: '$version'"; exit 1; }
+                    fi
+                    echo "wordpress_version=$version" >> "$GITHUB_ENV"
+                env:
+                    WORDPRESS: ${{ matrix.wordpress }}
+
             -   name: Set Up Tests
-                run: bash tests/includes/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
+                run: bash tests/includes/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ env.wordpress_version }}
 
             -   name: Run Tests
                 run: composer test
                 env:
                     DB_PORT: ${{ env.mysql_port }}
+
+    # The same suite inside wp-env, the way `npm run test:php` runs it locally. wp-env's database
+    # is MariaDB and cannot be changed, which makes this the MariaDB half of the matrix: the job
+    # above covers MySQL.
+    test-mariadb:
+        runs-on: blacksmith-4vcpu-ubuntu-2404
+
+        # A run takes a few minutes. The cap is for a database that stops answering, which would
+        # otherwise hold the job, and a release waiting on it, for six hours.
+        timeout-minutes: 20
+
+        # The job reads the checkout and runs the test suite, nothing else.
+        permissions:
+            contents: read
+
+        strategy:
+            # One failing combination says nothing about the others, so let them all finish.
+            fail-fast: false
+            matrix:
+                php: [7.4, 8.4]
+                # `minimum` is the "Requires at least" line of readme.txt, so the oldest version
+                # tested is always the oldest one the plugin says it supports.
+                wordpress: [ minimum, latest ]
+
+        env:
+            WP_ENV_PHP_VERSION: ${{ matrix.php }}
+
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    # Nothing here pushes over git, and the job goes on to run third-party actions.
+                    persist-credentials: false
+
+            # Composer runs on the runner, on the PHP version the release is built with. The tests
+            # run on the container's PHP.
+            -   name: Set Up PHP for build
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 7.4
+                    coverage: none
+
+            # Composer is asked where its download cache is, because the answer depends on the
+            # runner. Every job installs on the same PHP, so they all share one cache.
+            -   name: Find the Composer cache
+                id: composer-cache
+                run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+            -   name: Cache dependencies
+                uses: actions/cache@v6
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: composer-${{ hashFiles('composer.lock') }}
+
+            -   name: Install composer dependencies
+                run: composer install --no-progress --no-interaction
+
+            -   name: Set Up Node
+                uses: actions/setup-node@v7
+                with:
+                    node-version-file: .nvmrc
+
+            # wp-env is the only Node package this job uses, so it is installed alone, at the
+            # version package.json pins, rather than with everything else in the lockfile.
+            -   name: Install wp-env
+                run: npm install --global "@wordpress/env@$(node -p "require('./package.json').devDependencies['@wordpress/env']")"
+
+            # wp-env takes the WordPress to install from WP_ENV_CORE.
+            -   name: Resolve the WordPress version
+                run: |
+                    core=https://wordpress.org/latest.zip
+                    if [ "$WORDPRESS" = minimum ]; then
+                        version=$(sed -n 's/^Requires at least: *//p' readme.txt)
+                        [[ "$version" =~ ^[0-9]+\.[0-9]+$ ]] || { echo "::error::No usable \"Requires at least\" in readme.txt: '$version'"; exit 1; }
+                        core=https://wordpress.org/wordpress-$version.zip
+                    fi
+                    echo "WP_ENV_CORE=$core" >> "$GITHUB_ENV"
+                env:
+                    WORDPRESS: ${{ matrix.wordpress }}
+
+            -   name: Start wp-env
+                run: npm run env:test:start
+
+            -   name: Run Tests
+                run: npm run test:php

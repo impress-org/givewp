@@ -9,6 +9,7 @@ use Give\Framework\Support\ValueObjects\Money;
 class DonorFactory extends ModelFactory
 {
     /**
+     * @since TBD Generate a unique "email", because the donors table does not accept a duplicate.
      * @since 4.4.0 Add "company", "avatarId", "additionalEmails", and "addresses" properties
      * @since 3.7.0 Add "phone" property
      * @since 2.19.6
@@ -44,7 +45,7 @@ class DonorFactory extends ModelFactory
             'lastName' => $lastName,
             'prefix' => $this->faker->randomElement(give_get_option('title_prefixes', array_values(give_get_default_title_prefixes()))),
             'name' => trim("$firstName $lastName"),
-            'email' => $this->faker->email,
+            'email' => $this->faker->unique()->email,
             'phone' => $this->faker->phoneNumber,
             'company' => $this->faker->company,
             'avatarId' => $this->faker->optional(0.2)->numberBetween(1, 9999),

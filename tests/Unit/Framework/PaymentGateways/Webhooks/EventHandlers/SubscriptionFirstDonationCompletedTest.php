@@ -161,4 +161,31 @@ class SubscriptionFirstDonationCompletedTest extends TestCase
         $this->assertNull($donation->gatewayTransactionId);
         $this->assertTrue($donation->status->isPending());
     }
+
+    /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testShouldNotUpdateSubscriptionWhenItHasNoInitialDonation()
+    {
+        $subscription = Subscription::factory()->create([
+            'gatewaySubscriptionId' => 'gateway-subscription-id',
+            'status' => SubscriptionStatus::PENDING(),
+        ]);
+
+        give(SubscriptionFirstDonationCompleted::class)(
+            'gateway-transaction-id',
+            '',
+            true,
+            true,
+            $subscription->gatewaySubscriptionId
+        );
+
+        $subscription = Subscription::find($subscription->id);
+
+        $this->assertNull($subscription->initialDonation());
+        $this->assertNull(give()->donations->getByGatewayTransactionId('gateway-transaction-id'));
+        $this->assertTrue($subscription->status->isPending());
+    }
 }

@@ -50,6 +50,26 @@ class SubscriptionActiveTest extends TestCase
     }
 
     /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testShouldNotSetStatusToActiveWhenSubscriptionHasNoInitialDonation()
+    {
+        $subscription = Subscription::factory()->create([
+            'status' => SubscriptionStatus::PENDING(),
+            'gatewaySubscriptionId' => 'gateway-subscription-id',
+        ]);
+
+        give(SubscriptionActive::class)($subscription->gatewaySubscriptionId, 'test', true);
+
+        $subscription = Subscription::find($subscription->id); // re-fetch subscription
+
+        $this->assertNull($subscription->initialDonation());
+        $this->assertNotTrue($subscription->status->isActive());
+    }
+
+    /**
      * @since 3.6.0
      *
      * @throws Exception

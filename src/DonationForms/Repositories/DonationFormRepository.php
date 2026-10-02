@@ -70,6 +70,7 @@ class DonationFormRepository
     }
 
     /**
+     * @since TBD Keep the original error as the previous exception when the write fails.
      * @since 3.7.0 Add post_excerpt to the list of fields being inserted
      * @since 3.0.0
      *
@@ -131,7 +132,7 @@ class DonationFormRepository
 
             Log::error('Failed creating a donation form', compact('donationForm'));
 
-            throw new $exception('Failed creating a donation form');
+            throw new Exception('Failed creating a donation form', 0, $exception);
         }
 
         DB::query('COMMIT');
@@ -148,6 +149,7 @@ class DonationFormRepository
     }
 
     /**
+     * @since TBD Keep the original error as the previous exception when the write fails.
      * @since 3.7.0 Add post_excerpt to the list of fields being updated
      * @since 3.0.0
      *
@@ -206,7 +208,7 @@ class DonationFormRepository
 
             Log::error('Failed updating a donation form', compact('donationForm'));
 
-            throw new $exception('Failed updating a donation form');
+            throw new Exception('Failed updating a donation form', 0, $exception);
         }
 
         DB::query('COMMIT');
@@ -215,6 +217,7 @@ class DonationFormRepository
     }
 
     /**
+     * @since TBD Keep the original error as the previous exception when the write fails.
      * @since 3.0.0
      *
      * @throws Exception
@@ -238,7 +241,7 @@ class DonationFormRepository
 
             Log::error('Failed deleting a donation form', compact('donationForm'));
 
-            throw new $exception('Failed deleting a donation form');
+            throw new Exception('Failed deleting a donation form', 0, $exception);
         }
 
         DB::query('COMMIT');

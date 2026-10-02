@@ -47,6 +47,7 @@ class SubscriptionNotesRepository
     }
 
     /**
+     * @since TBD Keep the original error as the previous exception when the write fails.
      * @since 4.8.0
      *
      * @throws Exception|InvalidArgumentException
@@ -92,7 +93,7 @@ class SubscriptionNotesRepository
 
             Log::error('Failed creating a subscription note', compact('subscriptionNote'));
 
-            throw new $exception('Failed creating a subscription note');
+            throw new Exception('Failed creating a subscription note', 0, $exception);
         }
 
         DB::query('COMMIT');
@@ -104,6 +105,7 @@ class SubscriptionNotesRepository
     }
 
     /**
+     * @since TBD Keep the original error as the previous exception when the write fails.
      * @since 4.8.0
      *
      * @throws Exception|InvalidArgumentException
@@ -134,7 +136,7 @@ class SubscriptionNotesRepository
 
             Log::error('Failed updating a subscription note', compact('subscriptionNote'));
 
-            throw new $exception('Failed updating a subscription note');
+            throw new Exception('Failed updating a subscription note', 0, $exception);
         }
 
         DB::query('COMMIT');
@@ -143,6 +145,7 @@ class SubscriptionNotesRepository
     }
 
     /**
+     * @since TBD Keep the original error as the previous exception when the write fails.
      * @since 4.8.0
      *
      * @throws Exception
@@ -166,7 +169,7 @@ class SubscriptionNotesRepository
 
             Log::error('Failed deleting a subscription note', compact('subscriptionNote'));
 
-            throw new $exception('Failed deleting a subscription note');
+            throw new Exception('Failed deleting a subscription note', 0, $exception);
         }
 
         DB::query('COMMIT');
