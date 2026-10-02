@@ -53,9 +53,10 @@
                 border: 1px solid var(--givewp-neutral-200);
                 box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
                 margin: var(--givewp-spacing-1) 0;
+                max-width: 24rem;
                 min-width: calc(100% + 2px);
                 transform: translate(-1px, 0);
-                width: fit-content;
+                width: max-content;
             }
 
             &__menu-list {
@@ -76,8 +77,8 @@
                 color: var(--givewp-neutral-900);
                 font-size: 0.875rem;
                 line-height: 1.5;
+                overflow-wrap: anywhere;
                 padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
-                white-space: nowrap;
 
                 &--is-focused {
                     background-color: var(--givewp-neutral-100);

@@ -68,7 +68,6 @@ class DonationFormsEntityRoute
     /**
      * Get Forms route
      *
-     * @since TBD Add search parameter
      * @since 4.10.1 Changed permission callback to use validationForGetItems method
      * @since 4.2.0
      */
@@ -110,12 +109,7 @@ class DonationFormsEntityRoute
                         'default' => 30,
                         'minimum' => 1,
                         'maximum' => 100,
-                    ],
-                    'search' => [
-                        'type' => 'string',
-                        'default' => '',
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
+                    ]
                 ],
             ]
         );
