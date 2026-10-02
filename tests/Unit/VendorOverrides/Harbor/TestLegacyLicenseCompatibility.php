@@ -173,16 +173,48 @@ class TestLegacyLicenseCompatibility extends TestCase
     /**
      * Add-on covered by Harbor with no legacy license should be reported as licensed.
      *
+     * @since TBD Harbor knows the add-on by its catalog slug, not its plugin dirname.
      * @since 4.15.0
      */
     public function testGetLicenseByPluginDirnameReturnsValidWhenHarborCoversAddon(): void
     {
-        $this->setHarborFeatureAvailable(['give-recurring']);
+        $this->setHarborFeatureAvailable(['give-recurring-donations']);
 
         $result = \Give_License::get_license_by_plugin_dirname('give-recurring');
 
         $this->assertNotEmpty($result, 'Should return a non-empty license array for Harbor-covered add-on');
         $this->assertSame('valid', $result['license'], 'License status should be valid for Harbor-covered add-on');
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testGetLicenseByPluginDirnameReturnsValidWhenCatalogSlugMatchesDirname(): void
+    {
+        $this->setHarborFeatureAvailable(['give-fee-recovery']);
+
+        $result = \Give_License::get_license_by_plugin_dirname('give-fee-recovery');
+
+        $this->assertSame('valid', $result['license']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testLicensesTabShowsHarborCoveredAddonAsLicensed(): void
+    {
+        $this->setHarborFeatureAvailable(['give-recurring-donations']);
+
+        $html = \Give_License::html_by_plugin([
+            'Dir'       => 'give-recurring',
+            'Name'      => 'Give - Recurring Donations',
+            'Version'   => '2.20.1',
+            'Status'    => 'active',
+            'PluginURI' => 'https://givewp.com/addons/recurring-donations/',
+        ]);
+
+        $this->assertStringContainsString('Licensed through your Liquid Web license', $html);
+        $this->assertStringNotContainsString('License is inactive', $html);
     }
 
     /**

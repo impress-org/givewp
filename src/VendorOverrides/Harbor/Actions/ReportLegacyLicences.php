@@ -8,11 +8,13 @@ use Give\License\Repositories\LicenseRepository;
 
 /**
  * Reports legacy Give licenses to Harbor by expanding each license's downloads
- * into individual entries, so each plugin slug (e.g. "give-recurring") is
- * associated with the correct license key.
+ * into individual entries, so each add-on is associated with the correct
+ * license key. Entries carry the add-on's Harbor catalog slug
+ * (e.g. "give-recurring-donations").
  *
- * Hooked into the `stellarwp/harbor/legacy_licenses` filter.
+ * Hooked into the `lw-harbor/legacy_licenses` filter.
  *
+ * @since TBD Report each add-on by its Harbor catalog slug.
  * @since 4.15.0
  */
 class ReportLegacyLicences
@@ -23,14 +25,22 @@ class ReportLegacyLicences
     private LicenseRepository $licenseRepository;
 
     /**
+     * @since TBD
+     */
+    private GetFeatureSlugByPluginDirname $getFeatureSlug;
+
+    /**
+     * @since TBD Added $getFeatureSlug.
      * @since 4.15.0
      */
-    public function __construct(LicenseRepository $licenseRepository)
+    public function __construct(LicenseRepository $licenseRepository, GetFeatureSlugByPluginDirname $getFeatureSlug)
     {
         $this->licenseRepository = $licenseRepository;
+        $this->getFeatureSlug = $getFeatureSlug;
     }
 
     /**
+     * @since TBD Report each add-on by its Harbor catalog slug.
      * @since 4.15.0
      * @param array $licenses Existing licenses already added by other plugins.
      * @return array
@@ -52,7 +62,7 @@ class ReportLegacyLicences
 
                 $entry = [
                     'key'       => $license->licenseKey,
-                    'slug'      => $download->pluginSlug,
+                    'slug'      => ($this->getFeatureSlug)($download->pluginSlug),
                     'name'      => $download->name,
                     'product'     => 'give',
                     'is_active' => $license->isActive,
@@ -92,7 +102,7 @@ class ReportLegacyLicences
 
             $entries[] = [
                 'key'       => '',
-                'slug'      => $slug,
+                'slug'      => ($this->getFeatureSlug)($slug),
                 'name'      => $plugin['Name'],
                 'product'   => 'give',
                 'is_active' => false,
