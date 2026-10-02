@@ -10,8 +10,10 @@
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
+use Give\Donations\Models\Donation;
 use Give\License\Repositories\LicenseRepository;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
+use Give\PaymentGateways\Gateways\Stripe\Actions\RecordMicrodepositVerification;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give\ValueObjects\Money;
 
@@ -990,24 +992,56 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
  * @param \Stripe\PaymentIntent $payment_intent Stripe Payment Intent Object.
  *
  * @since 2.5.0
+ * @since TBD Handle ACH `verify_with_microdeposits` next actions and stop redirecting to an empty URL.
  *
  * @return void
  */
 function give_stripe_process_additional_authentication( $donation_id, $payment_intent ) {
 
 	// Additional steps required when payment intent status is set to `requires_action`.
-	if ( 'requires_action' === $payment_intent->status ) {
-
-		$action_url = $payment_intent->next_action->redirect_to_url->url;
-
-		// Save Payment Intent requires action related information to donation note and DB.
-		give_insert_payment_note( $donation_id, 'Stripe requires additional action to be fulfilled.' );
-		give_update_meta( $donation_id, '_give_stripe_payment_intent_require_action_url', $action_url );
-
-		wp_redirect( $action_url );
-		exit;
+	if ( 'requires_action' !== $payment_intent->status ) {
+		return;
 	}
 
+	// Save Payment Intent requires action related information to donation note.
+	give_insert_payment_note( $donation_id, 'Stripe requires additional action to be fulfilled.' );
+
+	// ACH microdeposit verification has no redirect. Record it and email the donor the hosted link.
+	if (
+		isset( $payment_intent->next_action->type )
+		&& 'verify_with_microdeposits' === $payment_intent->next_action->type
+		&& ! empty( $payment_intent->next_action->verify_with_microdeposits->hosted_verification_url )
+	) {
+		$donation = Donation::find( $donation_id );
+
+		if ( $donation ) {
+			give( RecordMicrodepositVerification::class )(
+				$donation,
+				$payment_intent->next_action->verify_with_microdeposits->hosted_verification_url
+			);
+		}
+
+		return;
+	}
+
+	$action_url = ! empty( $payment_intent->next_action->redirect_to_url->url )
+		? $payment_intent->next_action->redirect_to_url->url
+		: '';
+
+	// Do not redirect to an empty URL when Stripe returns an unrecognized next action.
+	if ( empty( $action_url ) ) {
+		give_record_gateway_error(
+			esc_html__( 'Stripe requires additional action', 'give' ),
+			esc_html__( 'Stripe returned a Payment Intent in the requires_action state without a redirect URL.', 'give' )
+		);
+
+		return;
+	}
+
+	give_update_meta( $donation_id, '_give_stripe_payment_intent_require_action_url', $action_url );
+
+	wp_redirect( $action_url );
+	exit;
 }
 
 /**
