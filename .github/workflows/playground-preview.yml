@@ -14,8 +14,11 @@ on:
 
 # One run per pull request at a time. A push while a preview is still building cancels that build,
 # so an older zip can never overwrite a newer button.
+#
+# A run started by some other label builds nothing, so it goes in a group of its own and cannot
+# cancel a preview that is still building.
 concurrency:
-    group: playground-preview-${{ github.event.pull_request.number }}
+    group: playground-preview-${{ github.event.pull_request.number }}-${{ github.event.action != 'labeled' || github.event.label.name == 'playground' }}
     cancel-in-progress: true
 
 jobs:
