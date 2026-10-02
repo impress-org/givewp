@@ -6,7 +6,11 @@ import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import RowAction from '@givewp/components/ListTable/RowAction';
 import {CheckCircle} from '@givewp/components/AdminUI/Icons';
 import {AsyncPaginate} from 'react-select-async-paginate';
-import {useCampaignAsyncSelect} from '@givewp/components/ListTable/CustomFilter/useAsyncCampaigns';
+import {
+    AsyncSelectEntity,
+    asyncSelectEntities,
+    useCampaignAsyncSelect,
+} from '@givewp/components/ListTable/CustomFilter/useAsyncCampaigns';
 import {CampaignOption} from '@givewp/components/ListTable/CustomFilter/utils';
 import {Interweave} from 'interweave';
 import selectStyles from '@givewp/components/ListTable/CustomFilter/styles.module.scss';
@@ -30,6 +34,12 @@ type AssignCampaignModalProps = AssignCampaignProps & {
 };
 
 type Step = 'pick' | 'confirmRemove' | 'moved' | 'removed';
+
+/* A form cannot be assigned to an archived campaign, so the picker leaves those out. */
+const assignableCampaigns: AsyncSelectEntity = {
+    ...asyncSelectEntities.campaign,
+    listQuery: {status: 'active,draft'},
+};
 
 /**
  * Row action that owns the modal state. It is a real component so the parent row-actions
@@ -77,7 +87,7 @@ function AssignCampaignModal({
     const [selected, setSelected] = useState<CampaignOption | null>(null);
     const [isSaving, setSaving] = useState(false);
     const [error, setError] = useState<string>('');
-    const {loadOptions, mapOptionsForMenu} = useCampaignAsyncSelect(null, ['active', 'draft']);
+    const {loadOptions, mapOptionsForMenu} = useCampaignAsyncSelect(null, assignableCampaigns);
     const campaignId = selected?.value ?? 0;
     const title = hasCampaign ? __('Change campaign', 'give') : __('Assign campaign', 'give');
     const campaignUrl = `edit.php?post_type=give_forms&page=give-campaigns&id=${campaignId}&tab=overview&action=edit`;

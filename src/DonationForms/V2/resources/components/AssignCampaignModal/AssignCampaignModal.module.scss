@@ -6,7 +6,9 @@
         overflow: visible;
     }
 
+    /* The list filters cap their menu width. Here the menu matches the select. */
     :global(.searchableSelect__menu) {
+        max-width: none;
         width: 100%;
     }
 

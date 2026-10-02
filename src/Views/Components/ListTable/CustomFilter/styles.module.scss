@@ -1,5 +1,17 @@
+/* A fixed width keeps the filter row from shifting when a long option is picked; the selected label truncates instead. */
 .searchableSelect {
+    inline-size: 14rem;
     z-index: 2;
+
+    &.alignMenuEnd {
+        :global {
+            .searchableSelect__menu {
+                left: auto;
+                right: 0;
+                transform: translate(1px, 0);
+            }
+        }
+    }
 
     &.asyncSelect {
         :global {
@@ -9,6 +21,20 @@
 
                     &:has(.searchableSelect__loading-indicator) {
                         padding-left: 0;
+                    }
+
+                    /* With a value selected, tighten the clear and dropdown buttons so more of the label shows. */
+                    &:has(.searchableSelect__clear-indicator) {
+                        padding-left: 0;
+
+                        .searchableSelect__clear-indicator {
+                            padding-inline: var(--givewp-spacing-1);
+                        }
+
+                        .searchableSelect__dropdown-indicator {
+                            padding-inline: var(--givewp-spacing-2);
+                            width: calc(var(--givewp-spacing-2) * 2 + 1rem);
+                        }
                     }
                 }
             }
@@ -37,9 +63,10 @@
                 border: 1px solid var(--givewp-neutral-200);
                 box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
                 margin: var(--givewp-spacing-1) 0;
+                max-width: min(24rem, calc(100vw - 2rem));
                 min-width: calc(100% + 2px);
                 transform: translate(-1px, 0);
-                width: fit-content;
+                width: max-content;
             }
 
             &__menu-list {
@@ -60,8 +87,8 @@
                 color: var(--givewp-neutral-900);
                 font-size: 0.875rem;
                 line-height: 1.5;
+                overflow-wrap: anywhere;
                 padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
-                white-space: nowrap;
 
                 &--is-focused {
                     background-color: var(--givewp-neutral-100);

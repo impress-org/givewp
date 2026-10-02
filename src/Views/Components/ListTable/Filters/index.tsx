@@ -1,10 +1,12 @@
 import {__} from '@wordpress/i18n';
 import CustomFilter from '../CustomFilter';
+import {asyncSelectEntities} from '../CustomFilter/useAsyncCampaigns';
 import styles from './styles.module.scss';
 
 /**
  * Filter type configurations
  *
+ * @since TBD Add formselect
  * @since 4.10.0
  */
 const filterConfigs = {
@@ -21,6 +23,15 @@ const filterConfigs = {
         isSelectable: true,
         isClearable: true,
         useDebouncedOnChange: false,
+        asyncEntity: asyncSelectEntities.campaign,
+    },
+    formselect: {
+        id: 'formselect',
+        isSearchable: true,
+        isSelectable: true,
+        isClearable: true,
+        useDebouncedOnChange: false,
+        asyncEntity: asyncSelectEntities.form,
     },
     search: {
         id: 'search',
@@ -31,6 +42,8 @@ const filterConfigs = {
 };
 
 /**
+ * @since TBD Pass ariaLabel through to the select
+ * @since TBD Render formselect as an async select
  * @since 4.10.0
  */
 export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
@@ -58,14 +71,15 @@ export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
         <CustomFilter
             name={filter.name}
             options={filter.options}
-            aria-label={filter?.ariaLabel}
+            ariaLabel={filter?.ariaLabel}
             placeholder={filter?.text}
             onChange={config.useDebouncedOnChange ? debouncedOnChange : onChange}
             value={value}
             isSearchable={config.isSearchable}
             isSelectable={config.isSelectable}
             isClearable={config.isClearable}
-            isAsync={config.id === 'campaignselect'}
+            isAsync={!!config.asyncEntity}
+            asyncEntity={config.asyncEntity}
         />
     );
 };
@@ -99,6 +113,7 @@ export const getInitialFilterState = (filters) => {
                     break;
                 case 'search':
                 case 'campaignselect':
+                case 'formselect':
                 default:
                     state[filter.name] = '';
                     break;
