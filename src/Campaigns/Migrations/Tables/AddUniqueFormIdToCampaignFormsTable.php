@@ -85,7 +85,16 @@ class AddUniqueFormIdToCampaignFormsTable extends Migration
                 return;
             }
 
-            DB::query("ALTER TABLE $table DROP INDEX form_id, ADD UNIQUE KEY form_id (form_id)");
+            $hasIndex = DB::get_var(
+                "SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS
+                WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '$table' AND INDEX_NAME = 'form_id'"
+            );
+
+            DB::query(
+                $hasIndex
+                    ? "ALTER TABLE $table DROP INDEX form_id, ADD UNIQUE KEY form_id (form_id)"
+                    : "ALTER TABLE $table ADD UNIQUE KEY form_id (form_id)"
+            );
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while updating the $table table", 0, $exception);
         }

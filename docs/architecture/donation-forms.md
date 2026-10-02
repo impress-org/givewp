@@ -172,9 +172,9 @@ is attached or moved into an archived campaign. Peer-to-Peer
 campaigns link their form through `give_campaigns.form_id` instead and are neither moved nor detached. Campaigns own the goal, and
 `Campaigns/Actions/FormInheritsCampaignGoal.php` pushes it down to the form.
 
-So a form's goal may not be the form's own setting. Creating a form outside a campaign context
-produces an orphan — see `src/DonationForms/OrphanedForms/` and
-`Campaigns/Actions/CreateDefaultCampaignForm.php`.
+So a form's goal may not be the form's own setting. A form created outside a campaign is a
+standalone form: it has no `give_campaign_forms` row and uses its own goal.
+`Campaigns/Actions/CreateDefaultCampaignForm.php` only runs when a campaign is created.
 
 ## Which one do I touch?
 
