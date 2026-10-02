@@ -22,6 +22,7 @@ export type DonationSummaryGridProps = {
 };
 
 /**
+ * @since TBD Say "No campaign" when there is no campaign.
  * @since 4.13.0 updated to accept Campaign type
  * @since 4.8.0 export function for SubscriptionSummaryGrid & add GridCard component
  * @since 4.6.0
@@ -29,13 +30,15 @@ export type DonationSummaryGridProps = {
 export function CampaignCard({campaign}: {campaign: Campaign}) {
     return (
         <GridCard heading={__('Campaign name', 'give')} headingId="campaign-name">
-            {campaign && (
+            {campaign ? (
                 <a
                     href={`edit.php?post_type=give_forms&page=give-campaigns&id=${campaign?.id}&tab=overview`}
                     className={styles.campaignLink}
                 >
                     {campaign?.title}
                 </a>
+            ) : (
+                <p className={styles.emptyValue}>{__('No campaign', 'give')}</p>
             )}
         </GridCard>
     );

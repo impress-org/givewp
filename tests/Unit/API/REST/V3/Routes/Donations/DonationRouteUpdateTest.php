@@ -3,6 +3,8 @@
 namespace Give\Tests\Unit\API\REST\V3\Routes\Donations;
 
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
+use Give\Campaigns\Models\Campaign;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
@@ -51,6 +53,32 @@ class DonationRouteUpdateTest extends RestApiTestCase
         $this->assertEquals('1234567890', $data['phone']);
         $this->assertEquals('Updated Company', $data['company']);
         $this->assertEquals('Updated comment', $data['comment']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testUpdateDonationShouldRemoveCampaignWhenMovedToStandaloneForm()
+    {
+        $campaign = Campaign::factory()->create();
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create(['campaignId' => $campaign->id]);
+        $standaloneForm = DonationForm::factory()->create(['title' => 'Standalone Form']);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id;
+        $request = $this->createRequest('PUT', $route, [], 'administrator');
+        $request->set_body_params([
+            'campaignId' => null,
+            'formId' => $standaloneForm->id,
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(200, $response->get_status());
+        $updated = Donation::find($donation->id);
+        $this->assertSame(0, $updated->campaignId);
+        $this->assertEquals($standaloneForm->id, $updated->formId);
+        $this->assertSame('Standalone Form', $updated->formTitle);
     }
 
     /**

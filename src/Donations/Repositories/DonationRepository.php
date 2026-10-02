@@ -263,6 +263,7 @@ class DonationRepository
     }
 
     /**
+     * @since TBD Refresh the form title when the donation moves to another form
      * @since 4.6.0 Turn createdAt property updatable
      * @since 2.23.1 Use give_update_meta() method to update entries on give_donationmeta table
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
@@ -276,6 +277,10 @@ class DonationRepository
     public function update(Donation $donation)
     {
         $this->validateDonation($donation);
+
+        if ($donation->isDirty('formId') && ! $donation->isDirty('formTitle')) {
+            $donation->formTitle = $this->getFormTitle($donation->formId);
+        }
 
         Hooks::doAction('givewp_donation_updating', $donation);
 

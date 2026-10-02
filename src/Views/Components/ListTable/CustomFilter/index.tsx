@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import ReactSelect, { components } from 'react-select';
-import { useCampaignAsyncSelect } from './useAsyncCampaigns';
+import { AsyncSelectEntity, useCampaignAsyncSelect } from './useAsyncCampaigns';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import { CampaignOption } from './utils';
 import styles from './styles.module.scss';
@@ -26,6 +27,38 @@ type CustomFilterProps = {
 	isSelectable?: boolean;
 	isClearable?: boolean;
 	isAsync?: boolean;
+	asyncEntity?: AsyncSelectEntity;
+}
+
+/* Matches the menu's max-width in the stylesheet. */
+const MENU_MAX_WIDTH_REM = 24;
+
+/**
+ * A menu opens from its select's left edge. When it would run past the right edge of the page, it opens from the
+ * select's right edge instead.
+ *
+ * @since TBD
+ */
+function useMenuAlignment(inputId: string) {
+    const [alignMenuEnd, setAlignMenuEnd] = useState(false);
+
+    const onMenuOpen = () => {
+        const root = document.documentElement;
+        const select = document.getElementById(inputId)?.closest(`.${styles.searchableSelect}`);
+
+        if (!select) {
+            return;
+        }
+
+        const menuMaxWidth = MENU_MAX_WIDTH_REM * parseFloat(getComputedStyle(root).fontSize);
+
+        setAlignMenuEnd(select.getBoundingClientRect().left + menuMaxWidth > root.clientWidth);
+    };
+
+    return {
+        onMenuOpen,
+        className: `${styles.searchableSelect} ${alignMenuEnd ? styles.alignMenuEnd : ''}`,
+    };
 }
 
 /**
@@ -36,6 +69,7 @@ export default function CustomFilter(props: CustomFilterProps) {
 }
 
 /**
+ * @since TBD Keep the open menu inside the page.
  * @since 4.10.0
  */
 function DefaultFilter({name, options, ariaLabel, placeholder, onChange, value, isSearchable, isSelectable, isClearable}: CustomFilterProps) {
@@ -53,9 +87,13 @@ function DefaultFilter({name, options, ariaLabel, placeholder, onChange, value, 
 		onChange(name, inputValue);
 	};
 
+	const inputId = `givewp-filter-${name}`;
+	const menuAlignment = useMenuAlignment(inputId);
+
 	return (
 			<ReactSelect
-				inputId={`givewp-filter-${name}`}
+				inputId={inputId}
+				onMenuOpen={menuAlignment.onMenuOpen}
 				name={name}
 				options={formattedOptions}
 				value={valueOption}
@@ -66,7 +104,7 @@ function DefaultFilter({name, options, ariaLabel, placeholder, onChange, value, 
 				isSearchable={isSearchable}
 				isClearable={isClearable}
 				classNamePrefix="searchableSelect"
-				className={styles.searchableSelect}
+				className={menuAlignment.className}
 				components={{
 					DropdownIndicator: isSelectable ? components.DropdownIndicator : () => null,
 					Menu: isSelectable ? components.Menu : () => null,
@@ -79,31 +117,40 @@ function DefaultFilter({name, options, ariaLabel, placeholder, onChange, value, 
 }
 
 /**
+ * @since TBD Load forms as well as campaigns through `asyncEntity`.
+ * @since TBD Label the select for screen readers with `ariaLabel`.
  * @since TBD Pin any static `options` (for example "No campaign") above the async results.
+ * @since TBD Keep the open menu inside the page.
  * @since 4.10.0
  */
-function AsyncFilter({name, options = [], placeholder, onChange, value, isSearchable, isClearable}: CustomFilterProps) {
+function AsyncFilter({name, options = [], ariaLabel, placeholder, onChange, value, isSearchable, isClearable, asyncEntity}: CustomFilterProps) {
 	const staticOptions = options.map(({value, text}) => ({value, label: text})) as unknown as CampaignOption[];
 	const staticSelected = staticOptions.find((option) => String(option.value) === String(value)) ?? null;
 	const { loadOptions, mapOptionsForMenu, selectedOption } = useCampaignAsyncSelect(
-		staticSelected ? null : parseInt(value) || null
+		staticSelected ? null : parseInt(value) || null,
+		asyncEntity
 	);
 
 	const handleChange = (selectedOption: CampaignOption | null) => {
 		onChange(name, selectedOption?.value.toString() ?? '');
 	}
 
+	const inputId = `givewp-async-filter-${name}`;
+	const menuAlignment = useMenuAlignment(inputId);
+
 	return (
 		<AsyncPaginate
-			inputId={`givewp-async-filter-${name}`}
+			inputId={inputId}
+			onMenuOpen={menuAlignment.onMenuOpen}
 			placeholder={placeholder}
+			aria-label={ariaLabel}
 			loadOptions={loadOptions}
 			onChange={handleChange}
 			value={staticSelected ?? selectedOption}
 			isSearchable={isSearchable}
 			isClearable={isClearable}
 			mapOptionsForMenu={(loaded: CampaignOption[]) => [...staticOptions, ...mapOptionsForMenu(loaded)]}
-			className={`${styles.searchableSelect} ${styles.asyncSelect}`}
+			className={`${menuAlignment.className} ${styles.asyncSelect}`}
 			classNamePrefix="searchableSelect"
 			debounceTimeout={600}
 		/>

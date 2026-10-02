@@ -11,6 +11,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class GetSubscriptionItemSchema
 {
     /**
+     * @since TBD Allow a null campaignId for subscriptions to standalone forms
      * @since 4.10.0 added campaignId
      * @since 4.8.0
      */
@@ -33,9 +34,8 @@ class GetSubscriptionItemSchema
                     'enum' => ['live', 'test'],
                 ],
                 'campaignId' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Campaign ID', 'give'),
-                    'nullable' => true,
+                    'type' => ['integer', 'null'],
+                    'description' => esc_html__('Campaign ID, or null for a subscription to a standalone form', 'give'),
                 ],
                 'donationFormId' => [
                     'type' => 'integer',
