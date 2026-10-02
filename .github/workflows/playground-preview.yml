@@ -59,6 +59,14 @@ jobs:
                     ref: ${{ github.event.pull_request.head.sha }}
                     persist-credentials: false
 
+            # The runner's own Composer is out of date, so set up PHP for a current one before
+            # Composer downloads pup.
+            -   name: Set Up PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 8.3
+                    coverage: none
+
             # pup names the zip after the version, the commit time and the commit hash, so the
             # name is asked of pup rather than rebuilt here.
             -   name: Find the zip
