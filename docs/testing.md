@@ -251,6 +251,47 @@ Playground runs on SQLite, not MySQL, with no cron, email or outside payment gat
 flows work there: the Playwright specs for campaigns, donation forms and the admin screens pass
 against it. It is for looking at a change, not for gateway or database work.
 
+## Plugin Check
+
+`.github/workflows/plugin-check.yml` runs WordPress.org's Plugin Check on every pull request with
+[`wordpress/plugin-check-action`](https://github.com/WordPress/plugin-check-action), against the
+plugin as the release ships it: pup builds and packages the zip with `.puprc` and `.distignore`,
+and the action checks the unzipped `give` folder. Only the `security` and `plugin_repo` categories
+run. They hold no runtime checks, so GiveWP's custom tables are not a problem here (SOFT-4567).
+
+The workflow has three jobs:
+
+- **Plugin Check start** posts the "in progress" comment.
+- **Plugin Check run** builds the zip and runs the action. It has a read-only token, because it runs
+  a third-party action. The action also tries to post its own comment, and with this token that
+  fails (the log shows "Failed to post PR comment"), so the only comment is ours.
+- **Plugin Check** (the check to watch) compares the results with the baseline and replaces the
+  comment with the result.
+
+GiveWP still has known problems, fixed ticket by ticket, and the action fails on any error. So the
+last job counts instead: `.github/plugin-check/ratchet.sh` counts errors and warnings per rule code
+and compares them with `.github/plugin-check/baseline.json`:
+
+- a rule with more errors than the baseline fails the check;
+- a rule with more warnings only gets a notice;
+- a rule with fewer errors or warnings passes, with a notice to lower the baseline.
+
+On pull requests from this repository the comment is short: totals, the top rules that went up, and
+links. Pull requests from forks get no comment (their token is read-only), but the job summary shows
+the same text. The full results are in the `plugin-check-report` artifact (the raw results and a new
+`baseline.json`).
+
+**Lowering the baseline.** After fixing problems, download the `plugin-check-report` artifact from
+your pull request's run and copy its `baseline.json` over `.github/plugin-check/baseline.json`.
+Commit it in the same pull request as the fix.
+
+**Plugin Check version.** The action always installs the latest Plugin Check, so a new release can
+add rules and raise counts on pull requests with no code change. If that happens, commit the new
+baseline in a separate pull request.
+
+Once every error count is zero, remove the first and last jobs and `continue-on-error` from the run
+job. The action then fails on any error and posts its own comment.
+
 ## Add-on smoke tests in CI
 
 `.github/workflows/tests-e2e.yml` installs the latest GitHub release of each add-on named in its
