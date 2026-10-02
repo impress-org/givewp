@@ -60,7 +60,7 @@ trait SEPAMandateForm
                 <div class="form-row form-row-responsive give-stripe-sepa-mandate-acceptance-text">
                     <?php
                     if (give_is_setting_enabled(give_get_option('stripe_mandate_acceptance_option', 'enabled'))) {
-                        echo give_stripe_get_mandate_acceptance_text();
+                        echo give_stripe_get_mandate_acceptance_text( 'sepa', $form_id );
                     }
                     ?>
                 </div>

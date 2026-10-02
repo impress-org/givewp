@@ -1187,7 +1187,7 @@ function give_stripe_get_default_mandate_acceptance_text( $method = 'sepa' ) {
  *
  * @return string
  */
-function give_stripe_get_mandate_acceptance_text( $method = 'sepa' ) {
+function give_stripe_get_mandate_acceptance_text( $method, $form_id ) {
 
 	$default_text = give_stripe_get_default_mandate_acceptance_text();
 	$text         = give_get_option( 'stripe_mandate_acceptance_text', $default_text );
@@ -1197,7 +1197,7 @@ function give_stripe_get_mandate_acceptance_text( $method = 'sepa' ) {
 		$text         = give_get_option( 'stripe_becs_mandate_acceptance_text', $default_text );
 	}
 
-	return apply_filters( 'give_stripe_get_mandate_acceptance_text', $text );
+	return apply_filters( 'give_stripe_get_mandate_acceptance_text', $text, $method, $form_id );
 }
 
 /**
