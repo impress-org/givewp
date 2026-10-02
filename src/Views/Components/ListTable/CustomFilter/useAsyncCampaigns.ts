@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { resolveSelect, useSelect } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
 import { decodeEntities } from '@wordpress/html-entities';
+import { __, sprintf } from '@wordpress/i18n';
 import { processOptionsForMenu } from './utils';
 import { CampaignOption } from './utils';
 
@@ -16,15 +17,19 @@ export type AsyncSelectEntity = {
     kind: string;
     name: string;
     listQuery: Record<string, string>;
+    editorListQuery?: Record<string, string>;
     recordQuery?: Record<string, string>;
     getTitle: (record: any) => string;
 };
 
 /* The view context keeps forms readable for users who cannot edit them. */
-const formRecordQuery = {context: 'view', _fields: 'id,title'};
+const formRecordQuery = {context: 'view', _fields: 'id,title,status'};
 
 /**
  * Forms load from the post type entity because the givewp form entity leaves out v2 forms.
+ *
+ * Draft forms are listed as well, since a form taken offline keeps its donations. The route only accepts a
+ * request for drafts from users who can edit forms, so `editorListQuery` applies to them alone.
  *
  * @since TBD
  */
@@ -45,8 +50,14 @@ export const asyncSelectEntities: Record<'campaign' | 'form', AsyncSelectEntity>
             order: 'asc',
             search_columns: 'post_title',
         },
+        editorListQuery: {status: 'publish,draft'},
         recordQuery: formRecordQuery,
-        getTitle: (form) => decodeEntities(form.title.rendered),
+        getTitle: (form) => {
+            const title = decodeEntities(form.title.rendered);
+
+            /* translators: %s: donation form title */
+            return form.status === 'draft' ? sprintf(__('%s (Draft)', 'give'), title) : title;
+        },
     },
 };
 
@@ -104,9 +115,15 @@ export function useCampaignAsyncSelect(
         setError(null);
 
         try {
+            const canEdit = entity.editorListQuery
+                // @ts-ignore
+                ? await resolveSelect(coreStore).canUser('create', entity.name).catch(() => false)
+                : false;
+
             // @ts-ignore
             const records: any[] = (await resolveSelect(coreStore).getEntityRecords(entity.kind, entity.name, {
                 ...entity.listQuery,
+                ...(canEdit && entity.editorListQuery),
                 per_page: CAMPAIGNS_PER_PAGE,
                 page: currentPage,
                 ...(search && {search}),

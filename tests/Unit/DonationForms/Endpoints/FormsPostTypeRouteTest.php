@@ -5,6 +5,8 @@ namespace Give\Tests\Unit\DonationForms\Endpoints;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Tests\RestApiTestCase;
+use Give\Tests\TestTraits\HasDefaultGiveWPUsers;
+use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
@@ -17,6 +19,8 @@ class FormsPostTypeRouteTest extends RestApiTestCase
 {
     use RefreshDatabase;
     use LegacyDonationFormAdapter;
+    use HasDefaultWordPressUsers;
+    use HasDefaultGiveWPUsers;
 
     /**
      * @since TBD
@@ -41,5 +45,25 @@ class FormsPostTypeRouteTest extends RestApiTestCase
         $request->set_query_params(['search' => 'Visual Builder', 'search_columns' => 'post_title']);
 
         $this->assertSame([$v3Form->id], array_column($this->dispatchRequest($request)->get_data(), 'id'));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testListsDraftFormsOnlyForUsersWhoCanEditForms()
+    {
+        $draftForm = DonationForm::factory()->create(['status' => DonationFormStatus::DRAFT()]);
+        $query = ['_fields' => 'id,title,status', 'status' => 'publish,draft', 'per_page' => 30];
+
+        $request = $this->createRequest('GET', '/wp/v2/give_forms', [], 'administrator');
+        $request->set_query_params($query);
+        $statuses = array_column($this->dispatchRequest($request)->get_data(), 'status', 'id');
+
+        $this->assertSame('draft', $statuses[$draftForm->id]);
+
+        $request = $this->createRequest('GET', '/wp/v2/give_forms', [], 'give_accountant');
+        $request->set_query_params($query);
+
+        $this->assertSame(400, $this->dispatchRequest($request)->get_status());
     }
 }
