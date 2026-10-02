@@ -110,6 +110,7 @@ jobs:
 
             -   name: Find the Composer cache
                 id: composer-cache
+                working-directory: source
                 run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
             -   name: Cache dependencies
@@ -148,9 +149,17 @@ jobs:
                 with:
                     build-dir: ${{ github.workspace }}/build/give
                     # No categories input: every category runs (general, plugin_repo, security,
-                    # performance, accessibility). The performance category holds the runtime
-                    # checks. They need GiveWP active so its custom tables exist (SOFT-4567); the
-                    # action activates the plugin before it runs the check.
+                    # performance, accessibility). The five runtime checks are excluded: they
+                    # boot WordPress with a scratch table prefix (wp_pc_), GiveWP's custom tables
+                    # do not exist under it, and the whole run dies with "Error: Database Query"
+                    # (SOFT-4567). Activating GiveWP first does not help. Remove this once that
+                    # is solved.
+                    exclude-checks: |
+                        enqueued_scripts_scope
+                        enqueued_scripts_size
+                        enqueued_styles_scope
+                        enqueued_styles_size
+                        non_blocking_scripts
 
     report:
         name: Plugin Check

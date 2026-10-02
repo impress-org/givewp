@@ -256,8 +256,9 @@ against it. It is for looking at a change, not for gateway or database work.
 `.github/workflows/plugin-check.yml` runs WordPress.org's Plugin Check on every pull request with
 [`wordpress/plugin-check-action`](https://github.com/WordPress/plugin-check-action), against the
 plugin as the release ships it: pup builds and packages the zip with `.puprc` and `.distignore`,
-and the action checks the unzipped `give` folder. Every category runs. The runtime checks (in
-`performance`) need GiveWP's custom tables (SOFT-4567), so the action activates GiveWP first.
+and the action checks the unzipped `give` folder. Every category runs, except the five runtime checks
+(in `performance`). They boot WordPress with a scratch table prefix, GiveWP's custom tables do not
+exist under it, and the whole run dies with `Error: Database Query` (SOFT-4567).
 
 The workflow has three jobs:
 

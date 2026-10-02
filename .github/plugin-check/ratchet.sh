@@ -49,6 +49,14 @@ if [ ! -f "$results" ]; then
     exit 1
 fi
 
+# A results file that holds anything else (an HTML database error, a PHP fatal) means the check
+# itself broke. Without this guard that file would count as "no results" and pass.
+unexpected=$({ grep -v -E '^(FILE: |\[|Success:)' "$results" || true; } | grep -v -E '^[[:space:]]*$' | head -n 1 | cut -c 1-200 || true)
+if [ -n "$unexpected" ]; then
+    echo "::error title=Plugin Check::The results file is not Plugin Check output, so the check did not run. First unexpected line: $unexpected"
+    exit 1
+fi
+
 # Only the JSON lines matter. grep exits 1 when there are none (a clean run), which is fine.
 counts=$({ grep '^\[' "$results" || true; } | jq -s -S '
     def per_code($type):
