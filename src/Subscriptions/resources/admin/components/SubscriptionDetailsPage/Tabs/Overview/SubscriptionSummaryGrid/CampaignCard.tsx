@@ -4,19 +4,22 @@ import {Campaign} from '@givewp/campaigns/admin/components/types';
 import styles from './styles.module.scss';
 
 /**
+ * @since TBD Say "No campaign" when there is no campaign.
  * @since 4.10.0
  */
 export default function CampaignCard({campaign}: {campaign: Campaign}) {
 
     return (
         <GridCard heading={__('Campaign name', 'give')} headingId="campaign-name">
-            {campaign && (
+            {campaign ? (
                 <a
                     href={`edit.php?post_type=give_forms&page=give-campaigns&id=${campaign?.id}&tab=overview`}
                     className={styles.campaignLink}
                 >
                     {campaign?.title}
                 </a>
+            ) : (
+                <p className={styles.emptyValue}>{__('No campaign', 'give')}</p>
             )}
         </GridCard>
     );
