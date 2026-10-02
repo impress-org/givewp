@@ -31,10 +31,6 @@ concurrency:
     cancel-in-progress: true
 
 env:
-    # performance and general are left out until a triage ticket decides on them. performance also
-    # holds the runtime checks, which need GiveWP's custom tables (SOFT-4567). These two categories
-    # have no runtime checks.
-    PLUGIN_CHECK_CATEGORIES: security,plugin_repo
     # Hidden line that marks the sticky pull request comment. Keep it in sync with ratchet.sh.
     COMMENT_MARKER: '<!-- givewp-plugin-check -->'
     # Only pull requests from this repository get a comment: a fork's token is read-only.
@@ -151,9 +147,10 @@ jobs:
                 uses: wordpress/plugin-check-action@v1
                 with:
                     build-dir: ${{ github.workspace }}/build/give
-                    categories: |
-                        security
-                        plugin_repo
+                    # No categories input: every category runs (general, plugin_repo, security,
+                    # performance, accessibility). The performance category holds the runtime
+                    # checks. They need GiveWP active so its custom tables exist (SOFT-4567); the
+                    # action activates the plugin before it runs the check.
 
     report:
         name: Plugin Check

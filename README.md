@@ -85,7 +85,7 @@ Note: We use [@wordpress/scripts](https://developer.wordpress.org/block-editor/r
 ## 🔍 Plugin Check
 
 Every pull request runs WordPress.org's [Plugin Check](https://wordpress.org/plugins/plugin-check/)
-(`security` and `plugin_repo` categories) on the built plugin, with
+(all categories) on the built plugin, with
 [`wordpress/plugin-check-action`](https://github.com/WordPress/plugin-check-action), and posts a short result comment.
 The job fails when a rule has more errors than `.github/plugin-check/baseline.json` allows.
 Warnings are counted too, but never fail it. See [docs/testing.md](docs/testing.md#plugin-check)
@@ -96,7 +96,7 @@ To run the same check on your local site:
 ```bash
 wp plugin install plugin-check --activate
 wp plugin check give --require=wp-content/plugins/plugin-check/cli.php \
-    --categories=security,plugin_repo --format=json > plugin-check-results.txt
+    --format=json > plugin-check-results.txt
 .github/plugin-check/ratchet.sh plugin-check-results.txt
 ```
 

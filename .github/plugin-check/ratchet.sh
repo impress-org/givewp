@@ -20,7 +20,6 @@
 #   COMMENT_BADGE          image URL shown under the status line
 #   RUN_URL                link to the workflow run
 #   ARTIFACT_URL           link to the uploaded results and fresh baseline
-#   PLUGIN_CHECK_CATEGORIES  shown in the last line of the comment
 
 set -euo pipefail
 
@@ -171,7 +170,7 @@ if [ "$went_down" -gt 0 ]; then
     body+="Rules that went down: $went_down. Lower the baseline with the new \`baseline.json\` from the artifact."$'\n'
 fi
 body+=$'\n'"$links"$'\n'
-body+="Categories: ${PLUGIN_CHECK_CATEGORIES:-all}"
+body+="Categories: all"
 
 # Hard cap: whatever happens above, the comment never grows past MAX_COMMENT_LINES.
 body=$(head -n "$MAX_COMMENT_LINES" <<< "$body")

@@ -256,8 +256,8 @@ against it. It is for looking at a change, not for gateway or database work.
 `.github/workflows/plugin-check.yml` runs WordPress.org's Plugin Check on every pull request with
 [`wordpress/plugin-check-action`](https://github.com/WordPress/plugin-check-action), against the
 plugin as the release ships it: pup builds and packages the zip with `.puprc` and `.distignore`,
-and the action checks the unzipped `give` folder. Only the `security` and `plugin_repo` categories
-run. They hold no runtime checks, so GiveWP's custom tables are not a problem here (SOFT-4567).
+and the action checks the unzipped `give` folder. Every category runs. The runtime checks (in
+`performance`) need GiveWP's custom tables (SOFT-4567), so the action activates GiveWP first.
 
 The workflow has three jobs:
 
