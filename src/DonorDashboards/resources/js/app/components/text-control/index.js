@@ -3,7 +3,15 @@ import {toUniqueId} from '../../utils';
 
 import './style.scss';
 
-const TextControl = ({label = null, value = '', onChange = null, icon = null, type = 'text'}) => {
+const TextControl = ({
+    label = null,
+    value = '',
+    onChange = null,
+    icon = null,
+    type = 'text',
+    name = null,
+    autoComplete = null,
+}) => {
     const id = toUniqueId(label);
 
     return (
@@ -15,7 +23,14 @@ const TextControl = ({label = null, value = '', onChange = null, icon = null, ty
             )}
             <div className="give-donor-dashboard-text-control__input">
                 {icon && <FontAwesomeIcon icon={icon} />}
-                <input id={id} type={type} value={value} onChange={(evt) => onChange(evt.target.value)} />
+                <input
+                    id={id}
+                    name={name}
+                    type={type}
+                    autoComplete={autoComplete}
+                    value={value}
+                    onChange={(evt) => onChange && onChange(evt.target.value)}
+                />
             </div>
         </div>
     );

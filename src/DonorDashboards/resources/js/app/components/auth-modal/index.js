@@ -5,6 +5,7 @@ import TextControl from '../text-control';
 import Button from '../button';
 
 import {loginWithAPI, verifyEmailWithAPI, resetPasswordWithAPI} from './utils';
+import {getSubmittedEmail, isValidEmail} from './utils/validation';
 import {getWindowData} from '../../utils';
 
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -22,6 +23,7 @@ const AuthModal = () => {
     const [emailSent, setEmailSent] = useState(false);
     const [emailError, setEmailError] = useState(null);
     const [passwordResetEmail, setPasswordResetEmail] = useState('');
+    const [passwordResetError, setPasswordResetError] = useState(null);
     const [showPasswordReset, setShowPasswordReset] = useState(false);
     const [passwordResetSent, setPasswordResetSent] = useState(false);
     const emailAccessEnabled = getWindowData('emailAccessEnabled');
@@ -56,36 +58,54 @@ const AuthModal = () => {
 
     const handleVerifyEmail = async (e) => {
         e.preventDefault();
-        if (email) {
-            setVerifyingEmail(true);
-            // eslint-disable-next-line camelcase
-            const {status, body_response} = await verifyEmailWithAPI({
-                email,
-                recaptcha,
-            });
 
-            setVerifyingEmail(false);
+        // Read the field value from the DOM so browser autofill is respected even
+        // when it does not trigger React's onChange and the email state is stale.
+        const submittedEmail = getSubmittedEmail(e.currentTarget, 'email', email);
 
-            if (status === 200) {
-                setEmailSent(true);
-            } else {
-                setEmailError(body_response.message);
-            }
+        if (!isValidEmail(submittedEmail)) {
+            setEmailError(__('Please enter a valid email address.', 'give'));
+            return;
+        }
+
+        setEmail(submittedEmail);
+        setEmailError(null);
+        setVerifyingEmail(true);
+        // eslint-disable-next-line camelcase
+        const {status, body_response} = await verifyEmailWithAPI({
+            email: submittedEmail,
+            recaptcha,
+        });
+
+        setVerifyingEmail(false);
+
+        if (status === 200) {
+            setEmailSent(true);
+        } else {
+            setEmailError(body_response.message);
         }
     };
 
     const handlePasswordReset = async (e) => {
         e.preventDefault();
-        if (passwordResetEmail) {
-            // eslint-disable-next-line camelcase
-            const {status, body_response} = await resetPasswordWithAPI(passwordResetEmail);
 
-            if (status === 200) {
-                setPasswordResetSent(true);
-                setShowPasswordReset(false);
-            } else {
-                setEmailError(body_response.message);
-            }
+        const submittedEmail = getSubmittedEmail(e.currentTarget, 'reset-email', passwordResetEmail);
+
+        if (!isValidEmail(submittedEmail)) {
+            setPasswordResetError(__('Please enter a valid email address.', 'give'));
+            return;
+        }
+
+        setPasswordResetEmail(submittedEmail);
+        setPasswordResetError(null);
+        // eslint-disable-next-line camelcase
+        const {status, body_response} = await resetPasswordWithAPI(submittedEmail);
+
+        if (status === 200) {
+            setPasswordResetSent(true);
+            setShowPasswordReset(false);
+        } else {
+            setPasswordResetError(body_response.message);
         }
     };
 
@@ -116,7 +136,14 @@ const AuthModal = () => {
                                 className="give-donor-dashboard__auth-modal-form"
                                 onSubmit={(e) => handleVerifyEmail(e)}
                             >
-                                <TextControl icon="envelope" value={email} onChange={(value) => setEmail(value)} />
+                                <TextControl
+                                    icon="envelope"
+                                    name="email"
+                                    type="email"
+                                    autoComplete="email"
+                                    value={email}
+                                    onChange={(value) => setEmail(value)}
+                                />
                                 {recaptchaKey && <ReCAPTCHA sitekey={recaptchaKey} onChange={setRecaptcha} />}
                                 <div className="give-donor-dashboard__auth-modal-row">
                                     <Button type="submit">
@@ -149,7 +176,14 @@ const AuthModal = () => {
                                         {__('Reset your password by entering your email address.', 'give')}
                                     </div>
                                     <form className="give-donor-dashboard__auth-modal-form" onSubmit={(e) => handlePasswordReset(e)}>
-                                        <TextControl icon="envelope" value={passwordResetEmail} onChange={(value) => setPasswordResetEmail(value)} />
+                                        <TextControl
+                                            icon="envelope"
+                                            name="reset-email"
+                                            type="email"
+                                            autoComplete="email"
+                                            value={passwordResetEmail}
+                                            onChange={(value) => setPasswordResetEmail(value)}
+                                        />
                                         <div className="give-donor-dashboard__auth-modal-row">
                                             <Button type="submit">
                                                 {__('Reset Password', 'give')}
@@ -159,6 +193,11 @@ const AuthModal = () => {
                                                     fixedWidth
                                                 />
                                             </Button>
+                                            {passwordResetError && (
+                                                <div className="give-donor-dashboard__auth-modal-error">
+                                                    {passwordResetError}
+                                                </div>
+                                            )}
                                         </div>
                                     </form>
                                 </>
