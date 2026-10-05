@@ -283,7 +283,7 @@ function give_get_emails_tags_list() {
  * @since 1.0
  * @since 2.0 $payment_id deprecated.
  * @since 2.0 $tag_args added.
- * @since TBD Only the {meta_*} tags present in the original content are resolved.
+ * @since 4.18.0 Only the {meta_*} tags present in the original content are resolved.
  *
  * @return string Content with email tags filtered out.
  */
@@ -330,7 +330,7 @@ function give_do_email_tags( $content, $tag_args ) {
  * tag substitution. The placeholder contains a dot, which keeps the email tag
  * engine from treating it as a tag of its own.
  *
- * @since TBD
+ * @since 4.18.0
  *
  * @param string $content Content to protect.
  *
@@ -1702,7 +1702,7 @@ function give_email_donor_comment( $tag_args ) {
  *
  * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0.3
- * @since TBD Only resolve {meta_*} tags that the content contained before tag substitution.
+ * @since 4.18.0 Only resolve {meta_*} tags that the content contained before tag substitution.
  * @see   https://github.com/impress-org/give/issues/2801#issuecomment-365136602
  *
  * @param $content

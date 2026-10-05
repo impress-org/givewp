@@ -9,14 +9,14 @@ use Give_New_Offline_Donation_Email;
 use Give_Offline_Donation_Instruction_Email;
 
 /**
- * @since TBD
+ * @since 4.18.0
  */
 class OfflineDonationEmailListenersTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testNonOfflineDonationBailsBeforeLoadingTheLegacyPayment()
     {
@@ -38,7 +38,7 @@ class OfflineDonationEmailListenersTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testOfflineDonationStillReachesSend()
     {

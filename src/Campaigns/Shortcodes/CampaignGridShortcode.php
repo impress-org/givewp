@@ -65,7 +65,7 @@ class CampaignGridShortcode
     }
 
     /**
-     * @since TBD Sanitize string attributes and restrict enumerated values.
+     * @since 4.18.0 Sanitize string attributes and restrict enumerated values.
      * @since 4.2.0
      */
     private function parseAttributes($atts): array
@@ -96,7 +96,7 @@ class CampaignGridShortcode
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     private function pickAllowed($value, array $allowed, $default): string
     {

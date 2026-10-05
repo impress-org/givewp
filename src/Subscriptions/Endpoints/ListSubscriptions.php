@@ -218,7 +218,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
-     * @since TBD Filter payment mode in WHERE instead of HAVING so the database can use indexes
+     * @since 4.18.0 Filter payment mode in WHERE instead of HAVING so the database can use indexes
      * @since 4.12.0 Add "status" where condition
      * @since 4.11.0 fix search by donor name or email
      * @since 2.24.0 Replace Query Builder with Subscriptions model

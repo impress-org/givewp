@@ -180,7 +180,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD Select the page of IDs first, then hydrate, so deep pages do not join every row
+     * @since 4.18.0 Select the page of IDs first, then hydrate, so deep pages do not join every row
      * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
      *
@@ -235,7 +235,7 @@ class ListDonations extends Endpoint
     /**
      * Meta keys a sort expression references, so the ID query can attach them.
      *
-     * @since TBD
+     * @since 4.18.0
      *
      * @param string[] $sortColumns
      *
@@ -251,7 +251,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD Drop the GROUP BY on mode, which made count() return the size of one mode group
+     * @since 4.18.0 Drop the GROUP BY on mode, which made count() return the size of one mode group
      * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
      *
@@ -274,7 +274,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     private function donationIdsWithNamePrefix(string $value): Closure
     {
@@ -286,7 +286,7 @@ class ListDonations extends Endpoint
      * the (meta_key, meta_value) index replaces a leading-wildcard LIKE across joined meta tables,
      * which had to scan every row for the key.
      *
-     * @since TBD
+     * @since 4.18.0
      *
      * @param string[] $metaKeys
      */
@@ -304,7 +304,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD Match name and email searches by prefix through indexed subqueries, and filter test mode the same way instead of HAVING
+     * @since 4.18.0 Match name and email searches by prefix through indexed subqueries, and filter test mode the same way instead of HAVING
      * @since 4.12.0 Updated status filtering to accept multiple comma-separated values
      * @since 4.8.0 Added support for subscriptionId parameter to filter donations
      * @since 4.6.0 add status status condition to filter donations
