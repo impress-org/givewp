@@ -4,6 +4,7 @@
  * Uninstall Give
  *
  * @package     Give
+ * @since       TBD Prepare SQL with placeholders and skip DROP TABLE when there are no tables.
  * @since       1.0
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
@@ -69,7 +70,7 @@ if (give_is_setting_enabled(give_get_option('uninstall_on_delete'))) {
 				FROM $wpdb->terms AS t
 				INNER JOIN $wpdb->term_taxonomy AS tt
 					ON t.term_id = tt.term_id
-				WHERE tt.taxonomy IN ('%s')
+				WHERE tt.taxonomy IN (%s)
 				ORDER BY t.name ASC
 				",
                 $taxonomy
@@ -108,7 +109,9 @@ if (give_is_setting_enabled(give_get_option('uninstall_on_delete'))) {
 
     // Remove all give database tables.
     $give_tables = $wpdb->get_col("SHOW TABLES LIKE '{$wpdb->prefix}give_%'");
-    $wpdb->query('DROP TABLE ' . implode(',', $give_tables));
+    if (!empty($give_tables)) {
+        $wpdb->query($wpdb->prepare('DROP TABLE ' . implode(',', array_fill(0, count($give_tables), '%i')), $give_tables));
+    }
 
     // Cleanup Cron Events.
     wp_clear_scheduled_hook('give_daily_scheduled_events');
@@ -122,7 +125,7 @@ if (give_is_setting_enabled(give_get_option('uninstall_on_delete'))) {
             "
 			SELECT option_name
 			FROM {$wpdb->options}
-			WHERE option_name LIKE '%s'
+			WHERE option_name LIKE %s
 			",
             '%give%'
         )
