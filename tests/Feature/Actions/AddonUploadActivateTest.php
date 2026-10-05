@@ -32,6 +32,7 @@ final class AddonUploadActivateTest extends TestCase
     private $testPluginSlugs = [];
 
     /**
+     * @since TBD Stop installs from checking WordPress.org for updates.
      * @since 4.17.0 Hold the upgrader directory lock while the test runs.
      * @since 4.16.6
      */
@@ -40,6 +41,13 @@ final class AddonUploadActivateTest extends TestCase
         parent::setUp();
 
         $this->lockUpgraderDirectory();
+
+        // Installing a plugin fires upgrader_process_complete, which makes WordPress check WordPress.org
+        // for core, plugin and theme updates. That isn't what these tests cover, and it fails whenever
+        // the network does.
+        remove_action('upgrader_process_complete', 'wp_version_check', 10);
+        remove_action('upgrader_process_complete', 'wp_update_plugins', 10);
+        remove_action('upgrader_process_complete', 'wp_update_themes', 10);
 
         // wp_send_json_* calls wp_die() only when wp_doing_ajax() is true.
         add_filter('wp_doing_ajax', '__return_true');
