@@ -77,6 +77,7 @@ class Give_DB_Comment_Meta extends Give_DB_Meta {
 	/**
 	 * Delete all comment meta
 	 *
+	 * @since TBD Use the registered table name from $wpdb.
 	 * @since  2.3.0
 	 * @access public
 	 *
@@ -95,7 +96,7 @@ class Give_DB_Comment_Meta extends Give_DB_Meta {
 			return false;
 		}
 
-		if ( false === $wpdb->query( $wpdb->prepare( "DELETE FROM {$this->table_name} WHERE give_comment_id = %d", $comment_id ) ) ) {
+		if ( false === $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->give_commentmeta} WHERE give_comment_id = %d", $comment_id ) ) ) {
 			return false;
 		}
 
