@@ -79,6 +79,7 @@ class CampaignRepository
 
     /**
      * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception|InvalidArgumentException
@@ -141,6 +142,7 @@ class CampaignRepository
 
     /**
      * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception|InvalidArgumentException
@@ -190,6 +192,7 @@ class CampaignRepository
 
     /**
      * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception
@@ -323,6 +326,7 @@ class CampaignRepository
 
     /**
      * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception
@@ -356,6 +360,7 @@ class CampaignRepository
 
     /**
      * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception
@@ -388,6 +393,7 @@ class CampaignRepository
 
     /**
      * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception

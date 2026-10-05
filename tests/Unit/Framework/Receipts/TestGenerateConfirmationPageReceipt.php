@@ -282,7 +282,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
     /**
      * Values inserted by legacy email tags must not be parsed as legacy meta tags.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     public function testDoesNotParseMetaTagsInsertedByLegacyNameTag()
     {

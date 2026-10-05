@@ -6,14 +6,14 @@ use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.18.0
  */
 final class ScriptAssetFacadeTest extends TestCase
 {
     /**
      * An unbuilt checkout has no asset files, and scripts must still be registrable there.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     public function testFallsBackToThePluginVersionWhenTheAssetFileIsMissing(): void
     {

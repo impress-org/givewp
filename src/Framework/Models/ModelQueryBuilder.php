@@ -37,9 +37,9 @@ class ModelQueryBuilder extends QueryBuilder
     /**
      * Returns the number of rows returned by a query
      *
-     * @since TBD Honor an explicit column in grouped counts by summing the column's non-null values per group.
-     * @since TBD Preserve SELECT aliases referenced by HAVING when counting a grouped query.
-     * @since TBD Count the groups of a grouped query rather than the first group's rows.
+     * @since 4.18.0 Honor an explicit column in grouped counts by summing the column's non-null values per group.
+     * @since 4.18.0 Preserve SELECT aliases referenced by HAVING when counting a grouped query.
+     * @since 4.18.0 Count the groups of a grouped query rather than the first group's rows.
      * @since 2.24.0
      *
      * @param  null|string  $column
@@ -178,7 +178,7 @@ class ModelQueryBuilder extends QueryBuilder
      * entries whose aliases a HAVING clause references are kept, since the replaced select list
      * would otherwise leave HAVING pointing at an alias that no longer exists.
      *
-     * @since TBD
+     * @since 4.18.0
      *
      * @param  string  $column
      */
@@ -214,7 +214,7 @@ class ModelQueryBuilder extends QueryBuilder
      * Renders the SELECT entries whose aliases a HAVING clause references, since the grouped
      * select list that count() builds would otherwise leave HAVING pointing at a missing alias.
      *
-     * @since TBD
+     * @since 4.18.0
      *
      * @return string[]
      */

@@ -10,14 +10,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.18.0
  */
 final class DuplicateCampaignTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testDuplicateMetadataDoesNotCreateAdditionalCampaignForms(): void
     {

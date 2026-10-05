@@ -121,7 +121,7 @@ final class CampaignsDataQueryTest extends TestCase
     }
 
     /**
-     * @since TBD Run in live mode, the cache is not written in test mode.
+     * @since 4.18.0 Run in live mode, the cache is not written in test mode.
      * @since 4.8.0
      */
     public function testCampaignCache()

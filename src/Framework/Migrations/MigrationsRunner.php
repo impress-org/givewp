@@ -22,7 +22,7 @@ use WP_Upgrader;
 class MigrationsRunner
 {
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     const LOCK_NAME = 'give_migrations';
 
@@ -76,7 +76,7 @@ class MigrationsRunner
     /**
      * Run database migrations.
      *
-     * @since      TBD hold a lock so concurrent requests do not run the same migration twice
+     * @since      4.18.0 hold a lock so concurrent requests do not run the same migration twice
      * @since      4.0.0 add support for batch processing
      * @since      2.9.0
      */

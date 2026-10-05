@@ -342,7 +342,7 @@ class TestListDonations extends TestCase
      * The live-mode filter is an OR expression; ungrouped it overrode every other WHERE clause
      * and let trash donations through.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     public function testLiveModeListingExcludesTrashAndTestDonations()
     {
@@ -379,7 +379,7 @@ class TestListDonations extends TestCase
     /**
      * Name search is an OR over first and last name; ungrouped it leaked rows excluded by status.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     public function testNameSearchRespectsOtherFilters()
     {
@@ -417,7 +417,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testShouldFilterDonationsByFormId()
     {
@@ -475,7 +475,7 @@ class TestListDonations extends TestCase
     /**
      * Sorting by a meta-backed column must survive the ID-first pagination.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     public function testSortsByAmountAcrossPages()
     {
@@ -513,7 +513,7 @@ class TestListDonations extends TestCase
      * Add-ons register sortable columns through givewp_donations_list_table, so any donation meta
      * key has to be sortable, not only the ones core columns use.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     public function testSortsByAddOnColumnOnAnyMetaKey()
     {
@@ -561,7 +561,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testShouldFilterDonationsWithNoCampaign()
     {

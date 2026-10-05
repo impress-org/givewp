@@ -111,7 +111,7 @@ class DonorRepository
     }
 
     /**
-     * @since TBD Keep the original error as the previous exception when the write fails.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.20.0 store meta using native WP functions
      * @since 3.7.0 Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
@@ -251,7 +251,7 @@ class DonorRepository
     }
 
     /**
-     * @since TBD Keep the original error as the previous exception when the write fails.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 2.19.6
      *
      * @throws Exception
@@ -285,7 +285,7 @@ class DonorRepository
 
     /**
      *
-     * @since TBD Keep the original error as the previous exception when the write fails.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 2.21.0 add actions givewp_donor_deleting and givewp_donor_deleted
      * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6

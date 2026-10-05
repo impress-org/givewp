@@ -381,7 +381,7 @@ class Give_Donor_Wall {
     /**
      * Get donation data.
      *
-     * @since TBD     Read meta values as stored instead of unserializing them, and read the donor
+     * @since 4.18.0     Read meta values as stored instead of unserializing them, and read the donor
      *                comment from the fetched rows instead of a per-donation meta lookup.
      * @since 4.16.7.2       Restrict unserialize to prevent object instantiation.
      * @since 2.27.0  Change to read comment from donations meta table

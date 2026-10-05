@@ -9,14 +9,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.18.0
  */
 final class ModelQueryBuilderTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testCountReturnsRowCountWithoutGroupBy()
     {
@@ -26,7 +26,7 @@ final class ModelQueryBuilderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testCountReturnsGroupCountWithGroupBy()
     {
@@ -40,7 +40,7 @@ final class ModelQueryBuilderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testCountReturnsDistinctGroupCountWhenRowsShareAGroup()
     {
@@ -58,7 +58,7 @@ final class ModelQueryBuilderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testCountIncludesTheGroupOfRowsWithANullGroupedColumn()
     {
@@ -72,7 +72,7 @@ final class ModelQueryBuilderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testCountWithColumnCountsNonNullValuesWithinGroups()
     {
@@ -89,7 +89,7 @@ final class ModelQueryBuilderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testCountKeepsSelectAliasesReferencedByHaving()
     {
