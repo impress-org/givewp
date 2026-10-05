@@ -21,6 +21,7 @@ class DonationFormViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * @since TBD build the signed URLs and the exports in the same second
      * @since 3.6.0 added includeHeaderInMultiStep to form design exports
      * @since 3.0.0
      */
@@ -41,9 +42,6 @@ class DonationFormViewModelTest extends TestCase
         $donationFormGoalData = new DonationFormGoalData($donationForm->id, $donationForm->settings);
         $totalRevenue = $donationFormRepository->getTotalRevenue($donationForm->id);
         $goalType = $donationForm->settings->goalType ?? GoalType::AMOUNT();
-        $donateUrl = (new GenerateDonateRouteUrl())();
-        $validateUrl = (new GenerateDonationFormValidationRouteUrl())();
-        $authUrl = (new GenerateAuthUrl())();
         $formDataGateways = $donationFormRepository->getFormDataGateways($donationForm->id);
         $formApi = $donationFormRepository->getFormSchemaFromBlocks(
             $donationForm->id,
@@ -52,7 +50,17 @@ class DonationFormViewModelTest extends TestCase
 
         $viewModel = new DonationFormViewModel($donationForm->id, $donationForm->blocks, $donationForm->settings);
 
-        $this->assertEquals($viewModel->exports(), [
+        // The donate, validate and auth URLs are signed with an expiration one day from the current second.
+        // Build them and the exports within the same second, or the signatures differ and the test flakes.
+        do {
+            $second = time();
+            $donateUrl = (new GenerateDonateRouteUrl())();
+            $validateUrl = (new GenerateDonationFormValidationRouteUrl())();
+            $authUrl = (new GenerateAuthUrl())();
+            $exports = $viewModel->exports();
+        } while (time() !== $second);
+
+        $this->assertEquals([
             'donateUrl' => $donateUrl,
             'validateUrl' => $validateUrl,
             'authUrl' => $authUrl,
@@ -85,7 +93,7 @@ class DonationFormViewModelTest extends TestCase
                 ],
             ]),
             'previewMode' => false,
-        ]);
+        ], $exports);
     }
 
     /**
