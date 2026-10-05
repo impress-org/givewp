@@ -256,6 +256,7 @@ class Give_Comment {
 	/**
 	 * Get comments
 	 *
+	 * @since  TBD Document why the query is safe.
 	 * @since  2.2.0
 	 * @access public
 	 *
@@ -281,7 +282,7 @@ class Give_Comment {
 			);
 		}
 
-		$comments = $wpdb->get_results( Give()->comment->db->get_sql( $comment_args ) );
+		$comments = $wpdb->get_results( Give()->comment->db->get_sql( $comment_args ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() returns a prepared query.
 
 		return $comments;
 	}
@@ -353,6 +354,7 @@ class Give_Comment {
 	/**
 	 * Remove Give Comments from the wp_count_comments function
 	 *
+	 * @since  TBD Document why the query is safe.
 	 * @since  2.2.0
 	 * @access public
 	 *
@@ -387,14 +389,8 @@ class Give_Comment {
 			$where .= $wpdb->prepare( ' AND comment_post_ID = %d', $post_id );
 		}
 
-		$count = $wpdb->get_results(
-			"
-				  SELECT comment_approved, COUNT( * ) AS num_comments
-				  FROM {$wpdb->comments} {$where}
-				  GROUP BY comment_approved
-				  ",
-			ARRAY_A
-		);
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built from the registered comment types (set in code through a filter, never request input) and a prepare() fragment above.
+		$count = $wpdb->get_results( "SELECT comment_approved, COUNT( * ) AS num_comments FROM {$wpdb->comments} {$where} GROUP BY comment_approved", ARRAY_A );
 
 		$total    = 0;
 		$approved = array(
