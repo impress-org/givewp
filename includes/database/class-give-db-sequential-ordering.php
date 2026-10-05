@@ -76,6 +76,7 @@ class Give_DB_Sequential_Ordering extends Give_DB {
 	/**
 	 * Create the table
 	 *
+	 * @since TBD Prepare the AUTO_INCREMENT query.
 	 * @since  2.1.0
 	 * @access public
 	 *
@@ -110,7 +111,7 @@ class Give_DB_Sequential_Ordering extends Give_DB {
 
 		if ( ! empty( $payment_ID ) ) {
 			$auto_increment = $payment_ID + 1;
-			$wpdb->query( "ALTER TABLE {$this->table_name} AUTO_INCREMENT={$auto_increment};" );
+			$wpdb->query( $wpdb->prepare( 'ALTER TABLE %i AUTO_INCREMENT=%d;', $this->table_name, $auto_increment ) );
 			give_update_option( 'sequential-ordering_number', $auto_increment );
 		} else {
 			give_update_option( 'sequential-ordering_number', 1 );
