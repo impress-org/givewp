@@ -57,6 +57,13 @@ if [ -n "$unexpected" ]; then
     exit 1
 fi
 
+# A clean run prints "Success: ..." and a run with results prints "FILE: ..." lines. An empty
+# file means the command failed with its error on stderr, which the results file does not hold.
+if ! grep -q -E '^(FILE: |Success:)' "$results"; then
+    echo "::error title=Plugin Check::The results file has no Plugin Check output, so the check did not run."
+    exit 1
+fi
+
 # Only the JSON lines matter. grep exits 1 when there are none (a clean run), which is fine.
 counts=$({ grep '^\[' "$results" || true; } | jq -s -S '
     def per_code($type):
