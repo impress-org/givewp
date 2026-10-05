@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Prepared the SQL queries in the upgrade routines, the multisite table cleanup and the uninstall script
+timestamp: 2026-10-05T23:21:36.000Z
