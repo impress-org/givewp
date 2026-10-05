@@ -46,7 +46,7 @@ final class CampaignModelTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testCampaignFormsReturnsEachFormOnceWithDuplicateMetadata()
     {

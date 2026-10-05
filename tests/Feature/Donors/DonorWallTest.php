@@ -15,14 +15,14 @@ use Give_Donor_Wall;
  * text and add-ons that read the template's meta keys keep working. Nothing on the path decodes a
  * stored value, which is the pair of requirements these tests hold together.
  *
- * @since TBD
+ * @since 4.18.0
  */
 class DonorWallTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testRendersDonorNameStoredAsPlainString()
     {
@@ -37,7 +37,7 @@ class DonorWallTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testRendersDonorInitialsWhenGravatarIsUnavailable()
     {
@@ -60,7 +60,7 @@ class DonorWallTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testRendersSerializedPayloadsAsEscapedTextWithoutDecodingThem()
     {
@@ -91,7 +91,7 @@ class DonorWallTest extends TestCase
      * honoree out of keys core knows nothing about — so the wall has to keep handing every row
      * through to the template.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     public function testPassesUnmodelledDonationMetaToTheTemplate()
     {
@@ -111,7 +111,7 @@ class DonorWallTest extends TestCase
      * Guards the read path against a future reintroduction of unserialize(): no shape of stored
      * payload — top level, nested, or double-encoded — may bring a class into being.
      *
-     * @since TBD
+     * @since 4.18.0
      *
      * @dataProvider objectPayloadProvider
      *
@@ -136,7 +136,7 @@ class DonorWallTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      *
      * @return array<string, array{0: string}>
      */
@@ -156,7 +156,7 @@ class DonorWallTest extends TestCase
      * anonymous, and skips the initials entirely when the donor has an uploaded avatar. The
      * factories randomize each of those.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     private function createDonorWallDonation(): Donation
     {
@@ -170,7 +170,7 @@ class DonorWallTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      *
      * @param array<string, string> $atts Shortcode attributes to override.
      *
@@ -187,7 +187,7 @@ class DonorWallTest extends TestCase
      * without reaching the network. Every other URL is left alone, so a request the render path
      * should not be making still surfaces instead of being quietly answered.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     private function denyGravatarLookups(): void
     {

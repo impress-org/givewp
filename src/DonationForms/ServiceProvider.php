@@ -3,7 +3,6 @@
 namespace Give\DonationForms;
 
 use Exception;
-use Give\DonationForms\OrphanedForms\Actions\Assets as OrphanedFormsAssets;
 use Give\DonationForms\Actions\AddHoneyPotFieldToDonationForms;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\GenerateExternalEmbedScriptUrl;
@@ -103,11 +102,6 @@ class ServiceProvider implements ServiceProviderInterface
             RemoveDuplicateMeta::class,
             UpdateDonationLevelsSchema::class,
         ]);
-
-        /**
-         * @since 4.2.0
-         */
-        Hooks::addAction('admin_init', OrphanedFormsAssets::class);
 
         /**
          * @since 3.16.0

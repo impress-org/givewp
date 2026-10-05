@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Resolved an issue where a donation moved to a different form still counted
+  toward the old form in the Multi-Form Goal progress bar
+timestamp: 2026-10-02T14:57:37.000Z

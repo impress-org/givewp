@@ -342,7 +342,7 @@ class TestListDonations extends TestCase
      * The live-mode filter is an OR expression; ungrouped it overrode every other WHERE clause
      * and let trash donations through.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     public function testLiveModeListingExcludesTrashAndTestDonations()
     {
@@ -379,7 +379,7 @@ class TestListDonations extends TestCase
     /**
      * Name search is an OR over first and last name; ungrouped it leaked rows excluded by status.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     public function testNameSearchRespectsOtherFilters()
     {
@@ -414,6 +414,29 @@ class TestListDonations extends TestCase
 
         $this->assertCount(1, $response->data['items']);
         $this->assertEquals($match->id, $response->data['items'][0]['id']);
+    }
+
+    /**
+     * @since 4.18.0
+     */
+    public function testShouldFilterDonationsByFormId()
+    {
+        $campaign = Campaign::factory()->create();
+        $match = Donation::factory()->create(['campaignId' => $campaign->id, 'formId' => 101]);
+        Donation::factory()->create(['campaignId' => $campaign->id, 'formId' => 202]);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('testMode', true);
+        $mockRequest->set_param('formId', $match->formId);
+
+        $response = give(ListDonations::class)->handleRequest($mockRequest);
+
+        $this->assertCount(1, $response->data['items']);
+        $this->assertEquals($match->id, $response->data['items'][0]['id']);
+        $this->assertEquals(1, $response->data['totalItems']);
     }
 
     /**
@@ -452,7 +475,7 @@ class TestListDonations extends TestCase
     /**
      * Sorting by a meta-backed column must survive the ID-first pagination.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     public function testSortsByAmountAcrossPages()
     {
@@ -490,7 +513,7 @@ class TestListDonations extends TestCase
      * Add-ons register sortable columns through givewp_donations_list_table, so any donation meta
      * key has to be sortable, not only the ones core columns use.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     public function testSortsByAddOnColumnOnAnyMetaKey()
     {
@@ -535,6 +558,28 @@ class TestListDonations extends TestCase
         $listTable->removeColumn('company');
 
         $this->assertSame(array_values($expected), array_map('intval', array_column($response->data['items'], 'id')));
+    }
+
+    /**
+     * @since 4.18.0
+     */
+    public function testShouldFilterDonationsWithNoCampaign()
+    {
+        $campaign = Campaign::factory()->create();
+        Donation::factory()->create(['campaignId' => $campaign->id]);
+        $standalone = Donation::factory()->create(['campaignId' => null, 'formId' => 999999]);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('testMode', true);
+        $mockRequest->set_param('campaignId', 'none');
+
+        $response = give(ListDonations::class)->handleRequest($mockRequest);
+
+        $this->assertCount(1, $response->data['items']);
+        $this->assertEquals($standalone->id, $response->data['items'][0]['id']);
     }
 
     /**

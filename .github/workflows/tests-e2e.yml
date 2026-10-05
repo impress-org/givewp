@@ -22,7 +22,7 @@ jobs:
         env:
             # Add-ons whose latest GitHub release is installed next to core before the suite runs.
             # Comma-separated repository names under impress-org; each release carries <slug>.zip.
-            ADDONS: give-peer-to-peer
+            ADDONS: give-peer-to-peer,give-recurring,give-funds
 
         steps:
             -   uses: actions/checkout@v7
@@ -40,7 +40,9 @@ jobs:
                     coverage: none
 
             -   name: Install Composer dependencies
-                run: composer install --no-dev --no-progress --no-interaction
+                uses: ramsey/composer-install@v4
+                with:
+                    composer-options: --no-dev
 
             -   name: Set Up Node
                 uses: actions/setup-node@v7

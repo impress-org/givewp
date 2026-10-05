@@ -14,14 +14,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.18.0
  */
 final class CacheCampaignDataTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function setUp(): void
     {
@@ -33,7 +33,7 @@ final class CacheCampaignDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function tearDown(): void
     {
@@ -44,7 +44,7 @@ final class CacheCampaignDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testKeepsZeroRowForCampaignWithNoDonations()
     {
@@ -58,7 +58,7 @@ final class CacheCampaignDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testRefreshesLiveStatsWhileTestModeIsEnabled()
     {
