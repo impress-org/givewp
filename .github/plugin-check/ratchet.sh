@@ -168,10 +168,11 @@ else
     links="📎 Local run, see $results"
 fi
 
-body="$COMMENT_MARKER"$'\n'"$status"$'\n\n'
+# The finish badge sits on the status line.
 if [ -n "${COMMENT_BADGE:-}" ]; then
-    body+="![Plugin Check finished](${COMMENT_BADGE})"$'\n\n'
+    status+=" ![Plugin Check finished](${COMMENT_BADGE})"
 fi
+body="$COMMENT_MARKER"$'\n'"$status"$'\n\n'
 body+="|          | Now | Baseline | Change |"$'\n'
 body+="|:--|--:|--:|:--|"$'\n'
 body+="| Errors   | $errors_now | $errors_base | $(change "$errors_now" "$errors_base")$errors_mark |"$'\n'
@@ -184,8 +185,11 @@ fi
 if [ "$went_down" -gt 0 ]; then
     body+="Rules that went down: $went_down. Lower the baseline with the new \`baseline.json\` from the artifact."$'\n'
 fi
-body+=$'\n'"$links"$'\n'
-body+="Categories: all"
+# A blank line separates the notes above from the links, when there are notes.
+if [ "$went_up" -gt 0 ] || [ "$went_down" -gt 0 ]; then
+    body+=$'\n'
+fi
+body+="$links"
 
 # Hard cap: whatever happens above, the comment never grows past MAX_COMMENT_LINES.
 body=$(head -n "$MAX_COMMENT_LINES" <<< "$body")
