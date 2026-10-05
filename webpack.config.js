@@ -116,7 +116,6 @@ const legacyScriptsEntry = {
     'assets/dist/js/donation-options': srcPath('Promotions/InPluginUpsells/resources/js/donation-options.ts'),
     'assets/dist/js/payment-gateway': srcPath('Promotions/InPluginUpsells/resources/js/payment-gateway.ts'),
     'assets/dist/js/welcome-banner': srcPath('Promotions/WelcomeBanner/resources/js/index.tsx'),
-    'assets/dist/js/orphaned-forms-list-table': srcPath('DonationForms/OrphanedForms/resources/index.tsx'),
     'assets/dist/js/parent-page': assetPath('src/js/plugins/form-template/parent-page.js'),
     'assets/dist/js/utils': assetPath('src/js/plugins/form-template/utils.js'),
     'assets/dist/js/iframe-content': assetPath('src/js/plugins/form-template/iframe-content.js'),

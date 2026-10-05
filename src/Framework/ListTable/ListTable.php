@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Give\Framework\ListTable;
 
-use Exception;
 use Give\Framework\ListTable\Concerns\Columns;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\Models\Model;
 use Give\Framework\Support\Contracts\Arrayable;
 use Give\Log\Log;
+use Throwable;
 
 /**
  * @since 2.24.0
@@ -149,6 +149,7 @@ abstract class ListTable implements Arrayable
      * Safely retrieves the cell value for a column. If an exception is thrown, it will be logged and the cell value
      * will be a human-readable error message. This is to prevent fatal errors from breaking the entire table.
      *
+     * @since TBD Catch Throwable so a TypeError from a third-party cell filter costs one cell, not the request.
      * @since 2.24.1
      *
      * @return mixed
@@ -171,7 +172,7 @@ abstract class ListTable implements Arrayable
                 $model,
                 $locale
             );
-        } catch (Exception $exception) {
+        } catch (Throwable $exception) {
             Log::error(
                 sprintf(
                     'Error while rendering column "%s" for table "%s".',

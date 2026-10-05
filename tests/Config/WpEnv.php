@@ -7,12 +7,12 @@ namespace Give\Tests\Config;
  * installed there. The paths are wp-env's own and are fixed: paratest workers start without the
  * container's environment, so nothing here can be read from it.
  *
- * @since TBD
+ * @since 4.18.0
  */
 class WpEnv implements Config
 {
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function config(): string
     {
@@ -20,7 +20,7 @@ class WpEnv implements Config
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function bootstrap(): string
     {

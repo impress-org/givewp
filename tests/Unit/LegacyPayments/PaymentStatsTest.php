@@ -13,7 +13,7 @@ use Give_Cache;
 use Give_Payment_Stats;
 
 /**
- * @since TBD
+ * @since 4.18.0
  */
 class PaymentStatsTest extends TestCase
 {
@@ -31,7 +31,7 @@ class PaymentStatsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testEarningsAndSalesMatchTheLoopBasedCalculation()
     {
@@ -57,7 +57,7 @@ class PaymentStatsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testFiltersByFormAndGateway()
     {
@@ -78,7 +78,7 @@ class PaymentStatsTest extends TestCase
     /**
      * Currency Switcher stores a base-currency amount; stats use it when present.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     public function testUsesCurrencySwitcherBaseAmountWhenPresent()
     {
@@ -93,7 +93,7 @@ class PaymentStatsTest extends TestCase
      * Anything an add-on adds to the query args that this code cannot translate falls back to the
      * per-donation path, so results stay correct even if slower.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     public function testFallsBackWhenArgsContainUnknownKeys()
     {
@@ -110,7 +110,7 @@ class PaymentStatsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testFallsBackWhenMetaQueryUsesUnsupportedOptions()
     {
@@ -131,7 +131,7 @@ class PaymentStatsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testRunsDonationAmountFiltersWhenAnAddOnRegistersOne()
     {
@@ -147,7 +147,7 @@ class PaymentStatsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testExcludesChildDonationsUnlessAnAddOnIncludesThem()
     {
