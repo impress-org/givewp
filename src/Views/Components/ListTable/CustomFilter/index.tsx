@@ -1,4 +1,5 @@
 import ReactSelect, { components } from 'react-select';
+import { __ } from '@wordpress/i18n';
 import { useCampaignAsyncSelect } from './useAsyncCampaigns';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import { CampaignOption } from './utils';
@@ -101,6 +102,8 @@ function AsyncFilter({name, placeholder, onChange, value, isSearchable, isCleara
 			className={`${styles.searchableSelect} ${styles.asyncSelect}`}
 			classNamePrefix="searchableSelect"
 			debounceTimeout={600}
+			loadingMessage={() => __('Loading…', 'give')}
+			noOptionsMessage={() => __('No options', 'give')}
 		/>
 	);
 }
