@@ -229,6 +229,7 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Retrieve all subscriptions for a donor.
      *
+     * @since TBD Allowlist the order direction and document why the query is safe.
      * @since   1.0
      *
      * @param array $args
@@ -270,12 +271,11 @@ class Give_Subscriptions_DB extends Give_DB
         if (is_null($subscriptions)) {
             $where = $this->generate_where_clause($args);
 
-            $args['orderby'] = esc_sql($args['orderby']);
-            $args['order'] = esc_sql($args['order']);
+            $args['order'] = 'ASC' === strtoupper((string)$args['order']) ? 'ASC' : 'DESC';
 
-            $subscriptions = $wpdb->get_results(
+            $subscriptions = $wpdb->get_results( // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause(); orderby and order are allowlisted above.
                 $wpdb->prepare(
-                    "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;",
+                    "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where is built by generate_where_clause(); orderby and order are allowlisted above.
                     absint($args['offset']),
                     absint($args['number'])
                 ),
@@ -298,6 +298,8 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Count the total number of subscriptions in the database.
      *
+     * @since TBD Only group by a column of the subscriptions table.
+     *
      * @param array $args
      *
      * @return int|array/null
@@ -309,6 +311,11 @@ class Give_Subscriptions_DB extends Give_DB
         $cache_key = Give_Cache::get_key('give_subscriptions_count', $args, false);
         $count = Give_Recurring_Cache::get_db_query($cache_key);
         $group_by_args = !empty($args['groupBy']) ? $args['groupBy'] : '';
+
+        if (!in_array($group_by_args, array_keys($this->get_columns()), true)) {
+            $group_by_args = '';
+        }
+
         $return_count = empty($group_by_args);
 
         $result = null;
@@ -319,7 +326,7 @@ class Give_Subscriptions_DB extends Give_DB
             $count = $return_count ? "COUNT({$this->primary_key})" : "{$group_by_args}, COUNT({$this->primary_key})";
             $sql = "SELECT {$count} FROM {$this->table_name} {$where} {$groupBy};";
 
-            $result = $return_count ? $wpdb->get_var($sql) : $wpdb->get_results($sql, ARRAY_A);
+            $result = $return_count ? $wpdb->get_var($sql) : $wpdb->get_results($sql, ARRAY_A); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause() from intval and prepare() fragments; groupBy is an allowlisted column.
 
             // Simplify result if query for groupBy.
             if ($group_by_args && $result) {
@@ -340,6 +347,8 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Create the table.
      *
+     * @since TBD Prepare the SHOW TABLES query.
+     *
      * @access  public
      * @since   1.0
      */
@@ -347,7 +356,7 @@ class Give_Subscriptions_DB extends Give_DB
     {
         global $wpdb;
 
-        if ($wpdb->get_var("SHOW TABLES LIKE '$this->table_name'") !== $this->table_name) {
+        if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $this->table_name)) !== $this->table_name) {
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
             $sql = 'CREATE TABLE ' . $this->table_name . ' (
@@ -383,6 +392,8 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Get Renewing Subscriptions
      *
+     * @since TBD Document why the query is safe.
+     *
      * @param string $period
      *
      * @return array|bool|mixed|null|object
@@ -409,12 +420,13 @@ class Give_Subscriptions_DB extends Give_DB
         if (is_null($subscriptions)) {
             $where = $this->generate_where_clause($args);
 
-            $query = $wpdb->prepare(
-                "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;",
-                absint($args['offset']),
-                absint($args['number'])
+            $subscriptions = $wpdb->get_results( // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause(); orderby and order are the literals set in $args above.
+                $wpdb->prepare(
+                    "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where is built by generate_where_clause(); orderby and order are the literals set in $args above.
+                    absint($args['offset']),
+                    absint($args['number'])
+                )
             );
-            $subscriptions = $wpdb->get_results($query);
             Give_Recurring_Cache::set_db_query($cache_key, $subscriptions);
         }
 
@@ -423,6 +435,8 @@ class Give_Subscriptions_DB extends Give_DB
 
     /**
      * Get expiring subscriptions.
+     *
+     * @since TBD Document why the query is safe.
      *
      * @param string $period
      *
@@ -452,12 +466,13 @@ class Give_Subscriptions_DB extends Give_DB
             $where .= ' AND `bill_times` != 0';
             $where .= ' AND ( SELECT COUNT(ID) FROM ' . $wpdb->prefix . 'posts WHERE `post_parent` = ' . $this->table_name . '.`parent_payment_id` OR `ID` = ' . $this->table_name . '.`parent_payment_id` ) + 1 >= `bill_times`';
 
-            $query = $wpdb->prepare(
-                "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;",
-                absint($args['offset']),
-                absint($args['number'])
+            $subscriptions = $wpdb->get_results( // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause(); orderby and order are the literals set in $args above.
+                $wpdb->prepare(
+                    "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where is built by generate_where_clause(); orderby and order are the literals set in $args above.
+                    absint($args['offset']),
+                    absint($args['number'])
+                )
             );
-            $subscriptions = $wpdb->get_results($query);
             Give_Recurring_Cache::set_db_query($cache_key, $subscriptions);
         }
 
@@ -483,12 +498,16 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Build the query args for subscriptions.
      *
+     * @since TBD Escape values in the WHERE clause.
+     *
      * @param array $args
      *
      * @return string The mysql "where" query part.
      */
     public function generate_where_clause($args = [])
     {
+        global $wpdb;
+
         $where = ' WHERE 1=1';
 
         // Specific ID.
@@ -542,34 +561,34 @@ class Give_Subscriptions_DB extends Give_DB
 
         // Subscriptions for specific profile IDs
         if (!empty($args['profile_id'])) {
-            if (is_array($args['profile_id'])) {
-                $profile_ids = implode('\',\'', $args['profile_id']);
-            } else {
-                $profile_ids = $args['profile_id'];
-            }
+            $profile_ids = array_values((array)$args['profile_id']);
 
-            $where .= " AND `profile_id` IN( '{$profile_ids}' ) ";
+            $where .= $wpdb->prepare(
+                ' AND `profile_id` IN( ' . implode(',', array_fill(0, count($profile_ids), '%s')) . ' ) ',
+                $profile_ids
+            );
         }
 
         // Specific transaction IDs
         if (!empty($args['transaction_id'])) {
-            if (is_array($args['transaction_id'])) {
-                $transaction_ids = implode('\',\'', array_map('sanitize_text_field', $args['transaction_id']));
-            } else {
-                $transaction_ids = sanitize_text_field($args['transaction_id']);
-            }
+            $transaction_ids = array_map('sanitize_text_field', array_values((array)$args['transaction_id']));
 
-            $where .= " AND `transaction_id` IN( '{$transaction_ids}' ) ";
+            $where .= $wpdb->prepare(
+                ' AND `transaction_id` IN( ' . implode(',', array_fill(0, count($transaction_ids), '%s')) . ' ) ',
+                $transaction_ids
+            );
         }
 
         // Subscriptions for specific statuses
         if (!empty($args['status'])) {
             if (is_array($args['status'])) {
-                $statuses = implode('\',\'', $args['status']);
-                $where .= " AND `status` IN( '{$statuses}' ) ";
+                $statuses = array_values($args['status']);
+                $where .= $wpdb->prepare(
+                    ' AND `status` IN( ' . implode(',', array_fill(0, count($statuses), '%s')) . ' ) ',
+                    $statuses
+                );
             } else {
-                $statuses = $args['status'];
-                $where .= " AND `status` = '{$statuses}' ";
+                $where .= $wpdb->prepare(' AND `status` = %s ', $args['status']);
             }
         }
 
@@ -605,6 +624,7 @@ class Give_Subscriptions_DB extends Give_DB
     }
 
     /**
+     * @since TBD Prepare the donor name search.
      * @since 2.26.0 Replace deprecated get_page_by_title() with give_get_page_by_title().
      *
      * @param $args
@@ -614,7 +634,6 @@ class Give_Subscriptions_DB extends Give_DB
     private function mysql_where_args_search($args)
     {
         $where = '';
-        $donors_db = new Give_DB_Donors();
         if (is_email($args['search'])) {
             $customer = new Give_Donor($args['search']);
             if ($customer && $customer->id > 0) {
@@ -646,15 +665,17 @@ class Give_Subscriptions_DB extends Give_DB
                 $where .= " AND `product_id` = " . absint($args['search']) . "";
             } else {
                 global $wpdb;
-                $query = $wpdb->prepare(
-                    "
-				SELECT id,name FROM {$donors_db->table_name}
-				WHERE name
-				LIKE '%s'",
-                    '%' . $args['search'] . '%'
-                );
                 $subscription_donor_id = [];
-                $donor_ids = $wpdb->get_results($query, ARRAY_A);
+                $donor_ids = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "
+				SELECT id,name FROM {$wpdb->donors}
+				WHERE name
+				LIKE %s",
+                        '%' . $args['search'] . '%'
+                    ),
+                    ARRAY_A
+                );
                 if (!empty($donor_ids) && count($donor_ids) > 0) {
                     foreach ($donor_ids as $key => $val) {
                         $subscription_donor_id[] = absint($val['id']);
