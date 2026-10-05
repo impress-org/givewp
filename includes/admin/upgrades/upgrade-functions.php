@@ -530,6 +530,7 @@ add_action( 'wp_ajax_give_trigger_upgrades', 'give_trigger_upgrades' );
  *
  * Standardizes the discrepancies between two metakeys `_give_payment_customer_id` and `_give_payment_donor_id`
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since      1.3.2
  */
 function give_v132_upgrade_give_payment_customer_id() {
@@ -539,8 +540,7 @@ function give_v132_upgrade_give_payment_customer_id() {
 	$give_updates = Give_Updates::get_instance();
 
 	// UPDATE DB METAKEYS.
-	$sql   = "UPDATE $wpdb->postmeta SET meta_key = '_give_payment_customer_id' WHERE meta_key = '_give_payment_donor_id'";
-	$query = $wpdb->query( $sql );
+	$query = $wpdb->query( "UPDATE $wpdb->postmeta SET meta_key = '_give_payment_customer_id' WHERE meta_key = '_give_payment_donor_id'" );
 
 	$give_updates->percentage = 100;
 	give_set_upgrade_complete( 'upgrade_give_payment_customer_id' );
@@ -552,6 +552,7 @@ function give_v132_upgrade_give_payment_customer_id() {
  *
  * Reverses the issue where offline donations in "pending" status where inappropriately marked as abandoned
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since      1.3.4
  */
 function give_v134_upgrade_give_offline_status() {
@@ -561,14 +562,13 @@ function give_v134_upgrade_give_offline_status() {
 	$give_updates = Give_Updates::get_instance();
 
 	// Get abandoned offline payments.
-	$select = "SELECT ID FROM $wpdb->posts p ";
-	$join   = "LEFT JOIN $wpdb->postmeta m ON p.ID = m.post_id ";
-	$where  = "WHERE p.post_type = 'give_payment' ";
-	$where .= "AND ( p.post_status = 'abandoned' )";
-	$where .= "AND ( m.meta_key = '_give_payment_gateway' AND m.meta_value = 'offline' )";
-
-	$sql            = $select . $join . $where;
-	$found_payments = $wpdb->get_col( $sql );
+	$found_payments = $wpdb->get_col(
+		"SELECT ID FROM $wpdb->posts p "
+		. "LEFT JOIN $wpdb->postmeta m ON p.ID = m.post_id "
+		. "WHERE p.post_type = 'give_payment' "
+		. "AND ( p.post_status = 'abandoned' )"
+		. "AND ( m.meta_key = '_give_payment_gateway' AND m.meta_value = 'offline' )"
+	);
 
 	foreach ( $found_payments as $payment ) {
 
@@ -1229,6 +1229,7 @@ function give_v189_upgrades_levels_post_meta_callback() {
 /**
  * Give version 1.8.9 upgrades
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since      1.8.9
  */
 function give_v189_upgrades() {
@@ -1243,7 +1244,7 @@ function give_v189_upgrades() {
 			"
 					DELETE FROM $wpdb->usermeta
 					WHERE meta_key
-					LIKE '%s'
+					LIKE %s
 					",
 			'%_give_hide_license_notices_permanently%'
 		)
@@ -1255,7 +1256,7 @@ function give_v189_upgrades() {
 			"
 					DELETE FROM $wpdb->options
 					WHERE option_name
-					LIKE '%s'
+					LIKE %s
 					",
 			'%__give_hide_license_notices_shortly_%'
 		)
@@ -1972,6 +1973,7 @@ function give_v20_upgrades_payment_metadata_callback() {
 /**
  * Move payment and form metadata to new table
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since 4.14.0 Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
  * @since  2.0
  * @return void
@@ -2009,7 +2011,7 @@ function give_v20_move_metadata_into_new_table_callback() {
 			if ( ! empty( $meta_data ) ) {
 				foreach ( $meta_data as $index => $data ) {
 					// Check for duplicate meta values.
-					if ( $result = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . ( 'give_forms' === $post->post_type ? $wpdb->formmeta : $wpdb->donationmeta ) . ' WHERE meta_id=%d', $data['meta_id'] ), ARRAY_A ) ) {
+					if ( $result = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i WHERE meta_id=%d', ( 'give_forms' === $post->post_type ? $wpdb->formmeta : $wpdb->donationmeta ), $data['meta_id'] ), ARRAY_A ) ) {
 						continue;
 					}
 
@@ -2168,6 +2170,7 @@ function give_v20_upgrades_user_address() {
 /**
  * Upgrade logs data.
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since  2.0
  * @return void
  * @global wpdb $wpdb
@@ -2189,10 +2192,10 @@ function give_v20_rename_donor_tables_callback() {
 			$wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', $old_table ) ) &&
 			! $wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', $new_table ) )
 		) {
-			$wpdb->query( "ALTER TABLE {$old_table} RENAME TO {$new_table}" );
+			$wpdb->query( $wpdb->prepare( 'ALTER TABLE %i RENAME TO %i', $old_table, $new_table ) );
 
 			if ( "{$wpdb->prefix}give_donormeta" === $new_table ) {
-				$wpdb->query( "ALTER TABLE {$new_table} CHANGE COLUMN customer_id donor_id bigint(20)" );
+				$wpdb->query( $wpdb->prepare( 'ALTER TABLE %i CHANGE COLUMN customer_id donor_id bigint(20)', $new_table ) );
 			}
 		}
 	}
@@ -2230,6 +2233,7 @@ function give_v201_create_tables() {
 /**
  * Upgrade payment metadata for new metabox settings.
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since  2.0.1
  * @return void
  * @global wpdb $wpdb
@@ -2240,17 +2244,20 @@ function give_v201_upgrades_payment_metadata_callback() {
 	give_v201_create_tables();
 
 	$payments = $wpdb->get_col(
-		"
+		$wpdb->prepare(
+			"
 			SELECT ID FROM $wpdb->posts
 			WHERE 1=1
 			AND (
   				$wpdb->posts.post_date >= '2018-01-08 00:00:00'
 			)
 			AND $wpdb->posts.post_type = 'give_payment'
-			AND {$wpdb->posts}.post_status IN ('" . implode( "','", array_keys( give_get_payment_statuses() ) ) . "')
+			AND {$wpdb->posts}.post_status IN (" . implode( ',', array_fill( 0, count( give_get_payment_statuses() ), '%s' ) ) . ")
 			ORDER BY $wpdb->posts.post_date ASC
 			LIMIT 100
-			OFFSET " . $give_updates->get_offset( 100 )
+			OFFSET %d",
+			array_merge( array_keys( give_get_payment_statuses() ), [ $give_updates->get_offset( 100 ) ] )
+		)
 	);
 
 	if ( ! empty( $payments ) ) {
@@ -2324,6 +2331,7 @@ function give_v201_upgrades_payment_metadata_callback() {
 /**
  * Move payment and form metadata to new table
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since 4.14.0 Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
  * @since  2.0.1
  * @return void
@@ -2334,14 +2342,17 @@ function give_v201_move_metadata_into_new_table_callback() {
 	give_v201_create_tables();
 
 	$payments = $wpdb->get_col(
-		"
+		$wpdb->prepare(
+			"
 			SELECT ID FROM $wpdb->posts
 			WHERE 1=1
 			AND ( $wpdb->posts.post_type = 'give_payment' OR $wpdb->posts.post_type = 'give_forms' )
-			AND {$wpdb->posts}.post_status IN ('" . implode( "','", array_keys( give_get_payment_statuses() ) ) . "')
+			AND {$wpdb->posts}.post_status IN (" . implode( ',', array_fill( 0, count( give_get_payment_statuses() ), '%s' ) ) . ")
 			ORDER BY $wpdb->posts.post_date ASC
 			LIMIT 100
-			OFFSET " . $give_updates->get_offset( 100 )
+			OFFSET %d",
+			array_merge( array_keys( give_get_payment_statuses() ), [ $give_updates->get_offset( 100 ) ] )
+		)
 	);
 
 	if ( ! empty( $payments ) ) {
@@ -2370,7 +2381,7 @@ function give_v201_move_metadata_into_new_table_callback() {
 			if ( ! empty( $meta_data ) ) {
 				foreach ( $meta_data as $index => $data ) {
 					// Check for duplicate meta values.
-					if ( $result = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . ( 'give_forms' === $post->post_type ? $wpdb->formmeta : $wpdb->donationmeta ) . ' WHERE meta_id=%d', $data['meta_id'] ), ARRAY_A ) ) {
+					if ( $result = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i WHERE meta_id=%d', ( 'give_forms' === $post->post_type ? $wpdb->formmeta : $wpdb->donationmeta ), $data['meta_id'] ), ARRAY_A ) ) {
 						continue;
 					}
 
@@ -2412,6 +2423,7 @@ function give_v201_move_metadata_into_new_table_callback() {
 /**
  * Add missing donor.
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since  2.0.1
  * @return void
  */
@@ -2428,7 +2440,7 @@ function give_v201_add_missing_donors_callback() {
 	}
 
 	$total_customers = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}give_customers " );
-	$customers       = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_customers LIMIT 20 OFFSET " . $give_updates->get_offset( 20 ) ), 'id' );
+	$customers       = wp_list_pluck( $wpdb->get_results( $wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_customers LIMIT 20 OFFSET %d", $give_updates->get_offset( 20 ) ) ), 'id' );
 	$donors          = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_donors" ), 'id' );
 
 	if ( ! empty( $customers ) ) {
@@ -2562,6 +2574,7 @@ function give_v203_upgrades() {
 /**
  * Version 2.2.0 automatic updates
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since 2.2.0
  */
 function give_v220_upgrades() {
@@ -2621,14 +2634,15 @@ function give_v220_upgrades() {
 		$options = array_merge( $options, $option_like );
 	}
 
-	$options_str = '\'' . implode( "','", $options ) . '\'';
-
 	$wpdb->query(
-		"
+		$wpdb->prepare(
+			"
 		UPDATE $wpdb->options
 		SET autoload = 'no'
-		WHERE option_name IN ( {$options_str} )
-		"
+		WHERE option_name IN ( " . implode( ',', array_fill( 0, count( $options ), '%s' ) ) . " )
+		",
+			$options
+		)
 	);
 }
 
@@ -2651,6 +2665,7 @@ function give_v221_upgrades() {
 /**
  * Version 2.3.0 automatic updates
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since 2.3.0
  */
 function give_v230_upgrades() {
@@ -2678,8 +2693,6 @@ function give_v230_upgrades() {
 		'give_temp_reset_ids', // reset stats
 	];
 
-	$options_key = '\'' . implode( "','", $options_key ) . '\'';
-
 	global $wpdb;
 
 	/**
@@ -2687,7 +2700,7 @@ function give_v230_upgrades() {
 	 *
 	 * delete unwanted key from option table
 	 */
-	$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name IN ( {$options_key} )" );
+	$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name IN ( " . implode( ',', array_fill( 0, count( $options_key ), '%s' ) ) . ' )', $options_key ) );
 }
 
 /**
@@ -2736,20 +2749,23 @@ function give_v210_verify_form_status_upgrades_callback() {
 /**
  * Upgrade routine for 2.1.3 to delete meta which is not attach to any donation.
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since 2.1
  */
 function give_v213_delete_donation_meta_callback() {
 	global $wpdb;
-	$give_updates        = Give_Updates::get_instance();
-	$donation_meta_table = Give()->payment_meta->table_name;
+	$give_updates = Give_Updates::get_instance();
 
 	$donations = $wpdb->get_col(
-		"
+		$wpdb->prepare(
+			"
 		SELECT DISTINCT payment_id
-		FROM {$donation_meta_table}
+		FROM {$wpdb->donationmeta}
 		LIMIT 20
-		OFFSET {$give_updates->get_offset( 20 )}
-		"
+		OFFSET %d
+		",
+			$give_updates->get_offset( 20 )
+		)
 	);
 
 	if ( ! empty( $donations ) ) {
@@ -2989,6 +3005,7 @@ function give_v230_move_donor_note_callback() {
 /**
  * Move donation notes to comment table
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since 2.3.0
  */
 function give_v230_move_donation_note_callback() {
@@ -3011,8 +3028,9 @@ function give_v230_move_donation_note_callback() {
 		)
 	);
 
-	$query = $wpdb->prepare(
-		"
+	$comments = $wpdb->get_results(
+		$wpdb->prepare(
+			"
 			SELECT *
 			FROM {$wpdb->comments}
 			WHERE comment_type=%s
@@ -3020,11 +3038,10 @@ function give_v230_move_donation_note_callback() {
 			LIMIT 100
 			OFFSET %d
 			",
-		'give_payment_note',
-		$give_updates->get_offset( 100 )
+			'give_payment_note',
+			$give_updates->get_offset( 100 )
+		)
 	);
-
-	$comments = $wpdb->get_results( $query );
 
 	if ( $comments ) {
 		$give_updates->set_percentage( $donation_note_count, $give_updates->step * 100 );
@@ -3092,10 +3109,8 @@ function give_v230_move_donation_note_callback() {
 		);
 
 		if ( ! empty( $comment_ids ) ) {
-			$comment_ids = "'" . implode( "','", $comment_ids ) . "'";
-
-			$wpdb->query( "DELETE FROM {$wpdb->comments} WHERE comment_ID IN ({$comment_ids})" );
-			$wpdb->query( "DELETE FROM {$wpdb->commentmeta} WHERE comment_id IN ({$comment_ids})" );
+			$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->comments} WHERE comment_ID IN (" . implode( ',', array_fill( 0, count( $comment_ids ), '%s' ) ) . ')', $comment_ids ) );
+			$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->commentmeta} WHERE comment_id IN (" . implode( ',', array_fill( 0, count( $comment_ids ), '%s' ) ) . ')', $comment_ids ) );
 		}
 
 		// The Update Ran.
@@ -3106,6 +3121,7 @@ function give_v230_move_donation_note_callback() {
 /**
  * Delete donor wall related donor meta data
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since 2.3.0
  */
 function give_v230_delete_dw_related_donor_data_callback() {
@@ -3113,9 +3129,7 @@ function give_v230_delete_dw_related_donor_data_callback() {
 
 	$give_updates = Give_Updates::get_instance();
 
-	$donor_meta_table_name = Give()->donor_meta->table_name;
-
-	$wpdb->query( "DELETE FROM {$donor_meta_table_name} WHERE meta_key LIKE '%_give_anonymous_donor%' OR meta_key='_give_has_comment';" );
+	$wpdb->query( "DELETE FROM {$wpdb->donormeta} WHERE meta_key LIKE '%_give_anonymous_donor%' OR meta_key='_give_has_comment';" );
 
 	$give_updates->percentage = 100;
 
