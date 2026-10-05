@@ -1,0 +1,6 @@
+significance: patch
+type: fix
+entry: Resolved an issue where PayPal Standard donations and subscription
+  renewals with recovered fees were not recorded after the IPN validation
+  update.
+timestamp: 2026-10-05T16:11:35.189Z

@@ -79,7 +79,7 @@ class ProcessIpnDonationRefundTest extends TestCase
         Call::invoke(
             MockProcessIpnDonationRefund::class,
             (object) [
-                'mc_gross' => '20.00',
+                'mc_gross' => '-20.00',
                 'parent_txn_id' => 'abc456',
                 'reason_code' => 'abc',
                 'txn_id' => 'abs123'
@@ -94,6 +94,49 @@ class ProcessIpnDonationRefundTest extends TestCase
 
         $this->assertTrue((bool)count($notes));
         $this->assertSame('refunded', get_post_status( $this->donation->ID ));
+    }
+
+    /**
+     * @since TBD
+     *
+     * @dataProvider invalidRefundAmountProvider
+     */
+    public function testInvalidRefundAmountLeavesDonationUnchanged(array $refundAmountData)
+    {
+        $this->donation->status = 'publish';
+        $this->donation->save();
+
+        Call::invoke(
+            MockProcessIpnDonationRefund::class,
+            (object) array_merge([
+                'parent_txn_id' => 'INVALID-AMOUNT-PARENT-TXN',
+                'reason_code' => 'refund',
+                'txn_id' => 'INVALID-AMOUNT-TXN',
+            ], $refundAmountData),
+            $this->donation->ID
+        );
+
+        $notes = give_get_payment_notes($this->donation->ID);
+        $notes = array_filter($notes, function ($note) {
+            return false !== strpos($note->comment_content, 'INVALID-AMOUNT-');
+        });
+
+        $this->assertSame([], array_column($notes, 'comment_content'));
+        $this->assertSame('publish', get_post_status($this->donation->ID));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function invalidRefundAmountProvider(): array
+    {
+        return [
+            'missing'     => [[]],
+            'non-numeric' => [['mc_gross' => 'abc']],
+            'zero'        => [['mc_gross' => '0.00']],
+            'positive'    => [['mc_gross' => '5.00']],
+            'over total'  => [['mc_gross' => '-999999.00']],
+        ];
     }
 }
 
