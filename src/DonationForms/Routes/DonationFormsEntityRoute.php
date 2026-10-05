@@ -25,6 +25,7 @@ class DonationFormsEntityRoute
 
 
     /**
+     * @since TBD Register the detach route
      * @since 4.2.0
      */
     public function __invoke()
@@ -32,6 +33,7 @@ class DonationFormsEntityRoute
         $this->registerGetForm();
         $this->registerGetForms();
         $this->registerAssociateFormsWithCampaign();
+        $this->registerDetachFormsFromCampaign();
     }
 
     /**
@@ -146,6 +148,36 @@ class DonationFormsEntityRoute
                         'type' => 'integer',
                         'required' => true,
                     ]
+                ],
+            ]
+        );
+    }
+
+    /**
+     * Detach donation forms from their campaigns, leaving them standalone
+     *
+     * @since TBD
+     */
+    public function registerDetachFormsFromCampaign()
+    {
+        register_rest_route(
+            Route::NAMESPACE,
+            Route::DETACH_FORMS_FROM_CAMPAIGN,
+            [
+                [
+                    'methods' => WP_REST_Server::EDITABLE,
+                    'callback' => function (WP_REST_Request $request) {
+                        return $this->controller->detachFormsFromCampaign($request);
+                    },
+                    'permission_callback' => function (WP_REST_Request $request) {
+                        return DonationFormPermissions::validationForAssociateForms($request);
+                    },
+                ],
+                'args' => [
+                    'formIDs' => [
+                        'type' => 'array',
+                        'required' => true,
+                    ],
                 ],
             ]
         );

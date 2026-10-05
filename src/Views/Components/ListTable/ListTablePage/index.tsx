@@ -51,7 +51,7 @@ interface FilterConfigBase {
 }
 
 interface FilterConfigWithSimpleOptions extends FilterConfigBase {
-    type: 'select' | 'campaignselect' | 'search' | 'checkbox' | 'hidden';
+    type: 'select' | 'campaignselect' | 'formselect' | 'search' | 'checkbox' | 'hidden';
     options?: Array<{text: string; value: string}>;
 }
 

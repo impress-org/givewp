@@ -465,6 +465,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @param string       $column_name The name of the column.
 	 *
 	 * @access public
+	 * @since  TBD Say No campaign when the donation has no campaign.
 	 * @since  1.0
      * @since 4.3.0 show campaign name instead of the form name
 	 *
@@ -509,8 +510,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 			case 'campaign':
 
                 $donation = Donation::find($payment->ID);
+				$campaign = $donation && $donation->campaignId ? $donation->campaign : null;
 
-				$value = '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-campaigns&id=' . $donation->campaign->id . '&tab=overview&action=edit' ) . '">' . $donation->campaign->title . '</a>';
+				if ( ! $campaign ) {
+					$value = esc_html__( 'No campaign', 'give' );
+					break;
+				}
+
+				$value = '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id . '&tab=overview&action=edit' ) . '">' . esc_html( $campaign->title ) . '</a>';
 
 				break;
 

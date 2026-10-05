@@ -71,3 +71,12 @@
     border-color: #459948;
   }
 }
+
+/* Stands in for a card's main value when there is none, at the same size so the card keeps its height. */
+.emptyValue {
+  color: var(--givewp-neutral-500);
+  font-size: 1.125rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: calc(28 / 18);
+}

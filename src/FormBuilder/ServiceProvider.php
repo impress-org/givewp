@@ -33,6 +33,8 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since TBD The forms list localizes its own newFormUrl, so the GiveNextGen script data is gone.
+     *
      * @inheritDoc
      */
     public function boot()
@@ -50,13 +52,6 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('admin_print_scripts', DequeueAdminScriptsInFormBuilder::class);
 
         Hooks::addAction('admin_print_styles', DequeueAdminStylesInFormBuilder::class);
-
-        /** Integrates the "Add v3 Form" button with the Donation Forms table. */
-        add_action('admin_enqueue_scripts', static function () {
-            wp_localize_script('give-admin-donation-forms', 'GiveNextGen', [
-                'newFormUrl' => FormBuilderRouteBuilder::makeCreateFormRoute()->getUrl(),
-            ]);
-        });
 
         add_action('givewp_form_builder_updated', static function (DonationForm $form) {
             give(UpdateFormGridMeta::class)->__invoke($form);

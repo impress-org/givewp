@@ -28,11 +28,6 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
          */
 		const GIVE_MIGRATIONS_TABLE_APP = 'give_migrations_table_app';
 
-        /**
-         * @since 4.2.0
-         */
-        const GIVE_ORPHANED_FORMS_TABLE_APP = 'give_orphaned_forms_app';
-
 		/**
 		 * Flag to check if enable saving option for setting page or not
 		 *
@@ -60,14 +55,6 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 				 * @since 2.10.0
 				 */
 				add_action( 'give_admin_field_' . self::GIVE_MIGRATIONS_TABLE_APP, [$this, 'render_migrations_container'] );
-                /**
-                 * Render orphaned forms container
-                 * @since 4.2.0
-                 */
-                if ('enabled' === give_get_option('show_orphaned_forms_table', 'disabled')) {
-                    add_action( 'give_admin_field_' . self::GIVE_ORPHANED_FORMS_TABLE_APP, [$this, 'render_orphaned_forms_container'] );
-                }
-
 			}
 		}
 
@@ -115,17 +102,6 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 					];
 
 					break;
-
-
-                case 'orphaned_forms':
-                    $settings = [
-                        [
-                            'id'   => self::GIVE_ORPHANED_FORMS_TABLE_APP,
-                            'type' => self::GIVE_ORPHANED_FORMS_TABLE_APP,
-                        ],
-                    ];
-
-                    break;
 			}
 
 			/**
@@ -153,10 +129,6 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 				'give_recount_stats' => __( 'Recount stats', 'give' ),
 			];
 
-            if ('enabled' === give_get_option('show_orphaned_forms_table', 'disabled')) {
-                $sections['orphaned_forms'] = __( 'Orphaned donation forms', 'give' );
-            }
-
 			$sections = apply_filters( 'give_data_views', $sections );
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
@@ -171,15 +143,6 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 		public function render_migrations_container() {
 			printf( '<div id="%s" style="padding-top: 20px"></div>', self::GIVE_MIGRATIONS_TABLE_APP );
 		}
-
-        /**
-         * Render orphaned forms container
-         *
-         * @since 4.2.0
-         */
-        public function render_orphaned_forms_container() {
-            printf( '<div id="%s" style="padding-top: 20px"></div>', self::GIVE_ORPHANED_FORMS_TABLE_APP );
-        }
 	}
 
 endif;

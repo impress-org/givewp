@@ -63,6 +63,7 @@ class DonationFormGoalData implements Arrayable
     public $goalSource;
 
     /**
+     * @since TBD Fall back to the form goal when the form has no campaign.
      * @since 3.0.0
      */
     public function __construct(int $formId, FormSettings $formSettings)
@@ -77,6 +78,10 @@ class DonationFormGoalData implements Arrayable
         $this->goalStartDate = $this->formSettings->goalStartDate ?? null;
         $this->goalEndDate = $this->formSettings->goalEndDate ?? null;
         $this->campaign = Campaign::findByFormId($this->formId);
+
+        if ($this->goalSource->isCampaign() && ! $this->campaign) {
+            $this->goalSource = GoalSource::FORM();
+        }
     }
 
     /**

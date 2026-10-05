@@ -419,6 +419,29 @@ class TestListDonations extends TestCase
     /**
      * @since 4.18.0
      */
+    public function testShouldFilterDonationsByFormId()
+    {
+        $campaign = Campaign::factory()->create();
+        $match = Donation::factory()->create(['campaignId' => $campaign->id, 'formId' => 101]);
+        Donation::factory()->create(['campaignId' => $campaign->id, 'formId' => 202]);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('testMode', true);
+        $mockRequest->set_param('formId', $match->formId);
+
+        $response = give(ListDonations::class)->handleRequest($mockRequest);
+
+        $this->assertCount(1, $response->data['items']);
+        $this->assertEquals($match->id, $response->data['items'][0]['id']);
+        $this->assertEquals(1, $response->data['totalItems']);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testTotalItemsCountsEveryMatchingDonation()
     {
         $campaign = Campaign::factory()->create();
@@ -539,6 +562,28 @@ class TestListDonations extends TestCase
 
     /**
      * @since 4.18.0
+     */
+    public function testShouldFilterDonationsWithNoCampaign()
+    {
+        $campaign = Campaign::factory()->create();
+        Donation::factory()->create(['campaignId' => $campaign->id]);
+        $standalone = Donation::factory()->create(['campaignId' => null, 'formId' => 999999]);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('testMode', true);
+        $mockRequest->set_param('campaignId', 'none');
+
+        $response = give(ListDonations::class)->handleRequest($mockRequest);
+
+        $this->assertCount(1, $response->data['items']);
+        $this->assertEquals($standalone->id, $response->data['items'][0]['id']);
+    }
+
+    /**
+     * @since TBD
      */
     public function testFiltersByCampaignWithTestModeOff()
     {
