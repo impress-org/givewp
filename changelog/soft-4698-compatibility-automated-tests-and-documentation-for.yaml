@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Resolved an issue where the classic Donations screen showed a broken
+  campaign link for donations to forms without a campaign
+timestamp: 2026-09-28T17:04:51.117Z

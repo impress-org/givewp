@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Resolved an issue where the form picker on donation and subscription details
+  showed an incomplete list of forms after a form was chosen
+timestamp: 2026-10-02T17:01:20.000Z

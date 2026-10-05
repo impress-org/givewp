@@ -10,6 +10,7 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\QueryBuilder\WhereQueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -48,6 +49,7 @@ class ListDonations extends Endpoint
     /**
      * @inheritDoc
      *
+     * @since TBD Add formId parameter and accept "none" for campaignId
      * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      * @since 3.4.0
      */
@@ -76,9 +78,16 @@ class ListDonations extends Endpoint
                         'minimum' => 1
                     ],
                     'campaignId' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'default' => '',
+                        'pattern' => '^(\\d*|none)$',
+                        'description' => 'Filter donations by campaign ID, or "none" for donations that have no campaign.',
+                    ],
+                    'formId' => [
                         'type' => 'integer',
                         'required' => false,
-                        'default' => 0
+                        'default' => 0,
                     ],
                     'search' => [
                         'type' => 'string',
@@ -180,7 +189,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD Select the page of IDs first, then hydrate, so deep pages do not join every row
+     * @since 4.18.0 Select the page of IDs first, then hydrate, so deep pages do not join every row
      * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
      *
@@ -235,7 +244,7 @@ class ListDonations extends Endpoint
     /**
      * Meta keys a sort expression references, so the ID query can attach them.
      *
-     * @since TBD
+     * @since 4.18.0
      *
      * @param string[] $sortColumns
      *
@@ -251,7 +260,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD Drop the GROUP BY on mode, which made count() return the size of one mode group
+     * @since 4.18.0 Drop the GROUP BY on mode, which made count() return the size of one mode group
      * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
      *
@@ -274,7 +283,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     private function donationIdsWithNamePrefix(string $value): Closure
     {
@@ -286,7 +295,7 @@ class ListDonations extends Endpoint
      * the (meta_key, meta_value) index replaces a leading-wildcard LIKE across joined meta tables,
      * which had to scan every row for the key.
      *
-     * @since TBD
+     * @since 4.18.0
      *
      * @param string[] $metaKeys
      */
@@ -304,7 +313,8 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD Match name and email searches by prefix through indexed subqueries, and filter test mode the same way instead of HAVING
+     * @since TBD Filter by formId, and by campaignId "none" for donations that have no campaign.
+     * @since 4.18.0 Match name and email searches by prefix through indexed subqueries, and filter test mode the same way instead of HAVING
      * @since 4.12.0 Updated status filtering to accept multiple comma-separated values
      * @since 4.8.0 Added support for subscriptionId parameter to filter donations
      * @since 4.6.0 add status status condition to filter donations
@@ -325,6 +335,7 @@ class ListDonations extends Endpoint
         $donor = $this->request->get_param('donor');
         $testMode = $this->request->get_param('testMode');
         $campaignId = $this->request->get_param('campaignId');
+        $formId = $this->request->get_param('formId');
         $subscriptionId = $this->request->get_param('subscriptionId');
         $status = $this->request->get_param('status');
         $dependencies = [];
@@ -358,10 +369,23 @@ class ListDonations extends Endpoint
             }
         }
 
-        if ($campaignId) {
+        if ($campaignId === 'none') {
+            $query->where(static function (WhereQueryBuilder $builder) {
+                $builder
+                    ->whereIsNull('give_donationmeta_attach_meta_campaignId.meta_value')
+                    ->orWhereIn('give_donationmeta_attach_meta_campaignId.meta_value', ['', '0']);
+            });
+            $dependencies[] = DonationMetaKeys::CAMPAIGN_ID();
+        } elseif ($campaignId) {
             $query
                 ->where('give_donationmeta_attach_meta_campaignId.meta_value', $campaignId);
             $dependencies[] = DonationMetaKeys::CAMPAIGN_ID();
+        }
+
+        if ($formId) {
+            $query
+                ->where('give_donationmeta_attach_meta_formId.meta_value', $formId);
+            $dependencies[] = DonationMetaKeys::FORM_ID();
         }
 
         if ($subscriptionId) {

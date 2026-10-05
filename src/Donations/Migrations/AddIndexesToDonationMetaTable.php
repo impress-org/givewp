@@ -15,7 +15,7 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
  * than about a third. This mirrors the WooCommerce HPOS order meta table, which indexes
  * (meta_key, meta_value) and (order_id, meta_key, meta_value) only.
  *
- * @since TBD
+ * @since 4.18.0
  */
 class AddIndexesToDonationMetaTable extends Migration
 {

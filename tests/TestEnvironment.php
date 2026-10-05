@@ -22,7 +22,7 @@ class TestEnvironment {
     private $wpEnv;
 
     /**
-     * @since TBD Add the wp-env environment.
+     * @since 4.18.0 Add the wp-env environment.
      * @since 2.22.1
      */
     public function __construct() {
@@ -32,7 +32,7 @@ class TestEnvironment {
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function isWpEnv(): bool
     {
@@ -56,7 +56,7 @@ class TestEnvironment {
     }
 
     /**
-     * @since TBD Add the wp-env environment.
+     * @since 4.18.0 Add the wp-env environment.
      * @since 2.22.1
      */
     public function hasConfig(): bool
@@ -65,7 +65,7 @@ class TestEnvironment {
     }
 
     /**
-     * @since TBD Add the wp-env environment, which wins because the checkout it mounts can carry a local config too.
+     * @since 4.18.0 Add the wp-env environment, which wins because the checkout it mounts can carry a local config too.
      * @since 2.22.1
      */
     public function current(): Config

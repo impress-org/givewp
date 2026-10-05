@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\V2\ListTable;
 
+use Give\DonationForms\V2\ListTable\Columns\CampaignColumn;
 use Give\DonationForms\V2\ListTable\Columns\DateCreatedColumn;
 use Give\DonationForms\V2\ListTable\Columns\DonationCountColumn;
 use Give\DonationForms\V2\ListTable\Columns\DonationRevenueColumn;
@@ -27,6 +28,7 @@ class DonationFormsListTable extends ListTable
     }
 
     /**
+     * @since TBD Add the Campaign column.
      * @since 2.24.0
      *
      * @inheritDoc
@@ -36,6 +38,7 @@ class DonationFormsListTable extends ListTable
         return [
             new IdColumn(),
             new TitleColumn(),
+            new CampaignColumn(),
             new GoalColumn(),
             new DonationCountColumn(),
             new DonationRevenueColumn(),
@@ -45,6 +48,7 @@ class DonationFormsListTable extends ListTable
     }
 
     /**
+     * @since TBD Add the Campaign column.
      * @since 2.24.0
      *
      * @inheritDoc
@@ -54,6 +58,7 @@ class DonationFormsListTable extends ListTable
         return [
             IdColumn::getId(),
             TitleColumn::getId(),
+            CampaignColumn::getId(),
             GoalColumn::getId(),
             DonationCountColumn::getId(),
             DonationRevenueColumn::getId(),

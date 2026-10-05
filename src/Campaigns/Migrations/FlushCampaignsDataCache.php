@@ -10,12 +10,12 @@ use Give\Framework\Migrations\Contracts\Migration;
  * rebuild migration merged donation rows into it, so what is stored cannot be trusted.
  * The repository repopulates the cache on demand.
  *
- * @since TBD
+ * @since 4.18.0
  */
 class FlushCampaignsDataCache extends Migration
 {
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public static function id(): string
     {
@@ -23,7 +23,7 @@ class FlushCampaignsDataCache extends Migration
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public static function title(): string
     {
@@ -31,7 +31,7 @@ class FlushCampaignsDataCache extends Migration
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public static function timestamp(): string
     {
@@ -39,7 +39,7 @@ class FlushCampaignsDataCache extends Migration
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function run()
     {
