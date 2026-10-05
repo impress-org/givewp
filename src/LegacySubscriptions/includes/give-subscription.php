@@ -1120,6 +1120,8 @@ class Give_Subscription {
 	/**
 	 * Payment Exists.
 	 *
+	 * @since TBD Prepare the SQL query with placeholders.
+	 *
 	 * @param string $txn_id transaction ID.
 	 *
 	 * @return bool
@@ -1131,19 +1133,20 @@ class Give_Subscription {
 			return false;
 		}
 
-		$txn_id = esc_sql( $txn_id );
-
-		$donation_meta_table_name = Give()->payment_meta->table_name;
-		$donation_id_col_name     = Give()->payment_meta->get_meta_type() . '_id';
+		$donation_id_col_name = Give()->payment_meta->get_meta_type() . '_id';
 
 		$donation = $wpdb->get_var(
-			"
-				SELECT {$donation_id_col_name}
-				FROM {$donation_meta_table_name}
-				WHERE meta_key = '_give_payment_transaction_id'
-				AND meta_value = '{$txn_id}'
-				LIMIT 1
+			$wpdb->prepare(
 				"
+				SELECT %i
+				FROM {$wpdb->donationmeta}
+				WHERE meta_key = '_give_payment_transaction_id'
+				AND meta_value = %s
+				LIMIT 1
+				",
+				$donation_id_col_name,
+				$txn_id
+			)
 		);
 
 		if ( $donation != null ) {
