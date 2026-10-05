@@ -155,7 +155,7 @@ class DonationFormViewModelTest extends TestCase
     }
 
     /**
-     * Assert the URL is a signed route URL that the route itself would accept.
+     * Assert the URL is a signed route URL that expires in one day and that the route itself would accept.
      *
      * @since TBD
      */
@@ -165,6 +165,13 @@ class DonationFormViewModelTest extends TestCase
 
         $this->assertSame($route, $query['givewp-route']);
         $this->assertSame($signatureId, $query['givewp-route-signature-id']);
+
+        // Signed URLs expire one day out. Allow a few seconds for the time between building them and now.
+        $this->assertEqualsWithDelta(
+            current_datetime()->modify('+1 day')->getTimestamp(),
+            (int)$query['givewp-route-signature-expiration'],
+            5
+        );
 
         $signature = new DonateRouteSignature($signatureId, $query['givewp-route-signature-expiration']);
 
