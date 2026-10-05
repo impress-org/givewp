@@ -53,7 +53,7 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
     /**
      * @inheritDoc
      *
-     * @since TBD Merge donors into the donors list and subscriptions into the subscriptions option; always compute live stats, the cache holds live stats only.
+     * @since 4.18.0 Merge donors into the donors list and subscriptions into the subscriptions option; always compute live stats, the cache holds live stats only.
      * @since 4.12.0 add early return if no campaigns found
      * @since 4.8.0
      *

@@ -1,4 +1,0 @@
-significance: patch
-type: fix
-entry: Resolved an issue where a PHP warning could appear on development copies of GiveWP that have not been built
-timestamp: 2026-10-01T16:01:48.000Z

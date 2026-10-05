@@ -6,7 +6,7 @@ namespace Give\Tests\Feature\Donors;
  * Records whether PHP ever built an instance of it. Restoring a stored meta value must never reach
  * these magic methods, so the flag staying false is what DonorWallTest asserts.
  *
- * @since TBD
+ * @since 4.18.0
  */
 class SerializedPayloadProbe
 {

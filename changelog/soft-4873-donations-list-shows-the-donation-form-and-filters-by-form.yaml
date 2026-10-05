@@ -1,0 +1,5 @@
+significance: minor
+type: feature
+entry: Added a Form column and a form filter to the Donations screen so you can
+  see and filter donations by the form they came through
+timestamp: 2026-09-28T16:37:30.625Z

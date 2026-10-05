@@ -78,7 +78,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @since TBD Return each associated form once when its metadata contains duplicate keys.
+     * @since 4.18.0 Return each associated form once when its metadata contains duplicate keys.
      * @since 4.0.0
      */
     public function forms(): ModelQueryBuilder

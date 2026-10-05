@@ -28,7 +28,7 @@ class Give_Payment_Stats extends Give_Stats {
 	/**
 	 * Retrieve sale stats
 	 *
-	 * @since TBD Count donations with one SQL query instead of loading every ID
+	 * @since 4.18.0 Count donations with one SQL query instead of loading every ID
 	 * @since  1.0
 	 * @access public
 	 *
@@ -83,7 +83,7 @@ class Give_Payment_Stats extends Give_Stats {
 	/**
 	 * Retrieve earning stats
 	 *
-	 * @since TBD Sum donation totals with one SQL query instead of loading every ID and formatting each amount
+	 * @since 4.18.0 Sum donation totals with one SQL query instead of loading every ID and formatting each amount
 	 * @since  1.0
 	 * @access public
 	 *
@@ -284,7 +284,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * Returns null when the query args contain something this method does not translate, or when an
 	 * add-on filters `give_donation_amount`, so the caller falls back to the per-donation loop.
 	 *
-	 * @since TBD
+	 * @since 4.18.0
 	 *
 	 * @param array $args Give_Payments_Query arguments.
 	 *
@@ -317,7 +317,7 @@ class Give_Payment_Stats extends Give_Stats {
 	/**
 	 * Count matching donations in one query instead of loading every ID into PHP.
 	 *
-	 * @since TBD
+	 * @since 4.18.0
 	 *
 	 * @param array $args Give_Payments_Query arguments.
 	 *
@@ -340,7 +340,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * the per-donation loop for earnings so their callbacks run. Counts are unaffected and stay in SQL. Core itself always hooks the deprecated filter
 	 * mapping there, so that one callback does not count.
 	 *
-	 * @since TBD
+	 * @since 4.18.0
 	 *
 	 * @return bool
 	 */
@@ -366,7 +366,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * Translate the subset of Give_Payments_Query arguments the stats methods build (status, date
 	 * range, form, parent, and simple meta equality) into a WHERE fragment. Anything else returns null.
 	 *
-	 * @since TBD
+	 * @since 4.18.0
 	 *
 	 * @param array $args
 	 *
@@ -378,7 +378,7 @@ class Give_Payment_Stats extends Give_Stats {
 		/**
 		 * Allow add-ons that alter stats amounts some other way to keep the per-donation code path.
 		 *
-		 * @since TBD
+		 * @since 4.18.0
 		 *
 		 * @param bool  $aggregate_in_sql
 		 * @param array $args

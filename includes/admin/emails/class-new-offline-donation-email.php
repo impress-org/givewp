@@ -246,7 +246,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		/**
 		 * Setup email notification.
 		 *
-		 * @since  TBD Check the gateway from meta before loading the legacy payment object.
+		 * @since  4.18.0 Check the gateway from meta before loading the legacy payment object.
 		 * @since  2.0
 		 * @access public
 		 *

@@ -9,7 +9,7 @@ use Give\Framework\Support\ValueObjects\Money;
 class DonorFactory extends ModelFactory
 {
     /**
-     * @since TBD Generate a unique "email", because the donors table does not accept a duplicate.
+     * @since 4.18.0 Generate a unique "email", because the donors table does not accept a duplicate.
      * @since 4.4.0 Add "company", "avatarId", "additionalEmails", and "addresses" properties
      * @since 3.7.0 Add "phone" property
      * @since 2.19.6

@@ -13,7 +13,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class SubscriptionActive
 {
     /**
-     * @since TBD Bail when the subscription has no initial donation instead of fataling on it.
+     * @since 4.18.0 Bail when the subscription has no initial donation instead of fataling on it.
      * @since 3.6.0
      *
      * @throws Exception

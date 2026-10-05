@@ -13,7 +13,6 @@ use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
 use Give\Campaigns\Actions\LoadCampaignAdminOptions;
 use Give\Campaigns\Actions\PreventDeleteDefaultForm;
-use Give\Campaigns\Actions\RedirectLegacyCreateFormToCreateCampaign;
 use Give\Campaigns\Actions\ReplaceGiveFormsCptLabels;
 use Give\Campaigns\Actions\UnarchiveCampaignFormAsPublishStatus;
 use Give\Campaigns\ListTable\Routes\DeleteCampaignListTable;
@@ -26,6 +25,7 @@ use Give\Campaigns\Migrations\P2P\SetCampaignType;
 use Give\Campaigns\Migrations\RevenueTable\AddCampaignID as RevenueTableAddCampaignID;
 use Give\Campaigns\Migrations\RevenueTable\AddIndexes;
 use Give\Campaigns\Migrations\RevenueTable\AssociateDonationsToCampaign;
+use Give\Campaigns\Migrations\Tables\AddUniqueFormIdToCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
 use Give\Campaigns\Models\Campaign;
@@ -84,6 +84,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since TBD add AddUniqueFormIdToCampaignFormsTable
      * @since 4.8.0 add CacheCampaignData
      * @since 4.0.0
      */
@@ -101,6 +102,7 @@ class ServiceProvider implements ServiceProviderInterface
                 DonationsAddCampaignId::class,
                 CacheCampaignsData::class,
                 FlushCampaignsDataCache::class,
+                AddUniqueFormIdToCampaignFormsTable::class,
             ]
         );
     }
@@ -199,8 +201,6 @@ class ServiceProvider implements ServiceProviderInterface
         if (CampaignsAdminPage::isShowingDetailsPage()) {
             Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
         }
-
-        Hooks::addAction('admin_init', RedirectLegacyCreateFormToCreateCampaign::class);
 
         Hooks::addAction('save_post_give_forms', AddCampaignFormFromRequest::class, 'optionBasedFormEditor', 10, 3);
         Hooks::addAction('givewp_donation_form_created', AddCampaignFormFromRequest::class, 'visualFormBuilder');

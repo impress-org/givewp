@@ -163,7 +163,7 @@ class SubscriptionFirstDonationCompletedTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      *
      * @throws Exception
      */

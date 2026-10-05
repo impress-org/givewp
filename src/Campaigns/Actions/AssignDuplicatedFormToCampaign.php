@@ -25,17 +25,14 @@ class AssignDuplicatedFormToCampaign
     }
 
     /**
+     * @since TBD Leave the copy of a form with no campaign standalone instead of logging an error.
      * @since 4.0.0
      */
     public function __invoke($duplicatedFormID, $originalFormID)
     {
         $campaign = $this->campaignRepository->queryByFormId($originalFormID)->get();
 
-        if(!$campaign) {
-            Log::error('Campaign does not exist for duplicated form.', [
-                'duplicated_form_id' => $duplicatedFormID,
-                'original_form_id' => $originalFormID,
-            ]);
+        if ( ! $campaign) {
             return;
         }
 
