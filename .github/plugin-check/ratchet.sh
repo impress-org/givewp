@@ -109,6 +109,7 @@ warnings_base=0
 warnings_now=0
 went_down=0
 went_up=0
+errors_up=0
 up_list=""
 
 while IFS=$'\t' read -r kind code allowed found; do
@@ -131,6 +132,7 @@ while IFS=$'\t' read -r kind code allowed found; do
         fi
         if [ "$kind" = errors ]; then
             failed=true
+            errors_up=$((errors_up + 1))
             echo "::error title=Plugin Check::$code has $found errors, the baseline allows $allowed. The full list is in the plugin-check-results artifact."
         else
             echo "::notice title=Plugin Check::$code has $found warnings, the baseline has $allowed. Warnings do not fail the check."
@@ -147,12 +149,15 @@ change() {
     if [ "$diff" -gt 0 ]; then echo "+$diff"; elif [ "$diff" -lt 0 ]; then echo "$diff"; else echo "±0"; fi
 }
 
+# The totals can go down while a rule goes up, so the status names the rules, not the totals.
 if [ "$failed" = true ]; then
-    status="❌ Plugin Check failed: more errors than the baseline allows"
-    errors_mark=" ❌"
+    if [ "$errors_up" -eq 1 ]; then
+        status="❌ Plugin Check failed: 1 rule has more errors than the baseline allows"
+    else
+        status="❌ Plugin Check failed: $errors_up rules have more errors than the baseline allows"
+    fi
 else
     status="✅ Plugin Check passed"
-    errors_mark=""
 fi
 
 run_url=${RUN_URL:-}
@@ -168,14 +173,13 @@ else
     links="📎 Local run, see $results"
 fi
 
-# The finish badge sits on the status line.
-if [ -n "${COMMENT_BADGE:-}" ]; then
-    status+=" ![Plugin Check finished](${COMMENT_BADGE})"
-fi
 body="$COMMENT_MARKER"$'\n'"$status"$'\n\n'
+if [ -n "${COMMENT_BADGE:-}" ]; then
+    body+="![Plugin Check finished](${COMMENT_BADGE})"$'\n\n'
+fi
 body+="|          | Now | Baseline | Change |"$'\n'
 body+="|:--|--:|--:|:--|"$'\n'
-body+="| Errors   | $errors_now | $errors_base | $(change "$errors_now" "$errors_base")$errors_mark |"$'\n'
+body+="| Errors   | $errors_now | $errors_base | $(change "$errors_now" "$errors_base") |"$'\n'
 body+="| Warnings | $warnings_now | $warnings_base | $(change "$warnings_now" "$warnings_base") |"$'\n\n'
 if [ "$went_up" -gt "$MAX_RULES_LISTED" ]; then
     body+="Went up (top $MAX_RULES_LISTED of $went_up): $up_list"$'\n'
