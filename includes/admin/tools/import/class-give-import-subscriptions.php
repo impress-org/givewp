@@ -205,6 +205,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Show success notice
          *
+         * @since TBD Add translators comments.
          * @since 4.11.0
          */
         public function import_success()
@@ -231,17 +232,20 @@ if (!class_exists('Give_Import_Subscriptions')) {
                         if ($success) {
                             if ($dry_run) {
                                 printf(
+                                    /* translators: %s: Number of rows, wrapped in bold tags */
                                     _n('Dry run import complete! %s row processed', 'Dry run import complete! %s rows processed', $total, 'give'),
                                     "<strong>{$total}</strong>"
                                 );
                             } else {
                                 printf(
+                                    /* translators: %s: Number of rows, wrapped in bold tags */
                                     _n('Import complete! %s row processed', 'Import complete! %s rows processed', $total, 'give'),
                                     "<strong>{$total}</strong>"
                                 );
                             }
                         } else {
                             printf(
+                                /* translators: %s: Number of rows, wrapped in bold tags */
                                 _n('Failed to import %s row', 'Failed to import %s rows', $total, 'give'),
                                 "<strong>{$total}</strong>"
                             );
@@ -276,12 +280,15 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
                     if (!empty($report)) {
                         if (isset($report['create_subscription'])) {
+                            /* translators: %s: Number of subscriptions */
                             echo '<p>' . sprintf(_n('%s subscription created', '%s subscriptions created', (int)$report['create_subscription'], 'give'), (int)$report['create_subscription']) . '</p>';
                         }
                         if (isset($report['failed_subscription'])) {
+                            /* translators: %s: Number of subscriptions */
                             echo '<p>' . sprintf(_n('%s subscription failed', '%s subscriptions failed', (int)$report['failed_subscription'], 'give'), (int)$report['failed_subscription']) . '</p>';
                         }
                         if (!empty($report['failed_subscription_initial_donation'])) {
+                            /* translators: %s: Number of initial donations */
                             echo '<p>' . sprintf(_n('%s initial donation failed', '%s initial donations failed', (int)$report['failed_subscription_initial_donation'], 'give'), (int)$report['failed_subscription_initial_donation']) . '</p>';
                         }
                         if (!empty($report['errors']) && is_array($report['errors'])) {
@@ -369,6 +376,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
          * Validate required mapped fields
          *
          * 4.14.1 Check if donor_id or email is mapped to the columns
+         * @since TBD Add translators comments.
          * @since 4.11.0
          */
         public function check_for_dropdown_or_import()
@@ -391,6 +399,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
                 foreach ($required as $key) {
                     if (false === in_array($key, $mapto)) {
+                        /* translators: %s: Name of the required field */
                         Give_Admin_Settings::add_error('give-import-csv-subscriptions', sprintf(__('A column must be mapped to "%s".', 'give'), $key));
                         $return = false;
                     }
@@ -949,6 +958,8 @@ if (!class_exists('Give_Import_Subscriptions')) {
          * @param array $main_key
          * @param array $import_setting
          * @return bool|int|string
+         *
+         * @since TBD Add translators comments.
          */
         public function import_row($raw_key, $row_data, $main_key = [], $import_setting = [])
         {
@@ -975,6 +986,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
             foreach ($required as $key) {
                 if (empty($data[$key]) && '0' !== (string)(isset($data[$key]) ? $data[$key] : '')) {
                     $report['failed_subscription'] = (!empty($report['failed_subscription']) ? (absint($report['failed_subscription']) + 1) : 1);
+                    /* translators: 1: Row number, 2: Name of the required field */
                     $report['errors'][] = sprintf(__('Row %1$d: Missing required field "%2$s"', 'give'), (int)(isset($import_setting['row_key']) ? $import_setting['row_key'] : 0), $key);
                     $this->update_report($report);
                     return 'Missing required field ' . $key;
@@ -982,6 +994,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
             }
             if (empty($data['donor_id']) && empty($data['email'])) {
                 $report['failed_subscription'] = (!empty($report['failed_subscription']) ? (absint($report['failed_subscription']) + 1) : 1);
+                /* translators: %d: Row number */
                 $report['errors'][] = sprintf(__('Row %d: Either donor_id or email is required to resolve the donor', 'give'), (int)(isset($import_setting['row_key']) ? $import_setting['row_key'] : 0));
                 $this->update_report($report);
                 return 'Missing donor identifier (donor_id or email)';
@@ -1044,6 +1057,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
                 $normalizedPeriod = isset($periodAliases[$rawPeriod]) ? $periodAliases[$rawPeriod] : $rawPeriod;
                 if (!\Give\Subscriptions\ValueObjects\SubscriptionPeriod::isValid($normalizedPeriod)) {
                     throw new \UnexpectedValueException(sprintf(
+                        /* translators: 1: Subscription period entered, 2: List of valid subscription periods */
                         __('Invalid subscription period "%1$s". Valid options: %2$s. You can also use: daily, weekly, monthly, quarterly, yearly.', 'give'),
                         (string)$data['period'],
                         implode(', ', array_values(\Give\Subscriptions\ValueObjects\SubscriptionPeriod::toArray()))
@@ -1154,6 +1168,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
                         }
                     } catch (\Throwable $e) {
                         $report['failed_subscription_initial_donation'] = (!empty($report['failed_subscription_initial_donation']) ? (absint($report['failed_subscription_initial_donation']) + 1) : 1);
+                        /* translators: 1: Row number, 2: Error message */
                         $report['errors'][] = sprintf(__('Row %1$d: Initial donation creation failed (%2$s)', 'give'), (int)(isset($import_setting['row_key']) ? $import_setting['row_key'] : 0), $e->getMessage());
                     }
                     $report['create_subscription'] = (!empty($report['create_subscription']) ? (absint($report['create_subscription']) + 1) : 1);
@@ -1166,6 +1181,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
                 return false;
             } catch (\Throwable $e) {
                 $report['failed_subscription'] = (!empty($report['failed_subscription']) ? (absint($report['failed_subscription']) + 1) : 1);
+                /* translators: 1: Row number, 2: Error message */
                 $report['errors'][] = sprintf(__('Row %1$d: %2$s', 'give'), (int)(isset($import_setting['row_key']) ? $import_setting['row_key'] : 0), $e->getMessage());
                 $this->update_report($report);
                 return $e->getMessage();
