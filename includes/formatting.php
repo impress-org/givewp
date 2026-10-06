@@ -523,6 +523,7 @@ function give_format_amount($amount, $args = [])
  *
  * Note: This function only support large number formatting from million to trillion
  *
+ * @since TBD Add translators comments.
  * @since 1.6
  *
  * @use   give_get_price_thousand_separator Get thousand separator.
@@ -569,12 +570,15 @@ function give_human_format_large_amount($amount, $args = [])
             // Calculate large number formatted amount.
             if (4 < $amount_count_parts) {
                 $human_format_amount = sprintf(
+                    /* translators: %s: Amount, for example 2.5 */
                     esc_html__('%s arab', 'give'),
                     round(($sanitize_amount / 1000000000), 2)
                 );
             } elseif (3 < $amount_count_parts) {
+                /* translators: %s: Amount, for example 2.5 */
                 $human_format_amount = sprintf(esc_html__('%s crore', 'give'), round(($sanitize_amount / 10000000), 2));
             } elseif (2 < $amount_count_parts) {
+                /* translators: %s: Amount, for example 2.5 */
                 $human_format_amount = sprintf(esc_html__('%s lakh', 'give'), round(($sanitize_amount / 100000), 2));
             }
             break;
@@ -582,16 +586,19 @@ function give_human_format_large_amount($amount, $args = [])
             // Calculate large number formatted amount.
             if (4 < $amount_count_parts) {
                 $human_format_amount = sprintf(
+                    /* translators: %s: Amount, for example 2.5 */
                     esc_html__('%s trillion', 'give'),
                     round(($sanitize_amount / 1000000000000), 2)
                 );
             } elseif (3 < $amount_count_parts) {
                 $human_format_amount = sprintf(
+                    /* translators: %s: Amount, for example 2.5 */
                     esc_html__('%s billion', 'give'),
                     round(($sanitize_amount / 1000000000), 2)
                 );
             } elseif (2 < $amount_count_parts) {
                 $human_format_amount = sprintf(
+                    /* translators: %s: Amount, for example 2.5 */
                     esc_html__('%s million', 'give'),
                     round(($sanitize_amount / 1000000), 2)
                 );
