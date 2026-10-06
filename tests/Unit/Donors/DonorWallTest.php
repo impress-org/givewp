@@ -20,8 +20,7 @@ class DonorWallTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * The donor names cannot be used as markers: the wall unserializes plain-string meta and shows
-     * an empty name for factory data. The donated amount of each donor is shown instead.
+     * The donated amount of each donor is used as the marker of that donor in the rendered wall.
      */
     private const ADA = '&#36;10.00';
 
@@ -74,22 +73,11 @@ class DonorWallTest extends TestCase
     }
 
     /**
-     * Render the shortcode. The wall unserializes plain strings and warns about it (hidden in
-     * production), so warnings are swallowed around the render only.
-     *
      * @since TBD
      */
     private function render(string $atts = ''): string
     {
-        set_error_handler(static function () {
-            return true;
-        }, E_WARNING | E_DEPRECATED | E_NOTICE);
-
-        try {
-            return (string)do_shortcode('[give_donor_wall ' . $atts . ']');
-        } finally {
-            restore_error_handler();
-        }
+        return (string)do_shortcode('[give_donor_wall ' . $atts . ']');
     }
 
     /**
