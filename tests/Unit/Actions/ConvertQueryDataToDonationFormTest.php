@@ -18,6 +18,7 @@ class ConvertQueryDataToDonationFormTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * @since TBD Reuse the same created and updated dates for the query data and the expected form.
      * @since 3.0.0
      *
      * @return void
@@ -33,8 +34,8 @@ class ConvertQueryDataToDonationFormTest extends TestCase
         $queryData = (object)[
             'id' => 1,
             'title' => 'Donation Form',
-            'createdAt' => Temporal::getCurrentFormattedDateForDatabase(),
-            'updatedAt' => Temporal::getCurrentFormattedDateForDatabase(),
+            'createdAt' => $createdAt,
+            'updatedAt' => $updatedAt,
             'status' => DonationFormStatus::PUBLISHED,
             'settings' => json_encode([
                 'enableDonationGoal' => false,

@@ -40,7 +40,9 @@ jobs:
                     coverage: none
 
             -   name: Install Composer dependencies
-                run: composer install --no-dev --no-progress --no-interaction
+                uses: ramsey/composer-install@v4
+                with:
+                    composer-options: --no-dev
 
             -   name: Set Up Node
                 uses: actions/setup-node@v7

@@ -35,25 +35,21 @@ jobs:
                 wordpress: [ minimum, latest ]
 
         services:
-            # --log-error-verbosity=1 keeps the server log to errors only; at the default level MySQL
-            # writes a note for every TRUNCATE, and the test suite runs thousands of them.
-            mysql57:
-                image: mysql:5.7
-                ports:
-                    - 3306
-                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh mysql:5.7 -c "exec docker-entrypoint.sh mysqld --log-error-verbosity=1"
-
             # This was a total pain to get setup. The default authentication plugin changed in MySQL 8 and is incompatible
             # with WordPress. So it needs to be set back to mysql_native_password. The best way to do this is to use the
             # command option in docker to apply it once the container is set up... but Github Actions does not support this.
             # The workaround is to execute the command in the options, but it is VITAL that it is the LAST option and that any
             # environment variables are added via options. DO NOT ADD THE ENV LINE IN YAML. You've been warned.
+            # MySQL 5.7 accepts the same flag, so one service covers every matrix entry and each job starts only the
+            # database it tests against.
+            # --log-error-verbosity=1 keeps the server log to errors only; at the default level MySQL
+            # writes a note for every TRUNCATE, and the test suite runs thousands of them.
             # @see https://github.com/docker-library/mysql/issues/690
-            mysql80:
-                image: mysql:8.0
+            mysql:
+                image: ${{ matrix.mysql }}
                 ports:
                     - 3306
-                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password --log-error-verbosity=1"
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh ${{ matrix.mysql }} -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password --log-error-verbosity=1"
 
         # Steps represent a sequence of tasks that will be executed as part of the job
         steps:
@@ -70,37 +66,14 @@ jobs:
                     extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                     coverage: none
 
-            # Composer is asked where its download cache is, because the answer depends on the
-            # runner. Every job installs on the same PHP, so they all share one cache.
-            -   name: Find the Composer cache
-                id: composer-cache
-                run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
-
-            -   name: Cache dependencies
-                uses: actions/cache@v6
-                with:
-                    path: ${{ steps.composer-cache.outputs.dir }}
-                    key: composer-${{ hashFiles('composer.lock') }}
-
+            # Caches Composer's downloads, keyed on composer.lock and the PHP version.
             -   name: Install composer dependencies
-                run: composer install --no-progress --no-interaction
+                uses: ramsey/composer-install@v4
 
             -   name: Store MySQL details in environment
                 run: |
-                    case "$MYSQL_VERSION" in
-                      'mysql:5.7')
-                        MYSQL_PORT="${{ job.services.mysql57.ports['3306'] }}"
-                        MYSQL_PASS='N0Tweak!@123!'
-                        ;;
-                      'mysql:8.0')
-                        MYSQL_PORT="${{ job.services.mysql80.ports['3306'] }}"
-                        MYSQL_PASS='N0Tweak!@123!'
-                        ;;
-                    esac
-                    echo "mysql_port=$MYSQL_PORT" >> "$GITHUB_ENV"
-                    echo "mysql_pass=$MYSQL_PASS" >> "$GITHUB_ENV"
-                env:
-                    MYSQL_VERSION: ${{ matrix.mysql }}
+                    echo "mysql_port=${{ job.services.mysql.ports['3306'] }}" >> "$GITHUB_ENV"
+                    echo "mysql_pass=N0Tweak!@123!" >> "$GITHUB_ENV"
 
             -   name: Configure MySQL
                 run: mysql -uroot --password='${{ env.mysql_pass}}' -h127.0.0.1 --port=${{env.mysql_port}}
@@ -180,20 +153,9 @@ jobs:
                     php-version: 7.4
                     coverage: none
 
-            # Composer is asked where its download cache is, because the answer depends on the
-            # runner. Every job installs on the same PHP, so they all share one cache.
-            -   name: Find the Composer cache
-                id: composer-cache
-                run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
-
-            -   name: Cache dependencies
-                uses: actions/cache@v6
-                with:
-                    path: ${{ steps.composer-cache.outputs.dir }}
-                    key: composer-${{ hashFiles('composer.lock') }}
-
+            # Caches Composer's downloads, keyed on composer.lock and the PHP version.
             -   name: Install composer dependencies
-                run: composer install --no-progress --no-interaction
+                uses: ramsey/composer-install@v4
 
             -   name: Set Up Node
                 uses: actions/setup-node@v7
