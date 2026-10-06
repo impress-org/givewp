@@ -266,6 +266,33 @@ class LegacyDonorsQueryTest extends TestCase
     /**
      * @since TBD
      */
+    public function testNegativeFormIdDoesNotMatchTheDonorsOfTheSameFormId()
+    {
+        $form = DonationForm::factory()->create();
+        $alice = $this->makeDonor('Alice Smith', 'alice@example.org');
+        $this->donate($alice, $form);
+
+        $this->assertSame(['Alice Smith'], $this->names(['give_forms' => [$form->id]]));
+        $this->assertSame([], $this->names(['give_forms' => [-$form->id]]));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testNegativeDonationCountAmountKeepsItsSign()
+    {
+        $this->makeDonor('Alice Smith', 'alice@example.org');
+        $this->makeDonor('Bobby Tables', 'bobby@example.org');
+
+        $this->assertSame(
+            ['Alice Smith', 'Bobby Tables'],
+            $this->names(['donation_count' => ['compare' => '>', 'amount' => -1]])
+        );
+    }
+
+    /**
+     * @since TBD
+     */
     public function testUnknownFieldFallsBackToAllColumns()
     {
         global $wpdb;

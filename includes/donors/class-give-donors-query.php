@@ -573,7 +573,7 @@ class Give_Donors_Query {
 				$amount  = isset( $this->args['donation_count']['amount'] ) ? $this->args['donation_count']['amount'] : 0;
 			}
 
-			$amount = absint( $amount );
+			$amount = (int) $amount;
 
 			$where .= "AND {$this->table_name}.purchase_count{$compare}{$amount}";
 		}
@@ -635,8 +635,15 @@ class Give_Donors_Query {
 				$this->args['give_forms'] = explode( ',', $this->args['give_forms'] );
 			}
 
-			// Non-numeric ids become 0 and are dropped.
-			$form_ids = array_values( array_filter( array_map( 'absint', $this->args['give_forms'] ) ) );
+			// Non-numeric ids become 0 and are dropped, and so are negative ids.
+			$form_ids = array_values(
+				array_filter(
+					array_map( 'intval', $this->args['give_forms'] ),
+					static function ( $id ) {
+						return $id > 0;
+					}
+				)
+			);
 
 			if ( empty( $form_ids ) ) {
 				$where .= "AND {$this->table_name}.id IN ('0')";
