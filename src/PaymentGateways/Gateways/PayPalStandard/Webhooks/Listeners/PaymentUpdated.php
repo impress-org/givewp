@@ -3,7 +3,6 @@
 namespace Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\Listeners;
 
 use Give\Donations\Models\Donation;
-use Give\Helpers\Call;
 use Give\Log\Log;
 use Give\PaymentGateways\Gateways\PayPalStandard\Actions\ProcessIpnDonationRefund;
 use Give_Payment;
@@ -20,8 +19,7 @@ class PaymentUpdated implements EventListener
     /**
      * @inheritDoc
      *
-     * @since TBD Don't complete a donation with a missing or already recorded transaction ID.
-     * @since TBD Refund the renewal referenced by parent_txn_id instead of the initial donation.
+     * @since TBD Reject missing or reused transaction IDs and refund the renewal referenced by parent_txn_id.
      */
     public function processEvent($eventData)
     {
@@ -31,11 +29,10 @@ class PaymentUpdated implements EventListener
 
         // Process refunds & reversed for donation.
         if (in_array($donationStatus, ['refunded', 'reversed'])) {
-            $refundedDonationId = $this->getRefundedDonationId($eventData, $donation->ID);
-            $refundedDonation = $refundedDonationId === $donation->ID ? $donation : new Give_Payment($refundedDonationId);
+            $refundedDonation = $this->getRefundedDonation($eventData, $donation->ID);
 
-            if ('refunded' !== $refundedDonation->status) {
-                Call::invoke(ProcessIpnDonationRefund::class, $eventData, $refundedDonation->ID);
+            if ($refundedDonation && ! $refundedDonation->status->isRefunded()) {
+                (new ProcessIpnDonationRefund())($eventData, $refundedDonation->id);
             }
 
             return;
@@ -112,23 +109,23 @@ class PaymentUpdated implements EventListener
      * @param object $eventData  PayPal IPN data.
      * @param int    $donationId Donation ID from the IPN "custom" field.
      *
-     * @return int ID of the donation being refunded.
+     * @return Donation|null The donation being refunded, or null when the "custom" donation doesn't exist.
      */
-    private function getRefundedDonationId($eventData, int $donationId): int
+    private function getRefundedDonation($eventData, int $donationId): ?Donation
     {
-        $parentTxnId = trim((string) ($eventData->parent_txn_id ?? ''));
         $donation = Donation::find($donationId);
+        $parentTxnId = trim((string) ($eventData->parent_txn_id ?? ''));
 
-        if ('' === $parentTxnId || ! $donation || $parentTxnId === $donation->gatewayTransactionId) {
-            return $donationId;
+        if ( ! $donation || '' === $parentTxnId || $parentTxnId === $donation->gatewayTransactionId) {
+            return $donation;
         }
 
         $renewal = give()->donations->getByGatewayTransactionId($parentTxnId);
 
         if ($renewal && $renewal->type->isRenewal() && $renewal->subscriptionId === $donation->subscriptionId) {
-            return $renewal->id;
+            return $renewal;
         }
 
-        return $donationId;
+        return $donation;
     }
 }
