@@ -77,7 +77,7 @@ jobs:
                     name=$(php -d display_errors=0 bin/pup.phar zip-name "$version")
                     echo "url=https://evnt.is/test-zip?file=${name}.zip" >> "$GITHUB_OUTPUT"
 
-            -   name: Post the buttons
+            -   name: Post the comment
                 env:
                     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                     ZIP_URL: ${{ steps.zip.outputs.url }}
@@ -103,16 +103,21 @@ jobs:
                             ] else [] end))
                         }' | jq -s -R -r @uri
                     }
-                    button() {
-                        printf '<a href="https://playground.wordpress.net/?blueprint-url=data:application/json,%s" target="_blank" rel="noopener noreferrer"><img src="%s" alt="%s" width="220" height="57" /></a>' "$1" "$2" "$3"
+                    # One short line of links, not buttons, so the comment stays small. The links open
+                    # Playground with the blueprint in the URL.
+                    link() {
+                        printf '[%s](https://playground.wordpress.net/?blueprint-url=data:application/json,%s)' "$1" "$2"
                     }
-                    plain=$(button "$(blueprint false)" "https://raw.githubusercontent.com/adamziel/playground-preview/refs/heads/trunk/assets/playground-preview-button.svg" "Open WordPress Playground Preview")
-                    seeded=$(button "$(blueprint true)" "https://raw.githubusercontent.com/adamziel/playground-preview/refs/heads/trunk/assets/playground-preview-button.svg" "Open WordPress Playground Preview with sample data")
-
+                    plain=$(link "Open empty site" "$(blueprint false)")
+                    seeded=$(link "Open with sample data" "$(blueprint true)")
                     marker='<!-- givewp-playground-preview -->'
-                    built=$(date -u '+%Y-%m-%d %H:%M UTC')
-                    body=$(printf '%s\n### WordPress Playground Preview\n\nTry this pull request in a throwaway WordPress in your browser, with debug output on. Built %s from %s, or [download the zip](%s) for a site of your own.\n\n**Empty site**\n\n%s\n\n**With sample data** (3 campaigns, 100 test-mode donations; takes a few minutes longer to open)\n\n%s\n' "$marker" "$built" "$SHA" "$ZIP_URL" "$plain" "$seeded")
-
+                    # Same badge as the Plugin Check comment. The time is Eastern Time: %Z prints EST in
+                    # winter and EDT in summer. The "/" is encoded because shields.io reads it as a path.
+                    stamp=$(LC_ALL=C TZ='America/New_York' date '+%m/%d %I:%M %p %Z')
+                    stamp=${stamp// /%20}
+                    stamp=${stamp//\//%2F}
+                    badge="https://img.shields.io/badge/Built-${stamp}-blue"
+                    body=$(printf '%s\n### WordPress Playground Preview ![Built](%s)\n\n%s · %s · [Download zip](%s)\n\nA throwaway WordPress in your browser, with debug output on. Sample data is 3 campaigns and 100 test-mode donations, and opens a few minutes slower. Built from commit %s.\n' "$marker" "$badge" "$plain" "$seeded" "$ZIP_URL" "${SHA:0:7}")
                     existing=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --paginate --jq ".[] | select(.body | startswith(\"$marker\")) | .id" | head -n 1)
                     if [ -n "$existing" ]; then
                         gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$existing" -f body="$body" > /dev/null
