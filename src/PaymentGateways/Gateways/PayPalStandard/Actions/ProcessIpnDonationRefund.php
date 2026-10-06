@@ -25,9 +25,10 @@ class ProcessIpnDonationRefund
     public function __invoke(stdClass $ipnEventData, $donationId)
     {
         $donation = new Give_Payment($donationId);
-        $refundedAmount = $ipnEventData->mc_gross ?? '';
+        $refundedAmount = $this->getRefundedAmount($ipnEventData, $donation->currency);
+        $donationAmount = Money::fromDecimal($donation->total, $donation->currency);
 
-        if ( ! $this->isValidRefundAmount($refundedAmount, $donation->currency, $donation->total)) {
+        if ( ! $refundedAmount || ! $this->isValidRefundAmount($refundedAmount, $donationAmount)) {
             Log::error(
                 'PayPal Standard IPN Error',
                 [
@@ -43,7 +44,7 @@ class ProcessIpnDonationRefund
             return;
         }
 
-        if ($this->isPartialRefund($refundedAmount, $donation->currency, $donation->total)) {
+        if ($this->isPartialRefund($ipnEventData->mc_gross, $donation->currency, $donation->total)) {
             $donation->add_note(
                 sprintf( /* translators: %s: Paypal parent transaction ID */
                     __('Partial PayPal refund processed: %s', 'give'),
@@ -71,33 +72,6 @@ class ProcessIpnDonationRefund
     }
 
     /**
-     * PayPal Standard sends refunds as a negative amount that cannot exceed the donation total.
-     *
-     * @since TBD
-     *
-     * @param mixed  $refundedAmount IPN mc_gross value.
-     * @param string $currency       Donation currency code.
-     * @param mixed  $donationAmount Donation total.
-     *
-     * @return bool
-     */
-    protected function isValidRefundAmount($refundedAmount, $currency, $donationAmount)
-    {
-        if ( ! is_numeric($refundedAmount)) {
-            return false;
-        }
-
-        try {
-            $refundedAmount = Money::fromDecimal($refundedAmount, $currency);
-
-            return $refundedAmount->isNegative()
-                && $refundedAmount->absolute()->lessThanOrEqual(Money::fromDecimal($donationAmount, $currency));
-        } catch (Exception $e) {
-            return false;
-        }
-    }
-
-    /**
      * @since TBD Replace the deprecated Give\ValueObjects\Money with the framework Money.
      * @since 2.19.0
      *
@@ -116,5 +90,37 @@ class ProcessIpnDonationRefund
         $refundedAmountOnPayPal = Money::fromDecimal($refundedAmount, $currency)->absolute();
 
         return $refundedAmountOnPayPal->lessThan(Money::fromDecimal($donationAmount, $currency));
+    }
+
+    /**
+     * @since TBD
+     *
+     * @param stdClass $ipnEventData PayPal IPN data.
+     * @param string   $currency     Donation currency code.
+     *
+     * @return Money|null The IPN mc_gross in the donation currency, or null when it is missing or not a decimal amount.
+     */
+    private function getRefundedAmount(stdClass $ipnEventData, string $currency): ?Money
+    {
+        try {
+            return Money::fromDecimal($ipnEventData->mc_gross ?? '', $currency);
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    /**
+     * PayPal Standard sends refunds as a negative amount that cannot exceed the donation total.
+     *
+     * @since TBD
+     *
+     * @param Money $refundedAmount IPN mc_gross amount.
+     * @param Money $donationAmount Donation total.
+     *
+     * @return bool
+     */
+    private function isValidRefundAmount(Money $refundedAmount, Money $donationAmount): bool
+    {
+        return $refundedAmount->isNegative() && $refundedAmount->absolute()->lessThanOrEqual($donationAmount);
     }
 }
