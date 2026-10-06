@@ -181,10 +181,10 @@ class Give_Donors_Query {
 
 		if ( null === $this->donors ) {
 			if ( empty( $this->args['count'] ) ) {
-				$this->donors = $wpdb->get_results( $this->get_sql() ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare(), intval, absint and allowlisted fragments.
+				$this->donors = $wpdb->get_results( $this->get_sql() ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare() fragments, intval, allowlisted table columns and compare operators, an ASC or DESC check, WP_Meta_Query and WP_Date_Query.
 				self::update_meta_cache( wp_list_pluck( (array) $this->donors, 'id' ) );
 			} else {
-				$this->donors = $wpdb->get_var( $this->get_sql() ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare(), intval, absint and allowlisted fragments.
+				$this->donors = $wpdb->get_var( $this->get_sql() ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare() fragments, intval, allowlisted table columns and compare operators, an ASC or DESC check, WP_Meta_Query and WP_Date_Query.
 			}
 
 			Give_Cache::set_db_query( $cache_key, $this->donors );
