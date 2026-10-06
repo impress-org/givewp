@@ -117,7 +117,7 @@ jobs:
                     stamp=${stamp// /%20}
                     stamp=${stamp//\//%2F}
                     badge="https://img.shields.io/badge/Built-${stamp}-darkgreen"
-                    body=$(printf '%s\n🎉 Playground preview ready for commit %s\n\n![Build timestamp](%s)\n\n- 🛝 [Open an empty site](%s)\n- 🌱 [Open with sample data](%s) (3 campaigns, 100 test-mode donations; opens a few minutes slower)\n- 💾 [Download zip](%s)\n\nDebug output is on in the preview.\n' "$marker" "${SHA:0:7}" "$badge" "$plain" "$seeded" "$ZIP_URL")
+                    body=$(printf '%s\n🎉 Playground preview ready for commit %s\n\n![Build timestamp](%s)\n\n- 🛝 [Try in WordPress Playground](%s)\n- 🛝 [Try in WordPress Playground with sample data](%s)\n- 💾 [Download zip](%s)\n\nDebug output is on. Sample data is 3 campaigns and 100 test-mode donations, and opens a few minutes slower.\n' "$marker" "${SHA:0:7}" "$badge" "$plain" "$seeded" "$ZIP_URL")
                     existing=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --paginate --jq ".[] | select(.body | startswith(\"$marker\")) | .id" | head -n 1)
                     if [ -n "$existing" ]; then
                         gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$existing" -f body="$body" > /dev/null
