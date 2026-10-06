@@ -207,7 +207,6 @@ class Give_Donors_Query {
 	 *
 	 * @since TBD Allow only known columns in the fields argument.
 	 * @since TBD Remove the placeholder escape hash, so the SQL text is the same on every call.
-	 * @since TBD Allow only known columns in the fields argument.
 	 * @since  2.0
 	 * @access public
 	 *
