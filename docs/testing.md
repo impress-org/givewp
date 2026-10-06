@@ -260,12 +260,17 @@ and the action checks the unzipped `give` folder. Every category runs, except th
 (in `performance`). They boot WordPress with a scratch table prefix, GiveWP's custom tables do not
 exist under it, and the whole run dies with `Error: Database Query` (SOFT-4567).
 
-The workflow has three jobs:
+The workflow has four jobs:
 
 - **Plugin Check start** posts the "in progress" comment.
-- **Plugin Check run** builds the zip and runs the action. It has a read-only token, because it runs
-  a third-party action. The action also tries to post its own comment, and with this token that
-  fails (the log shows "Failed to post PR comment"), so the only comment is ours.
+- **Plugin Check build** builds the zip once with pup, through the reusable
+  `.github/workflows/build-zip.yml`, and uploads it as the `give-plugin-zip` artifact (kept for
+  three days; download it from the run to try the pull request's build on a site of your own).
+- **Plugin Check run** downloads the zip and runs the action. It has a read-only token and no
+  checkout, because it runs a third-party action. The action also tries to post its own comment, and
+  with this token that fails (the log shows "Failed to post PR comment"), so the only comment is
+  ours. When this job fails for a reason that has nothing to do with the code (a container that does
+  not start), "Re-run failed jobs" runs it again without building the zip again.
 - **Plugin Check** (the check to watch) compares the results with the baseline and replaces the
   comment with the result.
 

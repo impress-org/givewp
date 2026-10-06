@@ -1,0 +1,126 @@
+name: Build Plugin Zip
+
+# Builds the plugin zip once with pup and uploads it as an artifact, so later jobs in the same
+# workflow run can use the zip without building it again. Today Plugin Check is the only caller.
+#
+# This is not the packaging workflow. zip.yml (the shared StellarWP workflow) makes the zips the
+# packaging bot and the Playground preview use, and uploads them to S3 with secrets. This one needs
+# no secrets, runs on pull requests from forks, and keeps the zip for three days only.
+#
+# The zip is built the same way the release zip is: `pup build` and `pup package`, so .puprc and
+# .distignore decide what is in it. pup names the zip after the version and commit; it is renamed
+# to give.zip here, so callers do not need pup to find it.
+#
+# No concurrency group here on purpose. The caller's group already covers this workflow, and a
+# group of our own could make two different callers cancel each other.
+
+on:
+    workflow_call:
+        outputs:
+            artifact-name:
+                description: 'Name of the artifact that holds give.zip'
+                value: ${{ jobs.build.outputs.artifact-name }}
+
+jobs:
+    build:
+        name: Build plugin zip
+        runs-on: blacksmith-4vcpu-ubuntu-2404
+
+        # Composer, npm ci, webpack and the zip take 3 to 7 minutes. The cap is for a step that hangs.
+        timeout-minutes: 20
+
+        # Reads the checkout and uploads an artifact, nothing else.
+        permissions:
+            contents: read
+
+        # The same name on every attempt, so "Re-run failed jobs" downloads the zip this job
+        # already uploaded instead of building it again.
+        outputs:
+            artifact-name: give-plugin-zip
+
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    # Nothing here pushes over git.
+                    persist-credentials: false
+
+            # The release builds vendor on PHP 7.4, so this does too.
+            -   name: Set Up PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 7.4
+                    coverage: none
+
+            -   name: Find the Composer cache
+                id: composer-cache
+                run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+            -   name: Cache Composer downloads
+                uses: actions/cache@v6
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: composer-${{ hashFiles('composer.lock') }}
+
+            -   name: Set Up Node
+                uses: actions/setup-node@v7
+                with:
+                    node-version-file: .nvmrc
+                    cache: npm
+
+            # webpack's filesystem cache (see webpack.config.js). It sits in .cache/webpack, outside
+            # node_modules, because pup build runs npm ci and npm ci deletes node_modules first. The
+            # key has its own prefix so this cache is easy to find and to drop on its own. Each
+            # commit saves a new entry; the restore key picks the newest one for the same lockfile.
+            # A stale cache is safe, because webpack checks every entry against the files.
+            -   name: Restore the webpack cache
+                id: webpack-cache
+                uses: actions/cache/restore@v6
+                with:
+                    path: .cache/webpack
+                    key: webpack-zip-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+                    restore-keys: |
+                        webpack-zip-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+
+            -   name: Build the plugin zip
+                run: |
+                    composer run -q pup -- --version > /dev/null
+                    composer -- pup build
+                    version=$(php -d display_errors=0 bin/pup.phar get-version --dev)
+                    composer -- pup package "$version"
+                    name=$(php -d display_errors=0 bin/pup.phar zip-name "$version")
+                    mkdir -p "$RUNNER_TEMP/plugin-zip"
+                    mv "$name.zip" "$RUNNER_TEMP/plugin-zip/give.zip"
+
+            # The file list is written out first: piping unzip into `grep -q` can end unzip early,
+            # and with pipefail that reads as a failure, which would hide a real match.
+            -   name: Check the zip
+                run: |
+                    files="$RUNNER_TEMP/plugin-zip-files.txt"
+                    unzip -Z1 "$RUNNER_TEMP/plugin-zip/give.zip" > "$files"
+                    if ! grep -qx 'give/give.php' "$files"; then
+                        echo "::error::give/give.php is missing from the zip."
+                        exit 1
+                    fi
+                    if grep -q '^give/\.cache/' "$files"; then
+                        echo "::error::The webpack cache (.cache/) is in the zip. Check .distignore."
+                        exit 1
+                    fi
+
+            -   name: Save the webpack cache
+                if: steps.webpack-cache.outputs.cache-hit != 'true'
+                uses: actions/cache/save@v6
+                with:
+                    path: .cache/webpack
+                    key: ${{ steps.webpack-cache.outputs.cache-primary-key }}
+
+            # Already a zip, so no second compression. overwrite: "Re-run all jobs" uploads the same
+            # name again in the same run.
+            -   name: Upload the plugin zip
+                uses: actions/upload-artifact@v7
+                with:
+                    name: give-plugin-zip
+                    path: ${{ runner.temp }}/plugin-zip/give.zip
+                    compression-level: 0
+                    retention-days: 3
+                    if-no-files-found: error
+                    overwrite: true
