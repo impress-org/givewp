@@ -209,6 +209,24 @@ class LegacyDonorsQueryTest extends TestCase
     /**
      * @since TBD
      */
+    public function testDonationCountNotEqualOperatorReturnsDonorsWithAnotherCount()
+    {
+        $once = $this->makeDonor('Bobby Tables', 'bobby@example.org');
+        $once->totalNumberOfDonations = 1;
+        $once->save();
+        $often = $this->makeDonor('Alice Smith', 'alice@example.org');
+        $often->totalNumberOfDonations = 3;
+        $often->save();
+
+        $this->assertSame(
+            ['Alice Smith'],
+            $this->names(['donation_count' => ['compare' => '<>', 'amount' => 1]])
+        );
+    }
+
+    /**
+     * @since TBD
+     */
     public function testSeveralFormsMatchTheDonorsOfAnyListedForm()
     {
         $formOne = DonationForm::factory()->create();

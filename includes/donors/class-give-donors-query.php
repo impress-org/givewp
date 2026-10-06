@@ -297,7 +297,7 @@ class Give_Donors_Query {
 	private function get_compare_operator( $compare ) {
 		$compare = is_string( $compare ) ? trim( $compare ) : '';
 
-		return in_array( $compare, [ '=', '!=', '>', '>=', '<', '<=' ], true ) ? $compare : '=';
+		return in_array( $compare, [ '=', '!=', '<>', '>', '>=', '<', '<=' ], true ) ? $compare : '=';
 	}
 
 	/**
