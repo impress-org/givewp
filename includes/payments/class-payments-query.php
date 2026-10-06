@@ -317,7 +317,7 @@ class Give_Payments_Query extends Give_Stats {
 
 				$this->set_filters();
 
-				$new_results = $wpdb->get_results( $this->get_sql(), ARRAY_N ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare(), allowlisted and absint fragments.
+				$new_results = $wpdb->get_results( $this->get_sql(), ARRAY_N ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare(), WP_Date_Query, WP_Meta_Query, is_numeric, absint and allowlisted fragments.
 
 				$this->unset_filters();
 

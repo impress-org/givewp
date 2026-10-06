@@ -290,6 +290,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * Returns null when the query args contain something this method does not translate, or when an
 	 * add-on filters `give_donation_amount`, so the caller falls back to the per-donation loop.
 	 *
+	 * @since TBD Document why the query is safe.
 	 * @since 4.18.0
 	 *
 	 * @param array $args Give_Payments_Query arguments.
@@ -323,6 +324,7 @@ class Give_Payment_Stats extends Give_Stats {
 	/**
 	 * Count matching donations in one query instead of loading every ID into PHP.
 	 *
+	 * @since TBD Document why the query is safe.
 	 * @since 4.18.0
 	 *
 	 * @param array $args Give_Payments_Query arguments.
@@ -372,6 +374,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * Translate the subset of Give_Payments_Query arguments the stats methods build (status, date
 	 * range, form, parent, and simple meta equality) into a WHERE fragment. Anything else returns null.
 	 *
+	 * @since TBD Prepare SQL with placeholders.
 	 * @since 4.18.0
 	 *
 	 * @param array $args
