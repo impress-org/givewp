@@ -367,7 +367,7 @@ class Give_DB_Comments extends Give_DB {
 
 		$args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? 'comment_date' : $args['orderby'];
 
-		$args['order'] = 'ASC' === strtoupper( $args['order'] ) ? 'ASC' : 'DESC';
+		$args['order'] = 'ASC' === strtoupper( (string) $args['order'] ) ? 'ASC' : 'DESC';
 
 		return $wpdb->prepare(
 			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- fields and orderby are allowlisted against the table columns, order is ASC or DESC, and $where is built from intval, WP_Meta_Query, WP_Date_Query and prepare() fragments.

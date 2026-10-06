@@ -10,9 +10,10 @@ use Give_DB_Comments;
 /**
  * Covers the queries of Give_DB_Comments and Give_Comment.
  *
- * The tests for an unknown fields value, a bad order value and a comment type with a quote were
- * added after the SQL fix, because they check the new hardening of get_sql(). Every other test was
- * written first and passed on the unchanged code.
+ * The tests for a bad order value and a comment type with a quote were added after the SQL fix,
+ * because they check the new hardening of get_sql(). Every other test was written first and passed
+ * on the unchanged code. This includes the unknown fields test, which pins the allowlist that
+ * validate_params() already had.
  *
  * @since TBD
  */
