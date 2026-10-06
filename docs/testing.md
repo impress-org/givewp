@@ -282,6 +282,11 @@ links. Pull requests from forks get no comment (their token is read-only), but t
 the same text. The full results are in the `plugin-check-report` artifact (the raw results and a new
 `baseline.json`).
 
+The comment shows the change against the **target branch**: the `baseline.json` of the branch the
+pull request goes into. A pull request that fixes errors and lowers its own `baseline.json` therefore
+still shows what it fixed. Pass or fail still comes from the `baseline.json` in the pull request, and
+the comment notes any rule whose baseline was raised above the target branch.
+
 **Lowering the baseline.** After fixing problems, download the `plugin-check-report` artifact from
 your pull request's run and copy its `baseline.json` over `.github/plugin-check/baseline.json`.
 Commit it in the same pull request as the fix.

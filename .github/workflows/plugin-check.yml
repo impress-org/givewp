@@ -225,10 +225,25 @@ jobs:
                     stamp=${stamp//\//%2F}
                     echo "url=https://img.shields.io/badge/Check%20Finished-${stamp}-darkgreen" >> "$GITHUB_OUTPUT"
 
+            # The baseline of the branch the pull request targets. The comment shows the change
+            # against it, so a pull request that fixes errors and lowers baseline.json still shows
+            # what it fixed. Missing on other events, or when the target has no baseline yet: the
+            # script then falls back to the baseline in the pull request.
+            -   name: Get the target branch baseline
+                if: ${{ github.event_name == 'pull_request' }}
+                continue-on-error: true
+                uses: actions/checkout@v7
+                with:
+                    ref: ${{ github.event.pull_request.base.sha }}
+                    path: target
+                    sparse-checkout: .github/plugin-check/baseline.json
+                    persist-credentials: false
+
             # Fails the job when a rule has more errors than the baseline. Also writes the short
             # comment body and the same text to the job summary.
             -   name: Compare with the baseline
                 env:
+                    TARGET_BASELINE: ${{ github.workspace }}/target/.github/plugin-check/baseline.json
                     COMMENT_BADGE: ${{ steps.finish_badge.outputs.url }}
                     ARTIFACT_URL: ${{ steps.artifact.outputs.artifact-url }}
                     RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

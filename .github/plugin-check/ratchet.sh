@@ -20,6 +20,9 @@
 #   COMMENT_BADGE          image URL shown under the status line
 #   RUN_URL                link to the workflow run
 #   ARTIFACT_URL           link to the uploaded results and fresh baseline
+#   TARGET_BASELINE        baseline.json of the pull request's target branch. The comment then shows
+#                          the change against it, and notes a baseline raised above it. Pass or fail
+#                          still comes from the baseline.json that is in the pull request.
 
 set -euo pipefail
 
@@ -177,10 +180,27 @@ body="$COMMENT_MARKER"$'\n'"$status"$'\n\n'
 if [ -n "${COMMENT_BADGE:-}" ]; then
     body+="![Plugin Check finished](${COMMENT_BADGE})"$'\n\n'
 fi
-body+="|          | Now | Baseline | Change |"$'\n'
+# The change is shown against the target branch when its baseline is known, so a pull request that
+# lowers baseline.json still shows what it fixed. Without it, it is shown against the baseline in
+# the pull request, which is what decides pass or fail.
+column="Baseline"
+errors_ref=$errors_base
+warnings_ref=$warnings_base
+baseline_raised=0
+if [ -n "${TARGET_BASELINE:-}" ] && [ -f "$TARGET_BASELINE" ]; then
+    column="Target branch"
+    errors_ref=$(jq '.errors | add // 0' "$TARGET_BASELINE")
+    warnings_ref=$(jq '.warnings | add // 0' "$TARGET_BASELINE")
+    # Rules whose baseline in this pull request is higher than on the target branch.
+    baseline_raised=$(jq -n --slurpfile target "$TARGET_BASELINE" --slurpfile mine "$baseline" '
+        [ ("errors", "warnings") as $kind
+          | ($mine[0][$kind] // {}) | to_entries[]
+          | select(.value > (($target[0][$kind] // {})[.key] // 0)) ] | length')
+fi
+body+="|          | Now | $column | Change |"$'\n'
 body+="|:--|--:|--:|:--|"$'\n'
-body+="| Errors   | $errors_now | $errors_base | $(change "$errors_now" "$errors_base") |"$'\n'
-body+="| Warnings | $warnings_now | $warnings_base | $(change "$warnings_now" "$warnings_base") |"$'\n\n'
+body+="| Errors   | $errors_now | $errors_ref | $(change "$errors_now" "$errors_ref") |"$'\n'
+body+="| Warnings | $warnings_now | $warnings_ref | $(change "$warnings_now" "$warnings_ref") |"$'\n\n'
 if [ "$went_up" -gt "$MAX_RULES_LISTED" ]; then
     body+="Went up (top $MAX_RULES_LISTED of $went_up): $up_list"$'\n'
 elif [ "$went_up" -gt 0 ]; then
@@ -189,8 +209,12 @@ fi
 if [ "$went_down" -gt 0 ]; then
     body+="Rules that went down: $went_down. Lower the baseline with the new \`baseline.json\` from the artifact."$'\n'
 fi
+if [ "$baseline_raised" -gt 0 ]; then
+    body+="⚠️ Rules with a baseline above the target branch: $baseline_raised."$'\n'
+    echo "::warning title=Plugin Check::baseline.json allows more than the target branch for $baseline_raised rule(s)."
+fi
 # A blank line separates the notes above from the links, when there are notes.
-if [ "$went_up" -gt 0 ] || [ "$went_down" -gt 0 ]; then
+if [ "$went_up" -gt 0 ] || [ "$went_down" -gt 0 ] || [ "$baseline_raised" -gt 0 ]; then
     body+=$'\n'
 fi
 body+="$links"
