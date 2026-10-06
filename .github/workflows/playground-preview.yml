@@ -103,21 +103,21 @@ jobs:
                             ] else [] end))
                         }' | jq -s -R -r @uri
                     }
-                    # One short line of links, not buttons, so the comment stays small. The links open
-                    # Playground with the blueprint in the URL.
+                    # A short list of links with icons, the same shape as Kadence Blocks' zip comment.
+                    # Playground opens with the blueprint in the URL.
                     link() {
-                        printf '[%s](https://playground.wordpress.net/?blueprint-url=data:application/json,%s)' "$1" "$2"
+                        printf 'https://playground.wordpress.net/?blueprint-url=data:application/json,%s' "$1"
                     }
-                    plain=$(link "Open empty site" "$(blueprint false)")
-                    seeded=$(link "Open with sample data" "$(blueprint true)")
+                    plain=$(link "$(blueprint false)")
+                    seeded=$(link "$(blueprint true)")
                     marker='<!-- givewp-playground-preview -->'
                     # Same badge as the Plugin Check comment. The time is Eastern Time: %Z prints EST in
                     # winter and EDT in summer. The "/" is encoded because shields.io reads it as a path.
                     stamp=$(LC_ALL=C TZ='America/New_York' date '+%m/%d %I:%M %p %Z')
                     stamp=${stamp// /%20}
                     stamp=${stamp//\//%2F}
-                    badge="https://img.shields.io/badge/Built-${stamp}-blue"
-                    body=$(printf '%s\n### WordPress Playground Preview ![Built](%s)\n\n%s · %s · [Download zip](%s)\n\nA throwaway WordPress in your browser, with debug output on. Sample data is 3 campaigns and 100 test-mode donations, and opens a few minutes slower. Built from commit %s.\n' "$marker" "$badge" "$plain" "$seeded" "$ZIP_URL" "${SHA:0:7}")
+                    badge="https://img.shields.io/badge/Built-${stamp}-darkgreen"
+                    body=$(printf '%s\n🎉 Playground preview ready for commit %s\n\n![Build timestamp](%s)\n\n- 🛝 [Open an empty site](%s)\n- 🌱 [Open with sample data](%s) (3 campaigns, 100 test-mode donations; opens a few minutes slower)\n- 💾 [Download zip](%s)\n\nDebug output is on in the preview.\n' "$marker" "${SHA:0:7}" "$badge" "$plain" "$seeded" "$ZIP_URL")
                     existing=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --paginate --jq ".[] | select(.body | startswith(\"$marker\")) | .id" | head -n 1)
                     if [ -n "$existing" ]; then
                         gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$existing" -f body="$body" > /dev/null
