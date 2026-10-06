@@ -1142,6 +1142,7 @@ function _give_get_prefill_form_field_values( $form_id ) {
 /**
  * Get donor count of form
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since 2.1.0
  *
  * @param int   $form_id
@@ -1164,33 +1165,35 @@ function give_get_form_donor_count( $form_id, $args = [] ) {
 			]
 		);
 
-		$donation_meta_table  = Give()->payment_meta->table_name;
 		$donation_id_col_name = Give()->payment_meta->get_meta_type() . '_id';
 
 		$distinct = $args['unique'] ? 'DISTINCT meta_value' : 'meta_value';
 
 		$query = $wpdb->prepare(
-			"
-			SELECT COUNT({$distinct})
-			FROM {$donation_meta_table}
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $distinct is one of two literals set above.
+			"SELECT COUNT({$distinct})
+			FROM {$wpdb->donationmeta}
 			WHERE meta_key=%s
-			AND {$donation_id_col_name} IN(
-				SELECT {$donation_id_col_name}
-				FROM {$donation_meta_table} as pm
+			AND %i IN(
+				SELECT %i
+				FROM {$wpdb->donationmeta} as pm
 				INNER JOIN {$wpdb->posts} as p
-				ON pm.{$donation_id_col_name}=p.ID
+				ON pm.%i=p.ID
 				WHERE pm.meta_key=%s
 				AND pm.meta_value=%s
 				AND p.post_status=%s
 			)
 			",
 			'_give_payment_donor_id',
+			$donation_id_col_name,
+			$donation_id_col_name,
+			$donation_id_col_name,
 			'_give_payment_form_id',
 			$form_id,
 			'publish'
 		);
 
-		$donor_count = absint( $wpdb->get_var( $query ) );
+		$donor_count = absint( $wpdb->get_var( $query ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $query is prepared above; $distinct is a literal.
 	}
 
 	/**
@@ -1562,6 +1565,7 @@ function give_is_name_title_prefix_required( $form_id = 0 ) {
 /**
  * Deletes form meta when the form is permanently deleted from the trash.
  *
+ * @since TBD Remove the quotes around the %d placeholder.
  * @since 2.3.0
  *
  * @param integer $id Donation Form ID which needs to be deleted.
@@ -1583,7 +1587,7 @@ function give_handle_form_meta_on_delete( $id ) {
 			! empty( $get_data['delete_all'] )
 		)
 	) {
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->formmeta} WHERE form_id = '%d'", $form->ID ) );
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->formmeta} WHERE form_id = %d", $form->ID ) );
 	}
 }
 
