@@ -240,7 +240,9 @@ file through the same `evnt.is/test-zip` link the bot posts to Slack. Nothing is
 new, and a branch the bot already packaged is not built twice. Pull requests from forks get no
 preview, because they cannot see the bucket credentials.
 
-The comment is a short list with icons, like the zip comment in Kadence Blocks: a heading with the
+While the zip builds, the same comment says "building", so the links of an older push are never left
+on the pull request. If the build fails, it says "failed" with a link to the run. When the build is
+done, the comment is a short list with icons, like the zip comment in Kadence Blocks: a heading with the
 commit, a time badge, and three links: an empty site, a site with sample data, and the zip. The
 sample-data link also installs the
 [Give Data Generator](https://github.com/impress-org/give-data-generator) release and runs

@@ -1,6 +1,6 @@
 name: Playground Preview
 
-# Adds a "Preview in WordPress Playground" button to a pull request: a throwaway WordPress in the
+# Adds a "Try in WordPress Playground" comment to a pull request: a throwaway WordPress in the
 # browser with the pull request's build installed. The zip comes from the same shared pup workflow
 # and public bucket the packaging bot uses, so nothing new is hosted anywhere.
 #
@@ -22,6 +22,59 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
+    # Replaces the comment from the last push at once, so a build that takes minutes does not leave
+    # links to an older zip on the pull request. It runs next to "zip", and "button" waits for it, so
+    # the finished comment can never be overwritten by this one.
+    pending:
+        if: >-
+            !github.event.pull_request.head.repo.fork
+            && contains(github.event.pull_request.labels.*.name, 'playground')
+            && (github.event.action != 'labeled' || github.event.label.name == 'playground')
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        permissions:
+            pull-requests: write
+        steps:
+            # The badge time is Eastern Time: %Z prints EST in winter and EDT in summer. The "/" is
+            # encoded because shields.io reads it as a path.
+            -   name: Make the badge
+                id: badge
+                env:
+                    SHA: ${{ github.event.pull_request.head.sha }}
+                run: |
+                    stamp=$(LC_ALL=C TZ='America/New_York' date '+%m/%d %I:%M %p %Z')
+                    stamp=${stamp// /%20}
+                    stamp=${stamp//\//%2F}
+                    {
+                        echo "url=https://img.shields.io/badge/Build%20Started-${stamp}-blue"
+                        echo "sha=${SHA:0:7}"
+                    } >> "$GITHUB_OUTPUT"
+
+            # A failed API call here must not stop the preview, so both steps may fail quietly.
+            -   name: Find the comment
+                id: find_comment
+                continue-on-error: true
+                uses: peter-evans/find-comment@v4
+                with:
+                    issue-number: ${{ github.event.pull_request.number }}
+                    comment-author: 'github-actions[bot]'
+                    body-includes: '<!-- givewp-playground-preview -->'
+
+            -   name: Post "building"
+                continue-on-error: true
+                uses: peter-evans/create-or-update-comment@v5
+                with:
+                    comment-id: ${{ steps.find_comment.outputs.comment-id }}
+                    issue-number: ${{ github.event.pull_request.number }}
+                    edit-mode: replace
+                    body: |
+                        <!-- givewp-playground-preview -->
+                        🏗️ Playground preview building for commit ${{ steps.badge.outputs.sha }}
+
+                        ![Build timestamp](${{ steps.badge.outputs.url }})
+
+                        This takes a few minutes.
+
     zip:
         if: >-
             !github.event.pull_request.head.repo.fork
@@ -45,7 +98,7 @@ jobs:
             S3_ENDPOINT: ${{ secrets.ZIP_S3_ENDPOINT }}
 
     button:
-        needs: zip
+        needs: [ pending, zip ]
         runs-on: blacksmith-4vcpu-ubuntu-2404
 
         # Writes one comment on the pull request and reads the checkout, nothing else.
@@ -124,3 +177,49 @@ jobs:
                     else
                         gh api -X POST "repos/$GITHUB_REPOSITORY/issues/$PR/comments" -f body="$body" > /dev/null
                     fi
+
+    # Without this, a failed build would leave "building" on the pull request for good.
+    failed:
+        needs: [ pending, zip, button ]
+        if: ${{ failure() }}
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        permissions:
+            pull-requests: write
+        steps:
+            -   name: Make the badge
+                id: badge
+                env:
+                    SHA: ${{ github.event.pull_request.head.sha }}
+                run: |
+                    stamp=$(LC_ALL=C TZ='America/New_York' date '+%m/%d %I:%M %p %Z')
+                    stamp=${stamp// /%20}
+                    stamp=${stamp//\//%2F}
+                    {
+                        echo "url=https://img.shields.io/badge/Build%20Failed-${stamp}-red"
+                        echo "sha=${SHA:0:7}"
+                    } >> "$GITHUB_OUTPUT"
+
+            -   name: Find the comment
+                id: find_comment
+                continue-on-error: true
+                uses: peter-evans/find-comment@v4
+                with:
+                    issue-number: ${{ github.event.pull_request.number }}
+                    comment-author: 'github-actions[bot]'
+                    body-includes: '<!-- givewp-playground-preview -->'
+
+            -   name: Post "failed"
+                continue-on-error: true
+                uses: peter-evans/create-or-update-comment@v5
+                with:
+                    comment-id: ${{ steps.find_comment.outputs.comment-id }}
+                    issue-number: ${{ github.event.pull_request.number }}
+                    edit-mode: replace
+                    body: |
+                        <!-- givewp-playground-preview -->
+                        ❌ Playground preview build failed for commit ${{ steps.badge.outputs.sha }}
+
+                        ![Build timestamp](${{ steps.badge.outputs.url }})
+
+                        See the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for the error. Push a commit to try again.
