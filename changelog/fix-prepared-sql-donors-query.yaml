@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Prepared the SQL queries in Give_Donors_Query. The donor search term is now escaped inside Give_Donors_Query, so callers must not escape it themselves, and a % or _ in the search now matches literally. Filtering donors by several forms now returns the donors of any listed form, and the fields and compare arguments only accept known values
+timestamp: 2026-10-05T23:30:00.000Z
