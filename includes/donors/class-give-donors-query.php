@@ -206,6 +206,8 @@ class Give_Donors_Query {
 	 * Get sql query from queried array.
 	 *
 	 * @since TBD Allow only known columns in the fields argument.
+	 * @since TBD Remove the placeholder escape hash, so the SQL text is the same on every call.
+	 * @since TBD Allow only known columns in the fields argument.
 	 * @since  2.0
 	 * @access public
 	 *
@@ -249,6 +251,10 @@ class Give_Donors_Query {
 		// $where, $orderby and order already prepared query they can generate notice if you re prepare them in above.
 		// WordPress consider LIKE condition as placeholder if start with s,f, or d.
 		$sql = str_replace( 'LIMIT', "{$where} {$orderby} LIMIT", $sql );
+
+		// Prepared LIKE values hold a placeholder hash that changes on every request. Remove it, so the SQL can be used as a cache key.
+		// The SQL is never passed to prepare() again, so this is safe.
+		$sql = $wpdb->remove_placeholder_escape( $sql );
 
 		return $sql;
 	}
@@ -420,6 +426,7 @@ class Give_Donors_Query {
 	/**
 	 * Set search where clause.
 	 *
+	 * @since TBD Escape the search term.
 	 * @since  1.8.14
 	 * @access private
 	 *
@@ -427,6 +434,8 @@ class Give_Donors_Query {
 	 * @return string
 	 */
 	private function get_where_search() {
+		global $wpdb;
+
 		$where = '';
 
 		// Bailout.
@@ -441,19 +450,19 @@ class Give_Donors_Query {
 				switch ( $search_parts[0] ) {
 					// Backward compatibility.
 					case 'name':
-						$where = "AND {$this->table_name}.name LIKE '%{$search_parts[1]}%'";
+						$where = $wpdb->prepare( "AND {$wpdb->donors}.name LIKE %s", '%' . $wpdb->esc_like( $search_parts[1] ) . '%' );
 						break;
 					case 'note':
-						$where = "AND {$this->table_name}.notes LIKE '%{$search_parts[1]}%'";
+						$where = $wpdb->prepare( "AND {$wpdb->donors}.notes LIKE %s", '%' . $wpdb->esc_like( $search_parts[1] ) . '%' );
 						break;
 				}
 			}
 		} elseif ( is_numeric( $this->args['s'] ) ) {
-			$where = "AND {$this->table_name}.id ='{$this->args['s']}'";
-
+			$where = $wpdb->prepare( "AND {$wpdb->donors}.id =%s", $this->args['s'] );
+		} elseif ( is_email( $this->args['s'] ) ) {
+			$where = $wpdb->prepare( "AND {$wpdb->donors}.email LIKE %s", '%' . $wpdb->esc_like( $this->args['s'] ) . '%' );
 		} else {
-			$search_field = is_email( $this->args['s'] ) ? 'email' : 'name';
-			$where        = "AND {$this->table_name}.$search_field LIKE '%{$this->args['s']}%'";
+			$where = $wpdb->prepare( "AND {$wpdb->donors}.name LIKE %s", '%' . $wpdb->esc_like( $this->args['s'] ) . '%' );
 		}
 
 		return $where;

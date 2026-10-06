@@ -9,15 +9,17 @@ use Give\Donors\Models\Donor;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give_Cache;
+use Give_Donor_List_Table;
+use Give_Donor_Reports_Table;
 use Give_Donors_Query;
 
 /**
  * Covers the queries of Give_Donors_Query.
  *
- * The tests for several forms, a form list with non-numeric ids, an unknown fields value and an
- * invalid compare value were added after the SQL fix, because they check the new behavior of the
- * form filter and the allowlists. Every other test was written first and passed on the unchanged
- * code.
+ * The tests for several forms, a form list with non-numeric ids, an unknown fields value, an
+ * invalid compare value, and a search term with a quote or a wildcard were added after the SQL
+ * fix, because they check the new behavior of the form filter, the allowlists and the escaping of
+ * the search term. Every other test was written first and passed on the unchanged code.
  *
  * @since TBD
  */
@@ -289,5 +291,112 @@ class LegacyDonorsQueryTest extends TestCase
 
         $this->assertSame('', $wpdb->last_error);
         $this->assertSame(['Alice Smith', 'Bobby Tables'], $names);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testSearchTermWithAQuoteMatchesTheDonor()
+    {
+        global $wpdb;
+
+        $this->makeDonor("Pat O'Brien", 'pat@example.org');
+        $this->makeDonor('Alice Smith', 'alice@example.org');
+
+        $this->assertSame(["Pat O'Brien"], $this->names(['s' => "O'Brien"]));
+        $this->assertSame(["Pat O'Brien"], $this->names(['s' => "name:O'Brien"]));
+        $this->assertSame('', $wpdb->last_error);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testUnderscoreAndPercentInTheSearchTermAreLiteral()
+    {
+        $this->makeDonor('Ann_Lee', 'annlee@example.org');
+        $this->makeDonor('AnnxLee', 'annxlee@example.org');
+        $this->makeDonor('100% Fan', 'fan@example.org');
+        $this->makeDonor('1000 Fan', 'fan2@example.org');
+
+        $this->assertSame(['Ann_Lee'], $this->names(['s' => 'n_L']));
+        $this->assertSame(['100% Fan'], $this->names(['s' => '100%']));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testHostileSearchTermMatchesNothingAndGivesNoSqlError()
+    {
+        global $wpdb;
+
+        $this->makeDonor('Alice Smith', 'alice@example.org');
+
+        $this->assertSame([], $this->names(['s' => "x' OR '1'='1"]));
+        $this->assertSame('', $wpdb->last_error);
+        $this->assertSame([], $this->names(['s' => "name:x' OR '1'='1"]));
+        $this->assertSame('', $wpdb->last_error);
+        $this->assertSame([], $this->names(['s' => "x' OR '1'='1@example.org"]));
+        $this->assertSame('', $wpdb->last_error);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testGetSqlIsStableAndHasNoPlaceholderHash()
+    {
+        global $wpdb;
+
+        $query = new Give_Donors_Query(['s' => 'name:100%', 'email' => 'a@example.org']);
+
+        $first = $query->get_sql();
+        $second = $query->get_sql();
+
+        $this->assertSame($first, $second);
+        $this->assertSame($first, $wpdb->remove_placeholder_escape($first));
+        // MySQL reads the two backslashes as one, so the percent sign is a literal in the LIKE.
+        $this->assertStringContainsString("name LIKE '%100" . '\\\\' . "%%'", $first);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDonorListTableUnslashesTheSearchTerm()
+    {
+        $this->loadListTables();
+        $_GET['s'] = wp_slash("O'Brien");
+
+        try {
+            $table = new Give_Donor_List_Table();
+
+            $this->assertSame("O'Brien", $table->get_search());
+            $this->assertSame("O'Brien", $table->get_donor_query()['s']);
+        } finally {
+            unset($_GET['s']);
+        }
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDonorReportsTableUnslashesTheSearchTerm()
+    {
+        $this->loadListTables();
+        $_GET['s'] = wp_slash("O'Brien");
+
+        try {
+            $this->assertSame("O'Brien", (new Give_Donor_Reports_Table())->get_search());
+        } finally {
+            unset($_GET['s']);
+        }
+    }
+
+    /**
+     * @since TBD
+     */
+    private function loadListTables(): void
+    {
+        require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+        require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/class-donor-table.php';
+        require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/class-donor-reports-table.php';
     }
 }
