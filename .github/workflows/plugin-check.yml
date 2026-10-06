@@ -126,8 +126,24 @@ jobs:
                     cache: npm
                     cache-dependency-path: source/package-lock.json
 
+            # webpack's filesystem cache (see webpack.config.js). It sits in .cache/webpack, outside
+            # node_modules, because pup build runs npm ci and npm ci deletes node_modules first. The
+            # key has its own prefix: webpack stores absolute paths, and this job builds in source/
+            # while the e2e workflow builds at the workspace root, so their caches do not fit each
+            # other. Each commit saves a new entry; the restore key picks the newest one for the same
+            # lockfile. A stale cache is safe, because webpack checks every entry against the files.
+            -   name: Restore the webpack cache
+                id: webpack-cache
+                uses: actions/cache/restore@v6
+                with:
+                    path: source/.cache/webpack
+                    key: webpack-source-${{ runner.os }}-${{ hashFiles('source/package-lock.json') }}-${{ github.sha }}
+                    restore-keys: |
+                        webpack-source-${{ runner.os }}-${{ hashFiles('source/package-lock.json') }}-
+
             # The same pup steps the release zip uses, so .puprc and .distignore decide what is
-            # checked. The zip's top folder is named after zip_name in .puprc: give.
+            # checked. The zip's top folder is named after zip_name in .puprc: give. The last line
+            # makes sure the webpack cache never ends up in the zip.
             -   name: Build the plugin zip
                 working-directory: source
                 run: |
@@ -139,6 +155,16 @@ jobs:
                     mkdir -p "$GITHUB_WORKSPACE/build"
                     unzip -q "$name.zip" -d "$GITHUB_WORKSPACE/build"
                     test -f "$GITHUB_WORKSPACE/build/give/give.php"
+                    test ! -e "$GITHUB_WORKSPACE/build/give/.cache"
+
+            # Saved now, before the third-party action below runs, so nothing it does can end up in
+            # a cache that later runs restore. Skipped when this exact commit already saved one.
+            -   name: Save the webpack cache
+                if: steps.webpack-cache.outputs.cache-hit != 'true'
+                uses: actions/cache/save@v6
+                with:
+                    path: source/.cache/webpack
+                    key: ${{ steps.webpack-cache.outputs.cache-primary-key }}
 
             # Fails on any error, which is expected for now: the report job decides pass or fail
             # from the counts. The action writes its results to $RUNNER_TEMP/plugin-check-results.txt

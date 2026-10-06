@@ -9,6 +9,7 @@
 /.wordpress-org
 /.cursor
 /.claude
+/.cache
 /docs
 
 /bin

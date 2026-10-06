@@ -53,13 +53,14 @@ jobs:
             -   name: Install Node dependencies
                 run: npm ci
 
-            # webpack's filesystem cache (see webpack.config.js). The lockfile is the key because
-            # webpack invalidates individual entries by content hash itself; a cache from an older
-            # commit is just a warmer start.
+            # webpack's filesystem cache (see webpack.config.js). It sits in .cache/webpack, outside
+            # node_modules, so npm ci cannot delete it. The lockfile is in the key, but webpack
+            # invalidates individual entries by content hash itself; a cache from an older commit is
+            # just a warmer start.
             -   name: Cache webpack build cache
                 uses: actions/cache@v6
                 with:
-                    path: node_modules/.cache/webpack
+                    path: .cache/webpack
                     key: webpack-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
                     restore-keys: |
                         webpack-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
