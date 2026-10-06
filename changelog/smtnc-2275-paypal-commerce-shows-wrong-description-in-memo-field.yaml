@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Changed PayPal order descriptions for visual builder forms to show the form
+  title and the donor's selected level instead of the first level's description.
+timestamp: 2026-10-06T05:46:28.623Z

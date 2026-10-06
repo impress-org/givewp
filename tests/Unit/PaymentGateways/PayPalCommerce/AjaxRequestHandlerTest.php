@@ -103,6 +103,47 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testCreateOrderDescribesV3OrderWithSelectedLevel(): void
+    {
+        $levels = $this->describedLevels();
+        $levelId = array_key_last($levels);
+        $amount = (string)$levels[$levelId]['value'];
+        $form = $this->createV3FormWithDescribedLevels($levels);
+
+        $_POST = $this->v3Request($form, [
+            'levelId' => (string)$levelId,
+            'amount' => $amount,
+            'give-amount' => $amount,
+        ]);
+
+        $orderData = $this->createOrderAndCaptureData();
+
+        $this->assertSame("{$form->title} - {$levels[$levelId]['label']}", $orderData['formTitle']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testCreateOrderDescribesV3CustomAmountOrderWithFormTitleOnly(): void
+    {
+        $levels = $this->describedLevels();
+        $customAmount = (string)(max(array_column($levels, 'value')) + 1);
+        $form = $this->createV3FormWithDescribedLevels($levels);
+
+        $_POST = $this->v3Request($form, [
+            'levelId' => 'custom',
+            'amount' => $customAmount,
+            'give-amount' => $customAmount,
+        ]);
+
+        $orderData = $this->createOrderAndCaptureData();
+
+        $this->assertSame($form->title, $orderData['formTitle']);
+    }
+
+    /**
      * @since 4.16.7.1
      */
     public function testCreateOrderRejectsV3AmountBelowFormMinimumBeforeCallingPayPal(): void
@@ -374,6 +415,66 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
+     * @since TBD
+     *
+     * @param array<int, array{value: int, label: string, checked: bool}> $levels Amount levels with descriptions.
+     */
+    private function createV3FormWithDescribedLevels(array $levels): DonationForm
+    {
+        $form = $this->createV3FormWithCustomAmountMinimum(min(array_column($levels, 'value')));
+
+        $form->blocks->findByName('givewp/donation-amount')
+            ->setAttribute('descriptionsEnabled', true)
+            ->setAttribute('levels', $levels);
+
+        $form->save();
+
+        return $form;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @return array<int, array{value: int, label: string, checked: bool}> Amount levels, each with its own description.
+     */
+    private function describedLevels(): array
+    {
+        return [
+            ['value' => 10, 'label' => 'General Donation', 'checked' => true],
+            ['value' => 25, 'label' => 'Building Donation', 'checked' => false],
+        ];
+    }
+
+    /**
+     * @since TBD
+     *
+     * @return array{
+     *     formId: int,
+     *     formTitle: string,
+     *     donationAmount: string,
+     *     payer: array{firstName: string, lastName: string, email: string, address: array<string, string>}
+     * } The data the handler passed to PayPalOrder::createOrder().
+     */
+    private function createOrderAndCaptureData(): array
+    {
+        $orderData = [];
+
+        $this->payPalOrder->expects($this->once())
+            ->method('createOrder')
+            ->willReturnCallback(static function (array $data) use (&$orderData): string {
+                $orderData = $data;
+
+                return 'ORDER123';
+            });
+
+        $this->invokeAndCatchWpDie(function () {
+            give(AjaxRequestHandler::class)->createOrder();
+        });
+
+        return $orderData;
+    }
+
+    /**
      * @since 4.16.7.1
      */
     private function createV2FormWithCustomAmountMinimum(int $minimum): int
@@ -389,6 +490,7 @@ class AjaxRequestHandlerTest extends TestCase
     /**
      * What the v3 gateway client posts: its own keys plus the complete form values.
      *
+     * @since TBD Drop "give-form-title", which the v3 gateway client never posts.
      * @since 4.16.7.1
      */
     private function v3Request(DonationForm $form, array $overrides = []): array
@@ -396,7 +498,6 @@ class AjaxRequestHandlerTest extends TestCase
         return array_merge([
             'give-form-id' => $form->id,
             'give-form-hash' => wp_create_nonce("give_donation_form_nonce_{$form->id}"),
-            'give-form-title' => $form->title,
             'give-amount' => '25',
             'give_first' => 'Bill',
             'give_last' => 'Murray',
