@@ -273,9 +273,9 @@ class Give_Subscriptions_DB extends Give_DB
 
             $args['order'] = 'ASC' === strtoupper((string)$args['order']) ? 'ASC' : 'DESC';
 
-            $subscriptions = $wpdb->get_results( // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause(); orderby and order are allowlisted above.
+            $subscriptions = $wpdb->get_results( // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause() from prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; orderby and order are allowlisted above.
                 $wpdb->prepare(
-                    "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where is built by generate_where_clause(); orderby and order are allowlisted above.
+                    "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where is built by generate_where_clause() from prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; orderby and order are allowlisted above.
                     absint($args['offset']),
                     absint($args['number'])
                 ),
@@ -420,9 +420,9 @@ class Give_Subscriptions_DB extends Give_DB
         if (is_null($subscriptions)) {
             $where = $this->generate_where_clause($args);
 
-            $subscriptions = $wpdb->get_results( // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause(); orderby and order are the literals set in $args above.
+            $subscriptions = $wpdb->get_results( // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause() from prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; orderby and order are the literals set in $args above.
                 $wpdb->prepare(
-                    "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where is built by generate_where_clause(); orderby and order are the literals set in $args above.
+                    "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where is built by generate_where_clause() from prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; orderby and order are the literals set in $args above.
                     absint($args['offset']),
                     absint($args['number'])
                 )
@@ -466,9 +466,9 @@ class Give_Subscriptions_DB extends Give_DB
             $where .= ' AND `bill_times` != 0';
             $where .= ' AND ( SELECT COUNT(ID) FROM ' . $wpdb->prefix . 'posts WHERE `post_parent` = ' . $this->table_name . '.`parent_payment_id` OR `ID` = ' . $this->table_name . '.`parent_payment_id` ) + 1 >= `bill_times`';
 
-            $subscriptions = $wpdb->get_results( // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause(); orderby and order are the literals set in $args above.
+            $subscriptions = $wpdb->get_results( // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause() from prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; orderby and order are the literals set in $args above.
                 $wpdb->prepare(
-                    "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where is built by generate_where_clause(); orderby and order are the literals set in $args above.
+                    "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where is built by generate_where_clause() from prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; orderby and order are the literals set in $args above.
                     absint($args['offset']),
                     absint($args['number'])
                 )
