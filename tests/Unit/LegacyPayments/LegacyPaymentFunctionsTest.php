@@ -49,7 +49,22 @@ class LegacyPaymentFunctionsTest extends TestCase
         $this->donation(400);
         $this->donation(700, DonationStatus::PENDING());
 
-        $this->assertEquals(39.5, give_get_total_earnings(true));
+        // give_get_total_earnings() skips the last payment when "give_update_payment_status" has fired
+        // in this PHP process (a live donation adds that payment itself). A test run in the same
+        // process before this one can have fired it, so clear the counter for this call.
+        global $wp_actions;
+        $previousCount = $wp_actions['give_update_payment_status'] ?? null;
+        unset($wp_actions['give_update_payment_status']);
+
+        try {
+            $total = give_get_total_earnings(true);
+        } finally {
+            if (null !== $previousCount) {
+                $wp_actions['give_update_payment_status'] = $previousCount;
+            }
+        }
+
+        $this->assertEquals(39.5, $total);
     }
 
     /**
