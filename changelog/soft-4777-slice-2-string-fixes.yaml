@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Numbered the placeholders in translatable messages and used the GiveWP
+  text domain for strings that used an add-on's
+timestamp: 2026-10-06T23:47:05.797Z
