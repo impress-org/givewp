@@ -622,7 +622,8 @@ function give_is_additional_email( $email ) {
 	global $wpdb;
 
 	$meta_type = Give()->donor_meta->meta_type;
-	$donor_id  = $wpdb->get_var( $wpdb->prepare( "SELECT %i FROM {$wpdb->donormeta} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $meta_type . '_id', $email ) );
+	// Use the table name of GiveWP's own donor meta. Other plugins, such as Charitable, can overwrite $wpdb->donormeta.
+	$donor_id  = $wpdb->get_var( $wpdb->prepare( "SELECT %i FROM %i WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $meta_type . '_id', Give()->donor_meta->table_name, $email ) );
 
 	if ( empty( $donor_id ) ) {
 		return false;

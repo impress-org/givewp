@@ -248,6 +248,7 @@ class Give_Donor {
 		global $wpdb;
 		$meta_type = Give()->donor_meta->meta_type;
 
+		// Use the table name of GiveWP's own donor meta. Other plugins, such as Charitable, can overwrite $wpdb->donormeta.
 		$addresses = $this->get_addresses_from_meta_cache();
 
 		$addresses = ! empty( $addresses )
@@ -255,11 +256,12 @@ class Give_Donor {
 			: $wpdb->get_results(
 				$wpdb->prepare(
 					"
-				SELECT meta_key, meta_value FROM {$wpdb->donormeta}
+				SELECT meta_key, meta_value FROM %i
 				WHERE meta_key
 				LIKE %s
 				AND %i=%d
 				",
+					Give()->donor_meta->table_name,
 					'%give_donor_address%',
 					$meta_type . '_id',
 					$this->id
@@ -1397,13 +1399,14 @@ class Give_Donor {
 				$multi_address_id = $wpdb->get_var(
 					$wpdb->prepare(
 						"
-						SELECT meta_key FROM {$wpdb->donormeta}
+						SELECT meta_key FROM %i
 						WHERE meta_key
 						LIKE %s
 						AND %i=%d
 						ORDER BY meta_id DESC
 						LIMIT 1
 						",
+						Give()->donor_meta->table_name,
 						"%_give_donor_address_{$address_type}_line1%",
 						$meta_type . '_id',
 						$this->id
@@ -1467,11 +1470,12 @@ class Give_Donor {
 		$row_affected = $wpdb->query(
 			$wpdb->prepare(
 				"
-				DELETE FROM {$wpdb->donormeta}
+				DELETE FROM %i
 				WHERE meta_key
 				LIKE %s
 				AND %i=%d
 				",
+				Give()->donor_meta->table_name,
 				$meta_key_prefix,
 				$meta_type . '_id',
 				$this->id
@@ -1523,11 +1527,12 @@ class Give_Donor {
 		$row_affected = $wpdb->get_results(
 			$wpdb->prepare(
 				"
-				SELECT meta_key FROM {$wpdb->donormeta}
+				SELECT meta_key FROM %i
 				WHERE meta_key
 				LIKE %s
 				AND %i=%d
 				",
+				Give()->donor_meta->table_name,
 				$meta_key_prefix,
 				$meta_type . '_id',
 				$this->id
