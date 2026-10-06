@@ -1,4 +1,10 @@
-<?php /** @var array[] $banners */?>
+<?php
+/**
+ * @since TBD Add translators comments.
+ *
+ * @var array[] $banners
+ */
+?>
 <div class="givewp-sale-banners-container" style="display: none;">
     <?php
     foreach ($banners as $banner): extract($banner);
@@ -21,6 +27,7 @@
 
         $discount_percentage = 40;
         $header = sprintf(
+            /* translators: %s: Discount percentage in bold, for example 40% */
             __('Save %s on GiveWP Today.', 'give'),
             '<strong>' . $discount_percentage . '%</strong>'
         );
