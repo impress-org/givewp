@@ -11,6 +11,14 @@ on:
     workflow_dispatch:
     workflow_call:
 
+# A new push to a pull request cancels the run still going for the older commit; nobody reads the
+# result of a commit that is no longer the head. Only pull requests: every other run (a push to
+# develop or master, a release, a manual run) gets a group of its own from its run id, so it is
+# never cancelled and never waits behind another run.
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
     e2e:
         runs-on: blacksmith-4vcpu-ubuntu-2404
