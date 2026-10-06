@@ -2760,10 +2760,11 @@ function give_v213_delete_donation_meta_callback() {
 		$wpdb->prepare(
 			"
 		SELECT DISTINCT payment_id
-		FROM {$wpdb->donationmeta}
+		FROM %i
 		LIMIT 20
 		OFFSET %d
 		",
+			Give()->payment_meta->table_name,
 			$give_updates->get_offset( 20 )
 		)
 	);
@@ -3129,7 +3130,8 @@ function give_v230_delete_dw_related_donor_data_callback() {
 
 	$give_updates = Give_Updates::get_instance();
 
-	$wpdb->query( "DELETE FROM {$wpdb->donormeta} WHERE meta_key LIKE '%_give_anonymous_donor%' OR meta_key='_give_has_comment';" );
+	// Use the table name of GiveWP's own donor meta. Other plugins, such as Charitable, can overwrite $wpdb->donormeta.
+	$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE meta_key LIKE %s OR meta_key=%s;', Give()->donor_meta->table_name, '%_give_anonymous_donor%', '_give_has_comment' ) );
 
 	$give_updates->percentage = 100;
 
