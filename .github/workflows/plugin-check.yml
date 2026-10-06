@@ -101,6 +101,30 @@ jobs:
                     # Nothing here pushes over git, and the job goes on to run third-party code.
                     persist-credentials: false
 
+            # The action's wp-env pulls these images when it starts, and pulling them is part of the
+            # time that step takes. The action writes its own .wp-env.json with no PHP version, so
+            # wp-env uses the default tags. Started now, in the background, the download overlaps
+            # with the build.
+            # The images are the ones wp-env's generated Dockerfiles and docker-compose.yml name
+            # (FROM wordpress..., FROM wordpress:cli..., image: mariadb:lts); if a later wp-env names
+            # others, these pulls are just wasted, never wrong. A failed pull only means wp-env pulls
+            # the image itself, as it always did, so this step cannot fail the job.
+            -   name: Start pulling the wp-env Docker images
+                continue-on-error: true
+                env:
+                    IMAGES: wordpress wordpress:cli mariadb:lts
+                run: |
+                    (
+                        set +e
+                        start=$(date +%s)
+                        for image in $IMAGES; do
+                            docker pull --quiet "$image" || echo "Could not pull $image, wp-env will pull it." &
+                        done
+                        wait
+                        echo "Pulled in $(( $(date +%s) - start )) seconds."
+                        touch "$RUNNER_TEMP/docker-pull.done"
+                    ) > "$RUNNER_TEMP/docker-pull.log" 2>&1 < /dev/null &
+
             # The release builds vendor on PHP 7.4, so this does too.
             -   name: Set Up PHP
                 uses: shivammathur/setup-php@v2
@@ -165,6 +189,19 @@ jobs:
                 with:
                     path: source/.cache/webpack
                     key: ${{ steps.webpack-cache.outputs.cache-primary-key }}
+
+            # Waits for the pulls started earlier, so wp-env does not start a second download of an
+            # image that is still coming, and prints how long they took. Gives up after two minutes
+            # and lets wp-env carry on; never fails the job.
+            -   name: Wait for the Docker image pulls
+                continue-on-error: true
+                timeout-minutes: 3
+                run: |
+                    for _ in $(seq 120); do
+                        [ -f "$RUNNER_TEMP/docker-pull.done" ] && break
+                        sleep 1
+                    done
+                    cat "$RUNNER_TEMP/docker-pull.log" 2>/dev/null || true
 
             # Fails on any error, which is expected for now: the report job decides pass or fail
             # from the counts. The action writes its results to $RUNNER_TEMP/plugin-check-results.txt

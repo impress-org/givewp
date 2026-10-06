@@ -171,6 +171,29 @@ jobs:
                     # Nothing here pushes over git, and the job goes on to run third-party actions.
                     persist-credentials: false
 
+            # wp-env pulls these images when it starts, and pulling them is part of the time that
+            # step takes. WP_ENV_PHP_VERSION (the matrix PHP) picks the PHP tags. Started now, in
+            # the background, the download overlaps with the steps in between.
+            # The images are the ones wp-env's generated Dockerfiles and docker-compose.yml name
+            # (FROM wordpress..., FROM wordpress:cli..., image: mariadb:lts); if a later wp-env names
+            # others, these pulls are just wasted, never wrong. A failed pull only means wp-env pulls
+            # the image itself, as it always did, so this step cannot fail the job.
+            -   name: Start pulling the wp-env Docker images
+                continue-on-error: true
+                env:
+                    IMAGES: wordpress:php${{ matrix.php }} wordpress:cli-php${{ matrix.php }} mariadb:lts
+                run: |
+                    (
+                        set +e
+                        start=$(date +%s)
+                        for image in $IMAGES; do
+                            docker pull --quiet "$image" || echo "Could not pull $image, wp-env will pull it." &
+                        done
+                        wait
+                        echo "Pulled in $(( $(date +%s) - start )) seconds."
+                        touch "$RUNNER_TEMP/docker-pull.done"
+                    ) > "$RUNNER_TEMP/docker-pull.log" 2>&1 < /dev/null &
+
             # vendor/ exactly as Composer builds it on PHP 7.4, the PHP the release is built on.
             # Setting up PHP is a slow step here (about 35 seconds), so on a cache hit the build PHP
             # and the install are skipped. Safe to reuse because the key is
@@ -230,6 +253,19 @@ jobs:
                     echo "WP_ENV_CORE=$core" >> "$GITHUB_ENV"
                 env:
                     WORDPRESS: ${{ matrix.wordpress }}
+
+            # Waits for the pulls started earlier, so wp-env does not start a second download of an
+            # image that is still coming, and prints how long they took. Gives up after two minutes
+            # and lets wp-env carry on; never fails the job.
+            -   name: Wait for the Docker image pulls
+                continue-on-error: true
+                timeout-minutes: 3
+                run: |
+                    for _ in $(seq 120); do
+                        [ -f "$RUNNER_TEMP/docker-pull.done" ] && break
+                        sleep 1
+                    done
+                    cat "$RUNNER_TEMP/docker-pull.log" 2>/dev/null || true
 
             -   name: Start wp-env
                 run: npm run env:test:start
