@@ -451,6 +451,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		/**
 		 * This function will help you prepare the admin settings field.
 		 *
+		 * @since TBD Add translators comments.
          * @since 4.1.0 Added support for code editor field.
 		 * @since  2.5.5
 		 *
@@ -884,7 +885,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				case 'file':
 				case 'media':
 					$option_value = esc_url( self::get_option( $option_name, $value['id'], $value['default'] ) );
-					$button_label = sprintf( __( 'Add or Upload %s', 'give' ), ( 'file' === $value['type'] ? __( 'File', 'give' ) : __( 'Image', 'give' ) ) );
+					$button_label = sprintf( /* translators: %s: Type of file, File or Image */ __( 'Add or Upload %s', 'give' ), ( 'file' === $value['type'] ? __( 'File', 'give' ) : __( 'Image', 'give' ) ) );
 					$fvalue       = empty( $value['fvalue'] ) ? 'url' : $value['fvalue'];
 
 					$allow_media_preview_tags = [ 'jpg', 'jpeg', 'png', 'gif', 'ico' ];
