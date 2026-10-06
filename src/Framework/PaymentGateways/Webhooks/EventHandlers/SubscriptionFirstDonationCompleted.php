@@ -17,6 +17,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class SubscriptionFirstDonationCompleted
 {
     /**
+     * @since TBD Number the placeholders and add translators comments.
      * @since 4.18.0 Guard against a null initial donation and a missing subscription instead of fataling on them.
      * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0 Add $setDonationComplete and $gatewaySubscriptionId parameters
@@ -85,7 +86,8 @@ class SubscriptionFirstDonationCompleted
 
                 DonationNote::create([
                     'donationId' => $donation->id,
-                    'content' => $message . ' ' . sprintf(__('%s transaction ID: %s', 'give'),
+                    /* translators: 1: Payment gateway name, 2: Transaction ID from the gateway */
+                    'content' => $message . ' ' . sprintf(__('%1$s transaction ID: %2$s', 'give'),
                             $donation->gateway()->getName(),
                             $donation->gatewayTransactionId
                         ),
