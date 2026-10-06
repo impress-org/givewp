@@ -604,7 +604,8 @@ class Give_Donors_Query {
 				$amount  = isset( $this->args['donation_amount']['amount'] ) ? $this->args['donation_amount']['amount'] : 0;
 			}
 
-			$amount = floatval( $amount );
+			// Format the float in a locale independent way, so a decimal comma never reaches the SQL.
+			$amount = rtrim( rtrim( sprintf( '%F', floatval( $amount ) ), '0' ), '.' );
 
 			$where .= "AND {$this->table_name}.purchase_value{$compare}{$amount}";
 		}

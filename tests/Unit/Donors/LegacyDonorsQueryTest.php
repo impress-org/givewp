@@ -293,6 +293,20 @@ class LegacyDonorsQueryTest extends TestCase
     /**
      * @since TBD
      */
+    public function testDonationAmountIsFormattedWithADecimalPoint()
+    {
+        $this->makeDonor('Alice Smith', 'alice@example.org');
+
+        $sql = (new Give_Donors_Query(['donation_amount' => ['compare' => '>', 'amount' => 10.5]]))->get_sql();
+        $this->assertStringContainsString('purchase_value>10.5', $sql);
+
+        $sql = (new Give_Donors_Query(['donation_amount' => ['compare' => '>', 'amount' => 10]]))->get_sql();
+        $this->assertStringContainsString('purchase_value>10 ', $sql . ' ');
+    }
+
+    /**
+     * @since TBD
+     */
     public function testUnknownFieldFallsBackToAllColumns()
     {
         global $wpdb;
