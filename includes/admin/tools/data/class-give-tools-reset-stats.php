@@ -235,7 +235,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 			if ( is_array( $sql ) && count( $sql ) > 0 ) {
 				foreach ( $sql as $query ) {
-					$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- each entry is a literal or prepared statement built above (ids come from the stored give_temp_reset_ids list), or SQL that add-ons append with the give_reset_add_queries_{$type} filter and run as-is.
+					$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- table and column names come from give_v20_bc_table_details() and Give()->donor_meta; ids are (int) post or donor ids or values added by the give_reset_items filter; the give_reset_add_queries_{$type} filter lets add-ons append raw SQL that runs as-is.
 				}
 			}
 
