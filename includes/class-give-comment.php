@@ -382,14 +382,14 @@ class Give_Comment {
 		$where = 'WHERE';
 
 		foreach ( $this->comment_types as $index => $comment_type ) {
-			$where .= ( $index ? ' AND ' : ' ' ) . "comment_type != \"{$comment_type}\"";
+			$where .= ( $index ? ' AND ' : ' ' ) . $wpdb->prepare( 'comment_type != %s', $comment_type );
 		}
 
 		if ( $post_id > 0 ) {
 			$where .= $wpdb->prepare( ' AND comment_post_ID = %d', $post_id );
 		}
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built from the registered comment types (set in code through a filter, never request input) and a prepare() fragment above.
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built only from prepare() fragments: one for each comment type, which can be changed by the give_comment_type filter, and one for the post ID.
 		$count = $wpdb->get_results( "SELECT comment_approved, COUNT( * ) AS num_comments FROM {$wpdb->comments} {$where} GROUP BY comment_approved", ARRAY_A );
 
 		$total    = 0;

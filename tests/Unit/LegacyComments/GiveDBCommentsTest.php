@@ -10,10 +10,10 @@ use Give_DB_Comments;
 /**
  * Covers the queries of Give_DB_Comments and Give_Comment.
  *
- * The tests for a bad order value and a comment type with a quote were added after the SQL fix,
- * because they check the new hardening of get_sql(). Every other test was written first and passed
- * on the unchanged code. This includes the unknown fields test, which pins the allowlist that
- * validate_params() already had.
+ * The tests for a bad order value and for a comment type with a quote (in get_sql() and in the
+ * WordPress comment counts) were added after the SQL fix, because they check the new hardening.
+ * Every other test was written first and passed on the unchanged code. This includes the unknown
+ * fields test, which pins the allowlist that validate_params() already had.
  *
  * @since TBD
  */
@@ -125,6 +125,31 @@ class GiveDBCommentsTest extends TestCase
         $this->addNote(900009, 'Not counted', 'donation');
 
         $stats = Give()->comment->remove_comments_from_comment_counts([], 0);
+
+        $this->assertSame('', $wpdb->last_error);
+        $this->assertIsObject($stats);
+    }
+
+    /**
+     * Added after the SQL fix: a comment type changed by the give_comment_type filter can hold a
+     * double quote or a single quote. It used to break the count query.
+     *
+     * @since TBD
+     */
+    public function testWordPressCommentCountsAcceptCommentTypesWithQuotes()
+    {
+        global $wpdb;
+
+        $property = new \ReflectionProperty(Give()->comment, 'comment_types');
+        $property->setAccessible(true);
+        $original = $property->getValue(Give()->comment);
+        $property->setValue(Give()->comment, ['donation', 'a"b', "x'y"]);
+
+        try {
+            $stats = Give()->comment->remove_comments_from_comment_counts([], 900010);
+        } finally {
+            $property->setValue(Give()->comment, $original);
+        }
 
         $this->assertSame('', $wpdb->last_error);
         $this->assertIsObject($stats);
