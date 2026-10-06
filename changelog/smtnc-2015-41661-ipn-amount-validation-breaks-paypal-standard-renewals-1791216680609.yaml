@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Improved validation of PayPal Standard IPN notifications.
+timestamp: 2026-10-05T16:11:20.608Z

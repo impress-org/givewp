@@ -2,7 +2,6 @@
 
 namespace Give\Tests\Unit\PaymentGateways\PayPalStandard\Actions;
 
-use Give\Helpers\Call;
 use Give\PaymentGateways\Gateways\PayPalStandard\Actions\ProcessIpnDonationRefund;
 use Give_Payment;
 use PHPUnit\Framework\TestCase;
@@ -17,35 +16,10 @@ class ProcessIpnDonationRefundTest extends TestCase
      */
     private $donation;
 
-    /**
-     * @var MockProcessIpnDonationRefund
-     */
-    private $processIpnDonationRefund;
-
     protected function setUp(): void
     {
         parent::setUp();
         $this->donation = new Give_Payment(\Give_Helper_Payment::create_simple_payment());
-        $this->processIpnDonationRefund = new MockProcessIpnDonationRefund();
-    }
-
-    public function testIsPartialRefundFunction()
-    {
-        $this->assertFalse(
-            $this->processIpnDonationRefund->mockIsPartialRefund(
-                '20.00',
-                $this->donation->currency,
-                $this->donation->total
-            )
-        );
-
-        $this->assertTrue(
-            $this->processIpnDonationRefund->mockIsPartialRefund(
-                '19.89',
-                $this->donation->currency,
-                $this->donation->total
-            )
-        );
     }
 
     public function testDonationStatusRemainCompletedOnPartialRefund()
@@ -53,8 +27,7 @@ class ProcessIpnDonationRefundTest extends TestCase
         $this->donation->status = 'publish';
         $this->donation->save();
 
-        Call::invoke(
-            MockProcessIpnDonationRefund::class,
+        (new ProcessIpnDonationRefund())(
             (object) [
                 'mc_gross' => '-19.05', // Actual donation amount is 20.00
                 'parent_txn_id' => 'abc123',
@@ -76,10 +49,9 @@ class ProcessIpnDonationRefundTest extends TestCase
         $this->donation->status = 'publish';
         $this->donation->save();
 
-        Call::invoke(
-            MockProcessIpnDonationRefund::class,
+        (new ProcessIpnDonationRefund())(
             (object) [
-                'mc_gross' => '20.00',
+                'mc_gross' => '-20.00',
                 'parent_txn_id' => 'abc456',
                 'reason_code' => 'abc',
                 'txn_id' => 'abs123'
@@ -95,12 +67,46 @@ class ProcessIpnDonationRefundTest extends TestCase
         $this->assertTrue((bool)count($notes));
         $this->assertSame('refunded', get_post_status( $this->donation->ID ));
     }
-}
 
-class MockProcessIpnDonationRefund extends ProcessIpnDonationRefund
-{
-    public function mockIsPartialRefund($refundedAmount, $currency, $donationAmount)
+    /**
+     * @since TBD
+     *
+     * @dataProvider invalidRefundAmountProvider
+     */
+    public function testInvalidRefundAmountLeavesDonationUnchanged(array $refundAmountData)
     {
-        return $this->isPartialRefund($refundedAmount, $currency, $donationAmount);
+        $this->donation->status = 'publish';
+        $this->donation->save();
+
+        (new ProcessIpnDonationRefund())(
+            (object) array_merge([
+                'parent_txn_id' => 'INVALID-AMOUNT-PARENT-TXN',
+                'reason_code' => 'refund',
+                'txn_id' => 'INVALID-AMOUNT-TXN',
+            ], $refundAmountData),
+            $this->donation->ID
+        );
+
+        $notes = give_get_payment_notes($this->donation->ID);
+        $notes = array_filter($notes, function ($note) {
+            return false !== strpos($note->comment_content, 'INVALID-AMOUNT-');
+        });
+
+        $this->assertSame([], array_column($notes, 'comment_content'));
+        $this->assertSame('publish', get_post_status($this->donation->ID));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function invalidRefundAmountProvider(): array
+    {
+        return [
+            'missing'     => [[]],
+            'non-numeric' => [['mc_gross' => 'abc']],
+            'zero'        => [['mc_gross' => '0.00']],
+            'positive'    => [['mc_gross' => '5.00']],
+            'over total'  => [['mc_gross' => '-999999.00']],
+        ];
     }
 }
