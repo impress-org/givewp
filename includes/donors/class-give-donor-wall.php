@@ -381,6 +381,7 @@ class Give_Donor_Wall {
     /**
      * Get donation data.
      *
+     * @since TBD Document why the query is safe.
      * @since 4.18.0     Read meta values as stored instead of unserializing them, and read the donor
      *                comment from the fetched rows instead of a per-donation meta lookup.
      * @since 4.16.7.2       Restrict unserialize to prevent object instantiation.
@@ -412,7 +413,7 @@ class Give_Donor_Wall {
 				ORDER BY FIELD( p1.ID, {$donation_ids} )
 				";
 
-		$results = (array) $wpdb->get_results( $sql );
+		$results = (array) $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $donation_id_col is the donation meta id column name and $donation_ids is the list of donation ids returned by get_donations().
 
 		if ( ! empty( $results ) ) {
 			$temp = [];
@@ -451,6 +452,7 @@ class Give_Donor_Wall {
 	/**
 	 * Get donation list for specific query
 	 *
+     * @since TBD Document why the query is safe.
      * @since 3.17.2 fix - filter by only_comments attr
 	 * @since 2.3.0
 	 *
@@ -558,12 +560,13 @@ class Give_Donor_Wall {
 
 		$sql .= $where . $order . $limit . $offset;
 
-		return $wpdb->get_col( $sql );
+		return $wpdb->get_col( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- every value in $sql comes from absint, an allowlist or a previous query (see get_query_param()).
 	}
 
 	/**
 	 * Get donor comments
 	 *
+	 * @since TBD Document why the query is safe.
 	 * @since 2.3.0
 	 *
 	 * @param array $donations_data
@@ -610,7 +613,7 @@ class Give_Donor_Wall {
 
 		$sql = $sql . $where;
 
-		$comments = (array) $wpdb->get_results( $sql );
+		$comments = (array) $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $sql only holds donation ids and donor ids read from the donation data (donation meta), plus fixed table names and literals.
 
 		if ( ! empty( $comments ) ) {
 			$comments = array_combine(
