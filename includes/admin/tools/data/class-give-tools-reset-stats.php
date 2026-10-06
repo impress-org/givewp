@@ -67,6 +67,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
+	 * @since TBD Document why the reset queries are safe.
 	 * @since 4.10.0 Added deletion logic for campaigns, campaign pages, subscriptions, events, logs, revenue, usermeta, etc.
 	 * @since  1.5
 	 * @global object $wpdb Used to query the database using the WordPress
@@ -234,7 +235,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 			if ( is_array( $sql ) && count( $sql ) > 0 ) {
 				foreach ( $sql as $query ) {
-					$wpdb->query( $query );
+					$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- each entry is a literal or prepared statement built above (ids come from the stored give_temp_reset_ids list), or SQL that add-ons append with the give_reset_add_queries_{$type} filter and run as-is.
 				}
 			}
 
