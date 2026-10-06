@@ -560,7 +560,7 @@ class Give_Donor_Wall {
 
 		$sql .= $where . $order . $limit . $offset;
 
-		return $wpdb->get_col( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- every value in $sql comes from absint, an allowlist or a previous query (see get_query_param()).
+		return $wpdb->get_col( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $donation_id_col is the donation meta id column name; every other value in $sql comes from absint, an allowlist or a previous query (see get_query_param()).
 	}
 
 	/**
@@ -605,7 +605,7 @@ class Give_Donor_Wall {
 				continue;
 			}
 
-			$where[] = "(c1.comment_parent={$id} AND cm1.meta_key='_give_donor_id' AND cm1.meta_value={$data['_give_payment_donor_id']})";
+			$where[] = '(c1.comment_parent=' . absint( $id ) . " AND cm1.meta_key='_give_donor_id' AND cm1.meta_value=" . absint( $data['_give_payment_donor_id'] ) . ')';
 		}
 
 		$where  = ' WHERE ' . implode( ' OR ', $where );
@@ -613,7 +613,7 @@ class Give_Donor_Wall {
 
 		$sql = $sql . $where;
 
-		$comments = (array) $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $sql only holds donation ids and donor ids read from the donation data (donation meta), plus fixed table names and literals.
+		$comments = (array) $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $sql only holds donation ids and donor ids cast with absint, plus fixed table names and literals.
 
 		if ( ! empty( $comments ) ) {
 			$comments = array_combine(
