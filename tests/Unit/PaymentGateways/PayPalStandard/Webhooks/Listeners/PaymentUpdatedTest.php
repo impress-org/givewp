@@ -12,7 +12,7 @@ use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.18.0.1
  */
 class PaymentUpdatedTest extends TestCase
 {
@@ -31,7 +31,7 @@ class PaymentUpdatedTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testCompletedPaymentCompletesDonation(): void
     {
@@ -45,7 +45,7 @@ class PaymentUpdatedTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testTransactionIdRecordedOnAnotherDonationIsRejected(): void
     {
@@ -58,7 +58,7 @@ class PaymentUpdatedTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testMissingTransactionIdIsRejected(): void
     {
@@ -70,7 +70,7 @@ class PaymentUpdatedTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testFullRefundOfRenewalRefundsTheRenewalOnly(): void
     {
@@ -93,7 +93,7 @@ class PaymentUpdatedTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testRefundOfInitialDonationRefundsTheInitialDonation(): void
     {
@@ -105,7 +105,7 @@ class PaymentUpdatedTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      *
      * @param DonationStatus $status        Status of the PayPal Standard donation.
      * @param string         $transactionId PayPal transaction ID stored on the donation.
@@ -121,7 +121,7 @@ class PaymentUpdatedTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      *
      * @param int    $donationId    Donation ID sent in the IPN "custom" field.
      * @param string $transactionId IPN txn_id value.
@@ -136,7 +136,7 @@ class PaymentUpdatedTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      *
      * @param int    $donationId    Donation ID sent in the IPN "custom" field.
      * @param string $parentTxnId   IPN parent_txn_id value.

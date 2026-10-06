@@ -33,7 +33,7 @@ class PayPalStandardWebhook
      * @since 2.19.0
      * @since 2.19.3 Respond with 200 http status to ipn.
      * @since 4.16.6.1 Add IPN event-data validation before processing.
-     * @since TBD Default the transaction type when the IPN doesn't include one.
+     * @since 4.18.0.1 Default the transaction type when the IPN doesn't include one.
      */
     public function handle()
     {
@@ -168,7 +168,7 @@ class PayPalStandardWebhook
     }
 
     /**
-     * @since TBD Pass the transaction type to the payment amount check, link refunds to renewals, and verify refund amounts.
+     * @since 4.18.0.1 Pass the transaction type to the payment amount check, link refunds to renewals, and verify refund amounts.
      * @since 4.16.6.1
      */
     private function verifyEventData(array $eventData, int $donationId, $txnType): bool
@@ -197,7 +197,7 @@ class PayPalStandardWebhook
     }
 
     /**
-     * @since TBD Reject the IPN when the site PayPal email or both IPN merchant emails are missing.
+     * @since 4.18.0.1 Reject the IPN when the site PayPal email or both IPN merchant emails are missing.
      * @since 4.16.6.1
      */
     private function verifyReceiverEmail(array $eventData)
@@ -252,7 +252,7 @@ class PayPalStandardWebhook
     }
 
     /**
-     * @since TBD Compare against the gross amount charged by PayPal, which includes recovered fees.
+     * @since 4.18.0.1 Compare against the gross amount charged by PayPal, which includes recovered fees.
      * @since 4.16.6.1
      *
      * @param array  $eventData  PayPal IPN data.
@@ -347,7 +347,7 @@ class PayPalStandardWebhook
      * Subscription payments reference the initial donation through "custom", but PayPal charges them
      * the subscription amount, which can differ from the initial donation amount.
      *
-     * @since TBD
+     * @since 4.18.0.1
      *
      * @param Donation $donation Donation referenced by the IPN.
      * @param string   $txnType  PayPal IPN transaction type.
@@ -373,7 +373,7 @@ class PayPalStandardWebhook
      * Refunds of subscription renewals reference the initial donation through "custom", while
      * "parent_txn_id" holds the transaction ID of the renewal being refunded.
      *
-     * @since TBD Renamed from verifyParentTransactionId(). Require parent_txn_id and accept renewals of the same subscription.
+     * @since 4.18.0.1 Renamed from verifyParentTransactionId(). Require parent_txn_id and accept renewals of the same subscription.
      * @since 4.16.6.1
      *
      * @param array $eventData  PayPal IPN data.
@@ -449,7 +449,7 @@ class PayPalStandardWebhook
     /**
      * PayPal reports refunds and reversals with a negative mc_gross. Partial refunds are allowed.
      *
-     * @since TBD
+     * @since 4.18.0.1
      *
      * @param array    $eventData        PayPal IPN data.
      * @param Donation $refundedDonation Donation being refunded or reversed.

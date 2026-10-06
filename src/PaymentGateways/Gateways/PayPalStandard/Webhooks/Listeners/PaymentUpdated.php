@@ -19,7 +19,7 @@ class PaymentUpdated implements EventListener
     /**
      * @inheritDoc
      *
-     * @since TBD Reject missing or reused transaction IDs and refund the renewal referenced by parent_txn_id.
+     * @since 4.18.0.1 Reject missing or reused transaction IDs and refund the renewal referenced by parent_txn_id.
      */
     public function processEvent($eventData)
     {
@@ -67,7 +67,7 @@ class PaymentUpdated implements EventListener
     /**
      * A PayPal transaction can complete only one donation.
      *
-     * @since TBD
+     * @since 4.18.0.1
      *
      * @param object $eventData  PayPal IPN data.
      * @param int    $donationId Donation the IPN would complete.
@@ -104,7 +104,7 @@ class PaymentUpdated implements EventListener
     /**
      * Renewal refunds reference the initial donation in "custom" and the renewal in "parent_txn_id".
      *
-     * @since TBD
+     * @since 4.18.0.1
      *
      * @param object $eventData  PayPal IPN data.
      * @param int    $donationId Donation ID from the IPN "custom" field.

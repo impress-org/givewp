@@ -7,7 +7,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.18.0.1
  */
 class WebhookValidatorTest extends TestCase
 {
@@ -38,7 +38,7 @@ class WebhookValidatorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testPostbackVerifiesSslCertificate(): void
     {
@@ -49,7 +49,7 @@ class WebhookValidatorTest extends TestCase
     /**
      * The setting was removed in 2.15.0, but a stale stored value must not skip the postback.
      *
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testPostbackRunsWhenLegacyVerificationSettingIsDisabled(): void
     {
@@ -61,7 +61,7 @@ class WebhookValidatorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      *
      * @param false|array $preempt Response to short-circuit the request with.
      * @param array       $args    Arguments of the request sent to PayPal.

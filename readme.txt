@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.18.0
+Stable tag: 4.18.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 4.18.0.1: October 6th, 2026 =
+* Security: Improved validation of PayPal Standard IPN notifications.
+* Fix: Resolved an issue where PayPal Standard donations and subscription renewals with recovered fees were not recorded after the IPN validation update.
+
 = 4.18.0: October 1st, 2026 =
 * Enhancement: Improved donations list table performance on sites with hundreds of thousands of donations by paging on IDs first, fixing the total count query, and replacing the single-column donation meta indexes with composite ones
 * Enhancement: Improved the Reports screen and legacy earnings stats on large sites by summing and counting donations in the database instead of loading every donation into memory

@@ -141,7 +141,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD Reject instead of pass when the site has no PayPal email.
+     * @since 4.18.0.1 Reject instead of pass when the site has no PayPal email.
      * @since 4.16.6.1
      */
     public function testEmptySitePaypalEmailIsRejected(): void
@@ -156,7 +156,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD Reject instead of pass when both emails are missing.
+     * @since 4.18.0.1 Reject instead of pass when both emails are missing.
      * @since 4.16.6.1
      */
     public function testMissingBothReceiverAndBusinessEmailIsRejected(): void
@@ -225,7 +225,7 @@ class PayPalStandardWebhookTest extends TestCase
     /**
      * PayPal charges the gross amount, which includes the fee recovered by the Fee Recovery add-on.
      *
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testFeeRecoveredDonationMatchesGrossAmount(): void
     {
@@ -240,7 +240,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testFeeRecoveredDonationRejectsAmountWithoutFee(): void
     {
@@ -257,7 +257,7 @@ class PayPalStandardWebhookTest extends TestCase
     /**
      * Renewal IPNs reference the initial donation through "custom".
      *
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testFeeRecoveredRenewalMatchesSubscriptionAmount(): void
     {
@@ -272,7 +272,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testRenewalMatchesSubscriptionAmountThatDiffersFromInitialDonation(): void
     {
@@ -289,7 +289,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testSubscriptionAmountIsIgnoredForOneTimePayments(): void
     {
@@ -306,7 +306,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testRenewalWithTamperedAmountIsRejected(): void
     {
@@ -385,7 +385,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testFeeRecoveredRenewalIpnPassesAllChecks(): void
     {
@@ -407,7 +407,7 @@ class PayPalStandardWebhookTest extends TestCase
      */
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testFullRefundOfInitialPaymentPasses(): void
     {
@@ -417,7 +417,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testPartialRefundPasses(): void
     {
@@ -429,7 +429,7 @@ class PayPalStandardWebhookTest extends TestCase
     /**
      * Refunds of renewals reference the initial donation through "custom" and the renewal through "parent_txn_id".
      *
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testRefundOfRenewalFromSameSubscriptionPasses(): void
     {
@@ -442,7 +442,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testRefundOfRenewalFromAnotherSubscriptionIsRejected(): void
     {
@@ -456,7 +456,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testRefundOfAnotherOneTimeDonationIsRejected(): void
     {
@@ -469,7 +469,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testRefundWithoutParentTransactionIdIsRejected(): void
     {
@@ -479,7 +479,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testRefundLargerThanDonationIsRejected(): void
     {
@@ -489,7 +489,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testRefundLargerThanRenewalIsRejected(): void
     {
@@ -502,7 +502,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function testRefundWithMismatchedCurrencyIsRejected(): void
     {
@@ -512,7 +512,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      *
      * @dataProvider invalidRefundAmountProvider
      */
@@ -524,7 +524,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function invalidRefundAmountProvider(): array
     {
@@ -540,7 +540,7 @@ class PayPalStandardWebhookTest extends TestCase
     /**
      * Mirrors the stored shape of a Fee Recovery donation: the amount includes the 0.84 fee.
      *
-     * @since TBD
+     * @since 4.18.0.1
      */
     private function createFeeRecoveredDonation(): Donation
     {
@@ -554,7 +554,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     private function createFeeRecoveredSubscription(): Subscription
     {
@@ -570,7 +570,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      *
      * @param Subscription $subscription  Subscription the renewal belongs to.
      * @param string       $transactionId PayPal transaction ID of the renewal.
@@ -587,7 +587,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      *
      * @param string $transactionId PayPal transaction ID stored on the donation.
      */
@@ -603,7 +603,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      *
      * @param int    $donationId   Donation ID sent in the IPN "custom" field.
      * @param string $parentTxnId  Transaction ID of the payment being refunded.

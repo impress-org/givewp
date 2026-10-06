@@ -15,7 +15,7 @@ class WebhookValidator
     /**
      * @since 2.19.0
      * @since 2.19.3 Update log message.
-     * @since TBD Always validate the IPN with PayPal and verify its SSL certificate.
+     * @since 4.18.0.1 Always validate the IPN with PayPal and verify its SSL certificate.
      *
      * @param array $eventData PayPal ipn body data.
      *

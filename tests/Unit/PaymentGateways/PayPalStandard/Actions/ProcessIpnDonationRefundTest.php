@@ -69,7 +69,7 @@ class ProcessIpnDonationRefundTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      *
      * @dataProvider invalidRefundAmountProvider
      */
@@ -97,7 +97,7 @@ class ProcessIpnDonationRefundTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      */
     public function invalidRefundAmountProvider(): array
     {

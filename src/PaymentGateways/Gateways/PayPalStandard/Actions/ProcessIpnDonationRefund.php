@@ -16,7 +16,7 @@ use stdClass;
 class ProcessIpnDonationRefund
 {
     /**
-     * @since TBD Use the Donation model and skip refunds with a missing, non-negative, or over-total amount.
+     * @since 4.18.0.1 Use the Donation model and skip refunds with a missing, non-negative, or over-total amount.
      * @since 2.19.0
      *
      * @param stdClass $ipnEventData PayPal IPN data.
@@ -84,7 +84,7 @@ class ProcessIpnDonationRefund
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0.1
      *
      * @param stdClass $ipnEventData PayPal IPN data.
      * @param string   $currency     Donation currency code.
@@ -103,7 +103,7 @@ class ProcessIpnDonationRefund
     /**
      * PayPal Standard sends refunds as a negative amount that cannot exceed the donation total.
      *
-     * @since TBD
+     * @since 4.18.0.1
      *
      * @param Money $refundedAmount IPN mc_gross amount.
      * @param Money $donationAmount Donation total.
