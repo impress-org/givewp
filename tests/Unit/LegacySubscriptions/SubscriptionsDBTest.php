@@ -156,8 +156,10 @@ class SubscriptionsDBTest extends TestCase
     public function testSearchByDonorName()
     {
         $donor = Donor::factory()->create(['name' => "Ann O'Brien Smith"]);
+        // A fixed name for the other donor. The factory picks a random name, which can contain "Ann".
+        $otherDonor = Donor::factory()->create(['name' => 'Zed Quill']);
         $match = $this->createSubscription('active', 'profile_a', 'txn_a', $donor->id);
-        $this->createSubscription('active', 'profile_b', 'txn_b');
+        $this->createSubscription('active', 'profile_b', 'txn_b', $otherDonor->id);
 
         $this->assertSame([$match->id], $this->ids($this->db()->get_subscriptions(['search' => "O'Brien"])));
         $this->assertSame([$match->id], $this->ids($this->db()->get_subscriptions(['search' => 'Ann'])));
