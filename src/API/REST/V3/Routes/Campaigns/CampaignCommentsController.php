@@ -64,6 +64,7 @@ class CampaignCommentsController extends WP_REST_Controller
     }
 
     /**
+     * @since TBD Add the give text domain to the Anonymous string.
      * @since 4.14.6 check campaign status to block comments on inactive campaigns for non-admins
      * @since 4.0.0
      *
@@ -122,7 +123,7 @@ class CampaignCommentsController extends WP_REST_Controller
         $donations = $query->limit($perPage)->getAll();
 
         $formattedComments = array_map(function ($donation) {
-            $donorName = $donation->anonymous === '1' ? __('Anonymous') : $donation->donorName;
+            $donorName = $donation->anonymous === '1' ? __('Anonymous', 'give') : $donation->donorName;
             $avatarEmail = $donation->anonymous === '1' ? '' : ($donation->email ?? '');
 
             return [
