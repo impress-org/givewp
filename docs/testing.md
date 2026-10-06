@@ -240,8 +240,9 @@ file through the same `evnt.is/test-zip` link the bot posts to Slack. Nothing is
 new, and a branch the bot already packaged is not built twice. Pull requests from forks get no
 preview, because they cannot see the bucket credentials.
 
-The comment is one heading with a time badge and one line of links: an empty site, a site with
-sample data, and the zip. The sample-data link also installs the
+The comment is a short list with icons, like the zip comment in Kadence Blocks: a heading with the
+commit, a time badge, and three links: an empty site, a site with sample data, and the zip. The
+sample-data link also installs the
 [Give Data Generator](https://github.com/impress-org/give-data-generator) release and runs
 `wp give-data donations 100 --campaigns=3` before opening, with the site switched to test mode so
 the Donations and Donors screens show what it made. It takes a few minutes longer to open.
