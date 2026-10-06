@@ -58,8 +58,24 @@ jobs:
                 with:
                     # Nothing here pushes over git, and the job goes on to run third-party actions.
                     persist-credentials: false
+
+            # vendor/ exactly as Composer builds it on PHP 7.4, the PHP the release is built on.
+            # Setting up a second PHP is the slowest step of this job (about 45 seconds), so on a
+            # cache hit the build PHP and the install are skipped. Safe to reuse because the key is
+            # every input of that build: composer.lock and composer.json (packages, Strauss config,
+            # autoload rules) and the Strauss version pinned in bin/strauss-installar.sh. The autoload
+            # files use paths relative to vendor/, so the folder works from any checkout. Bump v1 to
+            # throw the cache away by hand.
+            -   name: Restore vendor
+                id: vendor-cache
+                uses: actions/cache/restore@v6
+                with:
+                    path: vendor
+                    key: vendor-v1-${{ runner.os }}-php7.4-${{ hashFiles('composer.json', 'composer.lock', 'bin/strauss-installar.sh') }}
+
             # @link https://github.com/spatie/laravel-activitylog/blob/master/.github/workflows/run-tests.yml
             -   name: Set Up PHP for build
+                if: steps.vendor-cache.outputs.cache-hit != 'true'
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: 7.4
@@ -68,7 +84,17 @@ jobs:
 
             # Caches Composer's downloads, keyed on composer.lock and the PHP version.
             -   name: Install composer dependencies
+                if: steps.vendor-cache.outputs.cache-hit != 'true'
                 uses: ramsey/composer-install@v4
+
+            # Saved before anything else touches vendor/, so the cache holds the plain PHP 7.4 build.
+            # When several jobs miss at once, the first one saves and the others log a warning.
+            -   name: Save vendor
+                if: steps.vendor-cache.outputs.cache-hit != 'true'
+                uses: actions/cache/save@v6
+                with:
+                    path: vendor
+                    key: ${{ steps.vendor-cache.outputs.cache-primary-key }}
 
             -   name: Store MySQL details in environment
                 run: |
@@ -145,9 +171,24 @@ jobs:
                     # Nothing here pushes over git, and the job goes on to run third-party actions.
                     persist-credentials: false
 
+            # vendor/ exactly as Composer builds it on PHP 7.4, the PHP the release is built on.
+            # Setting up PHP is a slow step here (about 35 seconds), so on a cache hit the build PHP
+            # and the install are skipped. Safe to reuse because the key is
+            # every input of that build: composer.lock and composer.json (packages, Strauss config,
+            # autoload rules) and the Strauss version pinned in bin/strauss-installar.sh. The autoload
+            # files use paths relative to vendor/, so the folder works from any checkout. Bump v1 to
+            # throw the cache away by hand.
+            -   name: Restore vendor
+                id: vendor-cache
+                uses: actions/cache/restore@v6
+                with:
+                    path: vendor
+                    key: vendor-v1-${{ runner.os }}-php7.4-${{ hashFiles('composer.json', 'composer.lock', 'bin/strauss-installar.sh') }}
+
             # Composer runs on the runner, on the PHP version the release is built with. The tests
-            # run on the container's PHP.
+            # run on the container's PHP. Not needed at all when vendor/ comes from the cache.
             -   name: Set Up PHP for build
+                if: steps.vendor-cache.outputs.cache-hit != 'true'
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: 7.4
@@ -155,7 +196,17 @@ jobs:
 
             # Caches Composer's downloads, keyed on composer.lock and the PHP version.
             -   name: Install composer dependencies
+                if: steps.vendor-cache.outputs.cache-hit != 'true'
                 uses: ramsey/composer-install@v4
+
+            # Saved before anything else touches vendor/, so the cache holds the plain PHP 7.4 build.
+            # When several jobs miss at once, the first one saves and the others log a warning.
+            -   name: Save vendor
+                if: steps.vendor-cache.outputs.cache-hit != 'true'
+                uses: actions/cache/save@v6
+                with:
+                    path: vendor
+                    key: ${{ steps.vendor-cache.outputs.cache-primary-key }}
 
             -   name: Set Up Node
                 uses: actions/setup-node@v7
@@ -182,6 +233,16 @@ jobs:
 
             -   name: Start wp-env
                 run: npm run env:test:start
+
+            # The install ends with `composer dump-autoload --optimize`, which writes every class in
+            # src/ and tests/ into a class map. A restored vendor/ has the map of the commit that
+            # saved it, so a class this pull request moved or deleted would point at a missing file.
+            # Rebuilding the map fixes that. It runs in the container because the runner has no PHP
+            # on a cache hit. (The "test" job needs no such step: its "Reload Composer autoload"
+            # step already rebuilds the autoloader on every run.)
+            -   name: Rebuild the Composer class map
+                if: steps.vendor-cache.outputs.cache-hit == 'true'
+                run: npm run env:test -- run cli --env-cwd=wp-content/plugins/give composer dump-autoload --optimize
 
             -   name: Run Tests
                 run: npm run test:php

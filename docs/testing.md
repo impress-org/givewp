@@ -98,6 +98,11 @@ both the MariaDB coverage and the check that the local command keeps working. Ea
 and 8.4 with two WordPress versions: `latest`, and `minimum`, which both jobs read from the
 "Requires at least" line of `readme.txt`. Raising that line is all it takes to move the floor.
 
+Both jobs build `vendor/` with Composer on PHP 7.4, the release PHP, and cache it. The key is
+`composer.json`, `composer.lock` and `bin/strauss-installar.sh`, so a cache hit skips the PHP 7.4
+setup and the install. `test-mariadb` then rebuilds Composer's class map in the container, because
+the cached one lists the classes of the commit that saved it.
+
 Add-ons run this same suite against core: an add-on's `tests/bootstrap.php` requires GiveWP's
 autoloader from the sibling directory and hands its main plugin file to
 `Give\Tests\Framework\Addons\Bootstrap`, which loads the add-on on `muplugins_loaded` and then
