@@ -1,7 +1,10 @@
 name: Static Analysis
 
 on:
+    # Only the main branches. Any other branch gets its run from the pull_request trigger below, so
+    # an unfiltered push would run this twice for every push to a pull request.
     push:
+        branches: [ master, develop, epic/**, release/** ]
     pull_request:
     workflow_call: # Allows you to use this workflow as part of another workflow
     workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
