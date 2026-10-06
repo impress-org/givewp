@@ -326,7 +326,7 @@ class Give_Subscriptions_DB extends Give_DB
             $count = $return_count ? "COUNT({$this->primary_key})" : "{$group_by_args}, COUNT({$this->primary_key})";
             $sql = "SELECT {$count} FROM {$this->table_name} {$where} {$groupBy};";
 
-            $result = $return_count ? $wpdb->get_var($sql) : $wpdb->get_results($sql, ARRAY_A); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause() from intval and prepare() fragments; groupBy is an allowlisted column.
+            $result = $return_count ? $wpdb->get_var($sql) : $wpdb->get_results($sql, ARRAY_A); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause() from intval, prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; groupBy is an allowlisted column.
 
             // Simplify result if query for groupBy.
             if ($group_by_args && $result) {
