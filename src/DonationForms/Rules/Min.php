@@ -76,6 +76,7 @@ class Min implements ValidationRule, ValidatesOnFrontEnd
     /**
      * @inheritDoc
      *
+     * @since TBD Number the placeholders and add translators comments.
      * @since 4.16.8 Skip amounts the admin configured on the form.
      * @since 3.0.0
      **/
@@ -89,11 +90,13 @@ class Min implements ValidationRule, ValidatesOnFrontEnd
 
         if (is_numeric($value)) {
             if ($value < $this->getSize()) {
-                $fail(sprintf(__('%s must be greater than or equal to %s', 'give'), '{field}', $this->getSize()));
+                /* translators: 1: Field label, 2: Minimum value */
+                $fail(sprintf(__('%1$s must be greater than or equal to %2$s', 'give'), '{field}', $this->getSize()));
             }
         } elseif (is_string($value)) {
             if (mb_strlen($value) < $this->getSize()) {
-                $fail(sprintf(__('%s must be more than or equal to %d characters', 'give'), '{field}', $this->getSize()));
+                /* translators: 1: Field label, 2: Minimum number of characters */
+                $fail(sprintf(__('%1$s must be more than or equal to %2$d characters', 'give'), '{field}', $this->getSize()));
             }
         } else {
             Config::throwValidationException("Field value must be a number or string");
