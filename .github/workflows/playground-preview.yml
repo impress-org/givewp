@@ -1,24 +1,20 @@
 name: Playground Preview
 
-# Adds a "Try in WordPress Playground" comment to a pull request: a throwaway WordPress in the
+# Adds a "Try in WordPress Playground" comment to every pull request: a throwaway WordPress in the
 # browser with the pull request's build installed. The zip comes from the same shared pup workflow
 # and public bucket the packaging bot uses, so nothing new is hosted anywhere.
 #
-# The build takes several minutes, so it is opt-in: add the "playground" label to a pull request to
-# get a preview, and it is rebuilt on every push for as long as the label stays on. Pull requests
-# from forks are skipped, because they cannot see the bucket credentials.
+# The preview is built on every push, like the zip comment in Kadence Blocks. Pull requests from
+# forks are skipped, because they cannot see the bucket credentials.
 
 on:
     pull_request:
-        types: [labeled, synchronize]
+        types: [opened, reopened, synchronize]
 
 # One run per pull request at a time. A push while a preview is still building cancels that build,
-# so an older zip can never overwrite a newer button.
-#
-# A run started by some other label builds nothing, so it goes in a group of its own and cannot
-# cancel a preview that is still building.
+# so an older zip can never overwrite a newer comment.
 concurrency:
-    group: playground-preview-${{ github.event.pull_request.number }}-${{ github.event.action != 'labeled' || github.event.label.name == 'playground' }}
+    group: playground-preview-${{ github.event.pull_request.number }}
     cancel-in-progress: true
 
 jobs:
@@ -26,10 +22,7 @@ jobs:
     # links to an older zip on the pull request. It runs next to "zip", and "button" waits for it, so
     # the finished comment can never be overwritten by this one.
     pending:
-        if: >-
-            !github.event.pull_request.head.repo.fork
-            && contains(github.event.pull_request.labels.*.name, 'playground')
-            && (github.event.action != 'labeled' || github.event.label.name == 'playground')
+        if: ${{ !github.event.pull_request.head.repo.fork }}
         runs-on: ubuntu-latest
         timeout-minutes: 5
         permissions:
@@ -76,10 +69,7 @@ jobs:
                         This takes a few minutes.
 
     zip:
-        if: >-
-            !github.event.pull_request.head.repo.fork
-            && contains(github.event.pull_request.labels.*.name, 'playground')
-            && (github.event.action != 'labeled' || github.event.label.name == 'playground')
+        if: ${{ !github.event.pull_request.head.repo.fork }}
         uses: stellarwp/github-actions/.github/workflows/zip.yml@main
         with:
             ref: ${{ github.event.pull_request.head.sha }}

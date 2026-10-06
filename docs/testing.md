@@ -228,11 +228,10 @@ itself through `requestUtils.rest()`.
 
 ## Playground previews
 
-Add the `playground` label to a pull request and `.github/workflows/playground-preview.yml` posts
-a short "WordPress Playground Preview" comment on it. Its links open a throwaway WordPress in the
-browser, running the pull request's build, logged in and opened on the Campaigns screen. The preview
-is rebuilt on every push while the label is on, and the build takes several minutes, which is why it
-is opt-in.
+Every pull request gets a "WordPress Playground Preview" comment from
+`.github/workflows/playground-preview.yml`. Its links open a throwaway WordPress in the browser,
+running the pull request's build, logged in and opened on the Campaigns screen. The preview is rebuilt
+on every push, and the build takes several minutes.
 
 The zip is the same dev build the packaging bot makes: the shared StellarWP `zip.yml` workflow
 builds it with pup and puts it in the public zip bucket, and the links' blueprint points at that
