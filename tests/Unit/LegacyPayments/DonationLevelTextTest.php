@@ -116,6 +116,30 @@ class DonationLevelTextTest extends TestCase
     /**
      * @since TBD
      */
+    public function testFormTitleOmitsLevelForCustomAmountEqualToALevel(): void
+    {
+        $form = $this->createV3FormWithDescribedLevels();
+        $level = $this->levels[array_key_last($this->levels)];
+        $fee = Money::fromDecimal($level['value'] * 0.03, 'USD');
+
+        $donation = Donation::factory()->create([
+            'formId' => $form->id,
+            'formTitle' => $form->title,
+            'amount' => Money::fromDecimal($level['value'], 'USD')->add($fee),
+            'feeAmountRecovered' => $fee,
+            'levelId' => 'custom',
+        ]);
+
+        $title = give_get_donation_form_title($donation->id, ['separator' => '-']);
+
+        foreach ($this->levels as $describedLevel) {
+            $this->assertStringNotContainsString($describedLevel['label'], $title);
+        }
+    }
+
+    /**
+     * @since TBD
+     */
     private function createV3FormWithDescribedLevels(): DonationForm
     {
         /** @var DonationForm $form */
