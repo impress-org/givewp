@@ -24,6 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles the donation form process.
  *
  * @access private
+ * @since TBD Use gmdate() instead of date().
  * @since 4.16.7.2     Reject serialized data in name fields before storing donation data.
  * @since 4.16.6  Bail early when the form ID is not a give_forms post or is a Visual Form Builder (v3) form.
  * @since 3.16.1  Use give_maybe_safe_unserialize() on $user_info data
@@ -185,7 +186,7 @@ function give_process_donation_form() {
 	$price        = isset( $post_data['give-amount'] ) ?
 		(float) apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $post_data['give-amount'], [ 'currency' => give_get_currency( $form_id ) ] ) ) :
 		'0.00';
-	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
+	$purchase_key = strtolower( md5( $user['user_email'] . gmdate( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
 
 	/**
 	 * Update donation Purchase key.
@@ -216,7 +217,7 @@ function give_process_donation_form() {
 		'price'        => $price,
 		'purchase_key' => $purchase_key,
 		'user_email'   => $user['user_email'],
-		'date'         => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
+		'date'         => gmdate( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
 		'user_info'    => $user_info,
 		'post_data'    => $post_data,
 		'gateway'      => $valid_data['gateway'],
@@ -1174,6 +1175,7 @@ function give_donation_form_validate_guest_user() {
  * @param array $user_data User Data.
  *
  * @access  private
+ * @since TBD Use gmdate() instead of date().
  * @since   1.0
  *
  * @return  integer
@@ -1196,7 +1198,7 @@ function give_register_and_login_new_user( $user_data = [] ) {
 			'user_email'      => isset( $user_data['user_email'] ) ? $user_data['user_email'] : '',
 			'first_name'      => isset( $user_data['user_first'] ) ? $user_data['user_first'] : '',
 			'last_name'       => isset( $user_data['user_last'] ) ? $user_data['user_last'] : '',
-			'user_registered' => date( 'Y-m-d H:i:s' ),
+			'user_registered' => gmdate( 'Y-m-d H:i:s' ),
 			'role'            => give_get_option( 'donor_default_user_role', 'give_donor' ),
 		],
 		$user_data

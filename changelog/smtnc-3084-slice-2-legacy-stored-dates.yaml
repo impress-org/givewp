@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Use gmdate() instead of date() for stored dates, queries and keys in legacy code
+timestamp: 2026-10-07T21:53:33.000Z

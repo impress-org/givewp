@@ -214,6 +214,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = [] ) {
 /**
  * Give get user details if not then create a user. Used in Import Donation CSV.
  *
+ * @since TBD Use gmdate() instead of date().
  * @since 1.8.13
  *
  * @param $data
@@ -298,7 +299,7 @@ function give_import_get_user_from_csv( $data, $import_setting = [] ) {
 				$donor_args         = [
 					'user_login'      => $data['email'],
 					'user_email'      => $data['email'],
-					'user_registered' => date( 'Y-m-d H:i:s' ),
+					'user_registered' => gmdate( 'Y-m-d H:i:s' ),
 					'user_first'      => $data['first_name'],
 					'user_last'       => $data['last_name'],
 					'user_pass'       => wp_generate_password( 8, true ),
