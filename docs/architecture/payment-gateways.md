@@ -150,8 +150,8 @@ Anything the processor sends you is attacker-reachable. `PayPalStandardWebhook::
 is the reference for what verification means in practice — it checks, before processing:
 
 - **merchant identity** — `receiver_email` matches the site's configured account
-- **amount and currency** — match the stored donation record
-- **record linkage** — for refunds and reversals, the parent transaction id matches the donation
+- **amount and currency** — match what the processor was asked to charge (the gross `amount`, fees included)
+- **record linkage** — for refunds and reversals, the parent transaction id matches the record being refunded
 
 Verifying the notification's *signature* is not sufficient. A signature proves the message came
 from the processor; it does not prove the message is about a donation on this site, for this

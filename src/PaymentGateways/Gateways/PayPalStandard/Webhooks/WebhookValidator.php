@@ -15,6 +15,7 @@ class WebhookValidator
     /**
      * @since 2.19.0
      * @since 2.19.3 Update log message.
+     * @since 4.18.0.1 Always validate the IPN with PayPal and verify its SSL certificate.
      *
      * @param array $eventData PayPal ipn body data.
      *
@@ -23,11 +24,6 @@ class WebhookValidator
     public function verifyEventSignature(array $eventData)
     {
         $eventData = array_merge( [ 'cmd' => '_notify-validate' ], $eventData );
-
-        // Validate IPN request w/ PayPal if user hasn't disabled this security measure.
-        if (! give_is_setting_enabled(give_get_option('paypal_verification', 'enabled'))) {
-            return true;
-        }
 
         $requestArgs = [
             'method' => 'POST',
@@ -41,7 +37,6 @@ class WebhookValidator
                 'content-type' => 'application/x-www-form-urlencoded',
                 'post' => '/cgi-bin/webscr HTTP/1.1',
             ],
-            'sslverify' => false,
             'body' => $eventData,
         ];
 
