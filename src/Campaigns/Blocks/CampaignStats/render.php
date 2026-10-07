@@ -6,6 +6,10 @@ use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Support\ValueObjects\Money;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * @since 4.0.0
  *

@@ -3,6 +3,10 @@
  * This template is used to display the donation history of the current user.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $donations             = array();
 $donation_history_args = Give()->session->get( 'give_donation_history_args' );
 

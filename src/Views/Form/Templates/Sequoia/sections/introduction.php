@@ -7,6 +7,10 @@
 
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $formInfo = get_post(FrontendFormTemplateUtils::getFormId());
 
 /* @var \Give\Form\Template $formTemplate */

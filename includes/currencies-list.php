@@ -33,6 +33,10 @@
  * @since       2.4.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 return array(
 	'USD' => array(
 		'admin_label' => sprintf( __( 'US Dollars (%1$s)', 'give' ), '&#36;' ),
