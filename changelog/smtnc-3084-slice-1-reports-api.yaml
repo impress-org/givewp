@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Use gmdate() instead of date() in reports, stats and the legacy API date ranges
+timestamp: 2026-10-07T21:16:35.000Z
