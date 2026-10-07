@@ -11,6 +11,14 @@ on:
     workflow_dispatch:
     workflow_call:
 
+# A new push to a pull request cancels the run still going for the older commit; nobody reads the
+# result of a commit that is no longer the head. Only pull requests: every other run (a push to
+# develop or master, a release, a manual run) gets a group of its own from its run id, so it is
+# never cancelled and never waits behind another run.
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
     e2e:
         runs-on: blacksmith-4vcpu-ubuntu-2404
@@ -22,13 +30,36 @@ jobs:
         env:
             # Add-ons whose latest GitHub release is installed next to core before the suite runs.
             # Comma-separated repository names under impress-org; each release carries <slug>.zip.
-            ADDONS: give-peer-to-peer
+            ADDONS: give-peer-to-peer,give-recurring,give-funds
 
         steps:
             -   uses: actions/checkout@v7
                 with:
                     # Nothing here pushes over git, and the job goes on to run third-party actions.
                     persist-credentials: false
+
+            # wp-env pulls these images when it starts, and pulling them is part of the time that
+            # step takes. .wp-env.json sets no PHP version, so wp-env uses the default tags. Started
+            # now, in the background, the download overlaps with the steps in between.
+            # The images are the ones wp-env's generated Dockerfiles and docker-compose.yml name
+            # (FROM wordpress..., FROM wordpress:cli..., image: mariadb:lts); if a later wp-env names
+            # others, these pulls are just wasted, never wrong. A failed pull only means wp-env pulls
+            # the image itself, as it always did, so this step cannot fail the job.
+            -   name: Start pulling the wp-env Docker images
+                continue-on-error: true
+                env:
+                    IMAGES: wordpress wordpress:cli mariadb:lts
+                run: |
+                    (
+                        set +e
+                        start=$(date +%s)
+                        for image in $IMAGES; do
+                            docker pull --quiet "$image" || echo "Could not pull $image, wp-env will pull it." &
+                        done
+                        wait
+                        echo "Pulled in $(( $(date +%s) - start )) seconds."
+                        touch "$RUNNER_TEMP/docker-pull.done"
+                    ) > "$RUNNER_TEMP/docker-pull.log" 2>&1 < /dev/null &
 
             # The plugin will not boot without the Strauss-prefixed vendor directory, which is
             # produced by Composer's post-install-cmd. PHP 7.4 matches the version the release
@@ -40,7 +71,9 @@ jobs:
                     coverage: none
 
             -   name: Install Composer dependencies
-                run: composer install --no-dev --no-progress --no-interaction
+                uses: ramsey/composer-install@v4
+                with:
+                    composer-options: --no-dev
 
             -   name: Set Up Node
                 uses: actions/setup-node@v7
@@ -48,16 +81,20 @@ jobs:
                     node-version-file: .nvmrc
                     cache: npm
 
+            # The same flags as the release build in .puprc. --prefer-offline takes packages from the
+            # npm cache that setup-node restored without asking the registry about each one first;
+            # --no-audit and --no-fund skip two network calls that change nothing here.
             -   name: Install Node dependencies
-                run: npm ci
+                run: npm ci --prefer-offline --no-audit --no-fund
 
-            # webpack's filesystem cache (see webpack.config.js). The lockfile is the key because
-            # webpack invalidates individual entries by content hash itself; a cache from an older
-            # commit is just a warmer start.
+            # webpack's filesystem cache (see webpack.config.js). It sits in .cache/webpack, outside
+            # node_modules, so npm ci cannot delete it. The lockfile is in the key, but webpack
+            # invalidates individual entries by content hash itself; a cache from an older commit is
+            # just a warmer start.
             -   name: Cache webpack build cache
                 uses: actions/cache@v6
                 with:
-                    path: node_modules/.cache/webpack
+                    path: .cache/webpack
                     key: webpack-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
                     restore-keys: |
                         webpack-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
@@ -105,6 +142,19 @@ jobs:
                     done
                     echo "{\"plugins\": [$plugins], \"config\": {\"WP_DEBUG_DISPLAY\": false}}" > .wp-env.override.json
                     echo "E2E_ADDONS=${ADDONS//,/ }" >> "$GITHUB_ENV"
+
+            # Waits for the pulls started earlier, so wp-env does not start a second download of an
+            # image that is still coming, and prints how long they took. Gives up after two minutes
+            # and lets wp-env carry on; never fails the job.
+            -   name: Wait for the Docker image pulls
+                continue-on-error: true
+                timeout-minutes: 3
+                run: |
+                    for _ in $(seq 120); do
+                        [ -f "$RUNNER_TEMP/docker-pull.done" ] && break
+                        sleep 1
+                    done
+                    cat "$RUNNER_TEMP/docker-pull.log" 2>/dev/null || true
 
             -   name: Start WordPress environment
                 run: npx wp-env start

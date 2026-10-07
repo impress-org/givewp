@@ -20,7 +20,7 @@
         "stellarwp/admin-notices": "^2.0.1",
         "stellarwp/arrays": "^1.3",
         "moneyphp/money": "^3.3.3",
-        "stellarwp/harbor": "^1.6"
+        "stellarwp/harbor": "^1.6.2"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
@@ -67,7 +67,7 @@
         "release:prep": "bin/release-prep.sh",
         "release:test": "npx --no-install bats tests/bats",
         "pup": [
-            "sh -c 'test -f ./bin/pup.phar || curl -o bin/pup.phar -L -C - https://github.com/stellarwp/pup/releases/download/2.0.0/pup.phar'",
+            "sh -c 'test -f ./bin/pup.phar || { curl -fsSL --create-dirs -o bin/pup.phar.tmp https://github.com/stellarwp/pup/releases/download/2.0.0/pup.phar && mv bin/pup.phar.tmp bin/pup.phar; }'",
             "sh -c 'PATH=$(echo \"$PATH\" | tr \":\" \"\\n\" | grep -v \"/vendor/bin$\" | paste -sd: -) exec php ./bin/pup.phar \"$@\"' --"
         ]
     },
@@ -149,8 +149,16 @@
     },
     "repositories": [
         {
-            "type": "git",
-            "url": "https://github.com/wordpress/wordpress-develop.git"
+            "type": "package",
+            "package": {
+                "name": "wordpress/wordpress",
+                "version": "dev-trunk",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://github.com/WordPress/wordpress-develop/archive/bb54668189a5fcd58d57eeb4dae8c0922e3aed79.zip",
+                    "reference": "bb54668189a5fcd58d57eeb4dae8c0922e3aed79"
+                }
+            }
         }
     ]
 }

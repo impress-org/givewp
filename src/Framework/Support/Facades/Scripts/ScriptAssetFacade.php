@@ -38,10 +38,11 @@ class ScriptAssetFacade
      *
      * @return array{dependencies: array<string>, version: int|string}
      *
+     * @since 4.18.0 Fall back to the plugin version when the asset file is missing.
      * @since 2.32.0
      */
     public function get(string $path): array
     {
-        return file_exists($path) ? require $path : ['dependencies' => [], 'version' => filemtime($path)];
+        return file_exists($path) ? require $path : ['dependencies' => [], 'version' => GIVE_VERSION];
     }
 }

@@ -13,6 +13,14 @@ on:
     # Allows you to use this workflow as part of another workflow
     workflow_call:
 
+# A new push to a pull request cancels the run still going for the older commit; nobody reads the
+# result of a commit that is no longer the head. Only pull requests: every other run (a push to
+# develop or master, a release, a manual run) gets a group of its own from its run id, so it is
+# never cancelled and never waits behind another run.
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
     # This workflow contains a single job called "test"
@@ -25,31 +33,31 @@ jobs:
             contents: read
 
         strategy:
+            # One failing combination says nothing about the others, so let them all finish.
+            fail-fast: false
             matrix:
                 php: [7.4, 8.4]
                 mysql: [ 'mysql:5.7', 'mysql:8.0' ]
-                wordpress: [ '6.5', latest ]
+                # `minimum` is the "Requires at least" line of readme.txt, so the oldest version
+                # tested is always the oldest one the plugin says it supports.
+                wordpress: [ minimum, latest ]
 
         services:
-            # --log-error-verbosity=1 keeps the server log to errors only; at the default level MySQL
-            # writes a note for every TRUNCATE, and the test suite runs thousands of them.
-            mysql57:
-                image: mysql:5.7
-                ports:
-                    - 3306
-                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh mysql:5.7 -c "exec docker-entrypoint.sh mysqld --log-error-verbosity=1"
-
             # This was a total pain to get setup. The default authentication plugin changed in MySQL 8 and is incompatible
             # with WordPress. So it needs to be set back to mysql_native_password. The best way to do this is to use the
             # command option in docker to apply it once the container is set up... but Github Actions does not support this.
             # The workaround is to execute the command in the options, but it is VITAL that it is the LAST option and that any
             # environment variables are added via options. DO NOT ADD THE ENV LINE IN YAML. You've been warned.
+            # MySQL 5.7 accepts the same flag, so one service covers every matrix entry and each job starts only the
+            # database it tests against.
+            # --log-error-verbosity=1 keeps the server log to errors only; at the default level MySQL
+            # writes a note for every TRUNCATE, and the test suite runs thousands of them.
             # @see https://github.com/docker-library/mysql/issues/690
-            mysql80:
-                image: mysql:8.0
+            mysql:
+                image: ${{ matrix.mysql }}
                 ports:
                     - 3306
-                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password --log-error-verbosity=1"
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh ${{ matrix.mysql }} -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password --log-error-verbosity=1"
 
         # Steps represent a sequence of tasks that will be executed as part of the job
         steps:
@@ -58,39 +66,48 @@ jobs:
                 with:
                     # Nothing here pushes over git, and the job goes on to run third-party actions.
                     persist-credentials: false
-            -   name: Cache dependencies
-                uses: actions/cache@v6
+
+            # vendor/ exactly as Composer builds it on PHP 7.4, the PHP the release is built on.
+            # Setting up a second PHP is the slowest step of this job (about 45 seconds), so on a
+            # cache hit the build PHP and the install are skipped. Safe to reuse because the key is
+            # every input of that build: composer.lock and composer.json (packages, Strauss config,
+            # autoload rules) and the Strauss version pinned in bin/strauss-installar.sh. The autoload
+            # files use paths relative to vendor/, so the folder works from any checkout. Bump v1 to
+            # throw the cache away by hand.
+            -   name: Restore vendor
+                id: vendor-cache
+                uses: actions/cache/restore@v6
                 with:
-                    path: ~/.composer/cache/files
-                    key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+                    path: vendor
+                    key: vendor-v1-${{ runner.os }}-php7.4-${{ hashFiles('composer.json', 'composer.lock', 'bin/strauss-installar.sh') }}
 
             # @link https://github.com/spatie/laravel-activitylog/blob/master/.github/workflows/run-tests.yml
             -   name: Set Up PHP for build
+                if: steps.vendor-cache.outputs.cache-hit != 'true'
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: 7.4
                     extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                     coverage: none
 
+            # Caches Composer's downloads, keyed on composer.lock and the PHP version.
             -   name: Install composer dependencies
-                run: composer install --no-progress --no-interaction
+                if: steps.vendor-cache.outputs.cache-hit != 'true'
+                uses: ramsey/composer-install@v4
+
+            # Saved before anything else touches vendor/, so the cache holds the plain PHP 7.4 build.
+            # When several jobs miss at once, the first one saves and the others log a warning.
+            -   name: Save vendor
+                if: steps.vendor-cache.outputs.cache-hit != 'true'
+                uses: actions/cache/save@v6
+                with:
+                    path: vendor
+                    key: ${{ steps.vendor-cache.outputs.cache-primary-key }}
 
             -   name: Store MySQL details in environment
                 run: |
-                    case "$MYSQL_VERSION" in
-                      'mysql:5.7')
-                        MYSQL_PORT="${{ job.services.mysql57.ports['3306'] }}"
-                        MYSQL_PASS='N0Tweak!@123!'
-                        ;;
-                      'mysql:8.0')
-                        MYSQL_PORT="${{ job.services.mysql80.ports['3306'] }}"
-                        MYSQL_PASS='N0Tweak!@123!'
-                        ;;
-                    esac
-                    echo "mysql_port=$MYSQL_PORT" >> "$GITHUB_ENV"
-                    echo "mysql_pass=$MYSQL_PASS" >> "$GITHUB_ENV"
-                env:
-                    MYSQL_VERSION: ${{ matrix.mysql }}
+                    echo "mysql_port=${{ job.services.mysql.ports['3306'] }}" >> "$GITHUB_ENV"
+                    echo "mysql_pass=N0Tweak!@123!" >> "$GITHUB_ENV"
 
             -   name: Configure MySQL
                 run: mysql -uroot --password='${{ env.mysql_pass}}' -h127.0.0.1 --port=${{env.mysql_port}}
@@ -111,10 +128,165 @@ jobs:
                   sudo apt-get install -y subversion
                   svn --version
 
+            -   name: Resolve the WordPress version
+                run: |
+                    version=latest
+                    if [ "$WORDPRESS" = minimum ]; then
+                        version=$(sed -n 's/^Requires at least: *//p' readme.txt)
+                        [[ "$version" =~ ^[0-9]+\.[0-9]+$ ]] || { echo "::error::No usable \"Requires at least\" in readme.txt: '$version'"; exit 1; }
+                    fi
+                    echo "wordpress_version=$version" >> "$GITHUB_ENV"
+                env:
+                    WORDPRESS: ${{ matrix.wordpress }}
+
             -   name: Set Up Tests
-                run: bash tests/includes/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
+                run: bash tests/includes/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ env.wordpress_version }}
 
             -   name: Run Tests
                 run: composer test
                 env:
                     DB_PORT: ${{ env.mysql_port }}
+
+    # The same suite inside wp-env, the way `npm run test:php` runs it locally. wp-env's database
+    # is MariaDB and cannot be changed, which makes this the MariaDB half of the matrix: the job
+    # above covers MySQL.
+    test-mariadb:
+        runs-on: blacksmith-4vcpu-ubuntu-2404
+
+        # A run takes a few minutes. The cap is for a database that stops answering, which would
+        # otherwise hold the job, and a release waiting on it, for six hours.
+        timeout-minutes: 20
+
+        # The job reads the checkout and runs the test suite, nothing else.
+        permissions:
+            contents: read
+
+        strategy:
+            # One failing combination says nothing about the others, so let them all finish.
+            fail-fast: false
+            matrix:
+                php: [7.4, 8.4]
+                # `minimum` is the "Requires at least" line of readme.txt, so the oldest version
+                # tested is always the oldest one the plugin says it supports.
+                wordpress: [ minimum, latest ]
+
+        env:
+            WP_ENV_PHP_VERSION: ${{ matrix.php }}
+
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    # Nothing here pushes over git, and the job goes on to run third-party actions.
+                    persist-credentials: false
+
+            # wp-env pulls these images when it starts, and pulling them is part of the time that
+            # step takes. WP_ENV_PHP_VERSION (the matrix PHP) picks the PHP tags. Started now, in
+            # the background, the download overlaps with the steps in between.
+            # The images are the ones wp-env's generated Dockerfiles and docker-compose.yml name
+            # (FROM wordpress..., FROM wordpress:cli..., image: mariadb:lts); if a later wp-env names
+            # others, these pulls are just wasted, never wrong. A failed pull only means wp-env pulls
+            # the image itself, as it always did, so this step cannot fail the job.
+            -   name: Start pulling the wp-env Docker images
+                continue-on-error: true
+                env:
+                    IMAGES: wordpress:php${{ matrix.php }} wordpress:cli-php${{ matrix.php }} mariadb:lts
+                run: |
+                    (
+                        set +e
+                        start=$(date +%s)
+                        for image in $IMAGES; do
+                            docker pull --quiet "$image" || echo "Could not pull $image, wp-env will pull it." &
+                        done
+                        wait
+                        echo "Pulled in $(( $(date +%s) - start )) seconds."
+                        touch "$RUNNER_TEMP/docker-pull.done"
+                    ) > "$RUNNER_TEMP/docker-pull.log" 2>&1 < /dev/null &
+
+            # vendor/ exactly as Composer builds it on PHP 7.4, the PHP the release is built on.
+            # Setting up PHP is a slow step here (about 35 seconds), so on a cache hit the build PHP
+            # and the install are skipped. Safe to reuse because the key is
+            # every input of that build: composer.lock and composer.json (packages, Strauss config,
+            # autoload rules) and the Strauss version pinned in bin/strauss-installar.sh. The autoload
+            # files use paths relative to vendor/, so the folder works from any checkout. Bump v1 to
+            # throw the cache away by hand.
+            -   name: Restore vendor
+                id: vendor-cache
+                uses: actions/cache/restore@v6
+                with:
+                    path: vendor
+                    key: vendor-v1-${{ runner.os }}-php7.4-${{ hashFiles('composer.json', 'composer.lock', 'bin/strauss-installar.sh') }}
+
+            # Composer runs on the runner, on the PHP version the release is built with. The tests
+            # run on the container's PHP. Not needed at all when vendor/ comes from the cache.
+            -   name: Set Up PHP for build
+                if: steps.vendor-cache.outputs.cache-hit != 'true'
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 7.4
+                    coverage: none
+
+            # Caches Composer's downloads, keyed on composer.lock and the PHP version.
+            -   name: Install composer dependencies
+                if: steps.vendor-cache.outputs.cache-hit != 'true'
+                uses: ramsey/composer-install@v4
+
+            # Saved before anything else touches vendor/, so the cache holds the plain PHP 7.4 build.
+            # When several jobs miss at once, the first one saves and the others log a warning.
+            -   name: Save vendor
+                if: steps.vendor-cache.outputs.cache-hit != 'true'
+                uses: actions/cache/save@v6
+                with:
+                    path: vendor
+                    key: ${{ steps.vendor-cache.outputs.cache-primary-key }}
+
+            -   name: Set Up Node
+                uses: actions/setup-node@v7
+                with:
+                    node-version-file: .nvmrc
+
+            # wp-env is the only Node package this job uses, so it is installed alone, at the
+            # version package.json pins, rather than with everything else in the lockfile.
+            -   name: Install wp-env
+                run: npm install --global "@wordpress/env@$(node -p "require('./package.json').devDependencies['@wordpress/env']")"
+
+            # wp-env takes the WordPress to install from WP_ENV_CORE.
+            -   name: Resolve the WordPress version
+                run: |
+                    core=https://wordpress.org/latest.zip
+                    if [ "$WORDPRESS" = minimum ]; then
+                        version=$(sed -n 's/^Requires at least: *//p' readme.txt)
+                        [[ "$version" =~ ^[0-9]+\.[0-9]+$ ]] || { echo "::error::No usable \"Requires at least\" in readme.txt: '$version'"; exit 1; }
+                        core=https://wordpress.org/wordpress-$version.zip
+                    fi
+                    echo "WP_ENV_CORE=$core" >> "$GITHUB_ENV"
+                env:
+                    WORDPRESS: ${{ matrix.wordpress }}
+
+            # Waits for the pulls started earlier, so wp-env does not start a second download of an
+            # image that is still coming, and prints how long they took. Gives up after two minutes
+            # and lets wp-env carry on; never fails the job.
+            -   name: Wait for the Docker image pulls
+                continue-on-error: true
+                timeout-minutes: 3
+                run: |
+                    for _ in $(seq 120); do
+                        [ -f "$RUNNER_TEMP/docker-pull.done" ] && break
+                        sleep 1
+                    done
+                    cat "$RUNNER_TEMP/docker-pull.log" 2>/dev/null || true
+
+            -   name: Start wp-env
+                run: npm run env:test:start
+
+            # The install ends with `composer dump-autoload --optimize`, which writes every class in
+            # src/ and tests/ into a class map. A restored vendor/ has the map of the commit that
+            # saved it, so a class this pull request moved or deleted would point at a missing file.
+            # Rebuilding the map fixes that. It runs in the container because the runner has no PHP
+            # on a cache hit. (The "test" job needs no such step: its "Reload Composer autoload"
+            # step already rebuilds the autoloader on every run.)
+            -   name: Rebuild the Composer class map
+                if: steps.vendor-cache.outputs.cache-hit == 'true'
+                run: npm run env:test -- run cli --env-cwd=wp-content/plugins/give composer dump-autoload --optimize
+
+            -   name: Run Tests
+                run: npm run test:php

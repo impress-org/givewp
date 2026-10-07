@@ -104,6 +104,24 @@ class Revenue
     }
 
     /**
+     * @since TBD
+     *
+     * @return false|int
+     */
+    public function updateRevenueFormId(Donation $donation)
+    {
+        global $wpdb;
+
+        return DB::update(
+            $wpdb->give_revenue,
+            ['form_id' => $donation->formId],
+            ['donation_id' => $donation->id],
+            ['%d'],
+            ['%d']
+        );
+    }
+
+    /**
      * Validate new revenue data.
      *
      * @since TBD Escape exception message.

@@ -234,8 +234,7 @@ class Give_Notices {
 			return;
 		}
 
-		$output         = '';
-		$trusted_output = '';
+		$output = '';
 
 		foreach ( self::$notices as $notice_id => $notice ) {
 			// Check flag set to true to show notice.
@@ -245,8 +244,8 @@ class Give_Notices {
 
 			// Render custom html.
 			if ( ! empty( $notice['description_html'] ) ) {
-				// description_html is trusted, code-controlled markup that register_notice() explicitly documents as accepting custom HTML (including form controls); kept out of wp_kses_post() below, which would strip elements this API is meant to support.
-				$trusted_output .= "{$notice['description_html']} \n";
+				// description_html is trusted, code-controlled markup that register_notice() explicitly documents as accepting custom HTML (including form controls); appended raw, not wp_kses_post()'d below, which would strip elements this API is meant to support.
+				$output .= "{$notice['description_html']} \n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- see the note above.
 				continue;
 			}
 
@@ -262,8 +261,8 @@ class Give_Notices {
 
 			$css_id = ( false === strpos( $notice['id'], 'give' ) ? "give-{$notice['id']}" : $notice['id'] );
 
-			$css_class = 'give-notice notice ' . ( empty( $notice['dismissible'] ) ? 'non' : 'is' ) . "-dismissible {$notice['type']} notice-{$notice['type']}";
-			$output   .= sprintf(
+			$css_class      = 'give-notice notice ' . ( empty( $notice['dismissible'] ) ? 'non' : 'is' ) . "-dismissible {$notice['type']} notice-{$notice['type']}";
+			$notice_output  = sprintf(
 				'<div id="%1$s" class="%2$s" data-dismissible="%3$s" data-dismissible-type="%4$s" data-dismiss-interval="%5$s" data-notice-id="%6$s" data-security="%7$s" data-dismiss-interval-time="%8$s" style="display: none">' . " \n",
 				$css_id,
 				$css_class,
@@ -275,11 +274,14 @@ class Give_Notices {
 				$notice['dismiss_interval_time']
 			);
 
-			$output .= ( 0 === strpos( $notice['description'], '<div' ) || 0 === strpos( $notice['description'], '<p' ) ? $notice['description'] : "<p>{$notice['description']}</p>" );
-			$output .= "</div> \n";
+			$notice_output .= ( 0 === strpos( $notice['description'], '<div' ) || 0 === strpos( $notice['description'], '<p' ) ? $notice['description'] : "<p>{$notice['description']}</p>" );
+			$notice_output .= "</div> \n";
+
+			// Escaped per-notice, in registration order, so description_html notices (appended raw above) keep their original position relative to these.
+			$output .= wp_kses_post( $notice_output );
 		}
 
-		echo wp_kses_post( $output ) . $trusted_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $trusted_output is register_notice()'s documented description_html param, trusted code-controlled markup; see the note above.
+		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- each piece above is either wp_kses_post()'d (regular notices) or trusted code-controlled markup (description_html); see the notes above.
 
 		$this->print_js();
 	}

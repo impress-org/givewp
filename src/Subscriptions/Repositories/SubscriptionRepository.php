@@ -161,6 +161,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.11.0 add campaign_id column to insert
      * @since 2.24.0 add payment_mode column to insert
      * @since 2.21.0 replace actions with givewp_subscription_creating and givewp_subscription_created
@@ -213,7 +214,7 @@ class SubscriptionRepository
 
             Log::error('Failed creating a subscription', compact('subscription'));
 
-            throw new $exception('Failed creating a subscription');
+            throw new Exception('Failed creating a subscription', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -227,6 +228,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.11.0 add campaign_id column to update
      * @since 3.17.0 add expiration column to update
      * @since 2.24.0 add payment_mode column to update
@@ -273,7 +275,7 @@ class SubscriptionRepository
 
             Log::error('Failed updating a subscription', compact('subscription'));
 
-            throw new $exception('Failed updating a subscription');
+            throw new Exception('Failed updating a subscription', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -282,6 +284,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 2.21.0 replace actions with givewp_subscription_deleting and givewp_subscription_deleted
      * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6
@@ -307,7 +310,7 @@ class SubscriptionRepository
 
             Log::error('Failed deleting a subscription', compact('subscription'));
 
-            throw new $exception('Failed deleting a subscription');
+            throw new Exception('Failed deleting a subscription', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -318,6 +321,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.8.0
      *
      * @throws Exception
@@ -344,7 +348,7 @@ class SubscriptionRepository
 
             Log::error('Failed trashing a subscription', compact('subscription'));
 
-            throw new $exception('Failed trashing a subscription');
+            throw new Exception('Failed trashing a subscription', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -355,6 +359,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.12.0
      *
      * @throws Exception
@@ -381,7 +386,7 @@ class SubscriptionRepository
 
             Log::error('Failed untrashing a subscription', compact('subscription'));
 
-            throw new $exception('Failed untrashing a subscription');
+            throw new Exception('Failed untrashing a subscription', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -417,7 +422,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 2.19.6
      *
      * @throws Exception
@@ -426,7 +431,7 @@ class SubscriptionRepository
     {
         foreach (Subscription::propertyKeys() as $key) {
             if (array_key_exists($key, $columns)) {
-                throw new InvalidArgumentException(sprintf("'%s' is not a legacy column.", esc_html($key)));
+                throw new InvalidArgumentException("'$key' is not a legacy column."); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $key always comes from Subscription::propertyKeys(), a hardcoded internal property list, never user input.
             }
         }
 
@@ -441,7 +446,7 @@ class SubscriptionRepository
 
             Log::error('Failed updating a subscription', compact('subscriptionId', 'columns'));
 
-            throw new $exception('Failed updating a subscription');
+            throw new Exception('Failed updating a subscription', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -539,7 +544,6 @@ class SubscriptionRepository
     }
 
     /**
-     * @since TBD Escape exception message.
      * @since 2.19.6
      *
      * @return void
@@ -548,7 +552,7 @@ class SubscriptionRepository
     {
         foreach ($this->requiredSubscriptionProperties as $key) {
             if (!isset($subscription->$key)) {
-                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
+                throw new InvalidArgumentException("'$key' is required."); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $key always comes from $this->requiredSubscriptionProperties, a hardcoded internal property list, never user input.
             }
         }
 

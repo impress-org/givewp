@@ -271,6 +271,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
+     * @since TBD use 30 days, as described, instead of the exact boundary
      * @since 4.8.0
      */
     public function testGetPlatformFeePercentageReturnsZeroWhenInGracePeriodViaLastActiveDate(): void
@@ -287,7 +288,7 @@ class TestLicenseRepository extends TestCase
         // Set last active date to 30 days ago (within 33-day grace period)
         update_option(
             LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE,
-            current_time('timestamp', true) - $this->repository->getGracePeriodInSeconds()
+            current_time('timestamp', true) - (30 * DAY_IN_SECONDS)
         );
 
         $this->assertSame(0.0, $this->repository->getPlatformFeePercentage());
@@ -316,6 +317,7 @@ class TestLicenseRepository extends TestCase
 
 
     /**
+     * @since TBD stay a minute inside the boundary so a clock tick can't push it past
      * @since 4.8.0
      */
     public function testGetPlatformFeePercentageReturnsZeroWhenAtGracePeriodBoundary(): void
@@ -329,10 +331,11 @@ class TestLicenseRepository extends TestCase
             ]
         );
 
-        // Set last active date to exactly 33 days ago (at boundary)
+        // Set last active date to just inside 33 days ago (at boundary). The repository reads the clock
+        // again, so an exact boundary fails whenever a second ticks over in between.
         update_option(
             LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE,
-            current_time('timestamp', true) - $this->repository->getGracePeriodInSeconds()
+            current_time('timestamp', true) - $this->repository->getGracePeriodInSeconds() + MINUTE_IN_SECONDS
         );
 
         $this->assertSame(0.0, $this->repository->getPlatformFeePercentage());

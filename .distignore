@@ -9,6 +9,7 @@
 /.wordpress-org
 /.cursor
 /.claude
+/.cache
 /docs
 
 /bin
@@ -83,6 +84,7 @@ webpack.mix.js
 docker-compose.yml
 wp-textdomain.js
 .wp-env.json
+.wp-env.test.json
 
 # GH Action files
 DOCKER_ENV

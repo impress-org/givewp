@@ -49,6 +49,7 @@ class EventTicketTypeRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
@@ -81,7 +82,7 @@ class EventTicketTypeRepository
 
             Log::error('Failed creating an event ticket type', compact('eventTicketType'));
 
-            throw new $exception('Failed creating an event ticket type');
+            throw new Exception('Failed creating an event ticket type', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         $eventTicketType->id = $eventTicketTypeId;
@@ -94,6 +95,7 @@ class EventTicketTypeRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
@@ -125,7 +127,7 @@ class EventTicketTypeRepository
 
             Log::error('Failed updating an event ticket type', compact('eventTicketType'));
 
-            throw new $exception('Failed updating an event ticket type');
+            throw new Exception('Failed updating an event ticket type', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         $eventTicketType->updatedAt = $updatedDateTime;
@@ -136,6 +138,7 @@ class EventTicketTypeRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.6.0
      *
      * @throws Exception
@@ -155,7 +158,7 @@ class EventTicketTypeRepository
 
             Log::error('Failed deleting an event ticket type', compact('eventTicketType'));
 
-            throw new $exception('Failed deleting an event ticket type');
+            throw new Exception('Failed deleting an event ticket type', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');

@@ -1,0 +1,345 @@
+name: Plugin Check
+
+# Runs WordPress.org's Plugin Check against the built plugin: the same files the release zip ships,
+# so tests, dotfiles, node_modules and other dev-only files cannot cause false positives.
+#
+# GiveWP still has known Plugin Check problems, fixed one ticket at a time. Until they are all gone
+# the job does not fail on every error. The "check" job runs wordpress/plugin-check-action. The
+# "report" job counts errors and warnings per rule and compares them with
+# .github/plugin-check/baseline.json: a rule with more errors than the baseline fails the check.
+# More warnings, or fewer of either, only add a notice. See docs/testing.md#plugin-check.
+#
+# Three jobs, so the third-party action never holds a token that can write:
+#   start   posts "in progress" on the pull request.
+#   check   builds the zip and runs the action. Read-only token.
+#   report  compares the results with the baseline and replaces the comment with the result.
+#
+# The action also tries to post its own comment. With a read-only token that call fails (it logs
+# "Failed to post PR comment" and carries on), so the only comment is ours. Once every error count
+# is zero, drop "start" and "report", remove continue-on-error from "check", and let the action
+# fail on any error and post its own comment.
+
+on:
+    pull_request:
+    push:
+        branches: [ develop, master ]
+    workflow_dispatch:
+
+# A new push to a pull request cancels the run still going for the older commit.
+concurrency:
+    group: plugin-check-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+
+env:
+    # Hidden line that marks the sticky pull request comment. Keep it in sync with ratchet.sh.
+    COMMENT_MARKER: '<!-- givewp-plugin-check -->'
+    # Only pull requests from this repository get a comment: a fork's token is read-only.
+    COMMENT: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
+
+jobs:
+    start:
+        name: Plugin Check start
+        if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        permissions:
+            issues: write
+            pull-requests: write
+        steps:
+            # The sticky comment follows the pattern of Kadence's stellar-zip.yml: one comment per
+            # pull request, found by a hidden marker line and replaced on every run. The badge time
+            # is Eastern Time: %Z prints EST in winter and EDT in summer.
+            -   name: Make the start badge
+                id: badge
+                run: |
+                    stamp=$(LC_ALL=C TZ='America/New_York' date '+%m/%d %I:%M %p %Z')
+                    stamp=${stamp// /%20}
+                    stamp=${stamp//\//%2F}
+                    echo "url=https://img.shields.io/badge/Check%20Started-${stamp}-blue" >> "$GITHUB_OUTPUT"
+
+            -   name: Find the Plugin Check comment
+                id: find_comment
+                continue-on-error: true
+                uses: peter-evans/find-comment@v4
+                with:
+                    issue-number: ${{ github.event.pull_request.number }}
+                    comment-author: 'github-actions[bot]'
+                    body-includes: ${{ env.COMMENT_MARKER }}
+
+            -   name: Post "in progress"
+                continue-on-error: true
+                uses: peter-evans/create-or-update-comment@v5
+                with:
+                    comment-id: ${{ steps.find_comment.outputs.comment-id }}
+                    issue-number: ${{ github.event.pull_request.number }}
+                    edit-mode: replace
+                    body: |
+                        ${{ env.COMMENT_MARKER }}
+                        ⏳ Plugin Check in progress
+
+                        ![Plugin Check started](${{ steps.badge.outputs.url }})
+
+    check:
+        name: Plugin Check run
+        runs-on: blacksmith-4vcpu-ubuntu-2404
+
+        # Build, WordPress start and the check together take about 15 minutes. The cap is for a
+        # container that stops answering.
+        timeout-minutes: 30
+
+        # Read-only on purpose: this job runs a third-party action. Its own attempt to post a
+        # comment fails with this token, which is what keeps the pull request to one comment.
+        permissions:
+            contents: read
+
+        steps:
+            # The repo goes into source/, so the workspace root has no .wp-env.json. The repo's own
+            # file mounts the repo root as a plugin, and the action would merge into it.
+            -   uses: actions/checkout@v7
+                with:
+                    path: source
+                    # Nothing here pushes over git, and the job goes on to run third-party code.
+                    persist-credentials: false
+
+            # The action's wp-env pulls these images when it starts, and pulling them is part of the
+            # time that step takes. The action writes its own .wp-env.json with no PHP version, so
+            # wp-env uses the default tags. Started now, in the background, the download overlaps
+            # with the build.
+            # The images are the ones wp-env's generated Dockerfiles and docker-compose.yml name
+            # (FROM wordpress..., FROM wordpress:cli..., image: mariadb:lts); if a later wp-env names
+            # others, these pulls are just wasted, never wrong. A failed pull only means wp-env pulls
+            # the image itself, as it always did, so this step cannot fail the job.
+            -   name: Start pulling the wp-env Docker images
+                continue-on-error: true
+                env:
+                    IMAGES: wordpress wordpress:cli mariadb:lts
+                run: |
+                    (
+                        set +e
+                        start=$(date +%s)
+                        for image in $IMAGES; do
+                            docker pull --quiet "$image" || echo "Could not pull $image, wp-env will pull it." &
+                        done
+                        wait
+                        echo "Pulled in $(( $(date +%s) - start )) seconds."
+                        touch "$RUNNER_TEMP/docker-pull.done"
+                    ) > "$RUNNER_TEMP/docker-pull.log" 2>&1 < /dev/null &
+
+            # The release builds vendor on PHP 7.4, so this does too.
+            -   name: Set Up PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 7.4
+                    coverage: none
+
+            -   name: Find the Composer cache
+                id: composer-cache
+                working-directory: source
+                run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+            -   name: Cache dependencies
+                uses: actions/cache@v6
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: composer-${{ hashFiles('source/composer.lock') }}
+
+            -   name: Set Up Node
+                uses: actions/setup-node@v7
+                with:
+                    node-version-file: source/.nvmrc
+                    cache: npm
+                    cache-dependency-path: source/package-lock.json
+
+            # webpack's filesystem cache (see webpack.config.js). It sits in .cache/webpack, outside
+            # node_modules, because pup build runs npm ci and npm ci deletes node_modules first. The
+            # key has its own prefix: webpack stores absolute paths, and this job builds in source/
+            # while the e2e workflow builds at the workspace root, so their caches do not fit each
+            # other. Each commit saves a new entry; the restore key picks the newest one for the same
+            # lockfile. A stale cache is safe, because webpack checks every entry against the files.
+            -   name: Restore the webpack cache
+                id: webpack-cache
+                uses: actions/cache/restore@v6
+                with:
+                    path: source/.cache/webpack
+                    key: webpack-source-${{ runner.os }}-${{ hashFiles('source/package-lock.json') }}-${{ github.sha }}
+                    restore-keys: |
+                        webpack-source-${{ runner.os }}-${{ hashFiles('source/package-lock.json') }}-
+
+            # The same pup steps the release zip uses, so .puprc and .distignore decide what is
+            # checked. The zip's top folder is named after zip_name in .puprc: give. The last line
+            # makes sure the webpack cache never ends up in the zip.
+            -   name: Build the plugin zip
+                working-directory: source
+                run: |
+                    composer run -q pup -- --version > /dev/null
+                    composer -- pup build
+                    version=$(php -d display_errors=0 bin/pup.phar get-version --dev)
+                    composer -- pup package "$version"
+                    name=$(php -d display_errors=0 bin/pup.phar zip-name "$version")
+                    mkdir -p "$GITHUB_WORKSPACE/build"
+                    unzip -q "$name.zip" -d "$GITHUB_WORKSPACE/build"
+                    test -f "$GITHUB_WORKSPACE/build/give/give.php"
+                    test ! -e "$GITHUB_WORKSPACE/build/give/.cache"
+
+            # Saved now, before the third-party action below runs, so nothing it does can end up in
+            # a cache that later runs restore. Skipped when this exact commit already saved one.
+            -   name: Save the webpack cache
+                if: steps.webpack-cache.outputs.cache-hit != 'true'
+                uses: actions/cache/save@v6
+                with:
+                    path: source/.cache/webpack
+                    key: ${{ steps.webpack-cache.outputs.cache-primary-key }}
+
+            # Waits for the pulls started earlier, so wp-env does not start a second download of an
+            # image that is still coming, and prints how long they took. Gives up after two minutes
+            # and lets wp-env carry on; never fails the job.
+            -   name: Wait for the Docker image pulls
+                continue-on-error: true
+                timeout-minutes: 3
+                run: |
+                    for _ in $(seq 120); do
+                        [ -f "$RUNNER_TEMP/docker-pull.done" ] && break
+                        sleep 1
+                    done
+                    cat "$RUNNER_TEMP/docker-pull.log" 2>/dev/null || true
+
+            # Fails on any error, which is expected for now: the report job decides pass or fail
+            # from the counts. The action writes its results to $RUNNER_TEMP/plugin-check-results.txt
+            # and uploads them as the plugin-check-results artifact.
+            -   name: Run Plugin Check
+                continue-on-error: true
+                uses: wordpress/plugin-check-action@v1
+                with:
+                    build-dir: ${{ github.workspace }}/build/give
+                    # No categories input: every category runs (general, plugin_repo, security,
+                    # performance, accessibility). The five runtime checks are excluded: they
+                    # boot WordPress with a scratch table prefix (wp_pc_), GiveWP's custom tables
+                    # do not exist under it, and the whole run dies with "Error: Database Query"
+                    # (SOFT-4567). Activating GiveWP first does not help. Remove this once that
+                    # is solved.
+                    exclude-checks: |
+                        enqueued_scripts_scope
+                        enqueued_scripts_size
+                        enqueued_styles_scope
+                        enqueued_styles_size
+                        non_blocking_scripts
+
+    report:
+        name: Plugin Check
+        needs: [ start, check ]
+        # "start" is skipped for forks and non-pull-request runs, which would skip this job too.
+        if: ${{ !cancelled() }}
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+
+        # Writes one sticky comment on the pull request.
+        permissions:
+            contents: read
+            issues: write
+            pull-requests: write
+
+        steps:
+            # Only the ratchet script and the baseline are needed.
+            -   uses: actions/checkout@v7
+                with:
+                    sparse-checkout: .github/plugin-check
+                    persist-credentials: false
+
+            -   name: Set file paths
+                run: |
+                    {
+                        echo "RESULTS=$RUNNER_TEMP/results/plugin-check-results.txt"
+                        echo "COMMENT_BODY=$RUNNER_TEMP/plugin-check-comment.md"
+                        echo "NEW_BASELINE=$RUNNER_TEMP/report/baseline.json"
+                    } >> "$GITHUB_ENV"
+
+            # The action uploaded its results under this name. Missing when the build or the check
+            # broke before then: the compare step below reports that.
+            -   name: Download the results
+                continue-on-error: true
+                uses: actions/download-artifact@v8
+                with:
+                    name: plugin-check-results
+                    path: ${{ runner.temp }}/results
+
+            # A baseline made from this run, uploaded even when the compare below fails. To lower
+            # the committed baseline after a fix, copy this file over .github/plugin-check/.
+            -   name: Write a new baseline
+                run: |
+                    mkdir -p "$RUNNER_TEMP/report"
+                    if [ -f "$RESULTS" ]; then
+                        cp "$RESULTS" "$RUNNER_TEMP/report/"
+                        PLUGIN_CHECK_BASELINE="$NEW_BASELINE" .github/plugin-check/ratchet.sh --update "$RESULTS"
+                    fi
+
+            -   name: Upload the report
+                id: artifact
+                uses: actions/upload-artifact@v7
+                with:
+                    name: plugin-check-report
+                    path: ${{ runner.temp }}/report
+                    if-no-files-found: ignore
+
+            -   name: Make the finish badge
+                id: finish_badge
+                run: |
+                    stamp=$(LC_ALL=C TZ='America/New_York' date '+%m/%d %I:%M %p %Z')
+                    stamp=${stamp// /%20}
+                    stamp=${stamp//\//%2F}
+                    echo "url=https://img.shields.io/badge/Check%20Finished-${stamp}-darkgreen" >> "$GITHUB_OUTPUT"
+
+            # The baseline of the branch the pull request targets. The comment shows the change
+            # against it, so a pull request that fixes errors and lowers baseline.json still shows
+            # what it fixed. Missing on other events, or when the target has no baseline yet: the
+            # script then falls back to the baseline in the pull request.
+            -   name: Get the target branch baseline
+                if: ${{ github.event_name == 'pull_request' }}
+                continue-on-error: true
+                uses: actions/checkout@v7
+                with:
+                    ref: ${{ github.event.pull_request.base.sha }}
+                    path: target
+                    sparse-checkout: .github/plugin-check/baseline.json
+                    persist-credentials: false
+
+            # Fails the job when a rule has more errors than the baseline. Also writes the short
+            # comment body and the same text to the job summary.
+            -   name: Compare with the baseline
+                env:
+                    TARGET_BASELINE: ${{ github.workspace }}/target/.github/plugin-check/baseline.json
+                    COMMENT_BADGE: ${{ steps.finish_badge.outputs.url }}
+                    ARTIFACT_URL: ${{ steps.artifact.outputs.artifact-url }}
+                    RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                run: .github/plugin-check/ratchet.sh --comment-file "$COMMENT_BODY" "$RESULTS"
+
+            # When the build or the check broke, the script never wrote a body. Say so instead of
+            # leaving "in progress" behind.
+            -   name: Prepare the comment
+                if: ${{ !cancelled() && env.COMMENT == 'true' }}
+                env:
+                    BADGE: ${{ steps.finish_badge.outputs.url }}
+                    RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                run: |
+                    if [ ! -s "$COMMENT_BODY" ]; then
+                        printf '%s\n❌ Plugin Check could not run\n\n![Plugin Check finished](%s)\n\n📎 [Run](%s)\n' "$COMMENT_MARKER" "$BADGE" "$RUN_URL" > "$COMMENT_BODY"
+                    fi
+
+            -   name: Find the Plugin Check comment
+                id: find_comment
+                if: ${{ !cancelled() && env.COMMENT == 'true' }}
+                continue-on-error: true
+                uses: peter-evans/find-comment@v4
+                with:
+                    issue-number: ${{ github.event.pull_request.number }}
+                    comment-author: 'github-actions[bot]'
+                    body-includes: ${{ env.COMMENT_MARKER }}
+
+            -   name: Post the result
+                if: ${{ !cancelled() && env.COMMENT == 'true' }}
+                continue-on-error: true
+                uses: peter-evans/create-or-update-comment@v5
+                with:
+                    comment-id: ${{ steps.find_comment.outputs.comment-id }}
+                    issue-number: ${{ github.event.pull_request.number }}
+                    edit-mode: replace
+                    body-path: ${{ env.COMMENT_BODY }}

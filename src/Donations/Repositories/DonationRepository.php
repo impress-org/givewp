@@ -194,6 +194,7 @@ class DonationRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.8.1 Moved campaignId assignment logic to getCoreDonationMetaForDatabase method to eliminate code duplication.
      * @since 3.20.0 store meta using native WP functions
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
@@ -241,7 +242,7 @@ class DonationRepository
 
             Log::error('Failed creating a donation', compact('donation'));
 
-            throw new $exception('Failed creating a donation');
+            throw new Exception('Failed creating a donation', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -263,6 +264,8 @@ class DonationRepository
     }
 
     /**
+     * @since TBD Refresh the form title when the donation moves to another form
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.6.0 Turn createdAt property updatable
      * @since 2.23.1 Use give_update_meta() method to update entries on give_donationmeta table
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
@@ -276,6 +279,10 @@ class DonationRepository
     public function update(Donation $donation)
     {
         $this->validateDonation($donation);
+
+        if ($donation->isDirty('formId') && ! $donation->isDirty('formTitle')) {
+            $donation->formTitle = $this->getFormTitle($donation->formId);
+        }
 
         Hooks::doAction('givewp_donation_updating', $donation);
 
@@ -307,7 +314,7 @@ class DonationRepository
 
             Log::error('Failed updating a donation', compact('donation'));
 
-            throw new $exception('Failed updating a donation');
+            throw new Exception('Failed updating a donation', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         $donation->updatedAt = $now;
@@ -318,6 +325,7 @@ class DonationRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 2.21.0 replace actions with givewp_donation_deleting and givewp_donation_deleted
      * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6
@@ -343,7 +351,7 @@ class DonationRepository
 
             Log::error('Failed deleting a donation', compact('donation'));
 
-            throw new $exception('Failed deleting a donation');
+            throw new Exception('Failed deleting a donation', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -354,6 +362,7 @@ class DonationRepository
     }
 
      /**
+      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.6.0
      *
      * @throws Exception
@@ -380,7 +389,7 @@ class DonationRepository
 
             Log::error('Failed trashing a donation', compact('donation'));
 
-            throw new $exception('Failed trashing a donation');
+            throw new Exception('Failed trashing a donation', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -391,6 +400,7 @@ class DonationRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.12.0
      *
      * @throws Exception
@@ -417,7 +427,7 @@ class DonationRepository
 
             Log::error('Failed untrashing a donation', compact('donation'));
 
-            throw new $exception('Failed untrashing a donation');
+            throw new Exception('Failed untrashing a donation', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');

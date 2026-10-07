@@ -349,7 +349,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 											<div class="give-order-tx-id give-admin-box-inside">
 												<p>
 													<strong><?php esc_html_e( 'Transaction ID:', 'give' ); ?> <span class="give-tooltip give-icon give-icon-question"  data-tooltip="<?php echo sprintf( esc_attr__( 'The transaction ID within %s.', 'give' ), esc_attr( $gateway ) ); ?>"></span></strong>&nbsp;
-													<?php echo esc_html( apply_filters( "give_payment_details_transaction_id-{$gateway}", $transaction_id, $payment_id ) ); ?>
+													<?php echo wp_kses_post( apply_filters( "give_payment_details_transaction_id-{$gateway}", $transaction_id, $payment_id ) ); ?>
 												</p>
 											</div>
 										<?php endif; ?>

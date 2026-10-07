@@ -174,7 +174,7 @@ class DonorRepository
 
             Log::error('Failed creating a donor', compact('donor'));
 
-            throw new $exception('Failed creating a donor');
+            throw new Exception('Failed creating a donor', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
