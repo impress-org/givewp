@@ -1,4 +1,0 @@
-significance: patch
-type: fix
-entry: Escaped dynamic values in exception messages thrown by the query builder clauses, list table columns, and form design/payment gateway registrars
-timestamp: 2026-09-26T00:00:00.000Z

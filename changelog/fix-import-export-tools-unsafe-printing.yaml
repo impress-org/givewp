@@ -1,4 +1,0 @@
-significance: patch
-type: fix
-entry: Escaped translated text output in the import and export tools and the email notification table
-timestamp: 2026-09-26T00:00:00.000Z

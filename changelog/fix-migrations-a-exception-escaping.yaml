@@ -1,4 +1,0 @@
-significance: patch
-type: fix
-entry: Escaped exception messages thrown by campaign, donation, donor, log, revenue and framework migrations
-timestamp: 2026-09-26T05:09:52.000Z
