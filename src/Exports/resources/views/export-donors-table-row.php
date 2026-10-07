@@ -1,3 +1,4 @@
+<?php if (!defined('ABSPATH')) { exit; } ?>
 <tr class="give-export-donors">
     <td scope="row" class="row-title">
         <h3>
