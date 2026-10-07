@@ -232,6 +232,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Show success notice
 		 *
+		 * @since TBD Add translators comments.
          * @since 2.25.3 Add nonce check.
 		 * @since 1.8.14
 		 */
@@ -248,31 +249,41 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 			$report_html = array(
 				'duplicate_donor'    => array(
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s duplicate %2$s detected', 'give' ),
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s duplicate %2$s detected', 'give' ),
 					__( 'donor', 'give' ),
 					__( 'donors', 'give' ),
 				),
 				'create_donor'       => array(
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s %2$s created', 'give' ),
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s %2$s will be created', 'give' ),
 					__( 'donor', 'give' ),
 					__( 'donors', 'give' ),
 				),
 				'create_form'        => array(
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s donation %2$s created', 'give' ),
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s donation %2$s will be created', 'give' ),
 					__( 'form', 'give' ),
 					__( 'forms', 'give' ),
 				),
 				'duplicate_donation' => array(
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s duplicate %2$s detected', 'give' ),
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s duplicate %2$s detected', 'give' ),
 					__( 'donation', 'give' ),
 					__( 'donations', 'give' ),
 				),
 				'create_donation'    => array(
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s %2$s imported', 'give' ),
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s %2$s will be imported', 'give' ),
 					__( 'donation', 'give' ),
 					__( 'donations', 'give' ),
@@ -290,17 +301,20 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						if ( $success ) {
 							if ( $dry_run ) {
 								printf(
+									/* translators: %s: Number of donations, wrapped in bold tags */
 									_n( 'Dry run import complete! %s donation processed', 'Dry run import complete! %s donations processed', $total, 'give' ),
 									"<strong>{$total}</strong>"
 								);
 							} else {
 								printf(
+									/* translators: %s: Number of donations, wrapped in bold tags */
 									_n( 'Import complete! %s donation processed', 'Import complete! %s donations processed', $total, 'give' ),
 									"<strong>{$total}</strong>"
 								);
 							}
 						} else {
 							printf(
+								/* translators: %s: Number of donations, wrapped in bold tags */
 								_n( 'Failed to import %s donation', 'Failed to import %s donations', $total, 'give' ),
 								"<strong>{$total}</strong>"
 							);

@@ -42,6 +42,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
         /**
 		 * Render give_currency_code_preview field type
 		 *
+         * @since TBD Number the placeholders, move the outer markup out of a translatable string and add translators comments.
 		 * @since 2.33.4 added nonce to give_sendwp_remote_install
 		 * @since  2.3.0
 		 * @access public
@@ -56,10 +57,11 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
             $connected .= __( 'Access your SendWP account', 'give' );
             $connected .= '</a>.';
 
-            $disconnected = sprintf(
-                __( '<em><strong>Note:</strong> Email sending is currently disabled. <a href="%s">Click here</a> to enable it.</em>', 'give' ),
+            $disconnected = '<em>' . sprintf(
+                /* translators: %s: URL of the SendWP page */
+                __( '<strong>Note:</strong> Email sending is currently disabled. <a href="%s">Click here</a> to enable it.', 'give' ),
                 esc_url( admin_url( '/tools.php?page=sendwp' ) )
-            );
+            ) . '</em>';
 
             // Checks if SendWP is connected
             $client_connected = function_exists( 'sendwp_client_connected' ) && sendwp_client_connected() ? true : false;
@@ -91,7 +93,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
                     </th>
                     <td class="give-forminp">
                         <div class="give-field-description">
-                            <?php _e( 'GiveWP recommends SendWP to ensure quick and reliable delivery of all emails sent from your site, such as donation receipts, recurring donation renewal reminders, password resets, and more.', 'give' ); ?> <?php printf( __( '%sLearn more%s', 'give' ), '<a href="https://go.givewp.com/sendwpinternal" target="_blank" rel="noopener noreferrer">', '</a>' ); ?>
+                            <?php _e( 'GiveWP recommends SendWP to ensure quick and reliable delivery of all emails sent from your site, such as donation receipts, recurring donation renewal reminders, password resets, and more.', 'give' ); ?> <?php printf( /* translators: 1: Opening link tag, 2: Closing link tag */ __( '%1$sLearn more%2$s', 'give' ), '<a href="https://go.givewp.com/sendwpinternal" target="_blank" rel="noopener noreferrer">', '</a>' ); ?>
                         </div>
 
                         <br style="margin-bottom: 0.5rem;"/>
