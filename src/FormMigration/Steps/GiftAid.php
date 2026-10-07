@@ -9,6 +9,7 @@ class GiftAid extends FormMigrationStep
 {
 
     /**
+     * @since TBD Use the give text domain.
      * @since 3.4.0
      *
      * @return void
@@ -30,8 +31,8 @@ class GiftAid extends FormMigrationStep
             'title' => $this->formV2->getGiftAidTitle(),
             'description' => $this->formV2->getGiftAidDescription(),
             'longExplanationEnabled' => $this->formV2->getGiftAidLongExplanationEnabled(),
-            'linkText' => __('Tell me more', 'give-gift-aid'),
-            'modalHeader' => __('What is Gift Aid?', 'give-gift-aid'),
+            'linkText' => __('Tell me more', 'give'),
+            'modalHeader' => __('What is Gift Aid?', 'give'),
             'longExplanation' => $this->formV2->getGiftAidLongExplanation(),
             'checkboxLabel' => $this->formV2->getGiftAidCheckboxLabel(),
             'agreementText' => $this->formV2->getGiftAidAgreementText(),
