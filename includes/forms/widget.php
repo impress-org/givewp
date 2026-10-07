@@ -163,8 +163,7 @@ class Give_Forms_Widget extends WP_Widget {
 	 *
 	 * @param array $instance Current settings.
 	 *
-	 * @since TBD Escape translated output.
-	 * @since TBD Escape output.
+	 * @since TBD Escape output, including translated strings.
 	 */
 	public function form( $instance ) {
 		$defaults = [

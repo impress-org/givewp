@@ -1,7 +1,6 @@
 <?php
 /**
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  */
 ?>
 <div class="form_grid_options_wrap inner-panel">

@@ -272,8 +272,7 @@ class DonationFormsAdminPage
     /**
      * Display a button on the old donation forms table that switches to the React view
      *
-     * @since TBD Escape translated output.
-     * @since TBD Escape output.
+     * @since TBD Escape output, including translated strings.
      * @since 2.20.0
      */
     public function renderReactSwitch()

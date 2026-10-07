@@ -640,8 +640,7 @@ add_action( 'admin_head', '_give_test_mode_notice_admin_bar_css' );
 /**
  * Add Link to Import page in from donation archive and donation single page
  *
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since 1.8.13
  */
 function give_import_page_link_callback() {
@@ -1114,8 +1113,7 @@ add_action( 'user_profile_update_errors', 'give_validate_user_profile', 10, 3 );
 /**
  * Show Donor Information on User Profile Page.
  *
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since 2.0
  *
  * @param object $user User Object.

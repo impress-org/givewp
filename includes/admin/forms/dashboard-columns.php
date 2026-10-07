@@ -59,8 +59,7 @@ add_filter( 'manage_edit-give_forms_columns', 'give_form_columns' );
 /**
  * Render Give Form Columns
  *
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since 3.16.0 Add new filters for the "donations count" and "revenue" columns
  * @since 1.0
  *
@@ -473,8 +472,7 @@ add_filter( 'pre_get_posts', 'give_search_form_by_id' );
 /**
  * Outputs advanced filter html in Give forms list admin screen.
  *
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @sicne 2.4.0
  *
  * @param $which

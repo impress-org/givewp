@@ -301,8 +301,7 @@ add_action( 'give_reports_view_gateways', 'give_reports_gateways_table' );
 /**
  * Renders the Reports Earnings Graphs
  *
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since 3.22.1 added permissions check
  * @since 1.0
  * @return void

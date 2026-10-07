@@ -152,8 +152,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	/**
 	 * Add donation search filter.
 	 *
-	 * @since TBD Escape translated output.
-	 * @since TBD Escape output.
+	 * @since TBD Escape output, including translated strings.
 	 *
 	 * @return void
 	 */

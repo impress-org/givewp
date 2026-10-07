@@ -1,8 +1,7 @@
 <?php
 
 /**
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  */
 
 echo '<div class="givewp-donation-options inner-panel">

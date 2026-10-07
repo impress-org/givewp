@@ -72,8 +72,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Add donors search filter.
 	 *
-	 * @since TBD Escape translated output.
-	 * @since TBD Escape output.
+	 * @since TBD Escape output, including translated strings.
 	 * @since 3.5.0 Escape search query string.
 	 * @since 2.4.0
 	 * @return void

@@ -647,8 +647,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Stripe Webhook field.
 		 *
-		 * @since TBD Escape translated output.
-		 * @since TBD Escape output.
+		 * @since TBD Escape output, including translated strings.
 		 * @since 2.5.0
 		 *
 		 * @param $value

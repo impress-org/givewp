@@ -2,8 +2,7 @@
 /**
  * Offsite payment gateway Iframe redirect handler view.
  *
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since 2.7.0
  */
 

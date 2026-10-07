@@ -17,8 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Show report graphs
  *
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since 1.0
  * @return void
  */
@@ -250,8 +249,7 @@ function give_reports_graph() {
 /**
  * Show report graphs of a specific donation form.
  *
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since 1.0
  *
  * @param int $form_id

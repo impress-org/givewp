@@ -1,7 +1,6 @@
 <?php
 /**
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  */
 
 use Give\Helpers\Form\Template as FormTemplateUtils;

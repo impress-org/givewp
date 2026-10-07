@@ -156,8 +156,7 @@ class Give_i18n_Banner {
 	/**
 	 * Outputs a promo box
 	 *
-	 * @since TBD Escape translated output.
-	 * @since TBD Escape output.
+	 * @since TBD Escape output, including translated strings.
 	 */
 	public function promo() {
 

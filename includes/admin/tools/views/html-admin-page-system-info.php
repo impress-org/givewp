@@ -2,8 +2,7 @@
 /**
  * Admin View: System Info
  *
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  */
 
 use Give\Framework\Migrations\MigrationsRunner;

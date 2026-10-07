@@ -306,8 +306,7 @@ function give_render_donor_view( $view, $callbacks ) {
 /**
  * View a donor
  *
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since 4.16.4 Escaped the donor company and phone output.
  * @since 3.7.0 Add "phone" field
  * @since  1.0
@@ -1041,8 +1040,7 @@ function give_donor_view( $donor ) {
 /**
  * View the notes of a donor.
  *
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since 4.16.6 Escaped the donor name output in the donor notes header.
  * @since 4.6.0 Escape donor note
  * @since  1.0
@@ -1119,8 +1117,7 @@ function give_donor_notes_view( $donor ) {
 /**
  * The donor delete view.
  *
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since 4.16.6 Escaped the donor name output in the delete donor view.
  * @since  1.0
  *

@@ -759,8 +759,7 @@ function give_add_button_open_form( $form_id, $args ) {
  *
  * @since 3.1.0 Add the give_user_info_fields_user_info filter
  * @since 2.25.0 add radio group to conditionally enable/disable company name field
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since      1.0
  *
  * @param int $form_id The form ID.
@@ -1099,8 +1098,7 @@ add_action( 'give_register_fields_before', 'give_user_info_fields' );
  * @param int $form_id The form ID.
  *
  * @return void
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since  1.0
  */
 function give_get_cc_form( $form_id ) {
@@ -1467,8 +1465,7 @@ add_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
  * @param int $form_id The form ID.
  *
  * @return string
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since  1.0
  */
 function give_get_register_fields( $form_id ) {
@@ -1607,8 +1604,7 @@ add_action( 'give_donation_form_register_fields', 'give_get_register_fields' );
  * @param int $form_id The form ID.
  *
  * @return string
- * @since TBD Escape translated output.
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since  1.0
  */
 function give_get_login_fields( $form_id ) {
