@@ -48,6 +48,7 @@ class Give_Donor_Stats {
 	/**
 	 *  Get total donated amount
 	 *
+	 * @since TBD Prepare SQL with placeholders.
 	 * @since  2.2.0
 	 * @access public
 	 *
@@ -70,16 +71,24 @@ class Give_Donor_Stats {
 		$args['fields'] = 'ids';
 		$args['number'] = - 1;
 
-		$donation_query  = new Give_Payments_Query( $args );
-		$donations       = $donation_query->get_payments();
-		$donation_id_str = implode( '\',\'', $donations );
+		$donation_query = new Give_Payments_Query( $args );
+		$donations      = $donation_query->get_payments();
 
-		$query = "SELECT {$donation_id_col} as id, meta_value as total
+		// No donations means no rows to sum, so skip the query.
+		if ( empty( $donations ) ) {
+			return $donated_amount;
+		}
+
+		$donated_amounts = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT %i as id, meta_value as total
 					FROM {$wpdb->donationmeta}
 					WHERE meta_key='_give_payment_total'
-					AND {$donation_id_col} IN ('{$donation_id_str}')";
-
-		$donated_amounts = $wpdb->get_results( $query, ARRAY_A );
+					AND %i IN (" . implode( ',', array_fill( 0, count( $donations ), '%s' ) ) . ')',
+				array_merge( [ $donation_id_col, $donation_id_col ], $donations )
+			),
+			ARRAY_A
+		);
 
 		if ( ! empty( $donated_amounts ) ) {
 			foreach ( $donated_amounts as $donation ) {
