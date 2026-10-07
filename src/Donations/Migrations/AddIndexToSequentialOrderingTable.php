@@ -63,6 +63,7 @@ class AddIndexToSequentialOrderingTable extends Migration
                 return;
             }
 
+            // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- the previous exception is chained, not printed.
             throw new DatabaseMigrationException('An error occurred while adding an index to the sequential ordering table', 0, $exception);
         }
     }
