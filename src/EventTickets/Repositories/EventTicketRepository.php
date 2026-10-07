@@ -294,6 +294,7 @@ class EventTicketRepository
     /**
      * Check if a database table exists
      *
+     * @since TBD Inline the prepared query.
      * @since 4.6.0
      */
     private function tableExists(string $tableName): bool
@@ -301,9 +302,8 @@ class EventTicketRepository
         global $wpdb;
 
         $prefixedTableName = $wpdb->prefix . $tableName;
-        $query = $wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($prefixedTableName));
 
-        return (bool) $wpdb->get_var($query);
+        return (bool) $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($prefixedTableName)));
     }
 
     /**

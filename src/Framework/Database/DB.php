@@ -53,6 +53,7 @@ class DB
     /**
      * A convenience method for the $wpdb->prepare method
      *
+     * @since TBD Document why the query is safe.
      * @since 2.9.6
      *
      * @param string $query
@@ -66,7 +67,7 @@ class DB
     {
         global $wpdb;
 
-        return $wpdb->prepare($query, ...$args);
+        return $wpdb->prepare($query, ...$args); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- thin wrapper over wpdb::prepare(); callers pass the query and its arguments.
     }
 
     /**
