@@ -27,17 +27,26 @@ class Page
     /**
      * Dismiss the Setup Page.
      *
+     * @since TBD Check the capability, sanitize the nonce and use a safe redirect.
      * @since 4.10.0 redirect to campaigns page
      * @since 2.8.0
      */
     public function dismissSetupPage()
     {
-        if (wp_verify_nonce($_GET['_wpnonce'], 'dismiss_setup_page')) {
-            give_update_option('setup_page_enabled', self::DISABLED);
-
-            wp_redirect(CampaignsAdminPage::getUrl());
-            exit;
+        if (! current_user_can('manage_give_settings')) {
+            return;
         }
+
+        $nonce = isset($_GET['_wpnonce']) ? sanitize_text_field(wp_unslash($_GET['_wpnonce'])) : '';
+
+        if (! wp_verify_nonce($nonce, 'dismiss_setup_page')) {
+            return;
+        }
+
+        give_update_option('setup_page_enabled', self::DISABLED);
+
+        wp_safe_redirect(CampaignsAdminPage::getUrl());
+        exit;
     }
 
     /**

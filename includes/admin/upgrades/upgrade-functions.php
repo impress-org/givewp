@@ -491,6 +491,7 @@ add_action( 'give_register_updates', 'give_show_upgrade_notices' );
  *
  * This function is usually triggered via AJAX
  *
+ * @since TBD Verify the nonce.
  * @since 1.0
  * @return void
  */
@@ -505,6 +506,8 @@ function give_trigger_upgrades() {
 			]
 		);
 	}
+
+	check_ajax_referer( 'give_trigger_upgrades' );
 
 	$give_version = get_option( 'give_version' );
 

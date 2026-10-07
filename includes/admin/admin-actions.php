@@ -98,12 +98,19 @@ add_action( 'admin_init', 'give_redirect_to_clean_url_admin_pages' );
  *
  * This code is used with AJAX call to hide outdated PHP notice for a short period of time
  *
+ * @since TBD Verify the nonce.
  * @since 1.8.9
  * @return void
  */
 function give_hide_outdated_php_notice() {
 
-	if ( ! isset( $_POST['_give_hide_outdated_php_notices_shortly'] ) || ! current_user_can( 'manage_give_settings' ) ) {
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
+		give_die();
+	}
+
+	check_ajax_referer( 'give_hide_outdated_php_notice' );
+
+	if ( ! isset( $_POST['_give_hide_outdated_php_notices_shortly'] ) ) {
 		give_die();
 	}
 
