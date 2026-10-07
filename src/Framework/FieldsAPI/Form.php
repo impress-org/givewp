@@ -42,6 +42,8 @@ class Form implements Node, Collection
     /**
      * @inheritDoc
      *
+     * @since TBD Escape exception message.
+     *
      * @param Section[] $nodes
      *
      * @throws TypeNotSupported
@@ -50,7 +52,7 @@ class Form implements Node, Collection
     {
         foreach ($nodes as $node) {
             if ( ! $node instanceof Section) {
-                throw new TypeNotSupported($node->getType());
+                throw new TypeNotSupported(esc_html($node->getType()));
             }
 
             $this->insert($node);

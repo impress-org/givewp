@@ -242,6 +242,8 @@ abstract class BaseEnum implements \JsonSerializable
     /**
      * Asserts valid enum value
      *
+     * @since TBD Escape exception message.
+     *
      * @psalm-pure
      * @psalm-assert T $value
      * @param mixed $value
@@ -250,7 +252,9 @@ abstract class BaseEnum implements \JsonSerializable
     private static function assertValidValueReturningKey($value): string
     {
         if (false === ($key = static::search($value))) {
-            throw new \UnexpectedValueException("Value '$value' is not part of the enum " . static::class);
+            throw new \UnexpectedValueException(
+                sprintf("Value '%s' is not part of the enum %s", esc_html(is_scalar($value) ? (string) $value : gettype($value)), static::class)
+            );
         }
 
         return $key;
@@ -288,6 +292,8 @@ abstract class BaseEnum implements \JsonSerializable
     /**
      * Returns a value when called statically like so: MyEnum::SOME_VALUE() given SOME_VALUE is a class constant
      *
+     * @since TBD Escape exception message.
+     *
      * @param string $name
      * @param array  $arguments
      *
@@ -302,8 +308,9 @@ abstract class BaseEnum implements \JsonSerializable
         if (!isset(self::$instances[$class][$name])) {
             $array = static::toArray();
             if (!isset($array[$name]) && !\array_key_exists($name, $array)) {
-                $message = "No static method or enum constant '$name' in class " . static::class;
-                throw new \BadMethodCallException($message);
+                throw new \BadMethodCallException(
+                    sprintf("No static method or enum constant '%s' in class %s", esc_html($name), static::class)
+                );
             }
             /** @psalm-suppress UnsafeGenericInstantiation */
             return self::$instances[$class][$name] = new static($array[$name]);

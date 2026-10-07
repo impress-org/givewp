@@ -1,6 +1,6 @@
 <?php
 /**
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  */
 
 global $post;
@@ -15,7 +15,7 @@ $registeredTemplates = Give()->templates->getTemplates();
 <div class="form_template_options_wrap inner-panel<?php
 echo $activatedTemplate ? ' has-activated-template' : ''; ?>">
     <strong class="templates-list-heading"><?php
-        _e('Available Form Templates', 'give'); ?></strong>
+        esc_html_e('Available Form Templates', 'give'); ?></strong>
     <div class="templates-list">
         <?php
         /* @var Template $template */
@@ -45,10 +45,10 @@ echo $activatedTemplate ? ' has-activated-template' : ''; ?>">
     <div class="form-template-introduction">
         <p>
             <?php
-            _e('What Are Form Templates?', 'give'); ?>
+            esc_html_e('What Are Form Templates?', 'give'); ?>
         </p>
         <p class="give-field-description form-template-description"><?php
-            _e(
+            esc_html_e(
                 'Form Templates allow you to change the appearance of a GiveWP donation form on your site. Each template has a different design, layout, and features. Choose the one that suits your taste and the requirements for your cause. Note: compatibility with add-ons and third-party plugins or themes is not guaranteed. Always thoroughly test your donation forms before going live!',
                 'give'
             ); ?></p>
@@ -70,10 +70,10 @@ echo $activatedTemplate ? ' has-activated-template' : ''; ?>">
     <div class="form-template-options-introduction">
         <strong>
             <?php
-            _e('Form Template Options', 'give'); ?>
+            esc_html_e('Form Template Options', 'give'); ?>
         </strong>
         <p class="give-field-description"><?php
-            _e(
+            esc_html_e(
                 'Customize the form template using the options below. See those customizations at any time using the "Preview" button.',
                 'give'
             ); ?></p>

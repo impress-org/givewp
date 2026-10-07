@@ -359,6 +359,8 @@ class LogRepository
     /**
      * Get log count by column name containing value
      *
+     * @since TBD Escape exception message.
+     *
      * @param string $columnName
      * @param string $value
      *
@@ -368,7 +370,7 @@ class LogRepository
     {
         if ( ! in_array($columnName, self::SORTABLE_COLUMNS, true)) {
             throw new InvalidArgumentException(
-                sprintf('Invalid column %s', $columnName)
+                sprintf('Invalid column %s', esc_html($columnName))
             );
         }
 

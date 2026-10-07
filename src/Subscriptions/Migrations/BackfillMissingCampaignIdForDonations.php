@@ -62,6 +62,7 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
     }
 
     /**
+     * @since TBD Escape exception message.
      * @inheritDoc
      * @throws DatabaseMigrationException
      */
@@ -88,7 +89,11 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
             $this->processDonationsBulk($donationIds);
 
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException('An error occurred while backfilling missing campaignId for donations', 0, $exception);
+            throw new DatabaseMigrationException(
+                'An error occurred while backfilling missing campaignId for donations',
+                0,
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
     }
 

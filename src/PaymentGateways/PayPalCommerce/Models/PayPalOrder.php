@@ -131,6 +131,7 @@ class PayPalOrder
     /**
      * Validate order given in array format.
      *
+     * @since TBD Escape exception message.
      * @since 2.9.0
      *
      * @param array $array
@@ -152,7 +153,7 @@ class PayPalOrder
             throw new InvalidArgumentException(
                 sprintf(
                     esc_html__('To create a PayPalOrder object, please provide valid %1$s', 'give'),
-                    implode(', ', $required)
+                    esc_html(implode(', ', $required))
                 )
             );
         }

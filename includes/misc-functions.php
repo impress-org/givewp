@@ -1501,8 +1501,7 @@ function give_recount_form_income_donation( $form_id = 0 ) {
  * @param array $default_attributes
  *
  * @return string
- * @since TBD Skip attribute names that aren't valid HTML attribute names.
- * @since TBD Escape every attribute value, not only "value".
+ * @since TBD Escape every attribute value, not only "value", and skip attribute names that aren't valid HTML attribute names.
  * @since 1.8.17
  */
 function give_get_attribute_str( $attributes, $default_attributes = [] ) {
@@ -1577,7 +1576,7 @@ function give_get_limit_display_donations() {
 /**
  * Add footer to the table when donor is view the donation history page with out login
  *
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since 1.8.17
  */
 function give_donation_history_table_end() {
@@ -1595,9 +1594,9 @@ function give_donation_history_table_end() {
 					<div class="give-security-column give-security-button-wrap">
 						<a href="#" data-email="<?php echo esc_attr( $email ); ?>" id="give-confirm-email-btn"
 						   class="give-confirm-email-btn give-btn">
-							<?php _e( 'Confirm Email', 'give' ); ?>
+							<?php esc_html_e( 'Confirm Email', 'give' ); ?>
 						</a>
-						<span><?php _e( 'Email Sent!', 'give' ); ?></span>
+						<span><?php esc_html_e( 'Email Sent!', 'give' ); ?></span>
 					</div>
 				</div>
 			</td>

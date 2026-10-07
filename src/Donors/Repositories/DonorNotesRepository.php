@@ -85,7 +85,7 @@ class DonorNotesRepository
 
             Log::error('Failed creating a donor note', compact('donorNote'));
 
-            throw new Exception('Failed creating a donor note', 0, $exception);
+            throw new Exception('Failed creating a donor note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::commit();
@@ -126,7 +126,7 @@ class DonorNotesRepository
 
             Log::error('Failed updating a donor note', compact('donorNote'));
 
-            throw new Exception('Failed updating a donor note', 0, $exception);
+            throw new Exception('Failed updating a donor note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::commit();
@@ -159,7 +159,7 @@ class DonorNotesRepository
 
             Log::error('Failed deleting a donor note', compact('donorNote'));
 
-            throw new Exception('Failed deleting a donor note', 0, $exception);
+            throw new Exception('Failed deleting a donor note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::commit();
@@ -180,6 +180,7 @@ class DonorNotesRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 4.4.0
      *
      * @return void
@@ -188,7 +189,7 @@ class DonorNotesRepository
     {
         foreach ($this->requiredDonorProperties as $key) {
             if ( ! isset($donorNote->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
 

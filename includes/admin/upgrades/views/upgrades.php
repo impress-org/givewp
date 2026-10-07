@@ -8,7 +8,7 @@
  * @subpackage  Admin/Upgrades
  * @copyright   Copyright (c) 2017, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since       1.8.12
  */
 
@@ -51,7 +51,7 @@ $give_updates = Give_Updates::get_instance();
 			<div id="give-db-updates" data-resume-update="<?php echo absint( $give_updates->is_doing_updates() ); ?>">
 				<div class="postbox-container">
 					<div class="postbox">
-						<h2 class="hndle"><?php _e( 'Database Updates', 'give' ); ?></h2>
+						<h2 class="hndle"><?php esc_html_e( 'Database Updates', 'give' ); ?></h2>
 						<div class="inside">
 							<div class="panel-content">
 								<p class="give-update-button">
@@ -94,19 +94,19 @@ $give_updates = Give_Updates::get_instance();
 											);
 											?>
 										<?php else : ?>
-											<?php _e( 'The updates have been paused.', 'give' ); ?>
+											<?php esc_html_e( 'The updates have been paused.', 'give' ); ?>
 										<?php endif; ?>
 									</span>
 
 									<?php if ( Give_Updates::$background_updater->is_paused_process() ) : ?>
 										<?php $is_disabled = isset( $_GET['give-restart-db-upgrades'] ) ? ' disabled' : ''; ?>
 										<button id="give-restart-upgrades" class="button button-primary alignright"
-												data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ) ); ?>"<?php echo esc_attr( $is_disabled ); ?>><?php _e( 'Restart Upgrades', 'give' ); ?></button>
+												data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ) ); ?>"<?php echo esc_attr( $is_disabled ); ?>><?php esc_html_e( 'Restart Upgrades', 'give' ); ?></button>
 									<?php elseif ( $give_updates->is_doing_updates() ) : ?>
 										<?php $is_disabled = isset( $_GET['give-pause-db-upgrades'] ) ? ' disabled' : ''; ?>
 										<button id="give-pause-upgrades" class="button button-primary alignright"
 												data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-pause-db-upgrades=1' ) ); ?>"<?php echo esc_attr( $is_disabled ); ?>>
-											<?php _e( 'Pause Upgrades', 'give' ); ?>
+											<?php esc_html_e( 'Pause Upgrades', 'give' ); ?>
 										</button>
 									<?php endif; ?>
 								</p>
@@ -161,7 +161,7 @@ $give_updates = Give_Updates::get_instance();
 			<div id="give-plugin-updates">
 				<div class="postbox-container">
 					<div class="postbox">
-						<h2 class="hndle"><?php _e( 'Add-on Updates', 'give' ); ?></h2>
+						<h2 class="hndle"><?php esc_html_e( 'Add-on Updates', 'give' ); ?></h2>
 						<div class="inside">
 							<div class="panel-content">
 								<p>

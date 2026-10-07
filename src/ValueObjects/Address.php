@@ -43,6 +43,7 @@ class Address implements ValueObjects
     /**
      * Take array and return object.
      *
+     * @since TBD Escape exception message.
      * @since 2.7.0
      *
      * @param array $array
@@ -57,7 +58,7 @@ class Address implements ValueObjects
 
         if (empty($array)) {
             throw new InvalidArgumentException(
-                'Invalid Address object, must have the exact following keys: ' . implode(', ', $expectedKeys)
+                'Invalid Address object, must have the exact following keys: ' . esc_html(implode(', ', $expectedKeys))
             );
         }
 

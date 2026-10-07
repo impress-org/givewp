@@ -110,7 +110,7 @@ class CampaignPageRepository
 
             Log::error('Failed creating a campaign page', [$campaignPage]);
 
-            throw new Exception('Failed creating a campaign page', 0, $exception);
+            throw new Exception('Failed creating a campaign page', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -154,7 +154,7 @@ class CampaignPageRepository
 
             Log::error('Failed updating a campaign page', [$campaignPage]);
 
-            throw new Exception('Failed updating a campaign page', 0, $exception);
+            throw new Exception('Failed updating a campaign page', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -186,7 +186,7 @@ class CampaignPageRepository
 
             Log::error('Failed deleting a campaign page', [$campaignPage]);
 
-            throw new Exception('Failed deleting a campaign page', 0, $exception);
+            throw new Exception('Failed deleting a campaign page', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -222,13 +222,14 @@ class CampaignPageRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 4.0.0
      */
     public function validate(CampaignPage $campaignPage)
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($campaignPage->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
     }

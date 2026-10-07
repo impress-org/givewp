@@ -186,6 +186,7 @@ trait ResponseTrait
     /**
      * Throws the response in a HttpResponseException instance.
      *
+     * @since TBD Escape exception message.
      * @since 2.18.0
      *
      * @return void
@@ -194,6 +195,6 @@ trait ResponseTrait
      */
     public function throwResponse()
     {
-        throw new HttpResponseException($this);
+        throw new HttpResponseException($this); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- response object, not output.
     }
 }

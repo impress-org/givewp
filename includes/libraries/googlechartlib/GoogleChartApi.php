@@ -118,7 +118,7 @@ class GoogleChartApi
 		if ( $method !== self::POST && $method !== self::GET )
 			throw new Exception(sprintf(
 				'Query method must be either GoogleChart::POST or GoogleChart::GET, "%s" given.',
-				$method
+				esc_html($method)
 			));
 
 		$this->query_method = $method;

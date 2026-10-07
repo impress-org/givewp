@@ -4,7 +4,7 @@
  *
  * This template is used to display the profile editor with [give_profile_editor]
  *
- * @since TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @copyright    Copyright (c) 2016, GiveWP
  * @license      https://opensource.org/licenses/gpl-license GNU Public License
  */
@@ -43,14 +43,14 @@ if ( is_user_logged_in() ) :
 
 	<form id="give_profile_editor_form" class="give-form" action="<?php echo esc_url( give_get_current_page_url() ); ?>" method="post">
 		<fieldset>
-			<legend id="give_profile_name_label"><?php _e( 'Profile', 'give' ); ?></legend>
+			<legend id="give_profile_name_label"><?php esc_html_e( 'Profile', 'give' ); ?></legend>
 
 			<h3 id="give_personal_information_label"
-				class="give-section-break"><?php _e( 'Change your Name', 'give' ); ?></h3>
+				class="give-section-break"><?php esc_html_e( 'Change your Name', 'give' ); ?></h3>
 
 			<p id="give_profile_first_name_wrap" class="form-row form-row-first form-row-responsive">
 				<label for="give_first_name">
-					<?php _e( 'First Name', 'give' ); ?>
+					<?php esc_html_e( 'First Name', 'give' ); ?>
 					<span class="give-required-indicator  ">*</span>
 				</label>
 				<input name="give_first_name" id="give_first_name" class="text give-input" type="text"
@@ -58,21 +58,21 @@ if ( is_user_logged_in() ) :
 			</p>
 
 			<p id="give_profile_last_name_wrap" class="form-row form-row-last form-row-responsive">
-				<label for="give_last_name"><?php _e( 'Last Name', 'give' ); ?></label>
+				<label for="give_last_name"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
 				<input name="give_last_name" id="give_last_name" class="text give-input" type="text"
 					   value="<?php echo esc_attr( $last_name ); ?>"/>
 			</p>
 
 			<?php if ( ! empty( $company_name ) ) : ?>
 				<p id="give_profile_company_name_wrap" class="form-row form-row-wide">
-					<label for="give_company_name"><?php _e( 'Company Name', 'give' ); ?></label>
+					<label for="give_company_name"><?php esc_html_e( 'Company Name', 'give' ); ?></label>
 					<input name="give_company_name" id="give_company_name" class="text give-input" type="text"
 						   value="<?php echo esc_attr( $company_name ); ?>"/>
 				</p>
 			<?php endif; ?>
 
 			<p id="give_profile_display_name_wrap" class="form-row form-row-first form-row-responsive">
-				<label for="give_display_name"><?php _e( 'Display Name', 'give' ); ?></label>
+				<label for="give_display_name"><?php esc_html_e( 'Display Name', 'give' ); ?></label>
 				<select name="give_display_name" id="give_display_name" class="select give-select">
 					<?php if ( ! empty( $current_user->first_name ) ) : ?>
 						<option <?php selected( $display_name, $current_user->first_name ); ?>
@@ -116,7 +116,7 @@ if ( is_user_logged_in() ) :
 
 			<p class="form-row form-row-last form-row-responsive">
 				<label for="give_email">
-					<?php _e( 'Email Address', 'give' ); ?>
+					<?php esc_html_e( 'Email Address', 'give' ); ?>
 					<span class="give-required-indicator  ">*</span>
 				</label>
 				<input name="give_email" id="give_email" class="text give-input required" type="email"
@@ -145,17 +145,17 @@ if ( is_user_logged_in() ) :
 			?>
 
 			<h3 id="give_profile_password_label"
-				class="give-section-break"><?php _e( 'Change your Password', 'give' ); ?></h3>
+				class="give-section-break"><?php esc_html_e( 'Change your Password', 'give' ); ?></h3>
 
 			<div id="give_profile_password_wrap" class="give-clearfix">
 				<p id="give_profile_password_wrap_1" class="form-row form-row-first form-row-responsive">
-					<label for="give_new_user_pass1"><?php _e( 'New Password', 'give' ); ?></label>
+					<label for="give_new_user_pass1"><?php esc_html_e( 'New Password', 'give' ); ?></label>
 					<input name="give_new_user_pass1" id="give_new_user_pass1" class="password give-input"
 						   type="password"/>
 				</p>
 
 				<p id="give_profile_password_wrap_2" class="form-row form-row-last form-row-responsive">
-					<label for="give_new_user_pass2"><?php _e( 'Re-enter Password', 'give' ); ?></label>
+					<label for="give_new_user_pass2"><?php esc_html_e( 'Re-enter Password', 'give' ); ?></label>
 					<input name="give_new_user_pass2" id="give_new_user_pass2" class="password give-input"
 						   type="password"/>
 					<?php
@@ -171,7 +171,7 @@ if ( is_user_logged_in() ) :
 				</p>
 			</div>
 
-			<p class="give_password_change_notice"><?php _e( 'Please note after changing your password, you must log back in.', 'give' ); ?></p>
+			<p class="give_password_change_notice"><?php esc_html_e( 'Please note after changing your password, you must log back in.', 'give' ); ?></p>
 
 			<?php
 			/**
@@ -191,7 +191,7 @@ if ( is_user_logged_in() ) :
 				<input type="hidden" name="give_redirect"
 					   value="<?php echo esc_url( give_get_current_page_url() ); ?>"/>
 				<input name="give_profile_editor_submit" id="give_profile_editor_submit" type="submit"
-					   class="give_submit" value="<?php _e( 'Save Changes', 'give' ); ?>"/>
+					   class="give_submit" value="<?php esc_attr_e( 'Save Changes', 'give' ); ?>"/>
 			</p>
 
 		</fieldset>
@@ -220,14 +220,14 @@ else :
 			switch ( $_GET['update_code'] ) {
 				case '2':
 					printf( '<p class="give_success"><strong>%1$s</strong> %2$s</p>', esc_html__( 'Success:', 'give' ), esc_html__( 'Your profile and password has been updated.', 'give' ) );
-					_e( 'Log in with your new credentials.', 'give' );
+					esc_html_e( 'Log in with your new credentials.', 'give' );
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_login_form() renders a full login form with input/button elements; wp_kses_post() would strip them, and its own values are escaped internally.
 					echo give_login_form();
 					break;
 
 				case '3':
 					printf( '<p class="give_success"><strong>%1$s</strong> %2$s</p>', esc_html__( 'Success:', 'give' ), esc_html__( 'Your password has been updated.', 'give' ) );
-					_e( 'Log in with your new credentials.', 'give' );
+					esc_html_e( 'Log in with your new credentials.', 'give' );
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_login_form() renders a full login form with input/button elements; wp_kses_post() would strip them, and its own values are escaped internally.
 					echo give_login_form();
 					break;
@@ -237,7 +237,7 @@ else :
 			}
 		}
 	} else {
-		_e( 'You need to log in to edit your profile.', 'give' );
+		esc_html_e( 'You need to log in to edit your profile.', 'give' );
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_login_form() renders a full login form with input/button elements; wp_kses_post() would strip them, and its own values are escaped internally.
 		echo give_login_form();
 	}
