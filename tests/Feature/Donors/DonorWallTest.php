@@ -54,7 +54,7 @@ class DonorWallTest extends TestCase
         );
 
         $this->assertStringContainsString(
-            "<span class='give-donor-container__image__name_initial'>" . esc_html($expectedInitials) . '</span>',
+            '<span class="give-donor-container__image__name_initial">' . esc_html($expectedInitials) . '</span>',
             $html
         );
     }
