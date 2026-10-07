@@ -858,7 +858,7 @@ if ( ! class_exists('Give_License') ) :
 		 */
 		private static function html_harbor_license_row() {
 			return sprintf(
-				'<div class="give-license-row give-clearfix"><div class="give-license__status"><span class="dashicons dashicons-yes"></span>&nbsp;%s</div></div>',
+				'<div class="give-license-row give-clearfix"><div class="give-license-top give-clearfix"><div class="give-license-top-column"><div class="give-license__status"><span class="dashicons dashicons-yes"></span>&nbsp;%s</div></div></div></div>',
 				sprintf(
 					/* translators: %s: URL of the Unified License Manager page. */
 					__( 'Licensed through your Liquid Web license. Manage it in the <a href="%s">Unified License Manager</a>.', 'give' ),
