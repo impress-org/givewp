@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 // same as default WP from wp-admin/admin-header.php.
 $wp_version_class = 'branch-' . str_replace(['.', ','], '-', floatval(get_bloginfo('version')));
 

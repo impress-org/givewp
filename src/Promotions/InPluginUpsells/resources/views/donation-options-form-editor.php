@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 echo '<div class="givewp-donation-options inner-panel">
     <div>
         <img src="' . GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/light-bulb-icon.svg' . '" alt="light-bulb-icon" />
