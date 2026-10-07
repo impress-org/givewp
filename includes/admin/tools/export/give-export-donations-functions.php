@@ -3,6 +3,10 @@
  * Give Export Donations Functions
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 
 /**
  * Return of meta keys for a donation form.
