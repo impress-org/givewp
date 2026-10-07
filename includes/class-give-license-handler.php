@@ -860,8 +860,8 @@ if ( ! class_exists('Give_License') ) :
 			return sprintf(
 				'<div class="give-license-row give-clearfix"><div class="give-license__status"><span class="dashicons dashicons-yes"></span>&nbsp;%s</div></div>',
 				sprintf(
-					/* translators: %s: URL of the Liquid Web Software Manager page. */
-					__( 'Licensed through your Liquid Web license. Manage it in the <a href="%s">Software Manager</a>.', 'give' ),
+					/* translators: %s: URL of the Unified License Manager page. */
+					__( 'Licensed through your Liquid Web license. Manage it in the <a href="%s">Unified License Manager</a>.', 'give' ),
 					esc_url( lw_harbor_get_license_page_url() )
 				)
 			);
