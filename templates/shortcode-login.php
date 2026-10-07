@@ -3,6 +3,10 @@
  * This template is used to display the login form with [give_login]
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $get_data = give_clean( filter_input_array( INPUT_GET ) );
 
 if ( ! is_user_logged_in() ) {
