@@ -2,7 +2,7 @@
 /**
  * Admin View: Exports
  *
- * @since TBD Escape output.
+ * @since TBD Escape output, use gmdate() instead of date(), and replace short echo tags.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -84,7 +84,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 // Year in year dropdown should begin from first donation year instead of only display first five recent year.
                                 $firstDonation = give()->donations->getFirstDonation();
                                 $firstDonationDate = $firstDonation->createdAt ?? null;
-                                $currentYear = date('Y', current_time('timestamp'));
+                                $currentYear = gmdate('Y', current_time('timestamp'));
 
                                 $start_year_dropdown = Give()->html->year_dropdown(
                                     'start_year',
@@ -101,7 +101,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 printf( esc_html__('%1$s to %2$s', 'give'), $start_year_dropdown . ' ' . Give()->html->month_dropdown('start_month'), $end_year_dropdown . ' ' . Give()->html->month_dropdown('end_month') );
                                 ?>
 								<input type="hidden" name="give-action" value="earnings_export"/>
-								<input type="hidden" name="give-nonce" value="<?= esc_attr( wp_create_nonce('give_earnings_export') ) ?>"/>
+								<input type="hidden" name="give-nonce" value="<?php echo esc_attr( wp_create_nonce('give_earnings_export') ); ?>"/>
 								<input type="submit" value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
 							</form>
 						</td>

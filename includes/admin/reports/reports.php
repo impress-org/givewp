@@ -325,6 +325,7 @@ add_action( 'give_reports_view_earnings', 'give_reports_earnings' );
 /**
  * Retrieves estimated monthly earnings and sales
  *
+ * @since TBD Use gmdate() instead of date().
  * @since 1.0
  * @return array
  */
@@ -344,9 +345,9 @@ function give_estimated_monthly_stats() {
 		$to_date_earnings = $stats->get_earnings( 0, 'this_month' );
 		$to_date_sales    = $stats->get_sales( 0, 'this_month' );
 
-		$current_day   = date( 'd', current_time( 'timestamp' ) );
-		$current_month = date( 'n', current_time( 'timestamp' ) );
-		$current_year  = date( 'Y', current_time( 'timestamp' ) );
+		$current_day   = gmdate( 'd', current_time( 'timestamp' ) );
+		$current_month = gmdate( 'n', current_time( 'timestamp' ) );
+		$current_year  = gmdate( 'Y', current_time( 'timestamp' ) );
 		$days_in_month = cal_days_in_month( CAL_GREGORIAN, $current_month, $current_year );
 
 		$estimated['earnings'] = ( $to_date_earnings / $current_day ) * $days_in_month;
