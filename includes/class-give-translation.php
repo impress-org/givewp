@@ -2,6 +2,10 @@
 
 use Give\Log\Log;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Translations
  *

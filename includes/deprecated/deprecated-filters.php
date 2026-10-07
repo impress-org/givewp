@@ -5,6 +5,10 @@
  * @package Give
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $give_map_deprecated_filters = give_deprecated_filters();
 
 foreach ( $give_map_deprecated_filters as $new => $old ) {
