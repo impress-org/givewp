@@ -5,6 +5,10 @@
  * @since 2.7.0
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 ?>
 <!DOCTYPE html>
 <html <?php
