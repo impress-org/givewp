@@ -74,11 +74,7 @@
     "autoload": {
         "psr-4": {
             "Give\\": "src/"
-        },
-        "files": [
-            "src/Framework/Http/Response/functions.php",
-            "src/FormMigration/functions.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

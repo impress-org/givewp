@@ -2,6 +2,10 @@
 
 use Give\Framework\Database\DB;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * This function is used to "redirect" shortcodes and blocks
  * to a migrated form ID, if one exists.
