@@ -154,6 +154,7 @@ class Give_Donors_Query {
 	 * query is run, or the filter on the arguments (existing mainly for backwards
 	 * compatibility).
 	 *
+	 * @since TBD Document why the query is safe.
 	 * @since  1.8.14
 	 * @access public
 	 *
@@ -180,10 +181,10 @@ class Give_Donors_Query {
 
 		if ( null === $this->donors ) {
 			if ( empty( $this->args['count'] ) ) {
-				$this->donors = $wpdb->get_results( $this->get_sql() );
+				$this->donors = $wpdb->get_results( $this->get_sql() ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare() fragments, intval, allowlisted table columns and compare operators, an ASC or DESC check, WP_Meta_Query and WP_Date_Query.
 				self::update_meta_cache( wp_list_pluck( (array) $this->donors, 'id' ) );
 			} else {
-				$this->donors = $wpdb->get_var( $this->get_sql() );
+				$this->donors = $wpdb->get_var( $this->get_sql() ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare() fragments, intval, allowlisted table columns and compare operators, an ASC or DESC check, WP_Meta_Query and WP_Date_Query.
 			}
 
 			Give_Cache::set_db_query( $cache_key, $this->donors );
@@ -204,6 +205,8 @@ class Give_Donors_Query {
 	/**
 	 * Get sql query from queried array.
 	 *
+	 * @since TBD Allow only known columns in the fields argument.
+	 * @since TBD Remove the placeholder escape hash, so the SQL text is the same on every call.
 	 * @since  2.0
 	 * @access public
 	 *
@@ -227,10 +230,10 @@ class Give_Donors_Query {
 		// Set fields.
 		$fields = "{$this->table_name}.*";
 		if ( ! empty( $this->args['fields'] ) && 'all' !== $this->args['fields'] ) {
-			if ( is_string( $this->args['fields'] ) ) {
-				$fields = "{$this->table_name}.{$this->args['fields']}";
-			} elseif ( is_array( $this->args['fields'] ) ) {
-				$fields = "{$this->table_name}." . implode( " , {$this->table_name}.", $this->args['fields'] );
+			$columns = $this->get_allowed_fields( $this->args['fields'] );
+
+			if ( ! empty( $columns ) ) {
+				$fields = "{$this->table_name}." . implode( " , {$this->table_name}.", $columns );
 			}
 		}
 
@@ -241,13 +244,60 @@ class Give_Donors_Query {
 
 		$orderby = $this->get_order_query();
 
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- fields are allowlisted table columns; table_name is the donors table.
 		$sql = $wpdb->prepare( "SELECT {$fields} FROM {$this->table_name} LIMIT %d,%d;", absint( $this->args['offset'] ), absint( $this->args['number'] ) );
 
 		// $where, $orderby and order already prepared query they can generate notice if you re prepare them in above.
 		// WordPress consider LIKE condition as placeholder if start with s,f, or d.
 		$sql = str_replace( 'LIMIT', "{$where} {$orderby} LIMIT", $sql );
 
+		// Prepared LIKE values hold a placeholder hash that changes on every request. Remove it, so the SQL can be used as a cache key.
+		// The SQL is never passed to prepare() again, so this is safe.
+		$sql = $wpdb->remove_placeholder_escape( $sql );
+
 		return $sql;
+	}
+
+	/**
+	 * Get the requested fields, but only when every one of them is a column of the donors table.
+	 *
+	 * @since TBD
+	 *
+	 * @param string|array $fields A column name, a comma separated list of column names or an array of column names.
+	 *
+	 * @return string[] The column names, or an empty array when the value is not valid.
+	 */
+	private function get_allowed_fields( $fields ) {
+		if ( is_string( $fields ) ) {
+			$fields = explode( ',', $fields );
+		}
+
+		if ( ! is_array( $fields ) ) {
+			return [];
+		}
+
+		$fields = array_map( 'trim', array_map( 'strval', $fields ) );
+
+		if ( array_diff( $fields, array_keys( Give()->donors->get_columns() ) ) ) {
+			return [];
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * Get a compare operator that is safe to use in the query.
+	 *
+	 * @since TBD
+	 *
+	 * @param mixed $compare The requested operator.
+	 *
+	 * @return string One of =, !=, >, >=, < or <=. Anything else gives =.
+	 */
+	private function get_compare_operator( $compare ) {
+		$compare = is_string( $compare ) ? trim( $compare ) : '';
+
+		return in_array( $compare, [ '=', '!=', '<>', '>', '>=', '<', '<=' ], true ) ? $compare : '=';
 	}
 
 	/**
@@ -288,6 +338,7 @@ class Give_Donors_Query {
 	/**
 	 * Set email where clause.
 	 *
+	 * @since TBD Prepare the IN list with inline placeholders.
 	 * @since  1.8.14
 	 * @access private
 	 *
@@ -303,13 +354,9 @@ class Give_Donors_Query {
 
 			if ( is_array( $this->args['email'] ) ) {
 
-				$emails_count       = count( $this->args['email'] );
-				$emails_placeholder = array_fill( 0, $emails_count, '%s' );
-				$emails             = implode( ', ', $emails_placeholder );
-
-				$where .= $wpdb->prepare( "AND {$this->table_name}.email IN( $emails )", $this->args['email'] );
+				$where .= $wpdb->prepare( "AND {$wpdb->donors}.email IN( " . implode( ', ', array_fill( 0, count( $this->args['email'] ), '%s' ) ) . ' )', $this->args['email'] );
 			} else {
-				$where .= $wpdb->prepare( "AND {$this->table_name}.email = %s", $this->args['email'] );
+				$where .= $wpdb->prepare( "AND {$wpdb->donors}.email = %s", $this->args['email'] );
 			}
 		}
 
@@ -378,6 +425,7 @@ class Give_Donors_Query {
 	/**
 	 * Set search where clause.
 	 *
+	 * @since TBD Escape the search term.
 	 * @since  1.8.14
 	 * @access private
 	 *
@@ -385,6 +433,8 @@ class Give_Donors_Query {
 	 * @return string
 	 */
 	private function get_where_search() {
+		global $wpdb;
+
 		$where = '';
 
 		// Bailout.
@@ -399,19 +449,19 @@ class Give_Donors_Query {
 				switch ( $search_parts[0] ) {
 					// Backward compatibility.
 					case 'name':
-						$where = "AND {$this->table_name}.name LIKE '%{$search_parts[1]}%'";
+						$where = $wpdb->prepare( "AND {$wpdb->donors}.name LIKE %s", '%' . $wpdb->esc_like( $search_parts[1] ) . '%' );
 						break;
 					case 'note':
-						$where = "AND {$this->table_name}.notes LIKE '%{$search_parts[1]}%'";
+						$where = $wpdb->prepare( "AND {$wpdb->donors}.notes LIKE %s", '%' . $wpdb->esc_like( $search_parts[1] ) . '%' );
 						break;
 				}
 			}
 		} elseif ( is_numeric( $this->args['s'] ) ) {
-			$where = "AND {$this->table_name}.id ='{$this->args['s']}'";
-
+			$where = $wpdb->prepare( "AND {$wpdb->donors}.id =%s", $this->args['s'] );
+		} elseif ( is_email( $this->args['s'] ) ) {
+			$where = $wpdb->prepare( "AND {$wpdb->donors}.email LIKE %s", '%' . $wpdb->esc_like( $this->args['s'] ) . '%' );
 		} else {
-			$search_field = is_email( $this->args['s'] ) ? 'email' : 'name';
-			$where        = "AND {$this->table_name}.$search_field LIKE '%{$this->args['s']}%'";
+			$where = $wpdb->prepare( "AND {$wpdb->donors}.name LIKE %s", '%' . $wpdb->esc_like( $this->args['s'] ) . '%' );
 		}
 
 		return $where;
@@ -505,6 +555,7 @@ class Give_Donors_Query {
 	 *
 	 * @todo: add phpunit test
 	 *
+	 * @since TBD Allow only known compare operators and cast the amount.
 	 * @since  2.2.0
 	 * @access private
 	 *
@@ -518,9 +569,11 @@ class Give_Donors_Query {
 			$compare = '>';
 			$amount  = $this->args['donation_count'];
 			if ( is_array( $this->args['donation_count'] ) ) {
-				$compare = $this->args['donation_count'] ['compare'];
-				$amount  = $this->args['donation_count']['amount'];
+				$compare = $this->get_compare_operator( isset( $this->args['donation_count']['compare'] ) ? $this->args['donation_count']['compare'] : null );
+				$amount  = isset( $this->args['donation_count']['amount'] ) ? $this->args['donation_count']['amount'] : 0;
 			}
+
+			$amount = (int) $amount;
 
 			$where .= "AND {$this->table_name}.purchase_count{$compare}{$amount}";
 		}
@@ -533,6 +586,7 @@ class Give_Donors_Query {
 	 *
 	 * @todo: add phpunit test
 	 *
+	 * @since TBD Allow only known compare operators and cast the amount.
 	 * @since  2.1.0
 	 * @access private
 	 *
@@ -546,9 +600,12 @@ class Give_Donors_Query {
 			$compare = '>';
 			$amount  = $this->args['donation_amount'];
 			if ( is_array( $this->args['donation_amount'] ) ) {
-				$compare = $this->args['donation_amount'] ['compare'];
-				$amount  = $this->args['donation_amount']['amount'];
+				$compare = $this->get_compare_operator( isset( $this->args['donation_amount']['compare'] ) ? $this->args['donation_amount']['compare'] : null );
+				$amount  = isset( $this->args['donation_amount']['amount'] ) ? $this->args['donation_amount']['amount'] : 0;
 			}
+
+			// Format the float in a locale independent way, so a decimal comma never reaches the SQL.
+			$amount = rtrim( rtrim( sprintf( '%F', floatval( $amount ) ), '0' ), '.' );
 
 			$where .= "AND {$this->table_name}.purchase_value{$compare}{$amount}";
 		}
@@ -561,6 +618,7 @@ class Give_Donors_Query {
 	 *
 	 * @todo   : add phpunit test
 	 *
+	 * @since TBD Match donors of any listed form and prepare the form ids.
 	 * @since 4.14.0 Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
 	 * @since  2.1.0
 	 *
@@ -578,27 +636,41 @@ class Give_Donors_Query {
 				$this->args['give_forms'] = explode( ',', $this->args['give_forms'] );
 			}
 
-			$form_ids        = implode( ',', array_map( 'intval', $this->args['give_forms'] ) );
+			// Non-numeric ids become 0 and are dropped, and so are negative ids.
+			$form_ids = array_values(
+				array_filter(
+					array_map( 'intval', $this->args['give_forms'] ),
+					static function ( $id ) {
+						return $id > 0;
+					}
+				)
+			);
+
+			if ( empty( $form_ids ) ) {
+				$where .= "AND {$this->table_name}.id IN ('0')";
+
+				return $where;
+			}
+
 			$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
 
-			$query = $wpdb->prepare(
-				"
+			$donor_ids = $wpdb->get_results(
+				$wpdb->prepare(
+					"
 			SELECT DISTINCT meta_value as donor_id
 			FROM {$wpdb->donationmeta}
 			WHERE meta_key=%s
-			AND {$donation_id_col} IN(
-				SELECT {$donation_id_col}
+			AND %i IN(
+				SELECT %i
 				FROM {$wpdb->donationmeta}
 				WHERE meta_key=%s
-				AND meta_value IN (%s)
+				AND meta_value IN (" . implode( ',', array_fill( 0, count( $form_ids ), '%s' ) ) . ')
 			)
-			",
-				'_give_payment_donor_id',
-				'_give_payment_form_id',
-				$form_ids
+			',
+					array_merge( [ '_give_payment_donor_id', $donation_id_col, $donation_id_col, '_give_payment_form_id' ], $form_ids )
+				),
+				ARRAY_A
 			);
-
-			$donor_ids = $wpdb->get_results( $query, ARRAY_A );
 
 			if ( ! empty( $donor_ids ) ) {
 				$donor_ids = wp_list_pluck( $donor_ids, 'donor_id' );
