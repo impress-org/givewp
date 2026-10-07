@@ -2,6 +2,10 @@
 
 use Give\Campaigns\Models\Campaign;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * @var array    $attributes
  * @var Campaign $campaign
