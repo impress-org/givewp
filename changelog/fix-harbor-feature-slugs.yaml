@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Resolved an issue where add-on licenses were not recognized correctly on sites using the Unified License Manager
+timestamp: 2026-10-01T13:50:50.000Z
