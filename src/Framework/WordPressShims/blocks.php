@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 if ( ! function_exists('get_comment_delimited_block_content')) {
     /**
      * Returns the content of a block, including comment delimiters.

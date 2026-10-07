@@ -8,6 +8,10 @@
  * @since       1.0
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Is the donation recurring.
  *

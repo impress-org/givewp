@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Added direct file access protection to legacy includes, templates and
+  source files, so they do nothing when opened by URL.
+timestamp: 2026-10-07T00:55:25.606Z

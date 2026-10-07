@@ -9,6 +9,10 @@
  * @since       2.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Add extra row actions to email notification table.
  *

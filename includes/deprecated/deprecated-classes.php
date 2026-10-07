@@ -5,6 +5,10 @@
  * @package Give
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 
 /**
  * Instantiate old properties for backwards compatibility.

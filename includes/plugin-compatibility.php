@@ -11,6 +11,10 @@
  * @since       1.4
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 
 /**
  * If Tickera is active then allow TCPDF calls in HTML.
