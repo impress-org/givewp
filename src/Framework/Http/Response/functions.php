@@ -2,6 +2,10 @@
 
 namespace Give\Framework\Http\Response;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 
 /**
  * Return a new response from the application.
