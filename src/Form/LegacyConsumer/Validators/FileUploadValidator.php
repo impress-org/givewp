@@ -78,6 +78,7 @@ class FileUploadValidator
     }
 
     /**
+     * @since TBD Add translators comments.
      * @since 2.14.0
      */
     private function validateUploadTypes()
@@ -88,6 +89,7 @@ class FileUploadValidator
             give_set_error(
                 'field-api-file-upload-allowed-type-error',
                 sprintf(
+                    /* translators: 1: The word type or types, 2: List of allowed file types */
                     esc_html__('Unable to upload file. Allowed file %1$s: %2$s', 'give'),
                     _n('type', 'types', count($allowedTypes), 'give'),
                     array_reduce(
@@ -106,6 +108,7 @@ class FileUploadValidator
     }
 
     /**
+     * @since TBD Add translators comments.
      * @since 2.14.0
      * @since 2.16.0 File size unit update to bytes from mega bytes in logic to get precise result.
      */
@@ -117,6 +120,7 @@ class FileUploadValidator
             give_set_error(
                 'field-api-file-upload-size-error',
                 sprintf(
+                    /* translators: %s: Maximum file size, for example 2 MB */
                     esc_html__('File size exceed upload limit. Maximum file limit is %s', 'give'),
                     size_format($allowedFileSize)
                 )

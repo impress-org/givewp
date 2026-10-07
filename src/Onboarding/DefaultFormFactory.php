@@ -109,6 +109,7 @@ class DefaultFormFactory
      *
      * Updates the default primary_color to match the Onboarding Wizard.
      *
+     * @since TBD Add translators comments.
      * @since 2.16.2 add new visual appearance settings
      * @since 2.8.0
      * @return array
@@ -131,6 +132,7 @@ class DefaultFormFactory
             'payment_amount' => [
                 'header_label' => __('Choose Amount', 'give'),
                 'content' => sprintf(
+                    /* translators: %s: Site name */
                     __(
                         'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause.',
                         'give'

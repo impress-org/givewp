@@ -88,6 +88,7 @@ class CampaignPageController extends WP_REST_Controller
     }
 
     /**
+     * @since TBD Add translators comments.
      * @since 4.13.1
      */
     public function prepare_item_for_response($item, $request)
@@ -120,6 +121,7 @@ class CampaignPageController extends WP_REST_Controller
             return new WP_Error(
                 'prepare_item_for_response_error',
                 sprintf(
+                    /* translators: %s: Error message */
                     __('Error while preparing campaign page for response: %s', 'give'),
                     $e->getMessage()
                 ),

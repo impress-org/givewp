@@ -58,6 +58,7 @@ class Give_Subscriptions_API extends Give_API {
 	 * Safely gets the status from the URL
 	 *
 	 * @access private
+	 * @since TBD Add translators comments.
 	 * @since  2.4.3
 	 * @author Topher
 	 */
@@ -85,6 +86,7 @@ class Give_Subscriptions_API extends Give_API {
 		}
 
 		if ( null !== $input_status && '' === $status ) {
+			/* translators: %s: Subscription status from the request */
 			$error['error'] = sprintf( __( '\'%s\' is not a valid status.', 'give' ), $input_status );
 
 			return $error;
@@ -119,6 +121,8 @@ class Give_Subscriptions_API extends Give_API {
 	/**
 	 * Add Subscribers Endpoint
 	 *
+	 * @since TBD Add translators comments.
+	 *
 	 * @param $data
 	 * @param $query_mode
 	 * @param $api_object
@@ -149,6 +153,7 @@ class Give_Subscriptions_API extends Give_API {
 		$donor     = new Give_Donor( $queried_c );
 
 		if ( ! empty( $queried_c ) && ( ! $donor || ! $donor->id > 0 ) ) {
+			/* translators: %s: Donor ID or email address from the request */
 			$error['error'] = sprintf( __( 'No donor found for %s!', 'give' ), $queried_c );
 
 			return $error;
@@ -255,6 +260,7 @@ class Give_Subscriptions_API extends Give_API {
 			}
 		} elseif ( ! empty( $queried_c ) ) {
 
+			/* translators: %s: Donor ID or email address from the request */
 			$error['error'] = sprintf( __( 'No subscriptions found for %s!', 'give' ), $queried_c );
 
 			return $error;

@@ -98,6 +98,7 @@ class PayPalStandardWebhook
     }
 
     /**
+     * @since TBD Add translators comments.
      * @since 2.19.0
      *
      * @param int $donationId
@@ -109,6 +110,7 @@ class PayPalStandardWebhook
         give_insert_payment_note(
             $donationId,
             sprintf(
+                /* translators: 1: Date, 2: Time */
                 __('IPN received on %1$s at %2$s', 'give'),
                 date_i18n('m/d/Y', $currentTimestamp),
                 date_i18n('H:i', $currentTimestamp)
