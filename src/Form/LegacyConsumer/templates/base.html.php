@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /** @var \Give\Framework\FieldsAPI\Text $field */ ?>
 <?php
 /** @var string $typeAttribute */ ?>
