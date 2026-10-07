@@ -158,7 +158,7 @@ class MerchantDetails
                 $response->result->expires_in - 60 // Expire token before one minute to prevent unnecessary race condition.
             );
         } catch (\Exception $e) {
-            throw new \Exception(esc_html($e->getMessage()));
+            throw new \Exception($e->getMessage()); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by ScriptLoader and stored via give_set_error(); the single escaping point is includes/class-notices.php's print_frontend_errors(), which already calls esc_html() on the full message before rendering. Escaping here would double-encode it.
         }
 
         return $response->result->client_token;
