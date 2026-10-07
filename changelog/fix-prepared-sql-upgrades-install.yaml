@@ -1,4 +1,4 @@
 significance: patch
 type: fix
-entry: Prepared the SQL queries in the upgrade routines, the multisite table cleanup and the uninstall script
+entry: Prepared the SQL queries in the upgrade routines, the multisite table cleanup and the uninstall script, and the uninstall script now deletes only the options that start with a GiveWP prefix. It used to delete every option with "give" in its name, including options of other plugins
 timestamp: 2026-10-05T23:21:36.000Z
