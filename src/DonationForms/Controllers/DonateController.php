@@ -210,6 +210,8 @@ class DonateController
     }
 
     /**
+     * @since TBD Add translators comments.
+     *
      * @throws PaymentGatewayException
      */
     private function validateGatewaySupportsSubscriptions(PaymentGateway $gateway)
@@ -219,6 +221,7 @@ class DonateController
 
             throw new PaymentGatewayException(
                 sprintf(
+                    /* translators: %s: Payment gateway name */
                     __(
                         "[%s] This payment gateway does not support recurring payments, please try selecting another payment gateway.",
                         'give'
