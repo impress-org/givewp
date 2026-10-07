@@ -53,8 +53,11 @@ class DonorWallTest extends TestCase
             ]
         );
 
-        $this->assertStringContainsString(
-            '<span class="give-donor-container__image__name_initial">' . esc_html($expectedInitials) . '</span>',
+        // wp_kses_post() preserves the source quote char on some WP core versions and normalizes
+        // to double quotes on others, so match either rather than pinning to one.
+        $this->assertMatchesRegularExpression(
+            '/<span class=[\'"]give-donor-container__image__name_initial[\'"]>'
+                . preg_quote(esc_html($expectedInitials), '/') . '<\/span>/',
             $html
         );
     }
