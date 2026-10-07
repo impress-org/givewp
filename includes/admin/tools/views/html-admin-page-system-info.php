@@ -1,6 +1,8 @@
 <?php
 /**
  * Admin View: System Info
+ *
+ * @since TBD Use wpdb::db_server_info() to read the database server version.
  */
 
 use Give\Framework\Migrations\MigrationsRunner;
@@ -296,7 +298,7 @@ $give_updates = Give_Updates::get_instance();
 		<?php
 	endif;
 
-    $ver = mysqli_get_server_info($wpdb->dbh);
+	$ver = $wpdb->db_server_info();
 
 	if ( ! empty( $wpdb->is_mysql ) && ! stristr( $ver, 'MariaDB' ) ) :
 		?>
