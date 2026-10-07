@@ -942,7 +942,7 @@ if ( ! class_exists('Give_License') ) :
 		 * @param array $plugin
 		 *
 		 * @return string
-		 * @since TBD Escape output.
+		 * @since TBD Escape output and use gmdate() instead of date().
 		 * @since 2.5.0
 		 */
 		private static function html_license_row( $license, $plugin = [] ) {
@@ -1027,7 +1027,7 @@ if ( ! class_exists('Give_License') ) :
 								echo sprintf(
 									'<p class="give-license-renewal-date"><span class="dashicons dashicons-calendar-alt"></span> <strong>%1$s</strong> %2$s</p>',
 									$is_license_expired ? esc_html__( 'Expired:', 'give' ) : esc_html__( 'Renews:', 'give' ),
-									esc_html( date( give_date_format(), $expires_timestamp ) )
+									esc_html( gmdate( give_date_format(), $expires_timestamp ) )
 								);
 								?>
 							<?php endif; ?>
@@ -1181,13 +1181,14 @@ if ( ! class_exists('Give_License') ) :
 		 * Get refresh license status
 		 *
 		 * @return mixed|void
+		 * @since TBD Use gmdate() instead of date().
 		 * @since 2.5.0
 		 */
 		public static function refresh_license_status() {
 			return get_option(
 				'give_licenses_refreshed_last_checked',
 				[
-					'compare' => date( 'Ymd' ),
+					'compare' => gmdate( 'Ymd' ),
 					'time'    => time(),
 					'count'   => 0,
 				]
