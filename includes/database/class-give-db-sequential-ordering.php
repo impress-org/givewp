@@ -76,6 +76,7 @@ class Give_DB_Sequential_Ordering extends Give_DB {
 	/**
 	 * Create the table
 	 *
+	 * @since TBD Index payment_id, which every serial number lookup filters on.
 	 * @since  2.1.0
 	 * @access public
 	 *
@@ -102,7 +103,8 @@ class Give_DB_Sequential_Ordering extends Give_DB {
 		$sql = "CREATE TABLE {$this->table_name} (
         id bigint(20) NOT NULL AUTO_INCREMENT,
         payment_id bigint(20) NOT NULL,
-        PRIMARY KEY  (id)
+        PRIMARY KEY  (id),
+        KEY payment_id (payment_id)
         ) {$charset_collate};";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
