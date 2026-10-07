@@ -4,12 +4,15 @@
  * Uninstall Give
  *
  * @package     Give
+ * @since       TBD Delete only the options that start with a GiveWP prefix.
  * @since       TBD Prepare SQL with placeholders and skip DROP TABLE when there are no tables.
  * @since       1.0
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @subpackage  Uninstall
  */
+
+use Give\Uninstall\Actions\DeleteGiveOptions;
 
 // Exit if accessed directly.
 if (!defined('WP_UNINSTALL_PLUGIN')) {
@@ -119,29 +122,6 @@ if (give_is_setting_enabled(give_get_option('uninstall_on_delete'))) {
     wp_clear_scheduled_hook('give_daily_cron');
     wp_clear_scheduled_hook('give_weekly_cron');
 
-    // Get all options.
-    $give_option_names = $wpdb->get_col(
-        $wpdb->prepare(
-            "
-			SELECT option_name
-			FROM {$wpdb->options}
-			WHERE option_name LIKE %s
-			",
-            '%give%'
-        )
-    );
-
-    if (!empty($give_option_names)) {
-        // Convert option name to transient or option name.
-        $new_give_option_names = [];
-
-        // Delete all the Plugin Options.
-        foreach ($give_option_names as $option) {
-            if (false !== strpos($option, 'give_cache')) {
-                Give_Cache::delete($option);
-            } else {
-                delete_option($option);
-            }
-        }
-    }
+    // Delete all the Plugin Options. Only options that start with a GiveWP prefix are deleted.
+    (new DeleteGiveOptions())();
 }
