@@ -250,8 +250,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @param string $text     Label for the search box.
 	 * @param string $input_id ID of the search box.
 	 *
-	 * @since  TBD Escape translated output.
-	 * @since  TBD Escape output.
+	 * @since  TBD Escape output, including translated strings.
 	 * @since  1.0
 	 * @access public
 	 *

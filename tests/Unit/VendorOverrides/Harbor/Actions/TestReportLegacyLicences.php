@@ -9,6 +9,7 @@ use Give\License\ValueObjects\LicenseOptionKeys;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\License\TestTraits\HasLicenseData;
+use Give\VendorOverrides\Harbor\Actions\GetFeatureSlugByPluginDirname;
 use Give\VendorOverrides\Harbor\Actions\ReportLegacyLicences;
 
 /**
@@ -29,7 +30,7 @@ class TestReportLegacyLicences extends TestCase
     {
         parent::setUp();
 
-        $this->action = new ReportLegacyLicences(new LicenseRepository());
+        $this->action = new ReportLegacyLicences(new LicenseRepository(), new GetFeatureSlugByPluginDirname());
     }
 
     /**
@@ -64,7 +65,7 @@ class TestReportLegacyLicences extends TestCase
         $this->assertSame([
             [
                 'key'        => 'license-key-1234567890',
-                'slug'       => 'give-recurring',
+                'slug'       => 'give-recurring-donations',
                 'name'       => 'Give Recurring',
                 'product'    => 'give',
                 'is_active'  => true,
@@ -123,7 +124,7 @@ class TestReportLegacyLicences extends TestCase
         $slugs = array_column($result, 'slug');
         $this->assertContains('give-manual-donations', $slugs);
         $this->assertContains('give-pdf-receipts', $slugs);
-        $this->assertContains('give-stripe', $slugs);
+        $this->assertContains('give-stripe-gateway', $slugs);
     }
 
     /**
@@ -242,7 +243,7 @@ class TestReportLegacyLicences extends TestCase
         $result = ($this->action)([]);
 
         $this->assertCount(1, $result);
-        $this->assertSame('give-recurring', $result[0]['slug']);
+        $this->assertSame('give-recurring-donations', $result[0]['slug']);
     }
 
     /**
@@ -272,8 +273,8 @@ class TestReportLegacyLicences extends TestCase
         $this->assertCount(2, $result);
 
         $bySlug = array_column($result, null, 'slug');
-        $this->assertSame('license-key-1', $bySlug['give-recurring']['key']);
-        $this->assertSame('license-key-2', $bySlug['give-stripe']['key']);
+        $this->assertSame('license-key-1', $bySlug['give-recurring-donations']['key']);
+        $this->assertSame('license-key-2', $bySlug['give-stripe-gateway']['key']);
     }
 
     /**
@@ -290,5 +291,19 @@ class TestReportLegacyLicences extends TestCase
         foreach ($result as $entry) {
             $this->assertSame('give', $entry['product']);
         }
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testReportsLicensesOnTheFilterHarborApplies(): void
+    {
+        update_option(LicenseOptionKeys::LICENSES, [
+            'license-key-1234567890' => $this->getRawLicenseData(),
+        ]);
+
+        $result = apply_filters('lw-harbor/legacy_licenses', []);
+
+        $this->assertContains('give-stripe-gateway', array_column($result, 'slug'));
     }
 }

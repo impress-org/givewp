@@ -825,8 +825,7 @@ add_action( 'give_filter_reports', 'give_parse_report_dates' );
  *
  * Outputs a "Refresh Reports" button for graphs
  *
- * @since      TBD Escape translated output.
- * @since      TBD Escape output.
+ * @since      TBD Escape output, including translated strings.
  * @since      1.3
  */
 function give_reports_refresh_button() {

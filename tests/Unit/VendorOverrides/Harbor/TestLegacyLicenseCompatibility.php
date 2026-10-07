@@ -7,6 +7,7 @@ namespace Give\Tests\Unit\VendorOverrides\Harbor;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\License\TestTraits\HasLicenseData;
+use Give\License\PremiumAddonsListManager;
 use Give\License\ValueObjects\LicenseOptionKeys;
 
 /**
@@ -173,16 +174,48 @@ class TestLegacyLicenseCompatibility extends TestCase
     /**
      * Add-on covered by Harbor with no legacy license should be reported as licensed.
      *
+     * @since TBD Harbor knows the add-on by its catalog slug, not its plugin dirname.
      * @since 4.15.0
      */
     public function testGetLicenseByPluginDirnameReturnsValidWhenHarborCoversAddon(): void
     {
-        $this->setHarborFeatureAvailable(['give-recurring']);
+        $this->setHarborFeatureAvailable(['give-recurring-donations']);
 
         $result = \Give_License::get_license_by_plugin_dirname('give-recurring');
 
         $this->assertNotEmpty($result, 'Should return a non-empty license array for Harbor-covered add-on');
         $this->assertSame('valid', $result['license'], 'License status should be valid for Harbor-covered add-on');
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testGetLicenseByPluginDirnameReturnsValidWhenCatalogSlugMatchesDirname(): void
+    {
+        $this->setHarborFeatureAvailable(['give-fee-recovery']);
+
+        $result = \Give_License::get_license_by_plugin_dirname('give-fee-recovery');
+
+        $this->assertSame('valid', $result['license']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testLicensesTabShowsHarborCoveredAddonAsLicensed(): void
+    {
+        $this->setHarborFeatureAvailable(['give-recurring-donations']);
+
+        $html = \Give_License::html_by_plugin([
+            'Dir'       => 'give-recurring',
+            'Name'      => 'Give - Recurring Donations',
+            'Version'   => '2.20.1',
+            'Status'    => 'active',
+            'PluginURI' => 'https://givewp.com/addons/recurring-donations/',
+        ]);
+
+        $this->assertStringContainsString('Licensed through your Liquid Web license', $html);
+        $this->assertStringNotContainsString('License is inactive', $html);
     }
 
     /**
@@ -216,5 +249,73 @@ class TestLegacyLicenseCompatibility extends TestCase
 
         $this->assertArrayHasKey('license_key', $result, 'Legacy license data should be returned when a legacy license exists');
         $this->assertSame('license-key-1234567890', $result['license_key']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testGetLicenseByPluginDirnamePrefersHarborOverExpiredLegacyLicense(): void
+    {
+        $this->setHarborFeatureAvailable(['give-stripe-gateway']);
+
+        update_option(LicenseOptionKeys::LICENSES, [
+            'license-key-1234567890' => $this->getRawLicenseData(['plugin_slug' => 'give-stripe', 'license' => 'expired']),
+        ]);
+
+        $result = \Give_License::get_license_by_plugin_dirname('give-stripe');
+
+        $this->assertSame(['license' => 'valid'], $result);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testGetLicenseByPluginDirnameKeepsExpiredLegacyLicenseWhenHarborDoesNotCoverAddon(): void
+    {
+        $this->setHarborFeatureAvailable([]);
+
+        update_option(LicenseOptionKeys::LICENSES, [
+            'license-key-1234567890' => $this->getRawLicenseData(['plugin_slug' => 'give-stripe', 'license' => 'expired']),
+        ]);
+
+        $result = \Give_License::get_license_by_plugin_dirname('give-stripe');
+
+        $this->assertSame('expired', $result['license']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testLicensesTabMovesHarborCoveredAddonOutOfExpiredAllAccessPass(): void
+    {
+        require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        require_once GIVE_PLUGIN_DIR . 'includes/admin/misc-functions.php';
+
+        $this->setHarborFeatureAvailable(['give-pdf-receipts']);
+
+        update_option(LicenseOptionKeys::LICENSES, [
+            'license-key-1234567890' => $this->getRawLicenseData(['is_all_access_pass' => true, 'license' => 'expired']),
+        ]);
+
+        // Seeds the installed plugin list and the premium add-on list without touching the filesystem or the API.
+        wp_cache_set('plugins', ['' => [
+            'give-pdf-receipts/give-pdf-receipts.php' => [
+                'Name'      => 'Give - PDF Receipts',
+                'PluginURI' => 'https://givewp.com/addons/pdf-receipts/',
+                'Version'   => '3.2.1',
+                'Author'    => 'GiveWP',
+            ],
+        ]], 'plugins');
+        give()->instance(PremiumAddonsListManager::class, new PremiumAddonsListManager());
+        set_transient('give_premium_addons_ids', ['pdf-receipts'], HOUR_IN_SECONDS);
+
+        $html = \Give_License::render_licenses_list();
+
+        wp_cache_delete('plugins', 'plugins');
+        delete_transient('give_premium_addons_ids');
+
+        $this->assertStringContainsString('Licensed through your Liquid Web license', $html);
+        $this->assertSame(1, substr_count($html, 'Changelog of Give - PDF Receipts'), 'The add-on should be listed once, not again under the expired pass');
+        $this->assertStringContainsString('Manual Donations', $html, 'Uncovered add-ons should stay under the pass');
     }
 }

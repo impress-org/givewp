@@ -6,8 +6,7 @@
  * @subpackage  Classes/Give_Settings_Email
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       TBD Escape translated output.
- * @since       TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since       1.8
  */
 

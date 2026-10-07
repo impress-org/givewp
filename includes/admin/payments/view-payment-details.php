@@ -6,8 +6,7 @@
  * @subpackage  Admin/Payments
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       TBD Escape translated output.
- * @since       TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since       1.0
  */
 
