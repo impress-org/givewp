@@ -98,6 +98,11 @@ both the MariaDB coverage and the check that the local command keeps working. Ea
 and 8.4 with two WordPress versions: `latest`, and `minimum`, which both jobs read from the
 "Requires at least" line of `readme.txt`. Raising that line is all it takes to move the floor.
 
+Both jobs build `vendor/` with Composer on PHP 7.4, the release PHP, and cache it. The key is
+`composer.json`, `composer.lock` and `bin/strauss-installar.sh`, so a cache hit skips the PHP 7.4
+setup and the install. `test-mariadb` then rebuilds Composer's class map in the container, because
+the cached one lists the classes of the commit that saved it.
+
 Add-ons run this same suite against core: an add-on's `tests/bootstrap.php` requires GiveWP's
 autoloader from the sibling directory and hands its main plugin file to
 `Give\Tests\Framework\Addons\Bootstrap`, which loads the add-on on `muplugins_loaded` and then
@@ -228,18 +233,22 @@ itself through `requestUtils.rest()`.
 
 ## Playground previews
 
-Add the `playground` label to a pull request and `.github/workflows/playground-preview.yml` posts
-a "Preview in WordPress Playground" button on it: a throwaway WordPress in the browser, running the
-pull request's build, logged in and opened on the Campaigns screen. The preview is rebuilt on every
-push while the label is on, and the build takes several minutes, which is why it is opt-in.
+Every pull request gets a "WordPress Playground Preview" comment from
+`.github/workflows/playground-preview.yml`. Its links open a throwaway WordPress in the browser,
+running the pull request's build, logged in and opened on the Campaigns screen. The preview is rebuilt
+on every push, and the build takes several minutes.
 
 The zip is the same dev build the packaging bot makes: the shared StellarWP `zip.yml` workflow
-builds it with pup and puts it in the public zip bucket, and the button's blueprint points at that
+builds it with pup and puts it in the public zip bucket, and the links' blueprint points at that
 file through the same `evnt.is/test-zip` link the bot posts to Slack. Nothing is hosted anywhere
 new, and a branch the bot already packaged is not built twice. Pull requests from forks get no
 preview, because they cannot see the bucket credentials.
 
-The comment carries two buttons. The second one also installs the
+While the zip builds, the same comment says "building", so the links of an older push are never left
+on the pull request. If the build fails, it says "failed" with a link to the run. When the build is
+done, the comment is a short list with icons, like the zip comment in Kadence Blocks: a heading with the
+commit, a time badge, and three links: an empty site, a site with sample data, and the zip. The
+sample-data link also installs the
 [Give Data Generator](https://github.com/impress-org/give-data-generator) release and runs
 `wp give-data donations 100 --campaigns=3` before opening, with the site switched to test mode so
 the Donations and Donors screens show what it made. It takes a few minutes longer to open.
@@ -281,6 +290,11 @@ On pull requests from this repository the comment is short: totals, the top rule
 links. Pull requests from forks get no comment (their token is read-only), but the job summary shows
 the same text. The full results are in the `plugin-check-report` artifact (the raw results and a new
 `baseline.json`).
+
+The comment shows the change against the **target branch**: the `baseline.json` of the branch the
+pull request goes into. A pull request that fixes errors and lowers its own `baseline.json` therefore
+still shows what it fixed. Pass or fail still comes from the `baseline.json` in the pull request, and
+the comment notes any rule whose baseline was raised above the target branch.
 
 **Lowering the baseline.** After fixing problems, download the `plugin-check-report` artifact from
 your pull request's run and copy its `baseline.json` over `.github/plugin-check/baseline.json`.

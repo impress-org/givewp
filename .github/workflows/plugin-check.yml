@@ -101,6 +101,30 @@ jobs:
                     # Nothing here pushes over git, and the job goes on to run third-party code.
                     persist-credentials: false
 
+            # The action's wp-env pulls these images when it starts, and pulling them is part of the
+            # time that step takes. The action writes its own .wp-env.json with no PHP version, so
+            # wp-env uses the default tags. Started now, in the background, the download overlaps
+            # with the build.
+            # The images are the ones wp-env's generated Dockerfiles and docker-compose.yml name
+            # (FROM wordpress..., FROM wordpress:cli..., image: mariadb:lts); if a later wp-env names
+            # others, these pulls are just wasted, never wrong. A failed pull only means wp-env pulls
+            # the image itself, as it always did, so this step cannot fail the job.
+            -   name: Start pulling the wp-env Docker images
+                continue-on-error: true
+                env:
+                    IMAGES: wordpress wordpress:cli mariadb:lts
+                run: |
+                    (
+                        set +e
+                        start=$(date +%s)
+                        for image in $IMAGES; do
+                            docker pull --quiet "$image" || echo "Could not pull $image, wp-env will pull it." &
+                        done
+                        wait
+                        echo "Pulled in $(( $(date +%s) - start )) seconds."
+                        touch "$RUNNER_TEMP/docker-pull.done"
+                    ) > "$RUNNER_TEMP/docker-pull.log" 2>&1 < /dev/null &
+
             # The release builds vendor on PHP 7.4, so this does too.
             -   name: Set Up PHP
                 uses: shivammathur/setup-php@v2
@@ -126,8 +150,24 @@ jobs:
                     cache: npm
                     cache-dependency-path: source/package-lock.json
 
+            # webpack's filesystem cache (see webpack.config.js). It sits in .cache/webpack, outside
+            # node_modules, because pup build runs npm ci and npm ci deletes node_modules first. The
+            # key has its own prefix: webpack stores absolute paths, and this job builds in source/
+            # while the e2e workflow builds at the workspace root, so their caches do not fit each
+            # other. Each commit saves a new entry; the restore key picks the newest one for the same
+            # lockfile. A stale cache is safe, because webpack checks every entry against the files.
+            -   name: Restore the webpack cache
+                id: webpack-cache
+                uses: actions/cache/restore@v6
+                with:
+                    path: source/.cache/webpack
+                    key: webpack-source-${{ runner.os }}-${{ hashFiles('source/package-lock.json') }}-${{ github.sha }}
+                    restore-keys: |
+                        webpack-source-${{ runner.os }}-${{ hashFiles('source/package-lock.json') }}-
+
             # The same pup steps the release zip uses, so .puprc and .distignore decide what is
-            # checked. The zip's top folder is named after zip_name in .puprc: give.
+            # checked. The zip's top folder is named after zip_name in .puprc: give. The last line
+            # makes sure the webpack cache never ends up in the zip.
             -   name: Build the plugin zip
                 working-directory: source
                 run: |
@@ -139,6 +179,29 @@ jobs:
                     mkdir -p "$GITHUB_WORKSPACE/build"
                     unzip -q "$name.zip" -d "$GITHUB_WORKSPACE/build"
                     test -f "$GITHUB_WORKSPACE/build/give/give.php"
+                    test ! -e "$GITHUB_WORKSPACE/build/give/.cache"
+
+            # Saved now, before the third-party action below runs, so nothing it does can end up in
+            # a cache that later runs restore. Skipped when this exact commit already saved one.
+            -   name: Save the webpack cache
+                if: steps.webpack-cache.outputs.cache-hit != 'true'
+                uses: actions/cache/save@v6
+                with:
+                    path: source/.cache/webpack
+                    key: ${{ steps.webpack-cache.outputs.cache-primary-key }}
+
+            # Waits for the pulls started earlier, so wp-env does not start a second download of an
+            # image that is still coming, and prints how long they took. Gives up after two minutes
+            # and lets wp-env carry on; never fails the job.
+            -   name: Wait for the Docker image pulls
+                continue-on-error: true
+                timeout-minutes: 3
+                run: |
+                    for _ in $(seq 120); do
+                        [ -f "$RUNNER_TEMP/docker-pull.done" ] && break
+                        sleep 1
+                    done
+                    cat "$RUNNER_TEMP/docker-pull.log" 2>/dev/null || true
 
             # Fails on any error, which is expected for now: the report job decides pass or fail
             # from the counts. The action writes its results to $RUNNER_TEMP/plugin-check-results.txt
@@ -225,10 +288,25 @@ jobs:
                     stamp=${stamp//\//%2F}
                     echo "url=https://img.shields.io/badge/Check%20Finished-${stamp}-darkgreen" >> "$GITHUB_OUTPUT"
 
+            # The baseline of the branch the pull request targets. The comment shows the change
+            # against it, so a pull request that fixes errors and lowers baseline.json still shows
+            # what it fixed. Missing on other events, or when the target has no baseline yet: the
+            # script then falls back to the baseline in the pull request.
+            -   name: Get the target branch baseline
+                if: ${{ github.event_name == 'pull_request' }}
+                continue-on-error: true
+                uses: actions/checkout@v7
+                with:
+                    ref: ${{ github.event.pull_request.base.sha }}
+                    path: target
+                    sparse-checkout: .github/plugin-check/baseline.json
+                    persist-credentials: false
+
             # Fails the job when a rule has more errors than the baseline. Also writes the short
             # comment body and the same text to the job summary.
             -   name: Compare with the baseline
                 env:
+                    TARGET_BASELINE: ${{ github.workspace }}/target/.github/plugin-check/baseline.json
                     COMMENT_BADGE: ${{ steps.finish_badge.outputs.url }}
                     ARTIFACT_URL: ${{ steps.artifact.outputs.artifact-url }}
                     RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

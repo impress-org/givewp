@@ -1,32 +1,75 @@
 name: Playground Preview
 
-# Adds a "Preview in WordPress Playground" button to a pull request: a throwaway WordPress in the
+# Adds a "Try in WordPress Playground" comment to every pull request: a throwaway WordPress in the
 # browser with the pull request's build installed. The zip comes from the same shared pup workflow
 # and public bucket the packaging bot uses, so nothing new is hosted anywhere.
 #
-# The build takes several minutes, so it is opt-in: add the "playground" label to a pull request to
-# get a preview, and it is rebuilt on every push for as long as the label stays on. Pull requests
-# from forks are skipped, because they cannot see the bucket credentials.
+# The preview is built on every push, like the zip comment in Kadence Blocks. Pull requests from
+# forks are skipped, because they cannot see the bucket credentials.
 
 on:
     pull_request:
-        types: [labeled, synchronize]
+        types: [opened, reopened, synchronize]
 
 # One run per pull request at a time. A push while a preview is still building cancels that build,
-# so an older zip can never overwrite a newer button.
-#
-# A run started by some other label builds nothing, so it goes in a group of its own and cannot
-# cancel a preview that is still building.
+# so an older zip can never overwrite a newer comment.
 concurrency:
-    group: playground-preview-${{ github.event.pull_request.number }}-${{ github.event.action != 'labeled' || github.event.label.name == 'playground' }}
+    group: playground-preview-${{ github.event.pull_request.number }}
     cancel-in-progress: true
 
 jobs:
+    # Replaces the comment from the last push at once, so a build that takes minutes does not leave
+    # links to an older zip on the pull request. It runs next to "zip", and "button" waits for it, so
+    # the finished comment can never be overwritten by this one.
+    pending:
+        if: ${{ !github.event.pull_request.head.repo.fork }}
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        permissions:
+            pull-requests: write
+        steps:
+            # The badge time is Eastern Time: %Z prints EST in winter and EDT in summer. The "/" is
+            # encoded because shields.io reads it as a path.
+            -   name: Make the badge
+                id: badge
+                env:
+                    SHA: ${{ github.event.pull_request.head.sha }}
+                run: |
+                    stamp=$(LC_ALL=C TZ='America/New_York' date '+%m/%d %I:%M %p %Z')
+                    stamp=${stamp// /%20}
+                    stamp=${stamp//\//%2F}
+                    {
+                        echo "url=https://img.shields.io/badge/Build%20Started-${stamp}-blue"
+                        echo "sha=${SHA:0:7}"
+                    } >> "$GITHUB_OUTPUT"
+
+            # A failed API call here must not stop the preview, so both steps may fail quietly.
+            -   name: Find the comment
+                id: find_comment
+                continue-on-error: true
+                uses: peter-evans/find-comment@v4
+                with:
+                    issue-number: ${{ github.event.pull_request.number }}
+                    comment-author: 'github-actions[bot]'
+                    body-includes: '<!-- givewp-playground-preview -->'
+
+            -   name: Post "building"
+                continue-on-error: true
+                uses: peter-evans/create-or-update-comment@v5
+                with:
+                    comment-id: ${{ steps.find_comment.outputs.comment-id }}
+                    issue-number: ${{ github.event.pull_request.number }}
+                    edit-mode: replace
+                    body: |
+                        <!-- givewp-playground-preview -->
+                        🏗️ Playground preview building for commit ${{ steps.badge.outputs.sha }}
+
+                        ![Build timestamp](${{ steps.badge.outputs.url }})
+
+                        This takes a few minutes.
+
     zip:
-        if: >-
-            !github.event.pull_request.head.repo.fork
-            && contains(github.event.pull_request.labels.*.name, 'playground')
-            && (github.event.action != 'labeled' || github.event.label.name == 'playground')
+        if: ${{ !github.event.pull_request.head.repo.fork }}
         uses: stellarwp/github-actions/.github/workflows/zip.yml@main
         with:
             ref: ${{ github.event.pull_request.head.sha }}
@@ -45,7 +88,7 @@ jobs:
             S3_ENDPOINT: ${{ secrets.ZIP_S3_ENDPOINT }}
 
     button:
-        needs: zip
+        needs: [ pending, zip ]
         runs-on: blacksmith-4vcpu-ubuntu-2404
 
         # Writes one comment on the pull request and reads the checkout, nothing else.
@@ -77,7 +120,7 @@ jobs:
                     name=$(php -d display_errors=0 bin/pup.phar zip-name "$version")
                     echo "url=https://evnt.is/test-zip?file=${name}.zip" >> "$GITHUB_OUTPUT"
 
-            -   name: Post the buttons
+            -   name: Post the comment
                 env:
                     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                     ZIP_URL: ${{ steps.zip.outputs.url }}
@@ -103,19 +146,70 @@ jobs:
                             ] else [] end))
                         }' | jq -s -R -r @uri
                     }
-                    button() {
-                        printf '<a href="https://playground.wordpress.net/?blueprint-url=data:application/json,%s" target="_blank" rel="noopener noreferrer"><img src="%s" alt="%s" width="220" height="57" /></a>' "$1" "$2" "$3"
+                    # A short list of links with icons, the same shape as Kadence Blocks' zip comment.
+                    # Playground opens with the blueprint in the URL.
+                    link() {
+                        printf 'https://playground.wordpress.net/?blueprint-url=data:application/json,%s' "$1"
                     }
-                    plain=$(button "$(blueprint false)" "https://raw.githubusercontent.com/adamziel/playground-preview/refs/heads/trunk/assets/playground-preview-button.svg" "Open WordPress Playground Preview")
-                    seeded=$(button "$(blueprint true)" "https://raw.githubusercontent.com/adamziel/playground-preview/refs/heads/trunk/assets/playground-preview-button.svg" "Open WordPress Playground Preview with sample data")
-
+                    plain=$(link "$(blueprint false)")
+                    seeded=$(link "$(blueprint true)")
                     marker='<!-- givewp-playground-preview -->'
-                    built=$(date -u '+%Y-%m-%d %H:%M UTC')
-                    body=$(printf '%s\n### WordPress Playground Preview\n\nTry this pull request in a throwaway WordPress in your browser, with debug output on. Built %s from %s, or [download the zip](%s) for a site of your own.\n\n**Empty site**\n\n%s\n\n**With sample data** (3 campaigns, 100 test-mode donations; takes a few minutes longer to open)\n\n%s\n' "$marker" "$built" "$SHA" "$ZIP_URL" "$plain" "$seeded")
-
+                    # Same badge as the Plugin Check comment. The time is Eastern Time: %Z prints EST in
+                    # winter and EDT in summer. The "/" is encoded because shields.io reads it as a path.
+                    stamp=$(LC_ALL=C TZ='America/New_York' date '+%m/%d %I:%M %p %Z')
+                    stamp=${stamp// /%20}
+                    stamp=${stamp//\//%2F}
+                    badge="https://img.shields.io/badge/Built-${stamp}-darkgreen"
+                    body=$(printf '%s\n🎉 Playground preview ready for commit %s\n\n![Build timestamp](%s)\n\n- 🛝 [Try in WordPress Playground](%s)\n- 🛝 [Try in WordPress Playground with sample data](%s)\n- 💾 [Download zip](%s)\n\nDebug output is on. Sample data is 3 campaigns and 100 test-mode donations, and opens a few minutes slower.\n' "$marker" "${SHA:0:7}" "$badge" "$plain" "$seeded" "$ZIP_URL")
                     existing=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --paginate --jq ".[] | select(.body | startswith(\"$marker\")) | .id" | head -n 1)
                     if [ -n "$existing" ]; then
                         gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$existing" -f body="$body" > /dev/null
                     else
                         gh api -X POST "repos/$GITHUB_REPOSITORY/issues/$PR/comments" -f body="$body" > /dev/null
                     fi
+
+    # Without this, a failed build would leave "building" on the pull request for good.
+    failed:
+        needs: [ pending, zip, button ]
+        if: ${{ failure() }}
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        permissions:
+            pull-requests: write
+        steps:
+            -   name: Make the badge
+                id: badge
+                env:
+                    SHA: ${{ github.event.pull_request.head.sha }}
+                run: |
+                    stamp=$(LC_ALL=C TZ='America/New_York' date '+%m/%d %I:%M %p %Z')
+                    stamp=${stamp// /%20}
+                    stamp=${stamp//\//%2F}
+                    {
+                        echo "url=https://img.shields.io/badge/Build%20Failed-${stamp}-red"
+                        echo "sha=${SHA:0:7}"
+                    } >> "$GITHUB_OUTPUT"
+
+            -   name: Find the comment
+                id: find_comment
+                continue-on-error: true
+                uses: peter-evans/find-comment@v4
+                with:
+                    issue-number: ${{ github.event.pull_request.number }}
+                    comment-author: 'github-actions[bot]'
+                    body-includes: '<!-- givewp-playground-preview -->'
+
+            -   name: Post "failed"
+                continue-on-error: true
+                uses: peter-evans/create-or-update-comment@v5
+                with:
+                    comment-id: ${{ steps.find_comment.outputs.comment-id }}
+                    issue-number: ${{ github.event.pull_request.number }}
+                    edit-mode: replace
+                    body: |
+                        <!-- givewp-playground-preview -->
+                        ❌ Playground preview build failed for commit ${{ steps.badge.outputs.sha }}
+
+                        ![Build timestamp](${{ steps.badge.outputs.url }})
+
+                        See the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for the error. Push a commit to try again.
