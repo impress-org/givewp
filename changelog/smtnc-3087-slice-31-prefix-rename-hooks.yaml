@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Renamed four unprefixed hooks to givewp_-prefixed names. The old names still
+  fire and log a deprecation notice
+timestamp: 2026-10-08T21:30:00.000Z
