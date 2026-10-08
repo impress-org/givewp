@@ -30,15 +30,17 @@ function give_setup_post_types() {
 
 	// Enable/Disable give_forms links if form is saving.
 	if ( Give_Admin_Settings::is_saving_settings() ) {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- nonce verified by Give_Admin_Settings::is_saving_settings() in the condition above.
 		if ( isset( $_POST['forms_singular'] ) ) {
-			$give_forms_singular = give_is_setting_enabled( give_clean( $_POST['forms_singular'] ) );
+			$give_forms_singular = give_is_setting_enabled( give_clean( $_POST['forms_singular'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 			flush_rewrite_rules();
 		}
 
 		if ( isset( $_POST['forms_archives'] ) ) {
-			$give_forms_archives = give_is_setting_enabled( give_clean( $_POST['forms_archives'] ) );
+			$give_forms_archives = give_is_setting_enabled( give_clean( $_POST['forms_archives'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 			flush_rewrite_rules();
 		}
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
 	}
 
 	$give_forms_slug = defined( 'GIVE_SLUG' ) ? GIVE_SLUG : 'donations';
@@ -238,15 +240,17 @@ function give_setup_taxonomies() {
 
 	// Enable/Disable category and tag if form is saving.
 	if ( Give_Admin_Settings::is_saving_settings() ) {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- nonce verified by Give_Admin_Settings::is_saving_settings() in the condition above.
 		if ( isset( $_POST['categories'] ) ) {
-			$enable_category = give_is_setting_enabled( give_clean( $_POST['categories'] ) );
+			$enable_category = give_is_setting_enabled( give_clean( $_POST['categories'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 			flush_rewrite_rules();
 		}
 
 		if ( isset( $_POST['tags'] ) ) {
-			$enable_tag = give_is_setting_enabled( give_clean( $_POST['tags'] ) );
+			$enable_tag = give_is_setting_enabled( give_clean( $_POST['tags'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 			flush_rewrite_rules();
 		}
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
 	}
 
 	if ( $enable_category ) {

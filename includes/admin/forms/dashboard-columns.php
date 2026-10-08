@@ -260,6 +260,7 @@ function give_sort_forms( $vars ) {
 /**
  * Sets restrictions on author of Forms List Table
  *
+ * @since TBD Unslash and sanitize the author ID.
  * @since  1.0
  *
  * @param  array $vars Array of all sort variables.
@@ -270,9 +271,11 @@ function give_filter_forms( $vars ) {
 	if ( isset( $vars['post_type'] ) && 'give_forms' == $vars['post_type'] ) {
 
 		// If an author ID was passed, use it
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only author param; it can only narrow the list, and anyone without view_give_reports is refused unless it is their own ID.
 		if ( isset( $_REQUEST['author'] ) && ! current_user_can( 'view_give_reports' ) ) {
 
-			$author_id = $_REQUEST['author'];
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only author param; it can only narrow the list, and anyone without view_give_reports is refused unless it is their own ID.
+			$author_id = absint( $_REQUEST['author'] );
 			if ( (int) $author_id !== get_current_user_id() ) {
 				wp_die(
 					esc_html__( 'You do not have permission to view this data.', 'give' ),
@@ -337,6 +340,7 @@ add_filter( 'months_dropdown_results', 'give_remove_month_filter', 99 );
 /**
  * Updates price when saving post
  *
+ * @since TBD Unslash and sanitize the request values.
  * @since 1.0
  * @since 2.1.4 If the donation amount is less than the Minimum amount then set the donation amount as Donation minimum amount.
  *
@@ -345,6 +349,7 @@ add_filter( 'months_dropdown_results', 'give_remove_month_filter', 99 );
  * @return int|null
  */
 function give_price_save_quick_edit( $post_id ) {
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- WordPress core verifies the nonce before it fires save_post; this only checks the post type.
 	if ( ! isset( $_POST['post_type'] ) || 'give_forms' !== $_POST['post_type'] ) {
 		return;
 	}
@@ -355,19 +360,25 @@ function give_price_save_quick_edit( $post_id ) {
 		return $post_id;
 	}
 
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- WordPress core verifies the nonce before it fires save_post.
 	if ( isset( $_REQUEST['_give_regprice'] ) ) {
-		give_update_meta( $post_id, '_give_set_price', give_sanitize_amount_for_db( strip_tags( stripslashes( $_REQUEST['_give_regprice'] ) ) ) );
+		give_update_meta( $post_id, '_give_set_price', give_sanitize_amount_for_db( sanitize_text_field( wp_unslash( $_REQUEST['_give_regprice'] ) ) ) );
 	}
 
 	// Override the Donation minimum amount.
 	if (
-		isset( $_REQUEST['_give_custom_amount'], $_REQUEST['_give_set_price'], $_REQUEST['_give_price_option'], $_REQUEST['_give_custom_amount_range'] )
+		isset( $_REQUEST['_give_custom_amount'], $_REQUEST['_give_set_price'], $_REQUEST['_give_price_option'], $_REQUEST['_give_custom_amount_range']['minimum'] )
 		&& 'set' === $_REQUEST['_give_price_option']
-		&& give_is_setting_enabled( $_REQUEST['_give_custom_amount'] )
-		&& give_maybe_sanitize_amount( $_REQUEST['_give_set_price'] ) < give_maybe_sanitize_amount( $_REQUEST['_give_custom_amount_range']['minimum'] )
+		&& give_is_setting_enabled( sanitize_text_field( wp_unslash( $_REQUEST['_give_custom_amount'] ) ) )
 	) {
-		give_update_meta( $post_id, '_give_custom_amount_range_minimum', give_sanitize_amount_for_db( $_REQUEST['_give_set_price'] ) );
+		$set_price = sanitize_text_field( wp_unslash( $_REQUEST['_give_set_price'] ) );
+		$minimum   = sanitize_text_field( wp_unslash( $_REQUEST['_give_custom_amount_range']['minimum'] ) );
+
+		if ( give_maybe_sanitize_amount( $set_price ) < give_maybe_sanitize_amount( $minimum ) ) {
+			give_update_meta( $post_id, '_give_custom_amount_range_minimum', give_sanitize_amount_for_db( $set_price ) );
+		}
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 }
 
 add_action( 'save_post', 'give_price_save_quick_edit' );
@@ -375,13 +386,13 @@ add_action( 'save_post', 'give_price_save_quick_edit' );
 /**
  * Function is used to filter the query for search result.
  *
- * @since TBD Use gmdate() instead of date().
+ * @since TBD Use gmdate() instead of date(), and sanitize the goal filter value.
  * @since 2.4.0
  *
  * @param $wp WP WordPress environment instance (passed by reference).
  */
 function give_form_search_query_filter( $wp ) {
-
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only list filters from the URL; they only narrow what is shown and save nothing.
 	if (
 		isset( $wp->query_vars['post_type'] )
 		 && 'give_forms' == $wp->query_vars['post_type']
@@ -390,11 +401,11 @@ function give_form_search_query_filter( $wp ) {
 
 		$wp->query_vars['date_query'] =
 			[
-				'after'     => ! empty( $_GET['start-date'] ) ? gmdate( 'Y-m-d', strtotime( give_clean( $_GET['start-date'] ) ) ) : false,
-				'before'    => ! empty( $_GET['end-date'] ) ? gmdate( 'Y-m-d 23:59:59 ', strtotime( give_clean( $_GET['end-date'] ) ) ) : false,
+				'after'     => ! empty( $_GET['start-date'] ) ? gmdate( 'Y-m-d', strtotime( give_clean( $_GET['start-date'] ) ) ) : false, // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+				'before'    => ! empty( $_GET['end-date'] ) ? gmdate( 'Y-m-d 23:59:59 ', strtotime( give_clean( $_GET['end-date'] ) ) ) : false, // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 				'inclusive' => true,
 			];
-		switch ( $_GET['give-forms-goal-filter'] ) {
+		switch ( sanitize_text_field( wp_unslash( $_GET['give-forms-goal-filter'] ) ) ) {
 			case 'goal_in_progress':
 				$wp->query_vars['meta_query'] =
 					[
@@ -437,6 +448,7 @@ function give_form_search_query_filter( $wp ) {
 				break;
 		}
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 }
 
 add_action( 'parse_request', 'give_form_search_query_filter' );
@@ -473,7 +485,7 @@ add_filter( 'pre_get_posts', 'give_search_form_by_id' );
 /**
  * Outputs advanced filter html in Give forms list admin screen.
  *
- * @since TBD Escape output, including translated strings, and use gmdate() instead of date().
+ * @since TBD Escape output, including translated strings, use gmdate() instead of date(), and sanitize the goal filter value.
  * @sicne 2.4.0
  *
  * @param $which
@@ -491,10 +503,12 @@ function give_forms_advanced_filter( $which ) {
 		return;
 	}
 
-	$start_date             = isset( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : '';
-	$end_date               = isset( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : '';
-	$search                 = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : '';
-	$give_forms_goal_filter = isset( $_GET['give-forms-goal-filter'] ) ? $_GET['give-forms-goal-filter'] : '';
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only list filters from the URL; they only narrow what is shown and save nothing.
+	$start_date             = isset( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+	$end_date               = isset( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+	$search                 = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+	$give_forms_goal_filter = isset( $_GET['give-forms-goal-filter'] ) ? sanitize_text_field( wp_unslash( $_GET['give-forms-goal-filter'] ) ) : '';
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 	?>
 	<div id="give-forms-advanced-filter" class="give-filters">
 		<div class="give-filter give-filter-search">
