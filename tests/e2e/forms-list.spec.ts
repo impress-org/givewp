@@ -1,5 +1,5 @@
 import {expect, Locator, Page, test} from '@wordpress/e2e-test-utils-playwright';
-import {chooseOption} from './utils/async-select';
+import {chooseOption, openOptions} from './utils/async-select';
 import {createCampaignWithForm} from './utils/campaign';
 import {createStandaloneForm} from './utils/standalone-form';
 
@@ -123,9 +123,10 @@ test.describe('Forms list', () => {
         const dialog = await openCampaignDialog(page, formRow(page, current.title), 'Change campaign');
         const picker = dialog.getByRole('combobox', {name: 'Move to'});
 
-        // The open campaign is offered, which is what makes the two empty searches below mean something.
+        // The open campaign is offered, which is what makes the two empty searches below mean something. The
+        // text is looked for among the menu's options: its own default form's row is on the page behind the dialog.
         await picker.fill(open.title);
-        await expect(page.getByText(open.title, {exact: true}).last()).toBeVisible();
+        await expect(openOptions(page).filter({hasText: open.title})).toBeVisible();
 
         await picker.fill(archived.title);
         await expect(dialog.getByText('No options')).toBeVisible();

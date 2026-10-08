@@ -70,8 +70,11 @@ test.describe('Donations list', () => {
         await expect(donationRow(page, inCampaign)).toHaveCount(0);
 
         // The standalone form's donations are the ones with no campaign, so the two filters agree. The
-        // list reloads when a filter changes and a reload drops what is typed into the next one, so wait it out.
-        const reloaded = page.waitForResponse((response) => response.url().includes('campaignId=none'));
+        // list reloads when a filter changes and a reload drops what is typed into the next one, so wait it
+        // out. The request has to carry both filters: dropping the form one would still leave this row showing.
+        const reloaded = page.waitForResponse(
+            (response) => response.url().includes('campaignId=none') && response.url().includes(`formId=${formId}`)
+        );
         await chooseOption(page, campaignFilter(page), 'No campaign');
         await reloaded;
         await expect(donationRow(page, standalone)).toBeVisible();
@@ -101,8 +104,11 @@ test.describe('Donations list', () => {
         await expect(donationRow(page, donation)).toBeVisible();
     });
 
-    test('searches past the first page of forms', async ({page, admin}) => {
+    test('searches past the first page of forms', async ({page, admin, requestUtils}) => {
         const prefix = `Paging form ${Date.now()}`;
+
+        // The list waits for a donation row before the filters are used, so a fresh install needs one.
+        createDonation((await createCampaignWithForm(requestUtils)).formId);
 
         // Forms in the menu are posts, so plain ones are enough to fill it. More than a page of them.
         wp(
@@ -134,7 +140,7 @@ test.describe('Donations list', () => {
         admin,
         requestUtils,
     }) => {
-        await createCampaignWithForm(requestUtils);
+        createDonation((await createCampaignWithForm(requestUtils)).formId);
         await page.setViewportSize({width: 1000, height: 800});
 
         await visitDonations(page, admin);
