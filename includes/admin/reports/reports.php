@@ -25,13 +25,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Renders the reports page contents.
  *
- * @since TBD Escape output.
+ * @since TBD Escape output. Unslash and sanitize the tab request value.
  * @since 1.0
  * @return void
  */
 function give_reports_page() {
 	$current_page = admin_url( 'edit.php?post_type=give_forms&page=give-reports' );
-	$active_tab   = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
+	$active_tab   = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'earnings'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only tab name; it selects which report tab to show and saves nothing.
 	$views        = give_reports_default_views();
 	?>
 	<div class="wrap give-settings-page">
@@ -137,16 +137,21 @@ function give_reports_default_views() {
  *
  * @param string $default Default view to use.
  *
+ * @since TBD Unslash and sanitize the view request value.
  * @since 1.0
  * @return string $view Report View
  */
 function give_get_reporting_view( $default = 'earnings' ) {
 
-	if ( ! isset( $_GET['view'] ) || ! in_array( $_GET['view'], array_keys( give_reports_default_views() ) ) ) {
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only view name; it selects which report to show and saves nothing.
+	$requested_view = isset( $_GET['view'] ) ? sanitize_text_field( wp_unslash( $_GET['view'] ) ) : '';
+
+	if ( ! isset( $_GET['view'] ) || ! in_array( $requested_view, array_keys( give_reports_default_views() ) ) ) {
 		$view = $default;
 	} else {
-		$view = $_GET['view'];
+		$view = $requested_view;
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	return apply_filters( 'give_get_reporting_view', $view );
 }
@@ -154,7 +159,7 @@ function give_get_reporting_view( $default = 'earnings' ) {
 /**
  * Renders the Reports page
  *
- * @since TBD Escape output.
+ * @since TBD Escape output. Unslash and sanitize the tab request value.
  * @since 1.0
  * @return void
  */
@@ -167,9 +172,13 @@ function give_reports_tab_reports() {
 	$current_view = 'earnings';
 	$views        = give_reports_default_views();
 
-	if ( isset( $_GET['tab'] ) && array_key_exists( $_GET['tab'], $views ) ) {
-		$current_view = $_GET['tab'];
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only tab name; it selects which report to show and saves nothing.
+	$requested_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
+
+	if ( isset( $_GET['tab'] ) && array_key_exists( $requested_tab, $views ) ) {
+		$current_view = $requested_tab;
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	/**
 	 * Fires the report page view.
@@ -184,13 +193,13 @@ add_action( 'give_reports_tab_reports', 'give_reports_tab_reports' );
 /**
  * Renders the Reports Page Views Drop Downs
  *
- * @since TBD Escape output.
+ * @since TBD Escape output. Unslash and sanitize the view request value.
  * @since 1.0
  * @return void
  */
 function give_report_views() {
 	$views        = give_reports_default_views();
-	$current_view = isset( $_GET['view'] ) ? $_GET['view'] : 'earnings';
+	$current_view = isset( $_GET['view'] ) ? sanitize_text_field( wp_unslash( $_GET['view'] ) ) : 'earnings'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only view name; it selects which report is shown and saves nothing.
 	/**
 	 * Fires before the report page actions form.
 	 *
@@ -240,7 +249,7 @@ function give_report_views() {
  */
 function give_reports_forms_table() {
 
-	if ( isset( $_GET['form-id'] ) ) {
+	if ( isset( $_GET['form-id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form filter; it only picks the table or the form report and saves nothing.
 		return;
 	}
 
@@ -265,7 +274,7 @@ add_action( 'give_reports_view_forms', 'give_reports_forms_table' );
  * @return void
  */
 function give_reports_form_details() {
-	if ( ! isset( $_GET['form-id'] ) ) {
+	if ( ! isset( $_GET['form-id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form filter; it only picks the table or the form report and saves nothing.
 		return;
 	}
 	?>
@@ -275,7 +284,7 @@ function give_reports_form_details() {
 		</div>
 	</div>
 	<?php
-	give_reports_graph_of_form( absint( $_GET['form-id'] ) );
+	give_reports_graph_of_form( absint( $_GET['form-id'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form filter; it only picks which form report is shown and saves nothing.
 }
 
 add_action( 'give_reports_view_forms', 'give_reports_form_details' );

@@ -92,7 +92,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	/**
 	 * Show the search field
 	 *
-	 * @since  TBD Escape output.
+	 * @since  TBD Escape output. Unslash and sanitize the sort request values.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -104,12 +104,14 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	public function give_search_box( $text, $input_id ) {
 		$input_id = $input_id . '-search-input';
 
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only sort params; they only change the order of the table and save nothing.
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
-			echo '<input type="hidden" name="orderby" value="' . esc_attr( $_REQUEST['orderby'] ) . '" />';
+			echo '<input type="hidden" name="orderby" value="' . esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) ) . '" />';
 		}
 		if ( ! empty( $_REQUEST['order'] ) ) {
-			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
+			echo '<input type="hidden" name="order" value="' . esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ) ) . '" />';
 		}
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		?>
 		<p class="search-box donor-search" role="search">
 			<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $text ); ?>:</label>
@@ -261,19 +263,19 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * @return int Current page number
 	 */
 	public function get_paged() {
-		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
+		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only paging param; it only picks which page of the table is shown and saves nothing.
 	}
 
 	/**
 	 * Retrieves the search query string
 	 *
 	 * @access public
-	 * @since TBD Unslash the search term. Give_Donors_Query escapes it.
+	 * @since TBD Unslash and sanitize the search term. Give_Donors_Query escapes it.
 	 * @since  1.0
 	 * @return mixed string If search is present, false otherwise
 	 */
 	public function get_search() {
-		return ! empty( $_GET['s'] ) ? urldecode( trim( wp_unslash( $_GET['s'] ) ) ) : false;
+		return ! empty( $_GET['s'] ) ? urldecode( trim( sanitize_text_field( wp_unslash( $_GET['s'] ) ) ) ) : false; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only search term; it only narrows what is shown and saves nothing.
 	}
 
 	/**
@@ -336,6 +338,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	/**
 	 * Get donor query.
 	 *
+	 * @since  TBD Unslash the sort request values.
 	 * @since  1.8.1
 	 * @access public
 	 * @return array
@@ -344,8 +347,10 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 		$paged   = $this->get_paged();
 		$offset  = $this->per_page * ( $paged - 1 );
 		$search  = $this->get_search();
-		$order   = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'DESC';
-		$orderby = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only sort params; they only change the order of the table and save nothing.
+		$order   = isset( $_GET['order'] ) ? sanitize_text_field( wp_unslash( $_GET['order'] ) ) : 'DESC';
+		$orderby = isset( $_GET['orderby'] ) ? sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) : 'id';
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		$args = array(
 			'number'  => $this->per_page,

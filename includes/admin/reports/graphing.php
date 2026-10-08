@@ -498,8 +498,8 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 /**
  * Show report graph date filters
  *
+ * @since TBD Use gmdate() instead of date(), and unslash and sanitize the tab request value.
  * @since 1.0.0
- * @since TBD Use gmdate() instead of date().
  * @since 1.8.0 The hidden `view` field is replaced with `tab` field.
  *
  * @return void
@@ -524,7 +524,7 @@ function give_reports_graph_controls() {
 
 	$dates   = give_get_report_dates();
 	$display = $dates['range'] == 'other' ? '' : 'display: none;';
-	$tab     = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
+	$tab     = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'earnings'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only tab name; it selects which report to show and saves nothing.
 
 	if ( empty( $dates['day_end'] ) ) {
 		$dates['day_end'] = cal_days_in_month( CAL_GREGORIAN, gmdate( 'n' ), gmdate( 'Y' ) );
@@ -545,8 +545,8 @@ function give_reports_graph_controls() {
 				<input type="hidden" name="page" value="give-reports" />
 				<input type="hidden" name="tab" value="<?php echo esc_attr( $tab ); ?>" />
 
-				<?php if ( isset( $_GET['form-id'] ) ) : ?>
-					<input type="hidden" name="form-id" value="<?php echo absint( $_GET['form-id'] ); ?>" />
+				<?php if ( isset( $_GET['form-id'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form filter; it only narrows the report and saves nothing. ?>
+					<input type="hidden" name="form-id" value="<?php echo absint( $_GET['form-id'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form filter; it only narrows the report and saves nothing. ?>" />
 				<?php endif; ?>
 
 				<div id="give-graphs-date-options-wrap">
@@ -614,7 +614,7 @@ function give_reports_graph_controls() {
  * Date sent via $_GET is read first and then modified (if needed) to match the
  * selected date-range (if any)
  *
- * @since TBD Use gmdate() instead of date().
+ * @since TBD Use gmdate() instead of date(), and unslash and sanitize the date request values.
  * @since 1.0
  *
  * @return array
@@ -624,13 +624,15 @@ function give_get_report_dates() {
 
 	$current_time = current_time( 'timestamp' );
 
-	$dates['range']    = isset( $_GET['range'] ) ? $_GET['range'] : 'this_month';
-	$dates['year']     = isset( $_GET['year'] ) ? $_GET['year'] : gmdate( 'Y' );
-	$dates['year_end'] = isset( $_GET['year_end'] ) ? $_GET['year_end'] : gmdate( 'Y' );
-	$dates['m_start']  = isset( $_GET['m_start'] ) ? $_GET['m_start'] : 1;
-	$dates['m_end']    = isset( $_GET['m_end'] ) ? $_GET['m_end'] : 12;
-	$dates['day']      = isset( $_GET['day'] ) ? $_GET['day'] : 1;
-	$dates['day_end']  = isset( $_GET['day_end'] ) ? $_GET['day_end'] : cal_days_in_month( CAL_GREGORIAN, $dates['m_end'], $dates['year'] );
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only report date filters; they only change the date range the report shows and save nothing.
+	$dates['range']    = isset( $_GET['range'] ) ? sanitize_text_field( wp_unslash( $_GET['range'] ) ) : 'this_month';
+	$dates['year']     = isset( $_GET['year'] ) ? sanitize_text_field( wp_unslash( $_GET['year'] ) ) : gmdate( 'Y' );
+	$dates['year_end'] = isset( $_GET['year_end'] ) ? sanitize_text_field( wp_unslash( $_GET['year_end'] ) ) : gmdate( 'Y' );
+	$dates['m_start']  = isset( $_GET['m_start'] ) ? sanitize_text_field( wp_unslash( $_GET['m_start'] ) ) : 1;
+	$dates['m_end']    = isset( $_GET['m_end'] ) ? sanitize_text_field( wp_unslash( $_GET['m_end'] ) ) : 12;
+	$dates['day']      = isset( $_GET['day'] ) ? sanitize_text_field( wp_unslash( $_GET['day'] ) ) : 1;
+	$dates['day_end']  = isset( $_GET['day_end'] ) ? sanitize_text_field( wp_unslash( $_GET['day_end'] ) ) : cal_days_in_month( CAL_GREGORIAN, $dates['m_end'], $dates['year'] );
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	// Modify dates based on predefined ranges.
 	switch ( $dates['range'] ) :
@@ -803,7 +805,7 @@ function give_get_report_dates() {
 /**
  * Grabs all of the selected date info and then redirects appropriately
  *
- * @since TBD Use a safe redirect.
+ * @since TBD Use a safe redirect, and unslash and sanitize the tab and form id request values.
  * @since 1.0.0
  * @since 1.8.0 The `tab` query arg is added to the redirect.
  *
@@ -813,8 +815,10 @@ function give_parse_report_dates( $data ) {
 	$dates = give_get_report_dates();
 
 	$view = give_get_reporting_view();
-	$tab  = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
-	$id   = isset( $_GET['form-id'] ) ? $_GET['form-id'] : null;
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only filters; this handler only redirects to the report with the chosen dates and saves nothing.
+	$tab  = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'earnings';
+	$id   = isset( $_GET['form-id'] ) ? absint( wp_unslash( $_GET['form-id'] ) ) : null;
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	wp_safe_redirect( esc_url_raw(add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&legacy=true&tab=' . esc_attr( $tab ) . '&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) ) );
 	give_die();
