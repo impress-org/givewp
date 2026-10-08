@@ -256,7 +256,7 @@ class Give_Updates {
 		// Bailout.
 		if ( ! $this->get_total_update_count() ) {
 			// Show complete update message if still on update setting page.
-			if ( isset( $_GET['page'] ) && 'give-updates' === $_GET['page'] ) {
+			if ( isset( $_GET['page'] ) && 'give-updates' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides whether to show the updates screen and saves nothing.
 				// Upgrades
 				add_submenu_page(
 					'edit.php?post_type=give_forms',
@@ -280,7 +280,7 @@ class Give_Updates {
 			sprintf(
 				'%1$s <span class="update-plugins"%2$s><span class="plugin-count give-update-progress-count">%3$s%4$s</span></span>',
 				__( 'Updates', 'give' ),
-				isset( $_GET['give-pause-db-upgrades'] ) ? ' style="display:none;"' : '',
+				isset( $_GET['give-pause-db-upgrades'] ) ? ' style="display:none;"' : '', // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only flag; it only hides the menu count after a pause and saves nothing.
 				$is_update ?
 					$this->get_db_update_processing_percentage() :
 					$this->get_total_update_count(),
@@ -307,7 +307,7 @@ class Give_Updates {
 			! wp_doing_ajax() &&
 			current_user_can( 'manage_give_settings' ) &&
 			get_option( 'give_show_db_upgrade_complete_notice' ) &&
-			! isset( $_GET['give-db-update-completed'] )
+			! isset( $_GET['give-db-update-completed'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only flag; it only skips the completed notice redirect and saves nothing.
 		) {
 			delete_option( 'give_show_db_upgrade_complete_notice' );
 
@@ -320,6 +320,7 @@ class Give_Updates {
 	/**
 	 * Pause db upgrade
 	 *
+     * @since TBD Verify a nonce and the capability before pausing.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.1
 	 * @access public
@@ -334,9 +335,9 @@ class Give_Updates {
 			! $force &&
 			(
 				wp_doing_ajax() ||
-				! isset( $_GET['page'] ) ||
-				'give-updates' !== $_GET['page'] ||
-				! isset( $_GET['give-pause-db-upgrades'] ) ||
+				! isset( $_GET['page'] ) || // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only tells whether this is the updates screen. The upgrade action itself is verified by is_verified_upgrade_request().
+				'give-updates' !== $_GET['page'] || // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only tells whether this is the updates screen. The upgrade action itself is verified by is_verified_upgrade_request().
+				! $this->is_verified_upgrade_request( 'give-pause-db-upgrades', 'give_pause_db_upgrades' ) ||
 				self::$background_updater->is_paused_process()
 			)
 
@@ -385,6 +386,7 @@ class Give_Updates {
 	/**
 	 * Restart db upgrade
 	 *
+     * @since TBD Verify a nonce and the capability before restarting.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.1
 	 * @access public
@@ -395,9 +397,9 @@ class Give_Updates {
 		// Bailout.
 		if (
 			wp_doing_ajax() ||
-			! isset( $_GET['page'] ) ||
-			'give-updates' !== $_GET['page'] ||
-			! isset( $_GET['give-restart-db-upgrades'] ) ||
+			! isset( $_GET['page'] ) || // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only tells whether this is the updates screen. The upgrade action itself is verified by is_verified_upgrade_request().
+			'give-updates' !== $_GET['page'] || // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only tells whether this is the updates screen. The upgrade action itself is verified by is_verified_upgrade_request().
+			! $this->is_verified_upgrade_request( 'give-restart-db-upgrades', 'give_restart_db_upgrades' ) ||
 			! self::$background_updater->is_paused_process()
 		) {
 			return false;
@@ -593,7 +595,7 @@ class Give_Updates {
 	/**
 	 * Show update related notices
 	 *
-     * @since TBD Escape translated output.
+     * @since TBD Escape translated output. Add nonces to the run and restart updater links.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
@@ -612,7 +614,7 @@ class Give_Updates {
 		}
 
 		// Run DB updates.
-		if ( ! empty( $_GET['give-run-db-update'] ) ) {
+		if ( $this->is_verified_upgrade_request( 'give-run-db-update', 'give_run_db_update' ) ) {
 			$this->run_db_update();
 		}
 
@@ -631,7 +633,7 @@ class Give_Updates {
 				&nbsp;&#8211;&nbsp;<?php esc_html_e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a backup before proceeding.', 'give' ); ?>
 				<br>
 				<br>
-				<a href="<?php echo esc_url( add_query_arg( [ 'give-restart-db-upgrades' => 1 ], admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ) ); ?>" class="button button-primary give-restart-updater-btn">
+				<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'give-restart-db-upgrades' => 1 ], admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ), 'give_restart_db_upgrades' ) ); ?>" class="button button-primary give-restart-updater-btn">
 					<?php esc_html_e( 'Restart the updater', 'give' ); ?>
 				</a>
 			<?php else : ?>
@@ -658,7 +660,7 @@ class Give_Updates {
 		}
 
 		// Show db upgrade completed notice.
-		if ( ! empty( $_GET['give-db-update-completed'] ) ) {
+		if ( ! empty( $_GET['give-db-update-completed'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only flag; it only shows the completed notice and saves nothing.
 			Give()->notices->register_notice(
 				[
 					'id'          => 'give_db_upgrade_completed',
@@ -669,7 +671,7 @@ class Give_Updates {
 			);
 
 			// Start update.
-		} elseif ( ! empty( $_GET['give-run-db-update'] ) ) {
+		} elseif ( $this->is_verified_upgrade_request( 'give-run-db-update', 'give_run_db_update' ) ) {
 			$this->run_db_update();
 
 			// Show run the update notice.
@@ -681,7 +683,7 @@ class Give_Updates {
 				&nbsp;&#8211;&nbsp;<?php esc_html_e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a complete backup before proceeding.', 'give' ); ?>
 			</p>
 			<p class="submit">
-				<a href="<?php echo esc_url( add_query_arg( [ 'give-run-db-update' => 1 ], admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ) ); ?>" class="button button-primary give-run-update-now">
+				<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'give-run-db-update' => 1 ], admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ), 'give_run_db_update' ) ); ?>" class="button button-primary give-run-update-now">
 					<?php esc_html_e( 'Run the updater', 'give' ); ?>
 				</a>
 			</p>
@@ -717,6 +719,26 @@ class Give_Updates {
 	 */
 	public function render_page() {
 		include_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/views/upgrades.php';
+	}
+
+	/**
+	 * Whether the request asks for an upgrade action, comes from a user who can manage GiveWP and carries a valid nonce.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $query_arg    Query arg that asks for the action.
+	 * @param string $nonce_action Nonce action of the link that sends the request.
+	 *
+	 * @return bool
+	 */
+	private function is_verified_upgrade_request( $query_arg, $nonce_action ) {
+		$nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+
+		if ( ! current_user_can( 'manage_give_settings' ) || ! wp_verify_nonce( $nonce, $nonce_action ) ) {
+			return false;
+		}
+
+		return ! empty( $_GET[ $query_arg ] );
 	}
 
 	/**
@@ -776,6 +798,7 @@ class Give_Updates {
 	/**
 	 * Initialize updates
 	 *
+     * @since TBD Verify the nonce the script already sends.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
@@ -794,7 +817,8 @@ class Give_Updates {
 			wp_send_json_error();
 		}
 
-		// @todo: validate nonce
+		check_ajax_referer( self::$background_updater->get_identifier(), 'nonce' );
+
 		// @todo: set http method to post
 		if ( empty( $_POST['run_db_update'] ) ) {
 			wp_send_json_error();

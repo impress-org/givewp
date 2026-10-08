@@ -1,0 +1,6 @@
+significance: patch
+type: fix
+entry: Added nonces to the core settings export form and the database updater
+  run, pause and restart links, and sanitized request input in the export, data
+  and upgrade tools
+timestamp: 2026-10-08T15:46:36.348Z

@@ -8,7 +8,7 @@
  * @subpackage  Admin/Upgrades
  * @copyright   Copyright (c) 2017, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since TBD Escape output, including translated strings. Add translators comments.
+ * @since TBD Escape output, including translated strings. Add translators comments. Add nonces to the pause and restart upgrade buttons.
  * @since       1.8.12
  */
 
@@ -100,13 +100,13 @@ $give_updates = Give_Updates::get_instance();
 									</span>
 
 									<?php if ( Give_Updates::$background_updater->is_paused_process() ) : ?>
-										<?php $is_disabled = isset( $_GET['give-restart-db-upgrades'] ) ? ' disabled' : ''; ?>
+										<?php $is_disabled = isset( $_GET['give-restart-db-upgrades'] ) ? ' disabled' : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only flag; it only disables the button after a restart and saves nothing. ?>
 										<button id="give-restart-upgrades" class="button button-primary alignright"
-												data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ) ); ?>"<?php echo esc_attr( $is_disabled ); ?>><?php esc_html_e( 'Restart Upgrades', 'give' ); ?></button>
+												data-redirect-url="<?php echo esc_url( wp_nonce_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ), 'give_restart_db_upgrades' ) ); ?>"<?php echo esc_attr( $is_disabled ); ?>><?php esc_html_e( 'Restart Upgrades', 'give' ); ?></button>
 									<?php elseif ( $give_updates->is_doing_updates() ) : ?>
-										<?php $is_disabled = isset( $_GET['give-pause-db-upgrades'] ) ? ' disabled' : ''; ?>
+										<?php $is_disabled = isset( $_GET['give-pause-db-upgrades'] ) ? ' disabled' : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only flag; it only disables the button after a pause and saves nothing. ?>
 										<button id="give-pause-upgrades" class="button button-primary alignright"
-												data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-pause-db-upgrades=1' ) ); ?>"<?php echo esc_attr( $is_disabled ); ?>>
+												data-redirect-url="<?php echo esc_url( wp_nonce_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-pause-db-upgrades=1' ), 'give_pause_db_upgrades' ) ); ?>"<?php echo esc_attr( $is_disabled ); ?>>
 											<?php esc_html_e( 'Pause Upgrades', 'give' ); ?>
 										</button>
 									<?php endif; ?>
