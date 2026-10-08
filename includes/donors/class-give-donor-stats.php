@@ -79,7 +79,7 @@ class Give_Donor_Stats {
 			return $donated_amount;
 		}
 
-		$donated_amounts = $wpdb->get_results(
+		$donated_amounts = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 			$wpdb->prepare(
 				"SELECT %i as id, meta_value as total
 					FROM {$wpdb->donationmeta}

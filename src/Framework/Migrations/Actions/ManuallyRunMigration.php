@@ -6,6 +6,8 @@ use Exception;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\MigrationsRunner;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- transaction statements around a migration that an admin runs by hand; they cannot be cached.
+
 class ManuallyRunMigration
 {
     /**

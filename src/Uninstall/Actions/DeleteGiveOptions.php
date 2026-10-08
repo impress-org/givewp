@@ -4,6 +4,8 @@ namespace Give\Uninstall\Actions;
 
 use Give_Cache;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- uninstall; it finds GiveWP option names by prefix pattern, which get_option() cannot do, and runs once.
+
 /**
  * Deletes the options that GiveWP and its add-ons created, when the data is removed on uninstall.
  *

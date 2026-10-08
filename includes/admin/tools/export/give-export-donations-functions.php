@@ -45,7 +45,7 @@ function give_export_donations_get_custom_fields() {
 
 	// Without donations there is nothing to look up: an empty IN () list is not valid SQL.
 	if ( ! empty( $donation_ids ) ) {
-		$meta_keys = $wpdb->get_col(
+		$meta_keys = $wpdb->get_col( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Distinct meta keys for the export; joins posts with the GiveWP donationmeta table, and the export needs current data.
 			$wpdb->prepare(
 				"
         SELECT DISTINCT($wpdb->donationmeta.meta_key)
@@ -66,7 +66,7 @@ function give_export_donations_get_custom_fields() {
 	}
 
 	if ( ! empty( $donation_ids ) ) {
-		$hidden_meta_keys = $wpdb->get_col(
+		$hidden_meta_keys = $wpdb->get_col( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Distinct meta keys for the export; joins posts with the GiveWP donationmeta table, and the export needs current data.
 			$wpdb->prepare(
 				"
         SELECT DISTINCT($wpdb->donationmeta.meta_key)
