@@ -161,6 +161,7 @@ class BlockRenderController
      * Load embed givewp script to resize iframe
      * @see        https://github.com/davidjbradshaw/iframe-resizer
      *
+     * @since TBD Set explicit versions on the enqueued assets.
      * @since 3.0.0
      */
     protected function loadEmbedScript()
@@ -178,7 +179,9 @@ class BlockRenderController
 
         wp_enqueue_style(
             'givewp-donation-form-embed-app',
-            GIVE_PLUGIN_URL . 'build/donationFormBlockApp.css'
+            GIVE_PLUGIN_URL . 'build/donationFormBlockApp.css',
+            [],
+            GIVE_VERSION
         );
     }
 }

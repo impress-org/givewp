@@ -18,9 +18,12 @@ use Give\Framework\PaymentGateways\PaymentGateway;
  */
 class LoadDonationAdminOptions
 {
+    /**
+     * @since TBD Set an explicit version on the options script.
+     */
     public function __invoke()
     {
-        wp_register_script('give-donation-options', false);
+        wp_register_script('give-donation-options', false, [], GIVE_VERSION, false);
         wp_localize_script('give-donation-options', 'GiveDonationOptions', $this->getDonationOptions());
         wp_enqueue_script('give-donation-options');
     }

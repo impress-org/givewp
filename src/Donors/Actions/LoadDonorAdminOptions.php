@@ -14,9 +14,12 @@ use Give\Helpers\IntlTelInput;
  */
 class LoadDonorAdminOptions
 {
+    /**
+     * @since TBD Set an explicit version on the options script.
+     */
     public function __invoke()
     {
-        wp_register_script('give-donor-options', false);
+        wp_register_script('give-donor-options', false, [], GIVE_VERSION, false);
         wp_localize_script('give-donor-options', 'GiveDonorOptions', $this->getDonorOptions());
         wp_enqueue_script('give-donor-options');
     }

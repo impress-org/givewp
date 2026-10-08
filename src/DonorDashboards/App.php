@@ -178,7 +178,7 @@ class App
             'give-google-font-montserrat',
             'https://fonts.googleapis.com/css?family=Montserrat:500,500i,600,600i,700,700i&display=swap',
             [],
-            null
+            null // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- external Google Fonts stylesheet, not versioned by GiveWP.
         );
 
         do_action('give_donor_dashboard_enqueue_assets');

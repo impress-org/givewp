@@ -103,7 +103,7 @@ class ScriptLoader
             'give-paypal-partner-js',
             $this->getPartnerJsUrl(),
             [],
-            null,
+            null, // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- external PayPal SDK script, not versioned by GiveWP.
             true
         );
 

@@ -12,9 +12,12 @@ use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
  */
 class LoadCampaignPublicOptions
 {
+    /**
+     * @since TBD Set an explicit version on the options script.
+     */
     public function __invoke()
     {
-        wp_register_script('give-campaign-options', false);
+        wp_register_script('give-campaign-options', false, [], GIVE_VERSION, false);
 
         wp_localize_script('give-campaign-options', 'GiveCampaignOptions',
             [
