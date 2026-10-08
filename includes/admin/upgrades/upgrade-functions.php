@@ -1923,7 +1923,7 @@ function give_v20_upgrades_payment_metadata_callback() {
 			$payment_meta = give_get_meta( $post->ID, '_give_payment_meta', true );
 
 			if ( ! empty( $payment_meta ) ) {
-				_give_20_bc_split_and_save_give_payment_meta( $post->ID, $payment_meta );
+				give_20_bc_split_and_save_give_payment_meta( $post->ID, $payment_meta );
 			}
 
 			$deprecated_meta_keys = [
@@ -2282,7 +2282,7 @@ function give_v201_upgrades_payment_metadata_callback() {
 			$payment_meta = give_get_meta( $post->ID, '_give_payment_meta', true );
 
 			if ( ! empty( $payment_meta ) ) {
-				_give_20_bc_split_and_save_give_payment_meta( $post->ID, $payment_meta );
+				give_20_bc_split_and_save_give_payment_meta( $post->ID, $payment_meta );
 			}
 
 			$deprecated_meta_keys = [

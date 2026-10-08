@@ -178,7 +178,7 @@ function give_form_shortcode( $atts ) {
         return ob_get_clean();
     }
 
-    _give_redirect_form_id($formId, $atts['id']);
+    give_redirect_form_id($formId, $atts['id']);
 
     // Short-circuit the shortcode output if the filter returns a non-empty string.
     $output = apply_filters('givewp_form_shortcode_output', '', $atts);
@@ -242,7 +242,7 @@ function give_goal_shortcode( $atts ) {
 		'give_goal'
 	);
 
-    _give_redirect_form_id($atts['id']);
+    give_redirect_form_id($atts['id']);
 
 	// get the Give Form.
 	ob_start();
@@ -692,7 +692,7 @@ function give_totals_shortcode( $atts ) {
 
         $form_ids = array_map(
             static function ($id) {
-                _give_redirect_form_id($id);
+                give_redirect_form_id($id);
 
                 return $id;
             },
@@ -973,7 +973,7 @@ function give_form_grid_shortcode( $atts ) {
 	if ( ! empty( $atts['ids'] ) ) {
         $form_args['post__in'] = array_map(
             static function ($id) {
-                _give_redirect_form_id($id);
+                give_redirect_form_id($id);
 
                 return $id;
             }, array_filter(array_map('trim', explode(',', $atts['ids'])))

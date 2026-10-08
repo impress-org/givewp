@@ -1418,14 +1418,14 @@ function give_get_field_name( $field ) {
  *
  * @TODO   : Add support for wysiwyg type field.
  *
- * @since  TBD Escape output.
+ * @since TBD Renamed from _give_metabox_form_data_repeater_fields(). Escape output.
  * @since  1.8
  *
  * @param  array $fields
  *
  * @return void
  */
-function _give_metabox_form_data_repeater_fields( $fields ) {
+function give_metabox_form_data_repeater_fields( $fields ) {
 	global $thepostid, $post;
 
 	// Bailout.
@@ -1604,6 +1604,18 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 		</table>
 	</div>
 	<?php
+}
+
+/**
+ * Output repeater field or multi donation type form on donation from edit screen.
+ *
+ * @since 1.8
+ * @deprecated TBD Use give_metabox_form_data_repeater_fields() instead.
+ */
+function _give_metabox_form_data_repeater_fields($fields) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_metabox_form_data_repeater_fields().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_metabox_form_data_repeater_fields()' );
+
+	give_metabox_form_data_repeater_fields($fields);
 }
 
 

@@ -41,8 +41,10 @@ add_filter( 'give_shortcode_button_condition', 'give_shortcode_button_condition'
  * @param array $args
  *
  * @return int|false
+ *
+ * @since TBD Renamed from get_form_id_from_args().
  */
-function get_form_id_from_args( $args ) {
+function give_get_form_id_from_args( $args ) {
 
 	if ( isset( $args['form_id'] ) && $args['form_id'] != 0 ) {
 
@@ -50,6 +52,17 @@ function get_form_id_from_args( $args ) {
 	}
 
 	return false;
+}
+
+/**
+ * Get the form ID from the form $args
+ *
+ * @deprecated TBD Use give_get_form_id_from_args() instead.
+ */
+function get_form_id_from_args($args) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_form_id_from_args().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_get_form_id_from_args()' );
+
+	return give_get_form_id_from_args($args);
 }
 
 /**
@@ -1075,13 +1088,14 @@ function give_show_login_register_option( $form_id ) {
  *
  * Note: this function will extract form field values from give_purchase session data.
  *
+ * @since TBD Renamed from _give_get_prefill_form_field_values().
  * @since  1.8
  *
  * @param  int $form_id Form ID.
  *
  * @return array
  */
-function _give_get_prefill_form_field_values( $form_id ) {
+function give_get_prefill_form_field_values( $form_id ) {
 	$logged_in_donor_info = [];
 
 	if ( is_user_logged_in() ) :
@@ -1145,6 +1159,18 @@ function _give_get_prefill_form_field_values( $form_id ) {
 
 	// Output.
 	return wp_parse_args( $give_donor_info_in_session, $logged_in_donor_info );
+}
+
+/**
+ * Get pre fill form field values.
+ *
+ * @since 1.8
+ * @deprecated TBD Use give_get_prefill_form_field_values() instead.
+ */
+function _give_get_prefill_form_field_values($form_id) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_prefill_form_field_values().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_get_prefill_form_field_values()' );
+
+	return give_get_prefill_form_field_values($form_id);
 }
 
 /**

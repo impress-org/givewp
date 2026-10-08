@@ -151,7 +151,7 @@ class DonationFormsAdminPage
         if ($this->isShowingEditV2FormPage()) {
             $formId = absint($_GET['post'] ?? 0); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only post id; it only selects which form to show and saves nothing.
             $campaign = Campaign::findByFormId($formId);
-            $isMigrated = _give_is_form_migrated($formId);
+            $isMigrated = give_is_form_migrated($formId);
 
             $campaignUrl = $campaign
                 ? admin_url('edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id)

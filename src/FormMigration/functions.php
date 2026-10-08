@@ -13,6 +13,7 @@ if (!defined('ABSPATH')) {
  * ex: givewp_migrated_form_id($formId);
  * ex: givewp_migrated_form_id($formId, $atts['id']);
  *
+ * @since TBD Renamed from _give_redirect_form_id().
  * @since 3.1.0 Make sure $formId always will receive an integer value
  * @since 3.0.0
  *
@@ -21,7 +22,7 @@ if (!defined('ABSPATH')) {
  *
  * @return void Note: $formId is an "output argument" - not a return value.
  */
-function _give_redirect_form_id(&$formId, &...$extraReference) {
+function give_redirect_form_id(&$formId, &...$extraReference) {
     global $wpdb;
 
     $formId = absint(DB::get_var(
@@ -44,11 +45,25 @@ function _give_redirect_form_id(&$formId, &...$extraReference) {
 }
 
 /**
+ * This function is used to "redirect" shortcodes and blocks
+ *
+ * @since 3.0.0
+ * @deprecated TBD Use give_redirect_form_id() instead.
+ */
+function _give_redirect_form_id(&$formId, &...$extraReference) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_redirect_form_id().
+    _give_deprecated_function( __FUNCTION__, 'TBD', 'give_redirect_form_id()' );
+
+    give_redirect_form_id($formId, ...$extraReference);
+}
+
+/**
  * @param $formId
  *
  * @return bool
+ *
+ * @since TBD Renamed from _give_is_form_migrated().
  */
-function _give_is_form_migrated($formId) {
+function give_is_form_migrated($formId) {
     global $wpdb;
 
     return (bool) DB::get_var(
@@ -67,11 +82,22 @@ function _give_is_form_migrated($formId) {
 }
 
 /**
+ * @deprecated TBD Use give_is_form_migrated() instead.
+ */
+function _give_is_form_migrated($formId) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_is_form_migrated().
+    _give_deprecated_function( __FUNCTION__, 'TBD', 'give_is_form_migrated()' );
+
+    return give_is_form_migrated($formId);
+}
+
+/**
  * @param $formId
  *
  * @return bool
+ *
+ * @since TBD Renamed from _give_is_form_transferred().
  */
-function _give_is_form_transferred($formId) {
+function give_is_form_transferred($formId) {
     global $wpdb;
 
     return (bool) DB::get_var(
@@ -87,4 +113,13 @@ function _give_is_form_transferred($formId) {
             $formId
         )
     );
+}
+
+/**
+ * @deprecated TBD Use give_is_form_transferred() instead.
+ */
+function _give_is_form_transferred($formId) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_is_form_transferred().
+    _give_deprecated_function( __FUNCTION__, 'TBD', 'give_is_form_transferred()' );
+
+    return give_is_form_transferred($formId);
 }

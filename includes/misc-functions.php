@@ -1276,10 +1276,23 @@ function give_list_pluck( $list, $field, $index_key = null ) {
  *                           Default false.
  *
  * @return int|false Meta ID on success, false on failure.
+ * @since TBD Renamed from add_donor_meta().
  * @since 1.8.13
  */
-function add_donor_meta( $donor_id, $meta_key, $meta_value, $unique = false ) {
+function give_add_donor_meta( $donor_id, $meta_key, $meta_value, $unique = false ) {
 	return add_metadata( 'give_customer', $donor_id, $meta_key, $meta_value, $unique );
+}
+
+/**
+ * Add meta data field to a donor.
+ *
+ * @since 1.8.13
+ * @deprecated TBD Use give_add_donor_meta() instead.
+ */
+function add_donor_meta($donor_id, $meta_key, $meta_value, $unique = false) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_add_donor_meta().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_add_donor_meta()' );
+
+	return give_add_donor_meta($donor_id, $meta_key, $meta_value, $unique);
 }
 
 /**
@@ -1294,10 +1307,23 @@ function add_donor_meta( $donor_id, $meta_key, $meta_value, $unique = false ) {
  * @param mixed  $meta_value Optional. Metadata value.
  *
  * @return bool True on success, false on failure.
+ * @since TBD Renamed from delete_donor_meta().
  * @since 1.8.13
  */
-function delete_donor_meta( $donor_id, $meta_key, $meta_value = '' ) {
+function give_delete_donor_meta( $donor_id, $meta_key, $meta_value = '' ) {
 	return delete_metadata( 'give_customer', $donor_id, $meta_key, $meta_value );
+}
+
+/**
+ * Remove metadata matching criteria from a Donor meta.
+ *
+ * @since 1.8.13
+ * @deprecated TBD Use give_delete_donor_meta() instead.
+ */
+function delete_donor_meta($donor_id, $meta_key, $meta_value = '') { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_delete_donor_meta().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_delete_donor_meta()' );
+
+	return give_delete_donor_meta($donor_id, $meta_key, $meta_value);
 }
 
 /**
@@ -1309,10 +1335,23 @@ function delete_donor_meta( $donor_id, $meta_key, $meta_value = '' ) {
  *
  * @return mixed Will be an array if $single is false. Will be value of meta data field if $single
  *  is true.
+ * @since TBD Renamed from get_donor_meta().
  * @since 1.8.13
  */
-function get_donor_meta( $donor_id, $key = '', $single = false ) {
+function give_get_donor_meta( $donor_id, $key = '', $single = false ) {
 	return get_metadata( 'give_customer', $donor_id, $key, $single );
+}
+
+/**
+ * Retrieve donor meta field for a donor meta table.
+ *
+ * @since 1.8.13
+ * @deprecated TBD Use give_get_donor_meta() instead.
+ */
+function get_donor_meta($donor_id, $key = '', $single = false) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_donor_meta().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_get_donor_meta()' );
+
+	return give_get_donor_meta($donor_id, $key, $single);
 }
 
 /**
@@ -1326,10 +1365,23 @@ function get_donor_meta( $donor_id, $key = '', $single = false ) {
  * @param mixed  $prev_value Optional. Previous value to check before removing.
  *
  * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
+ * @since TBD Renamed from update_donor_meta().
  * @since 1.8.13
  */
-function update_donor_meta( $donor_id, $meta_key, $meta_value, $prev_value = '' ) {
+function give_update_donor_meta( $donor_id, $meta_key, $meta_value, $prev_value = '' ) {
 	return update_metadata( 'give_customer', $donor_id, $meta_key, $meta_value, $prev_value );
+}
+
+/**
+ * Update customer meta field based on Donor ID.
+ *
+ * @since 1.8.13
+ * @deprecated TBD Use give_update_donor_meta() instead.
+ */
+function update_donor_meta($donor_id, $meta_key, $meta_value, $prev_value = '') { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_update_donor_meta().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_update_donor_meta()' );
+
+	return give_update_donor_meta($donor_id, $meta_key, $meta_value, $prev_value);
 }
 
 
@@ -2528,14 +2580,14 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 
 	update_option( 'give_licenses_refreshed_last_checked', $refresh, 'no' );
 
-    $platform_fee_percentage = get_platform_fee_from_licenses();
+    $platform_fee_percentage = give_get_platform_fee_from_licenses();
 
     if (!is_null($platform_fee_percentage)) {
         update_option( LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE, $platform_fee_percentage, 'no' );
     }
 
     // Update active license date after license refresh when active license is found
-    $active_license_date = get_active_license_date();
+    $active_license_date = give_get_active_license_date();
 
 	if(!is_null($active_license_date)) {
         update_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE, $active_license_date, 'no');
@@ -2554,8 +2606,10 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 
 /**
  * Get platform fee from stored licenses
+ *
+ * @since TBD Renamed from get_platform_fee_from_licenses().
  */
-function get_platform_fee_from_licenses(): ?float
+function give_get_platform_fee_from_licenses(): ?float
 {
     /** @var LicenseRepository $repository */
     $repository = give(LicenseRepository::class);
@@ -2564,16 +2618,42 @@ function get_platform_fee_from_licenses(): ?float
 }
 
 /**
+ * Get platform fee from stored licenses
+ *
+ * @deprecated TBD Use give_get_platform_fee_from_licenses() instead.
+ */
+function get_platform_fee_from_licenses(): ?float // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_platform_fee_from_licenses().
+{
+    _give_deprecated_function( __FUNCTION__, 'TBD', 'give_get_platform_fee_from_licenses()' );
+
+    return give_get_platform_fee_from_licenses();
+}
+
+/**
  * Set Active License Date
  *
+ * @since TBD Renamed from get_active_license_date().
  * @since 4.8.0
  */
-function get_active_license_date(): ?int
+function give_get_active_license_date(): ?int
 {
     /** @var LicenseRepository $repository */
     $repository = give(LicenseRepository::class);
 
     return $repository->getCurrentActiveLicenseDate();
+}
+
+/**
+ * Set Active License Date
+ *
+ * @since 4.8.0
+ * @deprecated TBD Use give_get_active_license_date() instead.
+ */
+function get_active_license_date(): ?int // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_active_license_date().
+{
+    _give_deprecated_function( __FUNCTION__, 'TBD', 'give_get_active_license_date()' );
+
+    return give_get_active_license_date();
 }
 
 /**
