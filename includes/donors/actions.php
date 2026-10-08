@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Insert donor comment to donation.
  *
+ * @since TBD Unslash and sanitize the posted comment.
  * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.21.0 remove anonymous
  * @since 2.2.0
@@ -17,9 +18,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param  array  $donation_data
  */
 function _give_insert_donor_donation_comment( $donation_id, $donation_data ) {
-	if ( ! empty( $_POST['give_comment'] ) ) {
+	if ( ! empty( $_POST['give_comment'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- public donation form request; nonce verified by give_verify_donation_form_nonce() in give_process_donation() before the donation is created.
         $donation = give()->donations->getById($donation_id);
-        $donation->comment = sanitize_textarea_field(trim($_POST['give_comment']));
+        $donation->comment = trim(sanitize_textarea_field(wp_unslash($_POST['give_comment']))); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- public donation form request; nonce verified by give_verify_donation_form_nonce() in give_process_donation() before the donation is created.
         $donation->save();
     }
 }
@@ -36,9 +37,9 @@ add_action( 'give_insert_payment', '_give_insert_donor_donation_comment', 10, 2 
  */
 function give_validate_donor_comment() {
 	// Check wp_check_comment_data_max_lengths for comment length validation.
-	if ( ! empty( $_POST['give_comment'] ) ) {
+	if ( ! empty( $_POST['give_comment'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- public donation form request; give_process_donation() verifies the form nonce before the checkout error checks run.
 		$max_lengths = wp_get_comment_fields_max_lengths();
-		$comment     = give_clean( $_POST['give_comment'] );
+		$comment     = give_clean( $_POST['give_comment'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- public donation form request; give_process_donation() verifies the form nonce before the checkout error checks run. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 		if ( mb_strlen( $comment, '8bit' ) > $max_lengths['comment_content'] ) {
 			give_set_error( 'comment_content_column_length', __( 'Your comment is too long.', 'give' ) );
@@ -93,6 +94,7 @@ add_action( 'give_payment_deleted', 'give_remove_donor_donation_comment', 10 );
 /**
  * Update anonymous donation for legacy gateways
  *
+ * @since TBD Read the anonymous donation flag with absint() only.
  * @since 2.21.3
  *
  * @retrun void
@@ -105,7 +107,7 @@ function giveUpdateAnonymousDonationForLegacyGateways(int $donationId)
     $registrar = give(PaymentGatewayRegister::class);
 
     if (!$registrar->hasPaymentGateway($gatewayId)){
-        $isAnonymousDonation = isset( $_POST['give_anonymous_donation'] ) ? absint( give_clean($_POST['give_anonymous_donation']) ) : 0;
+        $isAnonymousDonation = isset( $_POST['give_anonymous_donation'] ) ? absint( $_POST['give_anonymous_donation'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- public donation form request; nonce verified by give_verify_donation_form_nonce() in give_process_donation() before the donation is created.
 
         give_update_meta( $donationId, '_give_anonymous_donation', $isAnonymousDonation );
     }

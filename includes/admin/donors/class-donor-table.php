@@ -78,12 +78,14 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function advanced_filters() {
-		$start_date = isset( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : '';
-		$end_date   = isset( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : '';
-		$status     = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : '';
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only filter params; they only change what is shown and save nothing.
+		$start_date = isset( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		$end_date   = isset( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		$status     = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		$donor      = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : '';
 		$search     = $this->get_search();
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		?>
 		<div id="give-donor-filters" class="give-filters">
 			<div class="give-donor-search-box">
@@ -361,7 +363,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return int Current page number.
 	 */
 	public function get_paged() {
-		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
+		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page number; it only changes which page of donors is shown and saves nothing.
 	}
 
 	/**
@@ -376,11 +378,13 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	public function get_search() {
 
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only search term; it saves nothing, and sanitize_text_field() would drop the percent-encoded characters that urldecode() needs. Give_Donors_Query escapes it before it reaches SQL.
 		if ( ! isset( $_GET['s'] ) ) {
 			return false;
 		}
 
         $search = urldecode(trim(wp_unslash($_GET['s'])));
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
         return ! empty($search) ? $search : false;
 	}
@@ -490,7 +494,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Get donor query.
 	 *
-     * @since TBD Do not escape the search term here. Give_Donors_Query escapes it.
+     * @since TBD Do not escape the search term here. Give_Donors_Query escapes it. Unslash and sanitize the sort and page values.
      * @since 3.5.0 Escape search query string.
 	 * @since  1.8.1
 	 * @access public
@@ -500,20 +504,21 @@ class Give_Donor_List_Table extends WP_List_Table {
 	public function get_donor_query() {
 		$per_page   = $this->per_page;
 		$paged      = $this->get_paged();
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only filter, sort and page params; they only change what is shown and save nothing.
 		$donor      = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : null;
-		$start_date = ! empty( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : false;
-		$end_date   = ! empty( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : false;
+		$start_date = ! empty( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : false; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		$end_date   = ! empty( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : false; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 		$offset     = $this->per_page * ( $paged - 1 );
 		$search     = $this->get_search();
-		$order      = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'DESC';
-		$orderby    = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
+		$order      = isset( $_GET['order'] ) ? sanitize_text_field( wp_unslash( $_GET['order'] ) ) : 'DESC';
+		$orderby    = isset( $_GET['orderby'] ) ? sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) : 'id';
 
 		$args = [
 			'output'     => 'payments',
 			'number'     => $per_page,
 			'offset'     => $offset,
-			'page'       => isset( $_GET['paged'] ) ? $_GET['paged'] : null,
+			'page'       => isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : null,
 			'orderby'    => $orderby,
 			'order'      => $order,
 			'donor'      => $donor,
@@ -522,6 +527,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			'end_date'   => $end_date,
 			'give_forms' => $form_id,
 		];
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		/**
 		 * Filter to modify donor table argument.
@@ -562,7 +568,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		$this->screen->render_screen_reader_content( 'heading_list' );
 
-		$get_data = give_clean( $_GET ); // WPCS: input var ok, sanitization ok, CSRF ok.
+		$get_data = give_clean( $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only sort params; they only change the order of the rows and save nothing.
 
 		$order    = ! empty( $get_data['order'] ) ? $get_data['order'] : 'DESC';
 		$order_by = ! empty( $get_data['orderby'] ) ? $get_data['orderby'] : 'id';
