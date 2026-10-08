@@ -17,6 +17,12 @@ any of the three subtly wrong produces code that loads without error and simply 
 `loadServiceProviders()` is also called from `Give::install()` on plugin activation, and is guarded
 by a `$providersLoaded` flag so it runs once per request.
 
+`give.php` also requires two function files, `src/Framework/Http/Response/functions.php` and
+`src/FormMigration/functions.php`, right after `vendor/autoload.php`. They are not in composer
+`autoload.files`. They used to be there, and composer ran them as soon as `vendor/autoload.php`
+loaded. In tests and tools that happens before WordPress. These two files exit when `ABSPATH` is
+not defined, so composer would have stopped PHPUnit and PHPCS before they started.
+
 ## Service providers
 
 A provider implements `Give\ServiceProviders\ServiceProvider` — two methods, and the split between

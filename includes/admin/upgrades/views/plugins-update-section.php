@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /* @var Give_Updates $give_updates */
 $plugins = $give_updates->get_updates( 'plugin' );
 if ( empty( $plugins ) ) {

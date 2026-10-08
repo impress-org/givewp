@@ -10,6 +10,10 @@
  * @link       https://github.com/webdevstudios/Custom-Metaboxes-and-Fields-for-WordPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Enabled & disable notification
  *

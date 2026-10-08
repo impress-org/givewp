@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * @since 4.16.3 Escaped the goal color when rendering the progress bar.
  *

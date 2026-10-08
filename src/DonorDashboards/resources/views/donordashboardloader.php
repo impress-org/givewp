@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $primaryColor = ! empty($accentColor) ? $accentColor : '#28C77B';
 $primaryColor = trim($accentColor, '#');
 

@@ -3,6 +3,10 @@
 use Give\Helpers\Form\Template;
 use Give\Views\Form\Templates\Sequoia\Sequoia;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /** @var int $formId */
 /** @var Give\Framework\FieldsAPI\Field|Give\Framework\FieldsAPI\Text $field */
 ?>

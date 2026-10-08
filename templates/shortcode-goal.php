@@ -3,6 +3,10 @@
 use Give\Log\Log;
 use Give\DonationForms\DonationQuery;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * This template is used to display the goal with [give_goal]
  *

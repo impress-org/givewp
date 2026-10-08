@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 // Reports widget markup
 // #reports-app is replaced by React app
 ?>

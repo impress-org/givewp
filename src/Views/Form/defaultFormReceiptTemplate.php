@@ -7,6 +7,10 @@
 
 use Give\Views\IframeContentView;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $pageId     = give_get_option('success_page');
 $iframeView = new IframeContentView();
 

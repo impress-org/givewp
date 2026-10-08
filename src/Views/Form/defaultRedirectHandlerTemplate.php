@@ -5,6 +5,10 @@
  * @since 2.7.0
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /* @var string $location Payment gateway checkout page url. */
 ?>
 <!DOCTYPE html>
