@@ -32,7 +32,7 @@ class CreateRevenueTable extends Migration
     /**
      * @inheritDoc
      *
-     * @since TBD Escape exception message.
+     * @since TBD Escape exception message. Write the query errors as JSON.
      * @since 2.9.0
      * @since 2.9.2 throw an exception if there is a SQL error and add log
      *
@@ -57,7 +57,7 @@ class CreateRevenueTable extends Migration
             DB::delta($sql);
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException(
-                'An error occurred creating the revenue table: ' . print_r($exception->getQueryErrors(), true) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by MigrationsRunner and shown as React text in the migration log, never as HTML; esc_html() would corrupt the raw wpdb error text.
+                'An error occurred creating the revenue table: ' . wp_json_encode($exception->getQueryErrors()) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by MigrationsRunner and shown as React text in the migration log, never as HTML; esc_html() would corrupt the raw wpdb error text.
             );
         }
     }

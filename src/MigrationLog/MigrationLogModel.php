@@ -68,6 +68,8 @@ class MigrationLogModel
     /**
      * Add migration error notice
      *
+     * @since TBD Store array and object errors as JSON.
+     *
      * @param mixed $error
      *
      * @return MigrationLogModel
@@ -75,7 +77,7 @@ class MigrationLogModel
     public function setError($error)
     {
         if (is_array($error) || is_object($error)) {
-            $error = print_r($error, true);
+            $error = wp_json_encode($error);
         }
 
         $this->error = $error;

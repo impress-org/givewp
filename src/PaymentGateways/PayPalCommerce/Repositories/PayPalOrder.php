@@ -234,6 +234,7 @@ class PayPalOrder
     }
 
     /**
+     * @since TBD Write the failure log data as JSON.
      * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 3.4.2
      *
@@ -271,8 +272,8 @@ class PayPalOrder
                 'Update PayPal Commerce order failure',
                 sprintf(
                     '<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
-                    print_r($patchRequest->body, true),
-                    print_r(json_decode($ex->getMessage(), true), true)
+                    wp_json_encode($patchRequest->body, JSON_PRETTY_PRINT),
+                    wp_json_encode(json_decode($ex->getMessage(), true), JSON_PRETTY_PRINT)
                 )
             );
 
@@ -355,6 +356,7 @@ class PayPalOrder
     /**
      * Refunds a processed payment
      *
+     * @since TBD Write the failure log data as JSON.
      * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 2.9.0
      *
@@ -376,7 +378,7 @@ class PayPalOrder
                 'Create PayPal Commerce payment refund failure',
                 sprintf(
                     '<strong>Response</strong><pre>%1$s</pre>',
-                    print_r(json_decode($exception->getMessage(), true), true)
+                    wp_json_encode(json_decode($exception->getMessage(), true), JSON_PRETTY_PRINT)
                 )
             );
 
