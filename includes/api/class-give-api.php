@@ -1031,7 +1031,7 @@ class Give_API {
 				array(
 					'post_type'        => 'give_forms',
 					'posts_per_page'   => $this->per_page(),
-					'suppress_filters' => true,
+					'suppress_filters' => true, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters -- intended: the API lists all forms and must not be changed by query filters such as WPML language filtering.
 					'paged'            => $this->get_paged(),
 				)
 			);

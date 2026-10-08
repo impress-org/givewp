@@ -298,7 +298,7 @@ add_filter( 'upgrader_pre_install', 'give_verify_addon_dependency_before_update'
  * @return array WP query argument for Total Goal.
  */
 function give_wpml_total_goal_shortcode_agrs( $args ) {
-	$args['suppress_filters'] = true;
+	$args['suppress_filters'] = true; // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters -- intended: WPML must not filter the language, so the goal counts forms in every language.
 
 	return $args;
 }
