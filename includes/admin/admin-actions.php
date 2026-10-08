@@ -22,17 +22,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Load wp editor by ajax.
  *
+ * @since TBD Unslash and sanitize the request input.
  * @since 1.8
  */
 function give_load_wp_editor() {
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- read-only editor loader; it only prints a WordPress editor for a user who can edit forms and saves nothing.
 	if ( ! isset( $_POST['wp_editor'] ) || ! current_user_can( 'edit_give_forms' ) ) {
 		die();
 	}
 
-	$wp_editor                     = json_decode( base64_decode( $_POST['wp_editor'] ), true );
-	$wp_editor[2]['textarea_name'] = give_clean( $_POST['textarea_name'] );
+	$wp_editor                     = json_decode( base64_decode( sanitize_text_field( wp_unslash( $_POST['wp_editor'] ) ) ), true );
+	$wp_editor[2]['textarea_name'] = isset( $_POST['textarea_name'] ) ? give_clean( $_POST['textarea_name'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+	$editor_id                     = isset( $_POST['wp_editor_id'] ) ? give_clean( $_POST['wp_editor_id'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 
-	wp_editor( wp_kses_post( $wp_editor[0] ), give_clean( $_POST['wp_editor_id'] ), $wp_editor[2] );
+	wp_editor( wp_kses_post( $wp_editor[0] ), $editor_id, $wp_editor[2] );
 
 	die();
 }
@@ -43,7 +47,7 @@ add_action( 'wp_ajax_give_load_wp_editor', 'give_load_wp_editor' );
 /**
  * Redirect admin to clean url give admin pages.
  *
- * @since TBD Use a safe redirect.
+ * @since TBD Use a safe redirect. Unslash and sanitize the page name.
  * @since 2.25.2 Removed _wpnonce from list of removed args.
  * @since      1.8
  *
@@ -59,12 +63,13 @@ function give_redirect_to_clean_url_admin_pages() {
 	];
 
 	// Get current page.
-	$current_page = isset( $_GET['page'] ) ? esc_attr( $_GET['page'] ) : '';
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page name; it only decides whether to clean the URL and saves nothing.
+	$current_page = isset( $_GET['page'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) : '';
 
 	// Bailout.
 	if (
 		empty( $current_page )
-		|| empty( $_GET['_wp_http_referer'] )
+		|| empty( $_GET['_wp_http_referer'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only; it only tells whether the URL still carries the referer arg to remove.
 		|| ! in_array( $current_page, $give_pages )
 	) {
 		return false;
@@ -83,7 +88,7 @@ function give_redirect_to_clean_url_admin_pages() {
             esc_url_raw(
                 remove_query_arg(
                     ['_wp_http_referer'],
-                    wp_unslash($_SERVER['REQUEST_URI'])
+                    esc_url_raw(wp_unslash(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : ''))
                 )
             )
 		);
@@ -134,7 +139,7 @@ add_action( 'wp_ajax_give_hide_outdated_php_notice', 'give_hide_outdated_php_not
 /**
  * Register admin notices.
  *
- * @since TBD Use gmdate() instead of date(), show the number in the singular bulk action notices, and add translators comments.
+ * @since TBD Use gmdate() instead of date(), show the number in the singular bulk action notices, add translators comments and unslash and sanitize the bulk action.
  * @since 2.25.2 Add nonce check for bulk action.
  * @since      1.8.9
  */
@@ -154,13 +159,15 @@ function _give_register_admin_notices() {
 		if (
             current_user_can('edit_give_payments') &&
             isset($_GET['_wpnonce']) &&
-            wp_verify_nonce($_GET['_wpnonce'], 'bulk-forms') &&
+            wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'bulk-forms') &&
             isset($_GET['payment']) &&
             ! empty( $_GET['payment'] )
 		) {
 			$payment_count = isset( $_GET['payment'] ) ? count( $_GET['payment'] ) : 0;
 
-			switch ( $_GET['action'] ) {
+			$bulk_action = sanitize_text_field( wp_unslash( $_GET['action'] ) );
+
+			switch ( $bulk_action ) {
 				case 'delete':
 					Give()->notices->register_notice(
 						[
@@ -591,14 +598,15 @@ add_action( 'admin_notices', '_give_register_admin_notices', - 1 );
 /**
  * Display admin bar when active.
  *
+ * @since TBD Unslash and sanitize the test mode value.
+ *
  * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
  *
  * @return bool
  */
 function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
-	$is_test_mode = ! empty( $_POST['test_mode'] ) ?
-		give_is_setting_enabled( $_POST['test_mode'] ) :
-		give_is_test_mode();
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only; it only picks the test mode label shown in the admin bar while the settings form is posted and saves nothing.
+	$is_test_mode = ! empty( $_POST['test_mode'] ) ? give_is_setting_enabled( sanitize_text_field( wp_unslash( $_POST['test_mode'] ) ) ) : give_is_test_mode();
 
 	if (
 		! current_user_can( 'view_give_reports' ) ||
@@ -653,7 +661,7 @@ add_action( 'admin_head', '_give_test_mode_notice_admin_bar_css' );
 /**
  * Add Link to Import page in from donation archive and donation single page
  *
- * @since TBD Escape output, including translated strings.
+ * @since TBD Escape output, including translated strings. Check the page param before use.
  * @since 1.8.13
  */
 function give_import_page_link_callback() {
@@ -679,7 +687,9 @@ function give_import_page_link_callback() {
 
 	<?php
 	// Check if view donation single page only.
-	if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) give_clean( $_REQUEST['view'] ) && 'give-payment-history' === give_clean( $_REQUEST['page'] ) ) {
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only page and view params; they only decide whether to print a style tag. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+	if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) give_clean( $_REQUEST['view'] ) && isset( $_REQUEST['page'] ) && 'give-payment-history' === give_clean( $_REQUEST['page'] ) ) {
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		?>
 		<style type="text/css">
 			.wrap #transaction-details-heading {
@@ -711,7 +721,7 @@ function give_maybe_safe_unserialize($data)
  * Load donation import ajax callback
  * Fire when importing from CSV start
  *
- * @since TBD Add translators comments.
+ * @since TBD Add translators comments. Unslash and validate the request input.
  * @since 4.11.0 Updated error handling to display errors in the import page.
  * @since 3.5.0 Extract safe unserialize logic to a function and use it in other places.
  * @since 2.25.3 Append nonce to response url.
@@ -730,7 +740,8 @@ function give_donation_import_callback() {
 	Give_Cache::get_instance()->disable();
 
 	$import_setting = [];
-	$fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- URL-encoded string of the import form; sanitize_text_field() would strip its %xx octets and break parse_str(). Nonce and capability are checked at the top of this function.
+	$fields         = isset( $_POST['fields'] ) ? wp_unslash( $_POST['fields'] ) : '';
 
 	parse_str( $fields, $output );
 
@@ -744,13 +755,13 @@ function give_donation_import_callback() {
 	// Parent key id.
     $main_key = give_maybe_safe_unserialize($output['main_key']);
 
-	$current    = absint( $_REQUEST['current'] );
-	$total_ajax = absint( $_REQUEST['total_ajax'] );
-	$start      = absint( $_REQUEST['start'] );
-	$end        = absint( $_REQUEST['end'] );
-	$next       = absint( $_REQUEST['next'] );
-	$total      = absint( $_REQUEST['total'] );
-	$per_page   = absint( $_REQUEST['per_page'] );
+	$current    = isset( $_REQUEST['current'] ) ? absint( $_REQUEST['current'] ) : 0;
+	$total_ajax = isset( $_REQUEST['total_ajax'] ) ? absint( $_REQUEST['total_ajax'] ) : 0;
+	$start      = isset( $_REQUEST['start'] ) ? absint( $_REQUEST['start'] ) : 0;
+	$end        = isset( $_REQUEST['end'] ) ? absint( $_REQUEST['end'] ) : 0;
+	$next       = isset( $_REQUEST['next'] ) ? absint( $_REQUEST['next'] ) : 0;
+	$total      = isset( $_REQUEST['total'] ) ? absint( $_REQUEST['total'] ) : 0;
+	$per_page   = isset( $_REQUEST['per_page'] ) ? absint( $_REQUEST['per_page'] ) : 0;
 	if ( empty( $output['delimiter'] ) ) {
 		$delimiter = ',';
 	} else {
@@ -859,7 +870,7 @@ add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
 /**
  * Load subscription import ajax callback
  *
- * @since TBD Add translators comments.
+ * @since TBD Add translators comments. Unslash and validate the request input.
  * @since 4.11.0
  */
 function give_subscription_import_callback() {
@@ -874,7 +885,8 @@ function give_subscription_import_callback() {
     Give_Cache::get_instance()->disable();
 
     $import_setting = [];
-    $fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
+    // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- URL-encoded string of the import form; sanitize_text_field() would strip its %xx octets and break parse_str(). Nonce and capability are checked at the top of this function.
+    $fields         = isset( $_POST['fields'] ) ? wp_unslash( $_POST['fields'] ) : '';
 
     parse_str( $fields, $output );
 
@@ -887,13 +899,13 @@ function give_subscription_import_callback() {
 
     $main_key = give_maybe_safe_unserialize($output['main_key']);
 
-    $current    = absint( $_REQUEST['current'] );
-    $total_ajax = absint( $_REQUEST['total_ajax'] );
-    $start      = absint( $_REQUEST['start'] );
-    $end        = absint( $_REQUEST['end'] );
-    $next       = absint( $_REQUEST['next'] );
-    $total      = absint( $_REQUEST['total'] );
-    $per_page   = absint( $_REQUEST['per_page'] );
+    $current    = isset( $_REQUEST['current'] ) ? absint( $_REQUEST['current'] ) : 0;
+    $total_ajax = isset( $_REQUEST['total_ajax'] ) ? absint( $_REQUEST['total_ajax'] ) : 0;
+    $start      = isset( $_REQUEST['start'] ) ? absint( $_REQUEST['start'] ) : 0;
+    $end        = isset( $_REQUEST['end'] ) ? absint( $_REQUEST['end'] ) : 0;
+    $next       = isset( $_REQUEST['next'] ) ? absint( $_REQUEST['next'] ) : 0;
+    $total      = isset( $_REQUEST['total'] ) ? absint( $_REQUEST['total'] ) : 0;
+    $per_page   = isset( $_REQUEST['per_page'] ) ? absint( $_REQUEST['per_page'] ) : 0;
     $delimiter  = empty( $output['delimiter'] ) ? ',' : $output['delimiter'];
 
     // Ensure importer class is loaded for admin-ajax context
@@ -983,6 +995,7 @@ add_action( 'wp_ajax_give_subscription_import', 'give_subscription_import_callba
  * Load core settings import ajax callback
  * Fire when importing from JSON start
  *
+ * @since TBD Unslash the request input.
  * @since  1.8.17
  */
 
@@ -994,7 +1007,8 @@ function give_core_settings_import_callback() {
 		give_die();
 	}
 
-	$fields = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- URL-encoded string of the import form; sanitize_text_field() would strip its %xx octets and break parse_str(). Nonce and capability are checked at the top of this function.
+	$fields = isset( $_POST['fields'] ) ? wp_unslash( $_POST['fields'] ) : '';
 	parse_str( $fields, $fields );
 
 	$json_data['success'] = false;
@@ -1100,7 +1114,7 @@ add_action( 'current_screen', 'give_blank_slate' );
  * @return mixed
  */
 function give_validate_user_profile( $errors, $update, $user ) {
-
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- WordPress core verifies the nonce before it fires user_profile_update_errors.
 	if ( ! empty( $_POST['action'] ) && ( 'adduser' === $_POST['action'] || 'createuser' === $_POST['action'] ) ) {
 		return;
 	}
@@ -1122,7 +1136,7 @@ function give_validate_user_profile( $errors, $update, $user ) {
 			}
 		}
 	}
-
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 }
 
 add_action( 'user_profile_update_errors', 'give_validate_user_profile', 10, 3 );
@@ -1250,7 +1264,7 @@ function give_ajax_donor_manage_addresses() {
 		);
 	}
 
-	$post                  = give_clean( wp_parse_args( urldecode_deep( $_POST ) ) );
+	$post                  = give_clean( wp_parse_args( urldecode_deep( $_POST ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the nonce is inside the posted "form" string, so it is verified by wp_verify_nonce() below, right after the string is parsed and before anything is saved.
 	$donorID               = absint( $post['donorID'] );
 	$form_data             = give_clean( wp_parse_args( $post['form'] ) );
 	$is_multi_address_type = ( 'billing' === $form_data['address-id'] || false !== strpos( $form_data['address-id'], '_' ) );
@@ -1441,6 +1455,7 @@ add_action( 'give_donor_personal_address_label', 'give_donor_personal_address_la
  * Update Donor Information when User Profile is updated from admin.
  * Note: for internal use only.
  *
+ * @since TBD Check that the name fields are set before reading them.
  * @since  2.0
  *
  * @param int $user_id
@@ -1460,8 +1475,10 @@ function give_update_donor_name_on_user_update( $user_id = 0 ) {
 		}
 
 		// Get User First name and Last name.
-		$first_name = ( $_POST['first_name'] ) ? give_clean( $_POST['first_name'] ) : get_user_meta( $user_id, 'first_name', true );
-		$last_name  = ( $_POST['last_name'] ) ? give_clean( $_POST['last_name'] ) : get_user_meta( $user_id, 'last_name', true );
+		// phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- WordPress core verifies the nonce before it fires personal_options_update and edit_user_profile_update. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		$first_name = ! empty( $_POST['first_name'] ) ? give_clean( $_POST['first_name'] ) : get_user_meta( $user_id, 'first_name', true );
+		$last_name  = ! empty( $_POST['last_name'] ) ? give_clean( $_POST['last_name'] ) : get_user_meta( $user_id, 'last_name', true );
+		// phpcs:enable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$full_name  = strip_tags( wp_unslash( trim( "{$first_name} {$last_name}" ) ) );
 
 		// Assign User First name and Last name to Donor.
@@ -1611,7 +1628,7 @@ add_action( 'activate_plugin', 'give_log_addon_activation_time', 10, 2 );
  * @since 2.5.0
  */
 function give_hide_notices_on_add_ons_page() {
-	$page = ! empty( $_GET['page'] ) ? give_clean( $_GET['page'] ) : '';
+	$page = ! empty( $_GET['page'] ) ? give_clean( $_GET['page'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only page name; it only decides whether to hide notices and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 	// Bailout.
 	if ( 'give-addons' !== $page ) {

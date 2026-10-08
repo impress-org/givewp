@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Added a nonce to the add-on banner dismiss link and sanitized request
+  input in the legacy admin actions
+timestamp: 2026-10-08T15:19:33.278Z

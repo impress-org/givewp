@@ -34,17 +34,19 @@ function give_sanitize_number_decimals_setting_field( $value ) {
 	$show_notice   = false;
 	$old_value     = $value;
 
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- nonce verified by Give_Admin_Settings::verify_nonce() in Give_Admin_Settings::save() before the settings filters run.
 	if ( isset( $_POST['decimal_separator'] ) ) {
 		$value         = ! empty( $_POST['decimal_separator'] ) ? $value : 0;
 		$value_changed = true;
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 	if ( $value_changed && ( $old_value !== $value ) ) {
 		Give_Admin_Settings::add_error( 'give-number-decimal', __( 'The \'Number of Decimals\' option has been automatically set to zero because the \'Decimal Separator\' is not set.', 'give' ) );
 	}
 
 	$value                      = absint( $value );
-	$is_currency_set_to_bitcoin = ( 'XBT' === give_get_option( 'currency' ) && ! isset( $_POST['currency'] ) ) || 'XBT' === $_POST['currency'];
+	$is_currency_set_to_bitcoin = ( 'XBT' === give_get_option( 'currency' ) && ! isset( $_POST['currency'] ) ) || 'XBT' === $_POST['currency']; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by Give_Admin_Settings::verify_nonce() in Give_Admin_Settings::save() before the settings filters run.
 
 	if ( $is_currency_set_to_bitcoin && 8 < $value ) {
 		$value       = 8;
@@ -86,8 +88,8 @@ add_filter( 'give_admin_settings_sanitize_option_number_decimals', 'give_sanitiz
  * @return  mixed
  */
 function give_validate_decimal_separator_setting_field( $value ) {
-	$thousand_separator = isset( $_POST['thousands_separator'] ) ? give_clean( $_POST['thousands_separator'] ) : '';
-	$decimal_separator  = isset( $_POST['decimal_separator'] ) ? give_clean( $_POST['decimal_separator'] ) : '';
+	$thousand_separator = isset( $_POST['thousands_separator'] ) ? give_clean( $_POST['thousands_separator'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified by Give_Admin_Settings::verify_nonce() in Give_Admin_Settings::save() before the settings filters run. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+	$decimal_separator  = isset( $_POST['decimal_separator'] ) ? give_clean( $_POST['decimal_separator'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified by Give_Admin_Settings::verify_nonce() in Give_Admin_Settings::save() before the settings filters run. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 	if ( $decimal_separator === $thousand_separator ) {
 		$value                    = '';
