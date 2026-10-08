@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Sanitized and validated request input in the legacy AJAX handlers
+timestamp: 2026-10-08T15:02:45.203Z
