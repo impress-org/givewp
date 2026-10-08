@@ -47,6 +47,7 @@ class Give_Recurring_Cron {
 	/**
 	 * Check for expired subscriptions once per day and mark them as expired
 	 *
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 */
 	public function check_for_expired_subscriptions() {
@@ -55,8 +56,8 @@ class Give_Recurring_Cron {
 			'status'     => 'active',
 			'number'     => 999999,
 			'expiration' => array(
-				'start' => date( 'Y-n-d 00:00:00', strtotime( '-1 day', current_time( 'timestamp' ) ) ),
-				'end'   => date( 'Y-n-d 23:59:59', strtotime( '-1 day', current_time( 'timestamp' ) ) )
+				'start' => gmdate( 'Y-n-d 00:00:00', strtotime( '-1 day', current_time( 'timestamp' ) ) ),
+				'end'   => gmdate( 'Y-n-d 23:59:59', strtotime( '-1 day', current_time( 'timestamp' ) ) )
 			)
 
 		);
