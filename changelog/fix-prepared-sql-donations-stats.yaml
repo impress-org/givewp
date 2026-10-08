@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Prepared the SQL queries for donation totals, payment stats, payment status counts, form donor counts and post type counts, and made the status and order values in Give_Payments_Query safe for any input
+timestamp: 2026-10-06T01:39:00.000Z

@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Prepared the SQL queries for donation notes and comments, and made the comment type and order values in Give_DB_Comments::get_sql() safe for any input
+timestamp: 2026-10-05T22:39:24.000Z

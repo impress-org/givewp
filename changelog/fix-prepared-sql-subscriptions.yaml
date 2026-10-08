@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Prepared the SQL queries for legacy subscriptions, and made profile id, transaction id, status, groupBy and order values in Give_Subscriptions_DB safe for any input
+timestamp: 2026-10-05T23:00:59.000Z

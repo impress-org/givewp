@@ -75,19 +75,24 @@ class AddAmountColumnToEventTicketsTable extends Migration
     }
 
     /**
+     * @since TBD Use %i for the table names.
      * @since 3.20.0
      *
      * @throws DatabaseMigrationException
      */
     private function migrateTicketPrices($wpdb, $eventTicketsTable, $eventTicketTypesTable)
     {
-        $sql = "UPDATE $eventTicketsTable eventTickets
-                JOIN $eventTicketTypesTable evenTicketTypes
-                ON eventTickets.ticket_type_id = evenTicketTypes.id
-                SET eventTickets.amount = evenTicketTypes.price";
-
         try {
-            $wpdb->query($sql);
+            $wpdb->query(
+                $wpdb->prepare(
+                    "UPDATE %i eventTickets
+                JOIN %i evenTicketTypes
+                ON eventTickets.ticket_type_id = evenTicketTypes.id
+                SET eventTickets.amount = evenTicketTypes.price",
+                    $eventTicketsTable,
+                    $eventTicketTypesTable
+                )
+            );
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while migrating data to the amount column in the $eventTicketsTable table", 0, $exception);
         }

@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Prepared the SQL queries in the Give_DB base class and the sequential donation number tables, and made Give_DB::get_results_by() safe for values with quotes
+timestamp: 2026-10-05T21:34:24.000Z
