@@ -72,7 +72,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Add donors search filter.
 	 *
-	 * @since TBD Escape output, including translated strings.
+	 * @since TBD Escape output, including translated strings, and use gmdate() instead of date().
 	 * @since 3.5.0 Escape search query string.
 	 * @since 2.4.0
 	 * @return void
@@ -111,7 +111,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 					   class="give_datepicker"
 					   autocomplete="off"
 					   value="<?php echo $start_date ? esc_attr( date_i18n( give_date_format(), $start_date ) ) : ''; ?>"
-					   data-standard-date="<?php echo $start_date ? esc_attr( date( 'Y-m-d', $start_date ) ) : esc_attr( $start_date ); ?>"
+					   data-standard-date="<?php echo $start_date ? esc_attr( gmdate( 'Y-m-d', $start_date ) ) : esc_attr( $start_date ); ?>"
 					   placeholder="<?php esc_attr_e( 'Start Date', 'give' ); ?>"
 				/>
 			</div>
@@ -123,7 +123,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 					   class="give_datepicker"
 					   autocomplete="off"
 					   value="<?php echo $end_date ? esc_attr( date_i18n( give_date_format(), $end_date ) ) : ''; ?>"
-					   data-standard-date="<?php echo $end_date ? esc_attr( date( 'Y-m-d', $end_date ) ) : esc_attr( $end_date ); ?>"
+					   data-standard-date="<?php echo $end_date ? esc_attr( gmdate( 'Y-m-d', $end_date ) ) : esc_attr( $end_date ); ?>"
 					   placeholder="<?php esc_attr_e( 'End Date', 'give' ); ?>"
 				/>
 			</div>

@@ -35,6 +35,7 @@ class Give_Core_Settings_Export extends Give_Export {
 	 * Set the export headers
 	 *
 	 * @access public
+	 * @since TBD Use gmdate() and wp_date() instead of date().
 	 * @since  1.8.17
 	 * @return void
 	 */
@@ -43,7 +44,7 @@ class Give_Core_Settings_Export extends Give_Export {
 
 		nocache_headers();
 		header( 'Content-Type: application/json; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename=' . apply_filters( 'give_core_settings_export_filename', 'give-export-' . $this->export_type . '-' . date( 'n' ) . '-' . date( 'Y' ) ) . '.json' );
+		header( 'Content-Disposition: attachment; filename=' . apply_filters( 'give_core_settings_export_filename', 'give-export-' . $this->export_type . '-' . wp_date( 'n', null, new DateTimeZone( 'UTC' ) ) . '-' . wp_date( 'Y', null, new DateTimeZone( 'UTC' ) ) ) . '.json' );
 		header( 'Expires: 0' );
 	}
 

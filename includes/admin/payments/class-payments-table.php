@@ -152,7 +152,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	/**
 	 * Add donation search filter.
 	 *
-	 * @since TBD Escape output, including translated strings.
+	 * @since TBD Escape output, including translated strings, and use gmdate() instead of date().
 	 *
 	 * @return void
 	 */
@@ -176,7 +176,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 						   class="give_datepicker"
 						   autocomplete="off"
 						   value="<?php echo $start_date ? esc_attr( date_i18n( give_date_format(), $start_date ) ) : ''; ?>"
-						   data-standard-date="<?php echo $start_date ? esc_attr( date( 'Y-m-d', $start_date ) ) : esc_attr( $start_date ); ?>"
+						   data-standard-date="<?php echo $start_date ? esc_attr( gmdate( 'Y-m-d', $start_date ) ) : esc_attr( $start_date ); ?>"
 						   placeholder="<?php esc_attr_e( 'Start Date', 'give' ); ?>"
 					/>
 				</div>
@@ -188,7 +188,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 						   class="give_datepicker"
 						   autocomplete="off"
 						   value="<?php echo $end_date ? esc_attr( date_i18n( give_date_format(), $end_date ) ) : ''; ?>"
-						   data-standard-date="<?php echo $end_date ? esc_attr( date( 'Y-m-d', $end_date ) ) : esc_attr( $end_date ); ?>"
+						   data-standard-date="<?php echo $end_date ? esc_attr( gmdate( 'Y-m-d', $end_date ) ) : esc_attr( $end_date ); ?>"
 						   placeholder="<?php esc_attr_e( 'End Date', 'give' ); ?>"
 					/>
 				</div>
@@ -950,6 +950,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Retrieve all the data for all the payments.
 	 *
 	 * @access public
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 *
 	 * @return array  objects in array containing all the data for the payments
@@ -968,10 +969,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : null;
 		$start_date = ! empty( $_GET['start-date'] )
 			? give_clean( $_GET['start-date'] )
-			: date( 'Y-m-d', 0 );
+			: gmdate( 'Y-m-d', 0 );
 		$end_date   = ! empty( $_GET['end-date'] )
 			? give_clean( $_GET['end-date'] )
-			: date( 'Y-m-d', current_time( 'timestamp' ) );
+			: gmdate( 'Y-m-d', current_time( 'timestamp' ) );
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 		$gateway    = ! empty( $_GET['gateway'] ) ? give_clean( $_GET['gateway'] ) : null;
 
