@@ -1,4 +1,4 @@
 significance: patch
 type: fix
-entry: Resolved an issue where Stripe ACH donations that require microdeposit verification stayed in a Processing state with no donor instructions. The donor is now emailed a hosted verification link and the verification is recorded on the donation.
+entry: Resolved an issue where Stripe ACH donations that require microdeposit verification stayed in a Processing state with no donor instructions. Donors were emailed a hosted verification link and the verification was recorded on the donation.
 timestamp: 2026-09-30T00:00:00.000Z
