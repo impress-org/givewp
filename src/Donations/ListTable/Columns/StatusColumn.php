@@ -49,7 +49,7 @@ class StatusColumn extends ModelColumn
     {
         $status = $model->status;
 
-        if (isset($_REQUEST['subscriptionId']) && $model->type->isRenewal() && $model->status->isRenewal()) {
+        if (isset($_REQUEST['subscriptionId']) && $model->type->isRenewal() && $model->status->isRenewal()) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only list filter; it only changes the status label shown and saves nothing.
             $status = DonationStatus::COMPLETE();
         }
 

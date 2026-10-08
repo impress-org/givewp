@@ -33,14 +33,14 @@ class DonorsAdminPage
     /**
      * Render admin page container
      *
-     * @since TBD Escape output.
+     * @since TBD Escape output. Guard the id param.
      * @since 4.4.0 Add new details page view
      * @since 2.20.0
      */
     public function render()
     {
         if (self::isShowingDetailsPage()) {
-            $donor = Donor::find(absint($_GET['id']));
+            $donor = Donor::find(absint($_GET['id'] ?? 0)); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only id param; it only selects which record to show and saves nothing.
 
             if (! $donor) {
                 wp_die(esc_html__('Donor not found', 'give'), 404);
@@ -93,7 +93,7 @@ class DonorsAdminPage
      */
     public static function isShowing()
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-donors' && ! isset($_GET['id']);
+        return isset($_GET['page']) && $_GET['page'] === 'give-donors' && ! isset($_GET['id']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
 
@@ -102,7 +102,7 @@ class DonorsAdminPage
      */
     public static function isShowingDetailsPage(): bool
     {
-        return isset($_GET['id'], $_GET['page']) && 'give-donors' === $_GET['page'];
+        return isset($_GET['id'], $_GET['page']) && 'give-donors' === $_GET['page']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**
@@ -110,7 +110,7 @@ class DonorsAdminPage
      */
     public static function isShowingNewDetailsPage(): bool
     {
-        return self::isShowingDetailsPage() && isset($_GET['view']) && $_GET['view'] === 'overview';
+        return self::isShowingDetailsPage() && isset($_GET['view']) && $_GET['view'] === 'overview'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**
