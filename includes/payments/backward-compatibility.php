@@ -7,6 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Split _give_payment_meta to new Give core meta_keys.
  *
+ * @since TBD Renamed from _give_20_bc_split_and_save_give_payment_meta().
  * @since 2.0
  *
  * @param       $object_id
@@ -14,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return void
  */
-function _give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value ) {
+function give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value ) {
 	// Bailout
 	if ( empty( $meta_value ) ) {
 		return;
@@ -85,8 +86,21 @@ function _give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value )
 }
 
 /**
+ * Split _give_payment_meta to new Give core meta_keys.
+ *
+ * @since 2.0
+ * @deprecated TBD Use give_20_bc_split_and_save_give_payment_meta() instead.
+ */
+function _give_20_bc_split_and_save_give_payment_meta($object_id, $meta_value) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_20_bc_split_and_save_give_payment_meta().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_20_bc_split_and_save_give_payment_meta()' );
+
+	give_20_bc_split_and_save_give_payment_meta($object_id, $meta_value);
+}
+
+/**
  * Add backward compatibility to get meta value of _give_payment_meta meta key.
  *
+ * @since TBD Renamed from _give_20_bc_give_payment_meta_value().
  * @since 2.0
  *
  * @param       $object_id
@@ -94,7 +108,7 @@ function _give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value )
  *
  * @return array
  */
-function _give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
+function give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
 	$cache_key = "_give_payment_meta_{$object_id}";
 	$cache     = Give_Cache::get_db_query( $cache_key );
 
@@ -196,6 +210,18 @@ function _give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
 }
 
 /**
+ * Add backward compatibility to get meta value of _give_payment_meta meta key.
+ *
+ * @since 2.0
+ * @deprecated TBD Use give_20_bc_give_payment_meta_value() instead.
+ */
+function _give_20_bc_give_payment_meta_value($object_id, $meta_value) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_20_bc_give_payment_meta_value().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_20_bc_give_payment_meta_value()' );
+
+	return give_20_bc_give_payment_meta_value($object_id, $meta_value);
+}
+
+/**
  * Add backward compatibility old meta while saving.
  *  1. _give_payment_meta (split into multiple single meta keys)
  *  2. _give_payment_user_email (renamed to _give_payment_donor_email)
@@ -236,7 +262,7 @@ function _give_20_bc_saving_old_payment_meta( $check, $object_id, $meta_key, $me
 	}
 
 	if ( '_give_payment_meta' === $meta_key ) {
-		_give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value );
+		give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value );
 	} elseif ( '_give_payment_user_email' === $meta_key ) {
 		give_update_meta( $object_id, '_give_payment_donor_email', $meta_value );
 		$check = true;
@@ -317,7 +343,7 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 							)
 						)
 					);
-				$check      = _give_20_bc_give_payment_meta_value( $object_id, $meta_value );
+				$check      = give_20_bc_give_payment_meta_value( $object_id, $meta_value );
 				// }
 
 				add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
