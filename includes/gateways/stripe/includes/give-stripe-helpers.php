@@ -995,7 +995,7 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
  * @param \Stripe\PaymentIntent $payment_intent Stripe Payment Intent Object.
  *
  * @since 2.5.0
- * @since TBD Handle ACH `verify_with_microdeposits` next actions and stop redirecting to an empty URL.
+ * @since TBD Handle ACH `verify_with_microdeposits` next actions, and send the donor back to the form instead of redirecting to an empty URL.
  *
  * @return void
  */
@@ -1031,12 +1031,17 @@ function give_stripe_process_additional_authentication( $donation_id, $payment_i
 		? $payment_intent->next_action->redirect_to_url->url
 		: '';
 
-	// Do not redirect to an empty URL when Stripe returns an unrecognized next action.
-	if ( empty( $action_url ) ) {
+	/*
+	 * Stripe returned a next action GiveWP cannot follow. Send the donor back to the form with an
+	 * error so the caller does not continue to the success page.
+	 */
+	if ( ! $action_url ) {
 		give_record_gateway_error(
 			esc_html__( 'Stripe requires additional action', 'give' ),
 			esc_html__( 'Stripe returned a Payment Intent in the requires_action state without a redirect URL.', 'give' )
 		);
+		give_set_error( 'stripe_error', __( 'The Stripe Gateway returned an error while processing the donation.', 'give' ) );
+		give_send_back_to_checkout();
 
 		return;
 	}
