@@ -225,13 +225,15 @@ class LogModel
     }
 
     /**
+     * @since TBD Store array and object values as JSON.
+     *
      * @param string $key
      * @param mixed  $value
      */
     private function addContext($key, $value)
     {
         if (is_array($value) || is_object($value)) {
-            $value = print_r($value, true);
+            $value = wp_json_encode($value);
         }
         $this->context[$key] = $value;
     }

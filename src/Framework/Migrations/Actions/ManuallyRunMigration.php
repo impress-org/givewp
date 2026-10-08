@@ -11,6 +11,7 @@ class ManuallyRunMigration
     /**
      * Manually runs the migration and then marks the migration as finished if successful
      *
+     * @since TBD Log the exception class and message instead of the full dump.
      * @since 2.9.2
      *
      * @param Migration $migration
@@ -27,7 +28,7 @@ class ManuallyRunMigration
         } catch (Exception $exception) {
             $wpdb->query('ROLLBACK');
 
-            give_record_log('Migration Failed', print_r($exception, true), 0, 'update');
+            give_record_log('Migration Failed', get_class($exception) . ': ' . $exception->getMessage(), 0, 'update');
             give()->notices->register_notice(
                 [
                     'id' => 'migration-failure',

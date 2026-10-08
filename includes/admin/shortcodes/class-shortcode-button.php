@@ -207,6 +207,7 @@ final class Give_Shortcode_Button {
 	 *
 	 * @return void
 	 *
+	 * @since TBD Stop writing a debug line to the PHP error log.
 	 * @since 1.0
 	 */
 	public function shortcode_ajax() {
@@ -233,8 +234,6 @@ final class Give_Shortcode_Button {
 				'shortcode' => $shortcode,
 				'title'     => $data['title'],
 			);
-		} else {
-			error_log( print_r( 'AJAX error!', 1 ) );
 		}
 
 		wp_send_json( $response );
