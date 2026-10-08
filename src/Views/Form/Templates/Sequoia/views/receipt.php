@@ -1,6 +1,6 @@
 <?php
 /**
- * @since TBD Escape output, including translated strings.
+ * @since TBD Escape output, including translated strings, and replace short echo tags with escaped echo.
  */
 
 use Give\Helpers\Form\Template as FormTemplateUtils;
@@ -34,10 +34,10 @@ ob_start();
                     <i class="fas fa-times"></i>
                 </div>
                 <h2 class="headline">
-                    <?= esc_html__('Donation Failed', 'give') ?>
+                    <?php echo esc_html__('Donation Failed', 'give'); ?>
                 </h2>
                 <p class="message">
-                    <?= esc_html__('We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give') ?>
+                    <?php echo esc_html__('We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give'); ?>
                 </p>
             <?php
             // Donation completed
