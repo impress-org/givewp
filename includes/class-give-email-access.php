@@ -222,11 +222,11 @@ class Give_Email_Access {
 	 */
 	public function get_token() {
 
-		$token = isset( $_GET['give_nl'] ) ? give_clean( $_GET['give_nl'] ) : '';
+		$token = isset( $_GET['give_nl'] ) ? give_clean( $_GET['give_nl'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- public email access link; the emailed token is the credential and is checked against the donors table, and a nonce cannot be added to an emailed link. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 		// Check for cookie.
 		if ( empty( $token ) ) {
-			$token = isset( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : '';
+			$token = isset( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		}
 
 		return is_string( $token ) ? $token : '';
@@ -304,8 +304,8 @@ class Give_Email_Access {
 
 		// Set error only if email access form isn't being submitted.
 		if (
-			! isset( $_POST['give_email'] ) &&
-			! isset( $_POST['_wpnonce'] )
+			! isset( $_POST['give_email'] ) && // phpcs:ignore WordPress.Security.NonceVerification.Missing -- presence check only; give_email_access_login() verifies the form nonce before it reads the email.
+			! isset( $_POST['_wpnonce'] ) // phpcs:ignore WordPress.Security.NonceVerification.Missing -- presence check only; give_email_access_login() verifies the form nonce before it reads the email.
 		) {
 			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', __( 'Your access token has expired. Please request a new one.', 'give' ) ) );
 		}

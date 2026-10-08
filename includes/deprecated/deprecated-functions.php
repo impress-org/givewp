@@ -1058,6 +1058,7 @@ function give_email_tag_receipt_id( $tag_args ) {
 /**
  * Check site host
  *
+ * @since TBD Unslash and sanitize the server name.
  * @since 1.0
  *
  * @param bool /string $host The host to check
@@ -1130,7 +1131,7 @@ function give_is_host( $host = false ) {
 				}
 				break;
 			case 'flywheel':
-				if ( strpos( $_SERVER['SERVER_NAME'], 'Flywheel' ) !== false ) {
+				if ( isset( $_SERVER['SERVER_NAME'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ), 'Flywheel' ) !== false ) {
 					$return = true;
 				}
 				break;

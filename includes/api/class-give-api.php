@@ -1954,7 +1954,7 @@ class Give_API {
 	 * Process an API key generation/revocation
 	 *
 	 * @access public
-	 * @since TBD Escape output. Use safe redirects to the admin Tools page.
+	 * @since TBD Escape output. Use safe redirects to the admin Tools page. Unslash and sanitize the nonce.
 	 * @since  1.1
 	 *
 	 * @param array $args
@@ -1963,7 +1963,9 @@ class Give_API {
 	 */
 	public function process_api_key( $args ) {
 
-		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'give-api-nonce' ) ) {
+		$nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+		if ( ! wp_verify_nonce( $nonce, 'give-api-nonce' ) ) {
 			wp_die(
 				esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ),
 				esc_html__( 'Error', 'give' ),
@@ -2071,6 +2073,7 @@ class Give_API {
 		$new_public_key = '';
 		$new_secret_key = '';
 
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- WordPress core verifies the nonce before it fires personal_options_update and edit_user_profile_update, and process_api_key() verifies give-api-nonce before the Tools page calls this.
 		if ( ! empty( $_POST['from'] ) && 'profile' === $_POST['from'] ) {
 			// For User Profile Page.
 			if ( ! empty( $_POST['give_set_api_key'] ) ) {
@@ -2083,6 +2086,7 @@ class Give_API {
 			} else {
 				return false;
 			}
+			// phpcs:enable WordPress.Security.NonceVerification.Missing
 		} else {
 			// For Tools > API page.
 			$public_key = $this->get_user_public_key( $user_id );

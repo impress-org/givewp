@@ -322,6 +322,7 @@ add_action( 'give_user_register', 'give_process_register_form' );
 /**
  * Email access login form.
  *
+ * @since TBD Unslash and sanitize the request input.
  * @since 1.8.17
  *
  * @return bool
@@ -329,12 +330,12 @@ add_action( 'give_user_register', 'give_process_register_form' );
 function give_email_access_login() {
 
 	// Verify nonce.
-	if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
+	if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'give' ) ) {
 		return false;
 	}
 
 	// Need email to proceed.
-	$email = isset( $_POST['give_email'] ) ? give_clean( $_POST['give_email'] ) : '';
+	$email = isset( $_POST['give_email'] ) ? give_clean( $_POST['give_email'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 	if ( empty( $email ) ) {
 		give_set_error( 'give_empty_email', __( 'Please enter the email address you used for your donation.', 'give' ) );
 	}
@@ -348,8 +349,8 @@ function give_email_access_login() {
 
 		$args = array(
 			'secret'   => $recaptcha_secret,
-			'response' => $_POST['g-recaptcha-response'],
-			'remoteip' => $_POST['give_ip'],
+			'response' => isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '',
+			'remoteip' => isset( $_POST['give_ip'] ) ? sanitize_text_field( wp_unslash( $_POST['give_ip'] ) ) : '',
 		);
 
 		if ( ! empty( $args['response'] ) ) {

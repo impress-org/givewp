@@ -516,8 +516,8 @@ function give_new_user_notification( $donation_id = 0, $donation_data = [] ) {
 	if (
 		empty( $donation_id )
 		|| empty( $donation_data )
-		|| ! isset( $_POST['give_create_account'] )
-		|| 'on' !== give_clean( $_POST['give_create_account'] )
+		|| ! isset( $_POST['give_create_account'] ) // phpcs:ignore WordPress.Security.NonceVerification.Missing -- for form donations the nonce is verified by give_verify_donation_form_nonce() in give_process_donation_form() before the payment is inserted; this only decides whether to send the new user email.
+		|| 'on' !== give_clean( $_POST['give_create_account'] ) // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data. For form donations the nonce is verified by give_verify_donation_form_nonce() in give_process_donation_form() before the payment is inserted; this only decides whether to send the new user email.
 	) {
 		return;
 	}

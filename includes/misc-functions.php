@@ -148,6 +148,7 @@ function give_get_timezone_id() {
  *
  * Returns the IP address of the current visitor
  *
+ * @since TBD Unslash and sanitize the server variables.
  * @since 2.33.5  Add $single param.
  * @since       1.0
  *
@@ -160,14 +161,14 @@ function give_get_ip($single = true)
 
 	if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
 		// check ip from share internet
-        $ip_addresses = $_SERVER['HTTP_CLIENT_IP'];
+        $ip_addresses = sanitize_text_field( wp_unslash( $_SERVER['HTTP_CLIENT_IP'] ) );
         $header_type = 'HTTP_CLIENT_IP';
 	} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
 		// to check ip is pass from proxy
-        $ip_addresses = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        $ip_addresses = sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) );
         $header_type = 'HTTP_X_FORWARDED_FOR';
 	} elseif ( ! empty( $_SERVER['REMOTE_ADDR'] ) ) {
-        $ip_addresses = $_SERVER['REMOTE_ADDR'];
+        $ip_addresses = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
         $header_type = 'REMOTE_ADDR';
 	}
 
@@ -355,10 +356,12 @@ function give_payment_gateway_donation_summary( $donation_data, $name_and_email 
  * Returns the webhost this site is using if possible
  *
  * @return string $host if detected, false otherwise
+ * @since TBD Unslash and sanitize the server name.
  * @since 1.0
  */
 function give_get_host() {
-	$find_host = gethostname();
+	$find_host   = gethostname();
+	$server_name = isset( $_SERVER['SERVER_NAME'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) : '';
 
 	if ( strpos( $find_host, 'sgvps.net' ) ) {
 		$host = 'Siteground';
@@ -384,11 +387,11 @@ function give_get_host() {
 		$host = 'Rackspace Cloud';
 	} elseif ( strpos( DB_HOST, '.sysfix.eu' ) !== false ) {
 		$host = 'SysFix.eu Power Hosting';
-	} elseif ( strpos( $_SERVER['SERVER_NAME'], 'Flywheel' ) !== false || strpos( $find_host, 'fw' ) ) {
+	} elseif ( strpos( $server_name, 'Flywheel' ) !== false || strpos( $find_host, 'fw' ) ) {
 		$host = 'Flywheel';
 	} else {
 		// Adding a general fallback for data gathering
-		$host = 'DBH: ' . DB_HOST . ', SRV: ' . $_SERVER['SERVER_NAME'];
+		$host = 'DBH: ' . DB_HOST . ', SRV: ' . $server_name;
 	}
 
 	return $host;
@@ -458,11 +461,13 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
  * @return string $post_id
  */
 function give_get_admin_post_id() {
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only post ID params; they only tell which post the admin screen is showing and save nothing.
 	$post_id = isset( $_REQUEST['post'] ) ? absint( $_REQUEST['post'] ) : null;
 
 	$post_id = ! empty( $post_id ) ? $post_id : ( isset( $_REQUEST['post_id'] ) ? absint( $_REQUEST['post_id'] ) : null );
 
 	$post_id = ! empty( $post_id ) ? $post_id : ( isset( $_REQUEST['post_ID'] ) ? absint( $_REQUEST['post_ID'] ) : null );
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	return $post_id;
 }
@@ -758,7 +763,7 @@ function give_can_view_receipt( $donation_id ) {
 		// The give_nl cookie must be a scalar string token; give_clean() does not coerce arrays
 		// to a string, so require is_string() explicitly before treating it as a token.
 		$email_access_token = ! empty( $_COOKIE['give_nl'] ) && is_string( $_COOKIE['give_nl'] )
-			? give_clean( $_COOKIE['give_nl'] )
+			? give_clean( $_COOKIE['give_nl'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 			: false;
 
 		if (
@@ -957,7 +962,7 @@ function give_delete_donation_stats( $date_range = '', $args = [] ) {
  * Check if admin creating new donation form or not.
  *
  * @return bool
- * @since TBD Read the request URI safely when it is not set.
+ * @since TBD Unslash and sanitize the request URI, and read it safely when it is not set.
  * @since 2.0
  */
 function give_is_add_new_form_page() {
@@ -1915,6 +1920,7 @@ function give_get_active_by_user_meta( $banner_addon_name ) {
 /**
  * Store recently activated Give's addons to wp options.
  *
+ * @since TBD Unslash and sanitize the request input.
  * @since 4.16.7.1 Moved from includes/admin/plugins.php so the listener is registered on every
  *            request, and fall back to the plugin file passed by the `activated_plugin`
  *            action so add-ons activated outside of plugins.php (REST, WP-CLI,
@@ -1927,18 +1933,24 @@ function give_recently_activated_addons( $activated_plugin = '' ) {
 	$plugins = [];
 
 	// Check if action is set.
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- WordPress core verifies the nonce before it fires activated_plugin; these params only tell which plugins were activated.
 	if ( isset( $_REQUEST['action'] ) ) {
-		$plugin_action = ( '-1' !== $_REQUEST['action'] ) ? $_REQUEST['action'] : ( isset( $_REQUEST['action2'] ) ? $_REQUEST['action2'] : '' );
+		$plugin_action = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) );
+
+		if ( '-1' === $plugin_action ) {
+			$plugin_action = isset( $_REQUEST['action2'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action2'] ) ) : '';
+		}
 
 		switch ( $plugin_action ) {
 			case 'activate': // Single add-on activation.
-				$plugins[] = $_REQUEST['plugin'];
+				$plugins[] = isset( $_REQUEST['plugin'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) : '';
 				break;
 			case 'activate-selected': // If multiple add-ons activated.
-				$plugins = $_REQUEST['checked'];
+				$plugins = isset( $_REQUEST['checked'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_REQUEST['checked'] ) ) : [];
 				break;
 		}
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	/**
 	 * Activations that do not come from the plugins.php form (Harbor's feature manager,
@@ -2131,12 +2143,14 @@ function give_goal_progress_stats( $form ) {
  * @since 2.1.4
  */
 function give_get_admin_messages_key() {
-	$messages = empty( $_GET['give-messages'] ) ? [] : give_clean( $_GET['give-messages'] );
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only notice params from the redirect URL; they only pick which admin notice to show and save nothing.
+	$messages = empty( $_GET['give-messages'] ) ? [] : give_clean( $_GET['give-messages'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 	// backward compatibility.
 	if ( ! empty( $_GET['give-message'] ) ) {
-		$messages[] = give_clean( $_GET['give-message'] );
+		$messages[] = give_clean( $_GET['give-message'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	/**
 	 * Filter to modify the admin messages key.
@@ -2158,7 +2172,7 @@ function give_get_admin_messages_key() {
 function give_get_user_agent() {
 
 	// Get User Agent.
-	$user_agent = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? give_clean( $_SERVER['HTTP_USER_AGENT'] ) : ''; // WPCS: input var ok.
+	$user_agent = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? give_clean( $_SERVER['HTTP_USER_AGENT'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 	return $user_agent;
 }

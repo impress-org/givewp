@@ -78,6 +78,7 @@ add_action( 'update_option_give_settings', 'give_set_settings_with_disable_prefi
  * It will build Akismet query string and call Akismet API.
  * Akismet response return 'true' for spam donation.
  *
+ * @since TBD Unslash and sanitize the request input.
  * @since 1.8.14
  *
  * @param $spam
@@ -98,7 +99,8 @@ function give_akismet( $spam ) {
 		return false;
 	}
 
-	$args['comment_author_email'] = isset( $_POST['give_email'] ) ? sanitize_email( $_POST['give_email'] ) : false;
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- runs from give_is_spam_donation() inside give_donation_form_validate_fields(), after give_process_donation_form() verified the donation form nonce.
+	$args['comment_author_email'] = isset( $_POST['give_email'] ) ? sanitize_email( wp_unslash( $_POST['give_email'] ) ) : false;
 
 	/**
 	 * Filter list of whitelisted emails
@@ -114,21 +116,22 @@ function give_akismet( $spam ) {
 		return false;
 	}
 
-	$args['comment_author'] = isset( $_POST['give_first'] ) ? give_clean( $_POST['give_first'] ) : '';
+	$args['comment_author'] = isset( $_POST['give_first'] ) ? give_clean( $_POST['give_first'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 	$args['blog']           = get_option( 'home' );
 	$args['blog_lang']      = get_locale();
 	$args['blog_charset']   = get_option( 'blog_charset' );
-	$args['user_ip']        = $_SERVER['REMOTE_ADDR'];
-	$args['user_agent']     = $_SERVER['HTTP_USER_AGENT'];
-	$args['referrer']       = $_SERVER['HTTP_REFERER'];
+	$args['user_ip']        = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+	$args['user_agent']     = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
+	$args['referrer']       = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
 	$args['comment_type']   = 'contact-form';
 
 	$form_id         = isset( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
-	$donor_last_name = ! empty( $_POST['give_last'] ) ? ' ' . give_clean( $_POST['give_last'] ) : '';
+	$donor_last_name = ! empty( $_POST['give_last'] ) ? ' ' . give_clean( $_POST['give_last'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 	// Pass Donor comment if enabled.
 	if ( give_is_donor_comment_field_enabled( $form_id ) ) {
-		$give_comment = isset( $_POST['give_comment'] ) ? give_clean( $_POST['give_comment'] ) : '';
+		$give_comment = isset( $_POST['give_comment'] ) ? give_clean( $_POST['give_comment'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		$args['comment_content'] = $give_comment;
 	}

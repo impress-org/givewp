@@ -25,7 +25,7 @@ $recaptcha_secret = give_get_option( 'recaptcha_secret' );
 $enable_recaptcha = ( give_is_setting_enabled( give_get_option( 'enable_recaptcha' ) ) ) && ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ? true : false;
 
 // Email already sent?
-if ( isset( $_POST['email-access-sent'] ) ) {
+if ( isset( $_POST['email-access-sent'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only flag set by the email access form after it runs; it only picks which notice to show and saves nothing.
 
 	/**
 	 * Filter to modify access mail send notice
@@ -46,7 +46,7 @@ if ( isset( $_POST['email-access-sent'] ) ) {
 
 	$is_form_required = false;
 
-} elseif ( isset( $_POST['email-access-exhausted'] ) ) {
+} elseif ( isset( $_POST['email-access-exhausted'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only flag set by the email access form after it runs; it only picks which notice to show and saves nothing.
 
 	$value = Give()->email_access->verify_throttle / 60;
 

@@ -481,7 +481,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
     // If modal, print form in hidden container until it is time to be revealed.
     if ('modal_reveal' === $atts['display_style']) {
         if (
-            !isset($_GET['context']) // check if we are in block editor
+            !isset($_GET['context']) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only block editor flag; it only decides whether to render the form and saves nothing.
             && !FormUtils::isLegacyForm($form_id)
         ) {
             // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_form_shortcode() renders the whole donation form; wp_kses_post() would strip the form elements, and its own output is escaped internally.
