@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Used the WordPress options API for the temporary data of the batch tools
+timestamp: 2026-10-09T01:00:00.000Z
