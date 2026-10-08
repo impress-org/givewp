@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Added nonce checks to the usage tracking links and the manual migration URL. Support must now use a URL with a valid nonce (wp_nonce_url with the give_manual_migration action) or the Migration log page
+timestamp: 2026-10-08T16:00:00.000Z
