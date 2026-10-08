@@ -52,12 +52,13 @@ class ReportsWidgetBanner extends SaleBanners
     }
 
     /**
+     * @since TBD Sanitize the request URI.
      * @since 3.13.0
      */
     public static function isShowing(): bool
     {
         $hasBanners = !empty((new ReportsWidgetBanner())->getVisibleBanners());
-        $isDashboardWidgetPage = admin_url() . 'index.php' === get_site_url() . $_SERVER['REQUEST_URI'];
+        $isDashboardWidgetPage = admin_url() . 'index.php' === get_site_url() . sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'] ?? ''));
 
         return $hasBanners && $isDashboardWidgetPage;
     }

@@ -17,6 +17,7 @@ use Give\FormBuilder\Routes\EditFormRoute;
 use Give\FormBuilder\Routes\RegisterFormBuilderPageRoute;
 use Give\FormBuilder\Routes\RegisterFormBuilderRestRoutes;
 use Give\FormBuilder\ValueObjects\EditorMode;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -65,22 +66,33 @@ class ServiceProvider implements ServiceProviderInterface
         $this->setupOnboardingTour();
     }
 
+    /**
+     * @since TBD Verify the nonce and the capability, and sanitize the request input.
+     */
     protected function setupOnboardingTour()
     {
         add_action('wp_ajax_givewp_tour_completed', static function () {
-            $mode = new EditorMode($_POST['mode']);
+            self::verifyAjaxRequest();
+
+            $mode = new EditorMode(isset($_POST['mode']) ? sanitize_text_field(wp_unslash($_POST['mode'])) : ''); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by ServiceProvider::verifyAjaxRequest() at the top of this handler.
             add_user_meta(get_current_user_id(), "givewp-form-builder-$mode-tour-completed", time(), true);
         });
 
         add_action('wp_ajax_givewp_migration_hide_notice', static function () {
-            give_update_meta((int)$_GET['formId'], 'givewp-form-builder-migration-hide-notice', time(), true);
+            self::verifyAjaxRequest();
+
+            give_update_meta(self::getFormIdFromAjaxRequest(), 'givewp-form-builder-migration-hide-notice', time(), true);
         });
 
         add_action('wp_ajax_givewp_transfer_hide_notice', static function () {
-            give_update_meta((int)$_GET['formId'], 'givewp-form-builder-transfer-hide-notice', time(), true);
+            self::verifyAjaxRequest();
+
+            give_update_meta(self::getFormIdFromAjaxRequest(), 'givewp-form-builder-transfer-hide-notice', time(), true);
         });
 
         add_action('wp_ajax_givewp_goal_hide_notice', static function () {
+            self::verifyAjaxRequest();
+
             add_user_meta(get_current_user_id(), 'givewp-goal-notice-dismissed', time(), true);
         });
 
@@ -88,7 +100,31 @@ class ServiceProvider implements ServiceProviderInterface
          * @since 3.16.2
          */
         add_action('wp_ajax_givewp_additional_payment_gateways_hide_notice', static function () {
+            self::verifyAjaxRequest();
+
             add_user_meta(get_current_user_id(), 'givewp-additional-payment-gateways-notice-dismissed', time(), true);
         });
+    }
+
+    /**
+     * Stops the request unless it carries the form builder nonce and comes from a user who can edit forms.
+     *
+     * @since TBD
+     */
+    private static function verifyAjaxRequest()
+    {
+        check_ajax_referer(FormBuilderRouteBuilder::AJAX_NONCE_ACTION);
+
+        if (!current_user_can(UserPermissions::donationForms()->editCap())) {
+            wp_die('-1', '', 403);
+        }
+    }
+
+    /**
+     * @since TBD
+     */
+    private static function getFormIdFromAjaxRequest(): int
+    {
+        return isset($_GET['formId']) ? absint($_GET['formId']) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified by ServiceProvider::verifyAjaxRequest() before this is called.
     }
 }

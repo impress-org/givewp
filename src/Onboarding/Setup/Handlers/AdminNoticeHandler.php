@@ -18,7 +18,7 @@ class AdminNoticeHandler implements RequestHandler
      */
     public function maybeHandle()
     {
-        if ( ! isset($_GET['page']) || 'give-setup' !== $_GET['page']) {
+        if ( ! isset($_GET['page']) || 'give-setup' !== $_GET['page']) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides whether the setup notice is shown and saves nothing.
             return;
         }
 

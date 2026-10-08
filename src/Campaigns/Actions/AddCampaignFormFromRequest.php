@@ -32,7 +32,7 @@ class AddCampaignFormFromRequest
      */
     public function visualFormBuilder(DonationForm $donationForm)
     {
-        if (isset($_GET['campaignId']) && $campaign = Campaign::find(absint($_GET['campaignId']))) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- campaign id only picks which campaign the new form joins; the form builder create route runs this after it creates the form.
+        if (isset($_GET['campaignId']) && $campaign = Campaign::find(absint($_GET['campaignId']))) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- campaign id only picks which campaign the new form joins; this runs on givewp_donation_form_created, and CreateFormRoute checks the capability and the nonce before it creates the form.
             give(CampaignRepository::class)->addCampaignForm($campaign, $donationForm->id);
         }
     }
