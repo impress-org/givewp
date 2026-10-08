@@ -1942,8 +1942,8 @@ function give_v20_upgrades_payment_metadata_callback() {
 					$wpdb->postmeta,
 					[
 						'post_id'    => $post->ID,
-						'meta_key'   => $new_meta_key,
-						'meta_value' => give_get_meta( $post->ID, $old_meta_key, true ),
+						'meta_key'   => $new_meta_key, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in a postmeta insert made by this upgrade, not a query filter.
+						'meta_value' => give_get_meta( $post->ID, $old_meta_key, true ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in a postmeta insert made by this upgrade, not a query filter.
 					]
 				);
 			}
@@ -2301,8 +2301,8 @@ function give_v201_upgrades_payment_metadata_callback() {
 					$wpdb->postmeta,
 					[
 						'post_id'    => $post->ID,
-						'meta_key'   => $new_meta_key,
-						'meta_value' => give_get_meta( $post->ID, $old_meta_key, true ),
+						'meta_key'   => $new_meta_key, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in a postmeta insert made by this upgrade, not a query filter.
+						'meta_value' => give_get_meta( $post->ID, $old_meta_key, true ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in a postmeta insert made by this upgrade, not a query filter.
 					]
 				);
 			}

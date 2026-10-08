@@ -712,7 +712,7 @@ function give_totals_shortcode( $atts ) {
 			'post__in'       => $form_ids,
 			'posts_per_page' => - 1,
 			'fields'         => 'ids',
-			'tax_query'      => [
+			'tax_query'      => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Base tax query that the category and tag filters below fill in; the taxonomy filter is the feature.
 				'relation' => 'AND',
 			],
 		];
@@ -947,7 +947,7 @@ function give_form_grid_shortcode( $atts ) {
 		'orderby'        => $atts['orderby'],
 		'order'          => $atts['order'],
         'paged'          => $atts['paged'],
-		'tax_query'      => [
+		'tax_query'      => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Base tax query that the category and tag filters below fill in; the taxonomy filter is the feature.
 			'relation' => 'AND',
 		],
 	];
@@ -956,7 +956,7 @@ function give_form_grid_shortcode( $atts ) {
 	$form_closed_status = trim( $atts['status'] );
 
 	if ( ! empty( $form_closed_status ) ) {
-		$form_args['meta_query'] = [
+		$form_args['meta_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Filters the form grid by form status, which is stored as meta.
 			[
 				'key'   => '_give_form_status',
 				'value' => $form_closed_status,
@@ -1056,11 +1056,11 @@ function give_form_grid_shortcode( $atts ) {
 	// Maybe filter by form Amount Donated or Number of Donations.
 	switch ( $atts['orderby'] ) {
 		case 'amount_donated':
-			$form_args['meta_key'] = '_give_form_earnings';
+			$form_args['meta_key'] = '_give_form_earnings'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the form grid by the stored earnings total; WP_Query sorts by meta only.
 			$form_args['orderby']  = 'meta_value_num';
 			break;
 		case 'number_donations':
-			$form_args['meta_key'] = '_give_form_sales';
+			$form_args['meta_key'] = '_give_form_sales'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the form grid by the stored sales total; WP_Query sorts by meta only.
 			$form_args['orderby']  = 'meta_value_num';
 			break;
         case 'random':
@@ -1068,7 +1068,7 @@ function give_form_grid_shortcode( $atts ) {
             break;
 		case 'closest_to_goal':
 			if ( give_has_upgrade_completed( 'v240_update_form_goal_progress' ) ) {
-				$form_args['meta_key'] = '_give_form_goal_progress';
+				$form_args['meta_key'] = '_give_form_goal_progress'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the form grid by the stored goal progress; WP_Query sorts by meta only.
 				$form_args['orderby']  = 'meta_value_num';
 			}
 			break;

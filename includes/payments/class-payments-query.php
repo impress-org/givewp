@@ -81,7 +81,7 @@ class Give_Payments_Query extends Give_Stats {
 			'user'            => null, // deprecated, use donor
 			'donor'           => null,
 			'status'          => give_get_payment_status_keys(),
-			'meta_key'        => null,
+			'meta_key'        => null, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Null default for the meta_key arg; callers set it when they sort or filter by meta.
 			'year'            => null,
 			'month'           => null,
 			'day'             => null,

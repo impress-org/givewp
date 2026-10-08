@@ -493,7 +493,7 @@ class Give_Comment {
 
 			// Set default meta_query value.
 			if ( ! isset( $comment_args['meta_query'] ) ) {
-				$comment_args['meta_query'] = array();
+				$comment_args['meta_query'] = array(); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Empty meta query that the note type filter below fills in.
 			}
 
 			// Bailout
@@ -506,7 +506,7 @@ class Give_Comment {
 
 			switch ( $comment_type ) {
 				case 'payment':
-					$comment_args['meta_query'] = ! empty( $comment_args['meta_query'] )
+					$comment_args['meta_query'] = ! empty( $comment_args['meta_query'] ) // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Hides donor notes from the donation notes; the note type is stored as comment meta.
 						? $comment_args['meta_query']
 						: array(
 							array(
@@ -529,7 +529,7 @@ class Give_Comment {
 					break;
 
 				case 'donor':
-					$comment_args['meta_query'] = ! empty( $comment_args['meta_query'] )
+					$comment_args['meta_query'] = ! empty( $comment_args['meta_query'] ) // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Selects the notes of one donor, whose ID is stored as comment meta.
 						? $comment_args['meta_query']
 						: array(
 							array(

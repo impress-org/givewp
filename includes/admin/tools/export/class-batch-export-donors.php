@@ -220,8 +220,8 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			'number'     => 30,
 			'paged'      => $this->step,
 			'status'     => 'publish',
-			'meta_key'   => '_give_payment_form_id',
-			'meta_value' => absint( $this->form ),
+			'meta_key'   => '_give_payment_form_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Selects the donations of one form (or price level) by meta; they are stored as meta; admin export.
+			'meta_value' => absint( $this->form ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Selects the donations of one form (or price level) by meta; they are stored as meta; admin export.
 		];
 
 		// Check for date option filter.
@@ -243,7 +243,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 		// Check for price option.
 		if ( null !== $this->price_id ) {
-			$args['meta_query'] = [
+			$args['meta_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Selects the donations of one form (or price level) by meta; they are stored as meta; admin export.
 				[
 					'key'   => '_give_payment_price_id',
 					'value' => (int) $this->price_id,

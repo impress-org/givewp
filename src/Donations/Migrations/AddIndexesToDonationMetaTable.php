@@ -67,7 +67,7 @@ class AddIndexesToDonationMetaTable extends Migration
 
             $clauses += array_intersect_key([
                 'donation_id' => 'DROP INDEX donation_id',
-                'meta_key' => 'DROP INDEX meta_key',
+                'meta_key' => 'DROP INDEX meta_key', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Array key naming the index to drop, not a query filter.
             ], $existing);
 
             if (!$clauses) {

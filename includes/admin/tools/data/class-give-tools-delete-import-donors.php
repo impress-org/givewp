@@ -214,7 +214,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 				'post_status'    => 'any',
 				'posts_per_page' => $this->per_step,
 				'paged'          => $paged,
-				'meta_key'       => '_give_payment_import',
+				'meta_key'       => '_give_payment_import', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Selects donations flagged as imported, which exists only as meta; admin tool.
 				'meta_value_num' => 1,
 				'meta_compare'   => '=',
 			)

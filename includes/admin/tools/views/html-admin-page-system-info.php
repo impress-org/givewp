@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 /**
  * The following code is a derivative work of the code from the WooCommerce
  * plugin, which is licensed GPLv3. This code therefore is also licensed under

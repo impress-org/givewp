@@ -338,8 +338,8 @@ function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish
 
 	$ret  = 0;
 	$args = [
-		'meta_key'    => '_give_payment_gateway',
-		'meta_value'  => $gateway_id,
+		'meta_key'    => '_give_payment_gateway', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Counts donations by gateway, which is stored as meta.
+		'meta_value'  => $gateway_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Counts donations by gateway, which is stored as meta.
 		'nopaging'    => true,
 		'post_type'   => 'give_payment',
 		'post_status' => $status,

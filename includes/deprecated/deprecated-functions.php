@@ -935,7 +935,7 @@ function give_get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 			'orderby'    => 'comment_ID',
 			'order'      => 'DESC',
 			'number'     => 1,
-			'meta_query' => [
+			'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Finds the latest comment by donor and anonymous meta; deprecated function kept for add-ons.
 				'related' => 'AND',
 				[
 					'key'   => '_give_donor_id',
@@ -962,7 +962,7 @@ function give_get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 		'orderby'    => 'comment_ID',
 		'order'      => 'DESC',
 		'number'     => 1,
-		'meta_query' => [
+		'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Finds the latest comment by donor and anonymous meta; deprecated function kept for add-ons.
 			'relation' => 'AND',
 			[
 				'key'   => '_give_anonymous_donation',

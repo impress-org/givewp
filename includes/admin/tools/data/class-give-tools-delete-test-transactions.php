@@ -195,7 +195,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 				array(
 					'post_status' => 'any',
 					'number'      => - 1,
-					'meta_query'  => array(
+					'meta_query'  => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Selects test mode donations by payment mode and gateway meta; admin tool.
 						'relation' => 'OR',
 						array(
 							'key'   => '_give_payment_mode',

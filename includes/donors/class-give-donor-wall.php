@@ -505,7 +505,7 @@ class Give_Donor_Wall {
             'post_type' => 'give_forms',
             'posts_per_page' => -1,
             'fields' => 'ids',
-            'tax_query' => [],
+            'tax_query' => [], // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Empty tax query that the category and tag filters below fill in; the taxonomy filter is the feature.
         ];
 
         // Categories

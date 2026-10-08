@@ -9,6 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 $donations             = array();
 $donation_history_args = Give()->session->get( 'give_donation_history_args' );
 

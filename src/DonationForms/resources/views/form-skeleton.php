@@ -23,6 +23,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 $modifier = $design === 'two-panel-steps' ? 'two-panel' : $design;
 $headerHtml = $header ? View::load('DonationForms.form-skeleton/header', compact('goal', 'image')) : '';
 $firstSectionHtml = View::load('DonationForms.form-skeleton/section', [

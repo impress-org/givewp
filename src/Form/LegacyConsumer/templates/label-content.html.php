@@ -8,6 +8,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 /** @var int $formId */
 /** @var Give\Framework\FieldsAPI\Field|Give\Framework\FieldsAPI\Text $field */
 ?>

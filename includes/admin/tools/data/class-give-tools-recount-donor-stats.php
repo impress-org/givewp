@@ -93,7 +93,7 @@ class Give_Tools_Recount_Donor_Stats extends Give_Batch_Export {
 					'post__not_in' => $attached_payment_ids, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- the recount must skip the payments already attached to this donor.
 					'number'       => - 1,
 					'status'       => $allowed_payment_status,
-					'meta_query'   => array(
+					'meta_query'   => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Finds donations by donor email, which is stored as meta; admin tool.
 						array(
 							'key'     => '_give_payment_donor_email',
 							'value'   => $donor->email,
