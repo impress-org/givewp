@@ -32,6 +32,7 @@ add_action( 'give_init', '_give_load_deprecated_global_params' );
 /**
  * Checks if Guest checkout is enabled for a particular donation form
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.4.1
  *
@@ -41,9 +42,7 @@ add_action( 'give_init', '_give_load_deprecated_global_params' );
  */
 function give_no_guest_checkout( $form_id ) {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.4.1', null, $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.4.1' );
 
 	$ret = give_get_meta( $form_id, '_give_logged_in_only', true );
 
@@ -54,15 +53,14 @@ function give_no_guest_checkout( $form_id ) {
 /**
  * Default Log Views
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8
  * @return array $views Log Views
  */
 function give_log_default_views() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8', null, $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8' );
 
 	$views = [
 		'sales'          => __( 'Donations', 'give' ),
@@ -78,14 +76,13 @@ function give_log_default_views() {
 /**
  * Donation form validate agree to "Terms and Conditions".
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
 function give_purchase_form_validate_agree_to_terms() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_agree_to_terms', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_agree_to_terms' );
 
 	// Call new renamed function.
 	give_donation_form_validate_agree_to_terms();
@@ -95,14 +92,13 @@ function give_purchase_form_validate_agree_to_terms() {
 /**
  * Donation Form Validate Logged In User.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
 function give_purchase_form_validate_logged_in_user() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_logged_in_user', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_logged_in_user' );
 
 	// Call new renamed function.
 	give_donation_form_validate_logged_in_user();
@@ -112,14 +108,13 @@ function give_purchase_form_validate_logged_in_user() {
 /**
  * Donation Form Validate Logged In User.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
 function give_purchase_form_validate_gateway() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_gateway', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_gateway' );
 
 	// Call new renamed function.
 	give_donation_form_validate_gateway();
@@ -129,14 +124,13 @@ function give_purchase_form_validate_gateway() {
 /**
  * Donation Form Validate Fields.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
 function give_purchase_form_validate_fields() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_fields', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_fields' );
 
 	// Call new renamed function.
 	give_donation_form_validate_fields();
@@ -146,14 +140,13 @@ function give_purchase_form_validate_fields() {
 /**
  * Validates the credit card info.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
 function give_purchase_form_validate_cc() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_cc', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_cc' );
 
 	// Call new renamed function.
 	give_donation_form_validate_cc();
@@ -163,14 +156,13 @@ function give_purchase_form_validate_cc() {
 /**
  * Validates the credit card info.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
 function give_get_purchase_cc_info() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_get_donation_cc_info', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_get_donation_cc_info' );
 
 	// Call new renamed function.
 	give_get_donation_cc_info();
@@ -181,6 +173,7 @@ function give_get_purchase_cc_info() {
 /**
  * Validates the credit card info.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  *
@@ -189,9 +182,7 @@ function give_get_purchase_cc_info() {
  */
 function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_cc_zip', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_cc_zip' );
 
 	// Call new renamed function.
 	give_donation_form_validate_cc_zip( $zip, $country_code );
@@ -201,14 +192,13 @@ function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 /**
  * Donation form validate user login.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
 function give_purchase_form_validate_user_login() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_user_login', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_user_login' );
 
 	// Call new renamed function.
 	give_donation_form_validate_user_login();
@@ -218,14 +208,13 @@ function give_purchase_form_validate_user_login() {
 /**
  * Donation Form Validate Guest User
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
 function give_purchase_form_validate_guest_user() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_guest_user', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_guest_user' );
 
 	// Call new renamed function.
 	give_donation_form_validate_guest_user();
@@ -235,14 +224,13 @@ function give_purchase_form_validate_guest_user() {
 /**
  * Donate Form Validate New User
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
 function give_purchase_form_validate_new_user() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_new_user', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_donation_form_validate_new_user' );
 
 	// Call new renamed function.
 	give_donation_form_validate_new_user();
@@ -253,6 +241,7 @@ function give_purchase_form_validate_new_user() {
 /**
  * Get Donation Form User
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  *
@@ -260,9 +249,7 @@ function give_purchase_form_validate_new_user() {
  */
 function give_get_purchase_form_user( $valid_data = [] ) {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_get_donation_form_user', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_get_donation_form_user' );
 
 	// Call new renamed function.
 	give_get_donation_form_user( $valid_data );
@@ -274,6 +261,7 @@ function give_get_purchase_form_user( $valid_data = [] ) {
  *
  * Renders the button on the Checkout.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  *
@@ -282,9 +270,7 @@ function give_get_purchase_form_user( $valid_data = [] ) {
  * @return string
  */
 function give_checkout_button_purchase( $form_id ) {
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_get_donation_form_submit_button', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.8', 'give_get_donation_form_submit_button' );
 
 	return give_get_donation_form_submit_button( $form_id );
 
@@ -293,6 +279,7 @@ function give_checkout_button_purchase( $form_id ) {
 /**
  * Get the donor ID associated with a payment.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since 1.0
  *
  * @param int $payment_id Payment ID.
@@ -301,9 +288,7 @@ function give_checkout_button_purchase( $form_id ) {
  */
 function give_get_payment_customer_id( $payment_id ) {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_get_payment_donor_id', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_get_payment_donor_id' );
 
 	return give_get_payment_donor_id( $payment_id );
 }
@@ -312,15 +297,14 @@ function give_get_payment_customer_id( $payment_id ) {
 /**
  * Get Total Donations.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since  1.0
  *
  * @return int $count Total sales.
  */
 function give_get_total_sales() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_get_total_donations', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_get_total_donations' );
 
 	return give_get_total_donations();
 }
@@ -332,6 +316,7 @@ function give_get_total_sales() {
  * Returns total number of donations a donor has made.
  *
  * @access      public
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since       1.0
  *
  * @param       int|string $user The ID or email of the donor.
@@ -340,9 +325,7 @@ function give_get_total_sales() {
  */
 function give_count_purchases_of_customer( $user = null ) {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_count_donations_of_donor', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_count_donations_of_donor' );
 
 	return give_count_donations_of_donor( $user );
 }
@@ -354,6 +337,7 @@ function give_count_purchases_of_customer( $user = null ) {
  * Retrieves the donation count and the total amount spent for a specific user.
  *
  * @access      public
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since       1.0
  *
  * @param       int|string $user The ID or email of the donor to retrieve stats for.
@@ -362,9 +346,7 @@ function give_count_purchases_of_customer( $user = null ) {
  */
 function give_get_purchase_stats_by_user( $user = '' ) {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_get_donation_stats_by_user', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_get_donation_stats_by_user' );
 
 	return give_get_donation_stats_by_user( $user );
 
@@ -375,6 +357,7 @@ function give_get_purchase_stats_by_user( $user = '' ) {
  *
  * Retrieves a list of all donations by a specific user.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since  1.0
  *
  * @param int    $user   User ID or email address
@@ -386,9 +369,7 @@ function give_get_purchase_stats_by_user( $user = '' ) {
  */
 function give_get_users_purchases( $user = 0, $number = 20, $pagination = false, $status = 'complete' ) {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_get_users_donations', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_get_users_donations' );
 
 	return give_get_users_donations( $user, $number, $pagination, $status );
 
@@ -401,6 +382,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
  * Checks to see if a user has donated to at least one form.
  *
  * @access      public
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since       1.0
  *
  * @param       int $user_id The ID of the user to check.
@@ -409,9 +391,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
  */
 function give_has_purchases( $user_id = null ) {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_has_donations', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_has_donations' );
 
 	return give_has_donations( $user_id );
 }
@@ -420,14 +400,13 @@ function give_has_purchases( $user_id = null ) {
  * Counts the total number of donors.
  *
  * @access        public
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since         1.0
  *
  * @return        int The total number of donors.
  */
 function give_count_total_customers() {
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_count_total_donors', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_count_total_donors' );
 
 	return give_count_total_donors();
 }
@@ -436,6 +415,7 @@ function give_count_total_customers() {
  * Calculates the total amount spent by a user.
  *
  * @access      public
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since       1.0
  *
  * @param       int|string $user The ID or email of the donor.
@@ -444,9 +424,7 @@ function give_count_total_customers() {
  */
 function give_purchase_total_of_user( $user = null ) {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_donation_total_of_user', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_donation_total_of_user' );
 
 	return give_donation_total_of_user( $user );
 }
@@ -454,6 +432,7 @@ function give_purchase_total_of_user( $user = null ) {
 /**
  * Deletes a Donation
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since  1.0
  *
  * @param  int  $payment_id      Payment ID (default: 0).
@@ -463,9 +442,7 @@ function give_purchase_total_of_user( $user = null ) {
  */
 function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_delete_donation', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_delete_donation' );
 
 	give_delete_donation( $payment_id, $update_customer );
 
@@ -478,6 +455,7 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
  * Undoes a donation, including the decrease of donations and earning stats.
  * Used for when refunding or deleting a donation.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since  1.0
  *
  * @param  int|bool $form_id    Form ID (default: false).
@@ -487,9 +465,7 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
  */
 function give_undo_purchase( $form_id, $payment_id ) {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_undo_donation', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_undo_donation' );
 
 	give_undo_donation( $payment_id );
 }
@@ -498,6 +474,7 @@ function give_undo_purchase( $form_id, $payment_id ) {
 /**
  * Trigger a Donation Deletion.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since 1.0
  *
  * @param array $data Arguments passed.
@@ -505,9 +482,7 @@ function give_undo_purchase( $form_id, $payment_id ) {
  * @return void
  */
 function give_trigger_purchase_delete( $data ) {
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_trigger_donation_delete', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_trigger_donation_delete' );
 
 	give_trigger_donation_delete( $data );
 }
@@ -516,6 +491,7 @@ function give_trigger_purchase_delete( $data ) {
 /**
  * Increases the donation total count of a donation form.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since 1.0
  *
  * @param int $form_id  Give Form ID
@@ -524,9 +500,7 @@ function give_trigger_purchase_delete( $data ) {
  * @return bool|int
  */
 function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_increase_donation_count', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_increase_donation_count' );
 
 	give_increase_donation_count( $form_id, $quantity );
 }
@@ -537,6 +511,7 @@ function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
  *
  * Stores log information for a donation.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since 1.0
  *
  * @param int         $give_form_id Give Form ID.
@@ -547,9 +522,7 @@ function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
  * @return void
  */
 function give_record_sale_in_log( $give_form_id, $payment_id, $price_id = false, $sale_date = null ) {
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_record_donation_in_log', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_record_donation_in_log' );
 
 	give_record_donation_in_log( $give_form_id, $payment_id, $price_id, $sale_date );
 }
@@ -560,6 +533,7 @@ function give_record_sale_in_log( $give_form_id, $payment_id, $price_id = false,
  * Prints all stored errors. Ensures errors show up on the appropriate form;
  * For use during donation process. If errors exist, they are returned.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since 1.0
  * @uses  give_get_errors()
  * @uses  give_clear_errors()
@@ -569,9 +543,7 @@ function give_record_sale_in_log( $give_form_id, $payment_id, $price_id = false,
  * @return void
  */
 function give_print_errors( $form_id ) {
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'Give_Notice::print_frontend_errors', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'Give_Notice::print_frontend_errors' );
 
 	do_action( 'give_frontend_notices', $form_id );
 }
@@ -581,6 +553,7 @@ function give_print_errors( $form_id ) {
  *
  * Helper function to easily output an error message properly wrapped; used commonly with shortcodes
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.3
  *
  * @param string $message  Message to store with the error.
@@ -590,9 +563,7 @@ function give_print_errors( $form_id ) {
  * @return   string  $error
  */
 function give_output_error( $message, $echo = true, $error_id = 'warning' ) {
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'Give_Notice::print_frontend_notice', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'Give_Notice::print_frontend_notice' );
 
 	Give_Notices::print_frontend_notice( $message, $echo, $error_id );
 }
@@ -603,6 +574,7 @@ function give_output_error( $message, $echo = true, $error_id = 'warning' ) {
  *
  * Retrieves the donation summary.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since       1.0
  *
  * @param array $purchase_data
@@ -612,9 +584,7 @@ function give_output_error( $message, $echo = true, $error_id = 'warning' ) {
  */
 function give_get_purchase_summary( $purchase_data, $email = true ) {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.12', 'give_payment_gateway_donation_summary', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.12', 'give_payment_gateway_donation_summary' );
 
 	give_payment_gateway_donation_summary( $purchase_data, $email );
 
@@ -661,15 +631,14 @@ function give_admin_notices_disabled( $payment_id = 0 ) {
  *
  * @param array $payment_data Payment Data.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since 1.8.14
  *
  * @return string
  */
 function give_build_paypal_item_title( $payment_data ) {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '1.8.14', 'give_payment_gateway_item_title', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.14', 'give_payment_gateway_item_title' );
 
 	return give_payment_gateway_item_title( $payment_data );
 
@@ -880,6 +849,7 @@ function give_get_donor_donation_comments( $donor_id, $comment_args = [], $searc
 /**
  * Converts a PHP date format for use in JavaScript.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since 2.2.0
  * @deprecated 2.3.0
  *
@@ -889,9 +859,7 @@ function give_get_donor_donation_comments( $donor_id, $comment_args = [], $searc
  */
 function give_convert_php_date_format_to_js( $php_format ) {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '2.3.0', null, $backtrace );
+	_give_deprecated_function( __FUNCTION__, '2.3.0' );
 
 	$js_format = $php_format;
 
@@ -926,15 +894,14 @@ function give_convert_php_date_format_to_js( $php_format ) {
 /**
  * Get localized date format for use in JavaScript.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since 2.2.0
  * @deprecated 2.3.0
  *
  * @return string.
  */
 function give_get_localized_date_format_to_js() {
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '2.3.0', null, $backtrace );
+	_give_deprecated_function( __FUNCTION__, '2.3.0' );
 
 	return give_convert_php_date_format_to_js( get_option( 'date_format' ) );
 }

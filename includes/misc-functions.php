@@ -411,14 +411,14 @@ function give_get_host() {
  * @param string $function    The function that was called.
  * @param string $version     The plugin version that deprecated the function.
  * @param string $replacement Optional. The function that should have been called.
- * @param array  $backtrace   Optional. Contains stack backtrace of deprecated function.
+ * @param array  $backtrace   Unused. Kept so add-ons that still pass a backtrace keep working.
  *
  * @uses do_action() Calls 'give_deprecated_function_run' and passes the function name, what to use instead,
  *       and the version the function was deprecated in.
  * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
  *       trigger or false to not trigger error.
  *
- * @since TBD Escape output. Add translators comments.
+ * @since TBD Escape output. Add translators comments. Stop dumping the backtrace in the notice.
  */
 function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
 
@@ -441,14 +441,10 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
 	if ( WP_DEBUG && apply_filters( 'give_deprecated_function_trigger_error', $show_errors ) ) {
 		if ( ! is_null( $replacement ) ) {
 			/* translators: 1: Function name, 2: GiveWP version, 3: Replacement function name */
-			trigger_error( wp_kses_post( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s! Use %3$s instead.', 'give' ), esc_html( $function ), esc_html( $version ), esc_html( $replacement ) ) ) );
-			trigger_error( esc_html( print_r( $backtrace, 1 ) ) ); // Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
-			// Alternatively we could dump this to a file.
+			wp_trigger_error( '', wp_kses_post( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s! Use %3$s instead.', 'give' ), esc_html( $function ), esc_html( $version ), esc_html( $replacement ) ) ) );
 		} else {
 			/* translators: 1: Function name, 2: GiveWP version */
-			trigger_error( wp_kses_post( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s with no alternative available.', 'give' ), esc_html( $function ), esc_html( $version ) ) ) );
-			trigger_error( esc_html( print_r( $backtrace, 1 ) ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
-			// Alternatively we could dump this to a file.
+			wp_trigger_error( '', wp_kses_post( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s with no alternative available.', 'give' ), esc_html( $function ), esc_html( $version ) ) ) );
 		}
 	}
 }
@@ -592,113 +588,6 @@ function give_donation_metabox_menu() {
 }
 
 add_action( 'current_screen', 'give_donation_metabox_menu' );
-
-/**
- * Array_column backup usage
- *
- * This file is part of the array_column library.
- *
- * @since      : 1.3.0.1
- *
- * @copyright  Copyright (c) Ben Ramsey (http://benramsey.com)
- * @license    https://opensource.org/licenses/MIT MIT
- */
-
-if ( ! function_exists( 'array_column' ) ) {
-	/**
-	 * Returns the values from a single column of the input array, identified by
-	 * the $columnKey.
-	 *
-	 * Optionally, you may provide an $indexKey to index the values in the returned
-	 * array by the values from the $indexKey column in the input array.
-	 *
-	 * @param array      $input     A multi-dimensional array (record set) from which to pull
-	 *                              a column of values.
-	 * @param int|string $columnKey The column of values to return. This value may be the
-	 *                              integer key of the column you wish to retrieve, or it
-	 *                              may be the string key name for an associative array.
-	 * @param mixed      $indexKey  (Optional.) The column to use as the index/keys for
-	 *                              the returned array. This value may be the integer key
-	 *                              of the column, or it may be the string key name.
-	 *
-	 * @since TBD Escape output.
-	 *
-	 * @return array|boolean|null
-	 */
-	function array_column( $input = null, $columnKey = null, $indexKey = null ) {
-		// Using func_get_args() in order to check for proper number of
-		// parameters and trigger errors exactly as the built-in array_column()
-		// does in PHP 5.5.
-		$argc   = func_num_args();
-		$params = func_get_args();
-
-		if ( $argc < 2 ) {
-			trigger_error( esc_html( sprintf( 'array_column() expects at least 2 parameters, %s given.', $argc ) ), E_USER_WARNING );
-
-			return null;
-		}
-
-		if ( ! is_array( $params[0] ) ) {
-			trigger_error( esc_html( sprintf( 'array_column() expects parameter 1 to be array, %s given.', gettype( $params[0] ) ) ), E_USER_WARNING );
-
-			return null;
-		}
-
-		if ( ! is_int( $params[1] ) && ! is_float( $params[1] ) && ! is_string( $params[1] ) && $params[1] !== null && ! ( is_object( $params[1] ) && method_exists( $params[1], '__toString' ) ) ) {
-			trigger_error( 'array_column(): The column key should be either a string or an integer.', E_USER_WARNING );
-
-			return false;
-		}
-
-		if ( isset( $params[2] ) && ! is_int( $params[2] ) && ! is_float( $params[2] ) && ! is_string( $params[2] ) && ! ( is_object( $params[2] ) && method_exists( $params[2], '__toString' ) ) ) {
-			trigger_error( 'array_column(): The index key should be either a string or an integer.', E_USER_WARNING );
-
-			return false;
-		}
-
-		$paramsInput     = $params[0];
-		$paramsColumnKey = ( $params[1] !== null ) ? (string) $params[1] : null;
-
-		$paramsIndexKey = null;
-		if ( isset( $params[2] ) ) {
-			if ( is_float( $params[2] ) || is_int( $params[2] ) ) {
-				$paramsIndexKey = (int) $params[2];
-			} else {
-				$paramsIndexKey = (string) $params[2];
-			}
-		}
-
-		$resultArray = [];
-
-		foreach ( $paramsInput as $row ) {
-			$key    = $value = null;
-			$keySet = $valueSet = false;
-
-			if ( $paramsIndexKey !== null && array_key_exists( $paramsIndexKey, $row ) ) {
-				$keySet = true;
-				$key    = (string) $row[ $paramsIndexKey ];
-			}
-
-			if ( $paramsColumnKey === null ) {
-				$valueSet = true;
-				$value    = $row;
-			} elseif ( is_array( $row ) && array_key_exists( $paramsColumnKey, $row ) ) {
-				$valueSet = true;
-				$value    = $row[ $paramsColumnKey ];
-			}
-
-			if ( $valueSet ) {
-				if ( $keySet ) {
-					$resultArray[ $key ] = $value;
-				} else {
-					$resultArray[] = $value;
-				}
-			}
-		}
-
-		return $resultArray;
-	}
-}// End if().
 
 /**
  * Determines the receipt visibility status.
@@ -1629,7 +1518,7 @@ function give_donation_history_table_end() {
  * @param string $version deprecated
  *
  * @return void
- * @since  TBD Escape output. Add translators comments.
+ * @since  TBD Escape output. Add translators comments. Stop dumping the backtrace in the notice.
  * @since  1.8.18
  * @since  2.5.13 Refactor function
  */
@@ -1652,8 +1541,7 @@ function give_doing_it_wrong( $function, $message, $version = null ) {
 	// Allow plugin to filter the output error trigger.
 	if ( WP_DEBUG && apply_filters( 'give_doing_it_wrong_trigger_error', $show_errors ) ) {
 		/* translators: 1: Function name, 2: Error message */
-		trigger_error( wp_kses_post( sprintf( __( '%1$s was called <strong>incorrectly</strong>. %2$s', 'give' ), esc_html( $function ), esc_html( $message ) ) ) );
-		trigger_error( esc_html( print_r( wp_debug_backtrace_summary(), 1 ) ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
+		wp_trigger_error( '', wp_kses_post( sprintf( __( '%1$s was called <strong>incorrectly</strong>. %2$s', 'give' ), esc_html( $function ), esc_html( $message ) ) ) );
 	}
 }
 
