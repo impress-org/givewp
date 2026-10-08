@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Sanitized request input when saving and listing donation forms in the legacy admin
+timestamp: 2026-10-08T17:30:00.000Z
