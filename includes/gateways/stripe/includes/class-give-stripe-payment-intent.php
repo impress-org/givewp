@@ -34,7 +34,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 		/**
          * This function is used to create payment intent in Stripe.
          *
-         * @since TBD Add translators comments.
+         * @since TBD Add translators comments. Read the payment mode through a sanitizing helper.
          * @since 2.27.1 Stripe payment intent error sets a more user friendly Exception message.
          * @since      2.5.0
          * @access     public
@@ -75,7 +75,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
                 		$e->getMessage()
                 	)
                 );
-                give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+                give_send_back_to_checkout( '?payment-mode=' . give_stripe_get_payment_mode_from_request() );
                 return false;
             } // End try().
         }

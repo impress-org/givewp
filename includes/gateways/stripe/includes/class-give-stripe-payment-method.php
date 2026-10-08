@@ -29,6 +29,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 		 *
 		 * @param array $args Payment Method Arguments.
 		 *
+		 * @since TBD Read the payment mode through a sanitizing helper.
 		 * @since 2.5.0
 		 *
 		 * @return \Stripe\PaymentMethod
@@ -51,7 +52,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 					)
 				);
 				give_set_error( 'stripe_error', __( 'An occurred while creating the payment method. Please try again.', 'give' ) );
-				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+				give_send_back_to_checkout( '?payment-mode=' . give_stripe_get_payment_mode_from_request() );
 				return false;
 			}
 
@@ -62,6 +63,8 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 		 * Retrieves the payment method.
 		 *
 		 * @param string $id Payment Intent ID.
+		 *
+		 * @since TBD Read the payment mode through a sanitizing helper.
 		 *
 		 * @return \Stripe\PaymentMethod
 		 */
@@ -83,7 +86,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 					)
 				);
 				give_set_error( 'stripe_error', __( 'An occurred while retrieving the payment method of the customer. Please try again.', 'give' ) );
-				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+				give_send_back_to_checkout( '?payment-mode=' . give_stripe_get_payment_mode_from_request() );
 				return false;
 			}
 
@@ -96,6 +99,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 		 * @param string $id   Payment Method ID of Stripe.
 		 * @param array  $args List of arguments to update.
 		 *
+		 * @since TBD Read the payment mode through a sanitizing helper.
 		 * @since 2.5.10
 		 *
 		 * @return bool|\Stripe\PaymentMethod
@@ -118,7 +122,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 					)
 				);
 				give_set_error( 'stripe_error', __( 'An occurred while retrieving the payment method of the customer. Please try again.', 'give' ) );
-				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+				give_send_back_to_checkout( '?payment-mode=' . give_stripe_get_payment_mode_from_request() );
 			}
 
 			return $payment_method;
@@ -130,6 +134,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 		 * @param string $customer_id Stripe Customer ID.
 		 * @param string $type        Stripe Payment Type.
 		 *
+		 * @since TBD Read the payment mode through a sanitizing helper.
 		 * @since 2.5.0
 		 *
 		 * @return \Stripe\PaymentMethod
@@ -159,7 +164,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 					)
 				);
 				give_set_error( 'stripe_error', __( 'An occurred while fetching the list of payment methods of the customer. Please try again.', 'give' ) );
-				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+				give_send_back_to_checkout( '?payment-mode=' . give_stripe_get_payment_mode_from_request() );
 				return false;
 			}
 

@@ -29,6 +29,8 @@ if ( ! class_exists( 'Give_Stripe_Invoice' ) ) {
 		 *
 		 * @param string $id Invoice ID.
 		 *
+		 * @since TBD Read the payment mode through a sanitizing helper.
+		 *
 		 * @return \Stripe\Invoice
 		 */
 		public function retrieve( $id ) {
@@ -51,7 +53,7 @@ if ( ! class_exists( 'Give_Stripe_Invoice' ) ) {
 					)
 				);
 				give_set_error( 'Stripe Error', __( 'An error occurred while retrieving invoice. Please try again.', 'give' ) );
-				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+				give_send_back_to_checkout( '?payment-mode=' . give_stripe_get_payment_mode_from_request() );
 
 				 return false;
 			}
