@@ -337,7 +337,7 @@ class Give_Cache {
 	 */
 	public static function delete_all_expired( $force = false ) {
 		global $wpdb;
-		$options = $wpdb->get_results(
+		$options = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds Give_Cache rows in wp_options by name pattern, which get_option() cannot do.
 			$wpdb->prepare(
 				"SELECT option_name, option_value
 						FROM {$wpdb->options}
@@ -395,7 +395,7 @@ class Give_Cache {
 		global $wpdb;
 
 		if ( $fields ) {
-			$options = $wpdb->get_results(
+			$options = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds Give_Cache rows in wp_options by name pattern, which get_option() cannot do.
 				$wpdb->prepare(
 					"SELECT option_name, option_value
 						FROM {$wpdb->options}
@@ -406,7 +406,7 @@ class Give_Cache {
 				ARRAY_A
 			);
 		} else {
-			$options = $wpdb->get_col(
+			$options = $wpdb->get_col( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds Give_Cache rows in wp_options by name pattern, which get_option() cannot do.
 				$wpdb->prepare(
 					"SELECT *
 						FROM {$wpdb->options}

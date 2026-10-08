@@ -343,7 +343,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 		$total_items = Give_Cache::get( 'give_total_api_keys', true );
 
 		if ( ! $total_items ) {
-			$total_items = $wpdb->get_var(
+			$total_items = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Counts API key rows in usermeta by value, which no core function does; the result is cached with Give_Cache::set just below.
 				$wpdb->prepare(
 					"SELECT count(user_id)
 					FROM {$wpdb->usermeta} WHERE meta_value=%s",

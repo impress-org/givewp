@@ -92,7 +92,7 @@ class Give_DB_Donor_Meta extends Give_DB_Meta {
 
 		if (
 			! give_has_upgrade_completed( 'v20_rename_donor_tables' ) &&
-			$wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', "{$wpdb->prefix}give_customermeta" ) )
+			$wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', "{$wpdb->prefix}give_customermeta" ) ) // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Checks whether a table exists with SHOW TABLES; WordPress has no function for it.
 		) {
 			$wpdb->donormeta = $this->table_name = "{$wpdb->prefix}give_customermeta";
 			$this->meta_type = 'customer';

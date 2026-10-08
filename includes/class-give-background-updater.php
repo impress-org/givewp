@@ -158,7 +158,7 @@ class Give_Background_Updater extends WPBackgroundProcess
 
         $key = $wpdb->esc_like($this->identifier . '_batch_') . '%';
 
-        $count = $wpdb->get_var(
+        $count = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds batch rows in wp_options by name pattern, which get_option() cannot do; the queue must be read live.
             $wpdb->prepare(
                 "
 			SELECT COUNT(*)
@@ -189,7 +189,7 @@ class Give_Background_Updater extends WPBackgroundProcess
 
         $key = $wpdb->esc_like($this->identifier . '_batch_') . '%';
 
-        $query = $wpdb->get_row(
+        $query = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds batch rows in wp_options by name pattern, which get_option() cannot do; the queue must be read live.
             $wpdb->prepare(
                 "
 			SELECT *

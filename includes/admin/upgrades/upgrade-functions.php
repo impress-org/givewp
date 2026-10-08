@@ -12,6 +12,8 @@
  * @subpackage  Admin/Upgrades
  */
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- one-time upgrade routines that rewrite GiveWP tables and post meta in bulk; they run once and must not be cached.
+
 // Exit if accessed directly.
 use Give\Helpers\Gateways\Stripe;
 

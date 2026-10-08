@@ -1147,7 +1147,7 @@ class Give_Subscription {
 
 		$donation_id_col_name = Give()->payment_meta->get_meta_type() . '_id';
 
-		$donation = $wpdb->get_var(
+		$donation = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds a donation by transaction ID in the GiveWP donation meta table; WordPress has no cache layer for it.
 			$wpdb->prepare(
 				"
 				SELECT %i

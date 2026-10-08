@@ -292,7 +292,7 @@ class Give_Email_Access {
 		// Make sure token isn't expired.
 		$expires = gmdate( 'Y-m-d H:i:s', time() - $this->token_expiration );
 
-		$email = $wpdb->get_var(
+		$email = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 			$wpdb->prepare( "SELECT email FROM {$wpdb->donors} WHERE verify_key = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
 		);
 
@@ -333,18 +333,18 @@ class Give_Email_Access {
 		$now = gmdate( 'Y-m-d H:i:s' );
 
 		// Insert or update?
-		$row_id = (int) $wpdb->get_var(
+		$row_id = (int) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 			$wpdb->prepare( "SELECT id FROM {$wpdb->donors} WHERE id = %d LIMIT 1", $donor_id )
 		);
 
 		// Update.
 		if ( ! empty( $row_id ) ) {
-			$wpdb->query(
+			$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 				$wpdb->prepare( "UPDATE {$wpdb->donors} SET verify_key = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $verify_key, $now, $row_id )
 			);
 		} // Insert.
 		else {
-			$wpdb->query(
+			$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 				$wpdb->prepare( "INSERT INTO {$wpdb->donors} ( verify_key, verify_throttle) VALUES (%s, %s)", $verify_key, $now )
 			);
 		}
@@ -377,7 +377,7 @@ class Give_Email_Access {
 		$expires = gmdate( 'Y-m-d H:i:s', time() - $this->token_expiration );
 
 		// See if the verify_key exists.
-		$row = $wpdb->get_row(
+		$row = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 			$wpdb->prepare( "SELECT id, email FROM {$wpdb->donors} WHERE verify_key = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
 		);
 
@@ -385,7 +385,7 @@ class Give_Email_Access {
 
 		// Set token and remove verify key.
 		if ( ! empty( $row ) ) {
-			$wpdb->query(
+			$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 				$wpdb->prepare( "UPDATE {$wpdb->donors} SET verify_key = '', token = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $token, $now, $row->id )
 			);
 
@@ -430,6 +430,6 @@ class Give_Email_Access {
 		global $wpdb;
 
 		// Create columns in donors table.
-		$wpdb->query( "ALTER TABLE {$wpdb->donors} ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`" );
+		$wpdb->query( "ALTER TABLE {$wpdb->donors} ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Adds the email access columns to the GiveWP donors table; a schema change that init() runs only when the token column is missing.
 	}
 }

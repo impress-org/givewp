@@ -304,7 +304,7 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 				$meta_value = ! empty( $meta_value ) ?
 					current( $meta_value ) :
 					(array) maybe_unserialize(
-						$wpdb->get_var(
+						$wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Runs inside the get_post_metadata filter, so get_post_meta() would call this filter again; the result is cached with Give_Cache::set_db_query.
 							$wpdb->prepare(
 								"
 								SELECT meta_value
@@ -416,7 +416,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 
 			// Handle new meta keys.
 			case '_give_payment_donor_id':
-				$check = $wpdb->get_var(
+				$check = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Runs inside the get_post_metadata filter, so get_post_meta() would call this filter again; the result is cached with Give_Cache::set_db_query.
 					$wpdb->prepare(
 						"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%d AND meta_key=%s",
 						$object_id,
@@ -426,7 +426,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 				break;
 
 			case '_give_payment_donor_email':
-				$check = $wpdb->get_var(
+				$check = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Runs inside the get_post_metadata filter, so get_post_meta() would call this filter again; the result is cached with Give_Cache::set_db_query.
 					$wpdb->prepare(
 						"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%d AND meta_key=%s",
 						$object_id,
@@ -436,7 +436,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 				break;
 
 			case '_give_payment_donor_ip':
-				$check = $wpdb->get_var(
+				$check = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Runs inside the get_post_metadata filter, so get_post_meta() would call this filter again; the result is cached with Give_Cache::set_db_query.
 					$wpdb->prepare(
 						"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%s AND meta_key=%s",
 						$object_id,
@@ -458,7 +458,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 				$donation_meta = Give_Cache::get_db_query( "_give_payment_meta_{$object_id}" );
 
 				if ( is_null( $donation_meta ) ) {
-					$donation_meta = $wpdb->get_var(
+					$donation_meta = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Runs inside the get_post_metadata filter, so get_post_meta() would call this filter again; the result is cached with Give_Cache::set_db_query.
 						$wpdb->prepare(
 							"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%d AND meta_key=%s",
 							$object_id,

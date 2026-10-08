@@ -8,6 +8,8 @@ use Give\FormMigration\Contracts\FormModelDecorator;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give_Email_Notification_Util;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- reads the GiveWP funds custom table during a form migration; WordPress has no cache layer for it.
+
 class FormMetaDecorator extends FormModelDecorator
 {
     /**

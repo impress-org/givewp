@@ -8,6 +8,8 @@ use Give\Framework\Migrations\Contracts\BatchMigration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- migration; it backfills data in bulk batches once and must not be cached.
+
 /**
  * Class BackfillMissingCampaignIdForDonations
  *

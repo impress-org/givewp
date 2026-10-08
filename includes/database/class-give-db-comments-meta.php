@@ -96,7 +96,7 @@ class Give_DB_Comment_Meta extends Give_DB_Meta {
 			return false;
 		}
 
-		if ( false === $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->give_commentmeta} WHERE give_comment_id = %d", $comment_id ) ) ) {
+		if ( false === $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->give_commentmeta} WHERE give_comment_id = %d", $comment_id ) ) ) { // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 			return false;
 		}
 

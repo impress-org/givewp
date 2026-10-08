@@ -8,6 +8,8 @@ use Give\Framework\QueryBuilder\Clauses\RawSQL;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- facade that forwards the caller's SQL (and transaction statements) to $wpdb; each caller decides about caching.
+
 /**
  * Class DB
  *

@@ -1201,7 +1201,7 @@ function give_get_form_donor_count( $form_id, $args = [] ) {
 			'publish'
 		);
 
-		$donor_count = absint( $wpdb->get_var( $query ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $query is prepared above; $distinct is a literal.
+		$donor_count = absint( $wpdb->get_var( $query ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $query is prepared above; $distinct is a literal. GiveWP custom table; WordPress has no cache layer for it.
 	}
 
 	/**
@@ -1595,7 +1595,7 @@ function give_handle_form_meta_on_delete( $id ) {
 			! empty( $get_data['delete_all'] )
 		)
 	) {
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->formmeta} WHERE form_id = %d", $form->ID ) );
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->formmeta} WHERE form_id = %d", $form->ID ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 	}
 }
 

@@ -985,7 +985,7 @@ function give_get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 
 	$sql = Give()->comment->db->get_sql( $comment_args );
 
-	$comment = current( $wpdb->get_results( $sql ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $sql comes from get_sql(), which returns a prepared query.
+	$comment = current( $wpdb->get_results( $sql ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $sql comes from get_sql(), which returns a prepared query. GiveWP custom table; WordPress has no cache layer for it.
 
 	return $comment;
 }

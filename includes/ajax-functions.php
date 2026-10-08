@@ -369,7 +369,7 @@ function give_ajax_donor_search() {
 	if ( ! current_user_can( 'view_give_reports' ) ) {
 		$donors = [];
 	} else {
-		$donors = $wpdb->get_results( $wpdb->prepare( "SELECT id,name,email FROM $wpdb->donors WHERE `name` LIKE %s OR `email` LIKE %s LIMIT 50", '%' . $search . '%', '%' . $search . '%' ) );
+		$donors = $wpdb->get_results( $wpdb->prepare( "SELECT id,name,email FROM $wpdb->donors WHERE `name` LIKE %s OR `email` LIKE %s LIMIT 50", '%' . $search . '%', '%' . $search . '%' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP donors table; WordPress has no cache layer for it, and a live search result is not cached.
 	}
 
 	if ( $donors ) {

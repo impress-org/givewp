@@ -253,7 +253,7 @@ class Give_Donor {
 
 		$addresses = ! empty( $addresses )
 			? $addresses
-			: $wpdb->get_results(
+			: $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP donor meta custom table; WordPress has no cache layer for it.
 				$wpdb->prepare(
 					"
 				SELECT meta_key, meta_value FROM %i
@@ -1396,7 +1396,7 @@ class Give_Donor {
 		if ( $is_multi_address ) {
 			if ( is_null( $multi_address_id ) ) {
 				// Get latest address key to set multi address id.
-				$multi_address_id = $wpdb->get_var(
+				$multi_address_id = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP donor meta custom table; WordPress has no cache layer for it.
 					$wpdb->prepare(
 						"
 						SELECT meta_key FROM %i
@@ -1467,7 +1467,7 @@ class Give_Donor {
 		$meta_type = Give()->donor_meta->meta_type;
 
 		// Process query.
-		$row_affected = $wpdb->query(
+		$row_affected = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- GiveWP donor meta custom table; WordPress has no cache layer for it.
 			$wpdb->prepare(
 				"
 				DELETE FROM %i
@@ -1524,7 +1524,7 @@ class Give_Donor {
 		$meta_type = Give()->donor_meta->meta_type;
 
 		// Process query.
-		$row_affected = $wpdb->get_results(
+		$row_affected = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP donor meta custom table; WordPress has no cache layer for it.
 			$wpdb->prepare(
 				"
 				SELECT meta_key FROM %i
