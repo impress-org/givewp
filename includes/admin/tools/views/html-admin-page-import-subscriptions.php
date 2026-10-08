@@ -1,6 +1,8 @@
 <?php
 /**
  * Admin View: Import Subscriptions
+ *
+ * @since TBD Escape output.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,7 +24,7 @@ do_action( 'give_tools_import_subscriptions_main_before' );
                 if ( ! empty( $_POST['mapto'] ) && ! empty( $_GET['dry_run'] ) ) {
                     printf(
                         '<strong> %s</strong>',
-                        __( '(Dry Run)', 'give' )
+                        esc_html__( '(Dry Run)', 'give' )
                     );
                 }
                 ?>

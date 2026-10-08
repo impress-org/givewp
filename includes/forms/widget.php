@@ -100,6 +100,8 @@ class Give_Forms_Widget extends WP_Widget {
 	 * @param array $args     Display arguments including before_title, after_title,
 	 *                        before_widget, and after_widget.
 	 * @param array $instance The settings for the particular instance of the widget.
+	 *
+	 * @since TBD Escape output.
 	 */
 	public function widget( $args, $instance ) {
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
@@ -113,7 +115,7 @@ class Give_Forms_Widget extends WP_Widget {
 		$form_id      = (int) $instance['id'];
 		$isLegacyForm = FormUtils::isLegacyForm( $form_id );
 
-		echo $args['before_widget']; // XSS ok.
+		echo wp_kses_post( $args['before_widget'] ); // XSS ok.
 
 		/**
 		 * Fires before widget settings form in the admin area.
@@ -124,7 +126,7 @@ class Give_Forms_Widget extends WP_Widget {
 		 */
 		do_action( 'give_before_forms_widget', $form_id );
 
-		echo $title ? $args['before_title'] . $title . $args['after_title'] : ''; // XSS ok.
+		echo $title ? wp_kses_post( $args['before_title'] . esc_html( $title ) . $args['after_title'] ) : ''; // XSS ok.
 
 		// Use alias setting to set display setting when form template other then Legacy.
 		if ( ! $isLegacyForm ) {
@@ -136,14 +138,15 @@ class Give_Forms_Widget extends WP_Widget {
 			if ( 'button' === $instance['display_style'] && ! empty( $instance['introduction_text'] ) ) {
 				printf(
 					'<p>%1$s</p>',
-					$instance['introduction_text']
+					esc_html( $instance['introduction_text'] )
 				);
 			}
 		}
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_form_shortcode() renders a full donation form; its fields escape their own values.
 		echo give_form_shortcode( $instance );
 
-		echo $args['after_widget']; // XSS ok.
+		echo wp_kses_post( $args['after_widget'] ); // XSS ok.
 
 		/**
 		 * Fires after widget settings form in the admin area.
@@ -159,6 +162,8 @@ class Give_Forms_Widget extends WP_Widget {
 	 * Output the settings update form.
 	 *
 	 * @param array $instance Current settings.
+	 *
+	 * @since TBD Escape output.
 	 */
 	public function form( $instance ) {
 		$defaults = [
@@ -184,7 +189,7 @@ class Give_Forms_Widget extends WP_Widget {
 
 		$this->getScriptForBuilders();
 		?>
-		<div id="<?php echo $this->widgetIdPrefix . $this->widgetIdentifier; ?>" class="give_forms_widget_container">
+		<div id="<?php echo esc_attr( $this->widgetIdPrefix . $this->widgetIdentifier ); ?>" class="give_forms_widget_container">
 
 			<?php // Widget: widget Title. ?>
 			<p>
@@ -200,15 +205,16 @@ class Give_Forms_Widget extends WP_Widget {
 				$selectFieldId   = esc_attr( sanitize_key( str_replace( '-', '_', esc_attr( $this->get_field_id( 'id' ) ) ) ) );
 				printf(
 					'<label for="%1$s">%2$s</label>',
-					$selectFieldId,
+					esc_attr( $selectFieldId ),
 					esc_html__( 'Donation Form:', 'give' )
 				);
 
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- forms_dropdown() renders a <select> control; its own values are escaped internally.
 				echo Give()->html->forms_dropdown(
 					[
-						'selected'    => $instance['id'] ?: false,
-						'id'          => $selectFieldId,
-						'name'        => $selectFieldName,
+						'selected'    => (int) $instance['id'] ?: false,
+						'id'          => esc_attr( $selectFieldId ),
+						'name'        => esc_attr( $selectFieldName ),
 						'placeholder' => esc_attr__( '- Select -', 'give' ),
 						'query_args'  => [
 							'post_status' => 'publish',
@@ -247,11 +253,11 @@ class Give_Forms_Widget extends WP_Widget {
 					&nbsp;&nbsp;<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>-disabled"><input type="radio" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>-disabled" name="<?php echo esc_attr( $this->get_field_name( 'float_labels' ) ); ?>" value="disabled" <?php checked( $instance['float_labels'], 'disabled' ); ?>> <?php echo esc_html__( 'Disabled', 'give' ); ?></label>
 					<small class="give-field-description">
 						<?php
-						printf(
+						echo wp_kses_post( sprintf(
 							/* translators: %s: Documentation link to http://docs.givewp.com/form-floating-labels */
 							__( 'Override the <a href="%s" target="_blank">floating labels</a> setting for this GiveWP form.', 'give' ),
 							esc_url( 'http://docs.givewp.com/form-floating-labels' )
-						);
+						) );
 						?>
 					</small>
 				</p>
