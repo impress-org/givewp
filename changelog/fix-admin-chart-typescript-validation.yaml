@@ -1,0 +1,4 @@
+significance: patch
+type: fixed
+entry: Fix TypeScript validation for admin time-series chart labels.
+timestamp: 2026-10-07T17:37:38.741Z
