@@ -74,6 +74,7 @@ class ScriptResponse
     }
 
     /**
+     * @since TBD Sanitize the If-None-Match header.
      * @since 4.17.0
      *
      * @param array $request Request data handed to the localize callable.
@@ -93,7 +94,7 @@ class ScriptResponse
         header("Cache-Control: public, max-age={$this->maxAge}");
         header("ETag: {$etag}");
 
-        if ($this->matchesIfNoneMatch($etag, $_SERVER['HTTP_IF_NONE_MATCH'] ?? '')) {
+        if ($this->matchesIfNoneMatch($etag, sanitize_text_field(wp_unslash($_SERVER['HTTP_IF_NONE_MATCH'] ?? '')))) {
             status_header(304);
             exit;
         }
