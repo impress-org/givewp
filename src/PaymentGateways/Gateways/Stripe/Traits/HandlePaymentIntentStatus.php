@@ -43,7 +43,7 @@ trait HandlePaymentIntentStatus
 
                 if (empty($redirectUrl)) {
                     throw new PaymentIntentException(
-                        __('Stripe requires an additional action that GiveWP cannot handle automatically.', 'give')
+                        esc_html__('Stripe requires an additional action that GiveWP cannot handle automatically.', 'give')
                     );
                 }
 
@@ -54,7 +54,12 @@ trait HandlePaymentIntentStatus
                 return new PaymentProcessing($paymentIntent->id());
             default:
                 throw new PaymentIntentException(
-                    sprintf(__('Unhandled payment intent status: %s', 'give'), $paymentIntent->status()));
+                    sprintf(
+                        /* translators: %s: Stripe Payment Intent status */
+                        esc_html__('Unhandled payment intent status: %s', 'give'),
+                        esc_html($paymentIntent->status())
+                    )
+                );
         }
     }
 }

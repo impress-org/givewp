@@ -46,6 +46,7 @@ class RecordMicrodepositVerification
             DonationNote::create([
                 'donationId' => $donation->id,
                 'content' => sprintf(
+                    /* translators: %s: Hosted Stripe verification URL */
                     __('Stripe ACH microdeposit verification required. Hosted verification link: %s', 'give'),
                     $hostedVerificationUrl
                 ),

@@ -45,6 +45,7 @@ class DonationMicrodepositVerificationEmail extends Give_Email_Notification
     public function getDefaultEmailMessage(): string
     {
         $defaultEmailMessage = sprintf(
+            /* translators: %s: Donor name email tag */
             esc_html__('Dear %s!', 'give') . "\n\n" .
             esc_html__(
                 'Thank you for your donation. Your bank has requested additional verification for your ACH payment, so your donation is on hold until it is complete.',

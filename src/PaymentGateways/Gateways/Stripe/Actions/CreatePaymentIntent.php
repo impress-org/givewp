@@ -69,7 +69,11 @@ class CreatePaymentIntent
 
         DonationNote::create([
             'donationId' => $donation->id,
-            'content' => sprintf(__('Stripe Charge/Payment Intent ID: %s', 'give'), $intent->id())
+            'content' => sprintf(
+                /* translators: %s: Stripe Payment Intent ID */
+                __('Stripe Charge/Payment Intent ID: %s', 'give'),
+                $intent->id()
+            )
         ]);
 
         if ('requires_action' === $intent->status()) {
