@@ -266,7 +266,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 			'fields'           => 'ids',
 			'posts_per_page'   => $this->per_page,
 			'paged'            => $this->get_paged(),
-			'suppress_filters' => true,
+			'suppress_filters' => true, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters -- intended: the report counts forms in every language, so WPML and other query filters must not apply.
 		];
 
 		if ( ! empty( $category ) ) {

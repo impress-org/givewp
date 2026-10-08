@@ -174,6 +174,7 @@ class DonationConfirmationReceiptViewModel
     /**
      * Loads scripts in order: [Registrars, Designs, App]
      *
+     * @since TBD Set an explicit version on the design script.
      * @since 3.0.0
      *
      * @return void
@@ -223,7 +224,7 @@ class DonationConfirmationReceiptViewModel
                         ['givewp-donation-form-registrars'],
                         $design->dependencies()
                     ),
-                    false,
+                    GIVE_VERSION,
                     true
                 );
             }
