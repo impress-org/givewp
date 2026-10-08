@@ -786,7 +786,7 @@ final class Give_Payment {
 				$this->update_meta( '_give_payment_meta', array_map( 'maybe_unserialize', $custom_payment_meta ) );
 			}
 
-			$give_company = ( ! empty( $_REQUEST['give_company_name'] ) ? give_clean( $_REQUEST['give_company_name'] ) : '' );
+			$give_company = ( ! empty( $_REQUEST['give_company_name'] ) ? give_clean( $_REQUEST['give_company_name'] ) : '' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- public donation form request; give_verify_donation_form_nonce() checks the form nonce in give_process_donation before the donation is created. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 			// Check $page_url is not empty.
 			if ( $give_company ) {

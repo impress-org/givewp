@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
  *
  * Process the payment details edit
  *
- * @since TBD Escape output and use gmdate() instead of date().
+ * @since TBD Escape output, use gmdate() instead of date(), and unslash and sanitize the comment.
  * @since 2.27.0 Change to save comment to donations meta table
  * @since  1.0
  *
@@ -337,8 +337,10 @@ function give_update_payment_details( $data ) {
 	// Update comment.
 	if ( give_is_donor_comment_field_enabled( $payment->form_id ) ) {
 		// We are access comment directly from $_POST because comment formatting remove because of give_clean in give_post_actions.
-        $data['give_comment'] = trim($_POST['give_comment']);
-        $payment->update_meta(DonationMetaKeys::COMMENT, sanitize_textarea_field($data['give_comment']));
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by check_admin_referer() at the top of this function.
+        $data['give_comment'] = isset($_POST['give_comment']) ? sanitize_textarea_field(wp_unslash($_POST['give_comment'])) : '';
+        // Meta functions unslash the value, so slash it again to keep real backslashes.
+        $payment->update_meta(DonationMetaKeys::COMMENT, wp_slash($data['give_comment']));
 	}
 
 	// Check if payment status is not completed then update the goal progress for donation form.
@@ -392,15 +394,15 @@ add_action( 'give_delete_payment', 'give_trigger_donation_delete' );
 /**
  * AJAX Store Donation Note
  *
- * @since TBD Escape output.
+ * @since TBD Escape output. Unslash and sanitize the request input.
  * @since 2.25.3 Add nonce check.
  */
 function give_ajax_store_payment_note() {
     check_ajax_referer('give_insert_payment_note');
 
-    $payment_id = absint($_POST['payment_id']);
-    $note = wp_kses($_POST['note'], []);
-    $note_type = give_clean($_POST['type']);
+    $payment_id = isset($_POST['payment_id']) ? absint($_POST['payment_id']) : 0;
+    $note = isset($_POST['note']) ? wp_kses(wp_unslash($_POST['note']), []) : '';
+    $note_type = isset($_POST['type']) ? give_clean($_POST['type']) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
     if ( ! current_user_can('edit_give_payments', $payment_id)) {
         wp_die(esc_html__('You do not have permission to edit payments.', 'give'), esc_html__('Error', 'give'), ['response' => 403]);
@@ -477,7 +479,7 @@ add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );
 /**
  * Delete a payment note deletion with ajax
  *
- * @since TBD Escape output.
+ * @since TBD Escape output. Sanitize the request input.
  * @since 2.25.3 Add nonce check.
  * @since 1.0
  *
@@ -486,11 +488,14 @@ add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );
 function give_ajax_delete_payment_note() {
     check_ajax_referer('give_delete_payment_note');
 
-	if ( ! current_user_can( 'edit_give_payments', $_POST['payment_id'] ) ) {
+	$payment_id = isset( $_POST['payment_id'] ) ? absint( $_POST['payment_id'] ) : 0;
+	$note_id    = isset( $_POST['note_id'] ) ? absint( $_POST['note_id'] ) : 0;
+
+	if ( ! current_user_can( 'edit_give_payments', $payment_id ) ) {
 		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	if ( give_delete_payment_note( $_POST['note_id'], $_POST['payment_id'] ) ) {
+	if ( give_delete_payment_note( $note_id, $payment_id ) ) {
 		die( '1' );
 	} else {
 		die( '-1' );
