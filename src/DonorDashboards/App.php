@@ -44,19 +44,19 @@ class App
             $queryArgs['accent-color'] = urlencode(esc_attr($attributes['accent_color']));
         }
 
-        if (isset($_GET['give_nl'])) {
-            $giveNl = give_clean($_GET['give_nl']);
+        if (isset($_GET['give_nl'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache.
+            $giveNl = give_clean($_GET['give_nl']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
             if (is_string($giveNl)) {
                 $queryArgs['give_nl'] = urlencode($giveNl);
             }
         }
 
-        if (isset($_GET['_give_hash'])) {
-            $queryArgs['_give_hash'] = urlencode(give_clean($_GET['_give_hash']));
+        if (isset($_GET['_give_hash'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache.
+            $queryArgs['_give_hash'] = urlencode(give_clean($_GET['_give_hash'])); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
         }
 
-        if (isset($_GET['action'])) {
-            $queryArgs['action'] = urlencode(give_clean($_GET['action']));
+        if (isset($_GET['action'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache.
+            $queryArgs['action'] = urlencode(give_clean($_GET['action'])); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
         }
 
         $url = esc_url(add_query_arg($queryArgs, $url));
@@ -142,7 +142,7 @@ class App
     public function loadAssets()
     {
         // Load assets only if rendering donor dashboard.
-        if (!isset($_GET['give-embed']) || 'donor-dashboard' !== $_GET['give-embed']) {
+        if (!isset($_GET['give-embed']) || 'donor-dashboard' !== $_GET['give-embed']) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache.
             return;
         }
 

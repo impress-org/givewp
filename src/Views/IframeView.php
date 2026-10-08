@@ -186,7 +186,7 @@ class IframeView
     private function isDonationFormBlockRendererApiRequest()
     {
         return false !== strpos(
-                $_SERVER['REQUEST_URI'],
+                $_SERVER['REQUEST_URI'], // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- only searched with strpos(); it is not saved or output.
                 rest_get_url_prefix() . '/wp/v2/block-renderer/give/donation-form'
             );
     }
@@ -294,7 +294,7 @@ class IframeView
      */
     private function getIframeURL()
     {
-        $query_string = array_map('give_clean', wp_parse_args($_SERVER['QUERY_STRING']));
+        $query_string = array_map('give_clean', wp_parse_args($_SERVER['QUERY_STRING'])); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- the query string is parsed by wp_parse_args() and each value is sanitized by give_clean().
         $donationHistory = give_get_purchase_session();
         $hasAction = !empty($query_string['giveDonationAction']);
         $this->autoScroll = absint($hasAction);
