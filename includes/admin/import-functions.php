@@ -1062,7 +1062,7 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
 					'second' => $post_date[5],
 				],
 			],
-			'meta_query'             => [
+			'meta_query'             => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Matches an existing donation by its total and form meta; the meta match is the lookup.
 				[
 					'key'     => '_give_payment_total',
 					'value'   => preg_replace( '/[\$,]/', '', $payment_data['price'] ),

@@ -11,6 +11,8 @@ if ( ! defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 // Bailout: Do not output anything if setting tab is not defined.
 if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) :
     /**

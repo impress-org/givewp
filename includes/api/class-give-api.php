@@ -1555,8 +1555,8 @@ class Give_API {
 		} elseif ( isset( $wp_query->query_vars['email'] ) ) {
 			$args  = array(
 				'fields'     => 'ids',
-				'meta_key'   => '_give_payment_donor_email',
-				'meta_value' => $wp_query->query_vars['email'],
+				'meta_key'   => '_give_payment_donor_email', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Finds donations by donor email meta for the API; the email is stored as meta.
+				'meta_value' => $wp_query->query_vars['email'], // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Finds donations by donor email meta for the API; the email is stored as meta.
 				'number'     => $this->per_page(),
 				'page'       => $this->get_paged(),
 			);

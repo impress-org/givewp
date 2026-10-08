@@ -137,8 +137,8 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
             if ($campaignId) {
                 $metaInserts[] = [
                     'donation_id' => $donationId,
-                    'meta_key' => '_give_campaign_id',
-                    'meta_value' => $campaignId
+                    'meta_key' => '_give_campaign_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in a bulk insert into the donation meta table, not a query filter.
+                    'meta_value' => $campaignId // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in a bulk insert into the donation meta table, not a query filter.
                 ];
             }
         }

@@ -12,6 +12,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 $formInfo = get_post(FrontendFormTemplateUtils::getFormId());
 
 /* @var \Give\Form\Template $formTemplate */

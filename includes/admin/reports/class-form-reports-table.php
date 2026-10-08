@@ -270,7 +270,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 		];
 
 		if ( ! empty( $category ) ) {
-			$args['tax_query'] = [
+			$args['tax_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Filters the forms report by category; the taxonomy filter is the feature.
 				[
 					'taxonomy' => 'form_category',
 					'terms'    => $category,
@@ -285,12 +285,12 @@ class Give_Form_Reports_Table extends WP_List_Table {
 
 			case 'sales':
 				$args['orderby']  = 'meta_value_num';
-				$args['meta_key'] = '_give_form_sales';
+				$args['meta_key'] = '_give_form_sales'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the forms report by the stored sales or earnings total; WP_Query sorts by meta only.
 				break;
 
 			case 'earnings':
 				$args['orderby']  = 'meta_value_num';
-				$args['meta_key'] = '_give_form_earnings';
+				$args['meta_key'] = '_give_form_earnings'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the forms report by the stored sales or earnings total; WP_Query sorts by meta only.
 				break;
 		endswitch;
 

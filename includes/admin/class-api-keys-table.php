@@ -309,7 +309,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	public function query() {
 		$users = get_users(
 			array(
-				'meta_value' => 'give_user_secret_key',
+				'meta_value' => 'give_user_secret_key', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Finds the users that hold an API key by meta value; no other field stores the key.
 				'number'     => $this->per_page,
 				'offset'     => $this->per_page * ( $this->get_paged() - 1 ),
 			)

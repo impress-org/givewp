@@ -3,6 +3,7 @@
 /**
  * @since TBD Escape output, including translated strings. Number the placeholders and move the translators comment.
  */
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 ?>
 <style>
     .give-donation-summary-table-wrapper {

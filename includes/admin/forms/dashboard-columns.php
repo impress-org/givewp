@@ -191,7 +191,7 @@ function give_sort_forms( $vars ) {
 			$vars = array_merge(
 				$vars,
 				[
-					'meta_key' => '_give_form_sales',
+					'meta_key' => '_give_form_sales', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the forms list by the stored sales total; WP_Query sorts by meta only.
 					'orderby'  => 'meta_value_num',
 				]
 			);
@@ -202,7 +202,7 @@ function give_sort_forms( $vars ) {
 			$vars = array_merge(
 				$vars,
 				[
-					'meta_key' => '_give_form_earnings',
+					'meta_key' => '_give_form_earnings', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the forms list by the stored earnings total; WP_Query sorts by meta only.
 					'orderby'  => 'meta_value_num',
 				]
 			);
@@ -213,7 +213,7 @@ function give_sort_forms( $vars ) {
 			$multi_level_meta_key = ( 'asc' === $vars['order'] ) ? '_give_levels_minimum_amount' : '_give_levels_maximum_amount';
 
 			$vars['orderby']    = 'meta_value_num';
-			$vars['meta_query'] = [
+			$vars['meta_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Sorts the forms list by price level meta; the meta query is the sort.
 				'relation' => 'OR',
 				[
 					'key'  => $multi_level_meta_key,
@@ -236,7 +236,7 @@ function give_sort_forms( $vars ) {
 			$vars = array_merge(
 				$vars,
 				[
-					'meta_key' => $meta_key,
+					'meta_key' => $meta_key, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the forms list by the goal meta; WP_Query sorts by meta only.
 					'orderby'  => 'meta_value_num',
 				]
 			);
@@ -247,7 +247,7 @@ function give_sort_forms( $vars ) {
 			$vars = array_merge(
 				$vars,
 				[
-					'meta_key' => '_give_form_sales',
+					'meta_key' => '_give_form_sales', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the forms list by the stored sales total; WP_Query sorts by meta only.
 					'orderby'  => 'meta_value_num',
 				]
 			);
@@ -407,7 +407,7 @@ function give_form_search_query_filter( $wp ) {
 			];
 		switch ( sanitize_text_field( wp_unslash( $_GET['give-forms-goal-filter'] ) ) ) {
 			case 'goal_in_progress':
-				$wp->query_vars['meta_query'] =
+				$wp->query_vars['meta_query'] = // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Goal filter on the forms list; the goal is stored as meta, so the filter is a meta query.
 					[
 						'relation' => 'AND',
 						[
@@ -420,7 +420,7 @@ function give_form_search_query_filter( $wp ) {
 
 				break;
 			case 'goal_achieved':
-				$wp->query_vars['meta_query'] =
+				$wp->query_vars['meta_query'] = // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Goal filter on the forms list; the goal is stored as meta, so the filter is a meta query.
 					[
 						'relation' => 'AND',
 						[
@@ -432,7 +432,7 @@ function give_form_search_query_filter( $wp ) {
 					];
 				break;
 			case 'goal_not_set':
-				$wp->query_vars['meta_query'] =
+				$wp->query_vars['meta_query'] = // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Goal filter on the forms list; the goal is stored as meta, so the filter is a meta query.
 					[
 						'relation' => 'OR',
 						[

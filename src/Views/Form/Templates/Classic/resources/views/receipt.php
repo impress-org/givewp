@@ -15,6 +15,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 $donationId = (new DonationAccessor())->getDonationId();
 $template = Give()->templates->getTemplate();
 $receipt = $template->getReceiptDetails($donationId);

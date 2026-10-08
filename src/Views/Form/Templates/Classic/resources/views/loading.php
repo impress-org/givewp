@@ -5,6 +5,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 $primaryColor = ! empty($options[ 'primary_color' ])
     ? trim($options[ 'primary_color' ], '#')
     : '1E8CBE';

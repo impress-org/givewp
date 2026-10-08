@@ -1003,7 +1003,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'user'       => $user,
 			'donor'      => $donor,
 			'status'     => $status,
-			'meta_key'   => $meta_key,
+			'meta_key'   => $meta_key, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Passes the meta key chosen for sorting the donations list; sorting by meta needs it.
 			'year'       => $year,
 			'month'      => $month,
 			'day'        => $day,

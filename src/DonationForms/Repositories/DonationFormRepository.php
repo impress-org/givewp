@@ -117,15 +117,15 @@ class DonationFormRepository
             DB::table('give_formmeta')
                 ->insert([
                     'form_id' => $donationFormId,
-                    'meta_key' => DonationFormMetaKeys::SETTINGS()->getValue(),
-                    'meta_value' => $donationForm->settings->toJson(),
+                    'meta_key' => DonationFormMetaKeys::SETTINGS()->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the form meta table, not a query filter.
+                    'meta_value' => $donationForm->settings->toJson(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the form meta table, not a query filter.
                 ]);
 
             DB::table('give_formmeta')
                 ->insert([
                     'form_id' => $donationFormId,
-                    'meta_key' => DonationFormMetaKeys::FIELDS()->getValue(),
-                    'meta_value' => $donationForm->blocks->toJson(),
+                    'meta_key' => DonationFormMetaKeys::FIELDS()->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the form meta table, not a query filter.
+                    'meta_value' => $donationForm->blocks->toJson(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the form meta table, not a query filter.
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -193,7 +193,7 @@ class DonationFormRepository
                 ->where('form_id', $donationForm->id)
                 ->where('meta_key', DonationFormMetaKeys::SETTINGS()->getValue())
                 ->update([
-                    'meta_value' => $donationForm->settings->toJson(),
+                    'meta_value' => $donationForm->settings->toJson(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the form meta table, not a query filter.
                 ]);
 
 
@@ -201,7 +201,7 @@ class DonationFormRepository
                 ->where('form_id', $donationForm->id)
                 ->where('meta_key', DonationFormMetaKeys::FIELDS()->getValue())
                 ->update([
-                    'meta_value' => $donationForm->blocks->toJson(),
+                    'meta_value' => $donationForm->blocks->toJson(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the form meta table, not a query filter.
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');

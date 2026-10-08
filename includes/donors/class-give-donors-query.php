@@ -106,7 +106,7 @@ class Give_Donors_Query {
 			'user'            => null,
 			'email'           => null,
 			'donor'           => null,
-			'meta_query'      => [],
+			'meta_query'      => [], // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Empty default for the meta_query arg; callers fill it when they filter donors by meta.
 			'date_query'      => [],
 			's'               => null,
 			'fields'          => 'all', // Supports donors (all fields) or valid column as string or array list.

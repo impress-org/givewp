@@ -43,7 +43,7 @@ class RemovePaymentIntentSecretMeta extends Migration
     {
         DB::delete(
             DB::prefix('give_donationmeta'),
-            ['meta_key' => '_give_stripe_payment_intent_client_secret'],
+            ['meta_key' => '_give_stripe_payment_intent_client_secret'], // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in a delete on the donation meta table, not a query filter.
             ['%s']
         );
 

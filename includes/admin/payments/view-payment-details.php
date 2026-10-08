@@ -19,6 +19,8 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 if (!current_user_can('view_give_payments')) {
 	wp_die(
 		esc_html__('Sorry, you are not allowed to access this page.', 'give'),

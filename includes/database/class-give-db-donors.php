@@ -471,7 +471,7 @@ class Give_DB_Donors extends Give_DB {
 		if ( ! $donor = $donor->get_donors() ) {
 			// Look for donor from an additional email.
 			$args = array(
-				'meta_query' => array(
+				'meta_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Finds a donor by an additional email, which is stored as donor meta.
 					array(
 						'key'   => 'additional_email',
 						'value' => $value,
