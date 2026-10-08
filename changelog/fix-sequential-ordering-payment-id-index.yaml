@@ -1,0 +1,4 @@
+significance: patch
+type: enhancement
+entry: The Reports page now loads much faster on sites with hundreds of thousands of donations
+timestamp: 2026-10-07T18:18:27.815Z
