@@ -31,8 +31,8 @@ class RegisterEventsMenuItem
      */
     public function render()
     {
-        if(isset($_GET['id'])) {
-            $event = Event::find(absint($_GET['id']));
+        if(isset($_GET['id'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only id param; it only selects which record to show and saves nothing.
+            $event = Event::find(absint($_GET['id'])); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only id param; it only selects which record to show and saves nothing.
 
             if (!$event) {
                 wp_die(esc_html__('Event not found', 'give'), 404);

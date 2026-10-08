@@ -162,15 +162,15 @@ class AllowGiveRolesToEditCampaignPages
         $checked = true;
 
         // Check for post ID in query string (standard edit screen)
-        if (!empty($_GET['post'])) {
-            $cachedPostId = (int)$_GET['post'];
+        if (!empty($_GET['post'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only post id; it only selects which post the capability check is for and saves nothing.
+            $cachedPostId = (int)$_GET['post']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only post id; it only selects which post the capability check is for and saves nothing.
             return $cachedPostId;
         }
 
         // Check REST API for post ID (query param or route)
         if (wp_is_serving_rest_request()) {
-            if (!empty($_GET['post_id'])) {
-                $cachedPostId = (int)$_GET['post_id'];
+            if (!empty($_GET['post_id'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only post id; it only selects which post the capability check is for and saves nothing.
+                $cachedPostId = (int)$_GET['post_id']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only post id; it only selects which post the capability check is for and saves nothing.
                 return $cachedPostId;
             }
 
