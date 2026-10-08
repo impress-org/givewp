@@ -127,8 +127,9 @@ slow test with a worse failure message.
 ### Layout
 
 **One spec file per screen**, named for the screen, holding everything that screen is covered for:
-`campaigns.spec.ts`, `donation-forms.spec.ts`, `donor-dashboard.spec.ts`, `form-builder.spec.ts`,
-`legacy-donation-forms.spec.ts`, `reports.spec.ts`, `tools-logs.spec.ts`, `tools-migrations.spec.ts`.
+`campaigns.spec.ts`, `donation-details.spec.ts`, `donation-forms.spec.ts`, `donations-list.spec.ts`,
+`donor-dashboard.spec.ts`, `form-builder.spec.ts`, `forms-list.spec.ts`, `legacy-donation-forms.spec.ts`,
+`reports.spec.ts`, `tools-logs.spec.ts`, `tools-migrations.spec.ts`.
 
 A v3 donation form is two screens, not one: the form builder that edits it in wp-admin and the
 form itself on the front end. They share a subject and nothing else - different apps, different
@@ -153,7 +154,11 @@ sets up the variation it needs without driving the builder to get there. `utils/
 holds the embed iframe locator and the steps every donating spec repeats. `utils/rest.ts` records the REST calls a page makes and
 asserts it reached the route it owns with nothing failing. `utils/legacy-form.ts` creates a v2 form
 and enables a gateway for it through `utils/wp-cli.ts`, because neither has a REST route: a v2 form
-is a post with protected meta, and GiveWP's settings are one option. WP-CLI runs in the wp-env this
+is a post with protected meta, and GiveWP's settings are one option. `utils/donation.ts` records a
+completed test donation the same way, because the REST route that creates one wants a donor and no
+route creates a donor; the list and details specs use it so they do not drive the donate flow for each
+donation they need. `utils/async-select.ts` picks an option from the admin's searchable dropdowns,
+whose options carry no `role=option`. WP-CLI runs in the wp-env this
 checkout started, so those fixtures assume `WP_BASE_URL` points at it. Assert on that traffic rather than on
 rendered records: a wrong route, a missing nonce, or a response shape the client no longer unwraps
 all produce a page that builds and mounts cleanly and then shows nothing.

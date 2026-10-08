@@ -11,6 +11,7 @@
 
 // Exit if accessed directly.
 use Give\Log\Log;
+use Give\VendorOverrides\Harbor\Actions\GetFeatureSlugByPluginDirname;
 use Give\Vendors\StellarWP\AdminNotices\AdminNotices;
 
 if ( ! defined('ABSPATH') ) {
@@ -578,6 +579,7 @@ if ( ! class_exists('Give_License') ) :
 		 *
 		 * @return array
 		 *
+		 * @since TBD look up Harbor features by catalog slug instead of plugin dirname, and prefer Harbor over an expired or inactive legacy license
          * @since 4.15.0 add support for Harbor unified licenses
 		 * @since  2.5.0
 		 * @access public
@@ -606,8 +608,8 @@ if ( ! class_exists('Give_License') ) :
 				}
 			}
 
-			// Fall back to Harbor feature availability when no legacy license is found.
-			if ( empty( $license ) && lw_harbor_is_feature_available( $plugin_dirname ) ) {
+			// Fall back to Harbor feature availability when no valid legacy license is found.
+			if ( ( empty( $license ) || 'valid' !== $license['license'] ) && lw_harbor_is_feature_available( give( GetFeatureSlugByPluginDirname::class )( $plugin_dirname ) ) ) {
 				$license = [ 'license' => 'valid' ];
 			}
 
@@ -697,12 +699,14 @@ if ( ! class_exists('Give_License') ) :
 		 * Render license section
 		 *
 		 * @return string
+		 * @since TBD list add-ons covered by a Liquid Web license without a valid legacy license key
 		 * @since 2.5.0
 		 */
 		public static function render_licenses_list() {
 			$give_plugins           = give_get_plugins( [ 'only_premium_add_ons' => true ] );
 			$give_licenses          = get_option( 'give_licenses', [] );
 			$licenses_without_addon = $give_licenses;
+			$harbor_covered_addons  = [];
 
 			// Get all access pass licenses
 			$all_access_pass_licenses   = [];
@@ -728,16 +732,29 @@ if ( ! class_exists('Give_License') ) :
 
 			if ( ! empty( $give_plugins ) ) {
 				foreach ( $give_plugins as $give_plugin ) {
-					if ( in_array( $give_plugin['Dir'], $all_access_pass_addon_list ) ) {
+					$addon_license = self::get_license_by_plugin_dirname( $give_plugin['Dir'] );
+
+					// A license without a key comes from a Liquid Web license rather than a legacy GiveWP one.
+					$is_covered_by_harbor = $addon_license && empty( $addon_license['license_key'] );
+
+					if ( $is_covered_by_harbor ) {
+						$harbor_covered_addons[] = $give_plugin['Dir'];
+					} elseif ( in_array( $give_plugin['Dir'], $all_access_pass_addon_list ) ) {
 						continue;
 					}
 
-					$addon_license = self::get_license_by_plugin_dirname( $give_plugin['Dir'] );
-					$html_arr_key  = 'unlicensed';
+					$html_arr_key = 'unlicensed';
 
 					if ( $addon_license ) {
 						$html_arr_key = 'licensed';
-						unset( $licenses_without_addon[ $addon_license['license_key'] ] );
+
+						// Drop this add-on's legacy keys, including an expired one a Liquid Web license now covers.
+						$licenses_without_addon = array_filter(
+							$licenses_without_addon,
+							static function ( $license ) use ( $give_plugin ) {
+								return empty( $license['plugin_slug'] ) || $license['plugin_slug'] !== $give_plugin['Dir'];
+							}
+						);
 					}
 
 					$html[ "{$html_arr_key}" ] .= self::html_by_plugin( $give_plugin );
@@ -746,6 +763,14 @@ if ( ! class_exists('Give_License') ) :
 
 			if ( ! empty( $all_access_pass_licenses ) ) {
 				foreach ( $all_access_pass_licenses as $key => $all_access_pass_license ) {
+					// Add-ons a Liquid Web license covers are already listed on their own.
+					$all_access_pass_license['download'] = array_filter(
+						$all_access_pass_license['download'],
+						static function ( $download ) use ( $harbor_covered_addons ) {
+							return ! in_array( $download['plugin_slug'], $harbor_covered_addons, true );
+						}
+					);
+
 					$html['all_access_licensed'] .= self::html_by_license( $all_access_pass_license );
 				}
 			}
@@ -773,6 +798,7 @@ if ( ! class_exists('Give_License') ) :
 		 * @param $plugin
 		 *
 		 * @return string
+		 * @since TBD show add-ons covered by a Liquid Web license as licensed
 		 * @since 2.5.0
 		 */
 		public static function html_by_plugin( $plugin ) {
@@ -784,6 +810,9 @@ if ( ! class_exists('Give_License') ) :
 			ob_start();
 			$license = self::get_license_by_plugin_dirname( $plugin['Dir'] );
 
+			// A license without a key comes from a Liquid Web license rather than a legacy GiveWP one.
+			$is_covered_by_harbor = $license && empty( $license['license_key'] );
+
 			$default_plugin = [
 				'ChangeLogSlug' => $plugin['Dir'],
 				'DownloadURL'   => '',
@@ -794,7 +823,7 @@ if ( ! class_exists('Give_License') ) :
 				$default_plugin['ChangeLogSlug'] = str_replace( '-gateway', '', $default_plugin['ChangeLogSlug'] );
 			}
 
-			if ( $license ) {
+			if ( $license && ! $is_covered_by_harbor ) {
 				$license['renew_url']            = self::$checkout_url . "?edd_license_key={$license['license_key']}";
 				$default_plugin['ChangeLogSlug'] = $license['readme'];
 				$default_plugin['DownloadURL']   = $license['download'];
@@ -812,13 +841,30 @@ if ( ! class_exists('Give_License') ) :
 			?>
 			<div class="give-addon-wrap">
 				<div class="give-addon-inner">
-					<?php echo self::html_license_row( $license, $plugin ); ?>
+					<?php echo $is_covered_by_harbor ? self::html_harbor_license_row() : self::html_license_row( $license, $plugin ); ?>
 					<?php echo self::html_plugin_row( $plugin ); ?>
 				</div>
 			</div>
 			<?php
 
 			return ob_get_clean();
+		}
+
+		/**
+		 * License row html for an add-on covered by a Liquid Web license
+		 *
+		 * @return string
+		 * @since TBD
+		 */
+		private static function html_harbor_license_row() {
+			return sprintf(
+				'<div class="give-license-row give-clearfix"><div class="give-license-top give-clearfix"><div class="give-license-top-column"><div class="give-license__status"><span class="dashicons dashicons-yes"></span>&nbsp;%s</div></div></div></div>',
+				sprintf(
+					/* translators: %s: URL of the Unified License Manager page. */
+					__( 'Licensed through your Liquid Web license. Manage it in the <a href="%s">Unified License Manager</a>.', 'give' ),
+					esc_url( lw_harbor_get_license_page_url() )
+				)
+			);
 		}
 
 		/**

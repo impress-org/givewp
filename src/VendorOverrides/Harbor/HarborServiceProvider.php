@@ -34,6 +34,7 @@ class HarborServiceProvider implements ServiceProviderContract
     }
 
     /**
+     * @since TBD Report legacy licenses on the lw-harbor/legacy_licenses filter, the one Harbor applies.
      * @since 4.15.0
      *
      * @inheritDoc
@@ -41,7 +42,7 @@ class HarborServiceProvider implements ServiceProviderContract
     public function boot()
     {
         // reports legacy licenses to Harbor
-        Hooks::addFilter('stellarwp/harbor/legacy_licenses', ReportLegacyLicences::class);
+        Hooks::addFilter('lw-harbor/legacy_licenses', ReportLegacyLicences::class);
 
         // adds a "licensing" submenu to Give
         lw_harbor_register_submenu('edit.php?post_type=give_forms');
