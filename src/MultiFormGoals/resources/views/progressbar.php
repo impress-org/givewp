@@ -3,7 +3,7 @@
  * Multi-Form Goals block/shortcode template
  * Styles for this template are defined in 'blocks/multi-form-goals/common.scss'
  *
- * @since TBD Escape output.
+ * @since TBD Escape output and replace short echo tags with escaped echo.
  * @since 3.19.1 Format the donation count
  *
  * @var Give\MultiFormGoals\ProgressBar\Model $this
@@ -12,7 +12,7 @@
 $uniqueId = uniqid('', true);
 ?>
 
-<div id="<?= esc_attr($uniqueId) ?>" class="give-progress-bar-block">
+<div id="<?php echo esc_attr($uniqueId); ?>" class="give-progress-bar-block">
     <style>
         <?php
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- reads our own built CSS asset, not user input; no escaping function applies to raw CSS content.
