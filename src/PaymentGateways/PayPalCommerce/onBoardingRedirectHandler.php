@@ -215,6 +215,7 @@ class onBoardingRedirectHandler
     /**
      * Redirects the user to the account connected url
      *
+     * @since TBD Use a safe redirect.
      * @since 4.13.2 Add nonce to redirect URL for CSRF protection.
      * @since 2.9.0
      */
@@ -222,7 +223,7 @@ class onBoardingRedirectHandler
     {
         $this->refreshAccountStatus();
 
-        wp_redirect(
+        wp_safe_redirect(
             wp_nonce_url(
                 add_query_arg(
                     [
@@ -506,11 +507,12 @@ class onBoardingRedirectHandler
     /**
      * Redirect admin to setting section with error.
      *
+     * @since TBD Use a safe redirect.
      * @since 2.9.0
      */
     private function redirectWhenOnBoardingFail()
     {
-        wp_redirect(
+        wp_safe_redirect(
             add_query_arg(
                 [
                     'post_type' => 'give_forms',

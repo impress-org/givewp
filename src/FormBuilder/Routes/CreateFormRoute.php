@@ -17,6 +17,7 @@ use Give\Helpers\Language;
 class CreateFormRoute
 {
     /**
+     * @since TBD Use a safe redirect.
      * @since 4.14.2 update default form title
      * @since 3.22.0 Add locale support
      * @since 3.1.0 updated default form blocks to be generated from block models instead of json
@@ -32,7 +33,7 @@ class CreateFormRoute
 
             // Little hack for alpha users to make sure the form builder is loaded.
             if (!isset($_GET['donationFormID'])) {
-                wp_redirect(FormBuilderRouteBuilder::makeCreateFormRoute($locale)->getUrl());
+                wp_safe_redirect(FormBuilderRouteBuilder::makeCreateFormRoute($locale)->getUrl());
                 exit();
             }
             if ('new' === $_GET['donationFormID']) {
@@ -55,7 +56,7 @@ class CreateFormRoute
 
                 $form->save();
 
-                wp_redirect(FormBuilderRouteBuilder::makeEditFormRoute($form->id, $locale)->getUrl());
+                wp_safe_redirect(FormBuilderRouteBuilder::makeEditFormRoute($form->id, $locale)->getUrl());
                 exit();
             }
         }

@@ -26,11 +26,12 @@ class TopLevelMenuRedirect implements RequestHandler
     /**
      * @inheritdoc
      *
+     * @since TBD Use a safe redirect.
      * @since 2.8.0
      */
     public function handle()
     {
-        wp_redirect(
+        wp_safe_redirect(
             $this->getRedirectUrl()
         );
         exit;

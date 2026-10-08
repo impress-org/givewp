@@ -296,6 +296,7 @@ class Give_Updates {
 	/**
 	 * Show update related notices
 	 *
+     * @since TBD Use a safe redirect.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
@@ -310,7 +311,7 @@ class Give_Updates {
 		) {
 			delete_option( 'give_show_db_upgrade_complete_notice' );
 
-			wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-updates&give-db-update-completed=give_db_upgrade_completed' ) );
+			wp_safe_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-updates&give-db-update-completed=give_db_upgrade_completed' ) );
 			exit();
 		}
 	}

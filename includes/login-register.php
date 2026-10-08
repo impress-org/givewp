@@ -91,6 +91,7 @@ function give_register_form( $redirect = '' ) {
 /**
  * Process Login Form
  *
+ * @since TBD Redirect only to URLs on this site.
  * @since 1.0
  *
  * @param array $data Data sent from the login form
@@ -130,7 +131,7 @@ function give_process_login_form( $data ) {
 
 		if ( ! $errors ) {
 			$redirect = apply_filters( 'give_login_redirect', $data['give_login_redirect'], $user_id );
-			wp_redirect( $redirect );
+			wp_safe_redirect( wp_validate_redirect( $redirect, home_url() ) );
 			give_die();
 		}
 	}
@@ -142,6 +143,7 @@ add_action( 'give_user_login', 'give_process_login_form' );
 /**
  * Process User Logout
  *
+ * @since TBD Redirect only to URLs on this site.
  * @since 1.0
  *
  * @param array $data Data sent from the give login form page
@@ -171,7 +173,7 @@ function give_process_user_logout( $data ) {
 		 */
 		do_action( 'give_after_user_logout' );
 
-		wp_redirect( $data['give_logout_redirect'] );
+		wp_safe_redirect( wp_validate_redirect( $data['give_logout_redirect'], home_url() ) );
 		give_die();
 	}
 }
@@ -224,7 +226,7 @@ function give_log_user_in( $user_id, $user_login, $user_pass ) {
 /**
  * Process Register Form
  *
- * @since TBD Use gmdate() instead of date().
+ * @since TBD Use gmdate() instead of date(), and redirect only to URLs on this site.
  * @since 4.16.6  Require a valid nonce before processing registration.
  * @since 2.0
  *
@@ -309,7 +311,7 @@ function give_process_register_form( $data ) {
 			)
 		);
 
-		wp_redirect( $redirect );
+		wp_safe_redirect( wp_validate_redirect( $redirect, home_url() ) );
 		give_die();
 	}
 }
