@@ -107,7 +107,7 @@ class BlockRenderController
      */
     public function isGutenbergEditor(): bool
     {
-        return !empty($_REQUEST['post']) || !empty($_REQUEST['action']) || !empty($_REQUEST['_locale']);
+        return !empty($_REQUEST['post']) || !empty($_REQUEST['action']) || !empty($_REQUEST['_locale']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only check for the block editor; it only decides whether to skip rendering and saves nothing.
     }
 
     /**
@@ -122,7 +122,7 @@ class BlockRenderController
             'show-donation-confirmation-receipt'
         );
 
-        return $routeListener->isValid($_GET, function ($request) use ($embedId) {
+        return $routeListener->isValid($_GET, function ($request) use ($embedId) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache.
             $isset = isset($request['givewp-embed-id'], $request['givewp-receipt-id']);
 
             return $isset && $request['givewp-embed-id'] === $embedId && DonationConfirmationReceiptViewRouteData::isReceiptIdValid(
@@ -140,7 +140,7 @@ class BlockRenderController
     private function getViewUrl(DonationForm $donationForm, string $embedId): string
     {
         if ($this->shouldDisplayDonationConfirmationReceipt($embedId)) {
-            $receiptId = give_clean($_GET['givewp-receipt-id']);
+            $receiptId = give_clean($_GET['givewp-receipt-id']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
             return (new GenerateDonationConfirmationReceiptViewRouteUrl())($receiptId);
         }

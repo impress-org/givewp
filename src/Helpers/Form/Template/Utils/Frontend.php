@@ -40,19 +40,19 @@ class Frontend
         }
 
         // Get form Id on ajax request.
-        if (isset($_REQUEST['give_form_id']) && ($formId = absint($_REQUEST['give_form_id']))) {
+        if (isset($_REQUEST['give_form_id']) && ($formId = absint($_REQUEST['give_form_id']))) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form ID lookup, cast with absint(); it saves nothing.
             return $formId;
         }
 
         // Get form Id on ajax request.
-        if (isset($_REQUEST['form_id']) && ($formId = absint($_REQUEST['form_id']))) {
+        if (isset($_REQUEST['form_id']) && ($formId = absint($_REQUEST['form_id']))) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form ID lookup, cast with absint(); it saves nothing.
             return $formId;
         }
 
         // Get form id on ajax request by donation id.
         if (
-            ! empty($_REQUEST['donation_id']) &&
-            ($donationId = absint($_REQUEST['donation_id']))
+            ! empty($_REQUEST['donation_id']) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form ID lookup, cast with absint(); it saves nothing.
+            ($donationId = absint($_REQUEST['donation_id'])) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form ID lookup, cast with absint(); it saves nothing.
         ) {
             return give_get_payment_form_id($donationId);
         }
@@ -83,10 +83,10 @@ class Frontend
         }
 
         if (
-            isset($_GET['preview'], $_GET['p'], $_GET['post_type']) &&
-            filter_var($_GET['preview'], FILTER_VALIDATE_BOOLEAN) &&
-            ('give_forms' === give_clean($_GET['post_type'])) &&
-            ($formId = absint($_GET['p']))
+            isset($_GET['preview'], $_GET['p'], $_GET['post_type']) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- admin form preview; the user needs the edit permission, and it saves nothing.
+            filter_var($_GET['preview'], FILTER_VALIDATE_BOOLEAN) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- admin form preview; the user needs the edit permission, and it saves nothing. only checked as a boolean with filter_var(); it is not saved or output.
+            ('give_forms' === give_clean($_GET['post_type'])) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- admin form preview; the user needs the edit permission, and it saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+            ($formId = absint($_GET['p'])) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- admin form preview; the user needs the edit permission, and it saves nothing.
         ) {
             return $formId;
         }

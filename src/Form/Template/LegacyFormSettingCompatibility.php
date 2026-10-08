@@ -109,11 +109,11 @@ class LegacyFormSettingCompatibility
     public static function migrateExistingFormSettings()
     {
         // Only migrate settings for existing form when editing.
-        if ( ! isset($_GET['action']) || 'edit' !== give_clean($_GET['action'])) {
+        if ( ! isset($_GET['action']) || 'edit' !== give_clean($_GET['action'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- runs when the form edit screen draws its metabox; it only reads the screen URL to find the form. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
             return;
         }
 
-        $formId = absint($_GET['post']);
+        $formId = absint($_GET['post']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- runs when the form edit screen draws its metabox; it only reads the screen URL to find the form. cast with absint() before use.
 
         if ( ! Utils::isLegacyForm($formId)) {
             return;

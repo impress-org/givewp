@@ -231,7 +231,7 @@ class ServiceProvider implements ServiceProviderInterface
          */
         Route::post('donation-form-view-preview', static function () {
             ini_set('display_errors', 0);
-            $requestData = (new SanitizeDonationFormPreviewRequest())($_REQUEST);
+            $requestData = (new SanitizeDonationFormPreviewRequest())($_REQUEST); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- preview request from the form builder; SanitizeDonationFormPreviewRequest sanitizes it and the preview saves nothing.
             $routeData = DonationFormPreviewRouteData::fromRequest($requestData);
 
             if ($locale = $requestData['locale'] ?? '') {
