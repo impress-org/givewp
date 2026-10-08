@@ -13,6 +13,7 @@ class GetOrCreateDonor
     public $donorCreated = false;
 
     /**
+     * @since TBD Skip updating donor when no phone is submitted.
      * @since 3.9.0 Add support to "phone" property
      * @since 3.2.0
      *
@@ -41,7 +42,7 @@ class GetOrCreateDonor
         }
 
         // if they exist as a donor & user but don't have a phone number then add it to their profile.
-        if ($donor && empty($donor->phone)) {
+        if ($donor && empty($donor->phone) && !empty($donorPhone)) {
             $donor->phone = $donorPhone;
             $donor->save();
         }

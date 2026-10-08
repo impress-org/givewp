@@ -101,4 +101,38 @@ class TestGetOrCreateDonor extends TestCase
         $this->assertSame('+120155501234', $donorFromAction->phone);
         $this->assertTrue($action->donorCreated);
     }
+
+    /**
+     * Regression for #8286: a returning donor whose stored phone is empty must
+     * not be saved when the submitted form provides no phone value.
+     *
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testShouldNotSaveDonorWhenStoredAndIncomingPhoneAreEmpty(): void
+    {
+        $donor = Donor::factory()->create(['userId' => 1]);
+        $donor->phone = '';
+        $donor->save();
+
+        $updateCount = 0;
+        $updatingAction = function () use (&$updateCount) {
+            $updateCount++;
+        };
+        add_action('givewp_donor_updating', $updatingAction);
+
+        try {
+            $action = new GetOrCreateDonor();
+            $result = $action($donor->userId, $donor->email, $donor->firstName, $donor->lastName,
+                $donor->prefix, null);
+
+            $this->assertSame($donor->id, $result->id);
+            $this->assertFalse($action->donorCreated);
+            $this->assertSame(0, $updateCount, 'Donor save should be skipped when no phone is submitted.');
+            $this->assertSame('', give()->donors->getById($donor->id)->phone);
+        } finally {
+            remove_action('givewp_donor_updating', $updatingAction);
+        }
+    }
 }
