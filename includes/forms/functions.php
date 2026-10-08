@@ -162,7 +162,7 @@ function give_send_to_success_page( $query_string = null ) {
 		$redirect .= $query_string;
 	}
 
-	$gateway = isset( $_REQUEST['give-gateway'] ) ? give_clean( $_REQUEST['give-gateway'] ) : '';
+	$gateway = isset( $_REQUEST['give-gateway'] ) ? give_clean( $_REQUEST['give-gateway'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- public donation request that is on its way to the success page; the gateway id only goes to the give_success_page_redirect filter and nothing is saved. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 	// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- the public give_success_page_redirect filter lets add-ons send donors to another site; wp_safe_redirect() would block it.
 	wp_redirect( apply_filters( 'give_success_page_redirect', $redirect, $gateway, $query_string ) );
@@ -178,24 +178,26 @@ function give_send_to_success_page( $query_string = null ) {
  * @param array|string $args
  *
  * @access public
+ * @since TBD Unslash and sanitize the posted values.
  * @since 2.21.0 Auto set "payment-mode" in redirect url.
  * @since  1.0
  * @return Void
  */
 function give_send_back_to_checkout( $args = [] ) {
 
-	$url     = isset( $_POST['give-current-url'] ) ? sanitize_text_field( $_POST['give-current-url'] ) : '';
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- public donation form request that is sent back to the form; the form nonce is checked in give_process_donation_form(), and this only builds the redirect URL and saves nothing.
+	$url     = isset( $_POST['give-current-url'] ) ? sanitize_text_field( wp_unslash( $_POST['give-current-url'] ) ) : '';
 	$form_id = 0;
     $defaults = [];
 
 	// Set the form_id.
 	if ( isset( $_POST['give-form-id'] ) ) {
-        $defaults['form-id'] = (int) sanitize_text_field( $_POST['give-form-id'] );
+        $defaults['form-id'] = (int) sanitize_text_field( wp_unslash( $_POST['give-form-id'] ) );
 	}
 
     // Set the payment mode.
     if ( isset( $_POST['payment-mode'] ) ) {
-        $defaults['payment-mode'] = sanitize_text_field( $_POST['payment-mode'] );
+        $defaults['payment-mode'] = sanitize_text_field( wp_unslash( $_POST['payment-mode'] ) );
     }
 
 	// Need a URL to continue. If none, redirect back to single form.
@@ -206,13 +208,14 @@ function give_send_back_to_checkout( $args = [] ) {
 
 	// Set the $level_id.
 	if ( isset( $_POST['give-price-id'] ) ) {
-		$defaults['level-id'] = sanitize_text_field( $_POST['give-price-id'] );
+		$defaults['level-id'] = sanitize_text_field( wp_unslash( $_POST['give-price-id'] ) );
 
 		// If custom, set amount
 		if( 'custom' === $defaults[ 'level-id' ] ) {
-			$defaults['custom-amount'] = sanitize_text_field( $_POST['give-amount'] );
+			$defaults['custom-amount'] = isset( $_POST['give-amount'] ) ? sanitize_text_field( wp_unslash( $_POST['give-amount'] ) ) : '';
 		}
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 	// Check for backward compatibility.
 	if ( is_string( $args ) ) {
@@ -312,6 +315,7 @@ function give_is_failed_transaction_page() {
 /**
  * Mark payments as Failed when returning to the Failed Donation Page
  *
+ * @since TBD Unslash the nonce before it is verified.
  * @since  1.0
  * @since  1.8.16 Add security check
  *
@@ -319,7 +323,7 @@ function give_is_failed_transaction_page() {
  */
 function give_listen_for_failed_payments() {
 	$payment_id = ! empty( $_GET['payment-id'] ) ? absint( $_GET['payment-id'] ) : 0;
-	$nonce      = ! empty( $_GET['_wpnonce'] ) ? give_clean( $_GET['_wpnonce'] ) : false;
+	$nonce      = ! empty( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : false; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- this is the nonce itself; wp_verify_nonce() checks it right below.
 
 	// Bailout.
 	if ( ! $payment_id || ! wp_verify_nonce( $nonce, "give-failed-donation-{$payment_id}" ) ) {
@@ -659,6 +663,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 /**
  * Retrieves a price from from low to high of a variable priced form
  *
+ * @since TBD Unslash and sanitize the order param.
  * @since 1.0
  *
  * @param int  $form_id   ID of the form
@@ -669,7 +674,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 function give_price_range( $form_id = 0, $formatted = true ) {
 	$low        = give_get_lowest_price_option( $form_id );
 	$high       = give_get_highest_price_option( $form_id );
-	$order_type = ! empty( $_REQUEST['order'] ) ? $_REQUEST['order'] : 'asc';
+	$order_type = ! empty( $_REQUEST['order'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ) : 'asc'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only sort param; it only changes which end of the price range is shown first and saves nothing.
 
 	$range = sprintf(
 		'<span class="give_price_range_%1$s">%2$s</span><span class="give_price_range_sep">&nbsp;&ndash;&nbsp;</span><span class="give_price_range_%3$s">%4$s</span>',
@@ -1123,9 +1128,9 @@ function _give_get_prefill_form_field_values( $form_id ) {
 
 	// Bailout: Auto fill form field values only form form which donor is donating.
 	if (
-		empty( $_GET['form-id'] )
+		empty( $_GET['form-id'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form id param; it only decides whether to prefill the form and saves nothing.
 		|| ! $form_id
-		|| ( $form_id !== absint( $_GET['form-id'] ) )
+		|| ( $form_id !== absint( $_GET['form-id'] ) ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form id param; it only decides whether to prefill the form and saves nothing.
 	) {
 		return $logged_in_donor_info;
 	}
@@ -1580,7 +1585,7 @@ function give_handle_form_meta_on_delete( $id ) {
 	global $wpdb;
 
 	$form     = get_post( $id );
-	$get_data = give_clean( $_GET );
+	$get_data = give_clean( $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- WordPress core verifies the nonce before it deletes a post and fires before_delete_post.
 
 	if (
 		'give_forms' === $form->post_type &&
