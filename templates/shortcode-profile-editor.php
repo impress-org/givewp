@@ -25,6 +25,7 @@ if ( is_user_logged_in() ) :
 	$address      = $donor->get_donor_address( array( 'address_type' => 'personal' ) );
 	$company_name = $donor->get_meta( '_give_donor_company', true );
 
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only notice params set by the redirect after a profile save; they only pick which message to show and save nothing.
 	if ( isset( $_GET['updated'] ) && 'true' === $_GET['updated'] && ! give_get_errors() ) {
 		if ( isset( $_GET['update_code'] ) ) {
 			if ( 1 === absint( $_GET['update_code'] ) ) {
@@ -32,6 +33,7 @@ if ( is_user_logged_in() ) :
 			}
 		}
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	Give()->notices->render_frontend_notices( 0 );
 
@@ -215,6 +217,7 @@ if ( is_user_logged_in() ) :
 
 	<?php
 else :
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only notice params set by the redirect after a profile save; they only pick which message to show and save nothing.
 	if (
 		isset( $_GET['updated'] )
 		&& 'true' === $_GET['updated']
@@ -239,6 +242,7 @@ else :
 				default:
 					break;
 			}
+			// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		}
 	} else {
 		esc_html_e( 'You need to log in to edit your profile.', 'give' );

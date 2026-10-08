@@ -165,7 +165,7 @@ function give_run_install()
     }
 
     // Bail if activating from network, or bulk.
-    if (is_network_admin() || isset($_GET['activate-multi'])) {
+    if (is_network_admin() || isset($_GET['activate-multi'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- WordPress core sets activate-multi on bulk activation; only its presence is checked and nothing is saved.
         return;
     }
 

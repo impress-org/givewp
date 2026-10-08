@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Displays a user's donation history.
  *
- * @since TBD Escape output.
+ * @since TBD Escape output. Unslash and sanitize the referrer.
  * @since 3.7.0 Sanitize attributes
  * @since 3.1.0 pass form id by reference in give_totals shortcode.
  * @since  1.0
@@ -75,7 +75,7 @@ function give_donation_history( $atts, $content = false ) {
 		if ( give_get_receipt_session() || is_user_logged_in() ) {
 			echo sprintf(
 				'<a href="%s">%s</a>',
-				esc_url($_SERVER['HTTP_REFERER'] ),
+				esc_url( isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '' ),
 				esc_html__( '&laquo; Return to All Donations', 'give' )
 			);
 		}

@@ -88,10 +88,11 @@ class Give_Cache {
 	 * Get result if cache enabled or not.
 	 *
 	 * @return bool
+	 * @since TBD Unslash and sanitize the request URI.
 	 * @since 2.6.1
 	 */
 	private function is_cache_enabled() {
-		return give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) && ( is_admin() || false !== strpos( $_SERVER['REQUEST_URI'], rest_get_url_prefix() . '/give-api/' ) );
+		return give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) && ( is_admin() || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), rest_get_url_prefix() . '/give-api/' ) ) );
 	}
 
 	/**
@@ -726,8 +727,8 @@ class Give_Cache {
 	public static function flush_cache( $force = false ) {
 		if (
 			$force
-			|| ( Give_Admin_Settings::is_saving_settings() && isset( $_POST['cache'] ) && give_is_setting_enabled( give_clean( $_POST['cache'] ) ) )
-			|| ( wp_doing_ajax() && isset( $_GET['action'] ) && 'give_cache_flush' === give_clean( $_GET['action'] ) )
+			|| ( Give_Admin_Settings::is_saving_settings() && isset( $_POST['cache'] ) && give_is_setting_enabled( give_clean( $_POST['cache'] ) ) ) // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified by Give_Admin_Settings::is_saving_settings() just before this read; give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+			|| ( wp_doing_ajax() && isset( $_GET['action'] ) && 'give_cache_flush' === give_clean( $_GET['action'] ) ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only compares the action name; give_cache_flush() verifies the nonce with check_ajax_referer() before it calls this. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		) {
 			self::$instance->get_incrementer( true );
 			self::$instance->get_incrementer( true, 'give-cache-incrementer' );

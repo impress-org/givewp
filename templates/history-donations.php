@@ -2,7 +2,7 @@
 /**
  * This template is used to display the donation history of the current user.
  *
- * @since TBD Escape output. Add translators comments.
+ * @since TBD Escape output. Add translators comments. Unslash and sanitize the request URI.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -213,7 +213,7 @@ if ( $donations ) : ?>
 									add_query_arg(
 										'donation_id',
 										$post->ID,
-                                        $_SERVER['REQUEST_URI']
+										isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : ''
 									)
 								),
 								esc_attr( $post->post_status ),
@@ -228,7 +228,7 @@ if ( $donations ) : ?>
 									add_query_arg(
 										'donation_id',
 										$post->ID,
-                                        $_SERVER['REQUEST_URI']
+										isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : ''
                                     )
 								),
 								esc_html( __( 'View Receipt &raquo;', 'give' ) ),
