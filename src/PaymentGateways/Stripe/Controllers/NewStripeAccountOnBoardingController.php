@@ -30,7 +30,7 @@ class NewStripeAccountOnBoardingController
     }
 
     /**
-     * @since TBD Use a safe redirect.
+     * @since TBD Use a safe redirect, and unslash and sanitize the request URI.
      * @since 3.4.0 Handle Stripe connect account on-boarding redirect on specific pages.
      *
      * @since 2.13.0
@@ -41,10 +41,13 @@ class NewStripeAccountOnBoardingController
             return;
         }
 
-        if (wp_doing_ajax() || ! $this->canProcessRequestOnCurrentPage($_SERVER['REQUEST_URI'])) {
+        $requestUri = isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : '';
+
+        if (wp_doing_ajax() || ! $this->canProcessRequestOnCurrentPage($requestUri)) {
             return;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Stripe Connect return for an admin with manage_give_settings; it only connects an account when Stripe sends valid tokens, and Stripe cannot send a WordPress nonce.
         $requestedData = NewStripeAccountOnBoardingDto::fromArray(give_clean($_GET));
 
         if (! $requestedData->hasValidateData()) {

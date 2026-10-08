@@ -46,6 +46,7 @@ class GatewayRoute
             }
 
             // create DTO from GET request
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- gateway return and callback route; secure methods are verified by validateSignature() and the rest cannot send a WordPress nonce.
             $data = GatewayRouteData::fromRequest(give_clean($_GET));
 
             /**
@@ -87,7 +88,9 @@ class GatewayRoute
      */
     private function isValidRequest($gatewayIds)
     {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- gateway return and callback route; secure methods are verified by validateSignature() and the rest cannot send a WordPress nonce.
         $isset = isset($_GET['give-gateway-id'], $_GET['give-gateway-method']);
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- same gateway route request as the line above.
         $idValid = in_array($_GET['give-gateway-id'], $gatewayIds, true);
 
         return $isset && $idValid;
@@ -102,6 +105,7 @@ class GatewayRoute
      */
     private function isValidListener()
     {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- gateway return and callback route; secure methods are verified by validateSignature() and the rest cannot send a WordPress nonce.
         return isset($_GET['give-listener']) && $_GET['give-listener'] === 'give-gateway';
     }
 

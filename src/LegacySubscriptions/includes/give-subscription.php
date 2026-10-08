@@ -1311,6 +1311,7 @@ class Give_Subscription {
 	 */
 	private function mayBeSanitizeWebhookResponseDonationAmount( $donationAmount, $currencyCode ) {
 		// Is processing webhook for any payment gateway.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- only checks that a gateway webhook is running; the webhook is verified by its gateway and cannot send a WordPress nonce.
 		if ( empty( $_GET['give-listener'] ) ) {
 			return $donationAmount;
 		}
