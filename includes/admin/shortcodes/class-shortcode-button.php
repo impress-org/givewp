@@ -90,6 +90,7 @@ final class Give_Shortcode_Button {
 	 * @since 1.0
 	 */
 	public function admin_enqueue_assets() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only text direction param; it only picks the stylesheet suffix and saves nothing.
 		$direction = ( is_rtl() || isset( $_GET['d'] ) && 'rtl' === $_GET['d'] ) ? '.rtl' : '';
 
 		wp_enqueue_script(
@@ -213,7 +214,8 @@ final class Give_Shortcode_Button {
 			wp_die();
 		}
 
-		$shortcode = isset( $_POST['shortcode'] ) ? $_POST['shortcode'] : false;
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only admin lookup; it returns the button settings for a known shortcode name, is limited to users who can edit forms, and saves nothing.
+		$shortcode = isset( $_POST['shortcode'] ) ? sanitize_text_field( wp_unslash( $_POST['shortcode'] ) ) : false;
 		$response  = false;
 
 		if ( $shortcode && array_key_exists( $shortcode, self::$shortcodes ) ) {
