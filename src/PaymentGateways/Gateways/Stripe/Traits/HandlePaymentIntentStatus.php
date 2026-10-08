@@ -7,12 +7,14 @@ use Give\Framework\PaymentGateways\Commands\PaymentCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
+use Give\PaymentGateways\Gateways\Stripe\Actions\RecordMicrodepositVerification;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\PaymentIntentException;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 
 trait HandlePaymentIntentStatus
 {
     /**
+     * @since TBD Handle ACH `verify_with_microdeposits` next actions and stop returning an empty redirect.
      * @since 2.27.1 Update PaymentIntentException message.
      * @since 2.21.0 Update second argument type to Donation model
      * @since 2.19.7 fix param order and only pass donationId
@@ -26,14 +28,38 @@ trait HandlePaymentIntentStatus
             case 'requires_action':
                 $donation->gatewayTransactionId = $paymentIntent->id();
                 $donation->save();
-                return new RedirectOffsite($paymentIntent->nextActionRedirectUrl());
+
+                if ('verify_with_microdeposits' === $paymentIntent->nextActionType()) {
+                    $hostedVerificationUrl = $paymentIntent->nextActionVerifyWithMicrodepositsUrl();
+
+                    if ($hostedVerificationUrl) {
+                        give(RecordMicrodepositVerification::class)($donation, $hostedVerificationUrl);
+                    }
+
+                    return new PaymentProcessing($paymentIntent->id());
+                }
+
+                $redirectUrl = $paymentIntent->nextActionRedirectUrl();
+
+                if (empty($redirectUrl)) {
+                    throw new PaymentIntentException(
+                        esc_html__('Stripe requires an additional action that GiveWP cannot handle automatically.', 'give')
+                    );
+                }
+
+                return new RedirectOffsite($redirectUrl);
             case 'succeeded':
                 return new PaymentComplete($paymentIntent->id());
             case 'processing':
                 return new PaymentProcessing($paymentIntent->id());
             default:
                 throw new PaymentIntentException(
-                    sprintf(__('Unhandled payment intent status: %s', 'give'), $paymentIntent->status()));
+                    sprintf(
+                        /* translators: %s: Stripe Payment Intent status */
+                        esc_html__('Unhandled payment intent status: %s', 'give'),
+                        esc_html($paymentIntent->status())
+                    )
+                );
         }
     }
 }
