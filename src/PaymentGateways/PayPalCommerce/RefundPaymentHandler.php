@@ -34,6 +34,7 @@ class RefundPaymentHandler
     /**
      * Refunds the payment when the donation is marked as refunded
      *
+     * @since TBD Guard and sanitize the posted status.
      * @since 2.9.0
      *
      * @param int $donationId
@@ -48,7 +49,8 @@ class RefundPaymentHandler
 
         $payPalPaymentId = give_get_payment_transaction_id($donationId);
         $paymentGateway = give_get_payment_gateway($donationId);
-        $newDonationStatus = give_clean($_POST['give-payment-status']);
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_update_edited_donation fires from give_update_payment_details() after check_admin_referer(). give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+        $newDonationStatus = isset($_POST['give-payment-status']) ? give_clean($_POST['give-payment-status']) : '';
 
         if ('refunded' !== $newDonationStatus || PayPalCommerce::GATEWAY_ID !== $paymentGateway) {
             return;
@@ -73,6 +75,7 @@ class RefundPaymentHandler
      */
     public function showPaymentRefundFailureNotice()
     {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only notice flag; it only decides whether to show the failure notice and saves nothing.
         if ( ! isset($_GET['paypal-error']) || 'refund-failure' !== $_GET['paypal-error']) {
             return;
         }
@@ -135,8 +138,10 @@ class RefundPaymentHandler
      */
     private function isAdminOptInToRefundPaymentOnPayPal()
     {
+        // phpcs:disable WordPress.Security.NonceVerification.Missing -- only the donation details form posts this field; give_update_edited_donation fires from give_update_payment_details() after check_admin_referer().
         return ! empty($_POST['give_paypal_donations_optin_for_refund']) ?
             (bool)absint($_POST['give_paypal_donations_optin_for_refund'])
             : false;
+        // phpcs:enable WordPress.Security.NonceVerification.Missing
     }
 }

@@ -75,16 +75,30 @@ class onBoardingRedirectHandler
     /**
      * This function set mode from request.
      *
+     * @since TBD Sanitize the mode from the request.
      * @since 2.30.0
      * @return void
      */
     private function setModeFromRequest()
     {
-        if (isset($_GET['mode']) && in_array($_GET['mode'], ['live', 'sandbox'], true)) {
-            $mode = $_GET['mode'];
+        $mode = $this->getModeFromRequest();
 
+        if ($mode !== '') {
             $this->setModeForServices($mode);
         }
+    }
+
+    /**
+     * Returns the connection mode from the request, or an empty string when it is not 'live' or 'sandbox'.
+     *
+     * @since TBD
+     */
+    private function getModeFromRequest(): string
+    {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- PayPal onboarding return; the stored onboarding state checked in isPayPalUserRedirected() protects it, and PayPal cannot send a WordPress nonce.
+        $mode = isset($_GET['mode']) ? sanitize_text_field(wp_unslash($_GET['mode'])) : '';
+
+        return in_array($mode, ['live', 'sandbox'], true) ? $mode : '';
     }
 
     /**
@@ -130,6 +144,7 @@ class onBoardingRedirectHandler
     /**
      * Save PayPal merchant details
      *
+     * @since TBD Unslash the query string.
      * @since 3.19.1 fix parsing email with special characters
      * @since 2.32.0 Remove second argument from updateSellerAccessToken function.
      * @since 2.25.0 Handle exception.
@@ -139,7 +154,9 @@ class onBoardingRedirectHandler
      */
     private function savePayPalMerchantDetails()
     {
-        $paypalGetData = wp_parse_args(str_replace("+", rawurlencode("+"), $_SERVER['QUERY_STRING']));
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- the query string is parsed below and only the two merchant keys are kept; sanitize_text_field() would strip percent-encoded characters from the email.
+        $queryString = isset($_SERVER['QUERY_STRING']) ? wp_unslash($_SERVER['QUERY_STRING']) : '';
+        $paypalGetData = wp_parse_args(str_replace("+", rawurlencode("+"), $queryString));
         $partnerLinkInfo = $this->settings->getPartnerLinkDetails();
         $tokenInfo = $this->settings->getAccessToken();
 
@@ -157,7 +174,7 @@ class onBoardingRedirectHandler
                                  'The Merchant ID for PayPal was not found. Try connecting to PayPal again. The PayPal return URL is:',
                                  'give'
                              ) . "\n",
-                'value' => urlencode($_SERVER['QUERY_STRING']),
+                'value' => urlencode($queryString),
             ];
 
             $this->merchantRepository->saveAccountErrors($errors);
@@ -299,6 +316,7 @@ class onBoardingRedirectHandler
     /**
      * Returns whether or not the current request is for refreshing the account status
      *
+     * @since TBD Unslash and sanitize the nonce.
      * @since 4.13.2 Add nonce verification for CSRF protection.
      * @since 2.9.0
      *
@@ -310,7 +328,7 @@ class onBoardingRedirectHandler
             return false;
         }
 
-        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'give_paypal_status_refresh')) {
+        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'give_paypal_status_refresh')) {
             return false;
         }
 
@@ -320,6 +338,7 @@ class onBoardingRedirectHandler
     /**
      * Return whether or not PayPal user redirect to GiveWP setting page after successful onboarding.
      *
+     * @since TBD Unslash and sanitize the mode and the state.
      * @since 4.13.2 Add state parameter verification for CSRF protection.
      * @since 2.9.0
      *
@@ -327,15 +346,18 @@ class onBoardingRedirectHandler
      */
     private function isPayPalUserRedirected()
     {
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- PayPal onboarding return; the stored give_paypal_onboarding_state_<mode> transient checked below protects it, and PayPal cannot send a WordPress nonce.
         if (!isset($_GET['merchantIdInPayPal']) || !Give_Admin_Settings::is_setting_page('gateways', 'paypal')) {
             return false;
         }
 
         // Verify the state parameter to protect against CSRF attacks.
-        $mode = isset($_GET['mode']) && in_array($_GET['mode'], ['live', 'sandbox'], true) ? $_GET['mode'] : 'live';
+        $mode = $this->getModeFromRequest() ?: 'live';
         $storedState = get_transient('give_paypal_onboarding_state_' . $mode);
+        $state = isset($_GET['give_paypal_state']) ? sanitize_text_field(wp_unslash($_GET['give_paypal_state'])) : '';
+        // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-        if (!isset($_GET['give_paypal_state']) || !$storedState || !hash_equals($storedState, $_GET['give_paypal_state'])) {
+        if ($state === '' || !$storedState || !hash_equals($storedState, $state)) {
             return false;
         }
 
@@ -348,6 +370,7 @@ class onBoardingRedirectHandler
     /**
      * Return whether or not PayPal account details saved.
      *
+     * @since TBD Unslash and sanitize the nonce.
      * @since 4.13.2 Add nonce verification for CSRF protection.
      * @since 2.9.0
      *
@@ -359,7 +382,7 @@ class onBoardingRedirectHandler
             return false;
         }
 
-        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'give_paypal_account_connected')) {
+        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'give_paypal_account_connected')) {
             return false;
         }
 

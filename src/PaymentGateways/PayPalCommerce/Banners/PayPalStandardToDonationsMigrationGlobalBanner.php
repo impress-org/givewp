@@ -31,8 +31,10 @@ class PayPalStandardToDonationsMigrationGlobalBanner
         }
 
         add_action('admin_enqueue_scripts', function () {
+            // phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides whether to print the banner script and saves nothing.
             $isGivePage = ( isset($_GET['page']) && 'give-forms' === $_GET['page'] )
             || ( isset($_GET['post_type']) && 'give_forms' === $_GET['post_type'] );
+            // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
             if ($isGivePage && give_is_gateway_active(PayPalStandard::id())) {
                 add_action('admin_footer', function () {
