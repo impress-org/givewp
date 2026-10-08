@@ -15,9 +15,12 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  */
 class LoadSubscriptionAdminOptions
 {
+    /**
+     * @since TBD Set an explicit version on the options script.
+     */
     public function __invoke()
     {
-        wp_register_script('give-subscription-options', false);
+        wp_register_script('give-subscription-options', false, [], GIVE_VERSION, false);
         wp_localize_script('give-subscription-options', 'GiveSubscriptionOptions', $this->getSubscriptionOptions());
         wp_enqueue_script('give-subscription-options');
     }

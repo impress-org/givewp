@@ -897,7 +897,7 @@ function give_form_grid_shortcode( $atts ) {
 			'forms_per_page'      => 12,
 			'paged'               => true,
 			'ids'                 => '',
-			'exclude'             => '',
+			'exclude'             => '', // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- this is a shortcode attribute, not a query argument; hiding the chosen forms is the feature.
 			'orderby'             => 'date',
 			'order'               => 'DESC',
 			'cats'                => '',
@@ -982,7 +982,7 @@ function give_form_grid_shortcode( $atts ) {
 
 	// Convert comma-separated form IDs into array.
 	if ( ! empty( $atts['exclude'] ) ) {
-		$form_args['post__not_in'] = array_filter(
+		$form_args['post__not_in'] = array_filter( // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- hiding the forms chosen in the shortcode is the feature.
 			array_map(
 				function( $item ) {
 					return intval( trim( $item ) );

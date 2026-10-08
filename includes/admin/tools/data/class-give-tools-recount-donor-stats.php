@@ -90,7 +90,7 @@ class Give_Tools_Recount_Donor_Stats extends Give_Batch_Export {
 				$attached_payments = (array) give_get_payments( $attached_args );
 
 				$unattached_args = array(
-					'post__not_in' => $attached_payment_ids,
+					'post__not_in' => $attached_payment_ids, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- the recount must skip the payments already attached to this donor.
 					'number'       => - 1,
 					'status'       => $allowed_payment_status,
 					'meta_query'   => array(
