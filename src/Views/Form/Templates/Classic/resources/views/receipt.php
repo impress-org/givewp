@@ -1,4 +1,7 @@
 <?php
+/**
+ * @since TBD Do not pass a variable to the translation function.
+ */
 
 use Give\Helpers\Form\Template;
 use Give\Receipt\DonationReceipt;
@@ -29,6 +32,8 @@ $option = static function ($name) {
 $hasDonationFailed = static function () use ($donation) {
     return $donation->post_status === 'failed';
 };
+
+$sharingInstructions = $option('sharing_instructions');
 
 $donorDashboardUrl = get_permalink(give_get_option('donor_dashboard_page'));
 
@@ -70,7 +75,7 @@ ob_start();
         <?php if ('enabled' === $option('social_sharing') && ! $hasDonationFailed()) : ?>
             <div class="social-sharing">
                 <p class="instruction">
-                    <?= esc_html__($option('sharing_instructions'),'give' ); ?>
+                    <?= esc_html($sharingInstructions === 'Help spread the word by sharing your support with your friends and followers!' ? __('Help spread the word by sharing your support with your friends and followers!', 'give') : $sharingInstructions); ?>
                 </p>
                 <div class="btn-row">
                     <button class="give-btn social-btn facebook-btn" onclick="GiveClassicTemplate.share(this);">

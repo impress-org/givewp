@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Added translator comments that explain the placeholders in translatable strings
+timestamp: 2026-10-06T23:51:02.760Z

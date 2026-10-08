@@ -53,6 +53,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		/**
 		 * This function is used to include the related Stripe core files.
 		 *
+		 * @since TBD Add translators comments.
 		 * @since 4.0.0 prevented loading translation when using get_plugin_data to avoid _load_textdomain_just_in_time error
 		 * @since  2.5.0
 		 * @since 2.11.0 Stripe sdk loading logic has been removed because
@@ -105,6 +106,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 										'id'          => 'give-recurring-fatal-error',
 										'type'        => 'error',
 										'description' => sprintf(
+											/* translators: 1: URL of the WP Rollback plugin page, 2: URL of the GiveWP support page */
 											__( '<strong>Action Needed:</strong> Please update the Recurring Donations add-on to version <strong>1.9.4+</strong> in order to be compatible with GiveWP <strong>2.5.5+</strong>. If you are experiencing any issues please rollback GiveWP to 2.5.4 or below using the <a href="%1$s" target="_blank">WP Rollback</a> plugin and <a href="%2$s" target="_blank">contact support</a> for prompt assistance.', 'give' ),
 											'https://wordpress.org/plugins/wp-rollback/',
 											'https://givewp.com/support/'

@@ -46,6 +46,7 @@ class FormBuilderResourceController
     /**
      * Update the form builder
      *
+     * @since TBD Add translators comments.
      * @since 3.0.0
      *
      * @return WP_Error|WP_HTTP_Response|WP_REST_Response
@@ -84,6 +85,7 @@ class FormBuilderResourceController
                 new WP_Error(
                     400,
                     sprintf(
+                        /* translators: %s: Meta key name */
                         __("ERROR: the form was not saved due to a meta key name conflict. A field already exists on this form with the meta key '%s'. Meta key names must be unique. Change the conflicting meta key and try to save again. ", 'give'),
                         $e->getNodeNameCollision()
                     )
@@ -122,6 +124,7 @@ class FormBuilderResourceController
     }
 
     /**
+     * @since TBD Add translators comments.
      * @since 3.0.0
      *
      * @return WP_Error|void
@@ -148,6 +151,7 @@ class FormBuilderResourceController
             return new WP_Error(
                 400,
                 sprintf(
+                    /* translators: %s: HTML list of the missing block names */
                     _n(
                         "<p>The following block was not found and is required for the form to work:</p>%s<p>Please add the missing block and try again.</p>",
                         "<p>The following blocks were not found and are required for the form to work:</p>%s<p>Please add these missing blocks and try again.</p>",

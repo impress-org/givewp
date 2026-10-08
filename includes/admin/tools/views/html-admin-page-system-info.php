@@ -1,6 +1,8 @@
 <?php
 /**
  * Admin View: System Info
+ *
+ * @since TBD Print the TLS rating without a translation call and add translators comments.
  */
 
 use Give\Framework\Migrations\MigrationsRunner;
@@ -94,7 +96,7 @@ $give_updates = Give_Updates::get_instance();
 			}
 
 			if ( $memory < 67108864 ) {
-				echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%1$s - We recommend setting memory to at least 64 MB. See: %2$s', 'give' ), size_format( $memory ), '<a href="https://developer.wordpress.org/apis/wp-config-php/#increasing-memory-allocated-to-php" target="_blank">' . __( 'Increasing memory allocated to PHP', 'give' ) . '</a>' ) . '</mark>';
+				echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( /* translators: 1: Memory limit, 2: Link to the WordPress documentation */ __( '%1$s - We recommend setting memory to at least 64 MB. See: %2$s', 'give' ), size_format( $memory ), '<a href="https://developer.wordpress.org/apis/wp-config-php/#increasing-memory-allocated-to-php" target="_blank">' . __( 'Increasing memory allocated to PHP', 'give' ) . '</a>' ) . '</mark>';
 			} else {
 				echo '<mark class="yes">' . size_format( $memory ) . '</mark>';
 			}
@@ -218,7 +220,7 @@ $give_updates = Give_Updates::get_instance();
 		<td>
 			<?php
             if ( ! is_wp_error( $tls_check ) ) {
-                esc_html_e( property_exists( $tls_check, 'rating' ) ? $tls_check->rating : $tls_check->tls_version, 'give' );
+                echo esc_html( property_exists( $tls_check, 'rating' ) ? $tls_check->rating : $tls_check->tls_version );
             }
 			?>
 		</td>
@@ -238,7 +240,7 @@ $give_updates = Give_Updates::get_instance();
 				$php_version = phpversion();
 
 				if ( version_compare( $php_version, '5.6', '<' ) ) {
-					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%1$s - We recommend a minimum PHP version of 5.6. See: %2$s', 'give' ), esc_html( $php_version ), '<a href="http://docs.givewp.com/settings-system-info" target="_blank">' . __( 'PHP Requirements in Give', 'give' ) . '</a>' ) . '</mark>';
+					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( /* translators: 1: PHP version, 2: Link to the PHP requirements page */ __( '%1$s - We recommend a minimum PHP version of 5.6. See: %2$s', 'give' ), esc_html( $php_version ), '<a href="http://docs.givewp.com/settings-system-info" target="_blank">' . __( 'PHP Requirements in Give', 'give' ) . '</a>' ) . '</mark>';
 				} else {
 					echo '<mark class="yes">' . esc_html( $php_version ) . '</mark>';
 				}
@@ -278,6 +280,7 @@ $give_updates = Give_Updates::get_instance();
 					$curl_version = curl_version();
 
 					if ( version_compare( $curl_version['version'], '7.40', '<' ) ) {
+						/* translators: %s: cURL and SSL version */
 						echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%s - We recommend a minimum cURL version of 7.40.', 'give' ), esc_html( $curl_version['version'] . ', ' . $curl_version['ssl_version'] ) ) . '</mark>';
 					} else {
 						echo '<mark class="yes">' . esc_html( $curl_version['version'] . ', ' . $curl_version['ssl_version'] ) . '</mark>';
@@ -308,7 +311,7 @@ $give_updates = Give_Updates::get_instance();
 				$mysql_version = $wpdb->db_version();
 
 				if ( version_compare( $mysql_version, '5.6', '<' ) ) {
-					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%1$s - We recommend a minimum MySQL version of 5.6. See: %2$s', 'give' ), esc_html( $mysql_version ), '<a href="https://wordpress.org/about/requirements/" target="_blank">' . __( 'WordPress Requirements', 'give' ) . '</a>' ) . '</mark>';
+					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( /* translators: 1: MySQL version, 2: Link to the WordPress requirements page */ __( '%1$s - We recommend a minimum MySQL version of 5.6. See: %2$s', 'give' ), esc_html( $mysql_version ), '<a href="https://wordpress.org/about/requirements/" target="_blank">' . __( 'WordPress Requirements', 'give' ) . '</a>' ) . '</mark>';
 				} else {
 					echo '<mark class="yes">' . esc_html( $mysql_version ) . '</mark>';
 				}
@@ -323,6 +326,7 @@ $give_updates = Give_Updates::get_instance();
 			<?php
 			$default_timezone = date_default_timezone_get();
 			if ( 'UTC' !== $default_timezone ) {
+				/* translators: %s: Time zone name */
 				echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( 'Default timezone is %s - it should be UTC', 'give' ), $default_timezone ) . '</mark>';
 			} else {
 				echo '<mark class="yes"><span class="dashicons dashicons-yes"></span></mark>';
@@ -352,6 +356,7 @@ $give_updates = Give_Updates::get_instance();
 		$posting['soap_client']['success'] = true;
 	} else {
 		$posting['soap_client']['success'] = false;
+		/* translators: %s: Link to the PHP SoapClient documentation */
 		$posting['soap_client']['note']    = sprintf( __( 'Your server does not have the %s class enabled - some gateway plugins which use SOAP may not work as expected.', 'give' ), '<a href="https://php.net/manual/en/class.soapclient.php">SoapClient</a>' );
 	}
 
@@ -363,6 +368,7 @@ $give_updates = Give_Updates::get_instance();
 		$posting['dom_document']['success'] = true;
 	} else {
 		$posting['dom_document']['success'] = false;
+		/* translators: %s: Link to the PHP DOMDocument documentation */
 		$posting['dom_document']['note']    = sprintf( __( 'Your server does not have the %s class enabled - HTML/Multipart emails, and also some extensions, will not work without DOMDocument.', 'give' ), '<a href="https://php.net/manual/en/class.domdocument.php">DOMDocument</a>' );
 	}
 
@@ -374,6 +380,7 @@ $give_updates = Give_Updates::get_instance();
 		$posting['gzip']['success'] = true;
 	} else {
 		$posting['gzip']['success'] = false;
+		/* translators: %s: Link to the PHP gzopen documentation */
 		$posting['gzip']['note']    = sprintf( __( 'Your server does not support the %s function - this is used for file compression and decompression.', 'give' ), '<a href="https://php.net/manual/en/zlib.installation.php">gzopen</a>' );
 	}
 
@@ -391,6 +398,7 @@ $give_updates = Give_Updates::get_instance();
 		$posting['mbstring']['success'] = true;
 	} else {
 		$posting['mbstring']['success'] = false;
+		/* translators: %s: Link to the PHP mbstring documentation */
 		$posting['mbstring']['note']    = sprintf( __( 'Your server does not support the %s functions - this is required for better character encoding. Some fallbacks will be used instead for it.', 'give' ), '<a href="https://php.net/manual/en/mbstring.installation.php">mbstring</a>' );
 	}
 
@@ -415,8 +423,10 @@ $give_updates = Give_Updates::get_instance();
 	} else {
 		$posting['wp_remote_post']['note'] = __( 'wp_remote_post() failed. PayPal IPN won\'t work with your server. Contact your hosting provider.', 'give' );
 		if ( is_wp_error( $response ) ) {
+			/* translators: %s: Error message */
 			$posting['wp_remote_post']['note'] .= ' ' . sprintf( __( 'Error: %s', 'give' ), sanitize_text_field( $response->get_error_message() ) );
 		} else {
+			/* translators: %s: HTTP status code */
 			$posting['wp_remote_post']['note'] .= ' ' . sprintf( __( 'Status code: %s', 'give' ), sanitize_text_field( $response['response']['code'] ) );
 		}
 		$posting['wp_remote_post']['success'] = false;
@@ -433,8 +443,10 @@ $give_updates = Give_Updates::get_instance();
 	} else {
 		$posting['wp_remote_get']['note'] = __( 'wp_remote_get() failed. The GiveWP plugin updater won\'t work with your server. Contact your hosting provider.', 'give' );
 		if ( is_wp_error( $response ) ) {
+			/* translators: %s: Error message */
 			$posting['wp_remote_get']['note'] .= ' ' . sprintf( __( 'Error: %s', 'give' ), give_clean( $response->get_error_message() ) );
 		} else {
+			/* translators: %s: HTTP status code */
 			$posting['wp_remote_get']['note'] .= ' ' . sprintf( __( 'Status code: %s', 'give' ), give_clean( $response['response']['code'] ) );
 		}
 		$posting['wp_remote_get']['success'] = false;
@@ -490,6 +502,7 @@ $give_updates = Give_Updates::get_instance();
 			if ( Give_Updates::$background_updater->is_paused_process() ) {
 				// When all the db updates are pending.
 				$updates_text = sprintf(
+					/* translators: %1$s: Number of updates */
 					__( '%1$s updates still need to run. (Paused) ', 'give' ),
 					count( $give_updates->get_updates( 'database', 'new' ) )
 				);
@@ -497,6 +510,7 @@ $give_updates = Give_Updates::get_instance();
 
 				// When all the db updates are pending.
 				$updates_text = sprintf(
+					/* translators: %1$s: Number of updates */
 					__( '%1$s updates still need to run.', 'give' ),
 					$total_updates
 				);
@@ -504,6 +518,7 @@ $give_updates = Give_Updates::get_instance();
 
 				// When some of the db updates are completed and some are pending.
 				$updates_text = sprintf(
+					/* translators: 1: Number of updates still to run, 2: Total number of updates */
 					__( '%1$s of %2$s updates still need to run.', 'give' ),
 					$pending_updates,
 					$total_updates
@@ -709,6 +724,7 @@ $give_updates = Give_Updates::get_instance();
 				$transaction_url = 'https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=' . $last_paypal_ipn_received['transaction_id'];
 				$donation_url    = site_url() . '/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $donation_id;
 				echo sprintf(
+					/* translators: 1: URL of the donation, 2: Donation ID, 3: URL of the PayPal transaction, 4: Transaction ID, 5: Date, 6: Time, 7: IPN status */
 					__( 'IPN received for <a href="%1$s">#%2$s</a> ( <a href="%3$s" target="_blank">%4$s</a> ) on %5$s at %6$s. Status %7$s', 'give' ),
 					$donation_url,
 					$donation_id,
@@ -822,6 +838,7 @@ $give_updates = Give_Updates::get_instance();
                 }
 
                 echo ' &ndash; '
+                    /* translators: %s: Author name */
                     . sprintf(_x('by %s', 'by author', 'give'), wp_kses($author_name, wp_kses_allowed_html('post')))
                     . ' &ndash; '
                     . esc_html($plugin_data['Version']);
@@ -879,7 +896,7 @@ $give_updates = Give_Updates::get_instance();
 		<tr>
 			<td><?php echo wp_kses( $plugin_name, wp_kses_allowed_html( 'post' ) ); ?></td>
 			<td class="help">&nbsp;</td>
-			<td><?php echo sprintf( _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) ) . ' &ndash; ' . esc_html( $plugin_data['Version'] ); ?></td>
+			<td><?php echo sprintf( /* translators: %s: Author name */ _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) ) . ' &ndash; ' . esc_html( $plugin_data['Version'] ); ?></td>
 		</tr>
 		<?php
 	}
@@ -926,7 +943,7 @@ $give_updates = Give_Updates::get_instance();
 		<tr>
 			<td><?php echo wp_kses( $plugin_name, wp_kses_allowed_html( 'post' ) ); ?></td>
 			<td class="help">&nbsp;</td>
-			<td><?php echo sprintf( _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) ) . ' &ndash; ' . esc_html( $plugin_data['Version'] ); ?></td>
+			<td><?php echo sprintf( /* translators: %s: Author name */ _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) ) . ' &ndash; ' . esc_html( $plugin_data['Version'] ); ?></td>
 		</tr>
 		<?php
 	}
@@ -976,7 +993,7 @@ if ( ! empty( $active_mu_plugins ) ) {
 				<tr>
 					<td><?php echo $plugin_name; ?></td>
 					<td class="help">&nbsp;</td>
-					<td><?php echo sprintf( _x( 'by %s', 'by author', 'give' ), $author_name ) . ' &ndash; ' . esc_html( $mu_plugin_data['Version'] ); ?></td>
+					<td><?php echo sprintf( /* translators: %s: Author name */ _x( 'by %s', 'by author', 'give' ), $author_name ) . ' &ndash; ' . esc_html( $mu_plugin_data['Version'] ); ?></td>
 				</tr>
 				<?php
 			}
@@ -1017,7 +1034,7 @@ if ( ! empty( $active_mu_plugins ) ) {
 		<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether the current theme is a child theme.', 'give' ) ); ?></td>
 		<td>
 			<?php
-			echo is_child_theme() ? __( 'Yes', 'give' ) : __( 'No', 'give' ) . ' &ndash; ' . sprintf( __( 'If you\'re modifying GiveWP on a parent theme you didn\'t build personally, then we recommend using a child theme. See: <a href="%s" target="_blank">How to Create a Child Theme</a>', 'give' ), 'https://docs.givewp.com/wp-child-themes' );
+			echo is_child_theme() ? __( 'Yes', 'give' ) : __( 'No', 'give' ) . ' &ndash; ' . sprintf( /* translators: %s: URL of the child themes documentation */ __( 'If you\'re modifying GiveWP on a parent theme you didn\'t build personally, then we recommend using a child theme. See: <a href="%s" target="_blank">How to Create a Child Theme</a>', 'give' ), 'https://docs.givewp.com/wp-child-themes' );
 			?>
 		</td>
 	</tr>

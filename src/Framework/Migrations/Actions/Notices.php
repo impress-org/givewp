@@ -7,12 +7,16 @@ use Give\MigrationLog\MigrationLogRepository;
 use Give\MigrationLog\MigrationLogStatus;
 
 /**
+ * @since TBD Number the placeholders and add translators comments.
  * @since 4.3.0
  *
  * Show reversed migration notice
  */
 class Notices
 {
+    /**
+     * @since TBD Number the placeholders and add translators comments.
+     */
     public function __invoke()
     {
         $migrations = give(MigrationLogRepository::class)->getMigrationsByStatus(MigrationLogStatus::REVERSED);
@@ -31,7 +35,8 @@ class Notices
                     'id' => $migration->getId(),
                     'type' => 'warning',
                     'description' => sprintf(
-                        __('<strong>GiveWP</strong> Pending database update: "%s". %s', 'give'),
+                        /* translators: 1: Name of the database update, 2: Link to run the update */
+                        __('<strong>GiveWP</strong> Pending database update: "%1$s". %2$s', 'give'),
                         $migrationClass::title(),
                         $listTableLink
                     ),

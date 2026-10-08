@@ -2,6 +2,8 @@
 /**
  * Displays onboarding message in the event of an empty list table.
  *
+ * @since TBD Print the content without passing variables to the translation functions.
+ *
  * Available Variables:
  *
  *    array $content {
@@ -22,15 +24,15 @@
 	<?php endif; ?>
 
 	<?php if ( ! empty( $content['heading'] ) ) : ?>
-		<h2 class="give-blank-slate__heading"><?php esc_html_e( $content['heading'], 'give' ); ?></h2>
+		<h2 class="give-blank-slate__heading"><?php echo esc_html( $content['heading'] ); ?></h2>
 	<?php endif; ?>
 
 	<?php if ( ! empty( $content['message'] ) ) : ?>
-		<p class="give-blank-slate__message"><?php esc_html_e( $content['message'], 'give' ); ?></p>
+		<p class="give-blank-slate__message"><?php echo esc_html( $content['message'] ); ?></p>
 	<?php endif; ?>
 
 	<?php if ( ! empty( $content['cta_text'] ) && ! empty( $content['cta_link'] ) ) : ?>
-		<a class="give-blank-slate__cta button button-primary" href="<?php echo esc_url( $content['cta_link'] ); ?>"><?php esc_html_e( $content['cta_text'], 'give' ); ?></a>
+		<a class="give-blank-slate__cta button button-primary" href="<?php echo esc_url( $content['cta_link'] ); ?>"><?php echo esc_html( $content['cta_text'] ); ?></a>
 	<?php endif; ?>
 
 	<?php if ( ! empty( $content['help'] ) ) : ?>

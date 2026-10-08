@@ -6,6 +6,7 @@
  * @subpackage  Admin/Payments
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
+ * @since TBD Add translators comments.
  * @since       1.0
  */
 
@@ -158,6 +159,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
                                                     'give_donation_nonce'
                                                 )
                                             ),
+											/* translators: %s: Donation ID */
 											sprintf( __( 'Delete Donation %s', 'give' ), $payment_id )
 										);
 									}
@@ -346,7 +348,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 											?>
 											<div class="give-order-tx-id give-admin-box-inside">
 												<p>
-													<strong><?php _e( 'Transaction ID:', 'give' ); ?> <span class="give-tooltip give-icon give-icon-question"  data-tooltip="<?php echo sprintf( esc_attr__( 'The transaction ID within %s.', 'give' ), $gateway ); ?>"></span></strong>&nbsp;
+													<strong><?php _e( 'Transaction ID:', 'give' ); ?> <span class="give-tooltip give-icon give-icon-question"  data-tooltip="<?php echo sprintf( /* translators: %s: Payment gateway name */ esc_attr__( 'The transaction ID within %s.', 'give' ), $gateway ); ?>"></span></strong>&nbsp;
 													<?php echo apply_filters( "give_payment_details_transaction_id-{$gateway}", $transaction_id, $payment_id ); ?>
 												</p>
 											</div>

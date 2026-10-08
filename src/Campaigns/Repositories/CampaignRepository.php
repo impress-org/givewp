@@ -318,6 +318,7 @@ class CampaignRepository
 
         throw new InvalidArgumentException(
             sprintf(
+                /* translators: %s: Campaign title */
                 __('This form is the default form for the campaign "%s". Choose a new default form for that campaign first.', 'give'),
                 $campaign->title
             )

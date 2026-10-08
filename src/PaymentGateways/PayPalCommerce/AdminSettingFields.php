@@ -238,6 +238,7 @@ class AdminSettingFields
     /**
      * Return admin guidance notice to fix PayPal on boarding error.
      *
+      * @since TBD Add translators comments.
      * @since 3.10.0 Updated phone number for contact
      * @since 2.9.6
      *
@@ -254,6 +255,7 @@ class AdminSettingFields
             );
 
             $message = sprintf(
+                /* translators: %1$s: Link with the PayPal support phone number */
                 esc_html__('Please call a PayPal support representative at %1$s', 'give'),
                 $telephone
             );
