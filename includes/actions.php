@@ -33,7 +33,7 @@ Give_Cron::add_thricely_event( 'give_refresh_licenses' );
  */
 function give_get_actions() {
 
-	$get_data = give_clean( $_GET ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$get_data = give_clean( $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- dispatcher only; each give_{action} handler verifies its own nonce.
 
 	$_get_action = ! empty( $get_data['give_action'] ) ? $get_data['give_action'] : null;
 
@@ -68,7 +68,7 @@ add_action( 'init', 'give_get_actions' );
  */
 function give_post_actions() {
 
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- dispatcher only; each give_{action} handler verifies its own nonce.
 
 	$_post_action = ! empty( $post_data['give_action'] ) ? $post_data['give_action'] : null;
 
@@ -162,15 +162,20 @@ add_action( 'give_file_export_complete', 'give_donor_batch_export_complete' );
  *
  * @param int $form_id Donation Form ID.
  *
+ * @since TBD Unslash and sanitize the posted price option and donation levels.
  * @since 1.8.9
  *
  * @return void
  */
 function give_set_donation_levels_max_min_amount( $form_id ) {
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- nonce verified by Give_MetaBox_Form_Data::save() before give_pre_process_give_forms_meta fires.
+	$price_option    = isset( $_POST['_give_price_option'] ) ? sanitize_text_field( wp_unslash( $_POST['_give_price_option'] ) ) : '';
+	$donation_levels = isset( $_POST['_give_donation_levels'] ) ? map_deep( wp_unslash( $_POST['_give_donation_levels'] ), 'sanitize_text_field' ) : [];
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
+
 	if (
-		( 'set' === $_POST['_give_price_option'] ) ||
-		( in_array( '_give_donation_levels', $_POST ) && count( $_POST['_give_donation_levels'] ) <= 0 ) ||
-		! ( $donation_levels_amounts = wp_list_pluck( $_POST['_give_donation_levels'], '_give_amount' ) )
+		( 'set' === $price_option ) ||
+		! ( $donation_levels_amounts = wp_list_pluck( (array) $donation_levels, '_give_amount' ) )
 	) {
 		// Delete old meta.
 		give_delete_meta( $form_id, '_give_levels_minimum_amount' );

@@ -237,6 +237,7 @@ function give_send_to_gateway( $gateway, $payment_data ) {
  * Determines the currently selected donation payment gateway.
  *
  * @access public
+ * @since  TBD Unslash and sanitize the requested form ID and payment mode.
  * @since  1.0
  *
  * @param  int $form_id The ID of the Form
@@ -245,14 +246,16 @@ function give_send_to_gateway( $gateway, $payment_data ) {
  */
 function give_get_chosen_gateway( $form_id ) {
 
-	$request_form_id = isset( $_REQUEST['give_form_id'] ) ? $_REQUEST['give_form_id'] : 0;
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- these params only pick which gateway is shown; give_process_donation_form() verifies the nonce before a donation is processed.
+	$request_form_id = isset( $_REQUEST['give_form_id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['give_form_id'] ) ) : 0;
 
 	// Back to check if 'form-id' is present.
 	if ( empty( $request_form_id ) ) {
-		$request_form_id = isset( $_REQUEST['form-id'] ) ? $_REQUEST['form-id'] : 0;
+		$request_form_id = isset( $_REQUEST['form-id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['form-id'] ) ) : 0;
 	}
 
-	$request_payment_mode = isset( $_REQUEST['payment-mode'] ) ? $_REQUEST['payment-mode'] : '';
+	$request_payment_mode = isset( $_REQUEST['payment-mode'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['payment-mode'] ) ) : '';
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 	$chosen               = false;
 
 	// If both 'payment-mode' and 'form-id' then set for only this form.

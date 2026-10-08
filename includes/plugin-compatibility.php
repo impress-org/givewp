@@ -52,6 +52,7 @@ add_action( 'give_email_send_before', 'give_disable_mandrill_nl2br' );
  * This function will clear the Yoast SEO sitemap cache on update of settings
  *
  * @return void
+ * @since TBD Unslash and sanitize the posted display settings before comparing them.
  * @since 1.8.9
  */
 function give_clear_seo_sitemap_cache_on_settings_change() {
@@ -69,10 +70,12 @@ function give_clear_seo_sitemap_cache_on_settings_change() {
 		$forms_archive_option  = give_get_option( 'forms_singular' );
 
 		// If there is change detected for Single Form View and Form Archives options then proceed.
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- nonce verified by Give_Admin_Settings::verify_nonce() in save() before give-settings_save_display fires.
 		if (
-			( isset( $_POST['forms_singular'] ) && $_POST['forms_singular'] !== $forms_singular_option ) ||
-			( isset( $_POST['forms_archives'] ) && $_POST['forms_archives'] !== $forms_archive_option )
+			( isset( $_POST['forms_singular'] ) && sanitize_text_field( wp_unslash( $_POST['forms_singular'] ) ) !== $forms_singular_option ) ||
+			( isset( $_POST['forms_archives'] ) && sanitize_text_field( wp_unslash( $_POST['forms_archives'] ) ) !== $forms_archive_option )
 		) {
+			// phpcs:enable WordPress.Security.NonceVerification.Missing
 			// If Yoast SEO or Yoast SEO Premium plugin exists, then update seo sitemap cache.
 			$yoast_sitemaps_cache = new WPSEO_Sitemaps_Cache();
 			if ( method_exists( $yoast_sitemaps_cache, 'clear' ) ) {
@@ -104,7 +107,7 @@ function give_elementor_hide_shortcodes_button() {
 		/**
 		 * Check user is on the Elementor's editor page, then hide Give Shortcodes Button.
 		 */
-		if ( isset( $_GET['action'] ) && 'elementor' === give_clean( $_GET['action'] ) ) {
+		if ( isset( $_GET['action'] ) && 'elementor' === give_clean( $_GET['action'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only check for the Elementor editor page; give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 			return false;
 		}
 	}

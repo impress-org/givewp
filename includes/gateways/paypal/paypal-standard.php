@@ -24,7 +24,7 @@ if ( ! defined('ABSPATH')) {
 function give_listen_for_paypal_ipn()
 {
     // Regular PayPal IPN.
-    if (isset($_GET['give-listener']) && 'IPN' === $_GET['give-listener']) {
+    if (isset($_GET['give-listener']) && 'IPN' === $_GET['give-listener']) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public PayPal IPN request; PayPal cannot send a nonce, and PayPalStandardWebhook::handle() verifies the event signature.
         /**
          * Fires while verifying PayPal IPN
          *

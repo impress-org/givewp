@@ -20,14 +20,18 @@ use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
 /**
  * Processes gateway select on checkout. Only for users without ajax / javascript
  *
- * @since TBD Use a safe redirect.
+ * @since TBD Use a safe redirect, and unslash and sanitize the payment mode.
  * @since 1.0
  *
  * @param $data
  */
 function give_process_gateway_select( $data ) {
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- public no-JavaScript fallback; it only redirects back to the form with the chosen gateway and saves nothing.
 	if ( isset( $_POST['gateway_submit'] ) ) {
-		wp_safe_redirect( esc_url_raw( add_query_arg( 'payment-mode', $_POST['payment-mode'] ) ) );
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- same redirect-only request as above.
+		$payment_mode = isset( $_POST['payment-mode'] ) ? sanitize_text_field( wp_unslash( $_POST['payment-mode'] ) ) : '';
+
+		wp_safe_redirect( esc_url_raw( add_query_arg( 'payment-mode', $payment_mode ) ) );
 		exit;
 	}
 }
@@ -43,7 +47,7 @@ add_action( 'give_gateway_select', 'give_process_gateway_select' );
  */
 function give_load_ajax_gateway() {
 
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, CSRF ok.
+	$post_data = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- give_verify_donation_form_nonce() verifies the nonce right below, before the form is rendered.
 
 	if (
 		! isset( $post_data['nonce'] )
@@ -85,10 +89,10 @@ add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
  * @return void
  */
 function give_donation_form_nonce() {
-	if ( isset( $_POST['give_form_id'] ) ) {
+	if ( isset( $_POST['give_form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- public endpoint that hands out the donation form nonce; it cannot require one.
 
 		// Get donation form id.
-		$form_id = is_numeric( $_POST['give_form_id'] ) ? absint( $_POST['give_form_id'] ) : 0;
+		$form_id = is_numeric( $_POST['give_form_id'] ) ? absint( $_POST['give_form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- same endpoint; the value is cast with absint().
 
 		if ( ! ShortcodeUtils::isValidForm( $form_id ) ) {
 			wp_send_json_error( [ 'error' => 'give_invalid_donation_form' ], 400 );
@@ -119,10 +123,10 @@ add_action( 'wp_ajax_nopriv_give_donation_form_nonce', 'give_donation_form_nonce
  * @return void
  */
 function give_donation_form_reset_all_nonce() {
-	if ( isset( $_POST['give_form_id'] ) ) {
+	if ( isset( $_POST['give_form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- public endpoint that hands out the donation form nonces; it cannot require one.
 
 		// Get donation form id.
-		$form_id = is_numeric( $_POST['give_form_id'] ) ? absint( $_POST['give_form_id'] ) : 0;
+		$form_id = is_numeric( $_POST['give_form_id'] ) ? absint( $_POST['give_form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- same endpoint; the value is cast with absint().
 
 		if ( ! ShortcodeUtils::isValidForm( $form_id ) ) {
 			wp_send_json_error( [ 'error' => 'give_invalid_donation_form' ], 400 );

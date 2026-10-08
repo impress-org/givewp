@@ -231,6 +231,7 @@ function give_get_offline_payment_instruction( $form_id, $wpautop = false ) {
 /**
  * Remove offline gateway from gateway list of offline disable for form.
  *
+ * @since  TBD Unslash and sanitize the request URI.
  * @since  1.8
  *
  * @param  array   $gateway_list
@@ -239,9 +240,11 @@ function give_get_offline_payment_instruction( $form_id, $wpautop = false ) {
  * @return array
  */
 function give_filter_offline_gateway( $gateway_list, $form_id ) {
+	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+
 	if (
 		// Show offline payment gateway if enable for new donation form.
-		( false === strpos( $_SERVER['REQUEST_URI'], '/wp-admin/post-new.php?post_type=give_forms' ) )
+		( false === strpos( $request_uri, '/wp-admin/post-new.php?post_type=give_forms' ) )
 		&& $form_id
 		&& ! give_is_setting_enabled( give_get_meta( $form_id, '_give_customize_offline_donations', true, 'global' ), [ 'enabled', 'global' ] )
 	) {
