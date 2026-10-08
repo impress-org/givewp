@@ -79,6 +79,7 @@ class Give_Subscriptions_DB extends Give_DB
      *
      * @access  public
      *
+     * @since TBD Use gmdate() instead of date().
      * @since 4.11.0 add campaign_id column
      * @since   1.0
      */
@@ -95,8 +96,8 @@ class Give_Subscriptions_DB extends Give_DB
             'transaction_id' => '',
             'parent_payment_id' => 0,
             'product_id' => 0,
-            'created' => date('Y-m-d H:i:s'),
-            'expiration' => date('Y-m-d H:i:s'),
+            'created' => gmdate('Y-m-d H:i:s'),
+            'expiration' => gmdate('Y-m-d H:i:s'),
             'status' => '',
             'notes' => '',
             'profile_id' => '',
@@ -383,6 +384,8 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Get Renewing Subscriptions
      *
+     * @since TBD Use gmdate() instead of date().
+     *
      * @param string $period
      *
      * @return array|bool|mixed|null|object
@@ -398,8 +401,8 @@ class Give_Subscriptions_DB extends Give_DB
             'orderby' => 'id',
             'order' => 'DESC',
             'expiration' => [
-                'start' => date('Y-m-d H:i:s', strtotime($period . ' midnight')),
-                'end' => date('Y-m-d H:i:s', strtotime($period . ' midnight') + (DAY_IN_SECONDS - 1)),
+                'start' => gmdate('Y-m-d H:i:s', strtotime($period . ' midnight')),
+                'end' => gmdate('Y-m-d H:i:s', strtotime($period . ' midnight') + (DAY_IN_SECONDS - 1)),
             ],
         ];
 
@@ -424,6 +427,8 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Get expiring subscriptions.
      *
+     * @since TBD Use gmdate() instead of date().
+     *
      * @param string $period
      *
      * @return array|bool|mixed|null|object
@@ -439,8 +444,8 @@ class Give_Subscriptions_DB extends Give_DB
             'orderby' => 'id',
             'order' => 'DESC',
             'expiration' => [
-                'start' => date('Y-m-d H:i:s', strtotime($period . ' midnight')),
-                'end' => date('Y-m-d H:i:s', strtotime($period . ' midnight') + (DAY_IN_SECONDS - 1)),
+                'start' => gmdate('Y-m-d H:i:s', strtotime($period . ' midnight')),
+                'end' => gmdate('Y-m-d H:i:s', strtotime($period . ' midnight') + (DAY_IN_SECONDS - 1)),
             ],
         ];
 
@@ -668,6 +673,8 @@ class Give_Subscriptions_DB extends Give_DB
     }
 
     /**
+     * @since TBD Use gmdate() instead of date().
+     *
      * @param $args
      *
      * @return string
@@ -677,17 +684,17 @@ class Give_Subscriptions_DB extends Give_DB
         $where = '';
         if (is_array($args['date'])) {
             if (!empty($args['date']['start'])) {
-                $start = date('Y-m-d H:i:s', strtotime($args['date']['start']));
+                $start = gmdate('Y-m-d H:i:s', strtotime($args['date']['start']));
                 $where .= " AND `expiration` >= '{$start}'";
             }
             if (!empty($args['date']['end'])) {
-                $end = date('Y-m-d H:i:s', strtotime($args['date']['end']));
+                $end = gmdate('Y-m-d H:i:s', strtotime($args['date']['end']));
                 $where .= " AND `expiration` <= '{$end}'";
             }
         } else {
-            $year = date('Y', strtotime($args['date']));
-            $month = date('m', strtotime($args['date']));
-            $day = date('d', strtotime($args['date']));
+            $year = gmdate('Y', strtotime($args['date']));
+            $month = gmdate('m', strtotime($args['date']));
+            $day = gmdate('d', strtotime($args['date']));
             $where .= " AND $year = YEAR ( created ) AND $month = MONTH ( created ) AND $day = DAY ( created )";
         }
 
@@ -695,6 +702,8 @@ class Give_Subscriptions_DB extends Give_DB
     }
 
     /**
+     * @since TBD Use gmdate() instead of date().
+     *
      * @param $args
      *
      * @return string
@@ -705,20 +714,20 @@ class Give_Subscriptions_DB extends Give_DB
 
         if (is_array($args['expiration'])) {
             if (!empty($args['expiration']['start'])) {
-                $start = date('Y-m-d H:i:s', strtotime($args['expiration']['start']));
+                $start = gmdate('Y-m-d H:i:s', strtotime($args['expiration']['start']));
 
                 $where .= " AND `expiration` >= '{$start}'";
             }
 
             if (!empty($args['expiration']['end'])) {
-                $end = date('Y-m-d H:i:s', strtotime($args['expiration']['end']));
+                $end = gmdate('Y-m-d H:i:s', strtotime($args['expiration']['end']));
 
                 $where .= " AND `expiration` <= '{$end}'";
             }
         } else {
-            $year = date('Y', strtotime($args['expiration']));
-            $month = date('m', strtotime($args['expiration']));
-            $day = date('d', strtotime($args['expiration']));
+            $year = gmdate('Y', strtotime($args['expiration']));
+            $month = gmdate('m', strtotime($args['expiration']));
+            $day = gmdate('d', strtotime($args['expiration']));
 
             $where .= " AND $year = YEAR ( expiration ) AND $month = MONTH ( expiration ) AND $day = DAY ( expiration )";
         }

@@ -67,16 +67,17 @@ class DonationQuery extends QueryBuilder
 
     /**
      * An opinionated whereBetween method for the completed date meta field.
+     * @since TBD Use gmdate() instead of date().
      * @since 3.12.0
      */
     public function between($startDate, $endDate): DonationQuery
     {
         // If the dates are empty or invalid, they will fallback to January 1st, 1970.
         // For the start date, this is exactly what we need, but for the end date, we should set it as the current date so that we have a correct date range.
-        $startDate = date('Y-m-d H:i:s', strtotime($startDate));
+        $startDate = gmdate('Y-m-d H:i:s', strtotime($startDate));
         $endDate = empty($endDate)
-            ? date('Y-m-d H:i:s')
-            : date('Y-m-d H:i:s', strtotime($endDate));
+            ? gmdate('Y-m-d H:i:s')
+            : gmdate('Y-m-d H:i:s', strtotime($endDate));
 
         $this->whereBetween('donation.post_date', $startDate, $endDate);
         return $this;
