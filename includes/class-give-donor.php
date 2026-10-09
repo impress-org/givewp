@@ -240,14 +240,15 @@ class Give_Donor {
 	/**
 	 * Setup donor address.
 	 *
+	 * @since TBD Prepare SQL with placeholders.
 	 * @since  2.0
 	 * @access public
 	 */
 	public function setup_address() {
 		global $wpdb;
-		$meta_type       = Give()->donor_meta->meta_type;
-		$meta_table_name = Give()->donor_meta->table_name;
+		$meta_type = Give()->donor_meta->meta_type;
 
+		// Use the table name of GiveWP's own donor meta. Other plugins, such as Charitable, can overwrite $wpdb->donormeta.
 		$addresses = $this->get_addresses_from_meta_cache();
 
 		$addresses = ! empty( $addresses )
@@ -255,12 +256,14 @@ class Give_Donor {
 			: $wpdb->get_results(
 				$wpdb->prepare(
 					"
-				SELECT meta_key, meta_value FROM {$meta_table_name}
+				SELECT meta_key, meta_value FROM %i
 				WHERE meta_key
-				LIKE '%s'
-				AND {$meta_type}_id=%d
+				LIKE %s
+				AND %i=%d
 				",
+					Give()->donor_meta->table_name,
 					'%give_donor_address%',
+					$meta_type . '_id',
 					$this->id
 				),
 				ARRAY_N
@@ -1334,6 +1337,7 @@ class Give_Donor {
 	/**
 	 * Add donor address
 	 *
+	 * @since TBD Prepare SQL with placeholders.
 	 * @since  2.0
 	 * @access public
 	 *
@@ -1388,7 +1392,6 @@ class Give_Donor {
 		global $wpdb;
 		$meta_key_prefix = "_give_donor_address_{$address_type}_{address_name}";
 		$meta_type       = Give()->donor_meta->meta_type;
-		$meta_table_name = Give()->donor_meta->table_name;
 
 		if ( $is_multi_address ) {
 			if ( is_null( $multi_address_id ) ) {
@@ -1396,14 +1399,16 @@ class Give_Donor {
 				$multi_address_id = $wpdb->get_var(
 					$wpdb->prepare(
 						"
-						SELECT meta_key FROM {$meta_table_name}
+						SELECT meta_key FROM %i
 						WHERE meta_key
-						LIKE '%s'
-						AND {$meta_type}_id=%d
+						LIKE %s
+						AND %i=%d
 						ORDER BY meta_id DESC
 						LIMIT 1
 						",
+						Give()->donor_meta->table_name,
 						"%_give_donor_address_{$address_type}_line1%",
+						$meta_type . '_id',
 						$this->id
 					)
 				);
@@ -1433,6 +1438,7 @@ class Give_Donor {
 	/**
 	 * Remove donor address
 	 *
+	 * @since TBD Prepare SQL with placeholders.
 	 * @since  2.0
 	 * @access public
 	 * @global wpdb  $wpdb
@@ -1458,19 +1464,20 @@ class Give_Donor {
 			$meta_key_prefix .= "_{$address_count}";
 		}
 
-		$meta_type       = Give()->donor_meta->meta_type;
-		$meta_table_name = Give()->donor_meta->table_name;
+		$meta_type = Give()->donor_meta->meta_type;
 
 		// Process query.
 		$row_affected = $wpdb->query(
 			$wpdb->prepare(
 				"
-				DELETE FROM {$meta_table_name}
+				DELETE FROM %i
 				WHERE meta_key
-				LIKE '%s'
-				AND {$meta_type}_id=%d
+				LIKE %s
+				AND %i=%d
 				",
+				Give()->donor_meta->table_name,
 				$meta_key_prefix,
+				$meta_type . '_id',
 				$this->id
 			)
 		);
@@ -1487,6 +1494,7 @@ class Give_Donor {
 	/**
 	 * Update donor address
 	 *
+	 * @since TBD Prepare SQL with placeholders.
 	 * @since  2.0
 	 * @access public
 	 * @global wpdb  $wpdb
@@ -1513,19 +1521,20 @@ class Give_Donor {
 			$meta_key_prefix .= "_{$address_count}";
 		}
 
-		$meta_type       = Give()->donor_meta->meta_type;
-		$meta_table_name = Give()->donor_meta->table_name;
+		$meta_type = Give()->donor_meta->meta_type;
 
 		// Process query.
 		$row_affected = $wpdb->get_results(
 			$wpdb->prepare(
 				"
-				SELECT meta_key FROM {$meta_table_name}
+				SELECT meta_key FROM %i
 				WHERE meta_key
-				LIKE '%s'
-				AND {$meta_type}_id=%d
+				LIKE %s
+				AND %i=%d
 				",
+				Give()->donor_meta->table_name,
 				$meta_key_prefix,
+				$meta_type . '_id',
 				$this->id
 			)
 		);

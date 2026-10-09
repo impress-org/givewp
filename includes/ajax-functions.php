@@ -348,6 +348,7 @@ add_action( 'wp_ajax_nopriv_give_form_search', 'give_ajax_form_search' );
 /**
  * Search the donors database via Ajax
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since  1.0
  *
  * @return void
@@ -355,12 +356,12 @@ add_action( 'wp_ajax_nopriv_give_form_search', 'give_ajax_form_search' );
 function give_ajax_donor_search() {
 	global $wpdb;
 
-	$search  = esc_sql( sanitize_text_field( $_POST['s'] ) );
+	$search  = sanitize_text_field( $_POST['s'] );
 	$results = [];
 	if ( ! current_user_can( 'view_give_reports' ) ) {
 		$donors = [];
 	} else {
-		$donors = $wpdb->get_results( "SELECT id,name,email FROM $wpdb->donors WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50" );
+		$donors = $wpdb->get_results( $wpdb->prepare( "SELECT id,name,email FROM $wpdb->donors WHERE `name` LIKE %s OR `email` LIKE %s LIMIT 50", '%' . $search . '%', '%' . $search . '%' ) );
 	}
 
 	if ( $donors ) {

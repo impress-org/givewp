@@ -209,9 +209,11 @@ abstract class WPBackgroundProcess extends WPAsyncRequest
             $wpdb->prepare(
                 "
 			SELECT COUNT(*)
-			FROM {$table}
-			WHERE {$column} LIKE %s
+			FROM %i
+			WHERE %i LIKE %s
 		",
+                $table,
+                $column,
                 $key
             )
         );
@@ -293,12 +295,15 @@ abstract class WPBackgroundProcess extends WPAsyncRequest
             $wpdb->prepare(
                 "
 			SELECT *
-			FROM {$table}
-			WHERE {$column} LIKE %s
-			ORDER BY {$key_column} ASC
+			FROM %i
+			WHERE %i LIKE %s
+			ORDER BY %i ASC
 			LIMIT 1
 		",
-                $key
+                $table,
+                $column,
+                $key,
+                $key_column
             )
         );
 

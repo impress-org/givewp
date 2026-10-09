@@ -330,6 +330,7 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
     /**
      * Bulk insert meta data while avoiding duplicates
      *
+     * @since TBD Document why the query is safe.
      * @since 4.3.2
      */
     private function bulkInsertMeta(array $metaInserts): void
@@ -375,7 +376,7 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
         $sql = "INSERT INTO {$wpdb->prefix}give_donationmeta (donation_id, meta_key, meta_value) VALUES " .
                implode(', ', $placeholders);
 
-        $wpdb->query($wpdb->prepare($sql, $values));
+        $wpdb->query($wpdb->prepare($sql, $values)); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $sql is a literal INSERT plus one "(%d, %s, %s)" group per row; every value goes through prepare().
     }
 
     /**

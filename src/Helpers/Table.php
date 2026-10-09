@@ -29,6 +29,7 @@ class Table
     /**
      * Check if the given table exists
      *
+     * @since TBD Remove the quotes around the %s placeholder.
      * @since  2.9.0
      * @access public
      *
@@ -40,7 +41,7 @@ class Table
     {
         global $wpdb;
 
-        return (bool)$wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE '%s'", $tableName));
+        return (bool)$wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $tableName));
     }
 
     /**

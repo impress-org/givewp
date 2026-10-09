@@ -115,6 +115,7 @@ class Give_Form_Duplicator
     /**
      * Clone meta data
      *
+     * @since TBD Prepare SQL with placeholders.
      * @since  2.2.0
      * @access private
      *
@@ -126,10 +127,9 @@ class Give_Form_Duplicator
         global $wpdb;
 
         // Clone the metadata of the form.
-        $post_meta_query = $wpdb->prepare("SELECT meta_key, meta_value FROM {$wpdb->formmeta} WHERE form_id=%s",
-            $old_form->ID);
-
-        $post_meta_data = $wpdb->get_results($post_meta_query); // WPCS: db call ok. WPCS: cache ok. WPCS: unprepared SQL OK.
+        $post_meta_data = $wpdb->get_results(
+            $wpdb->prepare("SELECT meta_key, meta_value FROM {$wpdb->formmeta} WHERE form_id=%s", $old_form->ID)
+        );
 
         if ( ! empty($post_meta_data)) {
             $duplicate_query = "INSERT INTO {$wpdb->formmeta} (form_id, meta_key, meta_value) ";
@@ -143,13 +143,14 @@ class Give_Form_Duplicator
 
             $duplicate_query .= implode(' UNION ALL ', $duplicate_query_select);
 
-            $wpdb->query($duplicate_query); // WPCS: db call ok. WPCS: cache ok. WPCS: unprepared SQL OK.
+            $wpdb->query($duplicate_query); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- every SELECT row is prepared above.
         }
     }
 
     /**
      * Reset stats for cloned form
      *
+     * @since TBD Prepare SQL with placeholders.
      * @since  2.2.0
      * @access private
      *
@@ -167,7 +168,12 @@ class Give_Form_Duplicator
          * @since  2.2.0
          */
         $meta_keys = apply_filters('give_duplicate_form_reset_stat_meta_keys', $meta_keys);
-        $meta_keys = 'meta_key=\'' . implode('\' OR meta_key=\'', $meta_keys) . '\'';
+
+        if (empty($meta_keys)) {
+            return;
+        }
+
+        $meta_keys = array_values($meta_keys);
 
         $wpdb->query(
             $wpdb->prepare(
@@ -175,9 +181,9 @@ class Give_Form_Duplicator
                 UPDATE $wpdb->formmeta
                 SET meta_value=0
                 WHERE form_id=%d
-                AND ({$meta_keys})
+                AND meta_key IN (" . implode(',', array_fill(0, count($meta_keys), '%s')) . ")
                 ",
-                $new_form_id
+                array_merge([$new_form_id], $meta_keys)
             )
         );
     }

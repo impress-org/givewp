@@ -147,6 +147,7 @@ class Give_DB_Comments extends Give_DB {
 	/**
 	 * Retrieves a single comment from the database
 	 *
+	 * @since  TBD Use the registered table name in the query.
 	 * @since  2.3.0
 	 * @access public
 	 *
@@ -172,7 +173,7 @@ class Give_DB_Comments extends Give_DB {
 			case 'id':
 				$comment = $wpdb->get_row(
 					$wpdb->prepare(
-						"SELECT * FROM $this->table_name WHERE comment_ID = %s LIMIT 1",
+						"SELECT * FROM {$wpdb->give_comments} WHERE comment_ID = %s LIMIT 1",
 						$comment_id
 					),
 					ARRAY_A
@@ -189,6 +190,7 @@ class Give_DB_Comments extends Give_DB {
 	/**
 	 * Retrieve comments from the database.
 	 *
+	 * @since  TBD Document why the query is safe.
 	 * @since  2.3.0
 	 * @access public
 	 *
@@ -201,7 +203,7 @@ class Give_DB_Comments extends Give_DB {
 		$sql_query = $this->get_sql( $args );
 
 		// Get comment.
-		$comments = $wpdb->get_results( $sql_query );
+		$comments = $wpdb->get_results( $sql_query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() returns a prepared query.
 
 		return $comments;
 	}
@@ -210,6 +212,7 @@ class Give_DB_Comments extends Give_DB {
 	/**
 	 * Count the total number of comments in the database
 	 *
+	 * @since  TBD Document why the query is safe.
 	 * @since  2.3.0
 	 * @access public
 	 *
@@ -226,7 +229,7 @@ class Give_DB_Comments extends Give_DB {
 
 		$sql_query = $this->get_sql( $args );
 
-		$count = $wpdb->get_var( $sql_query );
+		$count = $wpdb->get_var( $sql_query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() returns a prepared query.
 
 		return absint( $count );
 	}
@@ -264,6 +267,7 @@ class Give_DB_Comments extends Give_DB {
 	/**
 	 * Get sql query from quaried array.
 	 *
+	 * @since  TBD Prepare the comment types, allowlist the order and document why the query is safe.
 	 * @since  2.3.0
 	 * @access public
 	 *
@@ -356,17 +360,17 @@ class Give_DB_Comments extends Give_DB {
 				$args['comment_type'] = explode( ',', $args['comment_type'] );
 			}
 
-			$comment_types = implode( '\',\'', array_map( 'trim', $args['comment_type'] ) );
+			$comment_types = array_map( 'trim', $args['comment_type'] );
 
-			$where .= " AND {$this->table_name}.comment_type IN( '{$comment_types}' ) ";
+			$where .= $wpdb->prepare( " AND {$wpdb->give_comments}.comment_type IN( " . implode( ',', array_fill( 0, count( $comment_types ), '%s' ) ) . ' ) ', $comment_types );
 		}
 
 		$args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? 'comment_date' : $args['orderby'];
 
-		$args['orderby'] = esc_sql( $args['orderby'] );
-		$args['order']   = esc_sql( $args['order'] );
+		$args['order'] = 'ASC' === strtoupper( (string) $args['order'] ) ? 'ASC' : 'DESC';
 
 		return $wpdb->prepare(
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- fields and orderby are allowlisted against the table columns, order is ASC or DESC, and $where is built from intval, WP_Meta_Query, WP_Date_Query and prepare() fragments.
 			"SELECT {$fields} FROM {$this->table_name} {$where} ORDER BY {$this->table_name}.{$args['orderby']} {$args['order']} LIMIT %d,%d;",
 			absint( $args['offset'] ),
 			absint( $args['number'] )

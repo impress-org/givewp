@@ -104,6 +104,7 @@ abstract class Give_DB {
 	/**
 	 * Retrieve a row by the primary key
 	 *
+	 * @since TBD Use %i for table and column names.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -120,12 +121,13 @@ abstract class Give_DB {
 			return null;
 		}
 
-		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $this->primary_key = %s LIMIT 1;", $row_id ) );
+		return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE %i = %s LIMIT 1;', $this->table_name, $this->primary_key, $row_id ) );
 	}
 
 	/**
 	 * Retrieve a row by a specific column / value
 	 *
+	 * @since TBD Use %i for table and column names.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -143,15 +145,14 @@ abstract class Give_DB {
 			return null;
 		}
 
-		$column = esc_sql( $column );
-
-		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $column = %s LIMIT 1;", $row_id ) );
+		return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE %i = %s LIMIT 1;', $this->table_name, $column, $row_id ) );
 	}
 
 	/**
 	 * Retrieve all rows by a specific column / value
 	 * Note: currently support string comparision
 	 *
+	 * @since TBD Prepare each condition and allow only AND or OR as the relation.
 	 * @since  2.2.4
 	 * @access public
 	 *
@@ -175,21 +176,23 @@ abstract class Give_DB {
 			)
 		);
 
-		$relation = $column_args['relation'];
+		$relation = 'OR' === strtoupper( (string) $column_args['relation'] ) ? 'OR' : 'AND';
 		unset( $column_args['relation'] );
 
 		$where = array();
 		foreach ( $column_args as $column_name => $column_value ) {
-			$where[] = esc_sql( $column_name ) . "='$column_value'";
+			$where[] = $wpdb->prepare( '%i = %s', $column_name, $column_value );
 		}
 		$where = implode( " {$relation} ", $where );
 
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- table_name is the class table property; $where is built from prepare() clauses and an allowlisted AND/OR above.
 		return $wpdb->get_results( "SELECT * FROM {$this->table_name} WHERE {$where};" );
 	}
 
 	/**
 	 * Retrieve a specific column's value by the primary key
 	 *
+	 * @since TBD Use %i for table and column names.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -207,14 +210,13 @@ abstract class Give_DB {
 			return null;
 		}
 
-		$column = esc_sql( $column );
-
-		return $wpdb->get_var( $wpdb->prepare( "SELECT $column FROM $this->table_name WHERE $this->primary_key = %s LIMIT 1;", $row_id ) );
+		return $wpdb->get_var( $wpdb->prepare( 'SELECT %i FROM %i WHERE %i = %s LIMIT 1;', $column, $this->table_name, $this->primary_key, $row_id ) );
 	}
 
 	/**
 	 * Retrieve a specific column's value by the the specified column / value
 	 *
+	 * @since TBD Use %i for table and column names.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -233,10 +235,7 @@ abstract class Give_DB {
 			return null;
 		}
 
-		$column_where = esc_sql( $column_where );
-		$column       = esc_sql( $column );
-
-		return $wpdb->get_var( $wpdb->prepare( "SELECT $column FROM $this->table_name WHERE $column_where = %s LIMIT 1;", $column_value ) );
+		return $wpdb->get_var( $wpdb->prepare( 'SELECT %i FROM %i WHERE %i = %s LIMIT 1;', $column, $this->table_name, $column_where, $column_value ) );
 	}
 
 	/**
@@ -344,6 +343,7 @@ abstract class Give_DB {
 	/**
 	 * Delete a row identified by the primary key
 	 *
+	 * @since TBD Use %i for table and column names.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -362,7 +362,7 @@ abstract class Give_DB {
 			return false;
 		}
 
-		if ( false === $wpdb->query( $wpdb->prepare( "DELETE FROM $this->table_name WHERE $this->primary_key = %d", $row_id ) ) ) {
+		if ( false === $wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE %i = %d', $this->table_name, $this->primary_key, $row_id ) ) ) {
 			return false;
 		}
 
@@ -372,6 +372,7 @@ abstract class Give_DB {
 	/**
 	 * Check if the given table exists
 	 *
+	 * @since TBD Remove quotes around the %s placeholder.
 	 * @since  1.3.2
 	 * @access public
 	 *
@@ -385,7 +386,7 @@ abstract class Give_DB {
 
 		$table = sanitize_text_field( $table );
 
-		return $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE '%s'", $table ) ) === $table;
+		return $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table;
 	}
 
 	/**
