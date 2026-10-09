@@ -1577,7 +1577,7 @@ function give_get_total_post_type_count( $post_type = '', $args = [] ) {
 	}
 
 	$post_types = (array) $post_type;
-	$result     = $wpdb->get_var( $wpdb->prepare( "SELECT count(ID) FROM {$wpdb->posts} WHERE post_type IN (" . implode( ',', array_fill( 0, count( $post_types ), '%s' ) ) . ')', $post_types ) );
+	$result     = $wpdb->get_var( $wpdb->prepare( "SELECT count(ID) FROM {$wpdb->posts} WHERE post_type IN (" . implode( ',', array_fill( 0, count( $post_types ), '%s' ) ) . ')', $post_types ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- One COUNT across several post types; wp_count_posts() counts one type at a time.
 
 	return absint( $result );
 }
@@ -1780,7 +1780,7 @@ function give_get_active_by_user_meta( $banner_addon_name ) {
 		$GLOBALS['give_addon_activated_by_user'] = [];
 
 		// Get the meta of activation banner by user.
-		$activation_banners = $wpdb->get_results(
+		$activation_banners = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds addon activation rows in wp_options by name pattern, which get_option() cannot do.
 			"
 					SELECT option_name, option_value
 					FROM {$wpdb->options}

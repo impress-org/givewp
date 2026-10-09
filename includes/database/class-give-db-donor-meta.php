@@ -74,8 +74,8 @@ class Give_DB_Donor_Meta extends Give_DB_Meta {
 		return array(
 			'meta_id'    => '%d',
 			'donor_id'   => '%d',
-			'meta_key'   => '%s',
-			'meta_value' => '%s',
+			'meta_key'   => '%s', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column format map of the GiveWP meta table, not a query filter.
+			'meta_value' => '%s', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column format map of the GiveWP meta table, not a query filter.
 		);
 	}
 
@@ -92,7 +92,7 @@ class Give_DB_Donor_Meta extends Give_DB_Meta {
 
 		if (
 			! give_has_upgrade_completed( 'v20_rename_donor_tables' ) &&
-			$wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', "{$wpdb->prefix}give_customermeta" ) )
+			$wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', "{$wpdb->prefix}give_customermeta" ) ) // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Checks whether a table exists with SHOW TABLES; WordPress has no function for it.
 		) {
 			$wpdb->donormeta = $this->table_name = "{$wpdb->prefix}give_customermeta";
 			$this->meta_type = 'customer';

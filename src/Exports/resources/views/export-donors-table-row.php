@@ -1,4 +1,7 @@
 <?php if (!defined('ABSPATH')) { exit; } ?>
+<?php
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+?>
 <?php /** @since TBD Escape output. */ ?>
 <tr class="give-export-donors">
     <td scope="row" class="row-title">

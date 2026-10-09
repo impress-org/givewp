@@ -36,7 +36,7 @@ class TransferDonations
             DB::table('give_donationmeta')
                 ->where('meta_key', '_give_payment_form_id')
                 ->where('meta_value', $this->sourceId)
-                ->update(['meta_value' => $destinationId]);
+                ->update(['meta_value' => $destinationId]); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an update of the donation meta table, not a query filter.
 
             DB::table('give_revenue')
                 ->where('form_id', $this->sourceId)

@@ -83,8 +83,8 @@ class DonationNotesRepository
                 DB::table('give_commentmeta')
                     ->insert([
                         'give_comment_id' => $commentId,
-                        'meta_key' => DonationNoteMetaKeys::TYPE,
-                        'meta_value' => DonationNoteType::DONOR,
+                        'meta_key' => DonationNoteMetaKeys::TYPE, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the comment meta table, not a query filter.
+                        'meta_value' => DonationNoteType::DONOR, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
                     ]);
             }
         } catch (Exception $exception) {
@@ -255,15 +255,15 @@ class DonationNotesRepository
         if (!$query) {
             $table->insert([
                 'give_comment_id' => $donationNote->id,
-                'meta_key' => DonationNoteMetaKeys::TYPE,
-                'meta_value' => $donationNote->type->getValue(),
+                'meta_key' => DonationNoteMetaKeys::TYPE, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the comment meta table, not a query filter.
+                'meta_value' => $donationNote->type->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
             ]);
         } else {
             $table
                 ->where('give_comment_id', $donationNote->id)
                 ->where('meta_key', DonationNoteMetaKeys::TYPE)
                 ->update([
-                    'meta_value' => $donationNote->type->getValue(),
+                    'meta_value' => $donationNote->type->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
                 ]);
         }
     }

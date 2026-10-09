@@ -84,8 +84,8 @@ class SubscriptionNotesRepository
                 DB::table('commentmeta')
                     ->insert([
                         'comment_ID' => $commentId,
-                        'meta_key' => SubscriptionNoteMetaKeys::TYPE,
-                        'meta_value' => SubscriptionNoteType::DONOR,
+                        'meta_key' => SubscriptionNoteMetaKeys::TYPE, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the comment meta table, not a query filter.
+                        'meta_value' => SubscriptionNoteType::DONOR, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
                     ]);
             }
         } catch (Exception $exception) {
@@ -246,15 +246,15 @@ class SubscriptionNotesRepository
         if (! $query) {
             $table->insert([
                 'comment_ID' => $subscriptionNote->id,
-                'meta_key' => SubscriptionNoteMetaKeys::TYPE,
-                'meta_value' => $subscriptionNote->type->getValue(),
+                'meta_key' => SubscriptionNoteMetaKeys::TYPE, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the comment meta table, not a query filter.
+                'meta_value' => $subscriptionNote->type->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
             ]);
         } else {
             $table
                 ->where('comment_ID', $subscriptionNote->id)
                 ->where('meta_key', SubscriptionNoteMetaKeys::TYPE)
                 ->update([
-                    'meta_value' => $subscriptionNote->type->getValue(),
+                    'meta_value' => $subscriptionNote->type->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
                 ]);
         }
     }

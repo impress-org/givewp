@@ -106,7 +106,7 @@ class Give_Donors_Query {
 			'user'            => null,
 			'email'           => null,
 			'donor'           => null,
-			'meta_query'      => [],
+			'meta_query'      => [], // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Empty default for the meta_query arg; callers fill it when they filter donors by meta.
 			'date_query'      => [],
 			's'               => null,
 			'fields'          => 'all', // Supports donors (all fields) or valid column as string or array list.
@@ -181,10 +181,10 @@ class Give_Donors_Query {
 
 		if ( null === $this->donors ) {
 			if ( empty( $this->args['count'] ) ) {
-				$this->donors = $wpdb->get_results( $this->get_sql() ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare() fragments, intval, allowlisted table columns and compare operators, an ASC or DESC check, WP_Meta_Query and WP_Date_Query.
+				$this->donors = $wpdb->get_results( $this->get_sql() ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare() fragments, intval, allowlisted table columns and compare operators, an ASC or DESC check, WP_Meta_Query and WP_Date_Query. GiveWP donors table; WordPress has no cache layer for it. The result is cached with Give_Cache::set_db_query below.
 				self::update_meta_cache( wp_list_pluck( (array) $this->donors, 'id' ) );
 			} else {
-				$this->donors = $wpdb->get_var( $this->get_sql() ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare() fragments, intval, allowlisted table columns and compare operators, an ASC or DESC check, WP_Meta_Query and WP_Date_Query.
+				$this->donors = $wpdb->get_var( $this->get_sql() ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare() fragments, intval, allowlisted table columns and compare operators, an ASC or DESC check, WP_Meta_Query and WP_Date_Query. GiveWP donors table; WordPress has no cache layer for it. The result is cached with Give_Cache::set_db_query below.
 			}
 
 			Give_Cache::set_db_query( $cache_key, $this->donors );
@@ -653,7 +653,7 @@ class Give_Donors_Query {
 
 			$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
 
-			$donor_ids = $wpdb->get_results(
+			$donor_ids = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 				$wpdb->prepare(
 					"
 			SELECT DISTINCT meta_value as donor_id

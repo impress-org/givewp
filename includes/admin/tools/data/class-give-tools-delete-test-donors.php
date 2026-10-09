@@ -182,7 +182,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 				'posts_per_page' => $this->per_step,
 				'paged'          => $paged,
 				// ONLY TEST MODE TRANSACTIONS!!!
-				'meta_query'     => array(
+				'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Selects donations by payment mode, which is stored as meta; admin tool.
 					'relation' => 'OR',
 					array(
 						'key'   => '_give_payment_mode',
@@ -361,8 +361,8 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 					'post_type'      => 'give_payment',
 					'post_status'    => 'any',
 					'posts_per_page' => 1,
-					'meta_key'       => '_give_payment_mode',
-					'meta_value'     => 'live',
+					'meta_key'       => '_give_payment_mode', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Selects donations by payment mode, which is stored as meta; admin tool.
+					'meta_value'     => 'live', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Selects donations by payment mode, which is stored as meta; admin tool.
 					'author'         => $donor_ids[ $page ],
 				)
 			);

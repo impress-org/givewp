@@ -282,7 +282,7 @@ class Give_Comment {
 			);
 		}
 
-		$comments = $wpdb->get_results( Give()->comment->db->get_sql( $comment_args ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() returns a prepared query.
+		$comments = $wpdb->get_results( Give()->comment->db->get_sql( $comment_args ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() returns a prepared query. GiveWP comments table; WordPress has no cache layer for it.
 
 		return $comments;
 	}
@@ -389,7 +389,7 @@ class Give_Comment {
 			$where .= $wpdb->prepare( ' AND comment_post_ID = %d', $post_id );
 		}
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built only from prepare() fragments: one for each comment type, which can be changed by the give_comment_type filter, and one for the post ID.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built only from prepare() fragments: one for each comment type, which can be changed by the give_comment_type filter, and one for the post ID. Counts comments grouped by status like core get_comment_count(), but excluding the GiveWP comment types, which get_comment_count() cannot do.
 		$count = $wpdb->get_results( "SELECT comment_approved, COUNT( * ) AS num_comments FROM {$wpdb->comments} {$where} GROUP BY comment_approved", ARRAY_A );
 
 		$total    = 0;
@@ -493,7 +493,7 @@ class Give_Comment {
 
 			// Set default meta_query value.
 			if ( ! isset( $comment_args['meta_query'] ) ) {
-				$comment_args['meta_query'] = array();
+				$comment_args['meta_query'] = array(); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Empty meta query that the note type filter below fills in.
 			}
 
 			// Bailout
@@ -506,7 +506,7 @@ class Give_Comment {
 
 			switch ( $comment_type ) {
 				case 'payment':
-					$comment_args['meta_query'] = ! empty( $comment_args['meta_query'] )
+					$comment_args['meta_query'] = ! empty( $comment_args['meta_query'] ) // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Hides donor notes from the donation notes; the note type is stored as comment meta.
 						? $comment_args['meta_query']
 						: array(
 							array(
@@ -529,7 +529,7 @@ class Give_Comment {
 					break;
 
 				case 'donor':
-					$comment_args['meta_query'] = ! empty( $comment_args['meta_query'] )
+					$comment_args['meta_query'] = ! empty( $comment_args['meta_query'] ) // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Selects the notes of one donor, whose ID is stored as comment meta.
 						? $comment_args['meta_query']
 						: array(
 							array(

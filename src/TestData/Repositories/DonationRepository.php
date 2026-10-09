@@ -7,6 +7,8 @@ use Give\TestData\Framework\MetaRepository;
 use Give\ValueObjects\Money;
 use Give_Donor;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery -- WP-CLI test data code; it writes and reads fake data directly for speed, runs only from the command line, and is not cached.
+
 class DonationRepository
 {
     /**

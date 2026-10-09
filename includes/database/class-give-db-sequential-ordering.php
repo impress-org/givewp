@@ -87,7 +87,7 @@ class Give_DB_Sequential_Ordering extends Give_DB {
 		$charset_collate = $wpdb->get_charset_collate();
 
 		// Calculate auto increment number.
-		$payment_ID = $wpdb->get_var(
+		$payment_ID = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Reads the newest donation post ID to seed the sequential ordering table; runs only when the table is created.
 			$wpdb->prepare(
 				"
 				SELECT ID
@@ -111,7 +111,7 @@ class Give_DB_Sequential_Ordering extends Give_DB {
 
 		if ( ! empty( $payment_ID ) ) {
 			$auto_increment = $payment_ID + 1;
-			$wpdb->query( $wpdb->prepare( 'ALTER TABLE %i AUTO_INCREMENT=%d;', $this->table_name, $auto_increment ) );
+			$wpdb->query( $wpdb->prepare( 'ALTER TABLE %i AUTO_INCREMENT=%d;', $this->table_name, $auto_increment ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Sets AUTO_INCREMENT on the GiveWP sequential ordering table when it is created; a schema change that runs once.
 			give_update_option( 'sequential-ordering_number', $auto_increment );
 		} else {
 			give_update_option( 'sequential-ordering_number', 1 );
@@ -130,7 +130,7 @@ class Give_DB_Sequential_Ordering extends Give_DB {
 	public function get_id_auto_increment_val() {
 		global $wpdb;
 
-		return $wpdb->get_var(
+		return $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Reads AUTO_INCREMENT from INFORMATION_SCHEMA, which WordPress has no function for; the value changes with every donation, so it is not cached.
 			$wpdb->prepare(
 				'
 				SELECT AUTO_INCREMENT

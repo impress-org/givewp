@@ -472,7 +472,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 						array(
 							'comment_parent' => $payment->ID,
 							'comment_type'   => 'donation',
-							'meta_query'     => array(
+							'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Reads donation notes by their note type, which is stored as comment meta; admin export.
 								'relation' => 'OR',
 								array(
 									'key'     => 'note_type',
@@ -507,7 +507,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 						array(
 							'comment_parent' => $payment->ID,
 							'comment_type'   => 'donation',
-							'meta_query'     => array(
+							'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Reads donation notes by their note type, which is stored as comment meta; admin export.
 								array(
 									'key'   => 'note_type',
 									'value' => 'donor',

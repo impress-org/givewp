@@ -92,8 +92,8 @@ function give_get_payment_by( $field = '', $value = '' ) {
 		case 'key':
 			$payment = give_get_payments(
 				[
-					'meta_key'       => '_give_payment_purchase_key',
-					'meta_value'     => $value,
+					'meta_key'       => '_give_payment_purchase_key', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Finds a donation by its purchase key, which is stored only as meta.
+					'meta_value'     => $value, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Finds a donation by its purchase key, which is stored only as meta.
 					'posts_per_page' => 1,
 					'fields'         => 'ids',
 				]
@@ -108,8 +108,8 @@ function give_get_payment_by( $field = '', $value = '' ) {
 		case 'payment_number':
 			$payment = give_get_payments(
 				[
-					'meta_key'       => '_give_payment_number',
-					'meta_value'     => $value,
+					'meta_key'       => '_give_payment_number', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Finds a donation by its donation number, which is stored only as meta.
+					'meta_value'     => $value, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Finds a donation by its donation number, which is stored only as meta.
 					'posts_per_page' => 1,
 					'fields'         => 'ids',
 				]
@@ -524,7 +524,7 @@ function give_count_payments( $args = [] ) {
 function give_check_for_existing_payment( $payment_id ) {
 	global $wpdb;
 
-	return (bool) $wpdb->get_var(
+	return (bool) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Existence check by ID and status in one query; it avoids loading the whole post.
 		$wpdb->prepare(
 			"
 			SELECT ID
@@ -681,7 +681,7 @@ function give_get_earnings_by_date( $day, $month_num, $year = null, $hour = null
 		if ( $donations ) {
 			$donation_ids   = $donations;
 			$donations      = implode( ',', $donations );
-			$earning_totals = $wpdb->get_var(
+			$earning_totals = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Sum of donation totals in the GiveWP donation meta table; WordPress has no function for it.
 				$wpdb->prepare(
 					"SELECT SUM(meta_value) FROM {$wpdb->donationmeta} WHERE meta_key = '_give_payment_total' AND %i IN (" . implode( ',', array_fill( 0, count( $donation_ids ), '%d' ) ) . ')',
 					array_merge( [ $donation_table_col ], $donation_ids )
@@ -735,7 +735,7 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 	$show_free = apply_filters( 'give_sales_by_date_show_free', true, $args );
 
 	if ( false === $show_free ) {
-		$args['meta_query'] = [
+		$args['meta_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Hides free donations from the sales stats; the amount is stored as meta.
 			[
 				'key'     => '_give_payment_total',
 				'value'   => 0,
@@ -864,7 +864,7 @@ function give_get_total_earnings( $recalculate = false ) {
 			}
 
 			if ( ! empty( $payments ) ) {
-				$total += $wpdb->get_var(
+				$total += $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Sum of donation totals in the GiveWP donation meta table; WordPress has no function for it.
 					$wpdb->prepare(
 						"SELECT SUM(meta_value) FROM %i WHERE meta_key = '_give_payment_total' AND %i IN(" . implode( ',', array_fill( 0, count( $payments ), '%d' ) ) . ')',
 						array_merge( [ $meta_table['name'], $meta_table['column']['id'] ], $payments )
@@ -1054,7 +1054,7 @@ function give_get_payment_user_id( $payment_id ) {
 	global $wpdb;
 	$donationmeta_primary_key = Give()->payment_meta->get_meta_type() . '_id';
 
-	return (int) $wpdb->get_var(
+	return (int) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Joins the GiveWP donors and donation meta tables; WordPress has no function for it.
 		$wpdb->prepare(
 			"
 			SELECT user_id
@@ -1392,7 +1392,7 @@ function give_get_donation_id_by_key( $key ) {
 
 	$meta_table = give_v20_bc_table_details( 'payment' );
 
-	$purchase = $wpdb->get_var(
+	$purchase = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds a donation by purchase key in meta, which get_post_meta() cannot search by value.
 		$wpdb->prepare(
 			"
 				SELECT %i
@@ -1432,7 +1432,7 @@ function give_get_purchase_id_by_transaction_id( $key ) {
 	global $wpdb;
 	$meta_table = give_v20_bc_table_details( 'payment' );
 
-	$purchase = $wpdb->get_var( $wpdb->prepare( "SELECT %i FROM %i WHERE meta_key = '_give_payment_transaction_id' AND meta_value = %s LIMIT 1", $meta_table['column']['id'], $meta_table['name'], $key ) );
+	$purchase = $wpdb->get_var( $wpdb->prepare( "SELECT %i FROM %i WHERE meta_key = '_give_payment_transaction_id' AND meta_value = %s LIMIT 1", $meta_table['column']['id'], $meta_table['name'], $key ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds a donation by transaction ID in meta, which get_post_meta() cannot search by value.
 
 	if ( $purchase != null ) {
 		return $purchase;
@@ -1929,7 +1929,7 @@ function give_is_donation_completed( $donation_id ) {
 	 */
 	return apply_filters(
 		'give_is_donation_completed',
-		(bool) $wpdb->get_var(
+		(bool) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Reads donation meta only when the donation is published, in one query; get_post_meta() cannot check the post status.
 			$wpdb->prepare(
 				"
 				SELECT meta_value

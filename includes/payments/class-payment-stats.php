@@ -159,7 +159,7 @@ class Give_Payment_Stats extends Give_Stats {
 			if ( ! empty( $payments ) ) {
 				$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
 
-				$payments = $wpdb->get_results(
+				$payments = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Reads totals from the GiveWP donation meta table; WordPress has no cache layer for it.
 					$wpdb->prepare(
 						"SELECT %i as id, meta_value as total
 					FROM {$wpdb->donationmeta}
@@ -318,7 +318,7 @@ class Give_Payment_Stats extends Give_Stats {
 			LEFT JOIN {$wpdb->donationmeta} AS base ON base.{$donation_id_col} = p.ID AND base.meta_key = '_give_cs_base_amount'
 			WHERE p.post_type = 'give_payment' {$where}";
 
-		return (float) $wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by stats_where_sql() from prepare() fragments; $donation_id_col is the donation meta id column name.
+		return (float) $wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by stats_where_sql() from prepare() fragments; $donation_id_col is the donation meta id column name. Sum over the GiveWP donation meta table; WordPress has no function or cache for it.
 	}
 
 	/**
@@ -340,7 +340,7 @@ class Give_Payment_Stats extends Give_Stats {
 			return null;
 		}
 
-		return (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} AS p WHERE p.post_type = 'give_payment' {$where}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by stats_where_sql() from prepare() fragments.
+		return (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} AS p WHERE p.post_type = 'give_payment' {$where}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by stats_where_sql() from prepare() fragments. Counts donation posts in one query instead of loading every ID; WP_Query would load the posts.
 	}
 
 	/**
@@ -497,7 +497,7 @@ class Give_Payment_Stats extends Give_Stats {
 
 		$meta_table = give_v20_bc_table_details( 'form' );
 
-		$give_forms = $wpdb->get_results(
+		$give_forms = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Ranking by the _give_form_sales meta value; WordPress has no function for it.
 			$wpdb->prepare(
 				"SELECT %i as form_id, max(ABS(meta_value)) as sales
 				FROM %i WHERE meta_key='_give_form_sales' AND meta_value > 0

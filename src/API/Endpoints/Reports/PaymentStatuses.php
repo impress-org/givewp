@@ -39,7 +39,7 @@ class PaymentStatuses extends Endpoint
             'start_date' => $request->get_param('start'),
             'end_date' => $request->get_param('end'),
             'gateway' => $gateway,
-            'meta_query' => [
+            'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Limits the report donations to one currency, which is stored as meta.
                 [
                     'key' => '_give_payment_currency',
                     'value' => $this->currency,

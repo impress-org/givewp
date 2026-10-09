@@ -81,7 +81,7 @@ class Give_Payments_Query extends Give_Stats {
 			'user'            => null, // deprecated, use donor
 			'donor'           => null,
 			'status'          => give_get_payment_status_keys(),
-			'meta_key'        => null,
+			'meta_key'        => null, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Null default for the meta_key arg; callers set it when they sort or filter by meta.
 			'year'            => null,
 			'month'           => null,
 			'day'             => null,
@@ -328,7 +328,7 @@ class Give_Payments_Query extends Give_Stats {
 
 				$this->set_filters();
 
-				$new_results = $wpdb->get_results( $this->get_sql(), ARRAY_N ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare(), WP_Date_Query, WP_Meta_Query, is_numeric, absint and allowlisted fragments.
+				$new_results = $wpdb->get_results( $this->get_sql(), ARRAY_N ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare(), WP_Date_Query, WP_Meta_Query, is_numeric, absint and allowlisted fragments. Grouped stats query built by get_sql(); WP_Query cannot return grouped totals.
 
 				$this->unset_filters();
 
