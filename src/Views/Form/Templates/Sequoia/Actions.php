@@ -282,13 +282,14 @@ class Actions
     /**
      * Start choose amount section
      *
-     * @since TBD Escape output.
+     * @since TBD Escape output. Add translators comments.
      * @since 4.16.4 Escaped the donate button label output.
      * @since 2.7.0
      */
     public function getStartWrapperHTMLForAmountSection()
     {
         $content = isset($this->templateOptions['payment_amount']['content']) && ! empty($this->templateOptions['payment_amount']['content']) ? $this->templateOptions['payment_amount']['content'] : sprintf(
+            /* translators: %s: Site name */
             __(
                 'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause. Thank you for your generosity!',
                 'give'
@@ -343,6 +344,8 @@ class Actions
      *
      * Modify gateways array returned give_get_enabled_payment_gateways, before printing
      *
+     * @since TBD Add translators comments.
+     *
      * @param array $gateways Array of enabled gateways
      *
      * @return array $gateways Array of modified enabled gateways
@@ -351,6 +354,7 @@ class Actions
     {
         foreach ($gateways as $key => $value) {
             $gateways[$key]['checkout_label'] = sprintf(
+                /* translators: %1$s: Gateway checkout label */
                 __('Donate with %1$s', 'give'),
                 $value['checkout_label']
             );

@@ -2,7 +2,7 @@
 /**
  * GiveWP Onboarding Setup Guide template file
  *
- * @since TBD Escape output.
+ * @since TBD Escape output. Add translators comments.
  * @since 3.15.0 Refactored to make it compatible with v3 forms.
  * @since 2.8.0
  */
@@ -111,6 +111,7 @@
                         'icon_alt' => esc_html__('Stripe', 'give'),
                         'title' => esc_html__('Connect to Stripe', 'give'),
                         'description' => sprintf(
+                            /* translators: %s: URL of the Stripe fees documentation */
                             __('Stripe is one of the most popular payment gateways, and for good reason! Receive one-time and Recurring Donations (add-on) using many of the most popular payment methods. Additional fees may apply for free users. Read our <a href="%s" target="_blank" rel="noopener noreferrer">Stripe documentation</a> for more information.', 'give'), 
                             'https://docs.givewp.com/stripe-fees'
                         ),
@@ -234,6 +235,7 @@
                                     'href' => esc_url(admin_url('edit.php?post_type=give_forms&page=give-settings&tab=licenses')),
                                     'title' => esc_html__('Activate an Add-on License', 'give'),
                                     'description' => wp_kses_post(sprintf(
+										/* translators: %1$s: URL of the My Account page on the GiveWP website */
 										__('Enter your license key below to unlock your GiveWP add-ons. You can access your licenses anytime from the <a href="%1$s" target="_blank">My Account</a> section on the GiveWP website. ', 'give'),
                                         esc_url(Give_License::get_account_url())
                                     )),

@@ -149,14 +149,16 @@ final class Options
      * Note: if you want to add an option in template to overwrite float labels feature then instead of define it manually in template options, developer can call this function.
      * This function help to maintain backward compatibility with legacy donation form renderer.
      *
+     * @since TBD Add translators comments.
+     *
      * @return array
      */
     public static function getFloatLabelsField()
     {
         return [
             'name' => __('Floating Labels', 'give'),
-            /* translators: %s: forms http://docs.givewp.com/form-floating-labels */
             'desc' => sprintf(
+                /* translators: %s: URL of the floating labels documentation */
                 __(
                     'Select the <a href="%s" target="_blank">floating labels</a> setting for this GiveWP form. Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.',
                     'give'

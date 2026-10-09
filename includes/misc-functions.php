@@ -311,6 +311,7 @@ function give_payment_gateway_item_title( $payment_data, $length = null ) {
  * @param int   $length
  *
  * @return string
+ * @since TBD Add translators comments.
  * @since       1.8.12
  */
 function give_payment_gateway_donation_summary( $donation_data, $name_and_email = true, $length = 255 ) {
@@ -319,7 +320,7 @@ function give_payment_gateway_donation_summary( $donation_data, $name_and_email 
 	$price_id = isset( $donation_data['post_data']['give-price-id'] ) ? $donation_data['post_data']['give-price-id'] : '';
 
 	// Form title.
-	$summary = ( ! empty( $donation_data['post_data']['give-form-title'] ) ? $donation_data['post_data']['give-form-title'] : ( ! empty( $form_id ) ? wp_sprintf( __( 'Donation Form ID: %d', 'give' ), $form_id ) : __( 'Untitled donation form', 'give' ) ) );
+	$summary = ( ! empty( $donation_data['post_data']['give-form-title'] ) ? $donation_data['post_data']['give-form-title'] : ( ! empty( $form_id ) ? wp_sprintf( /* translators: %d: Donation form ID */ __( 'Donation Form ID: %d', 'give' ), $form_id ) : __( 'Untitled donation form', 'give' ) ) );
 
 	// Form multilevel if applicable.
 	if ( ! empty( $price_id ) && 'custom' !== $price_id ) {
@@ -414,7 +415,7 @@ function give_get_host() {
  * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
  *       trigger or false to not trigger error.
  *
- * @since TBD Escape output.
+ * @since TBD Escape output. Add translators comments.
  */
 function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
 
@@ -436,10 +437,12 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
 	// Allow plugin to filter the output error trigger.
 	if ( WP_DEBUG && apply_filters( 'give_deprecated_function_trigger_error', $show_errors ) ) {
 		if ( ! is_null( $replacement ) ) {
+			/* translators: 1: Function name, 2: GiveWP version, 3: Replacement function name */
 			trigger_error( wp_kses_post( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s! Use %3$s instead.', 'give' ), esc_html( $function ), esc_html( $version ), esc_html( $replacement ) ) ) );
 			trigger_error( esc_html( print_r( $backtrace, 1 ) ) ); // Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
 			// Alternatively we could dump this to a file.
 		} else {
+			/* translators: 1: Function name, 2: GiveWP version */
 			trigger_error( wp_kses_post( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s with no alternative available.', 'give' ), esc_html( $function ), esc_html( $version ) ) ) );
 			trigger_error( esc_html( print_r( $backtrace, 1 ) ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
 			// Alternatively we could dump this to a file.
@@ -1579,7 +1582,7 @@ function give_get_limit_display_donations() {
 /**
  * Add footer to the table when donor is view the donation history page with out login
  *
- * @since TBD Escape output, including translated strings.
+ * @since TBD Escape output, including translated strings. Add translators comments.
  * @since 1.8.17
  */
 function give_donation_history_table_end() {
@@ -1591,6 +1594,7 @@ function give_donation_history_table_end() {
 				<div class="give-security-wrap">
 					<div class="give-security-column give-security-description-wrap">
 						<?php
+						/* translators: %s: Email address */
 						echo esc_html( sprintf( __( 'For security reasons, please confirm your email address (%s) to view your complete donation history.', 'give' ), $email ) );
 						?>
 					</div>
@@ -1617,7 +1621,7 @@ function give_donation_history_table_end() {
  * @param string $version deprecated
  *
  * @return void
- * @since  TBD Escape output.
+ * @since  TBD Escape output. Add translators comments.
  * @since  1.8.18
  * @since  2.5.13 Refactor function
  */
@@ -1639,6 +1643,7 @@ function give_doing_it_wrong( $function, $message, $version = null ) {
 
 	// Allow plugin to filter the output error trigger.
 	if ( WP_DEBUG && apply_filters( 'give_doing_it_wrong_trigger_error', $show_errors ) ) {
+		/* translators: 1: Function name, 2: Error message */
 		trigger_error( wp_kses_post( sprintf( __( '%1$s was called <strong>incorrectly</strong>. %2$s', 'give' ), esc_html( $function ), esc_html( $message ) ) ) );
 		trigger_error( esc_html( print_r( wp_debug_backtrace_summary(), 1 ) ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
 	}

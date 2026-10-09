@@ -59,6 +59,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
         /**
          * Get settings array.
          *
+         * @since TBD Add translators comments.
          * @since 4.14.0 update donor default user role to use give_get_donor_safe_user_roles
          * @since 4.1.0 Added Donation Forms section
          * @since  1.8
@@ -156,9 +157,9 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
                         ],
                         [
                             'name' => __('Setup Page', 'give'),
-                            /* translators: %s: about page URL */
                             'desc' => sprintf(
                             wp_kses(
+                                    /* translators: %s: Link to the GiveWP Setup page */
                                     __(
                                         'This option controls the display of the %s when GiveWP is first installed.',
                                         'give'
@@ -190,6 +191,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
                         [
                             'name' => __('Form Page URL Prefix', 'give'),
                             'desc' => sprintf(
+                                /* translators: %1$s: Example form page URL */
                                 __('This slug is used as a base for the (invisible to users/site visitors) iframe URL that contains all form templates besides the legacy form template. The URL currently looks like this: %1$s. This option allows you to modify that URL to avoid conflicts that might exist with other pages and URLs on the site.',
                                     'give'),
                                 '<code>' . trailingslashit(home_url()) . Give()->routeForm->getBase() . '/{form-slug}</code>'
@@ -283,6 +285,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
                                 __('Add emails one at a time to ensure that donations using that email bypass GiveWP\'s Akismet SPAM filtering. Emails added to the list here are always allowed to donate, even if they\'ve been flagged by Akismet.',
                                     'give'),
                                 sprintf(
+                                    /* translators: %1$s: URL of the Akismet contact page */
                                     __('To permanently prevent emails from being flagged as SPAM by Akismet <a href="%1$s" target="_blank">contact their team here</a>.',
                                         'give'),
                                     esc_url('https://docs.givewp.com/akismet-contact')

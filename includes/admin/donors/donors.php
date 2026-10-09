@@ -306,7 +306,7 @@ function give_render_donor_view( $view, $callbacks ) {
 /**
  * View a donor
  *
- * @since TBD Escape output, including translated strings.
+ * @since TBD Escape output, including translated strings. Add translators comments.
  * @since 4.16.4 Escaped the donor company and phone output.
  * @since 3.7.0 Add "phone" field
  * @since  1.0
@@ -564,6 +564,7 @@ function give_donor_view( $donor ) {
 					<span class="dashicons dashicons-heart"></span>
 					<?php
 					// Completed Donations.
+					/* translators: %d: Number of completed donations */
 					$completed_donations_text = sprintf( _n( '%d Completed Donation', '%d Completed Donations', $donor->purchase_count, 'give' ), $donor->purchase_count );
 					echo esc_html( apply_filters( 'give_donor_completed_donations', $completed_donations_text, $donor ) );
 					?>

@@ -11,6 +11,7 @@ use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 class GetPaymentMethodFromRequest
 {
     /**
+     * @since TBD Add translators comments.
      * @since 2.19.0
      *
      * @throws PaymentMethodException
@@ -30,6 +31,7 @@ class GetPaymentMethodFromRequest
 
         DonationNote::create([
             'donationId' => $donation->id,
+            /* translators: %s: Stripe payment method ID */
             'content' => sprintf(__('Stripe Source/Payment Method ID: %s', 'give'), $paymentMethod->id())
         ]);
 

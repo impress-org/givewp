@@ -1,7 +1,10 @@
-<?php /**
- * @since TBD Escape output and replace short echo tags with escaped echo.
+<?php
+/**
+ * @since TBD Escape output, replace short echo tags with escaped echo, and add translators comments.
+ *
  * @var array[] $banners
- */?>
+ */
+?>
 <div class="givewp-sale-banners-container" style="display: none;">
     <?php
     foreach ($banners as $banner): extract($banner);
@@ -24,6 +27,7 @@
 
         $discount_percentage = 40;
         $header = sprintf(
+            /* translators: %s: Discount percentage in bold, for example 40% */
             __('Save %s on GiveWP Today.', 'give'),
             '<strong>' . $discount_percentage . '%</strong>'
         );

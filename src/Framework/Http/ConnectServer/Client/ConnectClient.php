@@ -104,7 +104,7 @@ class ConnectClient
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since TBD Escape exception message. Add translators comments.
      * @since 2.25.0
      *
      * @param array|WP_Error $response
@@ -116,6 +116,7 @@ class ConnectClient
         if (is_wp_error($response)) {
             throw new RequestException(
                 sprintf(
+                    /* translators: 1: URL of the Connect server, 2: Error message */
                     esc_html__(
                         'The request to the %1$s failed. Error:  %2$s',
                         'give'

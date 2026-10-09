@@ -1050,7 +1050,7 @@ function give_file( $field ) {
 /**
  * Output a media upload field.
  *
- * @since  TBD Escape output.
+ * @since  TBD Escape output. Add translators comments.
  * @since  1.8
  *
  * @param array $field
@@ -1059,7 +1059,7 @@ function give_media( $field ) {
 	global $thepostid, $post;
 
 	$thepostid    = empty( $thepostid ) ? $post->ID : $thepostid;
-	$button_label = sprintf( __( 'Add or Upload %s', 'give' ), ( 'file' === $field['type'] ? __( 'File', 'give' ) : __( 'Image', 'give' ) ) );
+	$button_label = sprintf( /* translators: %s: Type of file, File or Image */ __( 'Add or Upload %s', 'give' ), ( 'file' === $field['type'] ? __( 'File', 'give' ) : __( 'Image', 'give' ) ) );
 
 	$field['style']               = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class']       = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
@@ -1146,12 +1146,16 @@ function give_default_gateway( $field ) {
  * @return void
  */
 
+/**
+ * @since TBD Add translators comments.
+ */
 function give_docs_link( $field ) {
 	$field['url']   = isset( $field['url'] ) ? $field['url'] : 'https://givewp.com/documentation';
 	$field['title'] = isset( $field['title'] ) ? $field['title'] : 'Documentation';
 
 	echo '<p class="give-docs-link"><a href="' . esc_url( $field['url'] )
 		 . '" target="_blank">'
+		 /* translators: %s: Documentation title */
 		 . sprintf( esc_html__( 'Need Help? See docs on "%s"', 'give' ), esc_html( $field['title'] ) )
 		 . '<span class="dashicons dashicons-editor-help"></span></a></p>';
 }

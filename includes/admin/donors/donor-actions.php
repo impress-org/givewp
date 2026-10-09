@@ -400,7 +400,7 @@ add_action( 'give_disconnect-userid', 'give_disconnect_donor_user_id', 10, 1 );
  *
  * @param array $args Array of arguments: nonce, donor id, and email address.
  *
- * @since TBD Escape output.
+ * @since TBD Escape output. Add translators comments.
  * @since 1.7
  *
  * @return mixed If DOING_AJAX echos out JSON, otherwise returns array of success (bool) and message (string).
@@ -467,10 +467,12 @@ function give_add_donor_email( $args ) {
 
 			$user       = wp_get_current_user();
 			$user_login = ! empty( $user->user_login ) ? $user->user_login : __( 'System', 'give' );
+			/* translators: 1: Email address, 2: Username of the person who made the change */
 			$donor_note = sprintf( __( 'Email address %1$s added by %2$s', 'give' ), $email, $user_login );
 			$donor->add_note( $donor_note );
 
 			if ( $primary ) {
+				/* translators: 1: Email address, 2: Username of the person who made the change */
 				$donor_note = sprintf( __( 'Email address %1$s set as primary by %2$s', 'give' ), $email, $user_login );
 				$donor->add_note( $donor_note );
 			}
@@ -494,7 +496,7 @@ add_action( 'give_add_donor_email', 'give_add_donor_email', 10, 1 );
 /**
  * Remove an email address to the donor from within the admin and log a donor note and redirect back to the donor interface for feedback.
  *
- * @since  TBD Escape output.
+ * @since  TBD Escape output. Add translators comments.
  * @since  1.7
  *
  * @return bool|null
@@ -526,6 +528,7 @@ function give_remove_donor_email() {
 		$url        = add_query_arg( 'give-messages[]', 'email-removed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor->id ) );
 		$user       = wp_get_current_user();
 		$user_login = ! empty( $user->user_login ) ? $user->user_login : __( 'System', 'give' );
+		/* translators: 1: Email address, 2: Username of the person who made the change */
 		$donor_note = sprintf( __( 'Email address %1$s removed by %2$s', 'give' ), $_GET['email'], $user_login );
 		$donor->add_note( $donor_note );
 	} else {
@@ -543,7 +546,7 @@ add_action( 'give_remove_donor_email', 'give_remove_donor_email', 10 );
  * Set an email address as the primary for a donor from within the admin and log a donor note
  * and redirect back to the donor interface for feedback
  *
- * @since  TBD Escape output.
+ * @since  TBD Escape output. Add translators comments.
  * @since  1.7
  *
  * @return bool|null
@@ -579,6 +582,7 @@ function give_set_donor_primary_email() {
 		$url        = add_query_arg( 'give-messages[]', 'primary-email-updated', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor->id ) );
 		$user       = wp_get_current_user();
 		$user_login = ! empty( $user->user_login ) ? $user->user_login : __( 'System', 'give' );
+		/* translators: 1: Email address, 2: Username of the person who made the change */
 		$donor_note = sprintf( __( 'Email address %1$s set as primary by %2$s', 'give' ), $_GET['email'], $user_login );
 
 		$donor->add_note( $donor_note );

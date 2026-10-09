@@ -1,6 +1,7 @@
 <?php
 /**
- * @since TBD Escape output and replace short echo tags with escaped echo.
+ * @since TBD Escape output, replace short echo tags with escaped echo, number the placeholders, and add translators comments.
+ *
  * @var string $title
  * @var string $description
  * @var bool $isSecureBadgeEnabled
@@ -46,7 +47,7 @@
                         role="meter"
                         class="give-form-goal-progress-meter"
                         style="--progress: <?php echo esc_attr($goalStats[ 'progress' ]); ?>%"
-                        aria-label="<?php echo esc_attr(sprintf(__('%s of %s goal', 'give'), $goalStats[ 'raised' ], $goalStats[ 'goal' ])); ?>"
+                        aria-label="<?php echo esc_attr(sprintf(/* translators: 1: Amount raised, 2: Goal amount */ __('%1$s of %2$s goal', 'give'), $goalStats[ 'raised' ], $goalStats[ 'goal' ])); ?>"
                         aria-valuemin="0"
                         aria-valuemax="<?php echo esc_attr($goalStats[ 'goalRaw' ]); ?>"
                         aria-valuenow="<?php echo esc_attr($goalStats[ 'raisedRaw' ]); ?>"

@@ -76,6 +76,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @param string $column_name The name of the column
 	 *
 	 * @access public
+	 * @since TBD Add translators comments.
 	 * @since  1.0
 	 *
 	 * @return string Column Name
@@ -83,6 +84,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
 			case 'title':
+				/* translators: %s: Form ID */
 				$title = empty( $item['title'] ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $item['ID'] ) : $item['title'];
 
 				return sprintf(

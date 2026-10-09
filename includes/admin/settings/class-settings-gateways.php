@@ -258,6 +258,7 @@ if (! class_exists('Give_Settings_Gateways')) :
         /**
          * Render Gateway Notice
          *
+         * @since TBD Add translators comments.
          * @since 4.2.0 Updated messages removing mentions to Stripe fees
          * @since  2.3.0
          * @access public
@@ -300,6 +301,7 @@ if (! class_exists('Give_Settings_Gateways')) :
                     <p class="give-gateways-notice-message">
                         <?php
                         echo wp_kses_post( sprintf(
+                            /* translators: 1: Help icon markup, 2: URL of the PayPal settings page, 3: URL of the 2Checkout add-on page, 4: URL of the Authorize.Net add-on page */
                             __(
                                 'Activate the free Stripe payment gateway %1$s, <a href="%2$s" target="_blank">PayPal Donations</a>, or a premium gateway like <a href="%3$s" target="_blank">2checkout</a>, or <a href="%4$s" target="_blank">Authorize.Net</a>.',
                                 'give'

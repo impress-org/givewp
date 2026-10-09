@@ -469,6 +469,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @param string       $column_name The name of the column.
 	 *
 	 * @access public
+	 * @since TBD Add translators comments.
 	 * @since  TBD Say No campaign when the donation has no campaign.
 	 * @since  1.0
      * @since 4.3.0 show campaign name instead of the form name
@@ -487,6 +488,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				if ( current_user_can( 'view_give_payments' ) ) {
 					$value = Give()->tooltips->render_link(
 						[
+							/* translators: %s: Donation number */
 							'label'       => sprintf( __( 'View Donation %s', 'give' ), $serial_code ),
 							'tag_content' => $serial_code,
 							'link'        => $single_donation_url,
@@ -538,6 +540,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				if ( current_user_can( 'view_give_payments' ) ) {
 					$value = Give()->tooltips->render_link(
 						[
+							/* translators: %s: Donation ID */
 							'label'       => sprintf( __( 'View Donation #%s', 'give' ), $payment->ID ),
 							'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
 							'link'        => $single_donation_url,
@@ -594,6 +597,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 *
 	 * @param object $payment Payment Data.
 	 *
+	 * @since TBD Add translators comments.
 	 * @since 1.6
 	 *
 	 * @return array $actions
@@ -625,6 +629,7 @@ class Give_Payment_History_Table extends WP_List_Table {
                         'give_payment_nonce'
                     )
                 ),
+				/* translators: %s: Donation ID */
 				sprintf( __( 'Resend Donation %s Receipt', 'give' ), $payment->ID ),
 				__( 'Resend Receipt', 'give' )
 			);
@@ -646,6 +651,7 @@ class Give_Payment_History_Table extends WP_List_Table {
                         'give_donation_nonce'
                     )
                 ),
+				/* translators: %s: Donation ID */
 				sprintf( __( 'Delete Donation %s', 'give' ), $payment->ID ),
 				__( 'Delete', 'give' )
 			);

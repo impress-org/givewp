@@ -76,6 +76,7 @@ class MigrationsRunner
     /**
      * Run database migrations.
      *
+     * @since TBD Number the placeholders and add translators comments.
      * @since      4.18.0 hold a lock so concurrent requests do not run the same migration twice
      * @since      4.0.0 add support for batch processing
      * @since      2.9.0
@@ -154,7 +155,8 @@ class MigrationsRunner
                                     'id' => $migrationId,
                                     'type' => 'warning',
                                     'description' => sprintf(
-                                        __('Incomplete database update: "%s". %s', 'give'),
+                                        /* translators: 1: Name of the database update, 2: Link to run the update */
+                                        __('Incomplete database update: "%1$s". %2$s', 'give'),
                                         $migration::title(),
                                         $listTableLink
                                     ),

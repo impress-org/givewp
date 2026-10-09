@@ -122,7 +122,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Escape output.
+     * @since TBD Escape output. Add translators comments.
      * @since 2.13.0
      */
     private function getIntroductionSectionMarkup()
@@ -158,6 +158,7 @@ class AccountManagerSettingField
             <p class="give-stripe-subheading-description">
                 <?php
                 echo wp_kses_post(sprintf(
+                    /* translators: %s: URL of the Stripe fees documentation */
                     __('Connect to the Stripe payment gateway using this section. Multiple Stripe accounts can be connected simultaneously. All donation forms will use the "Default Account" unless configured otherwise. To specify a different Stripe account for a form, configure the settings within the "Stripe Account" tab on the individual form edit screen. An additional 2%% fee is applied to donations for free users (removed with any premium product license). Read our <a href="%s" target="_blank" rel="noopener noreferrer">Stripe documentation</a> for more information.', 'give'),
                     esc_url('https://docs.givewp.com/stripe-fees')
                 ));

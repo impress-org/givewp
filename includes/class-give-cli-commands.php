@@ -171,6 +171,7 @@ class GIVE_CLI_COMMAND {
 	 * wp give forms --id=103
 	 * wp give forms --number=103
 	 *
+	 * @since TBD Add translators comments.
 	 * @since         1.7
 	 * @access        public
 	 *
@@ -279,6 +280,7 @@ class GIVE_CLI_COMMAND {
 			$is_table_first_row_set = false;
 			$table_column_count     = 0;
 
+			/* translators: %d: Number of donation forms */
 			WP_CLI::line( $this->color_message( sprintf( __( '%d donation forms found', 'give' ), count( $forms['forms'] ) ), '', false ) );
 
 			foreach ( $forms['forms'] as $index => $form_data ) {
@@ -365,7 +367,7 @@ class GIVE_CLI_COMMAND {
 	 * wp give donors --number=1000
 	 * wp give donors --form-id=1024
 	 *
-	 * @since TBD Use gmdate() and wp_date() instead of date().
+	 * @since TBD Use gmdate() and wp_date() instead of date(), and add translators comments.
 	 * @since         1.7
 	 * @access        public
 	 *
@@ -419,6 +421,7 @@ class GIVE_CLI_COMMAND {
 				$donor_id = Give()->donors->add( $args );
 
 				if ( $donor_id ) {
+					/* translators: %d: Donor ID */
 					WP_CLI::line( $this->color_message( sprintf( __( 'Donor #%d created successfully', 'give' ), $donor_id ) ) );
 				} else {
 					WP_CLI::error( __( 'Failed to create donor', 'give' ) );
@@ -428,6 +431,7 @@ class GIVE_CLI_COMMAND {
 				$email = $name = false;
 			}
 
+			/* translators: 1: Number of donors, 2: Number of seconds */
 			WP_CLI::line( $this->color_message( sprintf( __( '%1$d donors created in %2$d seconds', 'give' ), $number, time() - $start ) ) );
 
 		} else {
@@ -586,6 +590,7 @@ class GIVE_CLI_COMMAND {
 	 * wp give donations
 	 * wp give donations --number=100
 	 *
+	 * @since TBD Add translators comments.
 	 * @since         1.7
 	 * @access        public
 	 *
@@ -627,6 +632,7 @@ class GIVE_CLI_COMMAND {
 		self::$counter = 1;
 
 		foreach ( $donations['donations'] as $key => $donation ) {
+			/* translators: 1: Position in the list, 2: Donation ID */
 			$this->color_main_heading( sprintf( __( '%1$s. Donation #%2$s', 'give' ), self::$counter, $donation['ID'] ), 'Y' );
 			self::$counter ++;
 
@@ -1128,6 +1134,7 @@ class GIVE_CLI_COMMAND {
 	 * @param array $pos   Array of positional arguments.
 	 * @param array $assoc Array of associative arguments.
 	 *
+	 * @since TBD Add translators comments.
 	 * @since 2.1.3
 	 *
 	 * @subcommand add-on-update
@@ -1153,6 +1160,7 @@ class GIVE_CLI_COMMAND {
 			 * not exist.
 			 */
 			if ( empty( $give_addon_path ) ) {
+				/* translators: %s: Add-on name */
 				WP_CLI::error( sprintf( __( "The GiveWP add-on '%s' does not exist.", 'give' ), $addon_name ) );
 			}
 
@@ -1180,10 +1188,12 @@ class GIVE_CLI_COMMAND {
 			 * current branch of the addon was updated or not.
 			 */
 			if ( 0 === $return_var ) {
+				/* translators: %s: Add-on name */
 				WP_CLI::success( sprintf( __( "The GiveWP add-on '%s' is up-to-date with origin.", 'give' ), $addon_name ) );
 
 				return;
 			} elseif ( 1 === $return_var ) {
+				/* translators: %s: Add-on name */
 				WP_CLI::error( sprintf( __( "The GiveWP add-on '%s' was not updated.", 'give' ), $addon_name ) );
 			}
 		}

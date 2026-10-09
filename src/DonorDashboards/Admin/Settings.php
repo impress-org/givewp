@@ -51,6 +51,7 @@ class Settings
     /**
      * Return CMB2 compatible array used to render/control donor profile page setting
      *
+     * @since TBD Add translators comments.
      * @since 2.10.0
      * @return array
      *
@@ -65,6 +66,7 @@ class Settings
         );
 
         $generateDonorDashboardPageDesc = $this->donorDashboardPageIsPublished() ? '' : sprintf(
+            /* translators: %s: URL that generates a new Donor Dashboard page */
             __(' Need helping setting one up? <a href="%s">Generate a new Donor Dashboard page.</a>', 'give'),
             $generateDonorDashboardPageUrl
         );

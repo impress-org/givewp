@@ -82,7 +82,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
-     * @since TBD Escape exception messages.
+     * @since TBD Escape exception messages. Add translators comments.
      * @since 4.16.9 Capture every order here, and validate the captured amount against the donation.
      * @since 4.16.8.1 Reject a completed order whose amount doesn't match the donation, or whose capture is already recorded against a different donation.
      * @since 4.2.1 updated to use updateOrderFromDonation
@@ -138,6 +138,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
         return PaymentComplete::make($transactionId)
             ->setPaymentNotes(
                 sprintf(
+                    /* translators: 1: PayPal transaction ID, 2: PayPal order ID */
                     __('Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give'),
                     $transactionId,
                     $payPalOrderId
@@ -146,6 +147,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
+      * @since TBD Add translators comments.
      * @since 4.5.0 Add Accept Credit Card (Smart Buttons Only) setting.
      * @since 3.0.0 Conditionally add "Transaction Type" setting.
      * @since 2.33.0 Register new payment field type setting.
@@ -203,6 +205,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
             [
                 'name' => esc_html__('Payment Field Type', 'give'),
                 'desc' => sprintf(
+                    /* translators: 1: Opening link tag, 2: Closing link tag */
                     esc_html__(
                         '"Auto" provides the most payment options to the donor as possible, based on your account. "Smart Buttons Only" shows only the payment buttons. There is no "Hosted Only" option at this time due to limitations with PayPal\'s hosted fields. Not sure what this means? %1$sRead here%2$s.',
                         'give'
@@ -388,7 +391,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
-     * @since TBD Escape exception messages.
+     * @since TBD Escape exception messages. Add translators comments.
      * @since 4.16.9 Read the capture defensively, and report a failed or declined capture's processor response.
      *
      * @throws PaymentGatewayException
@@ -417,6 +420,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
                 : '';
 
             $message = sprintf(
+                /* translators: %s: Transaction status */
                 __('PayPal Order has been declined.  Transaction status:: %s', 'give'),
                 $transaction->status
             );
@@ -429,6 +433,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
         if ($error) {
             throw new PaymentGatewayException(
                 sprintf(
+                    /* translators: %s: Error message */
                     esc_html__('PayPal Order has an error: %s', 'give'),
                     esc_html($error)
                 )
@@ -452,7 +457,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
-     * @since TBD Escape exception messages.
+     * @since TBD Escape exception messages. Add translators comments.
      * @since 4.7.0
      *
      * @throws Exception
@@ -466,6 +471,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
             DonationNote::create([
                 'donationId' => $donation->id,
                 'content' => sprintf(
+                    /* translators: %s: PayPal transaction ID */
                     __('Donation refunded in PayPal for transaction ID: %s', 'give'),
                     $donation->gatewayTransactionId
                 ),
@@ -476,6 +482,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
             DonationNote::create([
                 'donationId' => $donation->id,
                 'content' => sprintf(
+                    /* translators: %s: Donation ID */
                     __(
                         'Error! Donation %s was NOT refunded. Find more details on the error in the logs at Donations > Tools > Logs. To refund the donation, use the PayPal dashboard tools.',
                         'give'
@@ -484,6 +491,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
                 ),
             ]);
 
+            /* translators: %s: Error message */
             throw new PaymentGatewayException(sprintf(__('PayPal API error: %s', 'give'), $e->getMessage())); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- PayPal API text shown on the donation form as JSON/text; esc_html() here would double-encode quotes.
         }
     }

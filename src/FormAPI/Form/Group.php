@@ -65,7 +65,7 @@ class Group extends Field
     /**
      * Get sub fields.
      *
-     * @since TBD Escape exception message.
+     * @since TBD Escape exception message. Add translators comments.
      * @since 2.7.0
      *
      * @param string $fieldId
@@ -87,6 +87,7 @@ class Group extends Field
         if ( ! $field) {
             throw new InvalidArgumentException(
                 sprintf(
+                    /* translators: %1$s: Field ID */
                     esc_html__('Field with %1$s Id does not exist in group.', 'give'),
                     esc_html($fieldId)
                 )

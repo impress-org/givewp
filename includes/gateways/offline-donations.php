@@ -152,6 +152,7 @@ function give_get_default_offline_donation_email_content() {
 /**
  * Get formatted offline instructions
  *
+ * @since TBD Add translators comments.
  * @since 2.15.0
  *
  * @param  string  $instructions
@@ -163,8 +164,8 @@ function give_get_default_offline_donation_email_content() {
 function get_formatted_offline_instructions( $instructions, $form_id, $wpautop = false ) {
 	$settings_url = admin_url( 'post.php?post=' . $form_id . '&action=edit&message=1' );
 
-	/* translators: %s: form settings url */
 	$offline_instructions = ! empty( $instructions ) ? $instructions : sprintf(
+		/* translators: %s: URL of the form settings page */
 		__( 'Please enter offline donation instructions in <a href="%s">this form\'s settings</a>.', 'give' ),
 		$settings_url
 	);
