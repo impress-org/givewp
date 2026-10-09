@@ -36,7 +36,7 @@ class Utils
         $formName = get_post_field('post_name', Frontend::getFormId());
         $referer = trailingslashit(wp_get_referer()) ?: '';
 
-        return ! empty($_REQUEST['give_embed_form']) ||
+        return ! empty($_REQUEST['give_embed_form']) || // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache.
                false !== strpos($referer, "/{$base}/{$formName}/") ||
                self::inIframe() ||
                false !== strpos($referer, 'giveDonationFormInIframe');
@@ -50,7 +50,7 @@ class Utils
      */
     public static function isProcessingGiveActionOnAjax()
     {
-        $action = isset($_REQUEST['action']) ? give_clean($_REQUEST['action']) : '';
+        $action = isset($_REQUEST['action']) ? give_clean($_REQUEST['action']) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
         $whiteListedAction = ['get_receipt'];
 
         return $action && wp_doing_ajax() && (0 === strpos($action, 'give_') || in_array(
@@ -68,7 +68,7 @@ class Utils
      */
     public static function canShowFailedDonationError()
     {
-        return ! empty($_REQUEST['showFailedDonationError']);
+        return ! empty($_REQUEST['showFailedDonationError']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache.
     }
 
     /**
@@ -134,7 +134,7 @@ class Utils
      */
     public static function getIframeParentURL()
     {
-        return isset($_REQUEST['give-current-url']) ? give_clean($_REQUEST['give-current-url']) : '';
+        return isset($_REQUEST['give-current-url']) ? give_clean($_REQUEST['give-current-url']) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
     }
 
     /**
@@ -212,7 +212,7 @@ class Utils
      */
     public static function inIframe()
     {
-        return ! empty($_GET['giveDonationFormInIframe']);
+        return ! empty($_GET['giveDonationFormInIframe']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache.
     }
 
     /**
@@ -240,7 +240,7 @@ class Utils
      */
     public static function canDisableDonationNowButton()
     {
-        return ! empty($_GET['giveDisableDonateNowButton']);
+        return ! empty($_GET['giveDisableDonateNowButton']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache.
     }
 
     /**

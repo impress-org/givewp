@@ -11,7 +11,7 @@ use Give\Helpers\Form\Utils;
 class EditFormRoute
 {
     /**
-     * @since TBD Use a safe redirect.
+     * @since TBD Use a safe redirect and sanitize the request input.
      * @since 3.22.0 Add locale support
      * @since 3.0.3 Use isV3Form() method instead of 'post_content' to check if the form is built with Visual Builder
      * @since 3.0.0
@@ -20,17 +20,24 @@ class EditFormRoute
      */
     public function __invoke()
     {
-        if (isset($_GET['post'], $_GET['action']) && 'edit' === $_GET['action']) {
-            $locale = $_GET['locale'] ?? '';
-            // This conditional will be also triggered by WP edit bulk action
-            // WP sends an array of IDs so if that is the case here, we can skip this
-            if ( ! is_array($_GET['post'])) {
-                $post = get_post(abs($_GET['post']));
-                if ('give_forms' === $post->post_type && Utils::isV3Form($post->ID)) {
-                    wp_safe_redirect(FormBuilderRouteBuilder::makeEditFormRoute($post->ID, $locale)->getUrl());
-                    exit();
-                }
-            }
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only edit link; it only redirects to the form builder and saves nothing.
+        if (!isset($_GET['post'], $_GET['action']) || 'edit' !== sanitize_key(wp_unslash($_GET['action']))) {
+            return;
+        }
+
+        // This conditional will be also triggered by WP edit bulk action
+        // WP sends an array of IDs so if that is the case here, we can skip this
+        if (is_array($_GET['post'])) {
+            return;
+        }
+
+        $locale = isset($_GET['locale']) ? sanitize_text_field(wp_unslash($_GET['locale'])) : '';
+        $post = get_post(absint($_GET['post']));
+        // phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+        if ($post && 'give_forms' === $post->post_type && Utils::isV3Form($post->ID)) {
+            wp_safe_redirect(FormBuilderRouteBuilder::makeEditFormRoute($post->ID, $locale)->getUrl());
+            exit();
         }
     }
 }

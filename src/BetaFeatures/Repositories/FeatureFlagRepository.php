@@ -46,8 +46,8 @@ class FeatureFlagRepository
     public function enabled($feature, $default = false): bool
     {
         // Workaround so that the updated option is available at the start of the request.
-        $option = ($this->isVerifiedSettingsSaveRequest() && isset($_POST["enable_$feature"]))
-            ? give_clean($_POST["enable_$feature"])
+        $option = ($this->isVerifiedSettingsSaveRequest() && isset($_POST["enable_$feature"])) // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by isVerifiedSettingsSaveRequest() in this condition.
+            ? give_clean($_POST["enable_$feature"]) // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified by isVerifiedSettingsSaveRequest() in the condition above; give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
             : give_get_option("enable_$feature", $default);
 
         return give_is_setting_enabled($option);

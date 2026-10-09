@@ -29,7 +29,7 @@ class ValidationRoute
     public function __invoke(array $request): bool
     {
         // create DTO from GET request
-        $routeData = DonateRouteData::fromRequest(give_clean($_GET));
+        $routeData = DonateRouteData::fromRequest(give_clean($_GET)); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public v3 donation route; DonateRouteData::validateSignature() checks the signed URL right after this, so a WordPress nonce cannot be sent here.
 
         // validate signature
         $routeData->validateSignature();

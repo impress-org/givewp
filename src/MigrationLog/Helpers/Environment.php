@@ -17,6 +17,7 @@ class Environment
      */
     public static function isMigrationsPage()
     {
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only page, tab and section checks; they only decide whether this is the migrations page.
         if ( ! isset($_GET['page'], $_GET['tab'])) {
             return false;
         }
@@ -28,6 +29,7 @@ class Environment
         ) {
             return true;
         }
+        // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
         return false;
     }

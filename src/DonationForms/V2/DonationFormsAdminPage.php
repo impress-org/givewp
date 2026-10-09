@@ -128,6 +128,7 @@ class DonationFormsAdminPage
 
     /**
      * Load migration onboarding scripts
+     * @since TBD Guard the post param.
      * @since 3.2.0
      *
      * @return void
@@ -148,7 +149,7 @@ class DonationFormsAdminPage
         }
 
         if ($this->isShowingEditV2FormPage()) {
-            $formId = (int)$_GET['post'];
+            $formId = absint($_GET['post'] ?? 0); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only post id; it only selects which form to show and saves nothing.
             $campaign = Campaign::findByFormId($formId);
             $isMigrated = _give_is_form_migrated($formId);
 
@@ -214,7 +215,7 @@ class DonationFormsAdminPage
         ];
 
         if (CampaignsAdminPage::isShowingDetailsPage()) {
-            $queryParameters['campaignId'] = isset($_GET['id']) ? absint($_GET['id']) : null;
+            $queryParameters['campaignId'] = isset($_GET['id']) ? absint($_GET['id']) : null; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only id param; it only selects which record to show and saves nothing.
         }
 
         $request = WP_REST_Request::from_url(
@@ -316,7 +317,7 @@ class DonationFormsAdminPage
      */
     public static function isShowing(): bool
     {
-        return isset($_GET['page']) && ($_GET['page'] === 'give-forms');
+        return isset($_GET['page']) && ($_GET['page'] === 'give-forms'); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**
@@ -329,7 +330,7 @@ class DonationFormsAdminPage
      */
     private function isShowingEditV2FormPage(): bool
     {
-        return isset($_GET['action'], $GLOBALS['post']) && $_GET['action'] === 'edit' && $GLOBALS['post']->post_type === 'give_forms';
+        return isset($_GET['action'], $GLOBALS['post']) && $_GET['action'] === 'edit' && $GLOBALS['post']->post_type === 'give_forms'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**
@@ -341,7 +342,7 @@ class DonationFormsAdminPage
      */
     private function isShowingAddV2FormPage(): bool
     {
-        return !isset($_GET['page']) && isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
+        return !isset($_GET['page']) && isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**
@@ -351,7 +352,7 @@ class DonationFormsAdminPage
      */
     public static function isShowingLegacyPage(): bool
     {
-        return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms' && empty($_GET['page']);
+        return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms' && empty($_GET['page']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**

@@ -18,7 +18,7 @@ class TopLevelMenuRedirect implements RequestHandler
      */
     public function maybeHandle()
     {
-        if (isset($_GET['page']) && 'give-setup' == $_GET['page'] && ! isset($_GET['post_type'])) {
+        if (isset($_GET['page']) && 'give-setup' == $_GET['page'] && ! isset($_GET['post_type'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only redirects to the setup page and saves nothing.
             $this->handle();
         }
     }

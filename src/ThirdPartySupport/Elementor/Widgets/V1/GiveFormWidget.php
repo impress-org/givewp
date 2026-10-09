@@ -277,7 +277,7 @@ class GiveFormWidget extends Widget_Base
         $displayStyle         = isset($settings['display_style']) ? $settings['display_style'] : 'onpage';
         $continueButtonTitle = isset($settings['continue_button_title']) ? $settings['continue_button_title'] : __('Continue to Donate', 'give');
 
-        if (isset($_POST['action']) && $_POST['action'] === 'elementor_ajax') {
+        if (isset($_POST['action']) && $_POST['action'] === 'elementor_ajax') { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Elementor verifies its ajax nonce in its own ajax handler before it renders the widget; the action name only tells the editor preview apart from a front-end render.
             // is this v3 form?
             if (Utils::isV3Form($formId)) {
                 if ($donationForm = DonationForm::find($formId)) {

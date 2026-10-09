@@ -20,8 +20,8 @@ class FormInheritsCampaignGoal
      */
     public function __invoke(DonationForm $donationForm): void
     {
-        if (isset($_GET['campaignId'])) {
-            $campaign = Campaign::find((int)$_GET['campaignId']);
+        if (isset($_GET['campaignId'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- campaign id only picks which campaign goal the new form inherits; it is cast to int before use.
+            $campaign = Campaign::find((int)$_GET['campaignId']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- campaign id only picks which campaign goal the new form inherits; it is cast to int before use.
 
             if ($campaign) {
                 $donationForm->settings->goalSource = GoalSource::CAMPAIGN();

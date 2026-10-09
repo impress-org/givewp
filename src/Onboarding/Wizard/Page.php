@@ -79,7 +79,7 @@ class Page
      **/
     public function setup_wizard()
     {
-        if (empty($_GET['page']) || $this->slug !== $_GET['page'] || ! current_user_can('manage_give_settings')) { // WPCS: CSRF ok, input var ok.
+        if (empty($_GET['page']) || $this->slug !== $_GET['page'] || ! current_user_can('manage_give_settings')) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides whether the wizard renders and saves nothing.
             return;
         } else {
             $this->render_page();
@@ -112,7 +112,7 @@ class Page
     {
         global $current_user;
 
-        if (empty($_GET['page']) || $this->slug !== $_GET['page']) { // WPCS: CSRF ok, input var ok.
+        if (empty($_GET['page']) || $this->slug !== $_GET['page']) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides whether the wizard scripts load and saves nothing.
             return;
         }
 
@@ -194,7 +194,7 @@ class Page
         \Give_Cache::delete(\Give_Cache::get_key('_give_activation_redirect'));
 
         // Bail if activating from network, or bulk
-        if (is_network_admin() || isset($_GET['activate-multi'])) {
+        if (is_network_admin() || isset($_GET['activate-multi'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- WordPress sets this flag on bulk plugin activation; it only skips the redirect and saves nothing.
             return;
         }
 

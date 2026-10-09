@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Sanitized request input in the donation form, confirmation and donor dashboard code
+timestamp: 2026-10-08T23:00:00.000Z
