@@ -68,7 +68,7 @@ class HandleGatewayPaymentCommand
         if ($command instanceof PaymentRefunded) {
             $handler = new PaymentRefundedHandler($command);
             $handler->handle($donation);
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- the refund starts from the donation details save, which verifies its nonce in give_update_payment_details(); this only picks where to send the admin back to.
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- for the admin form, give_update_payment_details() verifies the nonce before the refund starts; add-ons that trigger a refund themselves are responsible for their own nonce. This only picks where to send the admin back to.
             $referer = isset($_REQUEST['_wp_http_referer']) ? esc_url_raw(wp_unslash($_REQUEST['_wp_http_referer'])) : '';
             $url = $referer !== '' ? home_url($referer) : home_url('/');
 
