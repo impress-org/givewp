@@ -51,7 +51,7 @@ gh workflow run release-prep.yml -f ref=release/4.16.0 -f version=4.16.0
 * `-f date=YYYY-MM-DD` sets the changelog date; it defaults to today, in UTC.
 * The version must be three or four numbers (`4.16.0`, `4.16.0.1`). A pre-release such as `4.16.0-beta.1` is refused before anything changes.
 * Running it again for the same version changes nothing and pushes nothing.
-* `ref` is the release branch the workflow checks out and pushes to. The workflow file itself is taken from `develop`; the release dashboard runs the copy on the release branch instead, so cut the branch after the workflow is on `develop`.
+* `ref` is the release branch to prepare. It has to exist already (step 2 above).
 
 After it runs, continue from step 4 above. It works the same for a `hotfix/x.y.z` branch.
 
