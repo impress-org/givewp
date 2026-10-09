@@ -5,7 +5,7 @@
  * This template is used to display an email form which will when submitted send an update donation receipt and also
  * refresh the users session
  *
- * @since TBD Escape output. Add translators comments.
+ * @since TBD Escape output. Add translators comments. Load the reCAPTCHA script with wp_enqueue_script().
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -133,7 +133,10 @@ if ( true === $is_form_required ) {
 					})(jQuery);
 				</script>
 
-				<script src='https://www.google.com/recaptcha/api.js'></script>
+				<?php
+				// External Google script: its URL has no version of ours, so the version stays null.
+				wp_enqueue_script( 'give-google-recaptcha', 'https://www.google.com/recaptcha/api.js', [], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- external Google script, not versioned by GiveWP.
+				?>
 				<div class="g-recaptcha" data-sitekey="<?php echo esc_attr( $recaptcha_key ); ?>"></div>
 				<input type="hidden" name="give_ip" class="give_ip" value=""/>
 			<?php endif; ?>

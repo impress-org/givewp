@@ -96,6 +96,7 @@ class RegisterWidgetEditorScripts
     }
 
     /**
+     * @since TBD Set explicit versions on the enqueued assets.
      * @since 4.7.0
      */
     private function registerDonationFormWidgetScripts()
@@ -113,6 +114,8 @@ class RegisterWidgetEditorScripts
         wp_register_style(
             self::DONATION_FORM_WIDGET_SCRIPT_NAME,
             GIVE_PLUGIN_URL . 'build/elementorDonationFormWidget.css',
+            [],
+            GIVE_VERSION
         );
     }
 

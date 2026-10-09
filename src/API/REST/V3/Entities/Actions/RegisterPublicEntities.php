@@ -11,6 +11,7 @@ use Give\Helpers\Language;
 class RegisterPublicEntities
 {
     /**
+     * @since TBD Load the script with the defer strategy.
      * @since 4.13.1
      */
     public function __invoke()
@@ -23,7 +24,7 @@ class RegisterPublicEntities
             GIVE_PLUGIN_URL . 'build/entitiesPublic.js',
             $scriptAsset['dependencies'],
             $scriptAsset['version'],
-            true
+            ['in_footer' => true, 'strategy' => 'defer']
         );
 
         // Prevent unnecessary current-user fetch/noise for logged-out visitors.

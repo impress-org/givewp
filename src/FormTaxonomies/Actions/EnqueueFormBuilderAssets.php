@@ -25,6 +25,7 @@ class EnqueueFormBuilderAssets
     }
 
     /**
+     * @since TBD Set explicit versions on the enqueued assets.
      * @since 4.10.0 use formTaxonomySettings.css instead of style-formTaxonomySettings.css
      * @since 3.16.0
      */
@@ -46,7 +47,9 @@ class EnqueueFormBuilderAssets
 
             wp_enqueue_style(
                 'givewp-builder-taxonomy-settings',
-                GIVE_PLUGIN_URL . 'build/formTaxonomySettings.css'
+                GIVE_PLUGIN_URL . 'build/formTaxonomySettings.css',
+                [],
+                GIVE_VERSION
             );
 
             wp_add_inline_script('givewp-builder-taxonomy-settings','var giveTaxonomySettings =' . json_encode([

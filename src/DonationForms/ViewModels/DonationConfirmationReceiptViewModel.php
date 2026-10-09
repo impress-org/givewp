@@ -148,6 +148,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
+     * @since TBD Set explicit versions on the enqueued assets.
      * @since 3.0.0
      */
     public function enqueueGlobalStyles(string $primaryColor, string $secondaryColor)
@@ -157,7 +158,9 @@ class DonationConfirmationReceiptViewModel
 
         wp_register_style(
             'givewp-base-form-styles',
-            GIVE_PLUGIN_URL . 'build/baseFormDesignCss.css'
+            GIVE_PLUGIN_URL . 'build/baseFormDesignCss.css',
+            [],
+            GIVE_VERSION
         );
 
         wp_add_inline_style(
@@ -174,6 +177,7 @@ class DonationConfirmationReceiptViewModel
     /**
      * Loads scripts in order: [Registrars, Designs, App]
      *
+     * @since TBD Set explicit versions on the design script and the receipt styles.
      * @since 3.0.0
      *
      * @return void
@@ -212,7 +216,7 @@ class DonationConfirmationReceiptViewModel
             $design = $formDesignRegistrar->getDesign($formDesignId);
 
             if ($design->css()) {
-                wp_enqueue_style('givewp-form-design-' . $design::id(), $design->css());
+                wp_enqueue_style('givewp-form-design-' . $design::id(), $design->css(), [], GIVE_VERSION);
             }
 
             if ($design->js()) {
@@ -223,7 +227,7 @@ class DonationConfirmationReceiptViewModel
                         ['givewp-donation-form-registrars'],
                         $design->dependencies()
                     ),
-                    false,
+                    GIVE_VERSION,
                     true
                 );
             }
