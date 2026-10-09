@@ -11,11 +11,18 @@ use Give_Payment_History_Table;
 final class PaymentHistoryTableRequestInputTest extends TestCase
 {
     /**
+     * @var string|null
+     */
+    private $previousRequestUri;
+
+    /**
      * @since TBD
      */
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->previousRequestUri = $_SERVER['REQUEST_URI'] ?? null;
 
         // add_query_arg() reads REQUEST_URI, which an earlier test in a full run can leave unset.
         $_SERVER['REQUEST_URI'] = '/wp-admin/edit.php?post_type=give_forms&page=give-payment-history';
@@ -31,6 +38,12 @@ final class PaymentHistoryTableRequestInputTest extends TestCase
     {
         unset($_GET['s'], $_GET['orderby'], $_GET['paged'], $_GET['status']);
         remove_all_filters('give_payment_table_payments_query');
+
+        if ($this->previousRequestUri === null) {
+            unset($_SERVER['REQUEST_URI']);
+        } else {
+            $_SERVER['REQUEST_URI'] = $this->previousRequestUri;
+        }
 
         parent::tearDown();
     }

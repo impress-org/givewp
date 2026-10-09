@@ -798,7 +798,7 @@ class Give_Updates {
 	/**
 	 * Initialize updates
 	 *
-     * @since TBD Verify the nonce the script already sends.
+     * @since TBD Verify the nonce the script already sends, before the permission check and the dispatch. Do not dispatch for users without permission.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
@@ -806,18 +806,19 @@ class Give_Updates {
 	 * @return void
 	 */
 	public function give_start_updating() {
+		check_ajax_referer( self::$background_updater->get_identifier(), 'nonce' );
+
 		// Check permission.
-		if (
-			! current_user_can( 'manage_give_settings' ) ||
-			$this->is_doing_updates()
-		) {
+		if ( ! current_user_can( 'manage_give_settings' ) ) {
+			wp_send_json_error();
+		}
+
+		if ( $this->is_doing_updates() ) {
 			// Run update via ajax
 			self::$background_updater->dispatch();
 
 			wp_send_json_error();
 		}
-
-		check_ajax_referer( self::$background_updater->get_identifier(), 'nonce' );
 
 		// @todo: set http method to post
 		if ( empty( $_POST['run_db_update'] ) ) {

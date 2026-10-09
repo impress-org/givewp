@@ -275,7 +275,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * @return mixed string If search is present, false otherwise
 	 */
 	public function get_search() {
-		return ! empty( $_GET['s'] ) ? urldecode( trim( sanitize_text_field( wp_unslash( $_GET['s'] ) ) ) ) : false; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only search term; it only narrows what is shown and saves nothing.
+		return ! empty( $_GET['s'] ) ? trim( sanitize_text_field( urldecode( wp_unslash( $_GET['s'] ) ) ) ) : false; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only search term; it only narrows what is shown and saves nothing. The value is unslashed, URL-decoded and then sanitized with sanitize_text_field().
 	}
 
 	/**
