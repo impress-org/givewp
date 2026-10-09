@@ -90,6 +90,10 @@ export function createDonorAccount(): DonorAccount {
         echo $donor->id;`
     );
 
+    if (!Number(donorId)) {
+        throw new Error(`WP-CLI did not return the id of the donor it was asked to create for ${login}: ${donorId}`);
+    }
+
     return {login, password, donorId: Number(donorId)};
 }
 
@@ -134,6 +138,10 @@ export function createSubscription({
         give()->subscriptions->updateLegacyParentPaymentId($subscription->id, $donation->id);
         echo $subscription->id;`
     );
+
+    if (!Number(id)) {
+        throw new Error(`WP-CLI did not return the id of the subscription it was asked to create: ${id}`);
+    }
 
     return Number(id);
 }
