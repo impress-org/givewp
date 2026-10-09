@@ -62,6 +62,7 @@ class UsageTrackingOnBoarding
     /**
      * Get notice.
      *
+     * @since TBD Add a nonce to the action links.
      * @since 2.10.0
      *
      * @param bool $wrapper
@@ -93,11 +94,11 @@ class UsageTrackingOnBoarding
                 ),
                 'action' => sprintf(
                     '<a class="button" href="%1$s">%2$s</a><div class="sub-links"><a href="%3$s" title="%7$s">%4$s</a><a href="%5$s">%6$s</a></div>',
-                    esc_url(add_query_arg(['give_action' => 'opt_in_into_tracking'])),
+                    esc_url(wp_nonce_url(add_query_arg(['give_action' => 'opt_in_into_tracking']), 'give_usage_tracking_action')),
                     esc_html__('Glad to Help', 'give'),
-                    esc_url(add_query_arg(['give_action' => 'hide_opt_in_notice_shortly'])),
+                    esc_url(wp_nonce_url(add_query_arg(['give_action' => 'hide_opt_in_notice_shortly']), 'give_usage_tracking_action')),
                     esc_html__('Not Right Now', 'give'),
-                    esc_url(add_query_arg(['give_action' => 'hide_opt_in_notice_permanently'])),
+                    esc_url(wp_nonce_url(add_query_arg(['give_action' => 'hide_opt_in_notice_permanently']), 'give_usage_tracking_action')),
                     esc_html__('Dismiss Forever', 'give'),
                     esc_html__('Disable notice for 48 hours', 'give')
                 ),
@@ -121,7 +122,7 @@ class UsageTrackingOnBoarding
             return false;
         }
 
-        $section = isset($_GET['section']) ? 'advanced-options' : '';
+        $section = isset($_GET['section']) ? 'advanced-options' : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only settings tab check; it only decides whether to show the notice and saves nothing.
         if (Give_Admin_Settings::is_setting_page('advanced', $section)) {
             return false;
         }

@@ -89,6 +89,7 @@ window.addEventListener('DOMContentLoaded', function () {
                     formData.append('action', 'give_stripe_set_account_default');
                     formData.append('account_slug', e.target.getAttribute('data-account'));
                     formData.append('form_id', formId);
+                    formData.append('_wpnonce', e.target.getAttribute('data-nonce'));
 
                     xhr.open('POST', ajaxurl);
                     xhr.onload = function () {

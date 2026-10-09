@@ -95,28 +95,35 @@ class AjaxRequestHandler
     /**
      * give_paypal_commerce_user_onboarded ajax action handler
      *
+     * @since TBD Verify the nonce and sanitize the request.
      * @since 2.32.0 Return error response on exception when fetch access token from authorization code.
      * @since 2.9.0
      */
     public function onBoardedUserAjaxRequestHandler()
     {
         $this->validateAdminRequest();
+        check_ajax_referer('give_paypal_commerce_user_on_boarded');
 
-        if (empty($_GET['mode']) || ! in_array($_GET['mode'], ['sandbox', 'live'])) {
+        $mode = isset($_GET['mode']) ? sanitize_text_field(wp_unslash($_GET['mode'])) : '';
+
+        if (! in_array($mode, ['sandbox', 'live'], true)) {
             wp_send_json_error('Must include valid mode');
         }
-
-        $mode = sanitize_text_field(wp_unslash($_GET['mode']));
 
         // Set PayPal client mode.
         give(PayPalClient::class)->setMode($mode);
 
         $partnerLinkInfo = $this->settings->getPartnerLinkDetails();
 
+        // phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+        $authCode = isset($_GET['authCode']) ? give_clean($_GET['authCode']) : '';
+        $sharedId = isset($_GET['sharedId']) ? give_clean($_GET['sharedId']) : '';
+        // phpcs:enable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
         try {
             $payPalResponse = $this->payPalAuth->getTokenFromAuthorizationCode(
-                give_clean($_GET['authCode']),
-                give_clean($_GET['sharedId']),
+                $authCode,
+                $sharedId,
                 $partnerLinkInfo['nonce']
             );
         } catch (\Exception $exception) {
@@ -136,6 +143,7 @@ class AjaxRequestHandler
     /**
      * This function handle ajax request with give_paypal_commerce_get_partner_url action.
      *
+     * @since TBD Verify the nonce and sanitize the request.
      * @since 3.0.0 Add support for accountType. This param is required to get partner link.
      * @since 2.30.0 Add support for mode param.
      * @since 2.9.0
@@ -143,22 +151,23 @@ class AjaxRequestHandler
     public function onGetPartnerUrlAjaxRequestHandler()
     {
         $this->validateAdminRequest();
+        check_ajax_referer('give_paypal_commerce_get_partner_url');
 
-        if (empty($accountType = $_GET['accountType']) || ! in_array($accountType, ScriptLoader::$accountTypes, true)) {
+        $accountType = isset($_GET['accountType']) ? sanitize_text_field(wp_unslash($_GET['accountType'])) : '';
+        $country = isset($_GET['countryCode']) ? sanitize_text_field(wp_unslash($_GET['countryCode'])) : '';
+        $mode = isset($_GET['mode']) ? sanitize_text_field(wp_unslash($_GET['mode'])) : '';
+
+        if (! in_array($accountType, ScriptLoader::$accountTypes, true)) {
             wp_send_json_error('Must include valid account type');
         }
 
-        if (empty($country = $_GET['countryCode']) || ! isset(give_get_country_list()[$country])) {
+        if (empty($country) || ! isset(give_get_country_list()[$country])) {
             wp_send_json_error('Must include valid 2-character country code');
         }
 
-        if (empty($_GET['mode']) || ! in_array($_GET['mode'], ['sandbox', 'live'])) {
+        if (! in_array($mode, ['sandbox', 'live'], true)) {
             wp_send_json_error('Must include valid mode');
         }
-
-        $country = sanitize_text_field(wp_unslash($_GET['countryCode']));
-        $accountType = sanitize_text_field(wp_unslash($_GET['accountType']));
-        $mode = sanitize_text_field(wp_unslash($_GET['mode']));
 
         // Generate a unique state token for CSRF protection on PayPal callback.
         $stateToken = wp_generate_password(32, false);
@@ -193,6 +202,7 @@ class AjaxRequestHandler
     /**
      * give_paypal_commerce_disconnect_account ajax request handler.
      *
+     * @since TBD Validate and sanitize the posted values.
      * @since 3.16.0 added security nonce check
      * @since 3.13.0 Add new $keepWebhooks option
      * @since 2.30.0 Add support for mode param.
@@ -208,8 +218,8 @@ class AjaxRequestHandler
         }
 
         try {
-            $mode = give_clean($_POST['mode']);
-            $keepWebhooks = rest_sanitize_boolean($_POST['keep-webhooks']);
+            $mode = isset($_POST['mode']) ? sanitize_text_field(wp_unslash($_POST['mode'])) : '';
+            $keepWebhooks = isset($_POST['keep-webhooks']) && rest_sanitize_boolean($_POST['keep-webhooks']);
             $this->webhooksRepository->setMode($mode);
             $this->merchantRepository->setMode($mode);
             $this->refreshToken->setMode($mode);
@@ -275,7 +285,7 @@ class AjaxRequestHandler
      */
     private function getOrderData(): array
     {
-        $postData = give_clean($_POST);
+        $postData = give_clean($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the donation form nonce is verified by validateFrontendRequest() before this runs.
         $formId = absint($postData['give-form-id']);
         $donorAddress = $this->getDonorAddressFromPostedDataForPaypalOrder($postData);
         $isV3Form = FormUtils::isV3Form($formId);
@@ -419,13 +429,15 @@ class AjaxRequestHandler
     /**
      * Validate frontend ajax request.
      *
+     * @since TBD Validate and sanitize the posted values.
      * @since 2.9.0
      */
     private function validateFrontendRequest()
     {
-        $formId = absint($_POST['give-form-id']);
+        $formId = isset($_POST['give-form-id']) ? absint($_POST['give-form-id']) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- this method is the nonce check; give_verify_donation_form_nonce() below verifies the form hash.
+        $formHash = isset($_POST['give-form-hash']) ? sanitize_text_field(wp_unslash($_POST['give-form-hash'])) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- this method is the nonce check; give_verify_donation_form_nonce() below verifies the form hash.
 
-        if (! $formId || ! give_verify_donation_form_nonce(give_clean($_POST['give-form-hash']), $formId)) {
+        if (! $formId || ! give_verify_donation_form_nonce($formHash, $formId)) {
             wp_die();
         }
     }

@@ -89,7 +89,7 @@ class ScriptLoader
     /**
      * Load admin scripts
      *
-     * @since TBD Add translators comments.
+     * @since TBD Add translators comments. Send nonces with the PayPal onboarding requests.
      * @since 3.13.0 Add new "keepWebhooksAfterDisconnect" string
      * @since 2.9.0
      */
@@ -120,6 +120,8 @@ class ScriptLoader
             [
                 'countriesAvailableForAdvanceConnection' => $this->countriesAvailableForAdvanceConnection,
                 'accountTypes' => self::$accountTypes,
+                'onBoardedNonce' => wp_create_nonce('give_paypal_commerce_user_on_boarded'),
+                'partnerUrlNonce' => wp_create_nonce('give_paypal_commerce_get_partner_url'),
                 'translations' => [
                     'confirmPaypalAccountDisconnection' => esc_html__('Disconnect PayPal Account', 'give'),
                     'disconnectPayPalAccount' => esc_html__(
@@ -168,7 +170,8 @@ class ScriptLoader
                 }
 
                 function givePayPalOnBoardedCallback(mode, authCode, sharedId) {
-                    const query = '&mode=' + mode + '&authCode=' + authCode + '&sharedId=' + sharedId;
+                    const query = '&mode=' + mode + '&authCode=' + authCode + '&sharedId=' + sharedId
+                        + '&_wpnonce=' + encodeURIComponent(window.givePayPalCommerce.onBoardedNonce);
 
                     fetch( ajaxurl + '?action=give_paypal_commerce_user_on_boarded' + query )
                         .then(function(res){ return res.json() })

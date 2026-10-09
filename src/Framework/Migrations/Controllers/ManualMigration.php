@@ -37,22 +37,18 @@ class ManualMigration
     }
 
     /**
+     * @since TBD Verify the nonce and unslash params.
      * @since 3.19.0 sanitize params
      * @since 2.9.2
      */
     public function __invoke()
     {
-        if ( ! empty($_GET['give-run-migration'])) {
-            $migrationToRun = give_clean($_GET['give-run-migration']);
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- presence check only; the nonce is verified below before any param is used.
+        if (empty($_GET['give-run-migration']) && empty($_GET['give-clear-update'])) {
+            return;
         }
 
-        if ( ! empty($_GET['give-clear-update'])) {
-            $migrationToClear = give_clean($_GET['give-clear-update']);
-        }
-
-        $hasMigration = isset($migrationToRun) || isset($migrationToClear);
-
-        if ($hasMigration && ! UserPermissions::settings()->canManage()) {
+        if ( ! UserPermissions::settings()->canManage()) {
             give()->notices->register_notice(
                 [
                     'id' => 'invalid-migration-permissions',
@@ -63,12 +59,25 @@ class ManualMigration
             return;
         }
 
-        if (isset($migrationToRun)) {
-            $this->runMigration($migrationToRun);
+        $nonce = isset($_GET['_wpnonce']) ? sanitize_text_field(wp_unslash($_GET['_wpnonce'])) : '';
+
+        if ( ! wp_verify_nonce($nonce, 'give_manual_migration')) {
+            give()->notices->register_notice(
+                [
+                    'id' => 'invalid-migration-nonce',
+                    'description' => 'This migration link has expired or is not valid. Please use a new link.',
+                ]
+            );
+
+            return;
         }
 
-        if (isset($migrationToClear)) {
-            $this->clearMigration($migrationToClear);
+        if ( ! empty($_GET['give-run-migration'])) {
+            $this->runMigration(sanitize_text_field(wp_unslash($_GET['give-run-migration'])));
+        }
+
+        if ( ! empty($_GET['give-clear-update'])) {
+            $this->clearMigration(sanitize_text_field(wp_unslash($_GET['give-clear-update'])));
         }
     }
 
