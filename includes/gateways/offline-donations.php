@@ -182,6 +182,7 @@ function give_get_formatted_offline_instructions( $instructions, $form_id, $wpau
 /**
  * Get formatted offline instructions
  *
+ * @since TBD Renamed to give_get_formatted_offline_instructions(); this old name is a deprecated alias.
  * @since 2.15.0
  * @deprecated TBD Use give_get_formatted_offline_instructions() instead.
  */
