@@ -104,16 +104,21 @@ class LegacyFormSettingCompatibility
      * Migrate existing legacy form settings.
      * Note: Only for internal use. This function can be removed or change in future
      *
+     * @since TBD Skip the migration when the user cannot edit the form.
      * @since 2.7.0
      */
     public static function migrateExistingFormSettings()
     {
         // Only migrate settings for existing form when editing.
-        if ( ! isset($_GET['action']) || 'edit' !== give_clean($_GET['action'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- runs when the form edit screen draws its metabox; it only reads the screen URL to find the form. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+        if ( ! isset($_GET['action']) || 'edit' !== give_clean($_GET['action'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- runs when the form edit screen draws its metabox; it reads the screen URL to find the form, then runs a one-time idempotent migration that writes form meta only when the legacy template meta is missing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
             return;
         }
 
-        $formId = absint($_GET['post']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- runs when the form edit screen draws its metabox; it only reads the screen URL to find the form. cast with absint() before use.
+        $formId = absint($_GET['post']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- runs when the form edit screen draws its metabox; it reads the screen URL to find the form, then runs a one-time idempotent migration that writes form meta only when the legacy template meta is missing. cast with absint() before use, and the user must be able to edit the form.
+
+        if ( ! current_user_can('edit_post', $formId)) {
+            return;
+        }
 
         if ( ! Utils::isLegacyForm($formId)) {
             return;
