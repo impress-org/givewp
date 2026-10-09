@@ -9,7 +9,8 @@
  * Referenced from package.json -> changelogger.files[].strategy as a path.
  * The changelogger loads any strategy whose name ends in .js/.ts (resolved from
  * the current working directory) and validates that it exports formatChanges,
- * formatVersionHeader, versionHeaderMatcher and changelogHeaderMatcher.
+ * formatVersionHeader, versionHeaderMatcher and changelogHeaderMatcher, plus
+ * getLatestVersion since changelogger 1.0.0.
  */
 
 const MONTHS = [
@@ -80,19 +81,29 @@ module.exports = {
 
     // Detect an existing block for this version (so re-runs replace it).
     versionHeaderMatcher(content, version) {
-        const re = new RegExp(`^(= ${escapeRegExp(version)}: [^=]+ =)$`, "m");
+        const re = new RegExp(`^(= ${escapeRegExp(version)}: [^=\n]+ =)$`, "m");
         const match = content.match(re);
         return match ? match[1].trim() : undefined;
     },
 
     // Insert before the first existing version block, or right after the
-    // "== Changelog ==" heading when there are none yet.
+    // "== Changelog ==" heading when there are none yet. The character classes
+    // exclude \n: without that, a readme section heading such as "= Updating ="
+    // matched across lines up to the first version header, and new entries were
+    // inserted above "== Changelog ==".
     changelogHeaderMatcher(content) {
-        const firstVersion = content.match(/^= [^:]+: [^=]+ =$/m);
+        const firstVersion = content.match(/^= [^:\n]+: [^=\n]+ =$/m);
         if (!firstVersion) {
             const mainHeader = content.match(/^== Changelog ==$/m);
             return mainHeader ? mainHeader.index + mainHeader[0].length + 1 : 0;
         }
         return firstVersion.index;
+    },
+
+    // The version of the first (newest) block, or undefined when there is none.
+    // changelogger 1.0.0 refuses to load a strategy without it.
+    getLatestVersion(content) {
+        const match = content.match(/^= ([^:\n]+): [^=\n]+ =$/m);
+        return match ? match[1].trim() : undefined;
     },
 };
