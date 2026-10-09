@@ -132,7 +132,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
             do_action(self::$setting_filter_prefix . '_tabs');
 
             // Show link to New Reports page
-            $isReports = isset($_GET['page']) && $_GET['page'] === 'give-reports';
+            $isReports = isset($_GET['page']) && $_GET['page'] === 'give-reports'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page name; it only decides whether to show a link and saves nothing.
             if ($isReports === true) {
                 echo sprintf(
                     '<a href="%1$s" class="nav-tab nav-tab" id="new-reports-link">%2$s</a>',

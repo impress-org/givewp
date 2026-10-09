@@ -97,11 +97,13 @@ class Give_i18n_Banner {
 			return;
 		}
 
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only; the post type and page only decide whether to show the translation promo and save nothing.
 		if (
 			! $this->hide_promo()
 			&& ( ! empty( $_GET['post_type'] ) && 'give_forms' === $_GET['post_type'] )
 			&& ( ! empty( $_GET['page'] ) && 'give-settings' === $_GET['page'] )
 		) {
+			// phpcs:enable WordPress.Security.NonceVerification.Recommended
 			add_action( $this->hook, array( $this, 'promo' ) );
 		}
 	}

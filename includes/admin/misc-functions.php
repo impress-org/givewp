@@ -17,7 +17,7 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
 
 	$post_options = [ '' => '' ]; // Blank option
 
-	if ( ( ! isset( $_GET['page'] ) || 'give-settings' != $_GET['page'] ) && ! $force ) {
+	if ( ( ! isset( $_GET['page'] ) || 'give-settings' != $_GET['page'] ) && ! $force ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page name; it only decides whether to load the post options and saves nothing.
 		return $post_options;
 	}
 

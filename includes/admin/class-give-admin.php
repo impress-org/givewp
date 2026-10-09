@@ -143,7 +143,7 @@ class Give_Admin {
 	 * @return bool
 	 */
 	private function is_generate_pdf() {
-		return isset( $_GET['give-action'] ) && 'generate_pdf' === give_clean( $_GET['give-action'] );
+		return isset( $_GET['give-action'] ) && 'generate_pdf' === give_clean( $_GET['give-action'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only check of the action name; it saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 	}
 }
 

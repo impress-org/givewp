@@ -156,12 +156,14 @@ add_action( 'wp_ajax_nopriv_give_checkout_login', 'give_load_checkout_login_fiel
 /**
  * Load Checkout Fields
  *
+ * @since TBD Unslash and sanitize the form ID.
  * @since  1.3.6
  *
  * @return void
  */
 function give_load_checkout_fields() {
-	$form_id = isset( $_POST['form_id'] ) ? $_POST['form_id'] : '';
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- public form login/register toggle; it only renders fields and saves nothing, and a nonce printed into a cached form page would expire.
+	$form_id = isset( $_POST['form_id'] ) ? absint( wp_unslash( $_POST['form_id'] ) ) : '';
 
 	ob_start();
 
@@ -190,6 +192,7 @@ add_action( 'wp_ajax_nopriv_give_checkout_register', 'give_load_checkout_fields'
 /**
  * Retrieve a states drop down
  *
+ * @since TBD Check that the request values are set, then unslash and sanitize them.
  * @since 2.30.0 add 'state_label' & 'states' to response
  * @since  1.0
  *
@@ -200,10 +203,12 @@ function give_ajax_get_states_field() {
     $show_field = true;
     $states_require = true;
     // Get the Country code from the $_POST.
-    $country = sanitize_text_field($_POST['country']);
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing -- public country to state dropdown; it only returns the list of states and saves nothing, and a nonce printed into a cached form page would expire.
+    $country = isset($_POST['country']) ? sanitize_text_field(wp_unslash($_POST['country'])) : '';
 
     // Get the field name from the $_POST.
-    $field_name = sanitize_text_field($_POST['field_name']);
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing -- public country to state dropdown; it only returns the list of states and saves nothing, and a nonce printed into a cached form page would expire.
+    $field_name = isset($_POST['field_name']) ? sanitize_text_field(wp_unslash($_POST['field_name'])) : '';
 
     $label = __('State', 'give');
     $states_label = give_get_states_label();
@@ -281,13 +286,15 @@ add_action( 'wp_ajax_nopriv_give_get_states', 'give_ajax_get_states_field' );
 /**
  * Retrieve donation forms via AJAX for chosen dropdown search field.
  *
+ * @since TBD Check that the search term is set, then unslash and sanitize it.
  * @since  1.0
  *
  * @return void
  */
 function give_ajax_form_search() {
 	$results = [];
-	$search  = esc_sql( sanitize_text_field( $_POST['s'] ) );
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only form search; it returns the titles of published forms and saves nothing, and add-on search boxes call it without a nonce.
+	$search  = isset( $_POST['s'] ) ? esc_sql( sanitize_text_field( wp_unslash( $_POST['s'] ) ) ) : '';
 
 	$args = [
 		'post_type'              => 'give_forms',
@@ -348,7 +355,7 @@ add_action( 'wp_ajax_nopriv_give_form_search', 'give_ajax_form_search' );
 /**
  * Search the donors database via Ajax
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since TBD Prepare SQL with placeholders. Check that the search term is set, then unslash and sanitize it.
  * @since  1.0
  *
  * @return void
@@ -356,7 +363,8 @@ add_action( 'wp_ajax_nopriv_give_form_search', 'give_ajax_form_search' );
 function give_ajax_donor_search() {
 	global $wpdb;
 
-	$search  = sanitize_text_field( $_POST['s'] );
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only donor search; it needs view_give_reports, returns donors that user can already see and saves nothing.
+	$search  = isset( $_POST['s'] ) ? sanitize_text_field( wp_unslash( $_POST['s'] ) ) : '';
 	$results = [];
 	if ( ! current_user_can( 'view_give_reports' ) ) {
 		$donors = [];
@@ -383,6 +391,7 @@ add_action( 'wp_ajax_give_donor_search', 'give_ajax_donor_search' );
 /**
  * Searches for users via ajax and returns a list of results
  *
+ * @since TBD Check that the search term is set, then unslash and sanitize it.
  * @since  1.0
  *
  * @return void
@@ -392,7 +401,8 @@ function give_ajax_search_users() {
 
 	if ( current_user_can( 'manage_give_settings' ) ) {
 
-		$search = esc_sql( sanitize_text_field( $_POST['s'] ) );
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only user search; it needs manage_give_settings, returns users that user can already see and saves nothing.
+		$search = isset( $_POST['s'] ) ? esc_sql( sanitize_text_field( wp_unslash( $_POST['s'] ) ) ) : '';
 
 		$get_users_args = [
 			'number' => 9999,
@@ -436,7 +446,7 @@ function give_ajax_pages_search() {
 	$data = [];
 	$args = [
 		'post_type' => 'page',
-		's'         => give_clean( $_POST['s'] ),
+		's'         => isset( $_POST['s'] ) ? give_clean( $_POST['s'] ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only page search that returns page titles and saves nothing; give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 	];
 
 	$query = new WP_Query( $args );
@@ -461,6 +471,7 @@ add_action( 'wp_ajax_give_pages_search', 'give_ajax_pages_search' );
 /**
  * Retrieve Categories via AJAX for chosen dropdown search field.
  *
+ * @since TBD Check that the search term is set, then unslash and sanitize it.
  * @since  2.1
  *
  * @return void
@@ -481,7 +492,8 @@ function give_ajax_categories_search() {
 		'give_forms_categories_dropdown_args',
 		[
 			'number'     => 30,
-			'name__like' => esc_sql( sanitize_text_field( $_POST['s'] ) ),
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only category search; it returns term names and saves nothing, and add-on search boxes call it without a nonce.
+			'name__like' => isset( $_POST['s'] ) ? esc_sql( sanitize_text_field( wp_unslash( $_POST['s'] ) ) ) : '',
 		]
 	);
 
@@ -513,6 +525,7 @@ add_action( 'wp_ajax_give_categories_search', 'give_ajax_categories_search' );
 /**
  * Retrieve Tags via AJAX for chosen dropdown search field.
  *
+ * @since TBD Check that the search term is set, then unslash and sanitize it.
  * @since  2.1
  *
  * @return void
@@ -533,7 +546,8 @@ function give_ajax_tags_search() {
 		'give_forms_tags_dropdown_args',
 		[
 			'number'     => 30,
-			'name__like' => esc_sql( sanitize_text_field( $_POST['s'] ) ),
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only tag search; it returns term names and saves nothing, and add-on search boxes call it without a nonce.
+			'name__like' => isset( $_POST['s'] ) ? esc_sql( sanitize_text_field( wp_unslash( $_POST['s'] ) ) ) : '',
 		]
 	);
 
@@ -565,7 +579,7 @@ add_action( 'wp_ajax_give_tags_search', 'give_ajax_tags_search' );
 /**
  * Check for Price Variations (Multi-level donation forms)
  *
- * @since  TBD Escape output.
+ * @since  TBD Escape output. Check that the form ID is set, then unslash and sanitize it.
  * @since  1.5
  *
  * @return void
@@ -576,7 +590,8 @@ function give_check_for_form_price_variations() {
 		die( '-1' );
 	}
 
-	$form_id = absint( $_POST['form_id'] );
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only price level dropdown; it needs edit_give_forms, returns a <select> and saves nothing.
+	$form_id = isset( $_POST['form_id'] ) ? absint( wp_unslash( $_POST['form_id'] ) ) : 0;
 	$form    = get_post( $form_id );
 
 	if ( 'give_forms' !== $form->post_type ) {
@@ -589,7 +604,7 @@ function give_check_for_form_price_variations() {
 		if ( $variable_prices ) {
 			$ajax_response = '<select class="give_price_options_select give-select give-select" name="give_price_option">';
 
-			if ( isset( $_POST['all_prices'] ) ) {
+			if ( isset( $_POST['all_prices'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only price level dropdown; it only adds an "All Levels" option and saves nothing.
 				$ajax_response .= '<option value="all">' . esc_html__( 'All Levels', 'give' ) . '</option>';
 			}
 
@@ -623,8 +638,10 @@ function give_check_for_form_price_variations_html() {
 		wp_die();
 	}
 
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- read-only price level dropdown; it needs edit_give_payments, returns a <select> and saves nothing.
 	$form_id    = ! empty( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : false;
 	$payment_id = ! empty( $_POST['payment_id'] ) ? absint( $_POST['payment_id'] ) : false;
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 	if ( empty( $form_id ) || empty( $payment_id ) ) {
 		wp_die();
 	}
@@ -692,7 +709,7 @@ function give_confirm_email_for_donation_access() {
 		return false;
 	}
 
-	$donor = Give()->donors->get_donor_by( 'email', give_clean( $_POST['email'] ) );
+	$donor = Give()->donors->get_donor_by( 'email', give_clean( $_POST['email'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 	if ( is_object( $donor ) && Give()->email_access->can_send_email( $donor->id ) ) {
 		Give()->email_access->send_email( $donor->id, $donor->email );
 	}
@@ -775,7 +792,7 @@ function give_modal_ajax_url( $args = [] ) {
  * @todo use get_version endpoint to read changelog or cache add-ons infro from update_plugins option
  *
  * @return string
- * @since TBD Escape output.
+ * @since TBD Escape output. Unslash and sanitize the request input.
  * @since 2.5.0
  */
 function give_get_content_by_ajax_handler() {
@@ -785,23 +802,25 @@ function give_get_content_by_ajax_handler() {
 		die();
 	}
 
+	$requested_url = sanitize_text_field( wp_unslash( $_GET['url'] ) );
+
     /**
      * Restrict requests to GiveWP.com plugin readme.txt file only.
      * @link https://owasp.org/www-community/attacks/Server_Side_Request_Forgery
      *
      * @since 2.25.2
      */
-    if(! preg_match('^https://givewp.com/downloads/plugins/(.*)/readme.txt$^', $_GET['url'])) {
+    if(! preg_match('^https://givewp.com/downloads/plugins/(.*)/readme.txt$^', $requested_url)) {
         die();
     }
 
 	// Handle changelog render request.
 	if (
 		! empty( $_GET['show_changelog'] )
-		&& (int) give_clean( $_GET['show_changelog'] )
+		&& absint( wp_unslash( $_GET['show_changelog'] ) )
 	) {
 		$msg = __( 'Sorry, unable to load changelog.', 'give' );
-		$url = urldecode_deep( give_clean( $_GET['url'] ) );
+		$url = urldecode_deep( $requested_url );
 
 		$response = wp_remote_get( $url );
 

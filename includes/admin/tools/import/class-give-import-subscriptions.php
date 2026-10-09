@@ -51,7 +51,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
          */
         private function __construct()
         {
-            self::$per_page = !empty($_GET['per_page']) ? absint($_GET['per_page']) : self::$per_page;
+            self::$per_page = !empty($_GET['per_page']) ? absint($_GET['per_page']) : self::$per_page; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only import step param; it only changes what is shown and saves nothing.
         }
 
         /**
@@ -118,7 +118,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
          */
         public function update_notices($messages)
         {
-            if (!empty($_GET['tab']) && 'import' === give_clean($_GET['tab'])) {
+            if (!empty($_GET['tab']) && 'import' === give_clean($_GET['tab'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
                 unset($messages['give-setting-updated']);
             }
 
@@ -205,7 +205,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Show success notice
          *
-         * @since TBD Escape output. Add translators comments.
+         * @since TBD Escape output. Add translators comments. Check that the total and success values are set.
          * @since 4.11.0
          */
         public function import_success()
@@ -220,9 +220,9 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
             $report = $this->get_report();
 
-            $total = (int)$_GET['total'];
+            $total = isset($_GET['total']) ? (int)$_GET['total'] : 0;
             --$total;
-            $success = (bool)$_GET['success'];
+            $success = isset($_GET['success']) && (bool)$_GET['success'];
             $dry_run = empty($_GET['dry_run']) ? 0 : absint($_GET['dry_run']);
             ?>
             <tr valign="top" class="give-import-dropdown">
@@ -315,15 +315,22 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Start Import
-         * @since TBD Escape translated output.
+         * @since TBD Escape translated output. Unslash and sanitize the request input.
          * @since 4.11.0
          */
         public function start_import()
         {
             $this->reset_report();
 
-            $csv = absint($_REQUEST['csv']);
-            $delimiter = (!empty($_REQUEST['delimiter']) ? give_clean($_REQUEST['delimiter']) : 'csv');
+            // phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- read-only import step params; they are printed back into the form and save nothing.
+            $csv = isset($_REQUEST['csv']) ? absint($_REQUEST['csv']) : 0;
+            $mapto = isset($_REQUEST['mapto']) ? map_deep(wp_unslash($_REQUEST['mapto']), 'sanitize_text_field') : '';
+            $mode = isset($_REQUEST['mode']) ? sanitize_text_field(wp_unslash($_REQUEST['mode'])) : '';
+            $create_user = isset($_REQUEST['create_user']) ? (int)$_REQUEST['create_user'] : 0;
+            $delete_csv = isset($_REQUEST['delete_csv']) ? (int)$_REQUEST['delete_csv'] : 0;
+            $dry_run = isset($_REQUEST['dry_run']) ? (int)$_REQUEST['dry_run'] : 0;
+            $delimiter = (!empty($_REQUEST['delimiter']) ? give_clean($_REQUEST['delimiter']) : 'csv'); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field().
+            // phpcs:enable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
             $index_start = 1;
             $next = true;
             $total = self::get_csv_total($csv);
@@ -360,13 +367,13 @@ if (!class_exists('Give_Import_Subscriptions')) {
                         <div style="width: <?php echo esc_attr((float)$current_percentage); ?>%"></div>
                     </div>
                     <input type="hidden" value="3" name="step">
-                    <input type="hidden" value='<?php echo esc_attr(maybe_serialize($_REQUEST['mapto'])); ?>' name="mapto" class="mapto">
+                    <input type="hidden" value='<?php echo esc_attr(maybe_serialize($mapto)); ?>' name="mapto" class="mapto">
                     <input type="hidden" value="<?php echo esc_attr((int)$csv); ?>" name="csv" class="csv">
-                    <input type="hidden" value="<?php echo esc_attr(isset($_REQUEST['mode']) ? sanitize_text_field((string)$_REQUEST['mode']) : ''); ?>" name="mode" class="mode">
-                    <input type="hidden" value="<?php echo esc_attr(isset($_REQUEST['create_user']) ? (int)$_REQUEST['create_user'] : 0); ?>" name="create_user" class="create_user">
-                    <input type="hidden" value="<?php echo esc_attr(isset($_REQUEST['delete_csv']) ? (int)$_REQUEST['delete_csv'] : 0); ?>" name="delete_csv" class="delete_csv">
+                    <input type="hidden" value="<?php echo esc_attr($mode); ?>" name="mode" class="mode">
+                    <input type="hidden" value="<?php echo esc_attr($create_user); ?>" name="create_user" class="create_user">
+                    <input type="hidden" value="<?php echo esc_attr($delete_csv); ?>" name="delete_csv" class="delete_csv">
                     <input type="hidden" value="<?php echo esc_attr($delimiter); ?>" name="delimiter">
-                    <input type="hidden" value="<?php echo esc_attr(isset($_REQUEST['dry_run']) ? (int)$_REQUEST['dry_run'] : 0); ?>" name="dry_run">
+                    <input type="hidden" value="<?php echo esc_attr($dry_run); ?>" name="dry_run">
                     <input type="hidden" value='<?php echo esc_attr(maybe_serialize(self::get_importer($csv, 0, $delimiter))); ?>' name="main_key" class="main_key">
                 </th>
             </tr>
@@ -377,14 +384,14 @@ if (!class_exists('Give_Import_Subscriptions')) {
          * Validate required mapped fields
          *
          * 4.14.1 Check if donor_id or email is mapped to the columns
-         * @since TBD Add translators comments.
+         * @since TBD Add translators comments and unslash and sanitize the mapped fields.
          * @since 4.11.0
          */
         public function check_for_dropdown_or_import()
         {
             $return = true;
-            if (isset($_REQUEST['mapto'])) {
-                $mapto = (array)$_REQUEST['mapto'];
+            if (isset($_REQUEST['mapto'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only import step param; it only changes what is shown and saves nothing.
+                $mapto = (array)map_deep(wp_unslash($_REQUEST['mapto']), 'sanitize_text_field'); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only import step param; it is only checked for required fields and saves nothing.
                 $required = ['form_id', 'period', 'frequency', 'amount', 'status'];
 
                 // Add donor_id or email to required based on what's present
@@ -414,7 +421,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Print the Dropdown option for CSV.
-         * @since TBD Escape translated output.
+         * @since TBD Escape translated output. Unslash and sanitize the request input.
          * @since 4.11.0
          */
         public function render_dropdown()
@@ -427,8 +434,8 @@ if (!class_exists('Give_Import_Subscriptions')) {
                 wp_die();
             }
 
-            $csv = (int)$_GET['csv'];
-            $delimiter = (!empty($_GET['delimiter']) ? give_clean($_GET['delimiter']) : 'csv');
+            $csv = isset($_GET['csv']) ? (int)$_GET['csv'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified by $this->is_nonce_valid() at the top of this method.
+            $delimiter = (!empty($_GET['delimiter']) ? give_clean($_GET['delimiter']) : 'csv'); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- nonce verified by $this->is_nonce_valid() at the top of this method. give_clean() unslashes and sanitizes with sanitize_text_field().
 
             if (!$this->is_valid_csv($csv)) {
                 $url = give_import_page_url();
@@ -478,7 +485,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
                 <?php
                 $selectedOptions = [];
                 $raw_key = $this->get_importer($csv, 0, $delimiter);
-                $mapto = (array)(isset($_REQUEST['mapto']) ? $_REQUEST['mapto'] : []);
+                $mapto = isset($_REQUEST['mapto']) ? (array)map_deep(wp_unslash($_REQUEST['mapto']), 'sanitize_text_field') : []; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified by $this->is_nonce_valid() at the top of this method.
 
                 foreach ($raw_key as $index => $value) {
                     ?>
@@ -693,7 +700,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
          */
         public function get_step()
         {
-            $step = (int)(isset($_REQUEST['step']) ? give_clean($_REQUEST['step']) : 0);
+            $step = (int)(isset($_REQUEST['step']) ? give_clean($_REQUEST['step']) : 0); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
             $on_step = 1;
 
             if (empty($step) || 1 === $step) {
@@ -724,7 +731,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
          */
         public function give_import_subscription_submit_button_render_media_csv()
         {
-            $dry_run = isset($_POST['dry_run']) ? absint($_POST['dry_run']) : 1;
+            $dry_run = isset($_POST['dry_run']) ? absint($_POST['dry_run']) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only import step param; it only changes what is shown and saves nothing.
             ?>
             <div>
                 <label for="dry_run">
@@ -771,17 +778,17 @@ if (!class_exists('Give_Import_Subscriptions')) {
                 </th>
             </tr>
             <?php
-            $csv = (isset($_POST['csv']) ? give_clean($_POST['csv']) : '');
-            $csv_id = (isset($_POST['csv_id']) ? give_clean($_POST['csv_id']) : '');
-            $delimiter = (isset($_POST['delimiter']) ? give_clean($_POST['delimiter']) : 'csv');
-            $mode = empty($_POST['mode']) ? 'disabled' : (give_is_setting_enabled(give_clean($_POST['mode'])) ? 'enabled' : 'disabled');
-            $create_user = empty($_POST['create_user']) ? 'disabled' : (give_is_setting_enabled(give_clean($_POST['create_user'])) ? 'enabled' : 'disabled');
-            $delete_csv = empty($_POST['delete_csv']) ? 'enabled' : (give_is_setting_enabled(give_clean($_POST['delete_csv'])) ? 'enabled' : 'disabled');
+            $csv = (isset($_POST['csv']) ? give_clean($_POST['csv']) : ''); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
+            $csv_id = (isset($_POST['csv_id']) ? give_clean($_POST['csv_id']) : ''); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
+            $delimiter = (isset($_POST['delimiter']) ? give_clean($_POST['delimiter']) : 'csv'); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
+            $mode = empty($_POST['mode']) ? 'disabled' : (give_is_setting_enabled(give_clean($_POST['mode'])) ? 'enabled' : 'disabled'); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
+            $create_user = empty($_POST['create_user']) ? 'disabled' : (give_is_setting_enabled(give_clean($_POST['create_user'])) ? 'enabled' : 'disabled'); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
+            $delete_csv = empty($_POST['delete_csv']) ? 'enabled' : (give_is_setting_enabled(give_clean($_POST['delete_csv'])) ? 'enabled' : 'disabled'); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
 
             if (empty($csv_id) || !$this->is_valid_csv($csv_id, $csv)) {
                 $csv_id = $csv = '';
             }
-            $per_page = isset($_POST['per_page']) ? absint($_POST['per_page']) : self::$per_page;
+            $per_page = isset($_POST['per_page']) ? absint($_POST['per_page']) : self::$per_page; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only import step param; it only changes what is shown and saves nothing.
 
             $sample_file_text = sprintf(
                 '%s <a href="%s">%s</a>.',
@@ -882,6 +889,8 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Run when user click on the submit button.
+         *
+         * @since TBD Unslash and sanitize the request input.
          */
         public function save()
         {
@@ -892,20 +901,20 @@ if (!class_exists('Give_Import_Subscriptions')) {
             $step = $this->get_step();
 
             if (1 === $step) {
-                $csv_id = absint($_POST['csv_id']);
+                $csv_id = isset($_POST['csv_id']) ? absint($_POST['csv_id']) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by $this->is_nonce_valid() at the top of this method.
 
-                if ($this->is_valid_csv($csv_id, esc_url($_POST['csv']))) {
+                if ($this->is_valid_csv($csv_id, isset($_POST['csv']) ? esc_url_raw(wp_unslash($_POST['csv'])) : '')) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by $this->is_nonce_valid() at the top of this method.
                     $url = give_import_page_url(
                         [
                             'step' => '2',
                             'importer-type' => $this->importer_type,
                             'csv' => $csv_id,
-                            'delimiter' => isset($_REQUEST['delimiter']) ? give_clean($_REQUEST['delimiter']) : 'csv',
-                            'mode' => empty($_POST['mode']) ? '0' : (give_is_setting_enabled(give_clean($_POST['mode'])) ? '1' : '0'),
-                            'create_user' => empty($_POST['create_user']) ? '0' : (give_is_setting_enabled(give_clean($_POST['create_user'])) ? '1' : '0'),
-                            'delete_csv' => empty($_POST['delete_csv']) ? '1' : (give_is_setting_enabled(give_clean($_POST['delete_csv'])) ? '1' : '0'),
-                            'per_page' => isset($_POST['per_page']) ? absint($_POST['per_page']) : self::$per_page,
-                            'dry_run' => isset($_POST['dry_run']) ? absint($_POST['dry_run']) : 0,
+                            'delimiter' => isset($_REQUEST['delimiter']) ? give_clean($_REQUEST['delimiter']) : 'csv', // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- nonce verified by $this->is_nonce_valid() at the top of this method. give_clean() unslashes and sanitizes with sanitize_text_field().
+                            'mode' => empty($_POST['mode']) ? '0' : (give_is_setting_enabled(give_clean($_POST['mode'])) ? '1' : '0'), // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- nonce verified by $this->is_nonce_valid() at the top of this method. give_clean() unslashes and sanitizes with sanitize_text_field().
+                            'create_user' => empty($_POST['create_user']) ? '0' : (give_is_setting_enabled(give_clean($_POST['create_user'])) ? '1' : '0'), // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- nonce verified by $this->is_nonce_valid() at the top of this method. give_clean() unslashes and sanitizes with sanitize_text_field().
+                            'delete_csv' => empty($_POST['delete_csv']) ? '1' : (give_is_setting_enabled(give_clean($_POST['delete_csv'])) ? '1' : '0'), // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- nonce verified by $this->is_nonce_valid() at the top of this method. give_clean() unslashes and sanitizes with sanitize_text_field().
+                            'per_page' => isset($_POST['per_page']) ? absint($_POST['per_page']) : self::$per_page, // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by $this->is_nonce_valid() at the top of this method.
+                            'dry_run' => isset($_POST['dry_run']) ? absint($_POST['dry_run']) : 0, // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by $this->is_nonce_valid() at the top of this method.
                         ]
                     );
 
@@ -924,7 +933,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
             if ($csv) {
                 $csv_url = wp_get_attachment_url($csv);
 
-                $delimiter = (!empty($_REQUEST['delimiter']) ? give_clean($_REQUEST['delimiter']) : 'csv');
+                $delimiter = (!empty($_REQUEST['delimiter']) ? give_clean($_REQUEST['delimiter']) : 'csv'); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
 
                 if (
                     !$csv_url ||
@@ -948,16 +957,18 @@ if (!class_exists('Give_Import_Subscriptions')) {
         private function is_subscriptions_import_page()
         {
             return 'import' === give_get_current_setting_tab() &&
-                isset($_GET['importer-type']) &&
-                $this->importer_type === give_clean($_GET['importer-type']);
+                isset($_GET['importer-type']) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only import step param; it only changes what is shown and saves nothing.
+                $this->importer_type === give_clean($_GET['importer-type']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
         }
 
         /**
          * Nonce validation
+         *
+         * @since TBD Unslash and sanitize the nonce before checking it.
          */
         private function is_nonce_valid()
         {
-            return !empty($_REQUEST['_give-save-settings']) && wp_verify_nonce($_REQUEST['_give-save-settings'], 'give-save-settings');
+            return !empty($_REQUEST['_give-save-settings']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_REQUEST['_give-save-settings'])), 'give-save-settings');
         }
 
         /**

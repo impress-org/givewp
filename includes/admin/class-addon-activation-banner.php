@@ -329,7 +329,7 @@ class Give_Addon_Activation_Banner {
 	/**
 	 * Render single banner activation
 	 *
-	 * @since TBD Escape output.
+	 * @since TBD Escape output. Add a nonce to the dismiss link.
 	 * @since 2.1.0
 	 *
 	 * @param array $banner_arr Banner options.
@@ -363,6 +363,7 @@ class Give_Addon_Activation_Banner {
 		$dismiss_url = $is_single
 			? admin_url( 'plugins.php?give_addon_activation_ignore=1&give_addon=' . sanitize_title( $banner_arr['name'] ) )
 			: admin_url( 'plugins.php?give_addon_activation_ignore=1&give_addon=all' );
+		$dismiss_url = wp_nonce_url( $dismiss_url, 'give_addon_activation_ignore' );
 
 		// Get the add-on details.
 		$plugin_data = get_plugin_data( $plugin_file );
@@ -430,6 +431,7 @@ class Give_Addon_Activation_Banner {
 	 *
 	 * This is the action that allows the user to dismiss the banner it basically sets a tag to their user meta data
 	 *
+	 * @since TBD Verify the nonce.
 	 * @since  1.0
 	 * @access public
 	 */
@@ -439,8 +441,9 @@ class Give_Addon_Activation_Banner {
 		 * See here: http://codex.wordpress.org/Function_Reference/add_user_meta
 		 */
 		if (
-			isset( $_GET['give_addon'], $_GET['give_addon_activation_ignore'] )
+			isset( $_GET['give_addon'], $_GET['give_addon_activation_ignore'], $_GET['_wpnonce'] )
 			&& '1' === $_GET['give_addon_activation_ignore']
+			&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'give_addon_activation_ignore' )
 		) {
 			// Get the value of the 'give_addon' query string.
 			$addon_query_arg    = sanitize_text_field( wp_unslash( $_GET['give_addon'] ) );

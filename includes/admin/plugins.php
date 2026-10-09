@@ -180,7 +180,7 @@ function give_prepare_filter_addons_referer( $action, $result ) {
 		return;
 	}
 	$screen = get_current_screen();
-	if ( is_object( $screen ) && $screen->base === 'plugins' && ! empty( $_REQUEST['plugin_status'] ) && $_REQUEST['plugin_status'] === 'give' ) {
+	if ( is_object( $screen ) && $screen->base === 'plugins' && ! empty( $_REQUEST['plugin_status'] ) && $_REQUEST['plugin_status'] === 'give' ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only list filter; it only keeps the GiveWP view of the Plugins screen and saves nothing. This runs on check_admin_referer, after core has checked the nonce.
 		global $status;
 		$status = 'give';
 	}
@@ -234,7 +234,7 @@ add_filter( 'views_plugins-network', 'give_filter_addons_filter_addons' );
 function give_prepare_filter_addons( $plugins ) {
 	global $status;
 
-	if ( isset( $_REQUEST['plugin_status'] ) && 'give' === $_REQUEST['plugin_status'] ) {
+	if ( isset( $_REQUEST['plugin_status'] ) && 'give' === $_REQUEST['plugin_status'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only list filter; it only keeps the GiveWP view of the Plugins screen and saves nothing.
 		$status = 'give';
 	}
 
@@ -540,6 +540,7 @@ add_action( 'wp_ajax_give_deactivation_popup', 'give_deactivation_popup' );
  * Ajax callback after the deactivation survey form has been submitted.
  * Note: only for internal use
  *
+ * @since TBD Check that the form data is set before reading it.
  * @since 2.2
  */
 function give_deactivation_form_submit() {
@@ -548,7 +549,7 @@ function give_deactivation_form_submit() {
 		wp_send_json_error();
 	}
 
-	$form_data = give_clean( wp_parse_args( $_POST['form-data'] ) );
+	$form_data = isset( $_POST['form-data'] ) ? give_clean( wp_parse_args( $_POST['form-data'] ) ) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 	// Get the selected radio value.
 	$radio_value = isset( $form_data['give-survey-radios'] ) ? $form_data['give-survey-radios'] : 0;
