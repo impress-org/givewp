@@ -69,7 +69,7 @@ function give_get_field_callback( $field ) {
 			break;
 
 		case 'group':
-			$func_name = "_{$func_name_prefix}_metabox_form_data_repeater_fields";
+			$func_name = "{$func_name_prefix}_metabox_form_data_repeater_fields";
 			break;
 
 		case 'give_default_radio_inline':

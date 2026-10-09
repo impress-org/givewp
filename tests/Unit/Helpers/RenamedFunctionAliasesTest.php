@@ -242,4 +242,21 @@ class RenamedFunctionAliasesTest extends TestCase
             $this->callOldName('_give_20_bc_give_payment_meta_value', 'give_20_bc_give_payment_meta_value', [999999, $meta])
         );
     }
+
+    /**
+     * @since TBD
+     */
+    public function testGroupFieldCallbackUsesNewRepeaterFunctionWithoutNotice(): void
+    {
+        if (! function_exists('give_get_field_callback')) {
+            require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php';
+        }
+
+        $this->notices = [];
+
+        $callback = give_get_field_callback(['type' => 'group']);
+
+        $this->assertSame('give_metabox_form_data_repeater_fields', $callback);
+        $this->assertSame([], $this->notices, 'The group field callback should not log a notice');
+    }
 }
