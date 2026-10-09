@@ -23,6 +23,10 @@ final class TestCoreSettingsImportUndo extends TestCase
         require_once \GIVE_PLUGIN_DIR . 'includes/admin/tools/import/class-give-import-core-settings.php';
 
         parent::setUp();
+
+        // Other tests define DOING_AJAX, which cannot be undone and sends wp_die() to the ajax die handler.
+        // Route that handler to the test handler too, so wp_die() throws WPDieException in every run order.
+        add_filter('wp_die_ajax_handler', [$this, 'get_wp_die_handler']);
     }
 
     /**
