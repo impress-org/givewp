@@ -38,7 +38,7 @@ class AddNewBadgeToAdminMenuItem {
         });
 
          // dismiss the notice when visiting the campaigns list page
-         if (isset($_GET['page']) && $_GET['page'] === 'give-campaigns') { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
+         if (isset($_GET['page']) && $_GET['page'] === 'give-campaigns') { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- plain admin menu link, so no nonce; it only reads the page slug and the write is a cosmetic flag that hides the NEW badge.
             update_option('givewp_new_notification_campaigns_dismissed', true);
          }
     }
