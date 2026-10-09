@@ -45,13 +45,13 @@ Step 3 above can also run in CI, through the [Release Prep](.github/workflows/re
 The NX1 release dashboard uses this workflow for a release's prepare step. To run it by hand once the release branch exists:
 
 ```bash
-gh workflow run release-prep.yml --ref release/4.16.0 -f ref=release/4.16.0 -f version=4.16.0
+gh workflow run release-prep.yml -f ref=release/4.16.0 -f version=4.16.0
 ```
 
 * `-f date=YYYY-MM-DD` sets the changelog date; it defaults to today, in UTC.
 * The version must be three or four numbers (`4.16.0`, `4.16.0.1`). A pre-release such as `4.16.0-beta.1` is refused before anything changes.
 * Running it again for the same version changes nothing and pushes nothing.
-* The run uses the copy of the workflow on the release branch, so the workflow has to be on `develop` when the branch is cut.
+* `ref` is the release branch the workflow checks out and pushes to. The workflow file itself is taken from `develop`; the release dashboard runs the copy on the release branch instead, so cut the branch after the workflow is on `develop`.
 
 After it runs, continue from step 4 above. It works the same for a `hotfix/x.y.z` branch.
 

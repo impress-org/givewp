@@ -13,7 +13,7 @@ name: Release Prep
 # Keep `date` optional: the dashboard refuses a workflow that requires an input it does not send.
 #
 # Run it by hand:
-#   gh workflow run release-prep.yml --ref release/4.19.0 -f ref=release/4.19.0 -f version=4.19.0
+#   gh workflow run release-prep.yml -f ref=release/4.19.0 -f version=4.19.0
 
 on:
     workflow_dispatch:
