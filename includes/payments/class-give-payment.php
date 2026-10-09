@@ -786,7 +786,7 @@ final class Give_Payment {
 				$this->update_meta( '_give_payment_meta', array_map( 'maybe_unserialize', $custom_payment_meta ) );
 			}
 
-			$give_company = ( ! empty( $_REQUEST['give_company_name'] ) ? give_clean( $_REQUEST['give_company_name'] ) : '' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- public donation form request; give_verify_donation_form_nonce() checks the form nonce in give_process_donation before the donation is created. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+			$give_company = ( ! empty( $_REQUEST['give_company_name'] ) ? give_clean( $_REQUEST['give_company_name'] ) : '' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- for form donations give_process_donation() checks the form nonce before the donation is created; other callers of give_insert_payment() (give_create_payment(), importers, Stripe SEPA) have no form nonce, so the value is only stored after sanitizing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 			// Check $page_url is not empty.
 			if ( $give_company ) {

@@ -205,7 +205,7 @@ function give_insert_payment( $payment_data = [] ) {
 
 	$payment    = new Give_Payment();
 	$gateway    = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
-	$gateway    = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? give_clean( $_POST['give-gateway'] ) : $gateway; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- public donation form request; give_verify_donation_form_nonce() checks the form nonce in give_process_donation before the donation is inserted. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+	$gateway    = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? give_clean( $_POST['give-gateway'] ) : $gateway; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- for form donations give_process_donation() checks the form nonce before the donation is inserted; other callers of give_insert_payment() (give_create_payment(), importers, Stripe SEPA) have no form nonce, so the value is only stored after sanitizing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 	$form_id    = isset( $payment_data['give_form_id'] ) ? $payment_data['give_form_id'] : 0;
 	$price_id   = give_get_payment_meta_price_id( $payment_data );
 	$form_title = isset( $payment_data['give_form_title'] ) ? $payment_data['give_form_title'] : get_the_title( $form_id );

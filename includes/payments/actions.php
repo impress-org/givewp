@@ -453,7 +453,7 @@ if ( give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
  * @param int $payment_id Payment id for which the meta value should be updated.
  */
 function give_payment_save_page_data( $payment_id ) {
-	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public donation form request; give_verify_donation_form_nonce() checks the form nonce in give_process_donation before the donation is created, and the value is only stored as the page the donor gave from.
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- for form donations give_process_donation() checks the form nonce before the donation is created; other callers of give_insert_payment() have no form nonce, so the value is only stored as the page the donor gave from, after esc_url_raw().
 	$page_url = ( ! empty( $_REQUEST['give-current-url'] ) ? esc_url_raw( wp_unslash( $_REQUEST['give-current-url'] ) ) : false );
 
 	// Check $page_url is not empty.
