@@ -957,12 +957,15 @@ function give_delete_donation_stats( $date_range = '', $args = [] ) {
  * Check if admin creating new donation form or not.
  *
  * @return bool
+ * @since TBD Read the request URI safely when it is not set.
  * @since 2.0
  */
 function give_is_add_new_form_page() {
 	$status = false;
 
-	if ( false !== strpos( $_SERVER['REQUEST_URI'], '/wp-admin/post-new.php?post_type=give_forms' ) ) {
+	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+
+	if ( false !== strpos( $request_uri, '/wp-admin/post-new.php?post_type=give_forms' ) ) {
 		$status = true;
 	}
 
