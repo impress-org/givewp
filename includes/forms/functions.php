@@ -1164,6 +1164,7 @@ function give_get_prefill_form_field_values( $form_id ) {
 /**
  * Get pre fill form field values.
  *
+ * @since TBD Renamed to give_get_prefill_form_field_values(); this old name is a deprecated alias.
  * @since 1.8
  * @deprecated TBD Use give_get_prefill_form_field_values() instead.
  */

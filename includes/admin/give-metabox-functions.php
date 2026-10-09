@@ -1609,6 +1609,7 @@ function give_metabox_form_data_repeater_fields( $fields ) {
 /**
  * Output repeater field or multi donation type form on donation from edit screen.
  *
+ * @since TBD Renamed to give_metabox_form_data_repeater_fields(); this old name is a deprecated alias.
  * @since 1.8
  * @deprecated TBD Use give_metabox_form_data_repeater_fields() instead.
  */

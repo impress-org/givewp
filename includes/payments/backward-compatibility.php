@@ -88,6 +88,7 @@ function give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value ) 
 /**
  * Split _give_payment_meta to new Give core meta_keys.
  *
+ * @since TBD Renamed to give_20_bc_split_and_save_give_payment_meta(); this old name is a deprecated alias.
  * @since 2.0
  * @deprecated TBD Use give_20_bc_split_and_save_give_payment_meta() instead.
  */
@@ -212,6 +213,7 @@ function give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
 /**
  * Add backward compatibility to get meta value of _give_payment_meta meta key.
  *
+ * @since TBD Renamed to give_20_bc_give_payment_meta_value(); this old name is a deprecated alias.
  * @since 2.0
  * @deprecated TBD Use give_20_bc_give_payment_meta_value() instead.
  */

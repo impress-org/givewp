@@ -1286,6 +1286,7 @@ function give_add_donor_meta( $donor_id, $meta_key, $meta_value, $unique = false
 /**
  * Add meta data field to a donor.
  *
+ * @since TBD Renamed to give_add_donor_meta(); this old name is a deprecated alias.
  * @since 1.8.13
  * @deprecated TBD Use give_add_donor_meta() instead.
  */
@@ -1317,6 +1318,7 @@ function give_delete_donor_meta( $donor_id, $meta_key, $meta_value = '' ) {
 /**
  * Remove metadata matching criteria from a Donor meta.
  *
+ * @since TBD Renamed to give_delete_donor_meta(); this old name is a deprecated alias.
  * @since 1.8.13
  * @deprecated TBD Use give_delete_donor_meta() instead.
  */
@@ -1345,6 +1347,7 @@ function give_get_donor_meta( $donor_id, $key = '', $single = false ) {
 /**
  * Retrieve donor meta field for a donor meta table.
  *
+ * @since TBD Renamed to give_get_donor_meta(); this old name is a deprecated alias.
  * @since 1.8.13
  * @deprecated TBD Use give_get_donor_meta() instead.
  */
@@ -1375,6 +1378,7 @@ function give_update_donor_meta( $donor_id, $meta_key, $meta_value, $prev_value 
 /**
  * Update customer meta field based on Donor ID.
  *
+ * @since TBD Renamed to give_update_donor_meta(); this old name is a deprecated alias.
  * @since 1.8.13
  * @deprecated TBD Use give_update_donor_meta() instead.
  */
@@ -2646,6 +2650,7 @@ function give_get_active_license_date(): ?int
 /**
  * Set Active License Date
  *
+ * @since TBD Renamed to give_get_active_license_date(); this old name is a deprecated alias.
  * @since 4.8.0
  * @deprecated TBD Use give_get_active_license_date() instead.
  */

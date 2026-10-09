@@ -47,6 +47,7 @@ function give_redirect_form_id(&$formId, &...$extraReference) {
 /**
  * This function is used to "redirect" shortcodes and blocks
  *
+ * @since TBD Renamed to give_redirect_form_id(); this old name is a deprecated alias.
  * @since 3.0.0
  * @deprecated TBD Use give_redirect_form_id() instead.
  */
