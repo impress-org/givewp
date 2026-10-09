@@ -2,7 +2,7 @@
 /**
  * Admin View: Exports
  *
- * @since TBD Escape output, use gmdate() instead of date(), and replace short echo tags, and add translators comments.
+ * @since TBD Escape output, use gmdate() instead of date(), replace short echo tags, add translators comments, and add a nonce to the core settings export form.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -152,6 +152,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 									</ul>
 								<?php } ?>
 								<input type="hidden" name="give-action" value="core_settings_export"/>
+								<input type="hidden" name="give-nonce" value="<?php echo esc_attr( wp_create_nonce( 'give_core_settings_export' ) ); ?>"/>
 								<input type="submit" value="<?php esc_attr_e( 'Export JSON', 'give' ); ?>" class="button-secondary"/>
 							</form>
 						</td>

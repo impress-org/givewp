@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Process batch exports via ajax
  *
+ * @since TBD Validate and sanitize the posted form, step and file name.
  * @since 2.21.0 Sanitize file name. Allow plain file name only.
  * @since 1.5
  * @return void
@@ -27,12 +28,16 @@ function give_do_ajax_export() {
 
 	require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export.php';
 
-	parse_str( $_POST['form'], $form );
+	// The nonce is a field inside the posted form string; it is verified right below, before anything else runs.
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- the posted string is URL-encoded form data for parse_str(); it is unslashed later by give_clean( $_REQUEST ) and each field is sanitized where it is used.
+	parse_str( isset( $_POST['form'] ) ? $_POST['form'] : '', $form );
 
 	$_REQUEST = $form = (array) $form;
 
+	$export_nonce = isset( $form['give_ajax_export'] ) ? sanitize_text_field( wp_unslash( $form['give_ajax_export'] ) ) : '';
+
 	if (
-		! wp_verify_nonce( $_REQUEST['give_ajax_export'], 'give_ajax_export' ) ||
+		! wp_verify_nonce( $export_nonce, 'give_ajax_export' ) ||
 		! current_user_can( 'manage_give_settings' )
     ) {
 		die( '-2' );
@@ -51,10 +56,10 @@ function give_do_ajax_export() {
         die(-2);
     }
 
-	$step     = absint( $_POST['step'] );
+	$step     = isset( $_POST['step'] ) ? absint( $_POST['step'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified above from the posted form (give_ajax_export).
 	$class    = sanitize_text_field( $form['give-export-class'] );
-	$filename = isset( $_POST['file_name'] ) ?
-        basename(sanitize_file_name( $_POST['file_name'] ), '.csv') :
+	$filename = isset( $_POST['file_name'] ) ? // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified above from the posted form (give_ajax_export).
+        basename(sanitize_file_name( wp_unslash( $_POST['file_name'] ) ), '.csv') :
         null;
 
 	/* @var Give_Batch_Export $export */

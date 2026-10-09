@@ -89,8 +89,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	public function set_properties( $request ) {
 
 		// Set data from form submission
-		if ( isset( $_POST['form'] ) ) {
-			$this->data = give_clean( wp_parse_args( $_POST['form'] ) );
+		if ( isset( $_POST['form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by give_do_ajax_export() before set_properties() runs.
+			$this->data = give_clean( wp_parse_args( $_POST['form'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified by give_do_ajax_export() before set_properties() runs. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		}
 
 		$this->form       = $this->data['forms'];

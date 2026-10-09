@@ -205,7 +205,7 @@ function give_insert_payment( $payment_data = [] ) {
 
 	$payment    = new Give_Payment();
 	$gateway    = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
-	$gateway    = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? give_clean( $_POST['give-gateway'] ) : $gateway; // WPCS: input var ok, sanitization ok, CSRF ok.
+	$gateway    = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? give_clean( $_POST['give-gateway'] ) : $gateway; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- for form donations give_process_donation() checks the form nonce before the donation is inserted; other callers of give_insert_payment() (give_create_payment(), importers, Stripe SEPA) have no form nonce, so the value is only stored after sanitizing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 	$form_id    = isset( $payment_data['give_form_id'] ) ? $payment_data['give_form_id'] : 0;
 	$price_id   = give_get_payment_meta_price_id( $payment_data );
 	$form_title = isset( $payment_data['give_form_title'] ) ? $payment_data['give_form_title'] : get_the_title( $form_id );
@@ -635,7 +635,7 @@ function give_get_payment_status_keys() {
  * @param int $year      Year number. Default is null.
  * @param int $hour      Hour number. Default is null.
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since TBD Prepare SQL with placeholders. Unslash and sanitize the refresh nonce.
  * @since 1.0
  *
  * @since 2.12.0 default value for the $day parameter is removed to prevent PHP8 warnings.
@@ -666,7 +666,7 @@ function give_get_earnings_by_date( $day, $month_num, $year = null, $hour = null
 	$args = apply_filters( 'give_get_earnings_by_date_args', $args );
 	$key  = Give_Cache::get_key( 'give_stats', $args );
 
-	if ( ! empty( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'give-refresh-reports' ) ) {
+	if ( ! empty( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'give-refresh-reports' ) ) {
 		$earnings = false;
 	} else {
 		$earnings = Give_Cache::get( $key );
@@ -714,6 +714,7 @@ function give_get_earnings_by_date( $day, $month_num, $year = null, $hour = null
  * @param int $year      Year number. Default is null.
  * @param int $hour      Hour number. Default is null.
  *
+ * @since TBD Unslash and sanitize the refresh nonce.
  * @since 1.0
  *
  * @return int $count Sales
@@ -760,7 +761,7 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 
 	$key = Give_Cache::get_key( 'give_stats', $args );
 
-	if ( ! empty( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'give-refresh-reports' ) ) {
+	if ( ! empty( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'give-refresh-reports' ) ) {
 		$count = false;
 	} else {
 		$count = Give_Cache::get( $key );

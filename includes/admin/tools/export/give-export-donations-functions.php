@@ -26,7 +26,7 @@ function give_export_donations_get_custom_fields() {
 	$responses              = [];
 	$donationmeta_table_key = Give()->payment_meta->get_meta_type() . '_id';
 
-	$form_id = isset( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : '';
+	$form_id = isset( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only admin lookup behind export_give_reports; it lists meta keys and saves nothing.
 
 	if ( empty( $form_id ) ) {
 		wp_send_json_error();
@@ -198,11 +198,12 @@ function give_export_donations_create_column_key( $string ) {
  * @return array
  */
 function give_export_donation_form_search_args( $args ) {
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only admin form search; it only narrows the list of forms shown and saves nothing.
 	if ( empty( $_POST['fields'] ) ) {
 		return $args;
 	}
 
-	$fields = isset( $_POST['fields'] ) ? $_POST['fields'] : '';
+	$fields = isset( $_POST['fields'] ) ? $_POST['fields'] : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only admin form search. Each parsed field goes through give_clean() on the next line, which unslashes and sanitizes it.
 	$fields = array_map( 'give_clean', wp_parse_args( $fields, [] ) );
 
 	if ( ! empty( $fields['give_forms_categories'] ) || ! empty( $fields['give_forms_tags'] ) ) {

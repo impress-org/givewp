@@ -36,12 +36,13 @@ if (!current_user_can('view_give_payments')) {
  * @since 1.0
  * @return void
  */
+// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only donation id param; this screen only shows the donation. Saving goes through give_update_payment_details(), which checks its own nonce.
 if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
 	wp_die( esc_html__( 'Donation ID not supplied. Please try again.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 }
 
 // Setup the variables
-$payment_id = absint( $_GET['id'] );
+$payment_id = absint( $_GET['id'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only donation id param; this screen only shows the donation. Saving goes through give_update_payment_details(), which checks its own nonce.
 $payment    = new Give_Payment( $payment_id );
 
 // Sanity check... fail if donation ID is invalid

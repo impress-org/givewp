@@ -157,7 +157,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @return int Current page number
 	 */
 	public function get_paged() {
-		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
+		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only paging param; it only picks which page of the table is shown and saves nothing.
 	}
 
 	/**
@@ -169,7 +169,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @return int Category ID
 	 */
 	public function get_category() {
-		return isset( $_GET['category'] ) ? absint( $_GET['category'] ) : 0;
+		return isset( $_GET['category'] ) ? absint( $_GET['category'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only category filter; it only narrows what is shown and saves nothing.
 	}
 
 	/**
@@ -246,14 +246,17 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Performs the donation forms query
 	 *
 	 * @access public
+	 * @since  TBD Unslash and sanitize the sort request values.
 	 * @since  1.0
 	 *
 	 * @return void
 	 */
 	public function query() {
 
-		$orderby  = isset( $_GET['orderby'] ) ? $_GET['orderby'] : 'title';
-		$order    = isset( $_GET['order'] ) ? $_GET['order'] : 'DESC';
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only sort params; they only change the order of the table and save nothing.
+		$orderby  = isset( $_GET['orderby'] ) ? sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) : 'title';
+		$order    = isset( $_GET['order'] ) ? sanitize_text_field( wp_unslash( $_GET['order'] ) ) : 'DESC';
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		$category = $this->get_category();
 
 		$args = [

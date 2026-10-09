@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Sanitized request input in the legacy donation list and details pages
+timestamp: 2026-10-08T15:57:40.940Z

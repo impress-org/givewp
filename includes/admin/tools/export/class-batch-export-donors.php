@@ -95,7 +95,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			return $filename;
 		}
 
-		$forms = empty( $_GET['forms'] ) ? 0 : absint( $_GET['forms'] );
+		$forms = empty( $_GET['forms'] ) ? 0 : absint( $_GET['forms'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified by give_process_batch_export_form() before the download starts; it only names the file.
 
 		if ( $forms ) {
 			$slug     = get_post_field( 'post_name', get_post( $forms ) );
@@ -112,13 +112,14 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 *
 	 * @param array $request The Form Data passed into the batch processing
 	 *
+	 * @since TBD Read the query id from the already sanitized request and unslash the posted form.
 	 * @since 1.5
 	 */
 	public function set_properties( $request ) {
 
 		// Set data from form submission
-		if ( isset( $_POST['form'] ) ) {
-			parse_str( $_POST['form'], $this->data );
+		if ( isset( $_POST['form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by give_do_ajax_export() before set_properties() runs.
+			parse_str( wp_unslash( $_POST['form'] ), $this->data ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified by give_do_ajax_export() before set_properties() runs. The parsed fields are cast or sanitized where they are used below.
 		}
 
 		$this->form = $this->data['forms'];
@@ -126,7 +127,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 		// Setup donor ids cache.
 		if ( ! empty( $this->form ) ) {
 			// Cache donor ids to output unique list of donor.
-			$this->query_id = give_clean( $_REQUEST['give_export_option']['query_id'] );
+			$this->query_id = isset( $request['give_export_option']['query_id'] ) ? $request['give_export_option']['query_id'] : '';
 			$this->cache_donor_ids();
 		}
 
