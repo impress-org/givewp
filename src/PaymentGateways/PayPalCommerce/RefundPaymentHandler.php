@@ -49,7 +49,7 @@ class RefundPaymentHandler
 
         $payPalPaymentId = give_get_payment_transaction_id($donationId);
         $paymentGateway = give_get_payment_gateway($donationId);
-        // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_update_edited_donation fires from give_update_payment_details() after check_admin_referer(). give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- for the admin form, give_update_payment_details() verifies the nonce with check_admin_referer() before it fires give_update_edited_donation; add-ons that fire that action are responsible for their own nonce. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
         $newDonationStatus = isset($_POST['give-payment-status']) ? give_clean($_POST['give-payment-status']) : '';
 
         if ('refunded' !== $newDonationStatus || PayPalCommerce::GATEWAY_ID !== $paymentGateway) {
@@ -138,7 +138,7 @@ class RefundPaymentHandler
      */
     private function isAdminOptInToRefundPaymentOnPayPal()
     {
-        // phpcs:disable WordPress.Security.NonceVerification.Missing -- only the donation details form posts this field; give_update_edited_donation fires from give_update_payment_details() after check_admin_referer().
+        // phpcs:disable WordPress.Security.NonceVerification.Missing -- only the donation details form posts this field; give_update_payment_details() verifies the nonce with check_admin_referer() before it fires give_update_edited_donation, and add-ons that fire that action are responsible for their own nonce.
         return ! empty($_POST['give_paypal_donations_optin_for_refund']) ?
             (bool)absint($_POST['give_paypal_donations_optin_for_refund'])
             : false;

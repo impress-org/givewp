@@ -423,7 +423,7 @@ class LegacyPaymentGatewayAdapter
         string $oldStatus,
         PaymentGateway $registeredGateway
     ) {
-        $gatewayOptRefund = !empty($_POST['give_gateway_opt_refund']) ? give_clean($_POST['give_gateway_opt_refund']) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only the donation details form posts this field, and give_update_payment_details() verifies its nonce with check_admin_referer() before the status changes; give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+        $gatewayOptRefund = !empty($_POST['give_gateway_opt_refund']) ? give_clean($_POST['give_gateway_opt_refund']) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only the donation details form posts this field, and give_update_payment_details() verifies its nonce with check_admin_referer() before the status changes (add-ons that change the status themselves are responsible for their own nonce); give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
         $canProcessRefund = !empty($gatewayOptRefund) ? $gatewayOptRefund : false;
 
         // Only move forward if refund requested.
