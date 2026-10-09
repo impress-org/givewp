@@ -217,6 +217,7 @@ class ElementorCampaignGridWidget extends Widget_Base
     }
 
     /**
+     * @since TBD Escape output.
      * @since 4.7.0
      */
     protected function render(): void
@@ -236,7 +237,8 @@ class ElementorCampaignGridWidget extends Widget_Base
         ];
 
         $shortcode = give(CampaignGridShortcode::class);
-        echo $shortcode->renderShortcode($attributes);
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $shortcode->renderShortcode() renders our own shortcode; its output is escaped internally.
+                echo $shortcode->renderShortcode($attributes);
     }
 }
 

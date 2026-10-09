@@ -6,6 +6,7 @@
  * @subpackage  Templates/Global
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
+ * @since TBD Escape output.
  * @since       1.0
  */
 
@@ -60,6 +61,6 @@ switch ( $template ) {
 		echo '</div>';
 		break;
 	default:
-		echo apply_filters( 'give_default_wrapper_end', '</div></div>' );
+		echo wp_kses_post( apply_filters( 'give_default_wrapper_end', '</div></div>' ) );
 		break;
 }
