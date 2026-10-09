@@ -231,7 +231,7 @@ class ServiceProvider implements ServiceProviderInterface
          */
         Route::post('donation-form-view-preview', static function () {
             ini_set('display_errors', 0);
-            $requestData = (new SanitizeDonationFormPreviewRequest())($_REQUEST); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- preview request from the form builder; SanitizeDonationFormPreviewRequest sanitizes it and the preview saves nothing.
+            $requestData = (new SanitizeDonationFormPreviewRequest())($_REQUEST); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- preview request from the form builder; the action only unslashes. The form id is cast to int, settings and blocks are parsed from JSON into typed objects, and the preview renders them without saving anything.
             $routeData = DonationFormPreviewRouteData::fromRequest($requestData);
 
             if ($locale = $requestData['locale'] ?? '') {
