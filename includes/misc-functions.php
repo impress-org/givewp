@@ -2764,3 +2764,20 @@ function give_get_page_by_title(string $page_title, string $output = OBJECT, str
 
     return get_post($pages[0], $output);
 }
+
+/**
+ * Fire the old `before_give_init` action, as deprecated.
+ *
+ * Lives here, not in give.php, so the release step that replaces `TBD` finds the version below.
+ *
+ * @since TBD
+ */
+function give_fire_deprecated_before_init_action() {
+	/**
+	 * Fires before the Give core is initialized. Deprecated: use `givewp_before_init`.
+	 *
+	 * @since TBD Deprecated in favor of `givewp_before_init`.
+	 * @since 1.8.9
+	 */
+	do_action_deprecated( 'before_give_init', [], 'TBD', 'givewp_before_init' );
+}
