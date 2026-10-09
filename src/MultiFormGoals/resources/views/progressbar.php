@@ -9,6 +9,10 @@
  * @var Give\MultiFormGoals\ProgressBar\Model $this
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $uniqueId = uniqid('', true);
 ?>
 

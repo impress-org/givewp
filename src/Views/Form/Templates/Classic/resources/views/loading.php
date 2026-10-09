@@ -1,6 +1,10 @@
 <?php
 /** @since TBD Escape output. */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $primaryColor = ! empty($options[ 'primary_color' ])
     ? trim($options[ 'primary_color' ], '#')
     : '1E8CBE';

@@ -4,6 +4,10 @@ use Give\FormBuilder\EmailPreview\Controllers\SendEmailPreview;
 use Give\FormBuilder\EmailPreview\Controllers\ShowEmailPreview;
 use Give\Framework\Permissions\Facades\UserPermissions;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 return [
 
     /*

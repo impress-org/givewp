@@ -9,6 +9,10 @@
  * @license      https://opensource.org/licenses/gpl-license GNU Public License
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $current_user = wp_get_current_user();
 
 if ( is_user_logged_in() ) :

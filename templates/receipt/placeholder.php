@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <div class="placeholder-container-animation">
 	<div class="timeline-wrapper">
 		<div class="timeline-item">

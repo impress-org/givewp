@@ -9,6 +9,10 @@
  * @since       1.8.17
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Get the set currency
  *

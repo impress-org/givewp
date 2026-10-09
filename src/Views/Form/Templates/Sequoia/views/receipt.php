@@ -12,6 +12,10 @@ use Give\Views\Form\Templates\Sequoia\Sequoia;
 use Give\Views\IframeContentView;
 use Give_Payment as Payment;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $donationSessionAccessor = new DonationAccessor();
 $donation = new Payment($donationSessionAccessor->getDonationId());
 $options = FormTemplateUtils::getOptions();

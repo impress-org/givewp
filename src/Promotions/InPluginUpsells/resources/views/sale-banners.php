@@ -1,3 +1,4 @@
+<?php if (!defined('ABSPATH')) { exit; } ?>
 <?php
 /**
  * @since TBD Escape output, replace short echo tags with escaped echo, and add translators comments.

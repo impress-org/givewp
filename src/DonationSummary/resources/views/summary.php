@@ -1,3 +1,4 @@
+<?php if (!defined('ABSPATH')) { exit; } ?>
 <?php
 /**
  * @since TBD Escape output, including translated strings. Number the placeholders and move the translators comment.

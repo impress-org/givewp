@@ -10,6 +10,10 @@
  * @var $campaignsPageUrl
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 ?>
 
 <div <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $elements->customWrapperAttributes escapes each attribute value internally. ?><?php echo $elements->customWrapperAttributes; ?>

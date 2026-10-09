@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * One step of a multi-step design: the step title bar with its progress line, the step's content,
  * the button, and the secure-donation badge under it.

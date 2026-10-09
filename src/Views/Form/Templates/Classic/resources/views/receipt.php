@@ -11,6 +11,10 @@ use Give\Session\SessionDonation\DonationAccessor;
 use Give\Views\IframeContentView;
 use Give_Payment as Payment;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $donationId = (new DonationAccessor())->getDonationId();
 $template = Give()->templates->getTemplate();
 $receipt = $template->getReceiptDetails($donationId);

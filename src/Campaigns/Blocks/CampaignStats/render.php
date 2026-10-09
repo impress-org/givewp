@@ -6,6 +6,10 @@ use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Support\ValueObjects\Money;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * @since TBD Escape output and replace short echo tags with escaped echo.
  * @since 4.0.0

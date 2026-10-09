@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /** @since TBD Escape output. */
 /** @var Give\Framework\FieldsAPI\Select $field */ ?>
 <?php

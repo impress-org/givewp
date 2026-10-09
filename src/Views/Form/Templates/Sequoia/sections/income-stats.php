@@ -10,6 +10,10 @@
 use Give\DonationForms\DonationQuery;
 use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModal;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * @since 3.14.0 Use sumIntendedAmount() and getDonationCount() methods to retrieve the proper values for the raised amount and donations count
  */

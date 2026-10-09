@@ -10,6 +10,10 @@
  * @var array $goalStats
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 ?>
 <div class="give-form-header">
     <div class="give-form-header-top-wrap">

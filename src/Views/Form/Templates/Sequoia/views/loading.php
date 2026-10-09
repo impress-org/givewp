@@ -2,6 +2,10 @@
 
 use Give\Helpers\Form\Template as FormTemplateUtils;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * The following variables should be in scope when including this view
  *

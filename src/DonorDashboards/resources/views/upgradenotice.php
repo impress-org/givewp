@@ -7,6 +7,10 @@
  * @since TBD Escape output.
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $setupUrl = add_query_arg(
     [
         'give-generate-donor-dashboard-page' => '1',

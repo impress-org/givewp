@@ -3,6 +3,10 @@
  * @since TBD Escape output, including translated strings, and replace short echo tags with escaped echo.
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 global $post;
 
 use Give\Form\Template;

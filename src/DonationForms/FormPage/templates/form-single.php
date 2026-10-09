@@ -3,6 +3,10 @@
  * @since TBD Escape output.
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 get_header();
 
 $formId = (int) get_the_ID();

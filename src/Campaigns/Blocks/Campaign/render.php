@@ -2,6 +2,10 @@
 
 use Give\Campaigns\Models\Campaign;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * @since TBD Replace short echo tags with escaped echo.
  *
