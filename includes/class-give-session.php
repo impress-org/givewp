@@ -267,10 +267,10 @@ class Give_Session {
 		if (
 			empty( $cookie )
 			&& wp_doing_ajax()
-			&& isset( $_GET['action'] )
-			&& 'get_receipt' === $_GET['action']
+			&& isset( $_GET['action'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public receipt AJAX request on a cached page; a nonce printed there would expire, and the session cookie is the credential.
+			&& 'get_receipt' === $_GET['action'] // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public receipt AJAX request on a cached page; a nonce printed there would expire, and the session cookie is the credential.
 		) {
-			$cookie = isset( $_GET[ $this->cookie_name ] ) ? give_clean( $_GET[ $this->cookie_name ] ) : false;
+			$cookie = isset( $_GET[ $this->cookie_name ] ) ? give_clean( $_GET[ $this->cookie_name ] ) : false; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- public receipt AJAX request on a cached page; the session cookie is the credential. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		}
 
 		return $cookie;

@@ -41,7 +41,7 @@ class Give_Scripts {
 	 * @since 2.1.0
 	 */
 	public function __construct() {
-		$this->direction      = ( is_rtl() || isset( $_GET['d'] ) && 'rtl' === $_GET['d'] ) ? '.rtl' : '';
+		$this->direction      = ( is_rtl() || isset( $_GET['d'] ) && 'rtl' === $_GET['d'] ) ? '.rtl' : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only display param; it only picks the RTL stylesheet and saves nothing.
 		self::$scripts_footer = give_is_setting_enabled( give_get_option( 'scripts_footer' ) ) ? true : false;
 		$this->init();
 	}

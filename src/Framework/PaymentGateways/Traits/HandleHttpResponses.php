@@ -85,16 +85,21 @@ trait HandleHttpResponses
     /**
      * This checks the server headers for 'application/json' to determine if it should respond with json.
      *
+     * @since TBD Unslash and sanitize the headers.
      * @since 2.32.0
      *
      * @return bool
      */
     protected function wantsJson(): bool
     {
-        if (isset($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'application/json')) {
+        $accept = isset($_SERVER['HTTP_ACCEPT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_ACCEPT'])) : '';
+
+        if (str_contains($accept, 'application/json')) {
             return true;
         }
 
-        return isset($_SERVER['CONTENT_TYPE']) && str_contains($_SERVER['CONTENT_TYPE'], 'application/json');
+        $contentType = isset($_SERVER['CONTENT_TYPE']) ? sanitize_text_field(wp_unslash($_SERVER['CONTENT_TYPE'])) : '';
+
+        return str_contains($contentType, 'application/json');
     }
 }

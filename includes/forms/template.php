@@ -247,16 +247,18 @@ function give_get_donation_form( $args = [] ) {
  * @param int $form_id The form ID.
  *
  * @return string
- * @since TBD Escape output.
+ * @since TBD Escape output. Sanitize the posted form id.
  * @since  1.0
  */
 function give_show_purchase_form( $form_id, $args ) {
 
 	$payment_mode = give_get_chosen_gateway( $form_id );
 
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- public form render; the form id only picks which form to show and nothing is saved.
 	if ( ! isset( $form_id ) && isset( $_POST['give_form_id'] ) ) {
-		$form_id = $_POST['give_form_id'];
+		$form_id = absint( wp_unslash( $_POST['give_form_id'] ) );
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 	/**
 	 * Fire before donation form render.
@@ -349,7 +351,7 @@ function give_show_register_login_fields( $form_id ) {
 
 	$show_register_form = give_show_login_register_option( $form_id );
 
-	if ( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) :
+	if ( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only login flag; it only chooses between the login and register fields and saves nothing.
 		?>
 		<div id="give-checkout-login-register-<?php echo (int) $form_id; ?>">
 			<?php
@@ -362,7 +364,7 @@ function give_show_register_login_fields( $form_id ) {
 			?>
 		</div>
 		<?php
-	elseif ( ( $show_register_form === 'login' || ( $show_register_form === 'both' && isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) :
+	elseif ( ( $show_register_form === 'login' || ( $show_register_form === 'both' && isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only login flag; it only chooses between the login and register fields and saves nothing.
 		?>
 		<div id="give-checkout-login-register-<?php echo (int) $form_id; ?>">
 			<?php
@@ -377,7 +379,7 @@ function give_show_register_login_fields( $form_id ) {
 		<?php
 	endif;
 
-	if ( ( ! isset( $_GET['login'] ) && is_user_logged_in() ) || ! isset( $show_register_form ) || 'none' === $show_register_form || 'login' === $show_register_form ) {
+	if ( ( ! isset( $_GET['login'] ) && is_user_logged_in() ) || ! isset( $show_register_form ) || 'none' === $show_register_form || 'login' === $show_register_form ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only login flag; it only chooses between the login and register fields and saves nothing.
 		/**
 		 * Fire when user info render.
 		 *
@@ -1003,7 +1005,7 @@ function give_user_info_fields( $form_id ) {
         <?php
         if (give_is_anonymous_donation_field_enabled($form_id)) : ?>
             <?php
-            $is_anonymous_donation = isset($_POST['give_anonymous_donation']) ? absint($_POST['give_anonymous_donation']) : 0; ?>
+            $is_anonymous_donation = isset($_POST['give_anonymous_donation']) ? absint($_POST['give_anonymous_donation']) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- public form render; it refills the checkbox after a failed submit, the value is cast with absint(), and nothing is saved. ?>
             <p id="give-anonymous-donation-wrap" class="form-row form-row-wide">
                 <label class="give-label" for="give-anonymous-donation">
                     <input
@@ -1060,7 +1062,7 @@ function give_user_info_fields( $form_id ) {
 					placeholder="<?php esc_attr_e( 'Leave a comment', 'give' ); ?>"
 					id="give-comment"
 					<?php echo( give_field_is_required( 'give_comment', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-				><?php echo isset( $_POST['give_comment'] ) ? esc_html( give_clean( $_POST['give_comment'] ) ) : ''; ?></textarea>
+				><?php echo isset( $_POST['give_comment'] ) ? esc_html( give_clean( $_POST['give_comment'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- public form render; it refills the comment after a failed submit and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data. ?></textarea>
 
 			</p>
 		<?php endif; ?>
@@ -1609,7 +1611,7 @@ add_action( 'give_donation_form_register_fields', 'give_get_register_fields' );
  */
 function give_get_login_fields( $form_id ) {
 
-	$form_id            = isset( $_POST['form_id'] ) ? give_clean( $_POST['form_id'] ) : $form_id;
+	$form_id            = isset( $_POST['form_id'] ) ? give_clean( $_POST['form_id'] ) : $form_id; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- public form render; the form id only picks which login fields to show and nothing is saved. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 	$show_register_form = give_show_login_register_option( $form_id );
 
 	ob_start();
@@ -1954,14 +1956,16 @@ add_action( 'give_donation_form_after_cc_form', 'give_terms_agreement', 8888, 1 
  * @param int $form_id The form ID.
  *
  * @return void
- * @since TBD Escape output.
+ * @since TBD Escape output. Unslash and sanitize the posted total.
  * @since  1.0
  */
 function give_checkout_final_total( $form_id ) {
 
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- public form render; the posted total only refills the amount after a failed submit and nothing is saved.
 	$total = isset( $_POST['give_total'] ) ?
-		apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $_POST['give_total'], [ 'currency' => give_get_currency( $form_id ) ] ) ) :
+		apply_filters( 'give_donation_total', give_maybe_sanitize_amount( sanitize_text_field( wp_unslash( $_POST['give_total'] ) ), [ 'currency' => give_get_currency( $form_id ) ] ) ) :
 		give_get_default_form_amount( $form_id );
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 	// Only proceed if give_total available.
 	if ( empty( $total ) ) {
@@ -2310,15 +2314,17 @@ function give_checkout_hidden_fields( $form_id, $args = [] ) {
  * @param string $content Content before filters.
  *
  * @return string $content Filtered content.
+ * @since TBD Unslash and sanitize the payment confirmation slug.
  * @since 1.0
  */
 function give_filter_success_page_content( $content ) {
 
 	$give_options = give_get_settings();
 
-	if ( isset( $give_options['success_page'] ) && isset( $_GET['payment-confirmation'] ) && is_page( $give_options['success_page'] ) ) {
-		if ( has_filter( 'give_payment_confirm_' . $_GET['payment-confirmation'] ) ) {
-			$content = apply_filters( 'give_payment_confirm_' . $_GET['payment-confirmation'], $content );
+	if ( isset( $give_options['success_page'] ) && isset( $_GET['payment-confirmation'] ) && is_page( $give_options['success_page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public success page; the payment-confirmation slug only picks which content filter runs and saves nothing.
+		$confirmation = sanitize_text_field( wp_unslash( $_GET['payment-confirmation'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public success page; the payment-confirmation slug only picks which content filter runs and saves nothing.
+		if ( has_filter( 'give_payment_confirm_' . $confirmation ) ) {
+			$content = apply_filters( 'give_payment_confirm_' . $confirmation, $content );
 		}
 	}
 
@@ -2548,16 +2554,18 @@ function give_is_form_grid_page_hidden_field( $id, $args, $form ) {
  * @param array  $args     Array of additional args.
  *
  * @return string
+ * @since TBD Check that the payment mode is posted before reading it.
  * @since 2.1
  */
 function give_redirect_and_popup_form( $redirect, $args ) {
 
 	// Check the page has Form Grid.
-	$is_form_grid = isset( $_POST['is-form-grid'] ) ? give_clean( $_POST['is-form-grid'] ) : '';
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- public donation form request that is sent back to the form; the form nonce is checked in give_process_donation_form(), and this only builds the redirect URL and saves nothing.
+	$is_form_grid = isset( $_POST['is-form-grid'] ) ? give_clean( $_POST['is-form-grid'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 	if ( 'true' === $is_form_grid ) {
 
-		$payment_mode = give_clean( $_POST['payment-mode'] );
+		$payment_mode = isset( $_POST['payment-mode'] ) ? give_clean( $_POST['payment-mode'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		$form_id      = $args['form-id'];
 
 		// Get the URL without Query parameters.
@@ -2572,6 +2580,8 @@ function give_redirect_and_popup_form( $redirect, $args ) {
 			$redirect
 		);
 	}
+
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 	// Return the modified URL.
 	return esc_url_raw( $redirect );

@@ -302,7 +302,7 @@ class Give_Stripe_Customer {
 	public function create_customer() {
 
 		$customer     = false;
-		$post_data    = give_clean( $_POST );
+		$post_data    = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 		$payment_mode = ! empty( $post_data['give-gateway'] ) ? $post_data['give-gateway'] : '';
 		$form_id      = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
 		$first_name   = ! empty( $post_data['give_first'] ) ? $post_data['give_first'] : '';
@@ -393,6 +393,7 @@ class Give_Stripe_Customer {
 	/**
 	 * This function is used to attach source to the customer, if not exists.
 	 *
+	 * @since TBD Read the payment mode through a sanitizing helper.
 	 * @since  2.1
 	 * @since 2.11.0 Use Give_Stripe_Customer::doesSourceFingerPrintMatch function to verify source finger print
 	 * @access public
@@ -470,7 +471,7 @@ class Give_Stripe_Customer {
 							'give'
 						)
 					);
-					give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+					give_send_back_to_checkout( '?payment-mode=' . give_stripe_get_payment_mode_from_request() );
 
 					return;
 				}
@@ -488,7 +489,7 @@ class Give_Stripe_Customer {
 					__( 'Stripe Error', 'give' ),
 					__( 'An error occurred retrieving or creating the ', 'give' )
 				);
-				give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+				give_send_back_to_checkout( '?payment-mode=' . give_stripe_get_payment_mode_from_request() );
 				$this->attached_payment_method = false;
 			}
 		} // End if().

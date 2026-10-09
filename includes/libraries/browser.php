@@ -232,7 +232,7 @@ class Browser {
 	 * Reset all properties
 	 */
 	function reset() {
-		$this->_agent        = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : "";
+		$this->_agent        = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : "";
 		$this->_browser_name = $this->BROWSER_UNKNOWN;
 		$this->_version      = $this->VERSION_UNKNOWN;
 		$this->_platform     = $this->PLATFORM_UNKNOWN;

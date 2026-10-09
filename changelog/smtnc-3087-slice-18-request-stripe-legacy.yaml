@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Sanitized and unslashed request input in the legacy Stripe gateway
+timestamp: 2026-10-08T20:00:00.000Z

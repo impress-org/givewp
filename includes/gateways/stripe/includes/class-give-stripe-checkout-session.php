@@ -27,6 +27,7 @@ class Give_Stripe_Checkout_Session {
 	 *
 	 * @param array $args List of arguments to create Checkout session.
 	 *
+	 * @since TBD Read the payment mode through a sanitizing helper.
 	 * @since  2.5.5
 	 * @access public
 	 *
@@ -67,7 +68,7 @@ class Give_Stripe_Checkout_Session {
 				)
 			);
 			give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give' ) );
-			give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+			give_send_back_to_checkout( '?payment-mode=' . give_stripe_get_payment_mode_from_request() );
 		}
 
 		return false;
@@ -78,6 +79,7 @@ class Give_Stripe_Checkout_Session {
 	 *
 	 * @param int $id Checkout Session ID.
 	 *
+	 * @since TBD Read the payment mode through a sanitizing helper.
 	 * @since  2.5.5
 	 * @access public
 	 *
@@ -107,7 +109,7 @@ class Give_Stripe_Checkout_Session {
 				)
 			);
 			give_set_error( 'stripe_error', __( 'An occurred while processing the donation with the gateway. Please try your donation again.', 'give' ) );
-			give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+			give_send_back_to_checkout( '?payment-mode=' . give_stripe_get_payment_mode_from_request() );
 		}
 
 		return false;

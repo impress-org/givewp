@@ -35,6 +35,7 @@ class GetStripeAccountDetailsController
     public function __invoke()
     {
         $this->validateRequest();
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only admin AJAX behind manage_give_settings; it returns account details the admin can already see and changes nothing.
         $requestedData = GetStripeAccountDetailsDto::fromArray(give_clean($_POST));
 
         try {

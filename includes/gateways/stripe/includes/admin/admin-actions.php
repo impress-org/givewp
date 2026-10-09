@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since TBD Escape output.
  */
 function give_stripe_connect_deauthorize() {
-	$get_vars = give_clean( $_GET );
+	$get_vars = give_clean( $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only notice params; they only decide which admin notice to show and save nothing.
 
 	// Be sure only to deauthorize when param present.
 	if ( ! isset( $get_vars['stripe_disconnected'] ) ) {
@@ -97,7 +97,7 @@ add_action( 'give_view_donation_details_totals_after', 'give_stripe_opt_refund',
  */
 function give_stripe_process_refund( $donation_id, $new_status, $old_status ) {
 
-	$stripe_opt_refund_value = ! empty( $_POST['give_stripe_opt_refund'] ) ? give_clean( $_POST['give_stripe_opt_refund'] ) : '';
+	$stripe_opt_refund_value = ! empty( $_POST['give_stripe_opt_refund'] ) ? give_clean( $_POST['give_stripe_opt_refund'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data; the refund checkbox is posted by the donation details form, and give_update_payment_details() verifies its nonce with check_admin_referer() before the status changes; other code that changes the status is responsible for its own nonce.
 	$can_process_refund      = ! empty( $stripe_opt_refund_value ) ? $stripe_opt_refund_value : false;
 
 	// Only move forward if refund requested.
