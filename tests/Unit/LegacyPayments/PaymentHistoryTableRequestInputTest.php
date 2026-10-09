@@ -17,6 +17,9 @@ final class PaymentHistoryTableRequestInputTest extends TestCase
     {
         parent::setUp();
 
+        // add_query_arg() reads REQUEST_URI, which an earlier test in a full run can leave unset.
+        $_SERVER['REQUEST_URI'] = '/wp-admin/edit.php?post_type=give_forms&page=give-payment-history';
+
         require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
         require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/class-payments-table.php';
     }
