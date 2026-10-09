@@ -1548,7 +1548,8 @@ function give_filter_where_older_than_week( $where = '' ) {
  *                                   enabled. b. separator  = The separator between the Form Title and the Donation
  *                                   Level.
  *
- * @since TBD match levels by intended amount (fee excluded), never for custom amounts; use the framework Money
+ * @since TBD match levels by intended amount (fee excluded), never for custom amounts; use the framework Money;
+ *            skip levels without text and donations that cannot be loaded
  * @since 4.16.5 lookup option values by level ID (price_id) first before falling back to amount-based matching
  * @since 4.14.5 add currency compatibility to determine whether the level is same as donation amount
  * @since 3.18.0 check if donation form is V3 form
@@ -1584,40 +1585,43 @@ function give_get_donation_form_title( $donation_id, $args = [] ) {
         $donation = Donation::find($donation_id);
         $price_id = give_get_meta( $donation_id, '_give_payment_price_id', true );
 
-        if ( $price_id !== '' && $price_id !== 'custom' && ! is_null( $price_id ) ) {
-            foreach ( $options as $option ) {
-                if ( isset( $option['_give_id']['level_id'] ) && (string) $option['_give_id']['level_id'] === (string) $price_id ) {
-                    $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
-                    return apply_filters('give_get_donation_form_title', $form_title, $donation_id);
+        if ($donation && $options) {
+            if ( $price_id !== '' && $price_id !== 'custom' && ! is_null( $price_id ) ) {
+                foreach ( $options as $option ) {
+                    if ( isset( $option['_give_id']['level_id'] ) && ! empty( $option['_give_text'] ) && (string) $option['_give_id']['level_id'] === (string) $price_id ) {
+                        $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
+                        return apply_filters('give_get_donation_form_title', $form_title, $donation_id);
+                    }
                 }
             }
-        }
 
-        // A custom amount that happens to equal a level was still not that level's donation.
-        if ($price_id !== 'custom') {
-            // Different currencies - use exchange rate from currency switcher
-            $exchange_rate = give_get_meta($donation_id, '_give_cs_exchange_rate', true);
-            $intended_amount = $donation->intendedAmount()->formatToMinorAmount();
+            // A custom amount that happens to equal a level was still not that level's donation.
+            if ($price_id !== 'custom') {
+                // Different currencies - use exchange rate from currency switcher
+                $exchange_rate = give_get_meta($donation_id, '_give_cs_exchange_rate', true);
+                $intended_amount = $donation->intendedAmount()->formatToMinorAmount();
 
-            foreach ( $options as $option ) {
-                if (!isset($option['_give_amount'], $option['_give_text'])) {
-                    continue;
-                }
+                foreach ( $options as $option ) {
+                    if (!isset($option['_give_amount']) || empty($option['_give_text'])) {
+                        continue;
+                    }
 
-                $matched = false;
+                    $matched = false;
 
-                if ($default_currency === $payment_currency) {
-                    $matched = Money::fromDecimal($option['_give_amount'], $default_currency)->formatToMinorAmount() == $intended_amount;
-                } elseif ($exchange_rate && is_numeric($exchange_rate)) {
-                    $option_amount_converted = $option['_give_amount'] * $exchange_rate;
-                    $option_money = Money::fromDecimal($option_amount_converted, $payment_currency);
-                    $diff = abs($option_money->formatToMinorAmount() - $intended_amount);
-                    $matched = ($diff < 2);
-                }
+                    if ($default_currency === $payment_currency) {
+                        $matched = Money::fromDecimal($option['_give_amount'], $default_currency)->formatToMinorAmount() == $intended_amount;
+                    } elseif ($exchange_rate && is_numeric($exchange_rate)) {
+                        // fromDecimal() truncates extra digits, so round the converted amount first.
+                        $option_amount_converted = round($option['_give_amount'] * $exchange_rate, give_get_price_decimals($payment_currency));
+                        $option_money = Money::fromDecimal($option_amount_converted, $payment_currency);
+                        $diff = abs($option_money->formatToMinorAmount() - $intended_amount);
+                        $matched = ($diff < 2);
+                    }
 
-                if ($matched) {
-                    $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
-                    return apply_filters('give_get_donation_form_title', $form_title, $donation_id);
+                    if ($matched) {
+                        $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
+                        return apply_filters('give_get_donation_form_title', $form_title, $donation_id);
+                    }
                 }
             }
         }

@@ -1,5 +1,0 @@
-significance: patch
-type: fix
-entry: Stopped the {donation} email tag and donation exports from naming a
-  donation without a stored level, or with a recovered fee, after the first level.
-timestamp: 2026-10-06T05:46:28.623Z

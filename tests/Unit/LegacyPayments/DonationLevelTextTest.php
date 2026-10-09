@@ -49,6 +49,20 @@ class DonationLevelTextTest extends TestCase
     /**
      * @since TBD
      */
+    public function testPriceOptionNameResolvesFirstLevelIdZero(): void
+    {
+        $form = $this->createV3FormWithDescribedLevels();
+        $levelId = array_key_first($this->levels);
+
+        $this->assertSame(
+            $this->levels[$levelId]['label'],
+            give_get_price_option_name($form->id, (string)$levelId, 0, false)
+        );
+    }
+
+    /**
+     * @since TBD
+     */
     public function testPriceOptionNameIsEmptyWhenLevelIdIsEmpty(): void
     {
         $form = $this->createV3FormWithDescribedLevels();
@@ -135,6 +149,78 @@ class DonationLevelTextTest extends TestCase
         foreach ($this->levels as $describedLevel) {
             $this->assertStringNotContainsString($describedLevel['label'], $title);
         }
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFormTitleResolvesFirstLevelIdZero(): void
+    {
+        $form = $this->createV3FormWithDescribedLevels();
+        $levelId = array_key_first($this->levels);
+        $otherLevel = $this->levels[array_key_last($this->levels)];
+
+        /* An amount equal to another level proves the title comes from level ID '0', not from amount matching. */
+        $donation = Donation::factory()->create([
+            'formId' => $form->id,
+            'formTitle' => $form->title,
+            'amount' => Money::fromDecimal($otherLevel['value'], 'USD'),
+            'feeAmountRecovered' => null,
+            'levelId' => (string)$levelId,
+        ]);
+
+        $title = give_get_donation_form_title($donation->id, ['separator' => '-']);
+
+        $this->assertStringContainsString($this->levels[$levelId]['label'], $title);
+        $this->assertStringNotContainsString($otherLevel['label'], $title);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFormTitleMatchesLevelByConvertedAmountInDonationCurrency(): void
+    {
+        $form = $this->createV3FormWithDescribedLevels();
+        $level = $this->levels[array_key_last($this->levels)];
+
+        /* A rate with more decimals than the currency, so the converted level amount needs rounding. */
+        $exchangeRate = '0.92347';
+
+        $donation = Donation::factory()->create([
+            'formId' => $form->id,
+            'formTitle' => $form->title,
+            'amount' => Money::fromDecimal(round($level['value'] * $exchangeRate, 2), 'EUR'),
+            'feeAmountRecovered' => null,
+            'exchangeRate' => $exchangeRate,
+            'levelId' => '',
+        ]);
+
+        $title = give_get_donation_form_title($donation->id, ['separator' => '-']);
+
+        $this->assertStringContainsString($level['label'], $title);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFormTitleSkipsMatchedLevelWithoutText(): void
+    {
+        $levelId = array_key_last($this->levels);
+        $this->levels[$levelId]['label'] = '';
+        $form = $this->createV3FormWithDescribedLevels();
+        $separator = '-';
+
+        $donation = Donation::factory()->create([
+            'formId' => $form->id,
+            'formTitle' => $form->title,
+            'amount' => Money::fromDecimal($this->levels[$levelId]['value'], 'USD'),
+            'feeAmountRecovered' => null,
+            'levelId' => (string)$levelId,
+        ]);
+
+        $title = give_get_donation_form_title($donation->id, ['separator' => $separator]);
+
+        $this->assertStringEndsNotWith($separator . ' ', $title);
     }
 
     /**
