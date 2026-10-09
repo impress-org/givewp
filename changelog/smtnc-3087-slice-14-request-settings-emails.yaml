@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Sanitized request input in the legacy settings and email notification screens
+timestamp: 2026-10-08T18:00:00.000Z

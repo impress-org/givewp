@@ -803,6 +803,7 @@ class Give_MetaBox_Form_Data {
 		if ( $form_data_tabs = $this->get_tabs() ) :
 			Template\LegacyFormSettingCompatibility::migrateExistingFormSettings();
 
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only tab name; it only selects which panel to show and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 			$active_tab = ! empty( $_GET['give_tab'] ) ? give_clean( $_GET['give_tab'] ) : 'form_template_options';
 			wp_nonce_field( 'give_save_form_meta', 'give_form_meta_nonce' );
 
@@ -953,6 +954,7 @@ class Give_MetaBox_Form_Data {
 	 * @param int        $post_id Post ID.
 	 * @param int|object $post    Post Object.
 	 *
+	 * @since TBD Unslash and sanitize the request values.
 	 * @since 1.8
 	 *
 	 * @return void
@@ -970,7 +972,7 @@ class Give_MetaBox_Form_Data {
 		}
 
 		// Check the nonce.
-		if ( empty( $_POST['give_form_meta_nonce'] ) || ! wp_verify_nonce( $_POST['give_form_meta_nonce'], 'give_save_form_meta' ) ) {
+		if ( empty( $_POST['give_form_meta_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['give_form_meta_nonce'] ) ), 'give_save_form_meta' ) ) {
 			return;
 		}
 
@@ -1011,16 +1013,17 @@ class Give_MetaBox_Form_Data {
 						switch ( $setting_field['type'] ) {
 							case 'textarea':
 							case 'wysiwyg':
-								$form_meta_value = wp_kses_post( $_POST[ $form_meta_key ] );
+								$form_meta_value = wp_slash( wp_kses_post( wp_unslash( $_POST[ $form_meta_key ] ) ) ); // update_post_meta() unslashes the value once more, so it is slashed again here.
 								break;
 
 							case 'donation_limit':
-								$form_meta_value = $_POST[ $form_meta_key ];
+								$form_meta_value = give_clean( $_POST[ $form_meta_key ] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 								break;
 
 							case 'group':
 								$form_meta_value = [];
 
+								// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- the values stay slashed on purpose: wp_kses_post() and give_clean() below handle them, and update_post_meta() unslashes them once when saving.
 								foreach ( $_POST[ $form_meta_key ] as $index => $group ) {
 
 									// Do not save template input field values.
@@ -1050,7 +1053,7 @@ class Give_MetaBox_Form_Data {
 								break;
 
 							default:
-								$form_meta_value = give_clean( $_POST[ $form_meta_key ] );
+								$form_meta_value = give_clean( $_POST[ $form_meta_key ] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 						}// End switch().
 
 						/**
@@ -1101,6 +1104,7 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Save form template setting handler
 	 *
+	 * @since TBD Check that the request values are set.
 	 * @since 4.16.2 Normalize file field values as URLs when saving form template settings.
 	 *
 	 * @param string $meta_key
@@ -1113,7 +1117,8 @@ class Give_MetaBox_Form_Data {
 			return;
 		}
 
-		$options = $_POST[ $new_template ];
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified by save() before this runs; the options stay slashed on purpose and are sanitized by field type below.
+		$options = isset( $_POST[ $new_template ] ) ? $_POST[ $new_template ] : [];
 
 		// Exit
 		if ( empty( $options ) ) {
@@ -1503,11 +1508,14 @@ class Give_MetaBox_Form_Data {
 	 * @return string The URL after redirect.
 	 */
 	public function maintain_active_tab( $location, $post_id ) {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- WordPress core verifies the nonce before it fires redirect_post_location.
 		if (
 			'give_forms' === get_post_type( $post_id ) &&
 			! empty( $_POST['give_form_active_tab'] )
 		) {
-			$location = esc_url_raw( add_query_arg( 'give_tab', give_clean( $_POST['give_form_active_tab'] ), $location ) ); }
+			$location = esc_url_raw( add_query_arg( 'give_tab', give_clean( $_POST['give_form_active_tab'] ), $location ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		}
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		return $location;
 	}

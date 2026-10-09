@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Enabled & disable notification
  *
+ * @since TBD Check that the status is set.
  * @since 2.0
  * @since 4.15.4 Add nonce verification.
  */
@@ -28,10 +29,12 @@ function give_set_notification_status_handler() {
 		return;
 	}
 
+	// phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 	$notification_id = isset( $_POST['notification_id'] ) ? give_clean( $_POST['notification_id'] ) : '';
-	if ( ! empty( $notification_id ) && give_update_option( "{$notification_id}_notification", give_clean( $_POST['status'] ) ) ) {
+	if ( ! empty( $notification_id ) && isset( $_POST['status'] ) && give_update_option( "{$notification_id}_notification", give_clean( $_POST['status'] ) ) ) {
 		wp_send_json_success();
 	}
+	// phpcs:enable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 	wp_send_json_error();
 }

@@ -186,6 +186,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			}
 
 			// Apply filter only for current email notification section.
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only section param; it only checks that a settings section is open and saves nothing.
 			if ( isset( $_GET['section'] ) && give_get_current_setting_section() === $this->config['id'] ) {
 				// Initialize email context for email notification.
 				$this->config['email_tag_context'] = apply_filters(
@@ -705,6 +706,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function send_preview_email( $send = true ) {
 			// Get form id
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Give_Email_Notifications::preview_email() and send_preview_email() verify the nonce with give_validate_nonce() before they call this; the ID is cast with absint().
 			$form_id = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 
 			// setup email data.

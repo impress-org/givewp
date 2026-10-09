@@ -238,7 +238,7 @@ class Give_Email_Notifications {
 	/**
 	 * Displays the email preview
 	 *
-	 * @since  TBD Escape output.
+	 * @since  TBD Escape output. Unslash and sanitize the request values.
 	 * @since  2.0
 	 * @access public
 	 * @return bool|null
@@ -250,10 +250,12 @@ class Give_Email_Notifications {
 		}
 
 		// Security check.
-		give_validate_nonce( $_GET['_wpnonce'], 'give-preview-email' );
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- this reads the nonce itself and give_validate_nonce() verifies it right here.
+		give_validate_nonce( isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '', 'give-preview-email' );
 
 		// Get email type.
-		$email_type = isset( $_GET['email_type'] ) ? esc_attr( $_GET['email_type'] ) : '';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified by give_validate_nonce() above.
+		$email_type = isset( $_GET['email_type'] ) ? sanitize_text_field( wp_unslash( $_GET['email_type'] ) ) : '';
 
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
@@ -262,7 +264,7 @@ class Give_Email_Notifications {
 			}
 
 			// Set form id.
-			$form_id = empty( $_GET['form_id'] ) ? null : absint( $_GET['form_id'] );
+			$form_id = empty( $_GET['form_id'] ) ? null : absint( $_GET['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified by give_validate_nonce() above.
 
 			// Call setup email data to apply filter and other thing to email.
 			$email->send_preview_email( false );
@@ -355,8 +357,8 @@ class Give_Email_Notifications {
 	 * @return array
 	 */
 	public function email_preview_data( $email_preview_data ) {
-		$email_preview_data['payment_id'] = absint( give_check_variable( give_clean( $_GET ), 'isset', 0, 'preview_id' ) );
-		$email_preview_data['user_id']    = absint( give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' ) );
+		$email_preview_data['payment_id'] = absint( give_check_variable( give_clean( $_GET ), 'isset', 0, 'preview_id' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only preview param; it only picks which donation to preview and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		$email_preview_data['user_id']    = absint( give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only preview param; it only picks which donor to preview and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 		return $email_preview_data;
 	}
@@ -386,7 +388,7 @@ class Give_Email_Notifications {
 	/**
 	 * Displays the email preview
 	 *
-	 * @since TBD Use a safe redirect.
+	 * @since TBD Use a safe redirect, and unslash and sanitize the request values.
 	 * @since  2.0
 	 * @access public
 	 * @return bool|null
@@ -398,9 +400,11 @@ class Give_Email_Notifications {
 		}
 
 		// Security check.
-		give_validate_nonce( $_GET['_wpnonce'], 'give-send-preview-email' );
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- this reads the nonce itself and give_validate_nonce() verifies it right here.
+		give_validate_nonce( isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '', 'give-send-preview-email' );
 
 		// Get email type.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified by give_validate_nonce() above. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		$email_type = give_check_variable( give_clean( $_GET ), 'isset', '', 'email_type' );
 
 		/* @var Give_Email_Notification $email */

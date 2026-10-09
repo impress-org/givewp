@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Sanitized request input in the legacy donors admin and donor comment handling
+timestamp: 2026-10-08T16:40:00.000Z
