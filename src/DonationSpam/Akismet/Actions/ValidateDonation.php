@@ -34,6 +34,7 @@ class ValidateDonation
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.22.0 replaced params to $email, $comment, $firstName, $lastName
      * @since 3.15.0
      *
@@ -56,7 +57,7 @@ class ValidateDonation
                 if(!give_akismet_is_email_logged($email)) {
                     Log::spam($message, (array) new SpamContext($args, $response));
                 }
-                throw new SpamDonationException($message);
+                throw new SpamDonationException($message); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- donor-entered text returned as JSON and rendered as text by the form; esc_html() here would double-encode.
             }
         }
     }

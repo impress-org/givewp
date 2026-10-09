@@ -30,11 +30,13 @@ class MultiSelect extends Field
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.0.0
      */
     public function fieldType(string $fieldType): MultiSelect
     {
         if (!in_array($fieldType, ['checkbox', 'dropdown'])) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- constant string returned as a JSON message; esc_html__() would encode its quotes.
             throw new InvalidArgumentException(__('Field type must be either "checkbox" or "dropdown".', 'give'));
         }
 

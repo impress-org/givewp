@@ -86,6 +86,7 @@ final class Fields
     /**
      * Validate field arguments
      *
+     * @since TBD Escape exception message.
      * @since 2.7.0
      *
      * @param array $array
@@ -99,7 +100,7 @@ final class Fields
 
         if (array_diff($required, array_keys($array))) {
             throw new InvalidArgumentException(
-                __('To create a Field object, please provide valid id, name and type.', 'give')
+                esc_html__('To create a Field object, please provide valid id, name and type.', 'give')
             );
         }
     }

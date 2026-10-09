@@ -1,5 +1,7 @@
 <?php
-/** @since TBD Escape output. */
+/**
+ * @since TBD Escape output, including translated strings.
+ */
 
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\Receipt\DonationReceipt;
@@ -117,7 +119,7 @@ ob_start();
             <div class="secure-notice">
                 <i class="fas fa-lock"></i>
                 <?php
-                _e('Secure Donation', 'give'); ?>
+                esc_html_e('Secure Donation', 'give'); ?>
             </div>
         </div>
     </div>

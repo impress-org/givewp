@@ -52,6 +52,7 @@ class DonorInfo implements ValueObjects
     /**
      * Take array and return object.
      *
+     * @since TBD Escape exception message.
      * @since 2.19.6 - fix update key validation with new variable to prevent removing not required keys like lastName
      *
      * @param $array
@@ -66,7 +67,7 @@ class DonorInfo implements ValueObjects
 
         if (empty($requiredKeys)) {
             throw new InvalidArgumentException(
-                'Invalid DonorInfo object, must have the exact following keys: ' . implode(', ', $expectedKeys)
+                'Invalid DonorInfo object, must have the exact following keys: ' . esc_html(implode(', ', $expectedKeys))
             );
         }
 

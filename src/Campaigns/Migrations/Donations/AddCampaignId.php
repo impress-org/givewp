@@ -52,6 +52,7 @@ class AddCampaignId extends BatchMigration implements ReversibleMigration
     /**
      * @inheritDoc
      *
+     * @since TBD Escape exception message.
      * @since 4.0.0
      *
      * @throws DatabaseMigrationException
@@ -109,7 +110,7 @@ class AddCampaignId extends BatchMigration implements ReversibleMigration
             }
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while adding campaign ID to the donation meta table",
-                0, $exception);
+                0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
         }
     }
 

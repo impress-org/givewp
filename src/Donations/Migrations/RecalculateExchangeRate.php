@@ -53,6 +53,9 @@ class RecalculateExchangeRate extends BatchMigration
 
     /**
      * @inheritDoc
+     *
+     * @since TBD Escape exception message.
+     *
      * @throws DatabaseMigrationException
      */
     public function runBatch($firstId, $lastId): void
@@ -107,7 +110,7 @@ class RecalculateExchangeRate extends BatchMigration
             throw new DatabaseMigrationException(
                 'An error occurred while updating donation exchange rates',
                 0,
-                $exception
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
             );
         }
     }

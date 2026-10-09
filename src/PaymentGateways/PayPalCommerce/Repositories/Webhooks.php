@@ -112,6 +112,7 @@ class Webhooks
      *
      * @see https://developer.paypal.com/docs/api/webhooks/v1/#webhooks_post
      *
+     * @since TBD Escape exception message.
      * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 2.32.0 Use PayPal client for rest api calls.
      * @since 2.9.0
@@ -157,7 +158,7 @@ class Webhooks
 
             return new WebhookConfig($response->result->id, $webhookUrl, $events);
         } catch (\Exception $exception) {
-            throw new Exception($exception->getMessage());
+            throw new Exception($exception->getMessage()); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- the only caller (onBoardingRedirectHandler::setUpWebhook) catches this and never reads getMessage(); it pushes a constant string into the account errors instead, so this message is discarded, not output.
         }
     }
 

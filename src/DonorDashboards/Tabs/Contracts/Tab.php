@@ -46,6 +46,7 @@ abstract class Tab
     /**
      * Registers routes with WP REST api
      *
+     * @since TBD Escape exception message.
      * @since 2.10.0
      */
     public function registerRoutes()
@@ -54,7 +55,7 @@ abstract class Tab
         foreach ($routeClasses as $routeClass) {
             if ( ! is_subclass_of($routeClass, RouteAbstract::class)) {
                 throw new \InvalidArgumentException(
-                    $routeClass . ' must extend the ' . RouteAbstract::class . ' class'
+                    esc_html($routeClass) . ' must extend the ' . RouteAbstract::class . ' class'
                 );
             }
             (new $routeClass)->registerRoute();

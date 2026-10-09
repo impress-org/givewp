@@ -44,6 +44,7 @@ class SubscriptionsAdminPage
     /**
      * Display a button on the old subscriptions table that switches to the React view
      *
+     * @since TBD Escape translated output.
      * @since 2.24.0
      */
     public function renderReactSwitch()
@@ -63,7 +64,7 @@ class SubscriptionsAdminPage
             }
             jQuery( function() {
                 jQuery(jQuery(".wrap .wp-header-end")).before(
-                    '<button class="page-title-action" onclick="showReactTable()"><?php _e('Switch to New View', 'give') ?></button>'
+                    '<button class="page-title-action" onclick="showReactTable()"><?php echo esc_js(__('Switch to New View', 'give')) ?></button>'
                 );
             });
         </script>

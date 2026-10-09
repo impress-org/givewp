@@ -238,6 +238,7 @@ abstract class Model implements Arrayable
     /**
      * Validates that the given value is a valid type for the given property.
      *
+     * @since TBD Escape exception message.
      * @since 2.19.6
      *
      * @param string $key
@@ -251,13 +252,14 @@ abstract class Model implements Arrayable
         if ( ! $this->isPropertyTypeValid($key, $value)) {
             $type = $this->getPropertyType($key);
 
-            throw new InvalidArgumentException("Invalid attribute assignment. '$key' should be of type: '$type'");
+            throw new InvalidArgumentException(sprintf("Invalid attribute assignment. '%s' should be of type: '%s'", esc_html($key), esc_html($type)));
         }
     }
 
     /**
      * Validates that the given property exists
      *
+     * @since TBD Escape exception message.
      * @since 2.23.0
      *
      * @return void
@@ -266,7 +268,7 @@ abstract class Model implements Arrayable
     protected function validatePropertyExists(string $key)
     {
         if ( !$this->hasProperty($key) ) {
-            throw new InvalidArgumentException("Invalid property. '$key' does not exist.");
+            throw new InvalidArgumentException(sprintf("Invalid property. '%s' does not exist.", esc_html($key)));
         }
     }
 
@@ -383,6 +385,7 @@ abstract class Model implements Arrayable
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.20.0 cache the relations after first load
      * @since 2.19.6
      *
@@ -395,7 +398,7 @@ abstract class Model implements Arrayable
     protected function getRelationship($key)
     {
         if ( ! is_callable([$this, $key])) {
-            throw new InvalidArgumentException("$key() does not exist.");
+            throw new InvalidArgumentException(esc_html($key) . '() does not exist.');
         }
 
         if ($this->hasCachedRelationship($key)) {

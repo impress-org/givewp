@@ -12,6 +12,7 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 class AddPhoneColumn extends Migration
 {
     /**
+     * @since TBD Escape exception message.
      * @since 3.7.0
      *
      * @throws DatabaseMigrationException
@@ -30,7 +31,7 @@ class AddPhoneColumn extends Migration
             );
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException('An error occurred adding the phone column to the donors table',
-                0, $exception);
+                0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
         }
     }
 

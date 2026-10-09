@@ -156,7 +156,7 @@ class Give_i18n_Banner {
 	/**
 	 * Outputs a promo box
 	 *
-	 * @since TBD Escape output.
+	 * @since TBD Escape output, including translated strings.
 	 */
 	public function promo() {
 
@@ -179,7 +179,7 @@ class Give_i18n_Banner {
 					<h2 style="margin: 10px 0;"><?php printf( esc_html__( 'Help Translate GiveWP to %s', 'give' ), esc_html( $this->locale_name ) ); ?></h2>
 					<p><?php echo wp_kses_post( $message ); ?></p>
 					<p>
-						<a href="https://wordpress.org/support/register.php" target="_blank"><?php _e( 'Register now &raquo;', 'give' ); ?></a>
+						<a href="https://wordpress.org/support/register.php" target="_blank"><?php esc_html_e( 'Register now &raquo;', 'give' ); ?></a>
 					</p>
 				</div>
 			</div>

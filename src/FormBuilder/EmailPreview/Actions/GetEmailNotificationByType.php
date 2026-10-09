@@ -10,6 +10,7 @@ namespace Give\FormBuilder\EmailPreview\Actions;
 class GetEmailNotificationByType
 {
     /**
+     * @since TBD Escape exception message.
      * @since 3.0.0
      *
      * @param $type
@@ -26,6 +27,6 @@ class GetEmailNotificationByType
             }
         }
 
-        throw new \Exception("Email notification not found for '$type'");
+        throw new \Exception(sprintf("Email notification not found for '%s'", esc_html($type)));
     }
 }

@@ -225,6 +225,8 @@ class DB
      * @param Callable $queryCaller
      *
      * @return mixed
+     *
+     * @since TBD Escape exception message.
      * @throws DatabaseQueryException
      */
     private static function runQueryWithErrorChecking($queryCaller)
@@ -244,7 +246,7 @@ class DB
         $wpError = self::getQueryErrors($errorCount);
 
         if ( ! empty($wpError->errors)) {
-            throw new DatabaseQueryException($wpdb->last_query, $wpError->errors);
+            throw new DatabaseQueryException($wpdb->last_query, $wpError->errors); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- SQL query and wpdb error array; stored in the log and shown as text, not HTML.
         }
 
         return $output;
