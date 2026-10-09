@@ -384,8 +384,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
          * Validate required mapped fields
          *
          * 4.14.1 Check if donor_id or email is mapped to the columns
-         * @since TBD Add translators comments.
-         * @since TBD Unslash and sanitize the mapped fields.
+         * @since TBD Add translators comments and unslash and sanitize the mapped fields.
          * @since 4.11.0
          */
         public function check_for_dropdown_or_import()
