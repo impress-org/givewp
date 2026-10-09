@@ -86,6 +86,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 * @param string $export_type export type.
 	 *
 	 * @return string $filename file name.
+	 * @since TBD Use gmdate() and wp_date() instead of date().
 	 * @since 2.1.0
 	 */
 	public function give_export_filename( $filename, $export_type ) {
@@ -98,9 +99,9 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 		if ( $forms ) {
 			$slug     = get_post_field( 'post_name', get_post( $forms ) );
-			$filename = 'give-export-donors-' . $slug . '-' . date( 'm-d-Y' );
+			$filename = 'give-export-donors-' . $slug . '-' . wp_date( 'm-d-Y', null, new DateTimeZone( 'UTC' ) );
 		} else {
-			$filename = 'give-export-donors-all-forms-' . date( 'm-d-Y' );
+			$filename = 'give-export-donors-all-forms-' . wp_date( 'm-d-Y', null, new DateTimeZone( 'UTC' ) );
 		}
 
 		return $filename;
@@ -207,6 +208,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 * Get donation query arguments
 	 *
 	 * @return array
+	 * @since TBD Use gmdate() instead of date().
 	 * @since 2.4.5
 	 */
 	private function get_donation_query_args() {
@@ -226,14 +228,14 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			// Start date.
 			$start_date = ! empty( $this->data['donor_export_start_date'] ) ? sanitize_text_field( $this->data['donor_export_start_date'] ) : '';
 			if ( ! empty( $start_date ) ) {
-				$start_date         = date( 'Y-m-d', strtotime( $start_date ) );
+				$start_date         = gmdate( 'Y-m-d', strtotime( $start_date ) );
 				$args['start_date'] = $start_date;
 			}
 
 			// End date.
 			$end_date         = ! empty( $this->data['donor_export_end_date'] )
-				? date( 'Y-m-d', strtotime( sanitize_text_field( $this->data['donor_export_end_date'] ) ) )
-				: date( 'Y-m-d', current_time( 'timestamp' ) );
+				? gmdate( 'Y-m-d', strtotime( sanitize_text_field( $this->data['donor_export_end_date'] ) ) )
+				: gmdate( 'Y-m-d', current_time( 'timestamp' ) );
 			$end_date         = "{$end_date} 23:59:59";
 			$args['end_date'] = $end_date;
 		}
@@ -256,6 +258,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 *
 	 * @access public
 	 * @return array $data The data for the CSV file.
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 */
 	public function get_data() {
@@ -330,14 +333,14 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 				// Start date.
 				$start_date = ! empty( $this->data['donor_export_start_date'] ) ? sanitize_text_field( $this->data['donor_export_start_date'] ) : '';
 				if ( ! empty( $start_date ) ) {
-					$start_date            = date( 'Y-m-d', strtotime( $start_date ) );
+					$start_date            = gmdate( 'Y-m-d', strtotime( $start_date ) );
 					$args['date']['start'] = $start_date;
 				}
 
 				// End date.
 				$end_date            = ! empty( $this->data['donor_export_end_date'] )
-					? date( 'Y-m-d', strtotime( sanitize_text_field( $this->data['donor_export_end_date'] ) ) )
-					: date( 'Y-m-d', current_time( 'timestamp' ) );
+					? gmdate( 'Y-m-d', strtotime( sanitize_text_field( $this->data['donor_export_end_date'] ) ) )
+					: gmdate( 'Y-m-d', current_time( 'timestamp' ) );
 				$end_date            = "{$end_date} 23:59:59";
 				$args['date']['end'] = $end_date;
 
