@@ -55,7 +55,7 @@ class Shortcode
             [
                 'ids' => array_map(
                     static function ($id) {
-                        _give_redirect_form_id($id);
+                        give_redirect_form_id($id);
 
                         return $id;
                     },

@@ -156,7 +156,7 @@ function give_get_default_offline_donation_email_content() {
 /**
  * Get formatted offline instructions
  *
- * @since TBD Add translators comments.
+ * @since TBD Renamed from get_formatted_offline_instructions(). Add translators comments.
  * @since 2.15.0
  *
  * @param  string  $instructions
@@ -165,7 +165,7 @@ function give_get_default_offline_donation_email_content() {
  *
  * @return string
  */
-function get_formatted_offline_instructions( $instructions, $form_id, $wpautop = false ) {
+function give_get_formatted_offline_instructions( $instructions, $form_id, $wpautop = false ) {
 	$settings_url = admin_url( 'post.php?post=' . $form_id . '&action=edit&message=1' );
 
 	$offline_instructions = ! empty( $instructions ) ? $instructions : sprintf(
@@ -177,6 +177,19 @@ function get_formatted_offline_instructions( $instructions, $form_id, $wpautop =
 	$offline_instructions = give_do_email_tags($offline_instructions, ['form_id' => $form_id]);
 
 	return $wpautop ? wpautop( do_shortcode( $offline_instructions ) ) : $offline_instructions;
+}
+
+/**
+ * Get formatted offline instructions
+ *
+ * @since TBD Renamed to give_get_formatted_offline_instructions(); this old name is a deprecated alias.
+ * @since 2.15.0
+ * @deprecated TBD Use give_get_formatted_offline_instructions() instead.
+ */
+function get_formatted_offline_instructions($instructions, $form_id, $wpautop = false) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_formatted_offline_instructions().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_get_formatted_offline_instructions()' );
+
+	return give_get_formatted_offline_instructions($instructions, $form_id, $wpautop);
 }
 
 /**
@@ -207,7 +220,7 @@ function give_get_offline_payment_instruction( $form_id, $wpautop = false ) {
 	$global_offline_instructions = give_get_option( 'global_offline_donation_content' );
 	$offline_instructions_content = $post_offline_customization_option_enabled ? $post_offline_instructions : $global_offline_instructions;
 
-	$formatted_offline_instructions = get_formatted_offline_instructions(
+	$formatted_offline_instructions = give_get_formatted_offline_instructions(
 		$offline_instructions_content,
 		$form_id,
 		$wpautop
