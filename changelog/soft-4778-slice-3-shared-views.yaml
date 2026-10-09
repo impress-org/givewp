@@ -1,0 +1,6 @@
+significance: patch
+type: fix
+entry: Added direct file access protection to donation form, campaign, donor
+  dashboard, shortcode and admin view templates, so they do nothing when opened
+  by URL.
+timestamp: 2026-10-07T00:58:00.104Z

@@ -11,11 +11,16 @@
 
 use Give\Donations\ValueObjects\DonationMetaKeys;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Get the donor's Gravatar with a nice fallback.
  *
  * The fallback uses the donor's
  *
+ * @since TBD Escape output.
  * @since 2.2.0
  *
  * @param  Give_Donor  $donor
@@ -34,7 +39,7 @@ function give_get_donor_avatar( $donor, $size = 60 ) {
 			echo get_avatar( $donor->email, $size );
 		} else {
 			// No gravatar = output initials.
-			echo $donor->get_donor_initals();
+			echo esc_html( $donor->get_donor_initals() );
 		}
 		?>
 	</div>

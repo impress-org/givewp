@@ -152,6 +152,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 	/**
 	 * Add donation search filter.
 	 *
+	 * @since TBD Escape output, including translated strings, and use gmdate() instead of date().
+	 *
 	 * @return void
 	 */
 	public function advanced_filters() {
@@ -167,41 +169,42 @@ class Give_Payment_History_Table extends WP_List_Table {
 			<div id="give-payment-date-filters">
 				<div class="give-filter give-filter-half">
 					<label for="start-date"
-						   class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
+						   class="give-start-date-label"><?php esc_html_e( 'Start Date', 'give' ); ?></label>
 					<input type="text"
 						   id="start-date"
 						   name="start-date"
 						   class="give_datepicker"
 						   autocomplete="off"
-						   value="<?php echo $start_date ? date_i18n( give_date_format(), $start_date ) : ''; ?>"
-						   data-standard-date="<?php echo $start_date ? date( 'Y-m-d', $start_date ) : $start_date; ?>"
-						   placeholder="<?php _e( 'Start Date', 'give' ); ?>"
+						   value="<?php echo $start_date ? esc_attr( date_i18n( give_date_format(), $start_date ) ) : ''; ?>"
+						   data-standard-date="<?php echo $start_date ? esc_attr( gmdate( 'Y-m-d', $start_date ) ) : esc_attr( $start_date ); ?>"
+						   placeholder="<?php esc_attr_e( 'Start Date', 'give' ); ?>"
 					/>
 				</div>
 				<div class="give-filter give-filter-half">
-					<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
+					<label for="end-date" class="give-end-date-label"><?php esc_html_e( 'End Date', 'give' ); ?></label>
 					<input type="text"
 						   id="end-date"
 						   name="end-date"
 						   class="give_datepicker"
 						   autocomplete="off"
-						   value="<?php echo $end_date ? date_i18n( give_date_format(), $end_date ) : ''; ?>"
-						   data-standard-date="<?php echo $end_date ? date( 'Y-m-d', $end_date ) : $end_date; ?>"
-						   placeholder="<?php _e( 'End Date', 'give' ); ?>"
+						   value="<?php echo $end_date ? esc_attr( date_i18n( give_date_format(), $end_date ) ) : ''; ?>"
+						   data-standard-date="<?php echo $end_date ? esc_attr( gmdate( 'Y-m-d', $end_date ) ) : esc_attr( $end_date ); ?>"
+						   placeholder="<?php esc_attr_e( 'End Date', 'give' ); ?>"
 					/>
 				</div>
 			</div>
 			<div id="give-payment-form-filter" class="give-filter">
 				<label for="give-donation-forms-filter"
-					   class="give-donation-forms-filter-label"><?php _e( 'Form', 'give' ); ?></label>
+					   class="give-donation-forms-filter-label"><?php esc_html_e( 'Form', 'give' ); ?></label>
 				<?php
 				// Filter Donations by Donation Forms.
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- forms_dropdown() renders a <select> control; wp_kses_post() would strip it.
 				echo Give()->html->forms_dropdown(
 					[
 						'name'     => 'form_id',
 						'id'       => 'give-donation-forms-filter',
 						'class'    => 'give-donation-forms-filter',
-						'selected' => $form_id, // Make sure to have $form_id set to 0, if there is no selection.
+						'selected' => (int) $form_id, // Make sure to have $form_id set to 0, if there is no selection.
 						'chosen'   => true,
 						'number'   => 30,
 					]
@@ -232,8 +235,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 				// Clear active filters button.
 				if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $donor ) || ! empty( $search ) || ! empty( $status ) || ! empty( $form_id ) ) :
 					?>
-					<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>"
-					   class="button give-clear-filters-button"><?php _e( 'Clear Filters', 'give' ); ?></a>
+					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ) ); ?>"
+					   class="button give-clear-filters-button"><?php esc_html_e( 'Clear Filters', 'give' ); ?></a>
 				<?php endif; ?>
 			</div>
 		</div>
@@ -247,6 +250,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @param string $text     Label for the search box.
 	 * @param string $input_id ID of the search box.
 	 *
+	 * @since  TBD Escape output, including translated strings.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -273,10 +277,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 */
 			do_action( 'give_payment_history_search' );
 			?>
-			<label class="screen-reader-text" for="<?php echo $input_id; ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id; ?>" name="s"
+			<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $text ); ?>:</label>
+			<input type="search" id="<?php echo esc_attr( $input_id ); ?>" name="s"
 				   value="<?php _admin_search_query(); ?>"
-				   placeholder="<?php _e( 'Name, Email, or Donation ID', 'give' ); ?>" />
+				   placeholder="<?php esc_attr_e( 'Name, Email, or Donation ID', 'give' ); ?>" />
 			<?php
 			submit_button(
 				$text,
@@ -465,7 +469,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @param string       $column_name The name of the column.
 	 *
 	 * @access public
-	 * @since  TBD Say No campaign when the donation has no campaign.
+	 * @since TBD Add translators comments and say No campaign when the donation has no campaign.
 	 * @since  1.0
      * @since 4.3.0 show campaign name instead of the form name
 	 *
@@ -483,6 +487,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				if ( current_user_can( 'view_give_payments' ) ) {
 					$value = Give()->tooltips->render_link(
 						[
+							/* translators: %s: Donation number */
 							'label'       => sprintf( __( 'View Donation %s', 'give' ), $serial_code ),
 							'tag_content' => $serial_code,
 							'link'        => $single_donation_url,
@@ -534,6 +539,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				if ( current_user_can( 'view_give_payments' ) ) {
 					$value = Give()->tooltips->render_link(
 						[
+							/* translators: %s: Donation ID */
 							'label'       => sprintf( __( 'View Donation #%s', 'give' ), $payment->ID ),
 							'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
 							'link'        => $single_donation_url,
@@ -590,6 +596,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 *
 	 * @param object $payment Payment Data.
 	 *
+	 * @since TBD Add translators comments.
 	 * @since 1.6
 	 *
 	 * @return array $actions
@@ -621,6 +628,7 @@ class Give_Payment_History_Table extends WP_List_Table {
                         'give_payment_nonce'
                     )
                 ),
+				/* translators: %s: Donation ID */
 				sprintf( __( 'Resend Donation %s Receipt', 'give' ), $payment->ID ),
 				__( 'Resend Receipt', 'give' )
 			);
@@ -642,6 +650,7 @@ class Give_Payment_History_Table extends WP_List_Table {
                         'give_donation_nonce'
                     )
                 ),
+				/* translators: %s: Donation ID */
 				sprintf( __( 'Delete Donation %s', 'give' ), $payment->ID ),
 				__( 'Delete', 'give' )
 			);
@@ -946,6 +955,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Retrieve all the data for all the payments.
 	 *
 	 * @access public
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 *
 	 * @return array  objects in array containing all the data for the payments
@@ -964,10 +974,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : null;
 		$start_date = ! empty( $_GET['start-date'] )
 			? give_clean( $_GET['start-date'] )
-			: date( 'Y-m-d', 0 );
+			: gmdate( 'Y-m-d', 0 );
 		$end_date   = ! empty( $_GET['end-date'] )
 			? give_clean( $_GET['end-date'] )
-			: date( 'Y-m-d', current_time( 'timestamp' ) );
+			: gmdate( 'Y-m-d', current_time( 'timestamp' ) );
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 		$gateway    = ! empty( $_GET['gateway'] ) ? give_clean( $_GET['gateway'] ) : null;
 

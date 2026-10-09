@@ -139,6 +139,7 @@ class Give_Stats {
 	 *
 	 * Converts a date to a timestamp.
 	 *
+	 * @since  TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -154,8 +155,8 @@ class Give_Stats {
 		$minute          = $end_date ? 59 : 0;
 		$hour            = $end_date ? 23 : 0;
 		$day             = 1;
-		$month           = date( 'n', current_time( 'timestamp' ) );
-		$year            = date( 'Y', current_time( 'timestamp' ) );
+		$month           = gmdate( 'n', current_time( 'timestamp' ) );
+		$year            = gmdate( 'Y', current_time( 'timestamp' ) );
 
 		if ( array_key_exists( (string) $date, $this->get_predefined_dates() ) ) {
 
@@ -192,7 +193,7 @@ class Give_Stats {
 					break;
 
 				case 'today':
-					$day = date( 'd', current_time( 'timestamp' ) );
+					$day = gmdate( 'd', current_time( 'timestamp' ) );
 
 					if ( $end_date ) {
 						$hour   = 23;
@@ -203,7 +204,7 @@ class Give_Stats {
 					break;
 
 				case 'yesterday':
-					$day = date( 'd', current_time( 'timestamp' ) ) - 1;
+					$day = gmdate( 'd', current_time( 'timestamp' ) ) - 1;
 
 					// Check if Today is the first day of the month (meaning subtracting one will get us 0)
 					if ( $day < 1 ) {
@@ -227,8 +228,8 @@ class Give_Stats {
 					break;
 
 				case 'this_week':
-					$days_to_week_start = ( date( 'w', current_time( 'timestamp' ) ) - 1 ) * 60 * 60 * 24;
-					$today              = date( 'j', current_time( 'timestamp' ) ) * 60 * 60 * 24;
+					$days_to_week_start = ( gmdate( 'w', current_time( 'timestamp' ) ) - 1 ) * 60 * 60 * 24;
+					$today              = gmdate( 'j', current_time( 'timestamp' ) ) * 60 * 60 * 24;
 
 					if ( $today <= $days_to_week_start ) {
 
@@ -243,14 +244,14 @@ class Give_Stats {
 
 						// Getting the start day
 
-						$day  = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 1;
+						$day  = gmdate( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 1;
 						$day += get_option( 'start_of_week' );
 
 					} else {
 
 						// Getting the end day
 
-						$day  = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 1;
+						$day  = gmdate( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 1;
 						$day += get_option( 'start_of_week' ) + 6;
 
 					}
@@ -258,8 +259,8 @@ class Give_Stats {
 					break;
 
 				case 'last_week':
-					$days_to_week_start = ( date( 'w', current_time( 'timestamp' ) ) - 1 ) * 60 * 60 * 24;
-					$today              = date( 'j', current_time( 'timestamp' ) ) * 60 * 60 * 24;
+					$days_to_week_start = ( gmdate( 'w', current_time( 'timestamp' ) ) - 1 ) * 60 * 60 * 24;
+					$today              = gmdate( 'j', current_time( 'timestamp' ) ) * 60 * 60 * 24;
 
 					if ( $today <= $days_to_week_start ) {
 
@@ -274,14 +275,14 @@ class Give_Stats {
 
 						// Getting the start day
 
-						$day  = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 8;
+						$day  = gmdate( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 8;
 						$day += get_option( 'start_of_week' );
 
 					} else {
 
 						// Getting the end day
 
-						$day  = date( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 8;
+						$day  = gmdate( 'd', current_time( 'timestamp' ) - $days_to_week_start ) - 8;
 						$day += get_option( 'start_of_week' ) + 6;
 
 					}
@@ -289,7 +290,7 @@ class Give_Stats {
 					break;
 
 				case 'this_quarter':
-					$month_now = date( 'n', current_time( 'timestamp' ) );
+					$month_now = gmdate( 'n', current_time( 'timestamp' ) );
 
 					if ( $month_now <= 3 ) {
 
@@ -340,7 +341,7 @@ class Give_Stats {
 					break;
 
 				case 'last_quarter':
-					$month_now = date( 'n', current_time( 'timestamp' ) );
+					$month_now = gmdate( 'n', current_time( 'timestamp' ) );
 
 					if ( $month_now <= 3 ) {
 
@@ -427,9 +428,9 @@ class Give_Stats {
 		} elseif ( false !== strtotime( $date ) ) {
 
 			$date  = strtotime( $date, current_time( 'timestamp' ) );
-			$year  = date( 'Y', $date );
-			$month = date( 'm', $date );
-			$day   = date( 'd', $date );
+			$year  = gmdate( 'Y', $date );
+			$month = gmdate( 'm', $date );
+			$day   = gmdate( 'd', $date );
 
 		} else {
 
@@ -451,6 +452,7 @@ class Give_Stats {
 	 *
 	 * Modifies the WHERE flag for payment counts.
 	 *
+	 * @since  TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -472,7 +474,7 @@ class Give_Stats {
 				$format = 'Y-m-d 00:00:00';
 			}
 
-			$start_date  = date( $format, $this->start_date );
+			$start_date  = gmdate( $format, $this->start_date );
 			$start_where = " AND p.post_date >= '{$start_date}'";
 		}
 
@@ -484,7 +486,7 @@ class Give_Stats {
 				$format = 'Y-m-d 23:59:59';
 			}
 
-			$end_date = date( $format, $this->end_date );
+			$end_date = gmdate( $format, $this->end_date );
 
 			$end_where = " AND p.post_date <= '{$end_date}'";
 		}
@@ -499,6 +501,7 @@ class Give_Stats {
 	 *
 	 * Modifies the WHERE flag for payment queries.
 	 *
+	 * @since  TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -521,7 +524,7 @@ class Give_Stats {
 				$format = 'Y-m-d 00:00:00';
 			}
 
-			$start_date  = date( $format, $this->start_date );
+			$start_date  = gmdate( $format, $this->start_date );
 			$start_where = " AND $wpdb->posts.post_date >= '{$start_date}'";
 		}
 
@@ -533,7 +536,7 @@ class Give_Stats {
 				$format = 'Y-m-d 23:59:59';
 			}
 
-			$end_date = date( $format, $this->end_date );
+			$end_date = gmdate( $format, $this->end_date );
 
 			$end_where = " AND $wpdb->posts.post_date <= '{$end_date}'";
 		}

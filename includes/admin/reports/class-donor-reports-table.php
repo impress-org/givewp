@@ -92,6 +92,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	/**
 	 * Show the search field
 	 *
+	 * @since  TBD Escape output.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -111,8 +112,8 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 		}
 		?>
 		<p class="search-box donor-search" role="search">
-			<label class="screen-reader-text" for="<?php echo $input_id; ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id; ?>" name="s" value="<?php _admin_search_query(); ?>" />
+			<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $text ); ?>:</label>
+			<input type="search" id="<?php echo esc_attr( $input_id ); ?>" name="s" value="<?php _admin_search_query(); ?>" />
 			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?>
 		</p>
 		<?php
@@ -267,11 +268,12 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * Retrieves the search query string
 	 *
 	 * @access public
+	 * @since TBD Unslash the search term. Give_Donors_Query escapes it.
 	 * @since  1.0
 	 * @return mixed string If search is present, false otherwise
 	 */
 	public function get_search() {
-		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
+		return ! empty( $_GET['s'] ) ? urldecode( trim( wp_unslash( $_GET['s'] ) ) ) : false;
 	}
 
 	/**

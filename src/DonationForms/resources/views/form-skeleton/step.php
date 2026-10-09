@@ -1,8 +1,14 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * One step of a multi-step design: the step title bar with its progress line, the step's content,
  * the button, and the secure-donation badge under it.
  *
+ * @since TBD Replace short echo tags with escaped echo.
  * @since 4.17.0
  *
  * @var string $content The rendered header or section shown in this step.
@@ -13,7 +19,8 @@
         <span class="givewp-embed-skeleton__bar givewp-embed-skeleton__step-title"></span>
         <span class="givewp-embed-skeleton__step-progress"></span>
     </div>
-    <?= $content ?>
+    <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $content is View::load() output passed in by the caller, which escapes internally. ?>
+    <?php echo $content; ?>
     <div class="givewp-embed-skeleton__section">
         <span class="givewp-embed-skeleton__bar givewp-embed-skeleton__button"></span>
     </div>

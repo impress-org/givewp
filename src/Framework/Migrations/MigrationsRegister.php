@@ -52,6 +52,7 @@ class MigrationsRegister
     /**
      * Returns a migration with the given ID
      *
+     * @since TBD Escape exception message.
      * @since 2.9.2
      *
      * @param string $id
@@ -61,7 +62,7 @@ class MigrationsRegister
     public function getMigration($id)
     {
         if ( ! isset($this->migrations[$id])) {
-            throw new InvalidArgumentException("No migration exists with the ID {$id}");
+            throw new InvalidArgumentException(esc_html("No migration exists with the ID {$id}"));
         }
 
         return $this->migrations[$id];

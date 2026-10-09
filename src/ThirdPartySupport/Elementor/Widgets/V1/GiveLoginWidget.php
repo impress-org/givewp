@@ -141,6 +141,7 @@ class GiveLoginWidget extends Widget_Base
      *
      * Written in PHP and used to generate the final HTML.
      *
+     * @since TBD Escape output, including translated strings.
      * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access protected
      */
@@ -158,14 +159,14 @@ class GiveLoginWidget extends Widget_Base
 		<div class="givewp-elementor-widget give-login-shortcode-wrap">
 			<form id="give-login-form" class="give-form">
 				<fieldset>
-					<legend><?php _e('Log into Your Account', 'give'); ?></legend>
+					<legend><?php esc_html_e('Log into Your Account', 'give'); ?></legend>
 					<div class="give-login-username give-login">
-						<label for="give_user_login"><?php _e('Username or Email Address', 'give'); ?></label>
+						<label for="give_user_login"><?php esc_html_e('Username or Email Address', 'give'); ?></label>
 						<input name="give_user_login" id="give_user_login" class="give-required give-input" type="text" required="" aria-required="true">
 					</div>
 
 					<div class="give-login-password give-login">
-						<label for="give_user_pass"><?php _e('Password', 'give'); ?></label>
+						<label for="give_user_pass"><?php esc_html_e('Password', 'give'); ?></label>
 						<input name="give_user_pass" id="give_user_pass" class="give-password give-required give-input" type="password" required="" aria-required="true">
 					</div>
 
@@ -174,8 +175,8 @@ class GiveLoginWidget extends Widget_Base
 					</div>
 
 					<div class="give-lost-password give-login">
-						<a href="<?php echo get_site_url(); ?>/wp-login.php?action=lostpassword">
-							<?php _e('Reset Password', 'give'); ?></a>
+						<a href="<?php echo esc_url(get_site_url()); ?>/wp-login.php?action=lostpassword">
+							<?php esc_html_e('Reset Password', 'give'); ?></a>
 					</div>
 				</fieldset>
 			</form>
@@ -190,8 +191,10 @@ class GiveLoginWidget extends Widget_Base
 
         // Conditionally show frontend or preview form
         if (!\Elementor\Plugin::$instance->editor->is_edit_mode()) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $html is do_shortcode() output of our own shortcode; the shortcode template escapes its values.
             echo $html;
         } else {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $preview is the static login form markup built above; wp_kses_post() would strip its form/input elements.
             echo $preview;
         }
 

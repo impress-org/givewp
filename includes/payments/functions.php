@@ -635,6 +635,7 @@ function give_get_payment_status_keys() {
  * @param int $year      Year number. Default is null.
  * @param int $hour      Hour number. Default is null.
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since 1.0
  *
  * @since 2.12.0 default value for the $day parameter is removed to prevent PHP8 warnings.
@@ -675,12 +676,17 @@ function give_get_earnings_by_date( $day, $month_num, $year = null, $hour = null
 		$donations = get_posts( $args );
 		$earnings  = 0;
 
-		$donation_table     = Give()->payment_meta->table_name;
 		$donation_table_col = Give()->payment_meta->get_meta_type() . '_id';
 
 		if ( $donations ) {
+			$donation_ids   = $donations;
 			$donations      = implode( ',', $donations );
-			$earning_totals = $wpdb->get_var( "SELECT SUM(meta_value) FROM {$donation_table} WHERE meta_key = '_give_payment_total' AND {$donation_table_col} IN ({$donations})" );
+			$earning_totals = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT SUM(meta_value) FROM {$wpdb->donationmeta} WHERE meta_key = '_give_payment_total' AND %i IN (" . implode( ',', array_fill( 0, count( $donation_ids ), '%d' ) ) . ')',
+					array_merge( [ $donation_table_col ], $donation_ids )
+				)
+			);
 
 			/**
 			 * Filter The earnings by dates.
@@ -818,6 +824,7 @@ function give_get_total_donations() {
  *
  * @param bool $recalculate Recalculate earnings forcefully.
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since 1.0
  *
  * @return float $total Total earnings.
@@ -856,8 +863,12 @@ function give_get_total_earnings( $recalculate = false ) {
 			}
 
 			if ( ! empty( $payments ) ) {
-				$payments = implode( ',', $payments );
-				$total   += $wpdb->get_var( "SELECT SUM(meta_value) FROM {$meta_table['name']} WHERE meta_key = '_give_payment_total' AND {$meta_table['column']['id']} IN({$payments})" );
+				$total += $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT SUM(meta_value) FROM %i WHERE meta_key = '_give_payment_total' AND %i IN(" . implode( ',', array_fill( 0, count( $payments ), '%d' ) ) . ')',
+						array_merge( [ $meta_table['name'], $meta_table['column']['id'] ], $payments )
+					)
+				);
 			}
 		}
 
@@ -1033,13 +1044,13 @@ function give_is_guest_payment( $payment_id ) {
  *
  * @param int $payment_id Payment ID.
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since 1.3
  *
  * @return int $user_id User ID.
  */
 function give_get_payment_user_id( $payment_id ) {
 	global $wpdb;
-	$paymentmeta_table        = Give()->payment_meta->table_name;
 	$donationmeta_primary_key = Give()->payment_meta->get_meta_type() . '_id';
 
 	return (int) $wpdb->get_var(
@@ -1049,11 +1060,12 @@ function give_get_payment_user_id( $payment_id ) {
 			FROM $wpdb->donors
 			WHERE id=(
 				SELECT meta_value
-				FROM $paymentmeta_table
-				WHERE {$donationmeta_primary_key}=%s
+				FROM {$wpdb->donationmeta}
+				WHERE %i=%s
 				AND meta_key=%s
 			)
 			",
+			$donationmeta_primary_key,
 			$payment_id,
 			'_give_payment_donor_id'
 		)
@@ -1368,6 +1380,7 @@ function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' 
  *
  * @param string $key  the key to search for.
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since 1.0
  * @global object $wpdb Used to query the database using the WordPress Database API.
  *
@@ -1381,14 +1394,17 @@ function give_get_donation_id_by_key( $key ) {
 	$purchase = $wpdb->get_var(
 		$wpdb->prepare(
 			"
-				SELECT {$meta_table['column']['id']}
-				FROM {$meta_table['name']}
+				SELECT %i
+				FROM %i
 				WHERE meta_key = '_give_payment_purchase_key'
 				AND meta_value = %s
-				ORDER BY {$meta_table['column']['id']} DESC
+				ORDER BY %i DESC
 				LIMIT 1
 				",
-			$key
+			$meta_table['column']['id'],
+			$meta_table['name'],
+			$key,
+			$meta_table['column']['id']
 		)
 	);
 
@@ -1405,6 +1421,7 @@ function give_get_donation_id_by_key( $key ) {
  *
  * @param string $key  The transaction ID to search for.
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since 1.3
  * @global object $wpdb Used to query the database using the WordPress Database API.
  *
@@ -1414,7 +1431,7 @@ function give_get_purchase_id_by_transaction_id( $key ) {
 	global $wpdb;
 	$meta_table = give_v20_bc_table_details( 'payment' );
 
-	$purchase = $wpdb->get_var( $wpdb->prepare( "SELECT {$meta_table['column']['id']} FROM {$meta_table['name']} WHERE meta_key = '_give_payment_transaction_id' AND meta_value = %s LIMIT 1", $key ) );
+	$purchase = $wpdb->get_var( $wpdb->prepare( "SELECT %i FROM %i WHERE meta_key = '_give_payment_transaction_id' AND meta_value = %s LIMIT 1", $meta_table['column']['id'], $meta_table['name'], $key ) );
 
 	if ( $purchase != null ) {
 		return $purchase;
@@ -1472,6 +1489,7 @@ function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
  * @param object|int $note       The comment object or ID.
  * @param int        $payment_id The payment ID the note is connected to.
  *
+ * @since TBD Escape the note author, content and delete-link text.
  * @since 1.0
  *
  * @return string
@@ -1506,11 +1524,11 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 		'give_delete_payment_note_' . $note->comment_ID
 	);
 
-	$note_html  = '<div class="give-payment-note" id="give-payment-note-' . $note->comment_ID . '">';
+	$note_html  = '<div class="give-payment-note" id="give-payment-note-' . absint( $note->comment_ID ) . '">';
 	$note_html .= '<p>';
-	$note_html .= '<strong>' . $user . '</strong>&nbsp;&ndash;&nbsp;<span style="color:#aaa;font-style:italic;">' . date_i18n( $date_format, strtotime( $note->comment_date ) ) . '</span><br/>';
-	$note_html .= nl2br( $note->comment_content );
-	$note_html .= '&nbsp;&ndash;&nbsp;<a href="' . esc_url( $delete_note_url ) . '" class="give-delete-payment-note" data-note-id="' . absint( $note->comment_ID ) . '" data-payment-id="' . absint( $payment_id ) . '" aria-label="' . __( 'Delete this donation note.', 'give' ) . '">' . __( 'Delete', 'give' ) . '</a>';
+	$note_html .= '<strong>' . esc_html( $user ) . '</strong>&nbsp;&ndash;&nbsp;<span style="color:#aaa;font-style:italic;">' . esc_html( date_i18n( $date_format, strtotime( $note->comment_date ) ) ) . '</span><br/>';
+	$note_html .= nl2br( esc_html( $note->comment_content ) );
+	$note_html .= '&nbsp;&ndash;&nbsp;<a href="' . esc_url( $delete_note_url ) . '" class="give-delete-payment-note" data-note-id="' . absint( $note->comment_ID ) . '" data-payment-id="' . absint( $payment_id ) . '" aria-label="' . esc_attr__( 'Delete this donation note.', 'give' ) . '">' . esc_html__( 'Delete', 'give' ) . '</a>';
 	$note_html .= '</p>';
 	$note_html .= '</div>';
 
@@ -1525,13 +1543,14 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
  * @param string $where Where clause.
  *
  * @access public
+ * @since TBD Use gmdate() instead of date().
  * @since  1.0
  *
  * @return string $where Modified where clause.
  */
 function give_filter_where_older_than_week( $where = '' ) {
 	// Payments older than one week.
-	$start  = date( 'Y-m-d', strtotime( '-7 days' ) );
+	$start  = gmdate( 'Y-m-d', strtotime( '-7 days' ) );
 	$where .= " AND post_date <= '{$start}'";
 
 	return $where;
@@ -1737,6 +1756,7 @@ function give_get_price_id( $form_id, $price ) {
  * @param array $args Arguments for form dropdown.
  * @param bool  $echo This parameter decides if print form dropdown html output or not.
  *
+ * @since TBD Escape output.
  * @since 1.6
  *
  * @return string
@@ -1748,6 +1768,7 @@ function give_get_form_dropdown( $args = [], $echo = false ) {
 		return $form_dropdown_html;
 	}
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- forms_dropdown() renders a <select> control; wp_kses_post() would strip it.
 	echo $form_dropdown_html;
 }
 
@@ -1757,6 +1778,7 @@ function give_get_form_dropdown( $args = [], $echo = false ) {
  * @param array $args Arguments for form dropdown.
  * @param bool  $echo This parameter decide if print form dropdown html output or not.
  *
+ * @since TBD Escape output.
  * @since 1.6
  * @since 2.12.0 Show "Custom" choice in select field if donation created with cusotm amount
  *
@@ -1808,6 +1830,7 @@ function give_get_form_variable_price_dropdown( $args = [], $echo = false ) {
 		return $form_dropdown_html;
 	}
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- forms_dropdown() renders a <select> control; wp_kses_post() would strip it.
 	echo $form_dropdown_html;
 }
 

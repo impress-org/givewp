@@ -74,6 +74,7 @@ final class Section
     /**
      * Validate group arguments
      *
+     * @since TBD Escape exception message.
      * @since 2.7.0
      *
      * @param $array
@@ -84,7 +85,7 @@ final class Section
 
         if (array_diff($required, array_keys($array))) {
             throw new InvalidArgumentException(
-                __('To create a Group object, please provide id, name and fields.', 'give')
+                esc_html__('To create a Group object, please provide id, name and fields.', 'give')
             );
         }
     }

@@ -37,6 +37,7 @@ class StatusColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Add translators comments.
      * @since 2.24.0
      *
      * @inheritDoc
@@ -86,6 +87,7 @@ class StatusColumn extends ModelColumn
                 'label' => __('limited', 'give'),
                 'status' => 'limited',
                 'text' => sprintf(
+                    /* translators: %s: Number of remaining donations */
                     _n(
                         'This subscription has <strong>%s</strong> remaining donation',
                         'This subscription has <strong>%s</strong> remaining donations',

@@ -12,6 +12,7 @@ use Give\Framework\Receipts\Properties\ReceiptDetail;
 class AddEventTicketsToDonationConfirmationPageEventTicketDetails
 {
     /**
+     * @since TBD Number the placeholders and add translators comments.
      * @since 3.6.0
      */
     public function __invoke(DonationReceipt $receipt): void
@@ -40,7 +41,8 @@ class AddEventTicketsToDonationConfirmationPageEventTicketDetails
         }
 
         foreach ($ticketTypes as $ticketType) {
-            $detailString = sprintf(__('%s - %s', 'give'), $event->title, $ticketType['title']);
+            /* translators: 1: Event title, 2: Ticket type name */
+            $detailString = sprintf(__('%1$s - %2$s', 'give'), $event->title, $ticketType['title']);
             $receipt->eventTicketsDetails->addDetail(new ReceiptDetail($detailString, $ticketType['quantity']));
         }
     }

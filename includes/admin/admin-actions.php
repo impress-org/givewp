@@ -126,6 +126,7 @@ add_action( 'wp_ajax_give_hide_outdated_php_notice', 'give_hide_outdated_php_not
 /**
  * Register admin notices.
  *
+ * @since TBD Use gmdate() instead of date(), show the number in the singular bulk action notices, and add translators comments.
  * @since 2.25.2 Add nonce check for bulk action.
  * @since      1.8.9
  */
@@ -158,8 +159,9 @@ function _give_register_admin_notices() {
 							'id'          => 'bulk_action_delete',
 							'type'        => 'updated',
 							'description' => sprintf(
+								/* translators: %d: Number of donations */
 								_n(
-									'Successfully deleted one donation.',
+									'Successfully deleted %d donation.',
 									'Successfully deleted %d donations.',
 									$payment_count,
 									'give'
@@ -178,8 +180,9 @@ function _give_register_admin_notices() {
 							'id'          => 'bulk_action_resend_receipt',
 							'type'        => 'updated',
 							'description' => sprintf(
+								/* translators: %d: Number of recipients */
 								_n(
-									'Successfully sent email receipt to one recipient.',
+									'Successfully sent email receipt to %d recipient.',
 									'Successfully sent email receipts to %d recipients.',
 									$payment_count,
 									'give'
@@ -326,6 +329,7 @@ function _give_register_admin_notices() {
 							[
 								'id'          => 'give-sent-test-email',
 								'type'        => 'updated',
+								/* translators: %s: Email address */
 								'description' => sprintf( __( 'The test email has been sent to %s.', 'give' ), wp_get_current_user()->user_email ),
 								'show'        => true,
 							]
@@ -541,8 +545,8 @@ function _give_register_admin_notices() {
 		global $wpdb;
 
 		$current_time               = current_time( 'timestamp' );
-		$end_of_current_time_in_gmt = get_gmt_from_date( date( 'Y-m-d H:i:s', strtotime( 'tomorrow', $current_time ) ), 'U' );
-		$current_time_gmt           = get_gmt_from_date( date( 'Y-m-d H:i:s', $current_time ), 'U' );
+		$end_of_current_time_in_gmt = get_gmt_from_date( gmdate( 'Y-m-d H:i:s', strtotime( 'tomorrow', $current_time ) ), 'U' );
+		$current_time_gmt           = get_gmt_from_date( gmdate( 'Y-m-d H:i:s', $current_time ), 'U' );
 
 		$spam_count = DB::get_var(
 			DB::prepare( "SELECT COUNT(id) FROM {$wpdb->give_log} WHERE log_type = %s AND date >= CURDATE();", LogType::SPAM )
@@ -554,6 +558,7 @@ function _give_register_admin_notices() {
 					'id'                    => 'give-new-akismet-spam-found',
 					'type'                  => 'warning',
 					'description'           => sprintf(
+						/* translators: 1: Number of donor emails, 2: Donor email or donor emails, 3: URL of the spam log page, 4: Title of the spam log link, 5: Was or were, 6: Donor or donors, 7: This or these */
 						__( 'Akismet flagged %1$s %2$s as spam. If you believe %7$s %5$s actual %6$s, you can whitelist %7$s to allow the %6$s to process donations. <a href="%3$s" title="%4$s">Click here</a> to review spam logs.', 'give' ),
 						$spam_count,
 						_n( 'donor email', 'donor emails', $spam_count, 'give' ),
@@ -640,18 +645,19 @@ add_action( 'admin_head', '_give_test_mode_notice_admin_bar_css' );
 /**
  * Add Link to Import page in from donation archive and donation single page
  *
+ * @since TBD Escape output, including translated strings.
  * @since 1.8.13
  */
 function give_import_page_link_callback() {
 	?>
 	<a href="<?php echo esc_url( give_import_page_url() ); ?>"
-	   class="page-import-action page-title-action"><?php _e( 'Import Donations', 'give' ); ?></a>
+	   class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give' ); ?></a>
     <script>
         function showReactTable () {
             fetch( '<?php echo esc_url_raw(rest_url('give-api/v2/admin/donations/view?isLegacy=0')) ?>', {
                 method: 'GET',
                 headers: {
-                    ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                    ['X-WP-Nonce']: '<?php echo esc_js( wp_create_nonce('wp_rest') ) ?>'
                 }
             })
             .then((res) => {
@@ -660,7 +666,7 @@ function give_import_page_link_callback() {
         }
     </script>
     <button onclick="showReactTable()" class="page-title-action">
-        <?php _e('Switch to New View', 'give') ?>
+        <?php esc_html_e('Switch to New View', 'give') ?>
     </button>
 
 	<?php
@@ -697,6 +703,7 @@ function give_maybe_safe_unserialize($data)
  * Load donation import ajax callback
  * Fire when importing from CSV start
  *
+ * @since TBD Add translators comments.
  * @since 4.11.0 Updated error handling to display errors in the import page.
  * @since 3.5.0 Extract safe unserialize logic to a function and use it in other places.
  * @since 2.25.3 Append nonce to response url.
@@ -771,6 +778,7 @@ function give_donation_import_callback() {
             if ( empty( $json_data['errors'] ) ) {
                 $json_data['errors'] = [];
             }
+            /* translators: 1: Row number, 2: Error message */
             $json_data['errors'][] = sprintf( __( 'Row %1$d: %2$s', 'give' ), $current_key, $result );
         }
         $current_key ++;
@@ -843,6 +851,7 @@ add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
 /**
  * Load subscription import ajax callback
  *
+ * @since TBD Add translators comments.
  * @since 4.11.0
  */
 function give_subscription_import_callback() {
@@ -899,6 +908,7 @@ function give_subscription_import_callback() {
             if ( empty( $json_data['errors'] ) ) {
                 $json_data['errors'] = [];
             }
+            /* translators: 1: Row number, 2: Error message */
             $json_data['errors'][] = sprintf( __( 'Row %1$d: %2$s', 'give' ), $current_key, $result );
         }
         $current_key ++;
@@ -1112,6 +1122,7 @@ add_action( 'user_profile_update_errors', 'give_validate_user_profile', 10, 3 );
 /**
  * Show Donor Information on User Profile Page.
  *
+ * @since TBD Escape output, including translated strings.
  * @since 2.0
  *
  * @param object $user User Object.
@@ -1124,10 +1135,10 @@ function give_donor_information_profile_fields( $user ) {
 	if ( ! empty( $donor->user_id ) ) :
 		?>
 		<tr>
-			<th scope="row"><?php _e( 'Donor', 'give' ); ?></th>
+			<th scope="row"><?php esc_html_e( 'Donor', 'give' ); ?></th>
 			<td>
-				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ); ?>">
-					<?php _e( 'View Donor Information', 'give' ); ?>
+				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) ); ?>">
+					<?php esc_html_e( 'View Donor Information', 'give' ); ?>
 				</a>
 			</td>
 		</tr>

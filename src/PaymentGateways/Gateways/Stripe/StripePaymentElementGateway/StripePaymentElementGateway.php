@@ -165,6 +165,7 @@ class StripePaymentElementGateway extends PaymentGateway implements PaymentGatew
     }
 
     /**
+     * @since TBD Escape exception message. Add translators comments.
      * @since 4.7.0
      *
      * @throws Exception
@@ -182,6 +183,7 @@ class StripePaymentElementGateway extends PaymentGateway implements PaymentGatew
             DonationNote::create([
                 'donationId' => $donation->id,
                 'content' => sprintf(
+                    /* translators: %s: Stripe transaction ID */
                     __('Donation refunded in Stripe for transaction ID: %s', 'give'),
                     $donation->gatewayTransactionId
                 ),
@@ -192,6 +194,7 @@ class StripePaymentElementGateway extends PaymentGateway implements PaymentGatew
             DonationNote::create([
                 'donationId' => $donation->id,
                 'content' => sprintf(
+                    /* translators: %s: Donation ID */
                     __(
                         'Error! Donation %s was NOT refunded. Find more details on the error in the logs at Donations > Tools > Logs. To refund the donation, use the Stripe dashboard tools.',
                         'give'
@@ -200,7 +203,8 @@ class StripePaymentElementGateway extends PaymentGateway implements PaymentGatew
                 ),
             ]);
 
-            throw new PaymentGatewayException(sprintf(__('Stripe API error: %s', 'give'), $e->getMessage()));
+            /* translators: %s: Error message */
+            throw new PaymentGatewayException(sprintf(__('Stripe API error: %s', 'give'), $e->getMessage())); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Stripe API text shown on the donation form as JSON/text (HandleHttpResponses); esc_html() here would double-encode quotes.
         }
     }
 }

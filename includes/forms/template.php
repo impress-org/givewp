@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param array $args An array of form arguments.
  *
  * @return string Donation form.
+ * @since TBD Escape output.
  * @since 1.0
  */
 function give_get_donation_form( $args = [] ) {
@@ -102,7 +103,7 @@ function give_get_donation_form( $args = [] ) {
 	do_action( 'give_pre_form_output', $form->ID, $args, $form );
 
 	?>
-	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="<?php echo $form_wrap_classes; ?>">
+	<div id="give-form-<?php echo (int) $form->ID; ?>-wrap" class="<?php echo esc_attr( $form_wrap_classes ); ?>">
 		<?php
 		if ( $form->is_close_donation_form() ) {
 
@@ -113,7 +114,7 @@ function give_get_donation_form( $args = [] ) {
 			$goal_achieved_message = ! empty( $goal_achieved_message ) ? $form_title . apply_filters( 'the_content', $goal_achieved_message ) : '';
 
 			// Print thank you message.
-			echo apply_filters( 'give_goal_closed_output', $goal_achieved_message, $form->ID, $form );
+			echo wp_kses_post( apply_filters( 'give_goal_closed_output', $goal_achieved_message, $form->ID, $form ) );
 
 		} else {
 			/**
@@ -123,7 +124,7 @@ function give_get_donation_form( $args = [] ) {
 			$form_title = apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form->ID ) . '</h2>' );
 
 			if ( ! doing_action( 'give_single_form_summary' ) && true === $args['show_title'] ) {
-				echo $form_title;
+				echo wp_kses_post( $form_title );
 			}
 
 			/**
@@ -155,11 +156,11 @@ function give_get_donation_form( $args = [] ) {
 			 */
 			$form_html_tags = apply_filters( 'give_form_html_tags', (array) $form_html_tags, $form );
 			?>
-			<form <?php echo give_get_attribute_str( $form_html_tags ); ?> method="post">
+			<form <?php echo give_get_attribute_str( $form_html_tags ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?> method="post">
 				<!-- The following field is for robots only, invisible to humans: -->
 				<span class="give-hidden" style="display: none !important;">
-					<label for="give-form-honeypot-<?php echo $form->ID; ?>"></label>
-					<input id="give-form-honeypot-<?php echo $form->ID; ?>" type="text" name="give-honeypot"
+					<label for="give-form-honeypot-<?php echo (int) $form->ID; ?>"></label>
+					<input id="give-form-honeypot-<?php echo (int) $form->ID; ?>" type="text" name="give-honeypot"
 						   class="give-honeypot give-hidden"/>
 				</span>
 
@@ -231,6 +232,7 @@ function give_get_donation_form( $args = [] ) {
 	$final_output = ob_get_clean();
 	$count ++;
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $final_output is the complete rendered donation form (fields escape their own values).
 	echo apply_filters( 'give_donate_form', $final_output, $args );
 }
 
@@ -245,6 +247,7 @@ function give_get_donation_form( $args = [] ) {
  * @param int $form_id The form ID.
  *
  * @return string
+ * @since TBD Escape output.
  * @since  1.0
  */
 function give_show_purchase_form( $form_id, $args ) {
@@ -339,6 +342,7 @@ add_action( 'give_donation_form', 'give_show_purchase_form', 10, 2 );
  * @param int $form_id The form ID.
  *
  * @return void
+ * @since TBD Escape output.
  * @since  1.4.1
  */
 function give_show_register_login_fields( $form_id ) {
@@ -347,7 +351,7 @@ function give_show_register_login_fields( $form_id ) {
 
 	if ( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) :
 		?>
-		<div id="give-checkout-login-register-<?php echo $form_id; ?>">
+		<div id="give-checkout-login-register-<?php echo (int) $form_id; ?>">
 			<?php
 			/**
 			 * Fire if user registration form render.
@@ -360,7 +364,7 @@ function give_show_register_login_fields( $form_id ) {
 		<?php
 	elseif ( ( $show_register_form === 'login' || ( $show_register_form === 'both' && isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) :
 		?>
-		<div id="give-checkout-login-register-<?php echo $form_id; ?>">
+		<div id="give-checkout-login-register-<?php echo (int) $form_id; ?>">
 			<?php
 			/**
 			 * Fire if user login form render.
@@ -395,6 +399,7 @@ add_action( 'give_donation_form_register_login_fields', 'give_show_register_logi
  * @param array $args    An array of form arguments.
  *
  * @return void
+ * @since TBD Escape output.
  * @since  1.0
  */
 function give_output_donation_amount_top( $form_id = 0, $args = [] ) {
@@ -433,13 +438,13 @@ function give_output_donation_amount_top( $form_id = 0, $args = [] ) {
 		<div class="set-price give-donation-amount form-row-wide">
 			<?php
 			if ( 'before' === $currency_position ) {
-				echo $currency_output;
+				echo wp_kses_post( $currency_output );
 			}
 			?>
-			<span id="give-amount-text" class="give-text-input give-amount-top"><?php echo $default_amount; ?></span>
+			<span id="give-amount-text" class="give-text-input give-amount-top"><?php echo esc_html( $default_amount ); ?></span>
 			<?php
 			if ( 'after' === $currency_position ) {
-				echo $currency_output;
+				echo wp_kses_post( $currency_output );
 			}
 			?>
 		</div>
@@ -451,7 +456,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = [] ) {
 			<div class="give-donation-amount form-row-wide">
 				<?php
 				if ( 'before' === $currency_position ) {
-					echo $currency_output;
+					echo wp_kses_post( $currency_output );
 				}
 				?>
 				<label class="give-hidden" for="give-amount"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
@@ -459,7 +464,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = [] ) {
 					   placeholder="" value="<?php echo esc_attr($default_amount); ?>" autocomplete="off">
 				<?php
 				if ( 'after' === $currency_position ) {
-					echo $currency_output;
+					echo wp_kses_post( $currency_output );
 				}
 				?>
 			</div>
@@ -505,6 +510,7 @@ add_action( 'give_donation_form_top', 'give_output_donation_amount_top', 10, 2 )
 /**
  * Outputs the Donation Levels in various formats such as dropdown, radios, and buttons.
  *
+ * @since TBD Escape output.
  * @since  1.0
  *
  * @param int $form_id The form ID.
@@ -663,6 +669,7 @@ function give_output_levels( $form_id ) {
 			break;
 	}
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $output renders the donation-level controls (select/radio/button), each already-escaped; wp_kses_post() would strip the form elements.
 	echo apply_filters( 'give_form_level_output', $output, $form_id );
 }
 
@@ -675,6 +682,7 @@ function give_output_levels( $form_id ) {
  * @param array $args    An array of form arguments.
  *
  * @return string Checkout button.
+ * @since TBD Escape output.
  * @since  1.0
  */
 function give_display_checkout_button( $form_id, $args ) {
@@ -703,6 +711,7 @@ function give_display_checkout_button( $form_id, $args ) {
 	 * @param int $form_id Form ID.
 	 * @param array $args Shortcode argument
 	 */
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $output renders a <button> element with already-escaped values; wp_kses_post() would strip it.
 	echo apply_filters( 'give_display_checkout_button', $output, $form_id, $args );
 }
 
@@ -711,6 +720,7 @@ add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 
 /**
  * Display MagnificPopup Button.
  *
+ * @since TBD Escape output.
  * @since 2.5.11
  *
  * @param $form_id
@@ -736,6 +746,7 @@ function give_add_button_open_form( $form_id, $args ) {
 	 * @param int $form_id Form ID.
 	 * @param array $args Shortcode argument
 	 */
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $output renders a <button> element with already-escaped values; wp_kses_post() would strip it.
 	echo apply_filters( 'give_display_checkout_button', $output, $form_id, $args );
 
 	// Remove action otherwise button will be added to coming form.
@@ -748,6 +759,7 @@ function give_add_button_open_form( $form_id, $args ) {
  *
  * @since 3.1.0 Add the give_user_info_fields_user_info filter
  * @since 2.25.0 add radio group to conditionally enable/disable company name field
+ * @since TBD Escape output, including translated strings.
  * @since      1.0
  *
  * @param int $form_id The form ID.
@@ -791,7 +803,7 @@ function give_user_info_fields( $form_id ) {
 					<?php if ( give_field_is_required( 'give_title', $form_id ) ) : ?>
 						<span class="give-required-indicator">*</span>
 					<?php endif ?>
-					<?php echo Give()->tooltips->render_help( __( 'Title is used to personalize your donation record..', 'give' ) ); ?>
+					<?php Give()->tooltips->print_render_help( __( 'Title is used to personalize your donation record..', 'give' ) ); ?>
 				</label>
 				<select
 					class="give-input"
@@ -825,7 +837,7 @@ function give_user_info_fields( $form_id ) {
                 <?php
                 endif ?>
                 <?php
-                echo Give()->tooltips->render_help(__('First Name is used to personalize your donation record.',
+                Give()->tooltips->print_render_help(__('First Name is used to personalize your donation record.',
                     'give')); ?>
             </label>
             <input
@@ -853,7 +865,7 @@ function give_user_info_fields( $form_id ) {
                 <?php
                 endif ?>
                 <?php
-                echo Give()->tooltips->render_help(__('Last Name is used to personalize your donation record.',
+                Give()->tooltips->print_render_help(__('Last Name is used to personalize your donation record.',
                     'give')); ?>
             </label>
 
@@ -933,7 +945,7 @@ function give_user_info_fields( $form_id ) {
                     <?php
                     endif; ?>
                     <?php
-                    echo Give()->tooltips->render_help(__('Donate on behalf of Company', 'give')); ?>
+                    Give()->tooltips->print_render_help(__('Donate on behalf of Company', 'give')); ?>
                 </label>
                 <input
                     class="give-input<?php
@@ -970,7 +982,7 @@ function give_user_info_fields( $form_id ) {
                     <?php
                 } ?>
                 <?php
-                echo Give()->tooltips->render_help(__('We will send the donation receipt to this address.', 'give')); ?>
+                Give()->tooltips->print_render_help(__('We will send the donation receipt to this address.', 'give')); ?>
             </label>
             <input
                 class="give-input required"
@@ -1013,8 +1025,8 @@ function give_user_info_fields( $form_id ) {
                      *
                      * @since 2.4.1
                      */
-                    echo apply_filters('give_anonymous_donation_checkbox_label',
-                        __('Make this an anonymous donation.', 'give'), $form_id);
+                    echo esc_html( apply_filters('give_anonymous_donation_checkbox_label',
+                        __('Make this an anonymous donation.', 'give'), $form_id) );
 
                     if ( give_field_is_required( 'give_comment', $form_id ) ) {
 						?>
@@ -1025,7 +1037,7 @@ function give_user_info_fields( $form_id ) {
 					// https://github.com/impress-org/give/issues/3911
 					$anonymous_donation_tooltip = give_is_donor_comment_field_enabled( $form_id ) ? esc_html__( 'Would you like to prevent your name, image, and comment from being displayed publicly?', 'give' ) : esc_html__( 'Would you like to prevent your name and image from being displayed publicly?', 'give' );
 
-					echo Give()->tooltips->render_help( $anonymous_donation_tooltip );
+					Give()->tooltips->print_render_help( $anonymous_donation_tooltip );
 					?>
 
 				</label>
@@ -1035,20 +1047,20 @@ function give_user_info_fields( $form_id ) {
 		<?php if ( give_is_donor_comment_field_enabled( $form_id ) ) : ?>
 			<p id="give-comment-wrap" class="form-row form-row-wide">
 				<label class="give-label" for="give-comment">
-					<?php _e( 'Comment', 'give' ); ?>
+					<?php esc_html_e( 'Comment', 'give' ); ?>
 					<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<?php echo Give()->tooltips->render_help( __( 'Would you like to add a comment to this donation?', 'give' ) ); ?>
+					<?php Give()->tooltips->print_render_help( __( 'Would you like to add a comment to this donation?', 'give' ) ); ?>
 				</label>
 
 				<textarea
 					class="give-input<?php echo( give_field_is_required( 'give_comment', $form_id ) ? ' required' : '' ); ?>"
 					name="give_comment"
-					placeholder="<?php _e( 'Leave a comment', 'give' ); ?>"
+					placeholder="<?php esc_attr_e( 'Leave a comment', 'give' ); ?>"
 					id="give-comment"
 					<?php echo( give_field_is_required( 'give_comment', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-				><?php echo isset( $_POST['give_comment'] ) ? give_clean( $_POST['give_comment'] ) : ''; ?></textarea>
+				><?php echo isset( $_POST['give_comment'] ) ? esc_html( give_clean( $_POST['give_comment'] ) ) : ''; ?></textarea>
 
 			</p>
 		<?php endif; ?>
@@ -1086,6 +1098,7 @@ add_action( 'give_register_fields_before', 'give_user_info_fields' );
  * @param int $form_id The form ID.
  *
  * @return void
+ * @since TBD Escape output, including translated strings.
  * @since  1.0
  */
 function give_get_cc_form( $form_id ) {
@@ -1101,47 +1114,47 @@ function give_get_cc_form( $form_id ) {
 	 */
 	do_action( 'give_before_cc_fields', $form_id );
 	?>
-	<fieldset id="give_cc_fields-<?php echo $form_id; ?>" class="give-do-validate">
-		<legend><?php echo apply_filters( 'give_credit_card_fieldset_heading', esc_html__( 'Credit Card Info', 'give' ) ); ?></legend>
+	<fieldset id="give_cc_fields-<?php echo (int) $form_id; ?>" class="give-do-validate">
+		<legend><?php echo wp_kses_post( apply_filters( 'give_credit_card_fieldset_heading', esc_html__( 'Credit Card Info', 'give' ) ) ); ?></legend>
 		<?php if ( is_ssl() ) : ?>
-			<div id="give_secure_site_wrapper-<?php echo $form_id; ?>">
+			<div id="give_secure_site_wrapper-<?php echo (int) $form_id; ?>">
 				<span class="give-icon padlock"></span>
-				<span><?php _e( 'This is a secure SSL encrypted payment.', 'give' ); ?></span>
+				<span><?php esc_html_e( 'This is a secure SSL encrypted payment.', 'give' ); ?></span>
 			</div>
 		<?php endif; ?>
-		<p id="give-card-number-wrap-<?php echo $form_id; ?>" class="form-row form-row-two-thirds form-row-responsive">
-			<label for="card_number-<?php echo $form_id; ?>" class="give-label">
-				<?php _e( 'Card Number', 'give' ); ?>
+		<p id="give-card-number-wrap-<?php echo (int) $form_id; ?>" class="form-row form-row-two-thirds form-row-responsive">
+			<label for="card_number-<?php echo (int) $form_id; ?>" class="give-label">
+				<?php esc_html_e( 'Card Number', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<?php echo Give()->tooltips->render_help( __( 'The (typically) 16 digits on the front of your credit card.', 'give' ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( 'The (typically) 16 digits on the front of your credit card.', 'give' ) ); ?>
 				<span class="card-type"></span>
 			</label>
 
-			<input type="tel" autocomplete="off" name="card_number" id="card_number-<?php echo $form_id; ?>"
-				   class="card-number give-input required" placeholder="<?php _e( 'Card Number', 'give' ); ?>"
+			<input type="tel" autocomplete="off" name="card_number" id="card_number-<?php echo (int) $form_id; ?>"
+				   class="card-number give-input required" placeholder="<?php esc_attr_e( 'Card Number', 'give' ); ?>"
 				   required aria-required="true"/>
 		</p>
 
-		<p id="give-card-cvc-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third form-row-responsive">
-			<label for="card_cvc-<?php echo $form_id; ?>" class="give-label">
-				<?php _e( 'CVC', 'give' ); ?>
+		<p id="give-card-cvc-wrap-<?php echo (int) $form_id; ?>" class="form-row form-row-one-third form-row-responsive">
+			<label for="card_cvc-<?php echo (int) $form_id; ?>" class="give-label">
+				<?php esc_html_e( 'CVC', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<?php echo Give()->tooltips->render_help( __( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ) ); ?>
 			</label>
 
-			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc-<?php echo $form_id; ?>"
-				   class="card-cvc give-input required" placeholder="<?php _e( 'CVC', 'give' ); ?>"
+			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc-<?php echo (int) $form_id; ?>"
+				   class="card-cvc give-input required" placeholder="<?php esc_attr_e( 'CVC', 'give' ); ?>"
 				   required aria-required="true"/>
 		</p>
 
-		<p id="give-card-name-wrap-<?php echo $form_id; ?>" class="form-row form-row-two-thirds form-row-responsive">
-			<label for="card_name-<?php echo $form_id; ?>" class="give-label">
-				<?php _e( 'Cardholder Name', 'give' ); ?>
+		<p id="give-card-name-wrap-<?php echo (int) $form_id; ?>" class="form-row form-row-two-thirds form-row-responsive">
+			<label for="card_name-<?php echo (int) $form_id; ?>" class="give-label">
+				<?php esc_html_e( 'Cardholder Name', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<?php echo Give()->tooltips->render_help( __( 'The name of the credit card account holder.', 'give' ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( 'The name of the credit card account holder.', 'give' ) ); ?>
 			</label>
 
-			<input type="text" autocomplete="off" name="card_name" id="card_name-<?php echo $form_id; ?>"
+			<input type="text" autocomplete="off" name="card_name" id="card_name-<?php echo (int) $form_id; ?>"
 				   class="card-name give-input required" placeholder="<?php esc_attr_e( 'Cardholder Name', 'give' ); ?>"
 				   required aria-required="true"/>
 		</p>
@@ -1156,18 +1169,18 @@ function give_get_cc_form( $form_id ) {
 		do_action( 'give_before_cc_expiration' );
 		?>
 		<p class="card-expiration form-row form-row-one-third form-row-responsive">
-			<label for="card_expiry-<?php echo $form_id; ?>" class="give-label">
-				<?php _e( 'Expiration', 'give' ); ?>
+			<label for="card_expiry-<?php echo (int) $form_id; ?>" class="give-label">
+				<?php esc_html_e( 'Expiration', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<?php echo Give()->tooltips->render_help( __( 'The date your credit card expires, typically on the front of the card.', 'give' ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( 'The date your credit card expires, typically on the front of the card.', 'give' ) ); ?>
 			</label>
 
-			<input type="hidden" id="card_exp_month-<?php echo $form_id; ?>" name="card_exp_month"
+			<input type="hidden" id="card_exp_month-<?php echo (int) $form_id; ?>" name="card_exp_month"
 				   class="card-expiry-month"/>
-			<input type="hidden" id="card_exp_year-<?php echo $form_id; ?>" name="card_exp_year"
+			<input type="hidden" id="card_exp_year-<?php echo (int) $form_id; ?>" name="card_exp_year"
 				   class="card-expiry-year"/>
 
-			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry-<?php echo $form_id; ?>"
+			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry-<?php echo (int) $form_id; ?>"
 				   class="card-expiry give-input required" placeholder="<?php esc_attr_e( 'MM / YY', 'give' ); ?>"
 				   required aria-required="true"/>
 		</p>
@@ -1192,6 +1205,7 @@ function give_get_cc_form( $form_id ) {
 	 */
 	do_action( 'give_after_cc_fields', $form_id );
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- buffered content is the credit card fieldset built above (inputs/labels), every value in it is already escaped at its own point; wp_kses_post() would strip the <input> elements.
 	echo ob_get_clean();
 }
 
@@ -1200,6 +1214,7 @@ add_action( 'give_cc_form', 'give_get_cc_form' );
 /**
  * Outputs the default credit card address fields.
  *
+ * @since TBD Escape translated output.
  * @since 4.17.0 Escape prefilled billing address values before output.
  * @since 3.1.0 Add the give_default_cc_address_fields_user_info filter
  * @since  1.0
@@ -1217,7 +1232,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 	ob_start();
 	?>
 	<fieldset id="give_cc_address" class="cc-address">
-		<legend><?php echo apply_filters( 'give_billing_details_fieldset_heading', esc_html__( 'Billing Details', 'give' ) ); ?></legend>
+		<legend><?php echo wp_kses_post( apply_filters( 'give_billing_details_fieldset_heading', esc_html__( 'Billing Details', 'give' ) ) ); ?></legend>
 		<?php
 		/**
 		 * Fires while rendering credit card billing form, before address fields.
@@ -1273,7 +1288,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 			>
 				<?php
 				foreach ( $countries as $country_code => $country ) {
-					echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
+					echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . esc_html( $country ) . '</option>';
 				}
 				?>
 			</select>
@@ -1281,13 +1296,13 @@ function give_default_cc_address_fields($form_id, $return = false)
 
 		<p id="give-card-address-wrap" class="form-row form-row-wide">
 			<label for="card_address" class="give-label">
-				<?php _e( 'Address 1', 'give' ); ?>
+				<?php esc_html_e( 'Address 1', 'give' ); ?>
 				<?php
 				if ( give_field_is_required( 'card_address', $form_id ) ) :
 					?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
-				<?php echo Give()->tooltips->render_help( __( 'The primary billing address for your credit card.', 'give' ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( 'The primary billing address for your credit card.', 'give' ) ); ?>
 			</label>
 
 			<input
@@ -1296,7 +1311,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 				name="card_address"
 				autocomplete="address-line1"
 				class="card-address give-input<?php echo( give_field_is_required( 'card_address', $form_id ) ? ' required' : '' ); ?>"
-				placeholder="<?php _e( 'Address line 1', 'give' ); ?>"
+				placeholder="<?php esc_attr_e( 'Address line 1', 'give' ); ?>"
 				value="<?php echo isset( $give_user_info['card_address'] ) ? esc_attr( $give_user_info['card_address'] ) : ''; ?>"
 				<?php echo( give_field_is_required( 'card_address', $form_id ) ? '  required aria-required="true" ' : '' ); ?>
 			/>
@@ -1304,11 +1319,11 @@ function give_default_cc_address_fields($form_id, $return = false)
 
 		<p id="give-card-address-2-wrap" class="form-row form-row-wide">
 			<label for="card_address_2" class="give-label">
-				<?php _e( 'Address 2', 'give' ); ?>
+				<?php esc_html_e( 'Address 2', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
-				<?php echo Give()->tooltips->render_help( __( '(optional) The suite, apartment number, post office box (etc) associated with your billing address.', 'give' ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( '(optional) The suite, apartment number, post office box (etc) associated with your billing address.', 'give' ) ); ?>
 			</label>
 
 			<input
@@ -1317,7 +1332,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 				name="card_address_2"
 				autocomplete="address-line2"
 				class="card-address-2 give-input<?php echo( give_field_is_required( 'card_address_2', $form_id ) ? ' required' : '' ); ?>"
-				placeholder="<?php _e( 'Address line 2', 'give' ); ?>"
+				placeholder="<?php esc_attr_e( 'Address line 2', 'give' ); ?>"
 				value="<?php echo isset( $give_user_info['card_address_2'] ) ? esc_attr( $give_user_info['card_address_2'] ) : ''; ?>"
 				<?php echo( give_field_is_required( 'card_address_2', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
@@ -1325,11 +1340,11 @@ function give_default_cc_address_fields($form_id, $return = false)
 
 		<p id="give-card-city-wrap" class="form-row form-row-wide">
 			<label for="card_city" class="give-label">
-				<?php _e( 'City', 'give' ); ?>
+				<?php esc_html_e( 'City', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_city', $form_id ) ) : ?>
 					<span class="give-required-indicator <?php echo( $city_required ? '' : 'give-hidden' ); ?>">*</span>
 				<?php endif; ?>
-				<?php echo Give()->tooltips->render_help( __( 'The city for your billing address.', 'give' ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( 'The city for your billing address.', 'give' ) ); ?>
 			</label>
 			<input
 				type="text"
@@ -1337,7 +1352,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 				name="card_city"
 				autocomplete="address-level2"
 				class="card-city give-input<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required' : '' ); ?>"
-				placeholder="<?php _e( 'City', 'give' ); ?>"
+				placeholder="<?php esc_attr_e( 'City', 'give' ); ?>"
 				value="<?php echo( isset( $give_user_info['card_city'] ) ? esc_attr( $give_user_info['card_city'] ) : '' ); ?>"
 				<?php echo( give_field_is_required( 'card_city', $form_id ) && $city_required ? ' required aria-required="true" ' : '' ); ?>
 			/>
@@ -1370,7 +1385,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 		<p id="give-card-state-wrap"
 		   class="form-row form-row-first form-row-responsive <?php echo ( ! empty( $selected_country ) && ! $require_state ) ? 'give-hidden' : ''; ?> ">
 			<label for="card_state" class="give-label">
-				<span class="state-label-text"><?php echo $state_label; ?></span>
+				<span class="state-label-text"><?php echo esc_html( $state_label ); ?></span>
 				<span
 					class="give-required-indicator <?php echo $validate_state ? '' : 'give-hidden'; ?> ">*</span>
 				<span class="give-tooltip give-icon give-icon-question"
@@ -1388,7 +1403,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 					<?php echo $validate_state ? ' required aria-required="true" ' : ''; ?>>
 					<?php
 					foreach ( $states as $state_code => $state ) {
-						echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
+						echo '<option value="' . esc_attr( $state_code ) . '"' . selected( $state_code, $selected_state, false ) . '>' . esc_html( $state ) . '</option>';
 					}
 					?>
 				</select>
@@ -1402,9 +1417,9 @@ function give_default_cc_address_fields($form_id, $return = false)
 
 		<p id="give-card-zip-wrap" class="form-row <?php echo $require_state ? 'form-row-last' : ''; ?> form-row-responsive">
 			<label for="card_zip" class="give-label">
-				<?php _e( 'Zip / Postal Code', 'give' ); ?>
+				<?php esc_html_e( 'Zip / Postal Code', 'give' ); ?>
 				<span class="give-required-indicator<?php echo ( $postcode_required ? '' : ' give-hidden' ); ?>">*</span>
-				<?php echo Give()->tooltips->render_help( __( 'The zip or postal code for your billing address.', 'give' ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( 'The zip or postal code for your billing address.', 'give' ) ); ?>
 			</label>
 
 			<input
@@ -1414,7 +1429,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 				name="card_zip"
 				autocomplete="postal-code"
 				class="card-zip give-input<?php echo( $postcode_required ? ' required' : '' ); ?>"
-				placeholder="<?php _e( 'Zip / Postal Code', 'give' ); ?>"
+				placeholder="<?php esc_attr_e( 'Zip / Postal Code', 'give' ); ?>"
 				value="<?php echo isset( $give_user_info['card_zip'] ) ? esc_attr( $give_user_info['card_zip'] ) : ''; ?>"
 				<?php echo( $postcode_required ? ' required aria-required="true" ' : '' ); ?>
 			/>
@@ -1436,6 +1451,7 @@ function give_default_cc_address_fields($form_id, $return = false)
         return ob_get_clean();
     }
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- buffered content is the billing address fieldset built above (inputs/selects), every value in it is already escaped at its own point; wp_kses_post() would strip the <input>/<select> elements.
 	echo ob_get_clean();
 }
 
@@ -1449,6 +1465,7 @@ add_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
  * @param int $form_id The form ID.
  *
  * @return string
+ * @since TBD Escape output, including translated strings.
  * @since  1.0
  */
 function give_get_register_fields( $form_id ) {
@@ -1463,7 +1480,7 @@ function give_get_register_fields( $form_id ) {
 
 	ob_start();
 	?>
-	<fieldset id="give-register-fields-<?php echo $form_id; ?>">
+	<fieldset id="give-register-fields-<?php echo (int) $form_id; ?>">
 
 		<?php
 		/**
@@ -1476,7 +1493,7 @@ function give_get_register_fields( $form_id ) {
 		do_action( 'give_register_fields_before', $form_id );
 		?>
 
-		<fieldset id="give-register-account-fields-<?php echo $form_id; ?>">
+		<fieldset id="give-register-account-fields-<?php echo (int) $form_id; ?>">
 			<?php
 			/**
 			 * Fires while rendering user registration form, before account fields.
@@ -1500,22 +1517,23 @@ function give_get_register_fields( $form_id ) {
 			 * @since 2.9.7 Create account checkbox is hidden when guest registration is disabled.
 			 */
 			?>
-			<div id="give-create-account-wrap-<?php echo $form_id; ?>" class="form-row <?php echo esc_attr( $class ); ?> form-row-responsive">
+			<div id="give-create-account-wrap-<?php echo (int) $form_id; ?>" class="form-row <?php echo esc_attr( $class ); ?> form-row-responsive">
 				<?php
 				$is_guest_checkout = give_get_meta( $form_id, '_give_logged_in_only', true );
 				if ( give_is_setting_enabled( $is_guest_checkout ) ) {
 					?>
-				<label for="give-create-account-<?php echo $form_id; ?>">
-				<input type="checkbox" id="give-create-account-<?php echo $form_id; ?>" name="give_create_account" class="give-input" value="on" />
+				<label for="give-create-account-<?php echo (int) $form_id; ?>">
+				<input type="checkbox" id="give-create-account-<?php echo (int) $form_id; ?>" name="give_create_account" class="give-input" value="on" />
 					<?php
-					_e( 'Create an account', 'give' );
-					echo Give()->tooltips->render_help( __( 'Create an account on the site to see and manage donation history.', 'give' ) );
+					esc_html_e( 'Create an account', 'give' );
+					Give()->tooltips->print_render_help( __( 'Create an account on the site to see and manage donation history.', 'give' ) );
 					?>
 				</label>
 				<?php } else { ?>
-				<input type="hidden" id="give-create-account-<?php echo $form_id; ?>" name="give_create_account" class="give-input" value="on" checked />
+				<input type="hidden" id="give-create-account-<?php echo (int) $form_id; ?>" name="give_create_account" class="give-input" value="on" checked />
 				<?php } ?>
 				<?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_nonce_field() wraps wp_nonce_field(), a trusted hidden <input>; wp_kses_post() would strip it.
 					echo str_replace(
 						'/>',
 						'data-time="' . time() . '" data-nonce-life="' . give_get_nonce_life() . '"/>',
@@ -1572,6 +1590,7 @@ function give_get_register_fields( $form_id ) {
 
 	</fieldset>
 	<?php
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- buffered content is the registration fieldset built above (inputs), every value in it is already escaped at its own point; wp_kses_post() would strip the <input> elements.
 	echo ob_get_clean();
 }
 
@@ -1585,6 +1604,7 @@ add_action( 'give_donation_form_register_fields', 'give_get_register_fields' );
  * @param int $form_id The form ID.
  *
  * @return string
+ * @since TBD Escape output, including translated strings.
  * @since  1.0
  */
 function give_get_login_fields( $form_id ) {
@@ -1597,22 +1617,22 @@ function give_get_login_fields( $form_id ) {
 	<fieldset id="give-login-fields-<?php echo esc_attr( $form_id ); ?>">
 		<legend>
 			<?php
-			echo apply_filters( 'give_account_login_fieldset_heading', __( 'Log In to Your Account', 'give' ) );
+			echo wp_kses_post( apply_filters( 'give_account_login_fieldset_heading', __( 'Log In to Your Account', 'give' ) ) );
 			if ( ! give_logged_in_only( $form_id ) ) {
-				echo ' <span class="sub-text">' . __( '(optional)', 'give' ) . '</span>';
+				echo ' <span class="sub-text">' . esc_html__( '(optional)', 'give' ) . '</span>';
 			}
 			?>
 		</legend>
 		<?php if ( $show_register_form === 'both' ) { ?>
 			<p class="give-new-account-link">
-				<?php _e( 'Don\'t have an account?', 'give' ); ?>&nbsp;
+				<?php esc_html_e( 'Don\'t have an account?', 'give' ); ?>&nbsp;
 				<a href="<?php echo esc_url( remove_query_arg( 'login' ) ); ?>" class="give-checkout-register-cancel"
 				   data-action="give_checkout_register">
 					<?php
 					if ( give_logged_in_only( $form_id ) ) {
-						_e( 'Register as a part of your donation &raquo;', 'give' );
+						esc_html_e( 'Register as a part of your donation &raquo;', 'give' );
 					} else {
-						_e( 'Register or donate as a guest &raquo;', 'give' );
+						esc_html_e( 'Register or donate as a guest &raquo;', 'give' );
 					}
 					?>
 				</a>
@@ -1634,7 +1654,7 @@ function give_get_login_fields( $form_id ) {
 		<div class="give-user-login-fields-container">
 			<div id="give-user-login-wrap-<?php echo esc_attr( $form_id ); ?>" class="form-row form-row-first form-row-responsive">
 				<label class="give-label" for="give-user-login-<?php echo esc_attr( $form_id ); ?>">
-					<?php _e( 'Username or Email Address', 'give' ); ?>
+					<?php esc_html_e( 'Username or Email Address', 'give' ); ?>
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
@@ -1643,20 +1663,20 @@ function give_get_login_fields( $form_id ) {
 				<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>"
 					   type="text"
 					   name="give_user_login" id="give-user-login-<?php echo esc_attr( $form_id ); ?>" value=""
-					   placeholder="<?php _e( 'Your username or email', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
+					   placeholder="<?php esc_attr_e( 'Your username or email', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
 			</div>
 
 			<div id="give-user-pass-wrap-<?php echo esc_attr( $form_id ); ?>"
 				 class="give_login_password form-row form-row-last form-row-responsive">
 				<label class="give-label" for="give-user-pass-<?php echo esc_attr( $form_id ); ?>">
-					<?php _e( 'Password', 'give' ); ?>
+					<?php esc_html_e( 'Password', 'give' ); ?>
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
 				</label>
 				<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>"
 					   type="password" name="give_user_pass" id="give-user-pass-<?php echo esc_attr( $form_id ); ?>"
-					   placeholder="<?php _e( 'Your password', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
+					   placeholder="<?php esc_attr_e( 'Your password', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
 				<?php if ( give_logged_in_only( $form_id ) ) : ?>
 					<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
 				<?php endif; ?>
@@ -1665,21 +1685,21 @@ function give_get_login_fields( $form_id ) {
 
 		<div id="give-user-login-submit-<?php echo esc_attr( $form_id ); ?>" class="give-clearfix">
 			<input type="submit" class="give-submit give-btn button" name="give_login_submit"
-				   value="<?php _e( 'Login', 'give' ); ?>"/>
+				   value="<?php esc_attr_e( 'Login', 'give' ); ?>"/>
 			<?php if ( $show_register_form !== 'login' ) { ?>
 				<input type="button" data-action="give_cancel_login"
 					   class="give-cancel-login give-checkout-register-cancel give-btn button" name="give_login_cancel"
-					   value="<?php _e( 'Cancel', 'give' ); ?>"/>
+					   value="<?php esc_attr_e( 'Cancel', 'give' ); ?>"/>
 			<?php } ?>
 			<span class="give-loading-animation"></span>
 			<div id="give-forgot-password-wrap-<?php echo esc_attr( $form_id ); ?>" class="give_login_forgot_password">
 				<span class="give-forgot-password ">
-					<a href="<?php echo wp_lostpassword_url(); ?>" target="_blank"><?php _e( 'Reset Password', 'give' ); ?></a>
+					<a href="<?php echo esc_url( wp_lostpassword_url() ); ?>" target="_blank"><?php esc_html_e( 'Reset Password', 'give' ); ?></a>
 				</span>
 			</div>
 		</div>
 		<input type="hidden" name="give_login_nonce"
-			   value="<?php echo wp_create_nonce( 'give-login-nonce' ); ?>"/>
+			   value="<?php echo esc_attr( wp_create_nonce( 'give-login-nonce' ) ); ?>"/>
 		<?php
 		/**
 		 * Fires while rendering checkout login form, after the fields.
@@ -1692,6 +1712,7 @@ function give_get_login_fields( $form_id ) {
 		?>
 	</fieldset><!--end #give-login-fields-->
 	<?php
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- buffered content is the login fieldset built above (inputs), every value in it is already escaped at its own point; wp_kses_post() would strip the <input> elements.
 	echo ob_get_clean();
 }
 
@@ -1708,6 +1729,7 @@ add_action( 'give_donation_form_login_fields', 'give_get_login_fields', 10, 1 );
  * @param int $form_id The form ID.
  *
  * @return void
+ * @since TBD Escape output.
  * @since  1.0
  */
 function give_payment_mode_select( $form_id, $args ) {
@@ -1738,7 +1760,7 @@ function give_payment_mode_select( $form_id, $args ) {
 		do_action( 'give_payment_mode_before_gateways_wrap' );
 		?>
 		<legend
-			class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ); ?>
+			class="give-payment-mode-label"><?php echo wp_kses_post( apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ) ); ?>
 			<span class="give-loading-text"><span
 					class="give-loading-animation"></span>
 			</span>
@@ -1768,10 +1790,10 @@ function give_payment_mode_select( $form_id, $args ) {
 
 					if ( true === $is_payment_method_visible ) {
 						?>
-						<li<?php echo $checked_class; ?>>
+						<li<?php echo $checked_class; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $checked_class is a hardcoded ' class="..."' attribute fragment or empty string; esc_attr() would encode its own quotes. ?>>
 							<input type="radio" name="payment-mode" class="give-gateway"
 								   id="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
-								   value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
+								   value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $checked is WP core checked()'s fixed 'checked="checked"' or empty output. ?>>
 							<label for="give-gateway-<?php echo esc_attr( $gateway_id . '-' . $id_prefix ); ?>"
 								   class="give-gateway-option"
 								   id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $gateway['checkout_label'] ); ?></label>
@@ -1845,6 +1867,7 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select', 10, 2 );
  * @param int $form_id The form ID.
  *
  * @return bool
+ * @since TBD Escape output. Add translators comments.
  * @since  1.0
  */
 function give_terms_agreement( $form_id ) {
@@ -1871,7 +1894,8 @@ function give_terms_agreement( $form_id ) {
 	// Bailout: Check if term and conditions text is empty or not.
 	if ( empty( $terms ) ) {
 		if ( is_user_logged_in() && current_user_can( 'edit_give_forms' ) ) {
-			echo sprintf( __( 'Please enter valid terms and conditions in <a href="%s">this form\'s settings</a>.', 'give' ), $edit_term_url );
+			/* translators: %s: URL of the form settings page */
+			echo wp_kses_post( sprintf( __( 'Please enter valid terms and conditions in <a href="%s">this form\'s settings</a>.', 'give' ), esc_url( $edit_term_url ) ) );
 		}
 
 		return false;
@@ -1886,8 +1910,8 @@ function give_terms_agreement( $form_id ) {
 
 	?>
 	<fieldset id="give_terms_agreement">
-		<legend><?php echo apply_filters( 'give_terms_agreement_text', esc_html__( 'Terms', 'give' ) ); ?></legend>
-		<div id="give_terms" class="give_terms-<?php echo $form_id; ?>" style="display:none;">
+		<legend><?php echo wp_kses_post( apply_filters( 'give_terms_agreement_text', esc_html__( 'Terms', 'give' ) ) ); ?></legend>
+		<div id="give_terms" class="give_terms-<?php echo (int) $form_id; ?>" style="display:none;">
 			<?php
 			/**
 			 * Fires while rendering terms of agreement, before the fields.
@@ -1896,7 +1920,7 @@ function give_terms_agreement( $form_id ) {
 			 */
 			do_action( 'give_before_terms' );
 
-			echo $terms;
+			echo wp_kses_post( $terms );
 			/**
 			 * Fires while rendering terms of agreement, after the fields.
 			 *
@@ -1906,15 +1930,15 @@ function give_terms_agreement( $form_id ) {
 			?>
 		</div>
 		<div id="give_show_terms">
-			<a href="#" class="give_terms_links give_terms_links-<?php echo $form_id; ?>" role="button"
+			<a href="#" class="give_terms_links give_terms_links-<?php echo (int) $form_id; ?>" role="button"
 			   aria-controls="give_terms"><?php esc_html_e( 'Show Terms', 'give' ); ?></a>
-			<a href="#" class="give_terms_links give_terms_links-<?php echo $form_id; ?>" role="button"
+			<a href="#" class="give_terms_links give_terms_links-<?php echo (int) $form_id; ?>" role="button"
 			   aria-controls="give_terms" style="display:none;"><?php esc_html_e( 'Hide Terms', 'give' ); ?></a>
 		</div>
 
 		<input name="give_agree_to_terms" class="required" type="checkbox"
-			   id="give_agree_to_terms-<?php echo $form_id; ?>" value="1" required aria-required="true"/>
-		<label for="give_agree_to_terms-<?php echo $form_id; ?>"><?php echo $label; ?></label>
+			   id="give_agree_to_terms-<?php echo (int) $form_id; ?>" value="1" required aria-required="true"/>
+		<label for="give_agree_to_terms-<?php echo (int) $form_id; ?>"><?php echo esc_html( $label ); ?></label>
 
 	</fieldset>
 	<?php
@@ -1930,6 +1954,7 @@ add_action( 'give_donation_form_after_cc_form', 'give_terms_agreement', 8888, 1 
  * @param int $form_id The form ID.
  *
  * @return void
+ * @since TBD Escape output.
  * @since  1.0
  */
 function give_checkout_final_total( $form_id ) {
@@ -1953,12 +1978,12 @@ function give_checkout_final_total( $form_id ) {
 		do_action( 'give_donation_final_total_label_before', $form_id );
 		?>
 		<span class="give-donation-total-label">
-			<?php echo apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ); ?>
+			<?php echo wp_kses_post( apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ) ); ?>
 		</span>
 		<span class="give-final-total-amount"
-			  data-total="<?php echo give_format_amount( $total, [ 'sanitize' => false ] ); ?>">
+			  data-total="<?php echo esc_attr( give_format_amount( $total, [ 'sanitize' => false ] ) ); ?>">
 			<?php
-			echo give_currency_filter(
+			echo esc_html( give_currency_filter(
 				give_format_amount(
 					$total,
 					[
@@ -1967,7 +1992,7 @@ function give_checkout_final_total( $form_id ) {
 					]
 				),
 				[ 'currency_code' => give_get_currency( $form_id ) ]
-			);
+			) );
 			?>
 		</span>
 		<?php
@@ -1991,6 +2016,7 @@ add_action( 'give_donation_form_before_submit', 'give_checkout_final_total', 999
  * @param array $args    List of arguments.
  *
  * @return void
+ * @since TBD Escape output.
  * @since  1.0
  */
 function give_checkout_submit( $form_id, $args ) {
@@ -2006,6 +2032,7 @@ function give_checkout_submit( $form_id, $args ) {
 
 		give_checkout_hidden_fields( $form_id, $args );
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_donation_form_submit_button() renders a trusted <input type="submit"> whose value is already escaped internally.
 		echo give_get_donation_form_submit_button( $form_id, $args );
 
 		/**
@@ -2025,6 +2052,7 @@ add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999, 2 
  * Give Donation form submit button.
  *
  * @since 4.16.2 Escape submit button label in form markup.
+ * @since TBD Escape output.
  * @since  1.8.8
  *
  * @param int   $form_id The form ID.
@@ -2058,6 +2086,7 @@ function give_get_donation_form_submit_button( $form_id, $args = [] ) {
  * @since        1.6   Add template for Give Goals Shortcode.
  *               More info is on https://github.com/impress-org/give/issues/411
  *
+ * @since TBD Escape output.
  * @since        1.0
  */
 function give_show_goal_progress( $form_id, $args = [] ) {
@@ -2076,7 +2105,7 @@ function give_show_goal_progress( $form_id, $args = [] ) {
 	 *
 	 * @since 2.0
 	 */
-	echo apply_filters( 'give_goal_output', ob_get_clean(), $form_id, $args );
+	echo wp_kses_post( apply_filters( 'give_goal_output', ob_get_clean(), $form_id, $args ) );
 
 	return true;
 }
@@ -2090,6 +2119,7 @@ add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
  * @param int $total_goal Total Goal amount passed by Admin.
  *
  * @return mixed
+ * @since TBD Escape output.
  * @since  2.1
  */
 function give_show_goal_totals_progress( $total, $total_goal ) {
@@ -2108,7 +2138,7 @@ function give_show_goal_totals_progress( $total, $total_goal ) {
 		]
 	);
 
-	echo apply_filters( 'give_total_progress_output', ob_get_clean() );
+	echo wp_kses_post( apply_filters( 'give_total_progress_output', ob_get_clean() ) );
 
 	return true;
 }
@@ -2182,6 +2212,7 @@ add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
  * @param array $args    An array of form arguments.
  *
  * @return void
+ * @since TBD Escape output.
  * @since  1.0
  */
 function give_form_display_content( $form_id, $args ) {
@@ -2225,7 +2256,7 @@ function give_form_display_content( $form_id, $args ) {
 	 *
 	 * @since 1.0
 	 */
-	echo apply_filters( 'give_form_content_output', $output, $form_id, $args );
+	echo wp_kses_post( apply_filters( 'give_form_content_output', $output, $form_id, $args ) );
 
 	// remove action to prevent content output on addition forms on page.
 	// @see: https://github.com/impress-org/give/issues/634.
@@ -2239,6 +2270,7 @@ function give_form_display_content( $form_id, $args ) {
  * @param array $args Shortcode args.
  *
  * @return void
+ * @since TBD Escape output.
  * @since 1.0
  */
 function give_checkout_hidden_fields( $form_id, $args = [] ) {
@@ -2254,10 +2286,10 @@ function give_checkout_hidden_fields( $form_id, $args = [] ) {
 
 	if ( is_user_logged_in() ) {
 		?>
-		<input type="hidden" name="give-user-id" value="<?php echo get_current_user_id(); ?>"/>
+		<input type="hidden" name="give-user-id" value="<?php echo (int) get_current_user_id(); ?>"/>
 	<?php } ?>
 	<input type="hidden" name="give_action" value="purchase"/>
-	<input type="hidden" name="give-gateway" value="<?php echo give_get_chosen_gateway( $form_id ); ?>"/>
+	<input type="hidden" name="give-gateway" value="<?php echo esc_attr( give_get_chosen_gateway( $form_id ) ); ?>"/>
 	<?php
 	/**
 	 * Fires while rendering hidden checkout fields, after the fields.
@@ -2355,12 +2387,13 @@ add_filter( 'give_donate_form', 'give_members_only_form', 10, 2 );
  * @param Give_Donate_Form $form
  *
  * @since 4.9.0 rename function - PHP 8 compatibility
+ * @since TBD Escape output.
  * @since 1.8.17
  */
 function give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 	?>
-	<input type="hidden" name="give-form-id-prefix" value="<?php echo $id_prefix; ?>"/>
+	<input type="hidden" name="give-form-id-prefix" value="<?php echo esc_attr( $id_prefix ); ?>"/>
 	<input type="hidden" name="give-form-id" value="<?php echo intval( $form_id ); ?>"/>
 	<input type="hidden" name="give-form-title" value="<?php echo esc_html( $form->post_title ); ?>"/>
 	<input type="hidden" name="give-current-url" value="<?php echo esc_url( give_get_current_page_url() ); ?>"/>
@@ -2373,9 +2406,9 @@ function give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	if ( give_is_setting_enabled( $custom_amount ) ) {
 		?>
 		<input type="hidden" name="give-form-minimum"
-			   value="<?php echo give_maybe_sanitize_amount( give_get_form_minimum_price( $form_id ) ); ?>"/>
+			   value="<?php echo esc_attr( give_maybe_sanitize_amount( give_get_form_minimum_price( $form_id ) ) ); ?>"/>
 		<input type="hidden" name="give-form-maximum"
-			   value="<?php echo give_maybe_sanitize_amount( give_get_form_maximum_price( $form_id ) ); ?>"/>
+			   value="<?php echo esc_attr( give_maybe_sanitize_amount( give_get_form_maximum_price( $form_id ) ) ); ?>"/>
 		<?php
 	}
 
@@ -2387,6 +2420,7 @@ function give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	);
 
 	// WP nonce field.
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_nonce_field() wraps wp_nonce_field(), a trusted hidden <input>; wp_kses_post() would strip it.
 	echo str_replace(
 		'/>',
 		"{$data_attr}/>",
@@ -2401,7 +2435,7 @@ function give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 
 		echo sprintf(
 			'<input type="hidden" name="give-price-id" value="%s"/>',
-			$price_id
+			esc_attr( $price_id )
 		);
 	}
 }

@@ -42,12 +42,13 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     /**
      * Get Gateway
      *
+     * @since TBD Escape exception message.
      * @since 2.18.0
      */
     public function getPaymentGateway(string $id): PaymentGateway
     {
         if (!$this->hasPaymentGateway($id)) {
-            throw new InvalidArgumentException("No gateway exists with the ID {$id}");
+            throw new InvalidArgumentException(esc_html("No gateway exists with the ID {$id}"));
         }
 
         /** @var PaymentGateway $gateway */
@@ -67,6 +68,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     /**
      * Register Gateway
      *
+     * @since TBD Escape exception message.
      * @since 2.18.0
      *
      * @throws OverflowException|InvalidArgumentException|Exception
@@ -77,7 +79,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
             throw new InvalidArgumentException(
                 sprintf(
                     '%1$s must extend %2$s',
-                    $gatewayClass,
+                    esc_html($gatewayClass),
                     PaymentGateway::class
                 )
             );
@@ -86,7 +88,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
         $gatewayId = $gatewayClass::id();
 
         if ($this->hasPaymentGateway($gatewayId)) {
-            throw new OverflowException("Cannot register a gateway with an id that already exists: $gatewayId");
+            throw new OverflowException(esc_html("Cannot register a gateway with an id that already exists: $gatewayId"));
         }
 
 

@@ -118,7 +118,7 @@ class GoogleChartApi
 		if ( $method !== self::POST && $method !== self::GET )
 			throw new Exception(sprintf(
 				'Query method must be either GoogleChart::POST or GoogleChart::GET, "%s" given.',
-				$method
+				esc_html($method)
 			));
 
 		$this->query_method = $method;
@@ -205,13 +205,15 @@ class GoogleChartApi
 
 	/**
 	 * Shortcut for getImage().
+	 *
+	 * @since TBD Escape output.
 	 */
 	public function __toString()
 	{
 		try {
 			return (string) $this->getImage();
 		} catch (Exception $e) {
-			trigger_error($e->getMessage(), E_USER_ERROR);
+			trigger_error(esc_html($e->getMessage()), E_USER_ERROR);
 		}
 	}
 //@}

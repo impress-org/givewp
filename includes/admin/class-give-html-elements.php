@@ -133,6 +133,7 @@ class Give_HTML_Elements {
 	 *
 	 * Renders an HTML Dropdown of all the Give Forms.
 	 *
+	 * @since TBD Add translators comments.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -203,6 +204,7 @@ class Give_HTML_Elements {
 			$options[0] = $args['placeholder'];
 			foreach ( $forms as $form ) {
 				$form_title = empty( $form->post_title )
+					/* translators: %s: Donation form ID */
 					? sprintf( __( 'Untitled (#%s)', 'give' ), $form->ID )
 					: $form->post_title;
 
@@ -230,6 +232,7 @@ class Give_HTML_Elements {
 	}
 
     /**
+     * @since TBD Add translators comments.
      * @since 4.1.0
      */
     public function campaigns_dropdown($args = [])
@@ -296,6 +299,7 @@ class Give_HTML_Elements {
 
             if ($selectedCampaign) {
                 $selected_title = empty($selectedCampaign->title)
+                    /* translators: %s: Campaign ID */
                     ? sprintf(__('Untitled (#%s)', 'give'), $selectedCampaign->id)
                     : $selectedCampaign->title;
                 $options[$args['selected']] = esc_html($selected_title);
@@ -307,6 +311,7 @@ class Give_HTML_Elements {
             $options[0] = $args['placeholder'];
             foreach ($campaigns as $campaign) {
                 $campaign_title = empty($campaign->title)
+                    /* translators: %s: Campaign ID */
                     ? sprintf(__('Untitled (#%s)', 'give'), $campaign->id)
                     : $campaign->title;
 
@@ -501,6 +506,7 @@ class Give_HTML_Elements {
 	 *
 	 * Renders an HTML Dropdown of years.
 	 *
+	 * @since  TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -512,10 +518,10 @@ class Give_HTML_Elements {
 	 * @return string               Years dropdown.
 	 */
 	public function year_dropdown( $name = 'year', $selected = 0, $years_before = 5, $years_after = 0 ) {
-		$current    = date( 'Y' );
+		$current    = gmdate( 'Y' );
 		$start_year = $current - absint( $years_before );
 		$end_year   = $current + absint( $years_after );
-		$selected   = empty( $selected ) ? date( 'Y' ) : $selected;
+		$selected   = empty( $selected ) ? gmdate( 'Y' ) : $selected;
 		$options    = array();
 
 		while ( $start_year <= $end_year ) {
@@ -541,6 +547,7 @@ class Give_HTML_Elements {
 	 *
 	 * Renders an HTML Dropdown of months.
 	 *
+	 * @since  TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -552,7 +559,7 @@ class Give_HTML_Elements {
 	public function month_dropdown( $name = 'month', $selected = 0 ) {
 		$month    = 1;
 		$options  = array();
-		$selected = empty( $selected ) ? date( 'n' ) : $selected;
+		$selected = empty( $selected ) ? gmdate( 'n' ) : $selected;
 
 		while ( $month <= 12 ) {
 			$options[ absint( $month ) ] = give_month_num_to_name( $month );

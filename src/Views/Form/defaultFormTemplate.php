@@ -2,11 +2,16 @@
 /**
  * Donation form view.
  *
+ * @since TBD Escape output.
  * @since 2.7.0
  */
 
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use Give\Views\IframeContentView;
+
+if (!defined('ABSPATH')) {
+    exit;
+}
 
 $formId = FrontendFormTemplateUtils::getFormId();
 $iframeView = new IframeContentView();
@@ -15,6 +20,5 @@ $iframeView = new IframeContentView();
 ob_start();
 give_get_donation_form(['id' => $formId]);
 
-echo $iframeView->setTitle(get_post_field('post_title', $formId))->setPostId($formId)
-                ->setBody(ob_get_clean())
-                ->render();
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- IframeContentView::render() escapes internally; the buffered form output is already escaped by includes/forms/template.php.
+echo $iframeView->setTitle(get_post_field('post_title', $formId))->setPostId($formId)->setBody(ob_get_clean())->render();

@@ -1,4 +1,10 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+/** @since TBD Escape output. */
 /** @var Give\Framework\FieldsAPI\File $field */ ?>
 <?php
 /** @var string $fieldIdAttribute */ ?>
@@ -6,10 +12,10 @@
 <input
     type="file"
     name="<?php
-    echo $field->getName(); ?><?php
+    echo esc_attr($field->getName()); ?><?php
     echo $field->getAllowMultiple() ? '[]' : ''; ?>"
     id="<?php
-    echo $fieldIdAttribute; ?>"
+    echo esc_attr($fieldIdAttribute); ?>"
     <?php
     echo $field->getAllowMultiple() ? 'multiple' : ''; ?>
     <?php

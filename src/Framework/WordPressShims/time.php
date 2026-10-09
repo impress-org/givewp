@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 if (!function_exists('wp_timezone_string')) {
     /**
      * Function is introduced in WP 5.3.

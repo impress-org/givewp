@@ -93,7 +93,7 @@ class SubscriptionNotesRepository
 
             Log::error('Failed creating a subscription note', compact('subscriptionNote'));
 
-            throw new Exception('Failed creating a subscription note', 0, $exception);
+            throw new Exception('Failed creating a subscription note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -136,7 +136,7 @@ class SubscriptionNotesRepository
 
             Log::error('Failed updating a subscription note', compact('subscriptionNote'));
 
-            throw new Exception('Failed updating a subscription note', 0, $exception);
+            throw new Exception('Failed updating a subscription note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -169,7 +169,7 @@ class SubscriptionNotesRepository
 
             Log::error('Failed deleting a subscription note', compact('subscriptionNote'));
 
-            throw new Exception('Failed deleting a subscription note', 0, $exception);
+            throw new Exception('Failed deleting a subscription note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -190,13 +190,14 @@ class SubscriptionNotesRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 4.8.0
      */
     private function validateSubscriptionNote(SubscriptionNote $subscriptionNote): void
     {
         foreach ($this->requiredSubscriptionProperties as $key) {
             if (! isset($subscriptionNote->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
 

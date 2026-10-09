@@ -149,6 +149,7 @@ class Give_Cache {
 	/**
 	 * Notices function.
 	 *
+     * @since TBD Add translators comments.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.5
 	 * @access public
@@ -166,7 +167,7 @@ class Give_Cache {
 		if ( $enabled && ! in_array( 'give', $settings, true ) ) {
 			?>
 			<div class="error">
-				<p><?php echo wp_kses_post( sprintf( __( 'In order for <strong>database caching</strong> to work with GiveWP you must add %1$s to the "Ignored query stems" option in <a href="%2$s">W3 Total Cache settings</a>.', 'give' ), '<code>give</code>', esc_url( admin_url( 'admin.php?page=w3tc_dbcache#dbcache_reject_sql' ) ) ) ); ?></p>
+				<p><?php echo wp_kses_post( sprintf( /* translators: 1: Query stem to add, 2: URL of the W3 Total Cache settings page */ __( 'In order for <strong>database caching</strong> to work with GiveWP you must add %1$s to the "Ignored query stems" option in <a href="%2$s">W3 Total Cache settings</a>.', 'give' ), '<code>give</code>', esc_url( admin_url( 'admin.php?page=w3tc_dbcache#dbcache_reject_sql' ) ) ) ); ?></p>
 			</div>
 			<?php
 		}
@@ -324,6 +325,7 @@ class Give_Cache {
 	 *
 	 * Note: only for internal use
 	 *
+	 * @since TBD Remove quotes around the placeholder.
 	 * @since  1.8.7
 	 * @access public
 	 * @global wpdb $wpdb
@@ -339,7 +341,7 @@ class Give_Cache {
 				"SELECT option_name, option_value
 						FROM {$wpdb->options}
 						Where option_name
-						LIKE '%s'",
+						LIKE %s",
 				'%give_cache%'
 			),
 			ARRAY_A
@@ -379,6 +381,7 @@ class Give_Cache {
 	 *
 	 * Note: only for internal use
 	 *
+	 * @since TBD Remove quotes around the placeholder and the SQL field variable.
 	 * @since  1.8.7
 	 * @access public
 	 *
@@ -390,15 +393,13 @@ class Give_Cache {
 	public static function get_options_like( $option_name, $fields = false ) {
 		global $wpdb;
 
-		$field_names = $fields ? 'option_name, option_value' : 'option_name';
-
 		if ( $fields ) {
 			$options = $wpdb->get_results(
 				$wpdb->prepare(
-					"SELECT {$field_names }
+					"SELECT option_name, option_value
 						FROM {$wpdb->options}
 						Where option_name
-						LIKE '%s'",
+						LIKE %s",
 					"%give_cache_{$option_name}%"
 				),
 				ARRAY_A
@@ -409,7 +410,7 @@ class Give_Cache {
 					"SELECT *
 						FROM {$wpdb->options}
 						Where option_name
-						LIKE '%s'",
+						LIKE %s",
 					"%give_cache_{$option_name}%"
 				),
 				1

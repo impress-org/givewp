@@ -145,6 +145,7 @@ class Give_Cache_Setting {
 	/**
 	 * Load plugin settings
 	 *
+	 * @since TBD Prepare SQL with placeholders.
 	 * @since  2.4.0
 	 * @access private
 	 */
@@ -171,10 +172,12 @@ class Give_Cache_Setting {
 			}
 		}
 
-		$db_option_ids = '\'' . implode( '\',\'', $this->db_option_ids ) . '\'';
-
-		$sql     = "SELECT option_name, option_value FROM $wpdb->options WHERE option_name IN ({$db_option_ids}) ";
-		$results = $wpdb->get_results( $sql );
+		$results = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT option_name, option_value FROM $wpdb->options WHERE option_name IN (" . implode( ',', array_fill( 0, count( $this->db_option_ids ), '%s' ) ) . ') ',
+				$this->db_option_ids
+			)
+		);
 
 		if ( ! empty( $results ) ) {
 

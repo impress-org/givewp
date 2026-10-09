@@ -431,12 +431,13 @@ class Container implements ArrayAccess, ContainerInterface
      *
      * @return void
      *
+     * @since TBD Escape exception message.
      * @throws LogicException
      */
     public function alias(string $abstract, string $alias)
     {
         if ($alias === $abstract) {
-            throw new LogicException("[{$abstract}] is aliased to itself.");
+            throw new LogicException(esc_html("[{$abstract}] is aliased to itself."));
         }
 
         $this->aliases[$alias] = $abstract;
@@ -537,6 +538,8 @@ class Container implements ArrayAccess, ContainerInterface
      * @param class-string<T> $id Identifier of the entry to look for.
      *
      * @return T|mixed Entry.
+     *
+     * @since TBD Escape exception message.
      * @throws InvalidArgumentException|BindingResolutionException
      */
     public function get(string $id)
@@ -548,7 +551,11 @@ class Container implements ArrayAccess, ContainerInterface
                 throw $e;
             }
 
-            throw new InvalidArgumentException($id, $e->getCode(), $e);
+            throw new InvalidArgumentException(
+                esc_html($id),
+                (int) $e->getCode(),
+                $e // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
     }
 
@@ -656,6 +663,8 @@ class Container implements ArrayAccess, ContainerInterface
      * @param Closure|string $concrete
      *
      * @return mixed
+     *
+     * @since TBD Escape exception message.
      * @throws BindingResolutionException
      * @throws ReflectionException
      */
@@ -671,7 +680,11 @@ class Container implements ArrayAccess, ContainerInterface
         try {
             $reflector = new ReflectionClass($concrete);
         } catch (ReflectionException $e) {
-            throw new InvalidArgumentException("Target class [$concrete] does not exist.", 0, $e);
+            throw new InvalidArgumentException(
+                esc_html("Target class [$concrete] does not exist."),
+                0,
+                $e // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
 
         // If the type is not instantiable, the developer is attempting to resolve
@@ -840,6 +853,8 @@ class Container implements ArrayAccess, ContainerInterface
      * @param string $concrete
      *
      * @return void
+     *
+     * @since TBD Escape exception message.
      * @throws BindingResolutionException
      */
     protected function notInstantiable(string $concrete)
@@ -852,7 +867,7 @@ class Container implements ArrayAccess, ContainerInterface
             $message = "Target [$concrete] is not instantiable.";
         }
 
-        throw new BindingResolutionException($message);
+        throw new BindingResolutionException(esc_html($message));
     }
 
     /**
@@ -861,13 +876,15 @@ class Container implements ArrayAccess, ContainerInterface
      * @param ReflectionParameter $parameter
      *
      * @return void
+     *
+     * @since TBD Escape exception message.
      * @throws BindingResolutionException
      */
     protected function unresolvablePrimitive(ReflectionParameter $parameter)
     {
         $message = "Unresolvable dependency resolving [$parameter] in class {$parameter->getDeclaringClass()->getName()}";
 
-        throw new BindingResolutionException($message);
+        throw new BindingResolutionException(esc_html($message));
     }
 
     /**

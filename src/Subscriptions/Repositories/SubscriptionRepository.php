@@ -214,7 +214,7 @@ class SubscriptionRepository
 
             Log::error('Failed creating a subscription', compact('subscription'));
 
-            throw new Exception('Failed creating a subscription', 0, $exception);
+            throw new Exception('Failed creating a subscription', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -275,7 +275,7 @@ class SubscriptionRepository
 
             Log::error('Failed updating a subscription', compact('subscription'));
 
-            throw new Exception('Failed updating a subscription', 0, $exception);
+            throw new Exception('Failed updating a subscription', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -310,7 +310,7 @@ class SubscriptionRepository
 
             Log::error('Failed deleting a subscription', compact('subscription'));
 
-            throw new Exception('Failed deleting a subscription', 0, $exception);
+            throw new Exception('Failed deleting a subscription', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -348,7 +348,7 @@ class SubscriptionRepository
 
             Log::error('Failed trashing a subscription', compact('subscription'));
 
-            throw new Exception('Failed trashing a subscription', 0, $exception);
+            throw new Exception('Failed trashing a subscription', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -386,7 +386,7 @@ class SubscriptionRepository
 
             Log::error('Failed untrashing a subscription', compact('subscription'));
 
-            throw new Exception('Failed untrashing a subscription', 0, $exception);
+            throw new Exception('Failed untrashing a subscription', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -431,7 +431,7 @@ class SubscriptionRepository
     {
         foreach (Subscription::propertyKeys() as $key) {
             if (array_key_exists($key, $columns)) {
-                throw new InvalidArgumentException("'$key' is not a legacy column.");
+                throw new InvalidArgumentException("'$key' is not a legacy column."); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $key always comes from Subscription::propertyKeys(), a hardcoded internal property list, never user input.
             }
         }
 
@@ -446,7 +446,7 @@ class SubscriptionRepository
 
             Log::error('Failed updating a subscription', compact('subscriptionId', 'columns'));
 
-            throw new Exception('Failed updating a subscription', 0, $exception);
+            throw new Exception('Failed updating a subscription', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -552,7 +552,7 @@ class SubscriptionRepository
     {
         foreach ($this->requiredSubscriptionProperties as $key) {
             if (!isset($subscription->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException("'$key' is required."); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $key always comes from $this->requiredSubscriptionProperties, a hardcoded internal property list, never user input.
             }
         }
 

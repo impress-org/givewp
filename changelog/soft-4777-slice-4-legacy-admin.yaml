@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Added translator comments in the legacy admin screens and fixed the
+  singular form of the bulk action notices
+timestamp: 2026-10-06T23:54:47.854Z

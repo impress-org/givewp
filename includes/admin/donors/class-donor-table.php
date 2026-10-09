@@ -72,7 +72,8 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Add donors search filter.
 	 *
-     * @since 3.5.0 Escape search query string.
+	 * @since TBD Escape output, including translated strings, and use gmdate() instead of date().
+	 * @since 3.5.0 Escape search query string.
 	 * @since 2.4.0
 	 * @return void
 	 */
@@ -87,7 +88,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		<div id="give-donor-filters" class="give-filters">
 			<div class="give-donor-search-box">
                 <input type="text" id="give-donors-search-input" placeholder="<?php
-                _e('Name, Email, or Donor ID', 'give'); ?>" name="s" value="<?php
+                esc_attr_e('Name, Email, or Donor ID', 'give'); ?>" name="s" value="<?php
                 echo esc_attr($search); ?>">
 				<?php
 				submit_button(
@@ -103,40 +104,40 @@ class Give_Donor_List_Table extends WP_List_Table {
 			</div>
 			<div class="give-filter give-filter-half">
 				<label for="start-date"
-					   class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
+					   class="give-start-date-label"><?php esc_html_e( 'Start Date', 'give' ); ?></label>
 				<input type="text"
 					   id="start-date"
 					   name="start-date"
 					   class="give_datepicker"
 					   autocomplete="off"
-					   value="<?php echo $start_date ? date_i18n( give_date_format(), $start_date ) : ''; ?>"
-					   data-standard-date="<?php echo $start_date ? date( 'Y-m-d', $start_date ) : $start_date; ?>"
-					   placeholder="<?php _e( 'Start Date', 'give' ); ?>"
+					   value="<?php echo $start_date ? esc_attr( date_i18n( give_date_format(), $start_date ) ) : ''; ?>"
+					   data-standard-date="<?php echo $start_date ? esc_attr( gmdate( 'Y-m-d', $start_date ) ) : esc_attr( $start_date ); ?>"
+					   placeholder="<?php esc_attr_e( 'Start Date', 'give' ); ?>"
 				/>
 			</div>
 			<div class="give-filter give-filter-half">
-				<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
+				<label for="end-date" class="give-end-date-label"><?php esc_html_e( 'End Date', 'give' ); ?></label>
 				<input type="text"
 					   id="end-date"
 					   name="end-date"
 					   class="give_datepicker"
 					   autocomplete="off"
-					   value="<?php echo $end_date ? date_i18n( give_date_format(), $end_date ) : ''; ?>"
-					   data-standard-date="<?php echo $end_date ? date( 'Y-m-d', $end_date ) : $end_date; ?>"
-					   placeholder="<?php _e( 'End Date', 'give' ); ?>"
+					   value="<?php echo $end_date ? esc_attr( date_i18n( give_date_format(), $end_date ) ) : ''; ?>"
+					   data-standard-date="<?php echo $end_date ? esc_attr( gmdate( 'Y-m-d', $end_date ) ) : esc_attr( $end_date ); ?>"
+					   placeholder="<?php esc_attr_e( 'End Date', 'give' ); ?>"
 				/>
 			</div>
 			<div id="give-payment-form-filter" class="give-filter">
 				<label for="give-donation-forms-filter"
-					   class="give-donation-forms-filter-label"><?php _e( 'Form', 'give' ); ?></label>
+					   class="give-donation-forms-filter-label"><?php esc_html_e( 'Form', 'give' ); ?></label>
 				<?php
 				// Filter Donations by Donation Forms.
-				echo Give()->html->forms_dropdown(
+				echo Give()->html->forms_dropdown( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- html->forms_dropdown() builds a <select> control; wp_kses_post() would strip the select/option elements.
 					[
 						'name'     => 'form_id',
 						'id'       => 'give-donation-forms-filter',
 						'class'    => 'give-donation-forms-filter',
-						'selected' => $form_id, // Make sure to have $form_id set to 0, if there is no selection.
+						'selected' => (int) $form_id, // Make sure to have $form_id set to 0, if there is no selection.
 						'chosen'   => true,
 						'number'   => 30,
 					]
@@ -167,8 +168,8 @@ class Give_Donor_List_Table extends WP_List_Table {
 				// Clear active filters button.
 				if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $donor ) || ! empty( $search ) || ! empty( $status ) || ! empty( $form_id ) ) :
 					?>
-					<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>"
-					   class="button give-clear-filters-button"><?php _e( 'Clear Filters', 'give' ); ?></a>
+					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors' ) ); ?>"
+					   class="button give-clear-filters-button"><?php esc_html_e( 'Clear Filters', 'give' ); ?></a>
 				<?php endif; ?>
 			</div>
 		</div>
@@ -333,6 +334,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 *
 	 * @param array $donor Donor Data.
 	 *
+	 * @since TBD Add translators comments.
 	 * @since  1.7
 	 * @access public
 	 *
@@ -342,8 +344,8 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		$actions = [
 			'id'     => '<span class="give-donor-id">ID: ' . $donor['id'] . '  </span>',
-			'view'   => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor['id'] ), sprintf( esc_attr__( 'View "%s"', 'give' ), esc_attr( $donor['name'] ) ), __( 'View Donor', 'give' ) ),
-			'delete' => sprintf( '<a class="%1$s" data-id="%2$s" href="#" aria-label="%3$s">%4$s</a>', 'give-single-donor-delete', $donor['id'], sprintf( esc_attr__( 'Delete "%s"', 'give' ), esc_attr( $donor['name'] ) ), __( 'Delete', 'give' ) ),
+			'view'   => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor['id'] ), sprintf( /* translators: %s: Donor name */ esc_attr__( 'View "%s"', 'give' ), esc_attr( $donor['name'] ) ), __( 'View Donor', 'give' ) ),
+			'delete' => sprintf( '<a class="%1$s" data-id="%2$s" href="#" aria-label="%3$s">%4$s</a>', 'give-single-donor-delete', $donor['id'], sprintf( /* translators: %s: Donor name */ esc_attr__( 'Delete "%s"', 'give' ), esc_attr( $donor['name'] ) ), __( 'Delete', 'give' ) ),
 		];
 
 		return apply_filters( 'give_donor_row_actions', $actions, $donor );
@@ -366,6 +368,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * Retrieves the search query string.
 	 *
 	 * @access public
+     * @since TBD Unslash the search term. Give_Donors_Query escapes it.
      * @since 3.5.0 Remove escape function
 	 * @since  1.0
 	 *
@@ -377,7 +380,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			return false;
 		}
 
-        $search = urldecode(trim($_GET['s']));
+        $search = urldecode(trim(wp_unslash($_GET['s'])));
 
         return ! empty($search) ? $search : false;
 	}
@@ -487,6 +490,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Get donor query.
 	 *
+     * @since TBD Do not escape the search term here. Give_Donors_Query escapes it.
      * @since 3.5.0 Escape search query string.
 	 * @since  1.8.1
 	 * @access public
@@ -513,7 +517,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			'orderby'    => $orderby,
 			'order'      => $order,
 			'donor'      => $donor,
-            's' => esc_sql($search),
+            's' => $search,
 			'start_date' => $start_date,
 			'end_date'   => $end_date,
 			'give_forms' => $form_id,
@@ -534,11 +538,12 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 *
 	 * @param object $item The current item.
 	 *
+	 * @since  TBD Escape output.
 	 * @since  1.8.17
 	 * @access public
 	 */
 	public function single_row( $item ) {
-		echo sprintf( '<tr id="donor-%1$d" data-id="%2$d" data-name="%3$s">', $item['id'], $item['id'], esc_attr( $item['name'] ) );
+		echo sprintf( '<tr id="donor-%1$d" data-id="%2$d" data-name="%3$s">', (int) $item['id'], (int) $item['id'], esc_attr( $item['name'] ) );
 		$this->single_row_columns( $item );
 		echo '</tr>';
 	}
@@ -546,6 +551,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Display the final donor table
 	 *
+	 * @since  TBD Escape output.
 	 * @since  1.8.17
 	 * @access public
 	 */
@@ -561,7 +567,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$order    = ! empty( $get_data['order'] ) ? $get_data['order'] : 'DESC';
 		$order_by = ! empty( $get_data['orderby'] ) ? $get_data['orderby'] : 'id';
 		?>
-		<table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
+		<table class="wp-list-table <?php echo esc_attr( implode( ' ', $this->get_table_classes() ) ); ?>">
 			<thead>
 			<tr>
 				<?php $this->print_column_headers(); ?>
@@ -571,7 +577,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			<tbody id="the-list"
 			<?php
 			if ( $singular ) {
-				echo " data-wp-lists='list:$singular'";
+				echo " data-wp-lists='list:" . esc_attr( $singular ) . "'";
 			}
 			?>
 			>

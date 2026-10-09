@@ -214,6 +214,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = [] ) {
 /**
  * Give get user details if not then create a user. Used in Import Donation CSV.
  *
+ * @since TBD Use gmdate() instead of date(), and add translators comments.
  * @since 1.8.13
  *
  * @param $data
@@ -261,6 +262,7 @@ function give_import_get_user_from_csv( $data, $import_setting = [] ) {
 
 					// Adding notes that donor is being imported from CSV.
 					$current_user = wp_get_current_user();
+					/* translators: %s: Email address of the user who ran the import */
 					$donor_data->add_note( wp_sprintf( __( 'This donor was imported by %s', 'give' ), $current_user->user_email ) );
 
 					// Add is used to ensure duplicate emails are not added
@@ -298,7 +300,7 @@ function give_import_get_user_from_csv( $data, $import_setting = [] ) {
 				$donor_args         = [
 					'user_login'      => $data['email'],
 					'user_email'      => $data['email'],
-					'user_registered' => date( 'Y-m-d H:i:s' ),
+					'user_registered' => gmdate( 'Y-m-d H:i:s' ),
 					'user_first'      => $data['first_name'],
 					'user_last'       => $data['last_name'],
 					'user_pass'       => wp_generate_password( 8, true ),
@@ -352,6 +354,7 @@ function give_import_get_user_from_csv( $data, $import_setting = [] ) {
 
 						// Adding notes that donor is being imported from CSV.
 						$current_user = wp_get_current_user();
+						/* translators: %s: Email address of the user who ran the import */
 						$donor_data->add_note( wp_sprintf( __( 'This donor was imported by %s', 'give' ), $current_user->user_email ) );
 					} else {
 						$dry_run_donor_create = true;
@@ -1107,6 +1110,7 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
 /**
  * Record payment notes that is being imported from CSV.
  *
+ * @since TBD Add translators comments.
  * @since  1.8.13
  *
  * @param  int $payment_id The ID number of the payment.
@@ -1115,6 +1119,7 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
  */
 function give_donation_import_insert_default_payment_note( $payment_id ) {
 	$current_user = wp_get_current_user();
+	/* translators: %s: Email address of the user who ran the import */
 	give_insert_payment_note( $payment_id, wp_sprintf( __( 'This donation was imported by %s', 'give' ), $current_user->user_email ) );
 }
 

@@ -357,6 +357,7 @@ final class Give
     /**
      * Load all the service providers to bootstrap the various parts of the application.
      *
+     * @since TBD Escape exception message.
      * @since 2.8.0
      */
     private function loadServiceProviders()
@@ -370,7 +371,7 @@ final class Give
         foreach ($this->serviceProviders as $serviceProvider) {
             if (!is_subclass_of($serviceProvider, ServiceProvider::class)) {
                 throw new InvalidArgumentException(
-                    "$serviceProvider class must implement the ServiceProvider interface"
+                    esc_html("$serviceProvider class must implement the ServiceProvider interface")
                 );
             }
 
@@ -482,6 +483,7 @@ final class Give
     /**
      * Display compatibility notice for Give 2.5.0 and Recurring 1.8.13 when Stripe premium is not active.
      *
+      * @since TBD Add translators comments.
      * @since 2.5.0
      *
      * @return void
@@ -496,6 +498,7 @@ final class Give
             && version_compare(GIVE_STRIPE_VERSION, '2.2.0', '<')
         ) {
             $message = sprintf(
+                /* translators: %1$s: URL of the GiveWP login page */
                 __(
                     '<strong>Attention:</strong> GiveWP 2.5.0+ requires the latest version of the Recurring Donations add-on to process payments properly with Stripe. Please update to the latest version add-on to resolve compatibility issues. If your license is active, you should see the update available in WordPress. Otherwise, you can access the latest version by <a href="%1$s" target="_blank">logging into your account</a> and visiting <a href="%1$s" target="_blank">your downloads</a> page on the GiveWP website.',
                     'give'
@@ -622,6 +625,8 @@ function give(?string $abstract = null)
 }
 
 require __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/src/Framework/Http/Response/functions.php';
+require_once __DIR__ . '/src/FormMigration/functions.php';
 require __DIR__ . '/vendor/vendor-prefixed/autoload.php';
 require __DIR__ . '/vendor/woocommerce/action-scheduler/action-scheduler.php';
 

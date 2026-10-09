@@ -14,6 +14,8 @@ class UpsellNotice
 {
     /**
      * Upsell notice for recurring addon
+     *
+     * @since TBD Add translators comments.
      */
     public static function recurringAddon()
     {
@@ -33,6 +35,7 @@ class UpsellNotice
 			</div>
 			',
             sprintf(
+                /* translators: 1: URL of the Recurring Donations add-on page, 2: Link title text */
                 __(
                     'Activate the <a href="%1$s" title="%2$s" target="_blank">Recurring Donations add-on</a> and provide your donors with flexible subscription giving options.',
                     'give'

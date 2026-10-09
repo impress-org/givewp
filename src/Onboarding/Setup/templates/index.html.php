@@ -2,9 +2,14 @@
 /**
  * GiveWP Onboarding Setup Guide template file
  *
+ * @since TBD Escape output. Add translators comments.
  * @since 3.15.0 Refactored to make it compatible with v3 forms.
  * @since 2.8.0
  */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
 
 /**
  * Variables from onboarding PageView
@@ -17,7 +22,7 @@
 
     <h1 class="wp-heading-inline">
         <?php
-        echo __('GiveWP Setup Guide', 'give'); ?>
+        echo esc_html__('GiveWP Setup Guide', 'give'); ?>
     </h1>
 
     <hr class="wp-header-end">
@@ -50,11 +55,11 @@
             : admin_url('edit.php?post_type=give_forms&page=give-campaigns');
     }
 
-    echo $this->render_template(
+    echo wp_kses_post($this->render_template(
         'section',
         [
             'class' => !$this->isFormConfigured() ? 'current-step' : '',
-            'title' => sprintf('%s 1: %s', __('Step', 'give'), __('Create your first campaign', 'give')),
+            'title' => sprintf('%s 1: %s', esc_html__('Step', 'give'), esc_html__('Create your first campaign', 'give')),
             'badge' => ($this->isFormConfigured()
                 ? $this->render_template('badge', [
                     'class' => 'completed',
@@ -78,16 +83,16 @@
                 ])
             ),
         ]
-    );
+    ));
     ?>
 
     <!-- Gateways -->
     <?php
-    echo $this->render_template(
+    echo wp_kses_post($this->render_template(
         'section',
         [
             'class' => ($this->isFormConfigured() && !($this->isStripeSetup() || $this->isPayPalSetup())) ? 'current-step' : '',
-            'title' => sprintf('%s 2: %s', __('Step', 'give'), __('Connect a payment gateway', 'give')),
+            'title' => sprintf('%s 2: %s', esc_html__('Step', 'give'), esc_html__('Connect a payment gateway', 'give')),
             'badge' => (($this->isStripeSetup() || $this->isPayPalSetup())
                 ? $this->render_template('badge', [
                     'class' => 'completed',
@@ -110,6 +115,7 @@
                         'icon_alt' => esc_html__('Stripe', 'give'),
                         'title' => esc_html__('Connect to Stripe', 'give'),
                         'description' => sprintf(
+                            /* translators: %s: URL of the Stripe fees documentation */
                             __('Stripe is one of the most popular payment gateways, and for good reason! Receive one-time and Recurring Donations (add-on) using many of the most popular payment methods. Additional fees may apply for free users. Read our <a href="%s" target="_blank" rel="noopener noreferrer">Stripe documentation</a> for more information.', 'give'), 
                             'https://docs.givewp.com/stripe-fees'
                         ),
@@ -182,7 +188,7 @@
                 ]
             ),
         ]
-    );
+    ));
     ?>
 
     <!-- Resources -->
@@ -208,31 +214,36 @@
         }
     }
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renders the section shell; the license-activation form content inside is escaped above and cannot be wp_kses_post()'d without stripping its form elements.
     echo $this->render_template(
         'section',
         [
-            'title' => sprintf('%s 3: %s', __('Step', 'give'), __('Get more from your fundraising campaign with add-ons', 'give')),
-            'badge' => $this->render_template('badge', [
+            'title' => sprintf('%s 3: %s', esc_html__('Step', 'give'), esc_html__('Get more from your fundraising campaign with add-ons', 'give')),
+            'badge' => wp_kses_post($this->render_template('badge', [
                 'class' => 'optional',
                 'text' => esc_html__('Optional', 'give'),
-            ]),
+            ])),
             'contents' => [
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renders the license-activation form; its own values are escaped below, and wp_kses_post() would strip the form/input elements.
                 (! empty($settings['addons'] || $needsActivation)) ? $this->render_template(
                     'sub-header',
                     [
                         'text' => sprintf(
                             '%s%s',
                             (! empty($settings['addons']) ? esc_html__('Based on your selections, Give recommends the following add-ons to support your fundraising.', 'give') . ' ' : ''),
+                            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renders the license-activation form; its own values are escaped below, and wp_kses_post() would strip the form/input elements.
                             ($needsActivation ? $this->render_template('activate-license',
                                 [
                                     'text' => esc_html__('Already have an add-on license?', 'give'),
                                     'label' => esc_html__('Activate your license', 'give'),
                                     'href' => esc_url(admin_url('edit.php?post_type=give_forms&page=give-settings&tab=licenses')),
                                     'title' => esc_html__('Activate an Add-on License', 'give'),
-                                    'description' => sprintf(
+                                    'description' => wp_kses_post(sprintf(
+										/* translators: %1$s: URL of the My Account page on the GiveWP website */
 										__('Enter your license key below to unlock your GiveWP add-ons. You can access your licenses anytime from the <a href="%1$s" target="_blank">My Account</a> section on the GiveWP website. ', 'give'),
-                                        Give_License::get_account_url()
-                                    ),
+                                        esc_url(Give_License::get_account_url())
+                                    )),
+                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_nonce_field(..., false) returns a trusted hidden <input>; wp_kses_post() would strip it.
                                     'nonce' => wp_nonce_field('give-license-activator-nonce', 'give_license_activator_nonce', true, false),
                                     'form-label' => esc_html__('License key', 'give'),
                                     'form-placeholder' => esc_html__('Enter your license key', 'give'),
@@ -240,11 +251,11 @@
                                     'form-submit-activating' => esc_html__('Verifying License...', 'give'),
                                     'form-submit-value' => esc_html__('Activate License', 'give'),
                                 ]
-                            ) : '')
+                            ) : ''), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ternary else-arm is a literal empty string.
                         )
                     ]
-                ) : '',
-                in_array('recurring-donations', $settings['addons']) ? $this->render_template(
+                ) : '', // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ternary else-arm is a literal empty string.
+                in_array('recurring-donations', $settings['addons']) ? wp_kses_post($this->render_template(
                     'row-item',
                     [
                         'class' => 'setup-item-recurring-donations',
@@ -264,8 +275,8 @@
                             ]
                         ),
                     ]
-                ) : '',
-                in_array('donors-cover-fees', $settings['addons']) ? $this->render_template(
+                )) : '',
+                in_array('donors-cover-fees', $settings['addons']) ? wp_kses_post($this->render_template(
                     'row-item',
                     [
                         'class' => 'setup-item-fee-recovery',
@@ -285,8 +296,8 @@
                             ]
                         ),
                     ]
-                ) : '',
-                in_array('pdf-receipts', $settings['addons']) ? $this->render_template(
+                )) : '',
+                in_array('pdf-receipts', $settings['addons']) ? wp_kses_post($this->render_template(
                     'row-item',
                     [
                         'class' => 'setup-item-pdf-receipts',
@@ -306,8 +317,8 @@
                             ]
                         ),
                     ]
-                ) : '',
-                in_array('custom-form-fields', $settings['addons']) ? $this->render_template(
+                )) : '',
+                in_array('custom-form-fields', $settings['addons']) ? wp_kses_post($this->render_template(
                     'row-item',
                     [
                         'class' => 'setup-item-form-fields-manager',
@@ -327,8 +338,8 @@
                             ]
                         ),
                     ]
-                ) : '',
-                in_array('multiple-currencies', $settings['addons']) ? $this->render_template(
+                )) : '',
+                in_array('multiple-currencies', $settings['addons']) ? wp_kses_post($this->render_template(
                     'row-item',
                     [
                         'class' => 'setup-item-currency-switcher',
@@ -348,8 +359,8 @@
                             ]
                         ),
                     ]
-                ) : '',
-                in_array('dedicate-donations', $settings['addons']) ? $this->render_template(
+                )) : '',
+                in_array('dedicate-donations', $settings['addons']) ? wp_kses_post($this->render_template(
                     'row-item',
                     [
                         'class' => 'setup-item-tributes',
@@ -369,8 +380,8 @@
                             ]
                         ),
                     ]
-                ) : '',
-                $this->render_template(
+                )) : '',
+                wp_kses_post($this->render_template(
                     'row-item',
                     [
                         'class' => 'setup-item',
@@ -390,17 +401,17 @@
                             ]
                         ),
                     ]
-                ),
+                )),
             ],
         ]
     );
     ?>
 
     <?php
-    echo $this->render_template(
+    echo wp_kses_post($this->render_template(
         'section',
         [
-            'title' => __('Get the most out of GiveWP', 'give'),
+            'title' => esc_html__('Get the most out of GiveWP', 'give'),
             'contents' => [
                 $this->render_template(
                     'row-item',
@@ -425,14 +436,16 @@
                 ),
             ],
         ]
-    );
+    ));
     ?>
 
     <?php
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renders the dismiss form; its own values are escaped below, and wp_kses_post() would strip the form/input/button elements.
     echo $this->render_template(
         'dismiss',
         [
-            'action' => admin_url('admin-post.php'),
+            'action' => esc_url(admin_url('admin-post.php')),
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_nonce_field(..., false) returns trusted hidden <input> element(s); wp_kses_post() would strip them.
             'nonce' => wp_nonce_field('dismiss_setup_page', $name = '_wpnonce', $referer = true, $echo = false),
             'label' => esc_html__('Dismiss Setup Screen', 'give'),
         ]

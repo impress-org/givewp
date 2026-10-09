@@ -106,6 +106,7 @@ function give_is_cc_verify_enabled() {
  * Retrieve timezone.
  *
  * @return string $timezone The timezone ID.
+ * @since TBD Use gmdate() instead of date().
  * @since 1.0
  */
 function give_get_timezone_id() {
@@ -126,7 +127,7 @@ function give_get_timezone_id() {
 	// last try, guess timezone string manually.
 	if ( $timezone === false ) {
 
-		$is_dst = date( 'I' );
+		$is_dst = gmdate( 'I' );
 
 		foreach ( timezone_abbreviations_list() as $abbr ) {
 			foreach ( $abbr as $city ) {
@@ -310,6 +311,7 @@ function give_payment_gateway_item_title( $payment_data, $length = null ) {
  * @param int   $length
  *
  * @return string
+ * @since TBD Add translators comments.
  * @since       1.8.12
  */
 function give_payment_gateway_donation_summary( $donation_data, $name_and_email = true, $length = 255 ) {
@@ -318,7 +320,7 @@ function give_payment_gateway_donation_summary( $donation_data, $name_and_email 
 	$price_id = isset( $donation_data['post_data']['give-price-id'] ) ? $donation_data['post_data']['give-price-id'] : '';
 
 	// Form title.
-	$summary = ( ! empty( $donation_data['post_data']['give-form-title'] ) ? $donation_data['post_data']['give-form-title'] : ( ! empty( $form_id ) ? wp_sprintf( __( 'Donation Form ID: %d', 'give' ), $form_id ) : __( 'Untitled donation form', 'give' ) ) );
+	$summary = ( ! empty( $donation_data['post_data']['give-form-title'] ) ? $donation_data['post_data']['give-form-title'] : ( ! empty( $form_id ) ? wp_sprintf( /* translators: %d: Donation form ID */ __( 'Donation Form ID: %d', 'give' ), $form_id ) : __( 'Untitled donation form', 'give' ) ) );
 
 	// Form multilevel if applicable.
 	if ( ! empty( $price_id ) && 'custom' !== $price_id ) {
@@ -412,6 +414,8 @@ function give_get_host() {
  *       and the version the function was deprecated in.
  * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
  *       trigger or false to not trigger error.
+ *
+ * @since TBD Escape output. Add translators comments.
  */
 function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
 
@@ -433,12 +437,14 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
 	// Allow plugin to filter the output error trigger.
 	if ( WP_DEBUG && apply_filters( 'give_deprecated_function_trigger_error', $show_errors ) ) {
 		if ( ! is_null( $replacement ) ) {
-			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s! Use %3$s instead.', 'give' ), $function, $version, $replacement ) );
-			trigger_error( print_r( $backtrace, 1 ) ); // Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
+			/* translators: 1: Function name, 2: GiveWP version, 3: Replacement function name */
+			trigger_error( wp_kses_post( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s! Use %3$s instead.', 'give' ), esc_html( $function ), esc_html( $version ), esc_html( $replacement ) ) ) );
+			trigger_error( esc_html( print_r( $backtrace, 1 ) ) ); // Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
 			// Alternatively we could dump this to a file.
 		} else {
-			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s with no alternative available.', 'give' ), $function, $version ) );
-			trigger_error( print_r( $backtrace, 1 ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
+			/* translators: 1: Function name, 2: GiveWP version */
+			trigger_error( wp_kses_post( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s with no alternative available.', 'give' ), esc_html( $function ), esc_html( $version ) ) ) );
+			trigger_error( esc_html( print_r( $backtrace, 1 ) ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
 			// Alternatively we could dump this to a file.
 		}
 	}
@@ -610,6 +616,8 @@ if ( ! function_exists( 'array_column' ) ) {
 	 *                              the returned array. This value may be the integer key
 	 *                              of the column, or it may be the string key name.
 	 *
+	 * @since TBD Escape output.
+	 *
 	 * @return array|boolean|null
 	 */
 	function array_column( $input = null, $columnKey = null, $indexKey = null ) {
@@ -620,13 +628,13 @@ if ( ! function_exists( 'array_column' ) ) {
 		$params = func_get_args();
 
 		if ( $argc < 2 ) {
-			trigger_error( sprintf( 'array_column() expects at least 2 parameters, %s given.', $argc ), E_USER_WARNING );
+			trigger_error( esc_html( sprintf( 'array_column() expects at least 2 parameters, %s given.', $argc ) ), E_USER_WARNING );
 
 			return null;
 		}
 
 		if ( ! is_array( $params[0] ) ) {
-			trigger_error( sprintf( 'array_column() expects parameter 1 to be array, %s given.', gettype( $params[0] ) ), E_USER_WARNING );
+			trigger_error( esc_html( sprintf( 'array_column() expects parameter 1 to be array, %s given.', gettype( $params[0] ) ) ), E_USER_WARNING );
 
 			return null;
 		}
@@ -789,6 +797,8 @@ if ( ! function_exists( 'cal_days_in_month' ) ) {
 	/**
 	 * cal_days_in_month
 	 *
+	 * @since TBD Use gmdate() instead of date().
+	 *
 	 * @param int $calendar
 	 * @param int $month
 	 * @param int $year
@@ -796,7 +806,7 @@ if ( ! function_exists( 'cal_days_in_month' ) ) {
 	 * @return bool|string
 	 */
 	function cal_days_in_month( $calendar, $month, $year ) {
-		return date( 't', mktime( 0, 0, 0, $month, 1, $year ) );
+		return gmdate( 't', gmmktime( 0, 0, 0, $month, 1, $year ) );
 	}
 }
 
@@ -1497,6 +1507,7 @@ function give_recount_form_income_donation( $form_id = 0 ) {
  * @param array $default_attributes
  *
  * @return string
+ * @since TBD Escape every attribute value, not only "value", and skip attribute names that aren't valid HTML attribute names.
  * @since 1.8.17
  */
 function give_get_attribute_str( $attributes, $default_attributes = [] ) {
@@ -1515,11 +1526,11 @@ function give_get_attribute_str( $attributes, $default_attributes = [] ) {
 	}
 
 	foreach ( $attributes as $tag => $value ) {
-		if ( 'value' == $tag ) {
-			$value = esc_attr( $value );
+		if ( ! preg_match( '/^[a-zA-Z_:][a-zA-Z0-9_.:-]*$/', $tag ) ) {
+			continue;
 		}
 
-		$attribute_str .= " {$tag}=\"{$value}\"";
+		$attribute_str .= " {$tag}=\"" . esc_attr( $value ) . '"';
 	}
 
 	return trim( $attribute_str );
@@ -1571,6 +1582,7 @@ function give_get_limit_display_donations() {
 /**
  * Add footer to the table when donor is view the donation history page with out login
  *
+ * @since TBD Escape output, including translated strings. Add translators comments.
  * @since 1.8.17
  */
 function give_donation_history_table_end() {
@@ -1582,15 +1594,16 @@ function give_donation_history_table_end() {
 				<div class="give-security-wrap">
 					<div class="give-security-column give-security-description-wrap">
 						<?php
-						echo sprintf( __( 'For security reasons, please confirm your email address (%s) to view your complete donation history.', 'give' ), $email );
+						/* translators: %s: Email address */
+						echo esc_html( sprintf( __( 'For security reasons, please confirm your email address (%s) to view your complete donation history.', 'give' ), $email ) );
 						?>
 					</div>
 					<div class="give-security-column give-security-button-wrap">
-						<a href="#" data-email="<?php echo $email; ?>" id="give-confirm-email-btn"
+						<a href="#" data-email="<?php echo esc_attr( $email ); ?>" id="give-confirm-email-btn"
 						   class="give-confirm-email-btn give-btn">
-							<?php _e( 'Confirm Email', 'give' ); ?>
+							<?php esc_html_e( 'Confirm Email', 'give' ); ?>
 						</a>
-						<span><?php _e( 'Email Sent!', 'give' ); ?></span>
+						<span><?php esc_html_e( 'Email Sent!', 'give' ); ?></span>
 					</div>
 				</div>
 			</td>
@@ -1608,6 +1621,7 @@ function give_donation_history_table_end() {
  * @param string $version deprecated
  *
  * @return void
+ * @since  TBD Escape output. Add translators comments.
  * @since  1.8.18
  * @since  2.5.13 Refactor function
  */
@@ -1629,8 +1643,9 @@ function give_doing_it_wrong( $function, $message, $version = null ) {
 
 	// Allow plugin to filter the output error trigger.
 	if ( WP_DEBUG && apply_filters( 'give_doing_it_wrong_trigger_error', $show_errors ) ) {
-		trigger_error( sprintf( __( '%1$s was called <strong>incorrectly</strong>. %2$s', 'give' ), $function, $message ) );
-		trigger_error( print_r( wp_debug_backtrace_summary(), 1 ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
+		/* translators: 1: Function name, 2: Error message */
+		trigger_error( wp_kses_post( sprintf( __( '%1$s was called <strong>incorrectly</strong>. %2$s', 'give' ), esc_html( $function ), esc_html( $message ) ) ) );
+		trigger_error( esc_html( print_r( wp_debug_backtrace_summary(), 1 ) ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
 	}
 }
 
@@ -1655,28 +1670,18 @@ function give_ignore_user_abort() {
  * @param array  $args
  *
  * @return int
+ * @since TBD Prepare SQL with placeholders.
  * @since 2.0.2
  */
 function give_get_total_post_type_count( $post_type = '', $args = [] ) {
 	global $wpdb;
-	$where = '';
 
 	if ( ! $post_type ) {
 		return 0;
 	}
 
-	// Bulit where query
-	if ( ! empty( $post_type ) ) {
-		$where .= ' WHERE';
-
-		if ( is_array( $post_type ) ) {
-			$where .= " post_type='" . implode( "' OR post_type='", $post_type ) . "'";
-		} else {
-			$where .= " post_type='{$post_type}'";
-		}
-	}
-
-	$result = $wpdb->get_var( "SELECT count(ID) FROM {$wpdb->posts}{$where}" );
+	$post_types = (array) $post_type;
+	$result     = $wpdb->get_var( $wpdb->prepare( "SELECT count(ID) FROM {$wpdb->posts} WHERE post_type IN (" . implode( ',', array_fill( 0, count( $post_types ), '%s' ) ) . ')', $post_types ) );
 
 	return absint( $result );
 }
@@ -1703,6 +1708,7 @@ function give_maybe_define_constant( $name, $value ) {
  * @param int    $timestamp
  *
  * @return string
+ * @since TBD Use gmdate() instead of date().
  * @since 2.1.0
  */
 function give_time_do_tags( $string, $timestamp = 0 ) {
@@ -1722,15 +1728,15 @@ function give_time_do_tags( $string, $timestamp = 0 ) {
 			'{S}',
 		],
 		[
-			date( 'j', $current_time ),
-			date( 'd', $current_time ),
-			date( 'n', $current_time ),
-			date( 'm', $current_time ),
-			date( 'Y', $current_time ),
-			date( 'Y', $current_time ),
-			date( 'G', $current_time ),
-			date( 'H', $current_time ),
-			date( 's', $current_time ),
+			gmdate( 'j', $current_time ),
+			gmdate( 'd', $current_time ),
+			gmdate( 'n', $current_time ),
+			gmdate( 'm', $current_time ),
+			gmdate( 'Y', $current_time ),
+			gmdate( 'Y', $current_time ),
+			gmdate( 'G', $current_time ),
+			gmdate( 'H', $current_time ),
+			gmdate( 's', $current_time ),
 		],
 		$string
 	);
@@ -2373,6 +2379,7 @@ function give_get_view_receipt_url( $donation_id ) {
  * @param $args
  *
  * @return bool|mixed
+ * @since TBD Escape output.
  * @since 2.4.1
  */
 function give_display_donation_receipt( $args ) {
@@ -2400,7 +2407,7 @@ function give_display_donation_receipt( $args ) {
 			if ( $is_email_access ) {
 				give_get_template_part( 'email-login-form' );
 			} else {
-				echo Give_Notices::print_frontend_notice( $args['error'], false, 'error' );
+				echo wp_kses_post( Give_Notices::print_frontend_notice( $args['error'], false, 'error' ) );
 			}
 
 			return ob_get_clean();
@@ -2418,10 +2425,12 @@ function give_display_donation_receipt( $args ) {
 				 */
 				$donor_mismatch_text = apply_filters( 'give_receipt_donor_mismatch_notice_text', __( 'You are trying to access invalid donation receipt. Please try again.', 'give' ) );
 
-				echo Give_Notices::print_frontend_notice(
-					$donor_mismatch_text,
-					false,
-					'error'
+				echo wp_kses_post(
+					Give_Notices::print_frontend_notice(
+						$donor_mismatch_text,
+						false,
+						'error'
+					)
 				);
 
 			} elseif ( $is_email_access ) {

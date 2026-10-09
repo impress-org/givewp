@@ -1,4 +1,7 @@
 <?php
+/**
+ * @since TBD Escape output, replace short echo tags with escaped echo, and do not pass a variable to the translation function.
+ */
 
 use Give\Helpers\Form\Template;
 use Give\Receipt\DonationReceipt;
@@ -7,6 +10,10 @@ use Give\Receipt\Section;
 use Give\Session\SessionDonation\DonationAccessor;
 use Give\Views\IframeContentView;
 use Give_Payment as Payment;
+
+if (!defined('ABSPATH')) {
+    exit;
+}
 
 $donationId = (new DonationAccessor())->getDonationId();
 $template = Give()->templates->getTemplate();
@@ -29,6 +36,8 @@ $option = static function ($name) {
 $hasDonationFailed = static function () use ($donation) {
     return $donation->post_status === 'failed';
 };
+
+$sharingInstructions = $option('sharing_instructions');
 
 $donorDashboardUrl = get_permalink(give_get_option('donor_dashboard_page'));
 
@@ -54,15 +63,15 @@ ob_start();
             <div class="give-form-header-top-wrap">
                 <aside class="give-form-secure-badge">
                     <svg class="give-form-secure-icon">
-                        <use href="<?= $data['badgeIcon'] ?>"/>
+                        <use href="<?php echo esc_attr($data['badgeIcon']); ?>"/>
                     </svg>
-                    <?= $data['badgeText'] ?>!
+                    <?php echo esc_html($data['badgeText']); ?>!
                 </aside>
                 <h1 class="give-receipt-title">
-                    <?= $data['title'] ?>
+                    <?php echo wp_kses_post($data['title']); ?>
                 </h1>
                 <p class="give-form-description">
-                    <?= $data['description'] ?>
+                    <?php echo wp_kses_post($data['description']); ?>
                 </p>
             </div>
         </div>
@@ -70,15 +79,15 @@ ob_start();
         <?php if ('enabled' === $option('social_sharing') && ! $hasDonationFailed()) : ?>
             <div class="social-sharing">
                 <p class="instruction">
-                    <?= esc_html__($option('sharing_instructions'),'give' ); ?>
+                    <?php echo esc_html($sharingInstructions === 'Help spread the word by sharing your support with your friends and followers!' ? __('Help spread the word by sharing your support with your friends and followers!', 'give') : $sharingInstructions); ?>
                 </p>
                 <div class="btn-row">
                     <button class="give-btn social-btn facebook-btn" onclick="GiveClassicTemplate.share(this);">
-                        <?= esc_html__('Share on Facebook', 'give'); ?>
+                        <?php echo esc_html__('Share on Facebook', 'give'); ?>
                         <i class="fab fa-facebook"></i>
                     </button>
                     <button class="give-btn social-btn twitter-btn" onclick="GiveClassicTemplate.share(this);">
-                        <?= esc_html__('Share on Twitter', 'give'); ?>
+                        <?php echo esc_html__('Share on Twitter', 'give'); ?>
                         <i class="fab fa-twitter"></i>
                     </button>
                 </div>
@@ -98,7 +107,7 @@ ob_start();
                 <div class="details">
                     <?php if ($section->label) : ?>
                         <h2 class="headline">
-                            <?= $section->label; ?>
+                            <?php echo esc_html($section->label); ?>
                         </h2>
                     <?php endif; ?>
                     <dl class="details-table">
@@ -116,11 +125,11 @@ ob_start();
                             }
                             ?>
 
-                            <div class="details-row details-row--<?= $lineItem->id ?>">
-                                <?= $lineItem->icon ?>
-                                <dt class="detail"><?= $lineItem->label ?></dt>
+                            <div class="details-row details-row--<?php echo esc_attr($lineItem->id); ?>">
+                                <?php echo $lineItem->icon; /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $lineItem->icon is developer-authored markup set via the public Section::addLineItem() API (PHP code, never request input); wp_kses_post() would strip a custom SVG icon. */ ?>
+                                <dt class="detail"><?php echo esc_html($lineItem->label); ?></dt>
                                 <dd class="value"
-                                    data-value="<?= esc_attr($lineItem->value) ?>"><?= $lineItem->value ?></dd>
+                                    data-value="<?php echo esc_attr($lineItem->value); ?>"><?php echo wp_kses_post($lineItem->value); ?></dd>
                             </div>
                         <?php
                         endforeach; ?>
@@ -133,13 +142,13 @@ ob_start();
         </div>
 
         <div class="dashboard-link-container">
-            <a class="dashboard-link" href="<?= esc_url($donorDashboardUrl); ?>" target="_parent">
-                <?= esc_html__('Go to my Donor Dashboard', 'give'); ?><i class="fas fa-long-arrow-alt-right"></i>
+            <a class="dashboard-link" href="<?php echo esc_url($donorDashboardUrl); ?>" target="_parent">
+                <?php echo esc_html__('Go to my Donor Dashboard', 'give'); ?><i class="fas fa-long-arrow-alt-right"></i>
             </a>
             <?php
             if (isset($section['receiptLink'])) : ?>
                 <div class="give-btn download-btn">
-                    <?= $section['receiptLink']->value; ?>
+                    <?php echo wp_kses_post($section['receiptLink']->value); ?>
                 </div>
             <?php
             endif; ?>
@@ -149,7 +158,5 @@ ob_start();
 <?php
 
 $pageId = give_get_option('success_page');
-echo (new IframeContentView())
-    ->setTitle(esc_html__('Donation Receipt', 'give'))->setPostId($pageId)
-    ->setBody(ob_get_clean())
-    ->renderBody();
+$iframeContentView = (new IframeContentView())->setTitle(esc_html__('Donation Receipt', 'give'))->setPostId($pageId)->setBody(ob_get_clean());
+echo $iframeContentView->renderBody(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renderBody() returns the receipt markup captured above by ob_get_clean(), already escaped piece by piece; wp_kses_post() would strip the inline <svg>/<use> icons.

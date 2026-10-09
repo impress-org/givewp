@@ -335,6 +335,7 @@ add_filter( 'enter_title_here', 'give_change_default_title' );
  * Registers Custom Post Statuses which are used by the Payments
  *
  * @return void
+ * @since TBD Add translators comments.
  * @since 1.0
  */
 function give_register_post_type_statuses() {
@@ -347,6 +348,7 @@ function give_register_post_type_statuses() {
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
+			/* translators: %s: Number of donations */
 			'label_count'               => _n_noop( 'Refunded <span class="count">(%s)</span>', 'Refunded <span class="count">(%s)</span>', 'give' ),
 		]
 	);
@@ -358,6 +360,7 @@ function give_register_post_type_statuses() {
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
+			/* translators: %s: Number of donations */
 			'label_count'               => _n_noop( 'Failed <span class="count">(%s)</span>', 'Failed <span class="count">(%s)</span>', 'give' ),
 		]
 	);
@@ -369,6 +372,7 @@ function give_register_post_type_statuses() {
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
+			/* translators: %s: Number of donations */
 			'label_count'               => _n_noop( 'Revoked <span class="count">(%s)</span>', 'Revoked <span class="count">(%s)</span>', 'give' ),
 		]
 	);
@@ -380,6 +384,7 @@ function give_register_post_type_statuses() {
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
+			/* translators: %s: Number of donations */
 			'label_count'               => _n_noop( 'Cancelled <span class="count">(%s)</span>', 'Cancelled <span class="count">(%s)</span>', 'give' ),
 		]
 	);
@@ -391,6 +396,7 @@ function give_register_post_type_statuses() {
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
+			/* translators: %s: Number of donations */
 			'label_count'               => _n_noop( 'Abandoned <span class="count">(%s)</span>', 'Abandoned <span class="count">(%s)</span>', 'give' ),
 		]
 	);
@@ -402,6 +408,7 @@ function give_register_post_type_statuses() {
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
+			/* translators: %s: Number of donations */
 			'label_count'               => _n_noop( 'Processing <span class="count">(%s)</span>', 'Processing <span class="count">(%s)</span>', 'give' ),
 		]
 	);
@@ -414,6 +421,7 @@ function give_register_post_type_statuses() {
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
+			/* translators: %s: Number of donations */
 			'label_count'               => _n_noop( 'Preapproval <span class="count">(%s)</span>', 'Preapproval <span class="count">(%s)</span>', 'give' ),
 		]
 	);

@@ -2,6 +2,10 @@
 
 use Give\Framework\Permissions\Facades\UserPermissions;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Class Give_Updates
  *
@@ -588,6 +592,7 @@ class Give_Updates {
 	/**
 	 * Show update related notices
 	 *
+     * @since TBD Escape translated output.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
@@ -621,17 +626,17 @@ class Give_Updates {
 
 			$upgrade_error = get_option( 'give_upgrade_error' );
 			if ( ! $upgrade_error ) : ?>
-				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
-				&nbsp;&#8211;&nbsp;<?php _e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a backup before proceeding.', 'give' ); ?>
+				<strong><?php esc_html_e( 'Database Update', 'give' ); ?></strong>
+				&nbsp;&#8211;&nbsp;<?php esc_html_e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a backup before proceeding.', 'give' ); ?>
 				<br>
 				<br>
 				<a href="<?php echo esc_url( add_query_arg( [ 'give-restart-db-upgrades' => 1 ], admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ) ); ?>" class="button button-primary give-restart-updater-btn">
-					<?php _e( 'Restart the updater', 'give' ); ?>
+					<?php esc_html_e( 'Restart the updater', 'give' ); ?>
 				</a>
 			<?php else : ?>
-				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
-				&nbsp;&#8211;&nbsp;<?php _e( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ); ?>
-				<a href="<?php echo esc_url( 'http://docs.givewp.com/troubleshooting-db-updates' ); ?>" target="_blank"><?php _e( 'Read More', 'give' ); ?> &raquo;</a>
+				<strong><?php esc_html_e( 'Database Update', 'give' ); ?></strong>
+				&nbsp;&#8211;&nbsp;<?php esc_html_e( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ); ?>
+				<a href="<?php echo esc_url( 'http://docs.givewp.com/troubleshooting-db-updates' ); ?>" target="_blank"><?php esc_html_e( 'Read More', 'give' ); ?> &raquo;</a>
 				<?php
 			endif;
 			$desc_html = ob_get_clean();
@@ -671,12 +676,12 @@ class Give_Updates {
 			ob_start();
 			?>
 			<p>
-				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
-				&nbsp;&#8211;&nbsp;<?php _e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a complete backup before proceeding.', 'give' ); ?>
+				<strong><?php esc_html_e( 'Database Update', 'give' ); ?></strong>
+				&nbsp;&#8211;&nbsp;<?php esc_html_e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a complete backup before proceeding.', 'give' ); ?>
 			</p>
 			<p class="submit">
 				<a href="<?php echo esc_url( add_query_arg( [ 'give-run-db-update' => 1 ], admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ) ); ?>" class="button button-primary give-run-update-now">
-					<?php _e( 'Run the updater', 'give' ); ?>
+					<?php esc_html_e( 'Run the updater', 'give' ); ?>
 				</a>
 			</p>
 			<?php

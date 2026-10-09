@@ -1,7 +1,13 @@
 <?php
 /**
  * This template is used to display the progress of [give_totals]
+ *
+ * @since TBD Escape output.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // Bail out if total goal is empty.
 if ( empty( $total_goal ) ) {
@@ -29,11 +35,11 @@ $progress = apply_filters( 'give_goal_totals_funded_percentage_output', $progres
 <div class="give-goal-progress">
 	<div class="raised">
 		<?php
-		echo sprintf(
+		echo wp_kses_post( sprintf(
 			/* translators: %s: percentage of the amount raised compared to the goal target */
 			__( '<span class="give-percentage">%s%%</span> funded', 'give' ),
-			round( $progress )
-		);
+			esc_html( round( $progress ) )
+		) );
 		?>
 	</div>
 
@@ -42,7 +48,7 @@ $progress = apply_filters( 'give_goal_totals_funded_percentage_output', $progres
 			<span style="width: <?php echo esc_attr( $progress ); ?>%;
 											<?php
 											if ( ! empty( $color ) ) {
-												echo 'background-color:' . $color;
+												echo 'background-color:' . esc_attr( $color );
 											}
 											?>
 			"></span>

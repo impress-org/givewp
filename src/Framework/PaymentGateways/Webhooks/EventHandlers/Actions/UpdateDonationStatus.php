@@ -15,6 +15,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class UpdateDonationStatus
 {
     /**
+     * @since TBD Number the placeholders and add translators comments.
      * @since 3.6.0
      *
      * @throws Exception
@@ -33,7 +34,8 @@ class UpdateDonationStatus
 
         DonationNote::create([
             'donationId' => $donation->id,
-            'content' => $message . ' ' . sprintf(__('%s transaction ID: %s', 'give'),
+            /* translators: 1: Payment gateway name, 2: Transaction ID from the gateway */
+            'content' => $message . ' ' . sprintf(__('%1$s transaction ID: %2$s', 'give'),
                     $donation->gateway()->getName(),
                     $donation->gatewayTransactionId
                 ),

@@ -4,7 +4,13 @@
  *
  * This template is used to display an email form which will when submitted send an update donation receipt and also
  * refresh the users session
+ *
+ * @since TBD Escape output. Add translators comments.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 global $give_access_form_outputted;
 
@@ -57,7 +63,9 @@ if ( isset( $_POST['email-access-sent'] ) ) {
 	$message = (string) apply_filters(
 		'give_email_access_requests_exceed_notice',
 		sprintf(
+			/* translators: %s: Wait time, for example "5 minutes" */
 			__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
+			/* translators: %s: Number of minutes */
 			sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
 		),
 		$value
@@ -106,7 +114,7 @@ if ( true === $is_form_required ) {
 			<label for="give-email"><?php esc_attr_e( 'Donation Email:', 'give' ); ?></label>
 			<input id="give-email" type="email" name="give_email" value=""
 					placeholder="<?php esc_attr_e( 'Email Address', 'give' ); ?>"/>
-			<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'give' ); ?>"/>
+			<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( wp_create_nonce( 'give' ) ); ?>"/>
 			<input type="hidden" name="give_action" value="email_access_form_login"/>
 			<input type="hidden" name="give_access_page" value="<?php the_ID(); ?>"/>
 
@@ -126,7 +134,7 @@ if ( true === $is_form_required ) {
 				</script>
 
 				<script src='https://www.google.com/recaptcha/api.js'></script>
-				<div class="g-recaptcha" data-sitekey="<?php echo $recaptcha_key; ?>"></div>
+				<div class="g-recaptcha" data-sitekey="<?php echo esc_attr( $recaptcha_key ); ?>"></div>
 				<input type="hidden" name="give_ip" class="give_ip" value=""/>
 			<?php endif; ?>
 

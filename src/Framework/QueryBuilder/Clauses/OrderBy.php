@@ -30,6 +30,8 @@ class OrderBy
     }
 
     /**
+     * @since TBD Escape exception message.
+     *
      * @param  string  $direction
      *
      * @return string
@@ -43,8 +45,8 @@ class OrderBy
             throw new InvalidArgumentException(
                 sprintf(
                     'Unsupported sort direction %s. Please use one of the (%s)',
-                    $direction,
-                    implode(',', $directions)
+                    esc_html($direction),
+                    esc_html(implode(',', $directions))
                 )
             );
         }

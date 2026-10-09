@@ -21,6 +21,7 @@ class CreditCardSettingField
     /**
      * Render Stripe account manager setting field.
      *
+     * @since TBD Escape output.
      * @since 2.13.0
      *
      * @param array $field
@@ -31,7 +32,7 @@ class CreditCardSettingField
         $classes = ! empty($field['wrapper_class']) ? esc_attr($field['wrapper_class']) : ''
         ?>
         <div class="<?php
-        echo $classes; ?>">
+        echo esc_attr($classes); ?>">
             <?php
             $this->getIntroductionSectionMarkup(); ?>
             <?php
@@ -62,6 +63,7 @@ class CreditCardSettingField
     }
 
     /**
+     * @since TBD Escape output.
      * @since 2.13.0
      */
     private function getRadioButtons($field, $value)
@@ -97,7 +99,7 @@ class CreditCardSettingField
 						<span class="stripe-cc-fields-example-text"><?php
                             esc_html_e('Example', 'give'); ?>:</span>
 						<img src="<?php
-                        echo GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/stripe-single-cc-field.png'; ?>"
+                        echo esc_url( GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/stripe-single-cc-field.png' ); ?>"
                              width="340px" />
 					</span>
 
@@ -134,7 +136,7 @@ class CreditCardSettingField
 						<span class="stripe-cc-fields-example-text"><?php
                             esc_html_e('Example', 'give'); ?>:</span>
 						<img src="<?php
-                        echo GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/stripe-multiple-cc-fields.png'; ?>"
+                        echo esc_url( GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/stripe-multiple-cc-fields.png' ); ?>"
                              width="340px" />
 					</span>
 

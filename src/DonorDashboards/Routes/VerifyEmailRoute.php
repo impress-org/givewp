@@ -48,6 +48,7 @@ class VerifyEmailRoute implements RestRoute
     /**
      * Handles login request
      *
+     * @since TBD Add translators comments.
      * @since 2.10.0
      *
      * @return WP_REST_Response
@@ -120,6 +121,7 @@ class VerifyEmailRoute implements RestRoute
             'give_email_access_requests_exceed_notice',
             sprintf(
                 esc_html__('Email sent. If not received, make sure it is a valid donor email.', 'give'),
+                /* translators: %s: Number of minutes */
                 sprintf(_n('%s minute', '%s minutes', $value, 'give'), $value)
             ),
             $value

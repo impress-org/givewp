@@ -1,6 +1,12 @@
+<?php if (!defined('ABSPATH')) { exit; } ?>
+<?php
+/**
+ * @since TBD Escape output, including translated strings. Number the placeholders and move the translators comment.
+ */
+?>
 <style>
     .give-donation-summary-table-wrapper {
-        --primary-color: <?php echo $this->getPrimaryColor(); ?>;
+        --primary-color: <?php echo esc_attr($this->getPrimaryColor()); ?>;
     }
 </style>
 <div class="give-donation-summary-section">
@@ -8,7 +14,7 @@
     <?php
     if ($heading = $this->getSummaryHeading()): ?>
         <div class="heading"><?php
-            echo $heading; ?></div>
+            echo esc_html($heading); ?></div>
     <?php
     endif; ?>
 
@@ -18,13 +24,13 @@
             <thead>
             <tr>
                 <th><?php
-                    _e('Donation Summary', 'give'); ?></th>
+                    esc_html_e('Donation Summary', 'give'); ?></th>
                 <th>
                     <?php
                     if ($this->isMultiStep()): ?>
                         <button type="button" class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">
                             <?php
-                            _e('Edit Donation', 'give'); ?>
+                            esc_html_e('Edit Donation', 'give'); ?>
                             <?php
                             include plugin_dir_path(__DIR__) . 'images/pencil.svg'; ?>
                         </button>
@@ -40,7 +46,7 @@
             <tr>
                 <td>
                     <div><?php
-                        _e('Payment Amount', 'give'); ?></div>
+                        esc_html_e('Payment Amount', 'give'); ?></div>
                 </td>
                 <td data-tag="amount"></td>
             </tr>
@@ -50,18 +56,18 @@
             <tr>
                 <td>
                     <div><?php
-                        _e('Giving Frequency', 'give'); ?></div>
+                        esc_html_e('Giving Frequency', 'give'); ?></div>
                     <?php
                     if ($this->isRecurringEnabled()): ?>
                         <span class="give-donation-summary-help-text js-give-donation-summary-frequency-help-text">
                             <img src="<?php
-                            echo GIVE_PLUGIN_URL . 'src/DonationSummary/resources/images/info.svg'; ?>" alt="">
+                            echo esc_url(GIVE_PLUGIN_URL . 'src/DonationSummary/resources/images/info.svg'); ?>" alt="">
                             <span>
                             <?php
                             $isMultiStep = $this->isMultiStep();
-                            /* translators: 1: <button> open tag when multi-step 2: close tag when multi-step. */
                             echo sprintf(
-                                __('Consider making this donation %srecurring%s', 'give'),
+                                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the button tags are code-controlled, not user input; wp_kses_post() would strip the onclick handler needed for navigation.
+                                /* translators: 1: Opening button tag, 2: Closing button tag */ __('Consider making this donation %1$srecurring%2$s', 'give'),
                                 $isMultiStep ? '<button type="button" class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">' : '',
                                 $isMultiStep ? '</button>' : ''
                             );
@@ -74,7 +80,7 @@
                 <td>
                     <span data-tag="recurring"></span>
                     <span data-tag="frequency"><?php
-                        _e('One time', 'give'); ?></span>
+                        esc_html_e('One time', 'give'); ?></span>
                 </td>
             </tr>
 
@@ -85,12 +91,12 @@
                 <tr class="js-give-donation-summary-fees">
                     <td>
                         <div><?php
-                            echo __('Cover Donation Fees', 'give'); ?></div>
+                            echo esc_html__('Cover Donation Fees', 'give'); ?></div>
                         <span class="give-donation-summary-help-text">
                                 <img src="<?php
-                                echo GIVE_PLUGIN_URL . 'src/DonationSummary/resources/images/info.svg'; ?>" alt="">
+                                echo esc_url(GIVE_PLUGIN_URL . 'src/DonationSummary/resources/images/info.svg'); ?>" alt="">
                                 <?php
-                                _e('Ensures 100% of your donation reaches our cause', 'give'); ?>
+                                esc_html_e('Ensures 100% of your donation reaches our cause', 'give'); ?>
                             </span>
                     </td>
                     <td data-tag="fees">{fees}</td>
@@ -106,7 +112,7 @@
             <!-- TOTAL DONATION AMOUNT (INCLUDING FEES) -->
             <tr>
                 <th><?php
-                    _e('Donation Total', 'give'); ?></th>
+                    esc_html_e('Donation Total', 'give'); ?></th>
                 <th data-tag="total"></th>
             </tr>
 

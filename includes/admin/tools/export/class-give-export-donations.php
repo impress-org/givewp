@@ -124,6 +124,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 		/**
 		 * Print the HTML for core setting exporter.
 		 *
+		 * @since TBD Escape output, including translated strings.
 		 * @since 2.1
 		 */
 		public function html() {
@@ -133,8 +134,8 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 					<tbody>
 					<tr class="top">
 						<td colspan="2">
-							<h2 id="give-export-title"><?php _e( 'Export Donation History and Custom Fields to CSV', 'give' ); ?></h2>
-							<p class="give-field-description"><?php _e( 'Download an export of donors for specific donation forms with the option to include custom fields.', 'give' ); ?></p>
+							<h2 id="give-export-title"><?php esc_html_e( 'Export Donation History and Custom Fields to CSV', 'give' ); ?></h2>
+							<p class="give-field-description"><?php esc_html_e( 'Download an export of donors for specific donation forms with the option to include custom fields.', 'give' ); ?></p>
 						</td>
 					</tr>
 
@@ -145,11 +146,12 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<tr>
 							<td scope="row" class="row-title">
 								<label
-									for="give_forms_categories"><?php _e( 'Filter by Categories:', 'give' ); ?></label>
+									for="give_forms_categories"><?php esc_html_e( 'Filter by Categories:', 'give' ); ?></label>
 							</td>
 							<td class="give-field-wrap">
 								<div class="give-clearfix">
 									<?php
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- category_dropdown() renders a <select> control; wp_kses_post() would strip it, and its values are used internally as attribute data, not printed raw.
 									echo Give()->html->category_dropdown(
 										'give_forms_categories[]',
 										0,
@@ -160,7 +162,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 											'multiple'    => true,
 											'selected'    => [],
 											'show_option_all' => false,
-											'placeholder' => __( 'Choose one or more from categories', 'give' ),
+											'placeholder' => esc_attr__( 'Choose one or more from categories', 'give' ),
 											'data'        => [ 'search-type' => 'categories' ],
 										]
 									);
@@ -178,11 +180,12 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<tr>
 							<td scope="row" class="row-title">
 								<label
-									for="give_forms_tags"><?php _e( 'Filter by Tags:', 'give' ); ?></label>
+									for="give_forms_tags"><?php esc_html_e( 'Filter by Tags:', 'give' ); ?></label>
 							</td>
 							<td class="give-field-wrap">
 								<div class="give-clearfix">
 									<?php
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- tags_dropdown() renders a <select> control; wp_kses_post() would strip it, and its values are used internally as attribute data, not printed raw.
 									echo Give()->html->tags_dropdown(
 										'give_forms_tags[]',
 										0,
@@ -193,7 +196,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 											'multiple'    => true,
 											'selected'    => [],
 											'show_option_all' => false,
-											'placeholder' => __( 'Choose one or more from tags', 'give' ),
+											'placeholder' => esc_attr__( 'Choose one or more from tags', 'give' ),
 											'data'        => [ 'search-type' => 'tags' ],
 										]
 									);
@@ -209,7 +212,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 					<tr class="give-export-donation-form">
 						<td scope="row" class="row-title">
 							<label
-								for="give_payment_form_select"><?php _e( 'Filter by Donation Form:', 'give' ); ?></label>
+								for="give_payment_form_select"><?php esc_html_e( 'Filter by Donation Form:', 'give' ); ?></label>
 						</td>
 						<td class="give-field-wrap">
 							<div class="give-clearfix">
@@ -222,6 +225,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 									'placeholder' => __( 'All Forms', 'give' ),
 									'data'        => [ 'no-form' => __( 'No donation forms found', 'give' ) ],
 								];
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- forms_dropdown() renders a <select> control; wp_kses_post() would strip it.
 								echo Give()->html->forms_dropdown( $args );
 								?>
 
@@ -232,7 +236,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 
 					<tr>
 						<td scope="row" class="row-title">
-							<label for="give-payment-export-start"><?php _e( 'Filter by Date:', 'give' ); ?></label>
+							<label for="give-payment-export-start"><?php esc_html_e( 'Filter by Date:', 'give' ); ?></label>
 						</td>
 						<td class="give-field-wrap">
 							<div class="give-clearfix">
@@ -243,6 +247,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 									'placeholder'  => __( 'Start Date', 'give' ),
 									'autocomplete' => 'off',
 								];
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- date_field() renders an <input> control; wp_kses_post() would strip it.
 								echo Give()->html->date_field( $args );
 								?>
 								<?php
@@ -252,6 +257,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 									'placeholder'  => __( 'End Date', 'give' ),
 									'autocomplete' => 'off',
 								];
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- date_field() renders an <input> control; wp_kses_post() would strip it.
 								echo Give()->html->date_field( $args );
 								?>
 							</div>
@@ -261,16 +267,16 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 					<tr>
 						<td scope="row" class="row-title">
 							<label
-								for="give-export-donations-status"><?php _e( 'Filter by Status:', 'give' ); ?></label>
+								for="give-export-donations-status"><?php esc_html_e( 'Filter by Status:', 'give' ); ?></label>
 						</td>
 						<td>
 							<div class="give-clearfix">
 								<select name="status" id="give-export-donations-status">
-									<option value="any"><?php _e( 'All Statuses', 'give' ); ?></option>
+									<option value="any"><?php esc_html_e( 'All Statuses', 'give' ); ?></option>
 									<?php
 									$statuses = give_get_payment_statuses();
 									foreach ( $statuses as $status => $label ) {
-										echo '<option value="' . $status . '">' . $label . '</option>';
+										echo '<option value="' . esc_attr( $status ) . '">' . esc_html( $label ) . '</option>';
 									}
 									?>
 								</select>
@@ -319,7 +325,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 			?>
 			<div id="poststuff" class="give-clearfix">
 				<div class="postbox">
-					<h1 class="give-export-h1" align="center"><?php _e( 'Export Donations', 'give' ); ?></h1>
+					<h1 class="give-export-h1" align="center"><?php esc_html_e( 'Export Donations', 'give' ); ?></h1>
 					<div class="inside give-tools-setting-page-export give-export_donations">
 						<?php
 						/**

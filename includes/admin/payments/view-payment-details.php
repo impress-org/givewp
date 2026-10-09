@@ -6,6 +6,7 @@
  * @subpackage  Admin/Payments
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
+ * @since TBD Escape output, including translated strings, and use gmdate() instead of date(), and add translators comments.
  * @since       1.0
  */
 
@@ -20,8 +21,8 @@ if (!defined('ABSPATH')) {
 
 if (!current_user_can('view_give_payments')) {
 	wp_die(
-		__('Sorry, you are not allowed to access this page.', 'give'),
-		__('Error', 'give'),
+		esc_html__('Sorry, you are not allowed to access this page.', 'give'),
+		esc_html__('Error', 'give'),
 		array(
 			'response' => 403,
 		)
@@ -36,7 +37,7 @@ if (!current_user_can('view_give_payments')) {
  * @return void
  */
 if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
-	wp_die( __( 'Donation ID not supplied. Please try again.', 'give' ), __( 'Error', 'give' ), array( 'response' => 400 ) );
+	wp_die( esc_html__( 'Donation ID not supplied. Please try again.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 }
 
 // Setup the variables
@@ -46,7 +47,7 @@ $payment    = new Give_Payment( $payment_id );
 // Sanity check... fail if donation ID is invalid
 $payment_exists = $payment->ID;
 if ( empty( $payment_exists ) ) {
-	wp_die( __( 'The specified ID does not belong to a donation. Please try again.', 'give' ), __( 'Error', 'give' ), array( 'response' => 400 ) );
+	wp_die( esc_html__( 'The specified ID does not belong to a donation. Please try again.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 }
 
 $number       = $payment->number;
@@ -77,13 +78,13 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 		printf(
 			/* translators: %s: donation number */
 			esc_html__( 'Donation %s', 'give' ),
-			$number
+			esc_html( $number )
 		);
 		if ( $payment_mode == 'test' ) {
-			echo Give()->tooltips->render_span(
+			echo Give()->tooltips->render_span( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- render_span() escapes every attribute value (including aria-label, built from the label below) and the tag name; tag_content is esc_html__() below.
 				array(
-					'label'       => __( 'This donation was made in test mode.', 'give' ),
-					'tag_content' => __( 'Test Donation', 'give' ),
+					'label'       => __( 'This donation was made in test mode.', 'give' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped into aria-label by render_span()/give_get_attribute_str().
+					'tag_content' => esc_html__( 'Test Donation', 'give' ),
 					'position'    => 'right',
 					'attributes'  => array(
 						'id'    => 'test-payment-label',
@@ -139,13 +140,13 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 							<div id="give-order-update" class="postbox give-order-data">
 
 								<div class="give-order-top">
-									<h3 class="hndle"><?php _e( 'Update Donation', 'give' ); ?></h3>
+									<h3 class="hndle"><?php esc_html_e( 'Update Donation', 'give' ); ?></h3>
 
 									<?php
 									if ( current_user_can( 'view_give_payments' ) ) {
 										echo sprintf(
 											'<span class="delete-donation" id="delete-donation-%d"><a class="delete-single-donation delete-donation-button dashicons dashicons-trash" href="%s" aria-label="%s"></a></span>',
-											$payment_id,
+											(int) $payment_id,
                                             esc_url(
                                                 wp_nonce_url(
                                                     add_query_arg(
@@ -158,7 +159,8 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
                                                     'give_donation_nonce'
                                                 )
                                             ),
-											sprintf( __( 'Delete Donation %s', 'give' ), $payment_id )
+											/* translators: %s: Donation ID */
+											sprintf( esc_attr__( 'Delete Donation %s', 'give' ), (int) $payment_id )
 										);
 									}
 									?>
@@ -180,29 +182,29 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 										<div class="give-admin-box-inside">
 											<p>
-												<label for="give-payment-status" class="strong"><?php _e( 'Status:', 'give' ); ?></label>&nbsp;
+												<label for="give-payment-status" class="strong"><?php esc_html_e( 'Status:', 'give' ); ?></label>&nbsp;
 												<select id="give-payment-status" name="give-payment-status" class="medium-text">
 													<?php foreach ( give_get_payment_statuses() as $key => $status ) : ?>
 														<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $payment->status, $key, true ); ?>><?php echo esc_html( $status ); ?></option>
 													<?php endforeach; ?>
 												</select>
-												<span class="give-donation-status status-<?php echo sanitize_title( $payment->status ); ?>"><span class="give-donation-status-icon"></span></span>
+												<span class="give-donation-status status-<?php echo esc_attr( sanitize_title( $payment->status ) ); ?>"><span class="give-donation-status-icon"></span></span>
 											</p>
 										</div>
 
 										<div class="give-admin-box-inside">
 											<?php $date_format = give_date_format(); ?>
 											<p>
-												<label for="give-payment-date" class="strong"><?php _e( 'Date:', 'give' ); ?></label>&nbsp;
-												<input type="text" id="give-payment-date" name="give-payment-date" data-standard-date="<?php echo esc_attr( date( 'Y-m-d', $payment_date ) ); ?>" value="<?php echo esc_attr( date_i18n( $date_format, $payment_date ) ); ?>" autocomplete="off" class="medium-text give_datepicker" placeholder="<?php _e( 'Date', 'give' ); ?>"/>
+												<label for="give-payment-date" class="strong"><?php esc_html_e( 'Date:', 'give' ); ?></label>&nbsp;
+												<input type="text" id="give-payment-date" name="give-payment-date" data-standard-date="<?php echo esc_attr( gmdate( 'Y-m-d', $payment_date ) ); ?>" value="<?php echo esc_attr( date_i18n( $date_format, $payment_date ) ); ?>" autocomplete="off" class="medium-text give_datepicker" placeholder="<?php esc_attr_e( 'Date', 'give' ); ?>"/>
 											</p>
 										</div>
 
 										<div class="give-admin-box-inside">
 											<p>
-												<label for="give-payment-time-hour" class="strong"><?php _e( 'Time:', 'give' ); ?></label>&nbsp;
+												<label for="give-payment-time-hour" class="strong"><?php esc_html_e( 'Time:', 'give' ); ?></label>&nbsp;
 												<input type="number" step="1" max="24" id="give-payment-time-hour" name="give-payment-time-hour" value="<?php echo esc_attr( date_i18n( 'H', $payment_date ) ); ?>" class="small-text give-payment-time-hour"/>&nbsp;:&nbsp;
-												<input type="number" step="1" max="59" id="give-payment-time-min" name="give-payment-time-min" value="<?php echo esc_attr( date( 'i', $payment_date ) ); ?>" class="small-text give-payment-time-min"/>
+												<input type="number" step="1" max="59" id="give-payment-time-min" name="give-payment-time-min" value="<?php echo esc_attr( gmdate( 'i', $payment_date ) ); ?>" class="small-text give-payment-time-min"/>
 											</p>
 										</div>
 
@@ -221,8 +223,8 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 										<div class="give-order-payment give-admin-box-inside">
 											<p>
-												<label for="give-payment-total" class="strong"><?php _e( 'Total Donation:', 'give' ); ?></label>&nbsp;
-												<?php echo give_currency_symbol( $payment->currency ); ?>
+												<label for="give-payment-total" class="strong"><?php esc_html_e( 'Total Donation:', 'give' ); ?></label>&nbsp;
+												<?php echo esc_html( give_currency_symbol( $payment->currency ) ); ?>
 												&nbsp;<input id="give-payment-total" name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( array( 'donation_id' => $payment_id ) ) ); ?>"/>
 											</p>
 										</div>
@@ -298,7 +300,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 							<div id="give-order-details" class="postbox give-order-data">
 
-								<h3 class="hndle"><?php _e( 'Donation Meta', 'give' ); ?></h3>
+								<h3 class="hndle"><?php esc_html_e( 'Donation Meta', 'give' ); ?></h3>
 
 								<div class="inside">
 									<div class="give-admin-box">
@@ -318,22 +320,22 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 											?>
 											<div class="give-order-gateway give-admin-box-inside">
 												<p>
-													<strong><?php _e( 'Gateway:', 'give' ); ?></strong>&nbsp;
-													<?php echo give_get_gateway_admin_label( $gateway ); ?>
+													<strong><?php esc_html_e( 'Gateway:', 'give' ); ?></strong>&nbsp;
+													<?php echo esc_html( give_get_gateway_admin_label( $gateway ) ); ?>
 												</p>
 											</div>
 										<?php endif; ?>
 
 										<div class="give-order-payment-key give-admin-box-inside">
 											<p>
-												<strong><?php _e( 'Key:', 'give' ); ?></strong>&nbsp;
-												<?php echo give_get_payment_key( $payment_id ); ?>
+												<strong><?php esc_html_e( 'Key:', 'give' ); ?></strong>&nbsp;
+												<?php echo esc_html( give_get_payment_key( $payment_id ) ); ?>
 											</p>
 										</div>
 
 										<div class="give-order-ip give-admin-box-inside">
 											<p>
-												<strong><?php _e( 'IP:', 'give' ); ?></strong>&nbsp;
+												<strong><?php esc_html_e( 'IP:', 'give' ); ?></strong>&nbsp;
 												<?php echo esc_html( give_get_payment_user_ip( $payment_id ) ); ?>
 											</p>
 										</div>
@@ -346,8 +348,8 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 											?>
 											<div class="give-order-tx-id give-admin-box-inside">
 												<p>
-													<strong><?php _e( 'Transaction ID:', 'give' ); ?> <span class="give-tooltip give-icon give-icon-question"  data-tooltip="<?php echo sprintf( esc_attr__( 'The transaction ID within %s.', 'give' ), $gateway ); ?>"></span></strong>&nbsp;
-													<?php echo apply_filters( "give_payment_details_transaction_id-{$gateway}", $transaction_id, $payment_id ); ?>
+													<strong><?php esc_html_e( 'Transaction ID:', 'give' ); ?> <span class="give-tooltip give-icon give-icon-question"  data-tooltip="<?php echo sprintf( /* translators: %s: Payment gateway name */ esc_attr__( 'The transaction ID within %s.', 'give' ), esc_attr( $gateway ) ); ?>"></span></strong>&nbsp;
+													<?php echo wp_kses_post( apply_filters( "give_payment_details_transaction_id-{$gateway}", $transaction_id, $payment_id ) ); ?>
 												</p>
 											</div>
 										<?php endif; ?>
@@ -365,7 +367,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 										<div class="give-admin-box-inside">
 											<p><?php $purchase_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . absint( give_get_payment_donor_id( $payment_id ) ) ); ?>
-												<a href="<?php echo $purchase_url; ?>"><?php _e( 'View all donations for this donor &raquo;', 'give' ); ?></a>
+												<a href="<?php echo esc_url( $purchase_url ); ?>"><?php esc_html_e( 'View all donations for this donor &raquo;', 'give' ); ?></a>
 											</p>
 										</div>
 
@@ -410,21 +412,21 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 							?>
 
 							<?php $column_count = 'columns-3'; ?>
-							<div id="give-donation-overview" class="postbox <?php echo $column_count; ?>">
-								<h3 class="hndle"><?php _e( 'Donation Information', 'give' ); ?></h3>
+							<div id="give-donation-overview" class="postbox <?php echo esc_attr( $column_count ); ?>">
+								<h3 class="hndle"><?php esc_html_e( 'Donation Information', 'give' ); ?></h3>
 
 								<div class="inside">
 
 									<div class="column-container">
 										<div class="column">
 											<p>
-												<strong><?php _e( 'Donation Form ID:', 'give' ); ?></strong><br>
+												<strong><?php esc_html_e( 'Donation Form ID:', 'give' ); ?></strong><br>
 												<?php
 												if ( $payment->form_id ) :
 													printf(
 														'<a href="%1$s">%2$s</a>',
-														admin_url( 'post.php?action=edit&post=' . $payment->form_id ),
-														$payment->form_id
+														esc_url( admin_url( 'post.php?action=edit&post=' . $payment->form_id ) ),
+														(int) $payment->form_id
 													);
 												endif;
 												?>
@@ -432,9 +434,10 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 											<p>
 												<strong><?php esc_html_e( 'Donation Form Title:', 'give' ); ?></strong><br>
 												<?php
+												// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- forms_dropdown() renders a <select> control; wp_kses_post() would strip it.
 												echo Give()->html->forms_dropdown(
 													array(
-														'selected' => $payment->form_id,
+														'selected' => (int) $payment->form_id,
 														'name' => 'give-payment-form-select',
 														'id'   => 'give-payment-form-select',
 														'chosen' => true,
@@ -448,13 +451,14 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
                                                     esc_html_e('Campaign:', 'give'); ?></strong><br>
                                                 <?php
                                                 $donation = Donation::find($payment->ID);
+                                                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- campaigns_dropdown() renders a <select> control; wp_kses_post() would strip it.
                                                 echo Give()->html->campaigns_dropdown(
                                                     [
-                                                        'selected' => $donation->campaignId,
+                                                        'selected' => (int) $donation->campaignId,
                                                         'name' => 'give-payment-campaign-select',
                                                         'id' => 'give-payment-campaign-select',
                                                         'chosen' => true,
-                                                        'placeholder' => __('Select Campaign', 'give'),
+                                                        'placeholder' => esc_html__('Select Campaign', 'give'),
                                                     ]
                                                 );
                                                 ?>
@@ -462,16 +466,16 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
                                         </div>
 										<div class="column">
 											<p>
-												<strong><?php _e( 'Donation Date:', 'give' ); ?></strong><br>
-												<?php echo date_i18n( give_date_format(), $payment_date ); ?>
+												<strong><?php esc_html_e( 'Donation Date:', 'give' ); ?></strong><br>
+												<?php echo esc_html( date_i18n( give_date_format(), $payment_date ) ); ?>
 											</p>
 											<p>
-												<strong><?php _e( 'Donation Level:', 'give' ); ?></strong><br>
+												<strong><?php esc_html_e( 'Donation Level:', 'give' ); ?></strong><br>
 												<span class="give-donation-level">
 													<?php
 													$var_prices = give_has_variable_prices( $payment->form_id );
 													if ( empty( $var_prices ) ) {
-														_e( 'n/a', 'give' );
+														esc_html_e( 'n/a', 'give' );
 													} else {
 														$prices_atts = array();
 														if ( $variable_prices = give_get_variable_prices( $payment->form_id ) ) {
@@ -499,7 +503,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 										<div class="column">
 											<p>
 												<strong><?php esc_html_e( 'Total Donation:', 'give' ); ?></strong><br>
-												<?php echo give_donation_amount( $payment, true ); ?>
+												<?php echo esc_html( give_donation_amount( $payment, true ) ); ?>
 											</p>
 												<div>
 													<strong><?php esc_html_e( 'Anonymous Donation:', 'give' ); ?></strong>
@@ -511,7 +515,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 																	value="1"
 																	type="radio"
 																	<?php checked( 1, absint( give_get_meta( $payment_id, '_give_anonymous_donation', true ) ) ); ?>
-																><?php _e( 'Yes', 'give' ); ?>
+																><?php esc_html_e( 'Yes', 'give' ); ?>
 															</label>
 														</li>
 														<li>
@@ -521,7 +525,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 																	value="0"
 																	type="radio"
 																	<?php checked( 0, absint( give_get_meta( $payment_id, '_give_anonymous_donation', true ) ) ); ?>
-																><?php _e( 'No', 'give' ); ?>
+																><?php esc_html_e( 'No', 'give' ); ?>
 															</label>
 														</li>
 													</ul>
@@ -595,7 +599,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 							?>
 
 							<div id="give-donor-details" class="postbox">
-								<h3 class="hndle"><?php _e( 'Donor Details', 'give' ); ?></h3>
+								<h3 class="hndle"><?php esc_html_e( 'Donor Details', 'give' ); ?></h3>
 
 								<div class="inside">
 
@@ -618,7 +622,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 											</p>
 											<p>
 												<strong><?php esc_html_e( 'Donor Since:', 'give' ); ?></strong><br>
-												<?php echo date_i18n( give_date_format(), strtotime( $donor->date_created ) ); ?>
+												<?php echo esc_html( date_i18n( give_date_format(), strtotime( $donor->date_created ) ) ); ?>
 											</p>
 										</div>
 										<div class="column">
@@ -685,9 +689,10 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 											<p>
 												<strong><?php esc_html_e( 'Change Donor:', 'give' ); ?></strong><br>
 												<?php
+												// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- donor_dropdown() renders a <select> control; wp_kses_post() would strip it.
 												echo Give()->html->donor_dropdown(
 													array(
-														'selected' => $donor->id,
+														'selected' => (int) $donor->id,
 														'name' => 'donor-id',
 													)
 												);
@@ -699,7 +704,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 													?>
 													<strong><?php esc_html_e( 'Company Name:', 'give' ); ?></strong><br>
 													<?php
-													echo $company_name;
+													echo esc_html( $company_name );
 												}
 												?>
 											</p>
@@ -709,29 +714,29 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 									<div class="column-container new-donor" style="display: none">
 										<div class="column">
 											<p>
-												<label for="give-new-donor-first-name"><?php _e( 'New Donor First Name:', 'give' ); ?></label>
+												<label for="give-new-donor-first-name"><?php esc_html_e( 'New Donor First Name:', 'give' ); ?></label>
 												<input id="give-new-donor-first-name" type="text" name="give-new-donor-first-name" value="" class="medium-text"/>
 											</p>
 										</div>
 										<div class="column">
 											<p>
-												<label for="give-new-donor-last-name"><?php _e( 'New Donor Last Name:', 'give' ); ?></label>
+												<label for="give-new-donor-last-name"><?php esc_html_e( 'New Donor Last Name:', 'give' ); ?></label>
 												<input id="give-new-donor-last-name" type="text" name="give-new-donor-last-name" value="" class="medium-text"/>
 											</p>
 										</div>
 										<div class="column">
 											<p>
-												<label for="give-new-donor-email"><?php _e( 'New Donor Email:', 'give' ); ?></label>
+												<label for="give-new-donor-email"><?php esc_html_e( 'New Donor Email:', 'give' ); ?></label>
 												<input id="give-new-donor-email" type="email" name="give-new-donor-email" value="" class="medium-text"/>
 											</p>
 										</div>
 										<div class="column">
 											<p>
-												<input type="hidden" name="give-current-donor" value="<?php echo $donor->id; ?>"/>
+												<input type="hidden" name="give-current-donor" value="<?php echo (int) $donor->id; ?>"/>
 												<input type="hidden" id="give-new-donor" name="give-new-donor" value="0"/>
-												<a href="#cancel" class="give-payment-new-donor-cancel give-delete"><?php _e( 'Cancel', 'give' ); ?></a>
+												<a href="#cancel" class="give-payment-new-donor-cancel give-delete"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
 												<br>
-												<em><?php _e( 'Click "Save Donation" to create new donor.', 'give' ); ?></em>
+												<em><?php esc_html_e( 'Click "Save Donation" to create new donor.', 'give' ); ?></em>
 											</p>
 										</div>
 									</div>
@@ -775,7 +780,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 							?>
 
 							<div id="give-billing-details" class="postbox">
-								<h3 class="hndle"><?php _e( 'Billing Address', 'give' ); ?></h3>
+								<h3 class="hndle"><?php esc_html_e( 'Billing Address', 'give' ); ?></h3>
 
 								<div class="inside">
 
@@ -795,13 +800,15 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 												<div class="row">
 													<div id="give-order-address-country-wrap">
-														<label class="order-data-address-line"><?php _e( 'Country:', 'give' ); ?></label>
+														<label class="order-data-address-line"><?php esc_html_e( 'Country:', 'give' ); ?></label>
 														<?php
+														// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- select() renders a <select> control; wp_kses_post() would strip it.
 														echo Give()->html->select(
 															array(
+																// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_country_list() returns admin-curated country labels; the select control escapes each option.
 																'options'          => give_get_country_list(),
 																'name'             => 'give-payment-address[0][country]',
-																'selected'         => $address['country'],
+																'selected'         => esc_attr( $address['country'] ),
 																'show_option_all'  => false,
 																'show_option_none' => false,
 																'chosen'           => true,
@@ -816,14 +823,14 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 												<div class="row">
 													<div class="give-wrap-address-line1">
-														<label for="give-payment-address-line1" class="order-data-address"><?php _e( 'Address 1:', 'give' ); ?></label>
+														<label for="give-payment-address-line1" class="order-data-address"><?php esc_html_e( 'Address 1:', 'give' ); ?></label>
 														<input id="give-payment-address-line1" type="text" name="give-payment-address[0][line1]" value="<?php echo esc_attr( $address['line1'] ); ?>" class="medium-text"/>
 													</div>
 												</div>
 
 												<div class="row">
 													<div class="give-wrap-address-line2">
-														<label for="give-payment-address-line2" class="order-data-address-line"><?php _e( 'Address 2:', 'give' ); ?></label>
+														<label for="give-payment-address-line2" class="order-data-address-line"><?php esc_html_e( 'Address 2:', 'give' ); ?></label>
 														<input id="give-payment-address-line2" type="text" name="give-payment-address[0][line2]" value="<?php echo esc_attr( $address['line2'] ); ?>" class="medium-text"/>
 													</div>
 												</div>
@@ -845,11 +852,13 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 															<?php
 															$states = give_get_states( $address['country'] );
 															if ( ! empty( $states ) ) {
+																// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- select() renders a <select> control; wp_kses_post() would strip it.
 																echo Give()->html->select(
 																	array(
+																		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_states() returns admin-curated state labels; the select control escapes each option.
 																		'options'          => $states,
 																		'name'             => 'give-payment-address[0][state]',
-																		'selected'         => $address['state'],
+																		'selected'         => esc_attr( $address['state'] ),
 																		'show_option_all'  => false,
 																		'show_option_none' => false,
 																		'chosen'           => true,
@@ -869,7 +878,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 													<div class="<?php echo( ! empty( $state_exists ) ? 'column-full' : 'column' ); ?> give-column give-column-zip">
 														<div class="give-wrap-address-zip">
-															<label for="give-payment-address-zip" class="order-data-address-line"><?php _e( 'Zip / Postal Code:', 'give' ); ?></label>
+															<label for="give-payment-address-zip" class="order-data-address-line"><?php esc_html_e( 'Zip / Postal Code:', 'give' ); ?></label>
 															<input id="give-payment-address-zip" type="text" name="give-payment-address[0][zip]" value="<?php echo esc_attr( $address['zip'] ); ?>" class="medium-text"/>
 														</div>
 													</div>
@@ -909,7 +918,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 							?>
 
 							<div id="give-payment-notes" class="postbox">
-								<h3 class="hndle"><?php _e( 'Donation Notes', 'give' ); ?></h3>
+								<h3 class="hndle"><?php esc_html_e( 'Donation Notes', 'give' ); ?></h3>
 
 								<div class="inside">
 									<div id="give-payment-notes-inner">
@@ -919,13 +928,14 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 											$no_notes_display = ' style="display:none;"';
 											foreach ( $notes as $note ) :
 
-												echo give_get_payment_note_html( $note, $payment_id );
+												echo wp_kses_post( give_get_payment_note_html( $note, $payment_id ) );
 
 											endforeach;
 										} else {
 											$no_notes_display = '';
 										}
 
+										// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $no_notes_display is a hardcoded ' style="display:none;"' attribute fragment or empty string, never user input; esc_attr() would encode its own quotes.
 										echo '<p class="give-no-payment-notes"' . $no_notes_display . '>' . esc_html__( 'No donation notes.', 'give' ) . '</p>';
 										?>
 									</div>
@@ -933,12 +943,12 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 									<div class="give-clearfix">
 										<p>
-											<label for="donation_note_type" class="screen-reader-text"><?php _e( 'Note type', 'give' ); ?></label>
+											<label for="donation_note_type" class="screen-reader-text"><?php esc_html_e( 'Note type', 'give' ); ?></label>
 											<select name="donation_note_type" id="donation_note_type">
-												<option value=""><?php _e( 'Private note', 'give' ); ?></option>
-												<option value="donor"><?php _e( 'Note to donor', 'give' ); ?></option>
+												<option value=""><?php esc_html_e( 'Private note', 'give' ); ?></option>
+												<option value="donor"><?php esc_html_e( 'Note to donor', 'give' ); ?></option>
 											</select>
-											<button id="give-add-payment-note" class="button button-secondary button-small" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php _e( 'Add Note', 'give' ); ?></button>
+											<button id="give-add-payment-note" class="button button-secondary button-small" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php esc_html_e( 'Add Note', 'give' ); ?></button>
 										</p>
 									</div>
 
@@ -961,7 +971,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 							<?php if ( give_is_donor_comment_field_enabled( $payment->form_id ) ) : ?>
 								<div id="give-payment-donor-comment" class="postbox">
-									<h3 class="hndle"><?php _e( 'Donor Comment', 'give' ); ?></h3>
+									<h3 class="hndle"><?php esc_html_e( 'Donor Comment', 'give' ); ?></h3>
 
 									<div class="inside">
 										<div id="give-payment-donor-comment-inner">
@@ -969,8 +979,8 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 												<?php
 												echo sprintf(
 													'<textarea name="give_comment" id="give_comment" placeholder="%s" class="large-text">%s</textarea>',
-													__( 'Add a comment', 'give' ),
-													$payment->get_meta(DonationMetaKeys::COMMENT) ?? ''
+													esc_attr__( 'Add a comment', 'give' ),
+													esc_textarea( $payment->get_meta(DonationMetaKeys::COMMENT) ?? '' )
 												);
 												?>
 											</p>

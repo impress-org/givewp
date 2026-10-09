@@ -387,6 +387,7 @@ class PayPalOrder
     /**
      * Validate argument given to create PayPal order.
      *
+     * @since TBD Escape exception message.
      * @since 2.9.0
      *
      * @param array $array
@@ -400,7 +401,7 @@ class PayPalOrder
 
         if (array_diff($required, array_keys($array))) {
             throw new InvalidArgumentException(
-                __(
+                esc_html__(
                     'To create a paypal order, please provide formId, donationAmount and payer',
                     'give'
                 )

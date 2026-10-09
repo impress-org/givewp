@@ -210,6 +210,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	/**
 	 * Process a step
 	 *
+	 * @since TBD Add translators comments.
 	 * @since 1.5
 	 * @return bool
 	 */
@@ -229,6 +230,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 			$this->delete_data( 'give_recount_total_' . $this->form_id );
 			$this->delete_data( 'give_temp_recount_form_stats' );
 			$this->done    = true;
+			/* translators: %s: Donation form title */
 			$this->message = sprintf( esc_html__( 'Donation counts and revenue amount statistics successfully recounted for "%s".', 'give' ), get_the_title( $this->form_id ) );
 
 			return false;
@@ -257,6 +259,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	/**
 	 * Given a key, get the information from the Database Directly
 	 *
+	 * @since TBD Remove the quotes around the placeholder.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name
@@ -265,7 +268,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 */
 	private function get_stored_data( $key ) {
 		global $wpdb;
-		$value = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = '%s'", $key ) );
+		$value = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = %s", $key ) );
 
 		if ( empty( $value ) ) {
 			return false;
