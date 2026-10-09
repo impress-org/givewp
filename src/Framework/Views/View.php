@@ -28,10 +28,9 @@ class View
      *
      * @return string|void
      *
-     * @since TBD Escape exception message.
+     * @since TBD Escape exception message and output.
      * @throws InvalidArgumentException if template file not exist
      *
-     * @since TBD Escape output.
      */
     public static function load($view, $templateParams = [], $echo = false)
     {

@@ -4,8 +4,7 @@
  * Uninstall Give
  *
  * @package     Give
- * @since       TBD Delete only the options that start with a GiveWP prefix.
- * @since       TBD Prepare SQL with placeholders and skip DROP TABLE when there are no tables.
+ * @since       TBD Delete only the options that start with a GiveWP prefix, prepare SQL with placeholders, and skip DROP TABLE when there are no tables.
  * @since       1.0
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License

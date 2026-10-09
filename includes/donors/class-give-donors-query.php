@@ -205,8 +205,7 @@ class Give_Donors_Query {
 	/**
 	 * Get sql query from queried array.
 	 *
-	 * @since TBD Allow only known columns in the fields argument.
-	 * @since TBD Remove the placeholder escape hash, so the SQL text is the same on every call.
+	 * @since TBD Allow only known columns in the fields argument, and remove the placeholder escape hash so the SQL text is the same on every call.
 	 * @since  2.0
 	 * @access public
 	 *
