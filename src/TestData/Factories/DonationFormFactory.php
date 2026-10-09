@@ -119,6 +119,7 @@ class DonationFormFactory extends Factory
     /**
      * Donor definition
      *
+     * @since TBD Use gmdate() instead of date().
      * @since 1.0.0
      * @return array
      */
@@ -130,7 +131,7 @@ class DonationFormFactory extends Factory
             'post_title' => $title,
             'post_name' => sanitize_title($title),
             'post_author' => $this->randomAuthor(),
-            'post_date' => date('Y-m-d H:i:s'),
+            'post_date' => gmdate('Y-m-d H:i:s'),
             'donation_goal' => $this->getDonationGoal(),
             'donation_terms' => $this->getTermsAndConditions(),
             'form_template' => $this->getFormTemplate(),

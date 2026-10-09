@@ -1,6 +1,6 @@
 <?php
 /**
- * @since TBD Escape output, including translated strings.
+ * @since TBD Escape output, including translated strings, and replace short echo tags with escaped echo.
  */
 
 global $post;
@@ -54,12 +54,12 @@ echo $activatedTemplate ? ' has-activated-template' : ''; ?>">
             ); ?></p>
 
         <div class="form-template-notice">
-            <img src="<?= esc_url(GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/cap-books.svg'); ?>" alt="" />
+            <img src="<?php echo esc_url(GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/cap-books.svg'); ?>" alt="" />
             <p>
-                <?= esc_html__('Learn the ins and outs of creating the perfect Donation Form with GiveWP', 'give'); ?>
+                <?php echo esc_html__('Learn the ins and outs of creating the perfect Donation Form with GiveWP', 'give'); ?>
             </p>
             <a href="http://docs.givewp.com/form-templates/" target="_blank">
-                <?= esc_html__('Learn More', 'give'); ?>
+                <?php echo esc_html__('Learn More', 'give'); ?>
                 <svg viewbox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
                   <path d="m10.96 9.68 6.897-6.896M18.53 6.148V2.11h-4.037M9.279 2.11H7.597c-4.205 0-5.887 1.683-5.887 5.888v5.046c0 4.205 1.682 5.887 5.887 5.887h5.046c4.205 0 5.887-1.682 5.887-5.887v-1.682" stroke="#fff" stroke-width="1.261" stroke-linecap="round" stroke-linejoin="round" fill="none" />
                 </svg>

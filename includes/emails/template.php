@@ -52,6 +52,7 @@ function give_email_template_tags( $message, $payment_data, $payment_id, $admin_
  *
  * Provides sample content for the preview email functionality within settings > email.
  *
+ * @since TBD Use gmdate() instead of date().
  * @since 1.0
  *
  * @param string $message Email message with template tags.
@@ -79,7 +80,7 @@ function give_email_preview_template_tags( $message ) {
 	$message = str_replace( '{username}', $user->user_login, $message );
 	$message = str_replace( '{user_email}', $user->user_email, $message );
 	$message = str_replace( '{billing_address}', "123 Test Street, Unit 222\nSomewhere Town, CA, 92101", $message );
-	$message = str_replace( '{date}', date( give_date_format(), current_time( 'timestamp' ) ), $message );
+	$message = str_replace( '{date}', gmdate( give_date_format(), current_time( 'timestamp' ) ), $message );
 	$message = str_replace( '{amount}', $price, $message );
 	$message = str_replace( '{price}', $price, $message );
 	$message = str_replace( '{donation}', esc_html__( 'Sample Donation Form Title', 'give' ), $message );

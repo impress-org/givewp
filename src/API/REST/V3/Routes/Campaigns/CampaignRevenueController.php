@@ -64,6 +64,7 @@ class CampaignRevenueController extends WP_REST_Controller
     }
 
     /**
+     * @since TBD Use gmdate() instead of date().
      * @since 4.13.1
      * @throws Exception
      */
@@ -108,7 +109,7 @@ class CampaignRevenueController extends WP_REST_Controller
 
         // Get all dates between the start and end date based on the group by
         $endTimestamp = strtotime($queryEndDate->format('Y-m-d H:i:s') . ' +1 day');
-        $queryEndDatePlusOne = new DateTime(date('Y-m-d H:i:s', $endTimestamp), wp_timezone());
+        $queryEndDatePlusOne = new DateTime(gmdate('Y-m-d H:i:s', $endTimestamp), wp_timezone());
         $dates = $this->getDatesFromRange($queryStartDate, $queryEndDatePlusOne, $groupBy);
 
         // Merge the results with the dates to ensure that all dates are included
@@ -120,6 +121,7 @@ class CampaignRevenueController extends WP_REST_Controller
     }
 
     /**
+     * @since TBD Use gmdate() instead of date().
      * @since 4.13.1
      */
     public function getDatesFromRange(DateTimeInterface $startDate, DateTimeInterface $endDate, string $groupBy): array
@@ -131,7 +133,7 @@ class CampaignRevenueController extends WP_REST_Controller
         $start = new DateTime($startDate->format('Y-m-d H:i:s'), wp_timezone());
         if ($startDateInterval->days < 7) {
             $defaultDays = 7 - $startDateInterval->days;
-            $start = new DateTime(date('Y-m-d H:i:s', strtotime($start->format('Y-m-d H:i:s') . " -$defaultDays days")), wp_timezone());
+            $start = new DateTime(gmdate('Y-m-d H:i:s', strtotime($start->format('Y-m-d H:i:s') . " -$defaultDays days")), wp_timezone());
         }
 
         $differenceInMonths = ($startDateInterval->y * 12) + $startDateInterval->m;
