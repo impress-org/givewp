@@ -60,3 +60,17 @@ teardown() {
     run cat "$REPO_ROOT/readme.txt"
     refute_output --partial "= 9.9.9:"
 }
+
+@test "the changelog strategy finds the first version block, not a readme section above it" {
+    # Its header regexes have to stay on one line. They once matched from a section heading such as
+    # "= Updating =" across lines to the first version header, so the new version landed above
+    # "== Changelog ==" and getLatestVersion returned a run of readme text.
+    run node -e '
+        const strategy = require(process.argv[1]);
+        const readme = "= Updating =\n\nUpdate as usual.\n\n== Changelog ==\n= 1.0.0: May 1st, 2026 =\n* Fix: Old entry\n";
+        const at = strategy.changelogHeaderMatcher(readme);
+        console.log(JSON.stringify(readme.slice(at, at + 9)) + " " + strategy.getLatestVersion(readme));
+    ' "$REPO_ROOT/bin/lib/changelog-strategy.js"
+    assert_success
+    assert_output '"= 1.0.0: " 1.0.0'
+}
