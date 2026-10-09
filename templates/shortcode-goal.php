@@ -6,7 +6,7 @@ use Give\DonationForms\DonationQuery;
 /**
  * This template is used to display the goal with [give_goal]
  *
- * @since TBD Escape output.
+ * @since TBD Escape output and use gmdate() instead of date().
  * @since 4.16.3 Escaped the goal color when rendering the progress bar.
  */
 
@@ -54,7 +54,7 @@ if (isset($args['start_date'], $args['end_date'])) {
     } else {
         // If end date is not set, we have to use the current datetime.
         if (! $args['end_date']) {
-            $args['end_date'] = date('Y-m-d H:i:s');
+            $args['end_date'] = gmdate('Y-m-d H:i:s');
         }
 
         $form_income = $donationQuery->between($args['start_date'], $args['end_date'])->sumIntendedAmount();

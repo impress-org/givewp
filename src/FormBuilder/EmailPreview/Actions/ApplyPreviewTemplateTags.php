@@ -24,6 +24,7 @@ class ApplyPreviewTemplateTags
     }
 
     /**
+     * @since TBD Use gmdate() instead of date().
      * @since 3.0.0
      * @return array
      */
@@ -48,7 +49,7 @@ class ApplyPreviewTemplateTags
                 'payment_id' => rand( 2000, 2050 ),
                 'receipt_link_url' => give_get_receipt_url(0),
                 'receipt_link' => give_get_receipt_link(0),
-                'date' => date( give_date_format(), current_time( 'timestamp' ) ),
+                'date' => gmdate( give_date_format(), current_time( 'timestamp' ) ),
                 'donation' => esc_html__( 'Sample Donation Form Title', 'give' ),
                 'form_title' => esc_html__( 'Sample Donation Form Title - Sample Donation Level', 'give' ),
                 'sitename' => get_bloginfo( 'name' ),

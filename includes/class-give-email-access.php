@@ -271,6 +271,7 @@ class Give_Email_Access {
 	/**
 	 * Is this a valid token?
 	 *
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  4.16.7 Only accept non-empty string tokens.
 	 * @since  1.0
 	 * @access public
@@ -289,7 +290,7 @@ class Give_Email_Access {
 		}
 
 		// Make sure token isn't expired.
-		$expires = date( 'Y-m-d H:i:s', time() - $this->token_expiration );
+		$expires = gmdate( 'Y-m-d H:i:s', time() - $this->token_expiration );
 
 		$email = $wpdb->get_var(
 			$wpdb->prepare( "SELECT email FROM {$wpdb->donors} WHERE verify_key = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
@@ -320,6 +321,7 @@ class Give_Email_Access {
 	 * @param string $email      Donor email.
 	 * @param string $verify_key The verification key.
 	 *
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -328,7 +330,7 @@ class Give_Email_Access {
 	public function set_verify_key( $donor_id, $email, $verify_key ) {
 		global $wpdb;
 
-		$now = date( 'Y-m-d H:i:s' );
+		$now = gmdate( 'Y-m-d H:i:s' );
 
 		// Insert or update?
 		$row_id = (int) $wpdb->get_var(
@@ -351,6 +353,7 @@ class Give_Email_Access {
 	/**
 	 * Is this a valid verify key?
 	 *
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  4.18.0 Verify keys expire with the same window as access tokens.
 	 * @since  4.16.7 Only accept non-empty string tokens.
 	 * @since  1.0
@@ -371,14 +374,14 @@ class Give_Email_Access {
 
 		// A verify key expires with the same window as an access token, so a
 		// key generated before that window can no longer be redeemed.
-		$expires = date( 'Y-m-d H:i:s', time() - $this->token_expiration );
+		$expires = gmdate( 'Y-m-d H:i:s', time() - $this->token_expiration );
 
 		// See if the verify_key exists.
 		$row = $wpdb->get_row(
 			$wpdb->prepare( "SELECT id, email FROM {$wpdb->donors} WHERE verify_key = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
 		);
 
-		$now = date( 'Y-m-d H:i:s' );
+		$now = gmdate( 'Y-m-d H:i:s' );
 
 		// Set token and remove verify key.
 		if ( ! empty( $row ) ) {

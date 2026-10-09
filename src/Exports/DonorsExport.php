@@ -32,6 +32,8 @@ class DonorsExport extends Give_Batch_Export
     protected $donationFormId;
 
     /**
+     * @since TBD Use gmdate() instead of date().
+     *
      * @inheritdoc
      */
     public function set_properties($request)
@@ -39,11 +41,11 @@ class DonorsExport extends Give_Batch_Export
         $this->postedData = $request;
 
         if ($this->postedData['giveDonorExport-startDate']) {
-            $this->startDate = date('Y-m-d', strtotime($this->postedData['giveDonorExport-startDate']));
+            $this->startDate = gmdate('Y-m-d', strtotime($this->postedData['giveDonorExport-startDate']));
         }
 
         if ($this->postedData['giveDonorExport-endDate']) {
-            $this->endDate = date('Y-m-d', strtotime($this->postedData['giveDonorExport-endDate']));
+            $this->endDate = gmdate('Y-m-d', strtotime($this->postedData['giveDonorExport-endDate']));
         }
 
         if ($this->postedData['searchBy']) {
