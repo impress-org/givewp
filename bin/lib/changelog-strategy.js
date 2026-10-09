@@ -9,7 +9,8 @@
  * Referenced from package.json -> changelogger.files[].strategy as a path.
  * The changelogger loads any strategy whose name ends in .js/.ts (resolved from
  * the current working directory) and validates that it exports formatChanges,
- * formatVersionHeader, versionHeaderMatcher and changelogHeaderMatcher.
+ * formatVersionHeader, versionHeaderMatcher and changelogHeaderMatcher, plus
+ * getLatestVersion since changelogger 1.0.0.
  */
 
 const MONTHS = [
@@ -94,5 +95,12 @@ module.exports = {
             return mainHeader ? mainHeader.index + mainHeader[0].length + 1 : 0;
         }
         return firstVersion.index;
+    },
+
+    // The version of the first (newest) block, or undefined when there is none.
+    // changelogger 1.0.0 refuses to load a strategy without it.
+    getLatestVersion(content) {
+        const match = content.match(/^= ([^:]+): [^=]+ =$/m);
+        return match ? match[1].trim() : undefined;
     },
 };
