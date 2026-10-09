@@ -1,0 +1,62 @@
+name: Release Prep
+
+# Prepares a release branch: bumps the version in the files .puprc lists under paths.versions,
+# replaces the @since TBD / @deprecated TBD placeholders, and compiles the pending entries in
+# ./changelog into readme.txt and changelog.txt. Then it commits that and pushes it to the branch.
+# No pull request is opened: the change is reviewed in the release branch's own pull request.
+#
+# It does in CI what `composer run release:prep <version>` does locally, through the shared
+# release-prep action in stellarwp/plugin-toolbox: pup replace-version, pup replace-tbd, then the
+# changelogger with bin/lib/changelog-strategy.js.
+#
+# The NX1 release dashboard dispatches this file for the prepare step, sending `ref` and `version`.
+# Keep `date` optional: the dashboard refuses a workflow that requires an input it does not send.
+#
+# Run it by hand:
+#   gh workflow run release-prep.yml --ref release/4.19.0 -f ref=release/4.19.0 -f version=4.19.0
+
+on:
+    workflow_dispatch:
+        inputs:
+            ref:
+                description: 'Release branch to prepare and push to, e.g. release/4.19.0'
+                required: true
+                type: string
+            version:
+                description: 'Version to write, e.g. 4.19.0'
+                required: true
+                type: string
+            date:
+                description: 'Changelog date (YYYY-MM-DD). Empty or "today" writes today, in UTC'
+                required: false
+                type: string
+                default: ''
+
+# Two preparations of the same branch would both commit on top of the same checkout, and the second
+# push would be refused. One group per branch makes the second wait for the first.
+concurrency:
+    group: ${{ github.workflow }}-${{ inputs.ref }}
+
+permissions:
+    contents: read
+
+jobs:
+    prepare:
+        # pup runs on PHP, which ubuntu-24.04 ships.
+        runs-on: ubuntu-24.04
+        permissions:
+            contents: write # the action pushes the preparation to the branch
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    ref: ${{ inputs.ref }}
+                    # The action pushes with its own token, so the checkout keeps no credentials for a
+                    # later step to find.
+                    persist-credentials: false
+
+            # Pinned to a commit until plugin-toolbox publishes its v1 tag; switch to @v1 then.
+            -   uses: stellarwp/plugin-toolbox/.github/actions/release-prep@2b6a48cdf8dffd44b2fe6c847f11033ffdc83fb6
+                with:
+                    ref: ${{ inputs.ref }}
+                    version: ${{ inputs.version }}
+                    date: ${{ inputs.date }}
