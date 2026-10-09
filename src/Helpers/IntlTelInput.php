@@ -191,6 +191,7 @@ class IntlTelInput
         ob_start();
 
         ?>
+        (function () {
         if (document.readyState !== 'loading') {
             readyHandler();
         } else {
@@ -240,6 +241,7 @@ class IntlTelInput
                 }
             });
         }
+        })();
         <?php
 
         return ob_get_clean();

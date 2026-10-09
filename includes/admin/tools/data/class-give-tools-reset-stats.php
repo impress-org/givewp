@@ -237,6 +237,11 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 				foreach ( $sql as $query ) {
 					$wpdb->query( $query ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- one-off bulk reset of GiveWP tables, posts and options; no WordPress API or object cache covers it. Table and column names come from give_v20_bc_table_details() and Give()->donor_meta; ids are (int) post or donor ids or values added by the give_reset_items filter; the give_reset_add_queries_{$type} filter lets add-ons append raw SQL that runs as-is.
 				}
+
+				// The raw delete above skips the options cache. Clear it so the batch tools do not read removed options.
+				if ( ! empty( $step_ids['other'] ) ) {
+					wp_cache_flush();
+				}
 			}
 
 			return true;

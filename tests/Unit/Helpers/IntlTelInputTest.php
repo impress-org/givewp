@@ -43,8 +43,27 @@ final class IntlTelInputTest extends TestCase
         $this->assertTrue(wp_style_is('givewp-intl-tel-input', 'enqueued'));
         $this->assertSame('21.2.4', wp_styles()->query('givewp-intl-tel-input')->ver);
 
-        $inline = $script->extra['after'][1] ?? '';
+        $inline = implode('', (array) ($script->extra['after'] ?? []));
         $this->assertStringContainsString('window.intlTelInput(input', $inline);
         $this->assertStringContainsString('give_donor_phone_number--intl_tel_input', $inline);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testEachInitializationBlockHasItsOwnScope(): void
+    {
+        IntlTelInput::getHtmlInput('+15555550123', 'give_donor_phone_number');
+        IntlTelInput::getHtmlInput('+15555550124', 'give_second_phone_number');
+
+        $script = wp_scripts()->query('givewp-intl-tel-input');
+        $this->assertNotFalse($script);
+
+        $blocks = $script->extra['after'] ?? [];
+        $inline = implode("\n", array_filter($blocks, 'is_string'));
+
+        $this->assertGreaterThanOrEqual(2, substr_count($inline, 'window.intlTelInput(input'));
+        $this->assertSame(substr_count($inline, 'function readyHandler()'), substr_count($inline, '(function () {'));
+        $this->assertSame(substr_count($inline, '(function () {'), substr_count($inline, '})();'));
     }
 }
