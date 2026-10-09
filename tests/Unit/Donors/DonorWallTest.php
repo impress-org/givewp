@@ -21,10 +21,12 @@ class DonorWallTest extends TestCase
 
     /**
      * The donated amount of each donor is used as the marker of that donor in the rendered wall.
+     * The currency symbol is left out, because it is an HTML entity that can be written in
+     * different ways (`&#36;` or `&#036;`) depending on how the output is escaped.
      */
-    private const ADA = '&#36;10.00';
+    private const ADA = '10.00';
 
-    private const GRACE = '&#36;50.00';
+    private const GRACE = '50.00';
 
     /** @var DonationForm */
     private $formOne;
