@@ -1,6 +1,5 @@
 {
   "errors": {
-    "Generic.PHP.DisallowShortOpenTag.EchoFound": 82,
     "Generic.PHP.ForbiddenFunctions.Found": 2,
     "PluginCheck.CodeAnalysis.Heredoc.NotAllowed": 4,
     "PluginCheck.CodeAnalysis.Localhost.Found": 1,
