@@ -20,13 +20,14 @@ use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
 /**
  * Processes gateway select on checkout. Only for users without ajax / javascript
  *
+ * @since TBD Use a safe redirect.
  * @since 1.0
  *
  * @param $data
  */
 function give_process_gateway_select( $data ) {
 	if ( isset( $_POST['gateway_submit'] ) ) {
-		wp_redirect( esc_url_raw( add_query_arg( 'payment-mode', $_POST['payment-mode'] ) ) );
+		wp_safe_redirect( esc_url_raw( add_query_arg( 'payment-mode', $_POST['payment-mode'] ) ) );
 		exit;
 	}
 }

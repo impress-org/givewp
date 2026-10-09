@@ -1004,6 +1004,7 @@ function give_stripe_process_additional_authentication( $donation_id, $payment_i
 		give_insert_payment_note( $donation_id, 'Stripe requires additional action to be fulfilled.' );
 		give_update_meta( $donation_id, '_give_stripe_payment_intent_require_action_url', $action_url );
 
+		// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- redirects off-site to the Stripe authentication page; wp_safe_redirect() would block it.
 		wp_redirect( $action_url );
 		exit;
 	}

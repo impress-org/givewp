@@ -386,6 +386,7 @@ class Give_Email_Notifications {
 	/**
 	 * Displays the email preview
 	 *
+	 * @since TBD Use a safe redirect.
 	 * @since  2.0
 	 * @access public
 	 * @return bool|null
@@ -411,7 +412,7 @@ class Give_Email_Notifications {
 		}
 
 		// Remove the test email query arg.
-		wp_redirect( esc_url_raw( remove_query_arg( 'give_action' ) ) );
+		wp_safe_redirect( esc_url_raw( remove_query_arg( 'give_action' ) ) );
 		exit;
 	}
 

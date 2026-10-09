@@ -164,6 +164,7 @@ function give_send_to_success_page( $query_string = null ) {
 
 	$gateway = isset( $_REQUEST['give-gateway'] ) ? give_clean( $_REQUEST['give-gateway'] ) : '';
 
+	// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- the public give_success_page_redirect filter lets add-ons send donors to another site; wp_safe_redirect() would block it.
 	wp_redirect( apply_filters( 'give_success_page_redirect', $redirect, $gateway, $query_string ) );
 	give_die();
 }

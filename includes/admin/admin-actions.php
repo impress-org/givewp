@@ -43,6 +43,7 @@ add_action( 'wp_ajax_give_load_wp_editor', 'give_load_wp_editor' );
 /**
  * Redirect admin to clean url give admin pages.
  *
+ * @since TBD Use a safe redirect.
  * @since 2.25.2 Removed _wpnonce from list of removed args.
  * @since      1.8
  *
@@ -78,7 +79,7 @@ function give_redirect_to_clean_url_admin_pages() {
 
 	if ( $redirect ) {
 		// Redirect.
-		wp_redirect(
+		wp_safe_redirect(
             esc_url_raw(
                 remove_query_arg(
                     ['_wp_http_referer'],

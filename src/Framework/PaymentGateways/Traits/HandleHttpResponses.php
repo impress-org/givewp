@@ -32,6 +32,7 @@ trait HandleHttpResponses
                 ]);
             }
 
+            // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- redirects off-site to the gateway; wp_safe_redirect() would block it.
             wp_redirect($type->getTargetUrl());
             exit;
         }

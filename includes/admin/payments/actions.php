@@ -365,7 +365,7 @@ add_action( 'give_update_payment_details', 'give_update_payment_details' );
 /**
  * Trigger a Donation Deletion.
  *
- * @since TBD Escape output.
+ * @since TBD Escape output. Use a safe redirect.
  * @since 1.0
  *
  * @param array $data Arguments passed.
@@ -382,7 +382,7 @@ function give_trigger_donation_delete( $data ) {
 		}
 
 		give_delete_donation( $payment_id );
-		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&give-messages[]=donation-deleted' ) );
+		wp_safe_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&give-messages[]=donation-deleted' ) );
 		give_die();
 	}
 }
@@ -448,7 +448,7 @@ add_action( 'wp_ajax_give_insert_payment_note', 'give_ajax_store_payment_note' )
 /**
  * Triggers a donation note deletion without ajax
  *
- * @since TBD Escape output.
+ * @since TBD Escape output. Use a safe redirect.
  * @since 1.0
  *
  * @param array $data Arguments passed
@@ -469,7 +469,7 @@ function give_trigger_payment_note_deletion( $data ) {
 
 	give_delete_payment_note( $data['note_id'], $data['payment_id'] );
 
-	wp_redirect( $edit_order_url );
+	wp_safe_redirect( $edit_order_url );
 }
 
 add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );

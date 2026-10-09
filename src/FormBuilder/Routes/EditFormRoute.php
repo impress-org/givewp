@@ -11,6 +11,7 @@ use Give\Helpers\Form\Utils;
 class EditFormRoute
 {
     /**
+     * @since TBD Use a safe redirect.
      * @since 3.22.0 Add locale support
      * @since 3.0.3 Use isV3Form() method instead of 'post_content' to check if the form is built with Visual Builder
      * @since 3.0.0
@@ -26,7 +27,7 @@ class EditFormRoute
             if ( ! is_array($_GET['post'])) {
                 $post = get_post(abs($_GET['post']));
                 if ('give_forms' === $post->post_type && Utils::isV3Form($post->ID)) {
-                    wp_redirect(FormBuilderRouteBuilder::makeEditFormRoute($post->ID, $locale)->getUrl());
+                    wp_safe_redirect(FormBuilderRouteBuilder::makeEditFormRoute($post->ID, $locale)->getUrl());
                     exit();
                 }
             }

@@ -1954,7 +1954,7 @@ class Give_API {
 	 * Process an API key generation/revocation
 	 *
 	 * @access public
-	 * @since  TBD Escape output.
+	 * @since TBD Escape output. Use safe redirects to the admin Tools page.
 	 * @since  1.1
 	 *
 	 * @param array $args
@@ -2019,23 +2019,23 @@ class Give_API {
 			case 'generate':
 				if ( $this->generate_api_key( $user_id ) ) {
 					Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
-					wp_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-generated', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) );
+					wp_safe_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-generated', admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) ) );
 					exit();
 				} else {
-					wp_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-failed', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) );
+					wp_safe_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-failed', admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) ) );
 					exit();
 				}
 				break;
 			case 'regenerate':
 				$this->generate_api_key( $user_id, true );
 				Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
-				wp_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-regenerated', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) );
+				wp_safe_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-regenerated', admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) ) );
 				exit();
 				break;
 			case 'revoke':
 				$this->revoke_api_key( $user_id );
 				Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
-				wp_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-revoked', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) );
+				wp_safe_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-revoked', admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) ) );
 				exit();
 				break;
 			default;

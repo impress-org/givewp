@@ -30,6 +30,7 @@ class NewStripeAccountOnBoardingController
     }
 
     /**
+     * @since TBD Use a safe redirect.
      * @since 3.4.0 Handle Stripe connect account on-boarding redirect on specific pages.
      *
      * @since 2.13.0
@@ -121,7 +122,7 @@ class NewStripeAccountOnBoardingController
                 );
             }
 
-            wp_redirect(
+            wp_safe_redirect(
                 esc_url_raw(
                     add_query_arg(
                         ['stripe_account' => 'connected'],
