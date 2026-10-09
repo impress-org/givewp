@@ -103,7 +103,8 @@ class Log
 
             return $log;
         } catch (Exception $exception) {
-            error_log($exception->getMessage());
+            // The logger itself failed, so the PHP error log is the only place left to report it.
+            error_log($exception->getMessage()); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- fallback when the GiveWP logger cannot save.
         }
     }
 

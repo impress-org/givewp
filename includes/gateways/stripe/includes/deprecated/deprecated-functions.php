@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * This function will check whether the Stripe account is connected via Connect button or not.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0.0
  * @deprecated 2.5.0
  *
@@ -25,9 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_is_stripe_connected() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '2.5.0', 'give_stripe_is_connected', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '2.5.0', 'give_stripe_is_connected' );
 
 	return give_stripe_is_connected();
 }
@@ -35,6 +34,7 @@ function give_is_stripe_connected() {
 /**
  * This function is used to get the connect options.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0.0
  * @deprecated 2.5.0
  *
@@ -42,9 +42,7 @@ function give_is_stripe_connected() {
  */
 function get_give_stripe_connect_options() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '2.5.0', 'give_stripe_get_connect_settings', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '2.5.0', 'give_stripe_get_connect_settings' );
 
 	return give_stripe_get_connect_settings();
 }
@@ -54,6 +52,7 @@ function get_give_stripe_connect_options() {
  *
  * @param \Stripe\Subscription $subscription Subscription object from Stripe.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0.0
  * @deprecated 2.5.0
  *
@@ -61,9 +60,7 @@ function get_give_stripe_connect_options() {
  */
 function give_get_stripe_statement_descriptor( $subscription ) {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '2.5.0', 'give_stripe_get_statement_descriptor', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '2.5.0', 'give_stripe_get_statement_descriptor' );
 
 	return give_stripe_get_statement_descriptor( $subscription );
 
@@ -72,6 +69,7 @@ function give_get_stripe_statement_descriptor( $subscription ) {
 /**
  * This function is used to check whether Stripe checkout is enabled or not.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0.0
  * @deprecated 2.5.0
  *
@@ -79,9 +77,7 @@ function give_get_stripe_statement_descriptor( $subscription ) {
  */
 function give_is_stripe_checkout_enabled() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '2.5.0', 'give_stripe_is_checkout_enabled', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '2.5.0', 'give_stripe_is_checkout_enabled' );
 
 	return give_stripe_is_checkout_enabled();
 }
@@ -89,6 +85,7 @@ function give_is_stripe_checkout_enabled() {
 /**
  * This function is used to fetch the connect options for Stripe.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      1.0.0
  * @deprecated 2.5.0
  *
@@ -97,9 +94,7 @@ function give_is_stripe_checkout_enabled() {
 if ( ! function_exists( 'get_give_stripe_connect_options' ) ) {
 	function get_give_stripe_connect_options() {
 
-		$backtrace = debug_backtrace();
-
-		_give_deprecated_function( __FUNCTION__, '2.5.0', 'give_stripe_get_connect_settings', $backtrace );
+		_give_deprecated_function( __FUNCTION__, '2.5.0', 'give_stripe_get_connect_settings' );
 
 		return give_stripe_get_connect_settings();
 	}
@@ -108,6 +103,7 @@ if ( ! function_exists( 'get_give_stripe_connect_options' ) ) {
 /**
  * This function is used to fetch the connect options for Stripe.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since      2.5.0
  * @deprecated 2.7.0
  *
@@ -116,9 +112,7 @@ if ( ! function_exists( 'get_give_stripe_connect_options' ) ) {
 if ( ! function_exists( 'give_stripe_get_connect_settings' ) ) {
 	function give_stripe_get_connect_settings() {
 
-		$backtrace = debug_backtrace();
-
-		_give_deprecated_function( __FUNCTION__, '2.7.0', 'give_stripe_get_connect_settings', $backtrace );
+		_give_deprecated_function( __FUNCTION__, '2.7.0', 'give_stripe_get_connect_settings' );
 
 		$options = [
 			'connected_status'     => give_get_option( 'give_stripe_connected' ),
@@ -143,15 +137,14 @@ if ( ! function_exists( 'give_stripe_get_connect_settings' ) ) {
 /**
  * Delete all the Give settings options for Stripe Connect.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since 2.5.0
  * @deprecated 2.7.0
  *
  * @return void
  */
 function give_stripe_connect_delete_options() {
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '2.7.0', 'give_stripe_connect_delete_options', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '2.7.0', 'give_stripe_connect_delete_options' );
 
 	// Disconnection successful.
 	// Remove the connect options within the db.
@@ -166,6 +159,7 @@ function give_stripe_connect_delete_options() {
 /**
  * Checks whether Stripe is connected or not.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since 2.5.0
  * @deprecated 2.7.0
  *
@@ -173,9 +167,7 @@ function give_stripe_connect_delete_options() {
  */
 function give_stripe_is_connected() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '2.7.0', 'give_stripe_is_connected', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '2.7.0', 'give_stripe_is_connected' );
 
 	$settings = give_stripe_get_connect_settings();
 
@@ -204,6 +196,7 @@ function give_stripe_is_connected() {
 
  /** Is Stripe Checkout Enabled?
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since 2.5.0
  * @deprecated 2.6.4
  *
@@ -211,9 +204,7 @@ function give_stripe_is_connected() {
  */
 function give_stripe_is_checkout_enabled() {
 
-	$backtrace = debug_backtrace();
-
-	_give_deprecated_function( __FUNCTION__, '2.6.4', 'give_stripe_is_checkout_enabled', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '2.6.4', 'give_stripe_is_checkout_enabled' );
 
 	return give_is_setting_enabled( give_get_option( 'stripe_checkout_enabled', 'disabled' ) );
 }
@@ -222,6 +213,7 @@ function give_stripe_is_checkout_enabled() {
  * Look up the stripe customer id in user meta, and look to recurring if not found yet.
  * Note: We are not changing @since and @deprecated as we moved this fn from Stripe Premium.
  *
+ * @since TBD Stop collecting a debug backtrace for the notice.
  * @since  1.4
  * @deprecated 2.1
  *
@@ -235,9 +227,7 @@ if ( ! function_exists( 'give_get_stripe_customer_id' ) ) {
 
 	if ( $isValidVersion ) {
 		function give_get_stripe_customer_id( $user_id_or_email ) {
-			$backtrace = debug_backtrace();
-
-			_give_deprecated_function( __FUNCTION__, '2.7.0', 'give_stripe_get_customer_id', $backtrace );
+			_give_deprecated_function( __FUNCTION__, '2.7.0', 'give_stripe_get_customer_id' );
 
 			return give_stripe_get_customer_id( $user_id_or_email );
 		}

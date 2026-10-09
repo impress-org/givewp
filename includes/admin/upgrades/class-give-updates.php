@@ -320,7 +320,7 @@ class Give_Updates {
 	/**
 	 * Pause db upgrade
 	 *
-     * @since TBD Verify a nonce and the capability before pausing.
+     * @since TBD Verify a nonce and the capability before pausing. Write the log data as JSON.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.1
 	 * @access public
@@ -371,7 +371,7 @@ class Give_Updates {
 		delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );
 		wp_clear_scheduled_hook( self::$background_updater->get_cron_identifier() );
 
-		Give()->logs->add( 'Update Pause', print_r( $batch, true ), 0, 'update' );
+		Give()->logs->add( 'Update Pause', wp_json_encode( $batch ), 0, 'update' );
 
 		/**
 		 * Fire action when pause db updates
@@ -386,7 +386,7 @@ class Give_Updates {
 	/**
 	 * Restart db upgrade
 	 *
-     * @since TBD Verify a nonce and the capability before restarting.
+     * @since TBD Verify a nonce and the capability before restarting. Write the log data as JSON.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.1
 	 * @access public
@@ -414,7 +414,7 @@ class Give_Updates {
 
 			delete_option( 'give_paused_batches' );
 
-			Give()->logs->add( 'Update Restart', print_r( $batch, true ), 0, 'update' );
+			Give()->logs->add( 'Update Restart', wp_json_encode( $batch ), 0, 'update' );
 
 			/** Fire action when restart db updates
 			 *
@@ -431,6 +431,7 @@ class Give_Updates {
 	/**
 	 * Health check for updates.
 	 *
+     * @since TBD Write the log data as JSON.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
@@ -455,7 +456,7 @@ class Give_Updates {
 
 		if ( ! empty( $doing_upgrade_args ) ) {
 			$log_data .= 'Doing update:' . "\n";
-			$log_data .= print_r( $doing_upgrade_args, true ) . "\n";
+			$log_data .= wp_json_encode( $doing_upgrade_args ) . "\n";
 		}
 
 		/**
@@ -464,7 +465,7 @@ class Give_Updates {
 		if ( ! empty( $batch->data ) ) {
 
 			foreach ( $batch->data as $index => $update ) {
-				$log_data = print_r( $update, true ) . "\n";
+				$log_data = wp_json_encode( $update ) . "\n";
 
 				if ( ! is_callable( $update['callback'] ) ) {
 					$log_data .= 'Removing missing callback update: ' . "{$update['id']}\n";
@@ -505,7 +506,7 @@ class Give_Updates {
 
 			if ( ! empty( $new_updates ) ) {
 				$log_data .= 'Adding new update: ' . "\n";
-				$log_data .= print_r( $new_updates, true ) . "\n";
+				$log_data .= wp_json_encode( $new_updates ) . "\n";
 
 				$batch->data = array_merge( (array) $batch->data, $new_updates );
 				update_option( 'give_db_update_count', ( absint( get_option( 'give_db_update_count' ) ) + count( $new_updates ) ), false );
@@ -530,7 +531,7 @@ class Give_Updates {
 		} elseif ( array_diff( wp_list_pluck( $batch->data, 'id' ), $old_batch_update_ids ) ) {
 
 			$log_data .= 'Updating batch' . "\n";
-			$log_data .= print_r( $batch, true );
+			$log_data .= wp_json_encode( $batch );
 
 			if ( ! empty( $batch->key ) ) {
 				wp_cache_delete( $batch->key, 'options' );
@@ -585,7 +586,7 @@ class Give_Updates {
 			update_option( 'give_doing_upgrade', $doing_upgrade_args, false );
 
 			$log_data .= 'Updated doing update:' . "\n";
-			$log_data .= print_r( $doing_upgrade_args, true ) . "\n";
+			$log_data .= wp_json_encode( $doing_upgrade_args ) . "\n";
 		}
 
 		Give()->logs->add( 'Update Health Check', $log_data, 0, 'update' );

@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Sent caught errors to the GiveWP log instead of the PHP error log
+timestamp: 2026-10-08T23:50:00.000Z

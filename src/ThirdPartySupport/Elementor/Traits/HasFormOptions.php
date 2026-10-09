@@ -4,6 +4,7 @@ namespace Give\ThirdPartySupport\Elementor\Traits;
 
 use Exception;
 use Give\Framework\Database\DB;
+use Give\Log\Log;
 
 /**
  * Trait to get form options with campaigns
@@ -101,6 +102,7 @@ trait HasFormOptions
     /**
      * Query campaigns with forms
      *
+     * @since TBD Send caught exceptions to the GiveWP log.
      * @since 4.7.0
      */
     public function getCampaignsWithForms(): array
@@ -123,7 +125,11 @@ trait HasFormOptions
 
             return $query->getAll();
         } catch (Exception $e) {
-            error_log('getCampaignsWithForms error: ' . $e->getMessage());
+            Log::error('getCampaignsWithForms error: ' . $e->getMessage(), [
+                'category' => 'Elementor',
+                'source' => 'Elementor form options',
+                'exception_class' => get_class($e),
+            ]);
             return [];
         }
     }

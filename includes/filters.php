@@ -78,7 +78,7 @@ add_action( 'update_option_give_settings', 'give_set_settings_with_disable_prefi
  * It will build Akismet query string and call Akismet API.
  * Akismet response return 'true' for spam donation.
  *
- * @since TBD Unslash and sanitize the request input.
+ * @since TBD Unslash and sanitize the request input. Write the Akismet log data as JSON.
  * @since 1.8.14
  *
  * @param $spam
@@ -160,9 +160,9 @@ function give_akismet( $spam ) {
 		$message = sprintf(
 			'<p><strong>%1$s</strong><pre>%2$s</pre></p><strong>%3$s</strong><pre>%4$s</pre><p>',
 			__( 'Request', 'give' ),
-			print_r( $args, true ),
+			wp_json_encode( $args, JSON_PRETTY_PRINT ),
 			__( 'Response', 'give' ),
-			print_r( $response, true )
+			wp_json_encode( $response, JSON_PRETTY_PRINT )
 		);
 
 		$context = [

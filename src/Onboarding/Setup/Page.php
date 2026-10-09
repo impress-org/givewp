@@ -86,6 +86,7 @@ class Page
      */
     public function enqueue_scripts()
     {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page param; it only decides whether to load the setup page styles and saves nothing.
         if (!isset($_GET['page']) || 'give-setup' !== $_GET['page']) {
             return;
         }
