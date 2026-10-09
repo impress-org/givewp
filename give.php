@@ -286,13 +286,10 @@ final class Give
      */
     public function init()
     {
-        /**
-         * Fires before the Give core is initialized. Deprecated: use `givewp_before_init`.
-         *
-         * @since TBD Deprecated in favor of `givewp_before_init`.
-         * @since 1.8.9
-         */
-        do_action_deprecated('before_give_init', [], 'TBD', 'givewp_before_init');
+        // The service providers load this file later, but the deprecated action must fire before them.
+        require_once GIVE_PLUGIN_DIR . 'includes/misc-functions.php';
+
+        give_fire_deprecated_before_init_action();
 
         /**
          * Fires before the Give core is initialized.
