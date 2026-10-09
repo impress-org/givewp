@@ -24,6 +24,15 @@ import SubscriptionCancelModal from '../subscription-cancel-modal';
 const normalizeAmount = (float, decimals) => Number.parseFloat(float).toFixed(decimals);
 
 /**
+ * Statuses that allow the donor to update the amount or payment method.
+ * Failing subscriptions are included so donors can replace an expired or declined card.
+ *
+ * @since TBD
+ */
+const UPDATABLE_STATUSES = ['active', 'failing'];
+
+/**
+ * @since TBD Allow failing subscriptions to be updated.
  * @since 3.19.0 Add support for hiding amount controls via filter
  */
 const SubscriptionManager = ({id, subscription}) => {
@@ -39,6 +48,7 @@ const SubscriptionManager = ({id, subscription}) => {
     const {handlePause, handleResume, loading} = usePauseSubscription(id);
 
     const subscriptionStatus = subscription.payment.status?.id || subscription.payment.status.label.toLowerCase();
+    const canUpdate = UPDATABLE_STATUSES.includes(subscriptionStatus);
 
     const showAmountControls = subscription.gateway.can_update;
     const showPaymentMethodControls = subscription.gateway.can_update_payment_method ?? showAmountControls;
@@ -145,8 +155,8 @@ const SubscriptionManager = ({id, subscription}) => {
                 )}
 
                 <Button
-                    disabled={subscriptionStatus !== 'active'}
-                    classnames={subscriptionStatus !== 'active' && 'disabled'}
+                    disabled={!canUpdate}
+                    classnames={!canUpdate && 'disabled'}
                     onClick={handleUpdate}
                 >
                     {updated ? (
