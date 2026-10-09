@@ -126,6 +126,7 @@ add_action( 'wp_ajax_give_hide_outdated_php_notice', 'give_hide_outdated_php_not
 /**
  * Register admin notices.
  *
+ * @since TBD Use gmdate() instead of date().
  * @since 2.25.2 Add nonce check for bulk action.
  * @since      1.8.9
  */
@@ -541,8 +542,8 @@ function _give_register_admin_notices() {
 		global $wpdb;
 
 		$current_time               = current_time( 'timestamp' );
-		$end_of_current_time_in_gmt = get_gmt_from_date( date( 'Y-m-d H:i:s', strtotime( 'tomorrow', $current_time ) ), 'U' );
-		$current_time_gmt           = get_gmt_from_date( date( 'Y-m-d H:i:s', $current_time ), 'U' );
+		$end_of_current_time_in_gmt = get_gmt_from_date( gmdate( 'Y-m-d H:i:s', strtotime( 'tomorrow', $current_time ) ), 'U' );
+		$current_time_gmt           = get_gmt_from_date( gmdate( 'Y-m-d H:i:s', $current_time ), 'U' );
 
 		$spam_count = DB::get_var(
 			DB::prepare( "SELECT COUNT(id) FROM {$wpdb->give_log} WHERE log_type = %s AND date >= CURDATE();", LogType::SPAM )

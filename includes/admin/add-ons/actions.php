@@ -542,6 +542,7 @@ add_action( 'wp_ajax_give_deactivate_license', 'give_deactivate_license_handler'
  *
  * Note: only for internal use
  *
+ * @since TBD Use gmdate() instead of date().
  * @since 2.5.0
  */
 function give_refresh_all_licenses_handler() {
@@ -555,13 +556,13 @@ function give_refresh_all_licenses_handler() {
 	$data = Give_License::refresh_license_status();
 
 	// Update date and reset counter.
-	if ( $data['compare'] === date( 'Ymd' ) && 5 <= $data['count'] ) {
+	if ( $data['compare'] === gmdate( 'Ymd' ) && 5 <= $data['count'] ) {
 		wp_send_json_error();
 	}
 
 	// Update date and reset counter.
-	if ( $data['compare'] < date( 'Ymd' ) ) {
-		$data['compare'] = date( 'Ymd' );
+	if ( $data['compare'] < gmdate( 'Ymd' ) ) {
+		$data['compare'] = gmdate( 'Ymd' );
 		$data['count']   = 0;
 	}
 
@@ -574,7 +575,7 @@ function give_refresh_all_licenses_handler() {
 
 	give_refresh_licenses();
 
-	$local_date = strtotime( get_date_from_gmt( date( 'Y-m-d H:i:s', $data['time'] ) ) );
+	$local_date = strtotime( get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $data['time'] ) ) );
 	wp_send_json_success(
 		[
 			'html'          => Give_License::render_licenses_list(),
@@ -582,8 +583,8 @@ function give_refresh_all_licenses_handler() {
 			'refreshStatus' => $data,
 			'lastUpdateMsg' => sprintf(
 				__( 'Last refreshed on %1$s at %2$s', 'give' ),
-				date( give_date_format(), $local_date ),
-				date( 'g:i a', $local_date )
+				gmdate( give_date_format(), $local_date ),
+				gmdate( 'g:i a', $local_date )
 			),
 		]
 	);
