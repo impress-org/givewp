@@ -21,6 +21,7 @@ class ValidationRoute
     use HandleHttpResponses;
 
     /**
+     * @since TBD Include failed field identifiers in validation logs.
      * @since 4.17.0 Sign the donor in from the auth token when the login cookie is unavailable.
      * @since 3.22.0 added additional catch statements for forbidden and unknown errors
      * @since 3.0.0
@@ -44,7 +45,7 @@ class ValidationRoute
             $this->handleResponse($response);
         } catch (DonationFormFieldErrorsException $exception) {
             $type = DonationFormErrorTypes::VALIDATION;
-            $this->logError($type, $exception->getMessage(), $formData);
+            $this->logError($type, $exception->getMessage(), $formData, $exception->getError()->get_error_codes());
             $this->sendJsonError($type, $exception->getError());
         } catch (DonationFormForbidden $exception) {
             wp_die($exception->getMessage(), 403);
@@ -58,21 +59,26 @@ class ValidationRoute
     }
 
     /**
+     * @since TBD Log form and error details without serializing the submitted form data.
      * @since 3.0.0
      */
     private function logError(
         string $type,
         string $exceptionMessage,
-        ValidationRouteData $formData
+        ValidationRouteData $formData,
+        array $invalidFields = []
     ) {
-        Log::error(
-            "Donation Route Error: $type",
-            [
-                'error_type' => $type,
-                'exceptionMessage' => $exceptionMessage,
-                'formData' => $formData->toArray(),
-            ]
-        );
+        $context = [
+            'error_type' => $type,
+            'exceptionMessage' => $exceptionMessage,
+            'formId' => $formData->formId,
+        ];
+
+        if ($invalidFields) {
+            $context['invalidFields'] = $invalidFields;
+        }
+
+        Log::error("Donation Route Error: $type", $context);
     }
 
     /**
