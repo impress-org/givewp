@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d351e850da575fb96a40338b5c784af9",
+    "content-hash": "ca8ca87e36af318f3c518000dfe058a0",
     "packages": [
         {
             "name": "composer/installers",
@@ -825,7 +825,7 @@
         },
         {
             "name": "stellarwp/harbor",
-            "version": "dev-main",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/harbor.git",
@@ -864,7 +864,6 @@
                 "szepeviktor/phpstan-wordpress": ">=1.0",
                 "wp-cli/wp-cli": "^2"
             },
-            "default-branch": true,
             "bin": [
                 "bin/stellar-harbor"
             ],
@@ -890,7 +889,7 @@
             "description": "A library that integrates a WordPress product with the Liquid Web licensing system.",
             "support": {
                 "issues": "https://github.com/stellarwp/harbor/issues",
-                "source": "https://github.com/stellarwp/harbor/tree/main"
+                "source": "https://github.com/stellarwp/harbor/tree/v2.0.0"
             },
             "time": "2026-10-12T15:17:52+00:00"
         },
@@ -8900,7 +8899,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "stellarwp/harbor": 20,
         "wordpress/wordpress": 20
     },
     "prefer-stable": false,
