@@ -50,11 +50,9 @@ const MobileMenu = ({children}) => {
                     <FontAwesomeIcon icon="bars" />
                 </div>
             </div>
-            {isOpen && (
-                <div className="give-donor-dashboard-mobile-menu__content">
-                    {children}
-                </div>
-            )}
+            <div className="give-donor-dashboard-mobile-menu__content" hidden={!isOpen}>
+                {children}
+            </div>
         </div>
     );
 };
