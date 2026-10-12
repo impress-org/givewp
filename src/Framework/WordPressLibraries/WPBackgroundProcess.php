@@ -452,6 +452,7 @@ abstract class WPBackgroundProcess extends WPAsyncRequest
         // Adds every 5 minutes to the existing schedules.
         $schedules[$this->identifier . '_cron_interval'] = [
             'interval' => MINUTE_IN_SECONDS * $interval,
+            /* translators: %d: Number of minutes */
             'display' => sprintf(__('Every %d Minutes', 'give'), $interval),
         ];
 

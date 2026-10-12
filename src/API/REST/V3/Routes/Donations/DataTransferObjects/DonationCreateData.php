@@ -70,6 +70,7 @@ class DonationCreateData
     /**
      * Validate data for creating a single donation
      *
+      * @since TBD Add translators comments.
      * @since 4.8.0
      *
      * @throws DonationValidationException
@@ -89,6 +90,7 @@ class DonationCreateData
         foreach ($requiredFields as $field) {
             if (!isset($this->attributes[$field])) {
                 throw new DonationValidationException(
+                    /* translators: %s: Name of the missing field */
                     sprintf(__('Missing required field: %s', 'give'), $field),
                     'missing_required_field',
                     400
@@ -100,6 +102,7 @@ class DonationCreateData
     /**
      * Validate data for creating a renewal donation
      *
+      * @since TBD Add translators comments.
      * @since 4.8.0
      *
      * @throws DonationValidationException
@@ -119,6 +122,7 @@ class DonationCreateData
         foreach ($requiredFields as $field) {
             if (!isset($this->attributes[$field])) {
                 throw new DonationValidationException(
+                    /* translators: %s: Name of the missing field */
                     sprintf(__('Missing required field: %s', 'give'), $field),
                     'missing_required_field',
                     400

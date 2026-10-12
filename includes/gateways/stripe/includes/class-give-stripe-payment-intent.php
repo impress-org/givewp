@@ -34,6 +34,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 		/**
          * This function is used to create payment intent in Stripe.
          *
+         * @since TBD Add translators comments.
          * @since 2.27.1 Stripe payment intent error sets a more user friendly Exception message.
          * @since      2.5.0
          * @access     public
@@ -69,6 +70,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 
                 give_set_error('stripe_payment_intent_error',
                	    sprintf( 
+                		/* translators: %s: Error message from Stripe */
                 		__('There was an issue with your donation transaction: %s<br>Please check your payment method or contact your card issuer for assistance. If the issue persists, try a different payment method or contact the site administrators.', 'give'),
                 		$e->getMessage()
                 	)

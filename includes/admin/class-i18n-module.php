@@ -129,16 +129,21 @@ class Give_i18n_Banner {
 	 * @access private
 	 *
 	 * @return bool|string $message
+	 *
+	 * @since TBD Add translators comments.
 	 */
 	private function promo_message() {
 		$message = false;
 
 		// Using a translation less than 90% complete.
 		if ( $this->translation_exists && $this->translation_loaded && $this->percent_translated < 90 ) {
+			/* translators: 1: Language name, 3: Percent translated, 4: Link to the WordPress.org registration page, 5: Link to the translation project */
 			$message = __( 'As you can see, there is a translation of this plugin in %1$s. This translation is currently %3$d%% complete. We need your help to make it complete and to fix any errors. Please register at %4$s to help %5$s to %1$s!', 'give' );
 		} elseif ( ! $this->translation_loaded && $this->translation_exists ) {
+			/* translators: 1: Language name, 2: Plugin name, 3: Percent translated, 4: Link to the WordPress.org registration page */
 			$message = __( 'You\'re using WordPress in %1$s. While %2$s has been %3$d%% translated to %1$s, it has not been shipped with the plugin yet. You can help! Register at %4$s to help complete the translation to %1$s!', 'give' );
 		} elseif ( ! $this->translation_exists ) {
+			/* translators: 2: Plugin name, 4: Link to the WordPress.org registration page */
 			$message = __( 'You\'re using WordPress in a language we don\'t support yet. We\'d love for %2$s to be translated in that language too, but unfortunately, it isn\'t right now. You can change that! Register at %4$s to help translate it!', 'give' );
 		}
 
@@ -155,6 +160,8 @@ class Give_i18n_Banner {
 
 	/**
 	 * Outputs a promo box
+	 *
+	 * @since TBD Add translators comments.
 	 */
 	public function promo() {
 
@@ -174,7 +181,7 @@ class Give_i18n_Banner {
 				<div class="give-i18n-notice-content">
 					<a href="<?php echo esc_url( add_query_arg( array( 'remove_i18n_promo' => '1' ) ) ); ?>" class="dismiss"><span class="dashicons dashicons-dismiss"></span></a>
 
-					<h2 style="margin: 10px 0;"><?php printf( esc_html__( 'Help Translate GiveWP to %s', 'give' ), $this->locale_name ); ?></h2>
+					<h2 style="margin: 10px 0;"><?php printf( /* translators: %s: Language name */ esc_html__( 'Help Translate GiveWP to %s', 'give' ), $this->locale_name ); ?></h2>
 					<p><?php echo $message; ?></p>
 					<p>
 						<a href="https://wordpress.org/support/register.php" target="_blank"><?php _e( 'Register now &raquo;', 'give' ); ?></a>

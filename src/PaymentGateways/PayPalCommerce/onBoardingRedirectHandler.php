@@ -530,6 +530,7 @@ class onBoardingRedirectHandler
     /**
      * Displays a notice of the site is not using SSL
      *
+     * @since TBD Add translators comments.
      * @since 2.9.0
      */
     private function registerPayPalSSLNotice()
@@ -544,6 +545,7 @@ class onBoardingRedirectHandler
             Give_Admin_Settings::add_error(
                 'paypal-webhook-error',
                 sprintf(
+                    /* translators: %1$s: Link to the logs page */
                     esc_html__(
                         'There was a problem setting up the webhooks for your PayPal account. Please try disconnecting and reconnecting your PayPal account. If the problem persists, please contact support and provide them with the latest %1$s',
                         'give'

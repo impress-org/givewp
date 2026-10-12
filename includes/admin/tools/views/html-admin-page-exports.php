@@ -1,6 +1,8 @@
 <?php
 /**
  * Admin View: Exports
+ *
+ * @since TBD Add translators comments.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -96,6 +98,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     $firstDonationDate ? ($currentYear - $firstDonationDate->format('Y')) : 0
                                 );
                                 printf(
+                                    /* translators: 1: Start year and month fields, 2: End year and month fields */
                                     esc_html__('%1$s to %2$s', 'give'),
                                     $start_year_dropdown . ' ' . Give()->html->month_dropdown('start_month'),
                                     $end_year_dropdown . ' ' . Give()->html->month_dropdown('end_month')

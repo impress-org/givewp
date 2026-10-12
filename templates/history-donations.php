@@ -1,6 +1,8 @@
 <?php
 /**
  * This template is used to display the donation history of the current user.
+ *
+ * @since TBD Add translators comments.
  */
 
 $donations             = array();
@@ -42,7 +44,9 @@ if ( is_user_logged_in() ) {
 			$message = (string) apply_filters(
 				'give_email_access_requests_exceed_notice',
 				sprintf(
+					/* translators: %s: Wait time, for example "5 minutes" */
 					__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
+					/* translators: %s: Number of minutes */
 					sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
 				),
 				$value

@@ -12,6 +12,7 @@
 /**
  * Add extra row actions to email notification table.
  *
+ * @since TBD Add translators comments.
  * @since 2.0
  *
  * @param array                   $row_actions
@@ -41,6 +42,7 @@ function give_email_notification_row_actions_callback( $row_actions, $email ) {
 		$send_preview_email_link = give()->tooltips->render_link( [
 			'tag_content' => esc_html__( 'Send test email', 'give' ),
 			'label'       => sprintf(
+				/* translators: %s: Email address of the current user */
 				esc_html__( 'Click this link to send a test email to yourself at %s', 'give' ),
 				wp_get_current_user()->user_email
 			),

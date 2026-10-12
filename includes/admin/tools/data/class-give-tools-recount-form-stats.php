@@ -210,6 +210,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	/**
 	 * Process a step
 	 *
+	 * @since TBD Add translators comments.
 	 * @since 1.5
 	 * @return bool
 	 */
@@ -229,6 +230,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 			$this->delete_data( 'give_recount_total_' . $this->form_id );
 			$this->delete_data( 'give_temp_recount_form_stats' );
 			$this->done    = true;
+			/* translators: %s: Donation form title */
 			$this->message = sprintf( esc_html__( 'Donation counts and revenue amount statistics successfully recounted for "%s".', 'give' ), get_the_title( $this->form_id ) );
 
 			return false;

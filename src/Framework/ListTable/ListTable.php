@@ -188,6 +188,7 @@ abstract class ListTable implements Arrayable
             );
 
             $cellValue = sprintf(
+                /* translators: %s: URL of the logs page */
                 __(
                     'Something went wrong, more in detail in <a href="%s">logs</a>',
                     'give'

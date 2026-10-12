@@ -56,6 +56,7 @@ if (!class_exists('Give_Settings_General')) :
         /**
          * Get settings array.
          *
+         * @since TBD Add translators comments.
          * @since 2.24.2 add auto_format_currency setting
          * @since  1.8
          *
@@ -135,8 +136,8 @@ if (!class_exists('Give_Settings_General')) :
                         [
                             'id' => 'recaptcha_key',
                             'name' => __('reCAPTCHA Site Key', 'give'),
-                            /* translators: %s: https://www.google.com/recaptcha/ */
                             'desc' => sprintf(
+                                /* translators: %s: URL of the reCAPTCHA documentation */
                                 __(
                                     'Navigate to <a href="%s" target="_blank">the reCAPTCHA website</a> and sign up for an API key and paste your reCAPTCHA site key here. The reCAPTCHA uses Google\'s user-friendly single click verification method.',
                                     'give'
@@ -171,7 +172,9 @@ if (!class_exists('Give_Settings_General')) :
                     break;
 
                 case 'currency-settings':
+                    /* translators: %s: Currency symbol */
                     $currency_position_before = __('Before - %s&#x200e;10', 'give');
+                    /* translators: %s: Currency symbol */
                     $currency_position_after = __('After - 10%s&#x200f;', 'give');
 
                     $hasIntlExtension = class_exists(NumberFormatter::class);
@@ -329,8 +332,8 @@ if (!class_exists('Give_Settings_General')) :
                         ],
                         [
                             'name' => __('Success Page', 'give'),
-                            /* translators: %s: [give_receipt] */
                             'desc' => sprintf(
+                                /* translators: %s: The [give_receipt] shortcode */
                                 __(
                                     'The page donors are sent to after completing their donations. The %s shortcode should be on this page.',
                                     'give'
@@ -373,8 +376,8 @@ if (!class_exists('Give_Settings_General')) :
                         ],
                         [
                             'name' => __('Donation History Page', 'give'),
-                            /* translators: %s: [donation_history] */
                             'desc' => sprintf(
+                                /* translators: %s: The [donation_history] shortcode */
                                 __(
                                     'The page showing a complete donation history for the current user. The %s shortcode should be on this page.',
                                     'give'
@@ -467,6 +470,7 @@ if (!class_exists('Give_Settings_General')) :
                             'name' => __('Next Donation Number', 'give'),
                             'id' => "{$current_section}_number",
                             'desc' => sprintf(
+                                /* translators: %s: Next donation number */
                                 __(
                                     'The number used to generate the next donation ID. This value must be greater than or equal to %s to avoid conflicts with existing donation IDs.',
                                     'give'
@@ -479,6 +483,7 @@ if (!class_exists('Give_Settings_General')) :
                             'name' => __('Number Prefix', 'give'),
                             'id' => "{$current_section}_number_prefix",
                             'desc' => sprintf(
+                                /* translators: %s: Replacement character */
                                 __(
                                     'The prefix appended to all sequential donation numbers. Spaces are replaced by %s.',
                                     'give'
@@ -491,6 +496,7 @@ if (!class_exists('Give_Settings_General')) :
                             'name' => __('Number Suffix', 'give'),
                             'id' => "{$current_section}_number_suffix",
                             'desc' => sprintf(
+                                /* translators: %s: Replacement character */
                                 __(
                                     'The suffix appended to all sequential donation numbers. Spaces are replaced by %s.',
                                     'give'
@@ -503,6 +509,7 @@ if (!class_exists('Give_Settings_General')) :
                             'name' => __('Number Padding', 'give'),
                             'id' => "{$current_section}_number_padding",
                             'desc' => sprintf(
+                                /* translators: 1: Number of digits, 2: Example number, 3: Example number padded with zeros */
                                 __(
                                     'The minimum number of digits in the sequential donation number. Enter %1$s to display %2$s as %3$s.',
                                     'give'
@@ -577,6 +584,7 @@ if (!class_exists('Give_Settings_General')) :
         /**
          * Set flag to reset sequestion donation number starting point when "Sequential Starting Number" value changes
          *
+         * @since TBD Add translators comments.
          * @since  2.1
          * @access public
          *
@@ -599,6 +607,7 @@ if (!class_exists('Give_Settings_General')) :
                 Give_Admin_Settings::add_error(
                     'give-invalid-sequential-starting-number',
                     sprintf(
+                        /* translators: %s: Next donation number */
                         __(
                             'Next Donation Number must be equal to or larger than %s to avoid conflicts with existing donation IDs.',
                             'give'

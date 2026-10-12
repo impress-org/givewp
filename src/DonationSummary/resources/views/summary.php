@@ -1,3 +1,8 @@
+<?php
+/**
+ * @since TBD Number the placeholders and move the translators comment.
+ */
+?>
 <style>
     .give-donation-summary-table-wrapper {
         --primary-color: <?php echo $this->getPrimaryColor(); ?>;
@@ -59,9 +64,9 @@
                             <span>
                             <?php
                             $isMultiStep = $this->isMultiStep();
-                            /* translators: 1: <button> open tag when multi-step 2: close tag when multi-step. */
                             echo sprintf(
-                                __('Consider making this donation %srecurring%s', 'give'),
+                                /* translators: 1: Opening button tag, 2: Closing button tag */
+                                __('Consider making this donation %1$srecurring%2$s', 'give'),
                                 $isMultiStep ? '<button type="button" class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">' : '',
                                 $isMultiStep ? '</button>' : ''
                             );

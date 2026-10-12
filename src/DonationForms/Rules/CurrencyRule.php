@@ -38,6 +38,7 @@ class CurrencyRule implements ValidationRule
      * Uses give_get_currencies_list() to get the current supported currencies
      * and provides clear error messages with valid currency options.
      *
+     * @since TBD Number the placeholders and add translators comments.
      * @since 4.10.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
@@ -46,6 +47,7 @@ class CurrencyRule implements ValidationRule
         if (!$this->isValidFormat($value)) {
             $fail(
                 sprintf(
+                    /* translators: %s: Field label */
                     __('%s must be a valid 3-letter currency code in uppercase format (example: USD)', 'give'),
                     '{field}'
                 )
@@ -53,7 +55,8 @@ class CurrencyRule implements ValidationRule
         } elseif (!give(GiveCurrencies::class)->contains(new Currency($value))) {
             $fail(
                 sprintf(
-                    __('%s must be a valid currency. Provided: %s', 'give'),
+                    /* translators: 1: Field label, 2: Submitted value */
+                    __('%1$s must be a valid currency. Provided: %2$s', 'give'),
                     '{field}',
                     $value
                 )

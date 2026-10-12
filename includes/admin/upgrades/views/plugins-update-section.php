@@ -1,4 +1,7 @@
 <?php
+/**
+ * @since TBD Add translators comments.
+ */
 /* @var Give_Updates $give_updates */
 $plugins = $give_updates->get_updates( 'plugin' );
 if ( empty( $plugins ) ) {
@@ -48,7 +51,9 @@ foreach ( $plugins as $plugin_data ) {
 
 			echo sprintf(
 				' &ndash; %s &ndash; %s',
+				/* translators: %s: Author name */
 				sprintf( _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) ),
+				/* translators: %s: Version number */
 				sprintf( __( '(Latest Version: %s)', 'give' ), $plugin_data['update']->new_version )
 			);
 			?>

@@ -153,6 +153,7 @@ class Give_Email_Setting_Field {
 	/**
 	 * Get notification status setting field.
 	 *
+	 * @since TBD Add translators comments.
 	 * @since  2.0
 	 * @access static
 	 *
@@ -180,7 +181,7 @@ class Give_Email_Setting_Field {
 			$default_value = 'global';
 		}
 
-		$description = isset( $_GET['page'] ) && 'give-settings' === $_GET['page'] ? __( 'Choose whether you want this email enabled or not.', 'give' ) : sprintf( __( 'Global Options are set <a href="%s">in GiveWP settings</a>. You may override them for this form here.', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails' ) );
+		$description = isset( $_GET['page'] ) && 'give-settings' === $_GET['page'] ? __( 'Choose whether you want this email enabled or not.', 'give' ) : sprintf( /* translators: %s: URL of the email settings page */ __( 'Global Options are set <a href="%s">in GiveWP settings</a>. You may override them for this form here.', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails' ) );
 
 		return array(
 			'name'          => esc_html__( 'Notification', 'give' ),

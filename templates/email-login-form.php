@@ -4,6 +4,8 @@
  *
  * This template is used to display an email form which will when submitted send an update donation receipt and also
  * refresh the users session
+ *
+ * @since TBD Add translators comments.
  */
 
 global $give_access_form_outputted;
@@ -57,7 +59,9 @@ if ( isset( $_POST['email-access-sent'] ) ) {
 	$message = (string) apply_filters(
 		'give_email_access_requests_exceed_notice',
 		sprintf(
+			/* translators: %s: Wait time, for example "5 minutes" */
 			__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
+			/* translators: %s: Number of minutes */
 			sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
 		),
 		$value
