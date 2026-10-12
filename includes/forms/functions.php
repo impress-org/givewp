@@ -615,12 +615,13 @@ function give_get_average_monthly_form_earnings( $form_id = 0 ) {
  *
  * Retrieves the name of a variable price option.
  *
+ * @since TBD   A non-numeric price ID, such as '' or 'custom', no longer matches the first level.
  * @since       1.0
  *
- * @param int  $form_id      ID of the donation form.
- * @param int  $price_id     ID of the price option.
- * @param int  $payment_id   payment ID for use in filters ( optional ).
- * @param bool $use_fallback Outputs the level amount if no level text is provided.
+ * @param int        $form_id      ID of the donation form.
+ * @param int|string $price_id     ID of the price option. Non-numeric values never match a level.
+ * @param int        $payment_id   payment ID for use in filters ( optional ).
+ * @param bool       $use_fallback Outputs the level amount if no level text is provided.
  *
  * @return string $price_name Name of the price option
  */
@@ -634,8 +635,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 	}
 
 	foreach ( $prices as $price ) {
-
-		if ( intval( $price['_give_id']['level_id'] ) === intval( $price_id ) ) {
+		if ( is_numeric( $price_id ) && intval( $price['_give_id']['level_id'] ) === intval( $price_id ) ) {
 
 			$price_text     = apply_filters( 'give_form_level_text', isset( $price['_give_text'] ) ? $price['_give_text'] : '', $form_id, $price );
 			$price_fallback = $use_fallback ?

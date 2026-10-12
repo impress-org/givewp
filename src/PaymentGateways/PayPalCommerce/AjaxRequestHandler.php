@@ -266,6 +266,7 @@ class AjaxRequestHandler
     }
 
     /**
+     * @since TBD Describe v3 orders with the form title and the donor's selected level.
      * @since 4.16.7.1 Validate the request through the form layer before building order data. v3 forms must
      *            also send a total at least as large as the amount the form validated; v2 forms are
      *            checked on the final, post-filter amount.
@@ -300,6 +301,9 @@ class AjaxRequestHandler
             if ($validatedAmount <= 0 || (float)$amount < $validatedAmount) {
                 wp_send_json_error(['error' => __('Invalid donation amount.', 'give')]);
             }
+
+            $postData['give-price-id'] = $postData['levelId'] ?? '';
+            $postData['give-form-title'] = get_post_field('post_title', $formId);
         } else {
             $amount = isset($postData['give-amount']) ?
                 (float)apply_filters(
