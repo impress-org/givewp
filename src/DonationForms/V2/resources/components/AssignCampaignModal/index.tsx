@@ -46,7 +46,7 @@ const assignableCampaigns: AsyncSelectEntity = {
  * function stays hook-free and the row count can change without breaking React's hook order.
  * A standalone form gets "Assign campaign"; a form that already has one gets "Change campaign".
  *
- * @since TBD
+ * @since 4.19.0
  */
 export default function AssignCampaignRowAction(props: AssignCampaignProps) {
     const [isOpen, setOpen] = useState(false);
@@ -70,7 +70,7 @@ export default function AssignCampaignRowAction(props: AssignCampaignProps) {
  * not archived and never the current one. The server refuses to move or remove a campaign's
  * default form and explains why.
  *
- * @since TBD
+ * @since 4.19.0
  */
 function AssignCampaignModal({
     isOpen,

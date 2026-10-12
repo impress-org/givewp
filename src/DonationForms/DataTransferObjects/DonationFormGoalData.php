@@ -63,7 +63,7 @@ class DonationFormGoalData implements Arrayable
     public $goalSource;
 
     /**
-     * @since TBD Fall back to the form goal when the form has no campaign.
+     * @since 4.19.0 Fall back to the form goal when the form has no campaign.
      * @since 3.0.0
      */
     public function __construct(int $formId, FormSettings $formSettings)

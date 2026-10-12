@@ -103,7 +103,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testCreateOrderDescribesV3OrderWithSelectedLevel(): void
     {
@@ -124,7 +124,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testCreateOrderDescribesV3CustomAmountOrderWithFormTitleOnly(): void
     {
@@ -415,7 +415,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      *
      * @param array<int, array{value: int, label: string, checked: bool}> $levels Amount levels with descriptions.
      */
@@ -433,7 +433,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      *
      * @return array<int, array{value: int, label: string, checked: bool}> Amount levels, each with its own description.
      */
@@ -446,7 +446,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      *
      * @return array{
      *     formId: int,
@@ -490,7 +490,7 @@ class AjaxRequestHandlerTest extends TestCase
     /**
      * What the v3 gateway client posts: its own keys plus the complete form values.
      *
-     * @since TBD Drop "give-form-title", which the v3 gateway client never posts.
+     * @since 4.19.0 Drop "give-form-title", which the v3 gateway client never posts.
      * @since 4.16.7.1
      */
     private function v3Request(DonationForm $form, array $overrides = []): array

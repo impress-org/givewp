@@ -14,14 +14,14 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
 
 /**
- * @since TBD
+ * @since 4.19.0
  */
 class DonationFormsRequestControllerTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testAssociateFormsWithCampaignLinksFormAndQueuesCacheRefresh()
     {
@@ -42,7 +42,7 @@ class DonationFormsRequestControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testAssociateFormsWithCampaignMovesALinkedFormAndRefreshesBothCampaigns(): void
     {
@@ -64,7 +64,7 @@ class DonationFormsRequestControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testAssociateFormsWithCampaignRefusesToMoveADefaultForm(): void
     {
@@ -83,7 +83,7 @@ class DonationFormsRequestControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testAssociateFormsWithCampaignMovesNothingWhenOneFormIsADefaultForm(): void
     {
@@ -103,7 +103,7 @@ class DonationFormsRequestControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testAssociateFormsWithCampaignRefusesAnArchivedCampaign(): void
     {
@@ -121,7 +121,7 @@ class DonationFormsRequestControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testAssociateFormsWithCampaignRefusesAPeerToPeerForm(): void
     {
@@ -143,7 +143,7 @@ class DonationFormsRequestControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testDetachFormsFromCampaignLeavesTheFormStandaloneAndRefreshesTheCampaign(): void
     {
@@ -162,7 +162,7 @@ class DonationFormsRequestControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testDetachFormsFromCampaignRefusesTheDefaultForm(): void
     {

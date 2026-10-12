@@ -5,7 +5,7 @@ namespace Give\DonationForms\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @since TBD Add DETACH_FORMS_FROM_CAMPAIGN
+ * @since 4.19.0 Add DETACH_FORMS_FROM_CAMPAIGN
  * @since 4.2.0
  *
  * @method static DonationFormsRoute NAMESPACE()

@@ -12,7 +12,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
  * A donation is described by its own level: never by the first level when it has no level ID, and
  * by the amount it intended when it also paid a recovered fee.
  *
- * @since TBD
+ * @since 4.19.0
  *
  * @covers ::give_get_price_option_name
  * @covers ::give_get_donation_form_title
@@ -22,7 +22,7 @@ class DonationLevelTextTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      *
      * @var array<int, array{value: int, label: string, checked: bool}>
      */
@@ -33,7 +33,7 @@ class DonationLevelTextTest extends TestCase
     ];
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testPriceOptionNameResolvesNumericLevelId(): void
     {
@@ -47,7 +47,7 @@ class DonationLevelTextTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testPriceOptionNameResolvesFirstLevelIdZero(): void
     {
@@ -61,7 +61,7 @@ class DonationLevelTextTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testPriceOptionNameIsEmptyWhenLevelIdIsEmpty(): void
     {
@@ -71,7 +71,7 @@ class DonationLevelTextTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testPriceOptionNameIsEmptyForCustomAmount(): void
     {
@@ -81,7 +81,7 @@ class DonationLevelTextTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testFormTitleMatchesLevelByAmountWithoutRecoveredFee(): void
     {
@@ -105,7 +105,7 @@ class DonationLevelTextTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testFormTitleOmitsLevelForUnmatchedAmountWithoutLevelId(): void
     {
@@ -128,7 +128,7 @@ class DonationLevelTextTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testFormTitleOmitsLevelForCustomAmountEqualToALevel(): void
     {
@@ -152,7 +152,7 @@ class DonationLevelTextTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testFormTitleResolvesFirstLevelIdZero(): void
     {
@@ -176,7 +176,7 @@ class DonationLevelTextTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testFormTitleMatchesLevelByConvertedAmountInDonationCurrency(): void
     {
@@ -201,7 +201,7 @@ class DonationLevelTextTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testFormTitleSkipsMatchedLevelWithoutText(): void
     {
@@ -224,7 +224,7 @@ class DonationLevelTextTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     private function createV3FormWithDescribedLevels(): DonationForm
     {

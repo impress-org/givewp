@@ -104,7 +104,7 @@ class Revenue
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      *
      * @return false|int
      */

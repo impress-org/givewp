@@ -62,7 +62,7 @@ class DonationFormsAdminPage
 
     /**
      * Register menu item
-     * @since TBD Show the "Forms" submenu again so standalone forms have a home in the admin.
+     * @since 4.19.0 Show the "Forms" submenu again so standalone forms have a home in the admin.
      * @since 4.14.0 update permission capability to use facade
      * @since 4.0.0 set submenu parent to empty string to hide "all forms" from admin menu
      */
@@ -83,7 +83,7 @@ class DonationFormsAdminPage
     /**
      * Load scripts
      *
-     * @since TBD Localize newFormUrl here instead of relying on the form builder to attach it to this script.
+     * @since 4.19.0 Localize newFormUrl here instead of relying on the form builder to attach it to this script.
      * @since 3.22.0 Add locale support
      */
     public function loadScripts()

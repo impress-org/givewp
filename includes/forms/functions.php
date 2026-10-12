@@ -615,7 +615,7 @@ function give_get_average_monthly_form_earnings( $form_id = 0 ) {
  *
  * Retrieves the name of a variable price option.
  *
- * @since TBD   A non-numeric price ID, such as '' or 'custom', no longer matches the first level.
+ * @since 4.19.0   A non-numeric price ID, such as '' or 'custom', no longer matches the first level.
  * @since       1.0
  *
  * @param int        $form_id      ID of the donation form.

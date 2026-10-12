@@ -1548,7 +1548,7 @@ function give_filter_where_older_than_week( $where = '' ) {
  *                                   enabled. b. separator  = The separator between the Form Title and the Donation
  *                                   Level.
  *
- * @since TBD match levels by intended amount (fee excluded), never for custom amounts; use the framework Money;
+ * @since 4.19.0 match levels by intended amount (fee excluded), never for custom amounts; use the framework Money;
  *            skip levels without text and donations that cannot be loaded
  * @since 4.16.5 lookup option values by level ID (price_id) first before falling back to amount-based matching
  * @since 4.14.5 add currency compatibility to determine whether the level is same as donation amount

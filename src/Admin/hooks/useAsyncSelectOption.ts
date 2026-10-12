@@ -5,8 +5,8 @@ import {UseAsyncSelectOptionReturn} from '@givewp/admin/types';
 /**
  * Custom hook for handling async option selection with pagination and search
  *
- * @since TBD Work out the page from the options already loaded, so a remounted select starts at the first page.
- * @since TBD Show a picked option right away instead of the previous one while its record loads.
+ * @since 4.19.0 Work out the page from the options already loaded, so a remounted select starts at the first page.
+ * @since 4.19.0 Show a picked option right away instead of the previous one while its record loads.
  * @since 4.11.0
  */
 export function useAsyncSelectOptions({
