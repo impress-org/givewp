@@ -12,6 +12,7 @@ use Give\Promotions\InPluginUpsells\Endpoints\ProductRecommendationsRoute;
 use Give\Promotions\InPluginUpsells\LegacyFormEditor;
 use Give\Promotions\InPluginUpsells\PaymentGateways;
 use Give\Promotions\InPluginUpsells\StellarSaleBanners;
+use Give\Promotions\NexcessBanner\NexcessBanner;
 use Give\Promotions\ReportsWidgetBanner\ReportsWidgetBanner;
 use Give\Promotions\WelcomeBanner\Endpoints\DismissWelcomeBannerRoute;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
@@ -28,6 +29,7 @@ class ServiceProvider implements ServiceProviderContract
     }
 
     /**
+     * @since TBD Add the Nexcess banner.
      * @since 2.19.0
      *
      * @inheritDoc
@@ -36,6 +38,9 @@ class ServiceProvider implements ServiceProviderContract
     {
         $this->bootPluginUpsells();
         $this->bootFreeAddonModal();
+
+        Hooks::addAction('init', NexcessBanner::class, 'register');
+        Hooks::addAction('admin_notices', NexcessBanner::class, 'render');
     }
 
     /**
