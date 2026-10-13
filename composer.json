@@ -20,7 +20,7 @@
         "stellarwp/admin-notices": "^2.0.1",
         "stellarwp/arrays": "^1.3",
         "moneyphp/money": "^3.3.3",
-        "stellarwp/harbor": "2.0.0",
+        "stellarwp/harbor": "2.0.2",
         "stellarwp/banners": "^1.0"
     },
     "require-dev": {
