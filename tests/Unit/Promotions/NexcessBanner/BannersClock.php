@@ -8,14 +8,14 @@
 namespace Give\Tests\Unit\Promotions\NexcessBanner {
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     class BannersClock
     {
         /**
          * The Unix timestamp the library sees, or null for the real time.
          *
-         * @since TBD
+         * @since 4.19.0
          *
          * @var int|null
          */
@@ -28,7 +28,7 @@ namespace Give\Vendors\Nexcess\Banners {
     use Give\Tests\Unit\Promotions\NexcessBanner\BannersClock;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     function time(): int
     {

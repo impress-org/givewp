@@ -11,21 +11,21 @@ use Give\Vendors\Nexcess\Banners\Registry;
 /**
  * The Nexcess software packages banner.
  *
- * @since TBD
+ * @since 4.19.0
  */
 class NexcessBanner
 {
     /**
      * Shared by every Nexcess plugin that shows this banner.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     public const ID = 'nexcess-software-packages-2026-10-14';
 
     /**
      * When the banner starts showing, in New York time.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     private const START = '2026-10-14 12:00:00';
 
@@ -35,7 +35,7 @@ class NexcessBanner
     private $audience;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function __construct(NexcessBannerAudience $audience)
     {
@@ -45,7 +45,7 @@ class NexcessBanner
     /**
      * Registers the banner.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     public function register(): void
     {
@@ -65,7 +65,7 @@ class NexcessBanner
     /**
      * Renders the banner.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     public function render(): void
     {

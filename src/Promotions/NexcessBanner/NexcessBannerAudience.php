@@ -9,7 +9,7 @@ use WP_Screen;
 /**
  * Decides whether the Nexcess banner may show on the current screen.
  *
- * @since TBD
+ * @since 4.19.0
  */
 class NexcessBannerAudience
 {
@@ -19,7 +19,7 @@ class NexcessBannerAudience
     private $licenses;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function __construct(LicenseRepository $licenses)
     {
@@ -29,7 +29,7 @@ class NexcessBannerAudience
     /**
      * Whether the banner may show on the current screen.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     public function shouldDisplay(): bool
     {
@@ -41,7 +41,7 @@ class NexcessBannerAudience
     /**
      * Whether this screen edits or creates a single post.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     private function isEditor(): bool
     {
@@ -55,7 +55,7 @@ class NexcessBannerAudience
      *
      * shortcut: a valid stored license counts even when its add-on is deactivated.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     private function hasActivePlan(): bool
     {
@@ -65,7 +65,7 @@ class NexcessBannerAudience
     /**
      * Whether this is one of GiveWP's admin pages, apart from the visual form builder.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     private function isGiveWPPage(): bool
     {
@@ -81,7 +81,7 @@ class NexcessBannerAudience
     /**
      * Whether this is the Nexcess licensing page.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     private function isLicenseManagerPage(): bool
     {

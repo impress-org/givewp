@@ -14,14 +14,14 @@ use Give\Tests\Unit\License\TestTraits\HasLicenseData;
 require_once __DIR__ . '/BannersClock.php';
 
 /**
- * @since TBD
+ * @since 4.19.0
  */
 class NexcessBannerTest extends TestCase
 {
     use HasLicenseData;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function setUp(): void
     {
@@ -34,7 +34,7 @@ class NexcessBannerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function tearDown(): void
     {
@@ -46,7 +46,7 @@ class NexcessBannerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testDoesNotShowBeforeItsStart(): void
     {
@@ -56,7 +56,7 @@ class NexcessBannerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testShowsFromItsStart(): void
     {
@@ -66,7 +66,7 @@ class NexcessBannerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testKeepsShowingYearsLaterBecauseItHasNoEnd(): void
     {

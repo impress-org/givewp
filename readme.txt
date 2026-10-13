@@ -285,6 +285,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix: Corrected donation and form queries leaving WordPress post globals populated after their results loop, which caused Multisite Network Admin site links to use a donation ID instead of the site ID.
 * Fix: Resolved an issue where the classic Donations screen showed a broken campaign link for donations to forms without a campaign
 * Tweak: Improved the unified licensing page experience.
+* Tweak: Added a dismissible announcement banner to plugin admin pages.
 
 = 4.18.0.1: October 6th, 2026 =
 * Security: Improved validation of PayPal Standard IPN notifications.

@@ -29,7 +29,7 @@ class ServiceProvider implements ServiceProviderContract
     }
 
     /**
-     * @since TBD Add the Nexcess banner.
+     * @since 4.19.0 Add the Nexcess banner.
      * @since 2.19.0
      *
      * @inheritDoc

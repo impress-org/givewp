@@ -11,14 +11,14 @@ use Give\Tests\Unit\VendorOverrides\Harbor\HarborStubs;
 use WP_Screen;
 
 /**
- * @since TBD
+ * @since 4.19.0
  */
 class NexcessBannerAudienceTest extends TestCase
 {
     use HasLicenseData;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function setUp(): void
     {
@@ -31,7 +31,7 @@ class NexcessBannerAudienceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function tearDown(): void
     {
@@ -42,7 +42,7 @@ class NexcessBannerAudienceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testIncludesSitesWithOnlyALegacyLicense(): void
     {
@@ -52,7 +52,7 @@ class NexcessBannerAudienceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testIncludesSitesWithOnlyAConsolidatedLicense(): void
     {
@@ -62,7 +62,7 @@ class NexcessBannerAudienceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testExcludesSitesWithoutALicense(): void
     {
@@ -70,7 +70,7 @@ class NexcessBannerAudienceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testExcludesSitesWhoseLegacyLicenseExpired(): void
     {
@@ -80,7 +80,7 @@ class NexcessBannerAudienceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testIncludesTheSharedLicensingPage(): void
     {
@@ -91,7 +91,7 @@ class NexcessBannerAudienceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testExcludesOtherAdminPages(): void
     {
@@ -102,7 +102,7 @@ class NexcessBannerAudienceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testExcludesTheFormEditor(): void
     {
@@ -113,7 +113,7 @@ class NexcessBannerAudienceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testExcludesCreatingAForm(): void
     {
@@ -126,7 +126,7 @@ class NexcessBannerAudienceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testExcludesTheFormBuilder(): void
     {
@@ -137,7 +137,7 @@ class NexcessBannerAudienceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testIncludesUsersWhoAreNotAdministrators(): void
     {
