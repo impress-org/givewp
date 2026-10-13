@@ -34,7 +34,20 @@ class NexcessBannerAudience
     public function shouldDisplay(): bool
     {
         return $this->hasActivePlan()
+            && !$this->isEditor()
             && ($this->isGiveWPPage() || $this->isLicenseManagerPage());
+    }
+
+    /**
+     * Whether this screen edits or creates a single post.
+     *
+     * @since TBD
+     */
+    private function isEditor(): bool
+    {
+        $screen = get_current_screen();
+
+        return $screen instanceof WP_Screen && $screen->base === 'post';
     }
 
     /**

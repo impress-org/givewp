@@ -8,6 +8,7 @@ use Give\Promotions\NexcessBanner\NexcessBannerAudience;
 use Give\Tests\TestCase;
 use Give\Tests\Unit\License\TestTraits\HasLicenseData;
 use Give\Tests\Unit\VendorOverrides\Harbor\HarborStubs;
+use WP_Screen;
 
 /**
  * @since TBD
@@ -96,6 +97,30 @@ class NexcessBannerAudienceTest extends TestCase
     {
         $this->givenALegacyLicense('valid');
         set_current_screen('dashboard');
+
+        $this->assertFalse($this->audience()->shouldDisplay());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testExcludesTheFormEditor(): void
+    {
+        $this->givenALegacyLicense('valid');
+        set_current_screen('give_forms');
+
+        $this->assertFalse($this->audience()->shouldDisplay());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testExcludesCreatingAForm(): void
+    {
+        $this->givenALegacyLicense('valid');
+        $screen = WP_Screen::get('give_forms');
+        $screen->action = 'add';
+        set_current_screen($screen);
 
         $this->assertFalse($this->audience()->shouldDisplay());
     }
