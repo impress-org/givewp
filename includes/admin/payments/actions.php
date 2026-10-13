@@ -401,7 +401,8 @@ function give_ajax_store_payment_note() {
     check_ajax_referer('give_insert_payment_note');
 
     $payment_id = isset($_POST['payment_id']) ? absint($_POST['payment_id']) : 0;
-    $note = isset($_POST['note']) ? wp_kses(wp_unslash($_POST['note']), []) : '';
+    // Slash again after sanitizing: the note is unslashed a second time when it is saved, which would drop backslashes.
+    $note = isset($_POST['note']) ? wp_slash(wp_kses(wp_unslash($_POST['note']), [])) : '';
     $note_type = isset($_POST['type']) ? give_clean($_POST['type']) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
     if ( ! current_user_can('edit_give_payments', $payment_id)) {
