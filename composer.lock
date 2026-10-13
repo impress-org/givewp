@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a12788144966e1776c0614d6a352a5ab",
+    "content-hash": "cba370f3adb8e636eae0bbec254b18f8",
     "packages": [
         {
             "name": "composer/installers",
@@ -727,6 +727,59 @@
             "time": "2026-02-12T19:58:13+00:00"
         },
         {
+            "name": "stellarwp/banners",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stellarwp/banners.git",
+                "reference": "782dc5754c5a68d1ccf9b90979a0d2a800d7f3fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stellarwp/banners/zipball/782dc5754c5a68d1ccf9b90979a0d2a800d7f3fd",
+                "reference": "782dc5754c5a68d1ccf9b90979a0d2a800d7f3fd",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "brain/monkey": "^2.6",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan": "^2.2",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.9",
+                "stellarwp/nexcess-coding-standards": "^2.0",
+                "szepeviktor/phpstan-wordpress": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nexcess\\Banners\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "StellarWP",
+                    "email": "dev@stellarwp.com"
+                },
+                {
+                    "name": "Dimi",
+                    "email": "dimi@nexcess.com"
+                }
+            ],
+            "description": "Marketing banners for WordPress admin pages, dismissed per user across every plugin that bundles them.",
+            "support": {
+                "issues": "https://github.com/stellarwp/banners/issues",
+                "source": "https://github.com/stellarwp/banners/tree/1.1.0"
+            },
+            "time": "2026-10-13T14:32:00+00:00"
+        },
+        {
             "name": "stellarwp/container-contract",
             "version": "1.0.4",
             "source": {
@@ -825,16 +878,16 @@
         },
         {
             "name": "stellarwp/harbor",
-            "version": "v1.6.0",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/harbor.git",
-                "reference": "e0253fa5512522a50dd73abe990d3591017494fb"
+                "reference": "bc13f0ee39c7f1460aa746dddb183dcf0462c5d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/harbor/zipball/e0253fa5512522a50dd73abe990d3591017494fb",
-                "reference": "e0253fa5512522a50dd73abe990d3591017494fb",
+                "url": "https://api.github.com/repos/stellarwp/harbor/zipball/bc13f0ee39c7f1460aa746dddb183dcf0462c5d3",
+                "reference": "bc13f0ee39c7f1460aa746dddb183dcf0462c5d3",
                 "shasum": ""
             },
             "require": {
@@ -889,9 +942,9 @@
             "description": "A library that integrates a WordPress product with the Liquid Web licensing system.",
             "support": {
                 "issues": "https://github.com/stellarwp/harbor/issues",
-                "source": "https://github.com/stellarwp/harbor/tree/v1.6.0"
+                "source": "https://github.com/stellarwp/harbor/tree/v2.0.2"
             },
-            "time": "2026-07-27T14:52:06+00:00"
+            "time": "2026-10-13T13:58:47+00:00"
         },
         {
             "name": "stellarwp/licensing-api-client",
@@ -8906,9 +8959,9 @@
     "platform": {
         "ext-json": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "7.4.0"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

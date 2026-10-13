@@ -116,7 +116,6 @@ const legacyScriptsEntry = {
     'assets/dist/js/donation-options': srcPath('Promotions/InPluginUpsells/resources/js/donation-options.ts'),
     'assets/dist/js/payment-gateway': srcPath('Promotions/InPluginUpsells/resources/js/payment-gateway.ts'),
     'assets/dist/js/welcome-banner': srcPath('Promotions/WelcomeBanner/resources/js/index.tsx'),
-    'assets/dist/js/orphaned-forms-list-table': srcPath('DonationForms/OrphanedForms/resources/index.tsx'),
     'assets/dist/js/parent-page': assetPath('src/js/plugins/form-template/parent-page.js'),
     'assets/dist/js/utils': assetPath('src/js/plugins/form-template/utils.js'),
     'assets/dist/js/iframe-content': assetPath('src/js/plugins/form-template/iframe-content.js'),
@@ -287,10 +286,14 @@ const plugins = [
  */
 module.exports = {
     ...defaultConfig,
-    // Persist the build cache under node_modules/.cache/webpack so repeat builds, locally and in CI,
-    // only recompile what changed. Webpack invalidates entries by content hash, so a stale cache is safe.
+    // Persist the build cache under .cache/webpack so repeat builds, locally and in CI, only
+    // recompile what changed. It lives outside node_modules because `npm ci` deletes node_modules
+    // first, and pup's build (.puprc) runs `npm ci` right before `npm run build`, so a cache in
+    // there never lives long enough to be used. .cache is git-ignored and kept out of the plugin zip
+    // by .distignore. Webpack invalidates entries by content hash, so a stale cache is safe.
     cache: {
         type: 'filesystem',
+        cacheDirectory: path.resolve(__dirname, '.cache/webpack'),
         buildDependencies: {
             config: [__filename],
         },

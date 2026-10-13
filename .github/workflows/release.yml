@@ -29,23 +29,14 @@ jobs:
                     extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                     coverage: none
 
-            -   name: Install composer dependencies
-                uses: php-actions/composer@v6
-                with:
-                    php_version: 7.4
-                    dev: no
-
-            -   name: Copy tcpdf fonts to vendor
-                run: sudo COMPOSER_ALLOW_SUPERUSER=1 composer run copy-fonts
-
             -   uses: actions/setup-node@v7
                 with:
                     node-version-file: .nvmrc
 
-            -   name: Install npm dependencies & build for translation
-                run: |
-                    npm ci
-                    npm run dev
+            # The build steps live in .puprc, the same ones the zip workflow runs, so a release and a
+            # production zip are built the same way.
+            -   name: Build the plugin
+                run: composer -- pup build
 
                 # In order to run this WordPress also needs to be installed
             -   name: Generate pot file
@@ -54,9 +45,6 @@ jobs:
                     chmod +x wp-cli.phar
                     mv wp-cli.phar /usr/local/bin/wp
                     php -d xdebug.mode=off "$(which wp)" i18n make-pot ${{github.workspace}} ${{github.workspace}}/languages/give.pot --exclude="$(cat .distignore | tr "\n" "," | sed 's/,$/ /' | tr " " "\n"),src/**/*.js,*.js.map,blocks/**/*.js"
-
-            -   name: Build assets for production
-                run: npm run build
 
             -   name: WordPress Plugin Deploy
                 id: deploy

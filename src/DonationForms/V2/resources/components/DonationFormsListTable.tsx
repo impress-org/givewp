@@ -36,9 +36,6 @@ declare global {
             locale: string;
             showDefaultFormTooltip: boolean;
             campaignUrl: string;
-        };
-
-        GiveNextGen?: {
             newFormUrl: string;
         };
     }
@@ -93,6 +90,16 @@ const donationFormsFilters: Array<FilterConfig> = [
         ariaLabel: __('Search donation forms', 'give'),
     },
 ];
+
+if (!isCampaignDetailsPage) {
+    donationFormsFilters.unshift({
+        name: 'campaign',
+        type: 'campaignselect',
+        text: __('All campaigns', 'give'),
+        ariaLabel: __('Filter donation forms by campaign', 'give'),
+        options: [{value: 'none', text: __('No campaign', 'give')}],
+    });
+}
 
 if (isCampaignDetailsPage) {
     donationFormsFilters.push({
@@ -367,6 +374,9 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
                     </div>
                 ) : (
                     <>
+                        <a href={window.GiveDonationForms.newFormUrl} className={`button button-primary ${styles.button}`}>
+                            {__('Add form', 'give')}
+                        </a>
                         {window.GiveDonationForms.isOptionBasedFormEditorEnabled && (
                             <button
                                 className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}

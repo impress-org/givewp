@@ -1192,10 +1192,6 @@ class DonationRouteCreateTest extends RestApiTestCase
      */
     public function testCreateRenewalShouldAutoGenerateCampaignId()
     {
-        // Create a campaign and associate it with the form
-        $campaign = \Give\Campaigns\Models\Campaign::factory()->create();
-        give()->campaigns->addCampaignForm($campaign, $this->form->id);
-
         // Create a subscription with an initial donation that has a campaignId
         $initialCampaignId = 123;
         $subscription = Subscription::factory()->createWithDonation([
@@ -1237,10 +1233,6 @@ class DonationRouteCreateTest extends RestApiTestCase
             'gatewayId' => TestGateway::id(),
             'installments' => 12, // Set higher installments to avoid limit
         ]);
-
-        // Create a campaign and associate it with the subscription's form
-        $campaign = Campaign::factory()->create();
-        give()->campaigns->addCampaignForm($campaign, $subscription->donationFormId);
 
         // Update the initial donation to have no campaignId
         $initialDonation = $subscription->initialDonation();
