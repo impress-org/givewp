@@ -273,7 +273,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 4.19.0: October 12th, 2026 =
+= 4.19.0: October 13th, 2026 =
 * Feature: Added the ability to create and edit donation forms without a campaign, and brought back the Forms list with a Campaign column, a "No campaign" filter, and a link-to-campaign action
 * Feature: Added a campaign action on the Forms screen to assign a form to a campaign, move it to another one, or remove it from its campaign
 * Feature: Added a Form column and a form filter to the Donations screen so you can see and filter donations by the form they came through
