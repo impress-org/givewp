@@ -7,7 +7,7 @@ use Give\Vendors\LiquidWeb\Harbor\Admin\Feature_Manager_Page;
 use WP_Screen;
 
 /**
- * Decides whether the Nexcess banner may show to the current user on the current screen.
+ * Decides whether the Nexcess banner may show on the current screen.
  *
  * @since TBD
  */
@@ -27,15 +27,14 @@ class NexcessBannerAudience
     }
 
     /**
-     * Whether the banner may show to the current user on the current screen.
+     * Whether the banner may show on the current screen. Whoever can see the page can see the
+     * banner: wp-admin only renders a page to users with its capability.
      *
      * @since TBD
      */
     public function shouldDisplay(): bool
     {
-        // Plan changes concern whoever manages the site, not every donation manager.
-        return current_user_can('manage_options')
-            && $this->hasActivePlan()
+        return $this->hasActivePlan()
             && ($this->isGiveWPPage() || $this->isLicenseManagerPage());
     }
 

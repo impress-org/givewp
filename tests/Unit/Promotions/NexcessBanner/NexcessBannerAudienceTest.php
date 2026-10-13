@@ -116,12 +116,12 @@ class NexcessBannerAudienceTest extends TestCase
     /**
      * @since TBD
      */
-    public function testExcludesUsersWhoCannotManageOptions(): void
+    public function testIncludesUsersWhoAreNotAdministrators(): void
     {
         $this->givenALegacyLicense('valid');
         wp_set_current_user(self::factory()->user->create(['role' => 'editor']));
 
-        $this->assertFalse($this->audience()->shouldDisplay());
+        $this->assertTrue($this->audience()->shouldDisplay());
     }
 
     /**
