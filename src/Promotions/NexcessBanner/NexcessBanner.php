@@ -20,7 +20,7 @@ class NexcessBanner
      *
      * @since TBD
      */
-    public const ID = 'nexcess-software-packages';
+    public const ID = 'nexcess-software-packages-2026-10-14';
 
     /**
      * When the banner starts showing, in New York time.
