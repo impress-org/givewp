@@ -11,7 +11,6 @@ use Give\Promotions\NexcessBanner\NexcessBannerAudience;
 use Give\Tests\TestCase;
 use Give\Tests\Unit\License\TestTraits\HasLicenseData;
 
-// Loaded with this file, before any test renders a banner: see BannersClock.
 require_once __DIR__ . '/BannersClock.php';
 
 /**
@@ -22,15 +21,12 @@ class NexcessBannerTest extends TestCase
     use HasLicenseData;
 
     /**
-     * An administrator with an active add-on license on a GiveWP page, who should see the banner.
-     *
      * @since TBD
      */
     public function setUp(): void
     {
         parent::setUp();
 
-        // Every copy of stellarwp/banners shares its registry through this global: start without the banner.
         unset($GLOBALS['nx_banners']);
         update_option(LicenseOptionKeys::LICENSES, ['license-key' => $this->getRawLicenseData()]);
         wp_set_current_user(self::factory()->user->create(['role' => 'administrator']));
@@ -88,7 +84,7 @@ class NexcessBannerTest extends TestCase
     }
 
     /**
-     * Registers the banner and renders it on the current screen.
+     * Registers and renders the banner.
      */
     private function renderBanner(): string
     {

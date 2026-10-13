@@ -27,8 +27,7 @@ class NexcessBannerAudience
     }
 
     /**
-     * Whether the banner may show on the current screen. Whoever can see the page can see the
-     * banner: wp-admin only renders a page to users with its capability.
+     * Whether the banner may show on the current screen.
      *
      * @since TBD
      */
@@ -39,11 +38,9 @@ class NexcessBannerAudience
     }
 
     /**
-     * Whether the site has a paid add-on with an active plan: a valid legacy add-on license or an
-     * active consolidated Harbor license. Both are read from stored options, with no remote request.
+     * Whether a legacy add-on license or a consolidated license is active, from stored options only.
      *
-     * shortcut: a valid stored license counts even when its add-on is deactivated; checking the
-     * add-on goes through give_get_plugins(), which can call givewp.com.
+     * shortcut: a valid stored license counts even when its add-on is deactivated.
      *
      * @since TBD
      */
@@ -53,9 +50,7 @@ class NexcessBannerAudience
     }
 
     /**
-     * Every GiveWP admin page sits under the give_forms post type's menu. Its pages keep the
-     * give_forms_page_ screen ID even through the top-level GiveWP link, which drops the post type.
-     * give_is_admin_page() is broader: it also matches the Dashboard and every post editor.
+     * Whether this is one of GiveWP's admin pages, apart from the visual form builder.
      *
      * @since TBD
      */
@@ -63,7 +58,6 @@ class NexcessBannerAudience
     {
         $screen = get_current_screen();
 
-        // The visual form builder fills the window, so the banner would only sit hidden behind it.
         if (!$screen instanceof WP_Screen || $screen->id === 'admin_page_givewp-form-builder') {
             return false;
         }
@@ -72,7 +66,7 @@ class NexcessBannerAudience
     }
 
     /**
-     * Whether this is the Nexcess licensing page, which every Nexcess plugin shares through Harbor.
+     * Whether this is the Nexcess licensing page.
      *
      * @since TBD
      */

@@ -17,8 +17,6 @@ class NexcessBannerAudienceTest extends TestCase
     use HasLicenseData;
 
     /**
-     * An administrator on a GiveWP page, with no license until a test adds one.
-     *
      * @since TBD
      */
     public function setUp(): void
@@ -125,7 +123,7 @@ class NexcessBannerAudienceTest extends TestCase
     }
 
     /**
-     * Stores a legacy add-on license as GiveWP records it after checking it.
+     * Stores a legacy add-on license.
      */
     private function givenALegacyLicense(string $status): void
     {

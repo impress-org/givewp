@@ -1,12 +1,8 @@
 <?php
 
 /**
- * A clock for the vendored stellarwp/banners library, which reads the time through unqualified
- * time() calls in its prefixed namespace. Declaring time() in that namespace shadows PHP's, the
- * technique Symfony's ClockMock uses. GiveWP's test environment has no uopz to mock time() itself.
- *
- * PHP resolves each call site once, so this file must load before any banner renders: the test
- * requires it when PHPUnit loads the test file.
+ * Freezes time() for the prefixed stellarwp/banners library, which calls it unqualified.
+ * Load it before any banner renders: PHP resolves each call site once.
  */
 
 namespace Give\Tests\Unit\Promotions\NexcessBanner {
