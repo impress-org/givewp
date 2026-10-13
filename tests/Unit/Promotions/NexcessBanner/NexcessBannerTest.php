@@ -54,7 +54,7 @@ class NexcessBannerTest extends TestCase
      */
     public function testDoesNotShowBeforeItsStart(): void
     {
-        $this->at('2026-10-14 11:59:59');
+        $this->freezeClockAt('2026-10-14 11:59:59');
 
         $this->assertSame('', $this->renderBanner());
     }
@@ -64,7 +64,7 @@ class NexcessBannerTest extends TestCase
      */
     public function testShowsFromItsStart(): void
     {
-        $this->at('2026-10-14 12:00:00');
+        $this->freezeClockAt('2026-10-14 12:00:00');
 
         $this->assertStringContainsString('notice nx-banner', $this->renderBanner());
     }
@@ -74,7 +74,7 @@ class NexcessBannerTest extends TestCase
      */
     public function testKeepsShowingYearsLaterBecauseItHasNoEnd(): void
     {
-        $this->at('2036-10-14 12:00:00');
+        $this->freezeClockAt('2036-10-14 12:00:00');
 
         $this->assertStringContainsString('notice nx-banner', $this->renderBanner());
     }
@@ -82,7 +82,7 @@ class NexcessBannerTest extends TestCase
     /**
      * Freezes the library's clock at a New York time.
      */
-    private function at(string $time): void
+    private function freezeClockAt(string $time): void
     {
         BannersClock::$now = (new DateTimeImmutable($time, new DateTimeZone('America/New_York')))->getTimestamp();
     }
