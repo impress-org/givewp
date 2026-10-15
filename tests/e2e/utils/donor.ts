@@ -19,6 +19,9 @@ export function createDonorAccount(): DonorAccount {
             'user_login' => '${username}', 'user_pass' => '${password}',
             'user_email' => '${username}@example.test', 'role' => 'give_donor',
         ]);
+        if (is_wp_error($userId)) {
+            WP_CLI::error($userId->get_error_message());
+        }
         $donor = \\Give\\Donors\\Models\\Donor::create([
             'name' => 'Dana Donor', 'firstName' => 'Dana', 'lastName' => 'Donor',
             'email' => '${username}@example.test', 'userId' => $userId,
@@ -38,7 +41,10 @@ export function deleteDonorAccount(account: DonorAccount): void {
     wp(
         'eval',
         `require_once ABSPATH . 'wp-admin/includes/user.php';
-        \\Give\\Donors\\Models\\Donor::find(${account.donorId})->delete();
+        $donor = \\Give\\Donors\\Models\\Donor::find(${account.donorId});
+        if ($donor) {
+            $donor->delete();
+        }
         wp_delete_user(${account.userId});`
     );
 }
