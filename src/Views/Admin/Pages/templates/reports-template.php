@@ -4,6 +4,8 @@
  */
 // Reports page markup
 // #reports-app is replaced by React app
+//
+// @since TBD Escape translated output.
 ?>
 <div id="reports-app">
     <div class="wrap give-settings-page">
@@ -16,23 +18,23 @@
                     <div class="group">
                         <button>
                             <?php
-                            _e('Day', 'give'); ?>
+                            esc_html_e('Day', 'give'); ?>
                         </button>
                         <button class="selected">
                             <?php
-                            _e('Week', 'give'); ?>
+                            esc_html_e('Week', 'give'); ?>
                         </button>
                         <button>
                             <?php
-                            _e('Month', 'give'); ?>
+                            esc_html_e('Month', 'give'); ?>
                         </button>
                         <button>
                             <?php
-                            _e('Year', 'give'); ?>
+                            esc_html_e('Year', 'give'); ?>
                         </button>
                         <button>
                             <?php
-                            _e('All Time', 'give'); ?>
+                            esc_html_e('All Time', 'give'); ?>
                         </button>
                     </div>
                 </div>
@@ -50,12 +52,12 @@
         <div class="nav-tab-wrapper give-nav-tab-wrapper" style="height: auto; overflow: visible;">
             <a class="nav-tab nav-tab-active" href="#/">
                 <?php
-                _e('Overview', 'give'); ?>
+                esc_html_e('Overview', 'give'); ?>
             </a>
             <a class="nav-tab"
                href="http://givewp.local/wp-admin/edit.php?post_type=give_forms&page=give-reports&legacy=1">
                 <?php
-                _e('Legacy Reports', 'give'); ?>
+                esc_html_e('Legacy Reports', 'give'); ?>
             </a>
         </div>
         <div class="givewp-loading-notice">

@@ -42,6 +42,8 @@ class Join
     }
 
     /**
+     * @since TBD Escape exception message.
+     *
      * @param  string  $type
      *
      * @return string
@@ -57,8 +59,8 @@ class Join
         throw new InvalidArgumentException(
             sprintf(
                 'Join type %s is not supported. Please provide one of the supported join types (%s)',
-                $type,
-                implode(',', JoinType::getTypes())
+                esc_html($type),
+                esc_html(implode(',', JoinType::getTypes()))
             )
         );
     }

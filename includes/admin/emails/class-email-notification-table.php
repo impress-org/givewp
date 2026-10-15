@@ -301,11 +301,12 @@ class Give_Email_Notification_Table extends WP_List_Table {
 	/**
 	 * Message to be displayed when there are no items
 	 *
+	 * @since  TBD Escape translated output.
 	 * @since  2.0
 	 * @access public
 	 */
 	public function no_items() {
-		_e( 'No give email notification found.', 'give' );
+		esc_html_e( 'No give email notification found.', 'give' );
 	}
 
 	/**

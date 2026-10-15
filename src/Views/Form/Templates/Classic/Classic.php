@@ -377,6 +377,8 @@ class Classic extends Template implements Hookable, Scriptable
     /**
      * Load file
      *
+     * @since TBD Escape exception message.
+     *
      * @param  string  $file
      * @param  array  $args
      *
@@ -389,7 +391,7 @@ class Classic extends Template implements Hookable, Scriptable
         $filePath = $this->getFilePath($file);
 
         if (! file_exists($filePath)) {
-            throw new InvalidArgumentException("File {$filePath} does not exist");
+            throw new InvalidArgumentException(esc_html("File {$filePath} does not exist"));
         }
 
         ob_start();

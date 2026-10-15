@@ -124,7 +124,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 		/**
 		 * Print the HTML for core setting exporter.
 		 *
-		 * @since TBD Escape output.
+		 * @since TBD Escape output, including translated strings.
 		 * @since 2.1
 		 */
 		public function html() {
@@ -134,8 +134,8 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 					<tbody>
 					<tr class="top">
 						<td colspan="2">
-							<h2 id="give-export-title"><?php _e( 'Export Donation History and Custom Fields to CSV', 'give' ); ?></h2>
-							<p class="give-field-description"><?php _e( 'Download an export of donors for specific donation forms with the option to include custom fields.', 'give' ); ?></p>
+							<h2 id="give-export-title"><?php esc_html_e( 'Export Donation History and Custom Fields to CSV', 'give' ); ?></h2>
+							<p class="give-field-description"><?php esc_html_e( 'Download an export of donors for specific donation forms with the option to include custom fields.', 'give' ); ?></p>
 						</td>
 					</tr>
 
@@ -146,7 +146,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<tr>
 							<td scope="row" class="row-title">
 								<label
-									for="give_forms_categories"><?php _e( 'Filter by Categories:', 'give' ); ?></label>
+									for="give_forms_categories"><?php esc_html_e( 'Filter by Categories:', 'give' ); ?></label>
 							</td>
 							<td class="give-field-wrap">
 								<div class="give-clearfix">
@@ -180,7 +180,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 						<tr>
 							<td scope="row" class="row-title">
 								<label
-									for="give_forms_tags"><?php _e( 'Filter by Tags:', 'give' ); ?></label>
+									for="give_forms_tags"><?php esc_html_e( 'Filter by Tags:', 'give' ); ?></label>
 							</td>
 							<td class="give-field-wrap">
 								<div class="give-clearfix">
@@ -212,7 +212,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 					<tr class="give-export-donation-form">
 						<td scope="row" class="row-title">
 							<label
-								for="give_payment_form_select"><?php _e( 'Filter by Donation Form:', 'give' ); ?></label>
+								for="give_payment_form_select"><?php esc_html_e( 'Filter by Donation Form:', 'give' ); ?></label>
 						</td>
 						<td class="give-field-wrap">
 							<div class="give-clearfix">
@@ -236,7 +236,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 
 					<tr>
 						<td scope="row" class="row-title">
-							<label for="give-payment-export-start"><?php _e( 'Filter by Date:', 'give' ); ?></label>
+							<label for="give-payment-export-start"><?php esc_html_e( 'Filter by Date:', 'give' ); ?></label>
 						</td>
 						<td class="give-field-wrap">
 							<div class="give-clearfix">
@@ -267,12 +267,12 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 					<tr>
 						<td scope="row" class="row-title">
 							<label
-								for="give-export-donations-status"><?php _e( 'Filter by Status:', 'give' ); ?></label>
+								for="give-export-donations-status"><?php esc_html_e( 'Filter by Status:', 'give' ); ?></label>
 						</td>
 						<td>
 							<div class="give-clearfix">
 								<select name="status" id="give-export-donations-status">
-									<option value="any"><?php _e( 'All Statuses', 'give' ); ?></option>
+									<option value="any"><?php esc_html_e( 'All Statuses', 'give' ); ?></option>
 									<?php
 									$statuses = give_get_payment_statuses();
 									foreach ( $statuses as $status => $label ) {
@@ -325,7 +325,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 			?>
 			<div id="poststuff" class="give-clearfix">
 				<div class="postbox">
-					<h1 class="give-export-h1" align="center"><?php _e( 'Export Donations', 'give' ); ?></h1>
+					<h1 class="give-export-h1" align="center"><?php esc_html_e( 'Export Donations', 'give' ); ?></h1>
 					<div class="inside give-tools-setting-page-export give-export_donations">
 						<?php
 						/**

@@ -54,6 +54,7 @@ class ValidateDonationFormRequest
      * after the run: before, so an earlier failed attempt in the same session cannot bleed in;
      * after, because the errors now live on the exception.
      *
+     * @since TBD Escape exception message.
      * @since 4.16.7.1
      *
      * @throws DonationFormFieldErrorsException
@@ -62,9 +63,9 @@ class ValidateDonationFormRequest
     {
         if (absint($_POST['give-form-id'] ?? 0) !== $formId) {
             throw new DonationFormFieldErrorsException(
-                new WP_Error(
+                new WP_Error( // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- WP_Error object; its messages are returned as JSON and rendered as text by the form.
                     'give_invalid_donation_form',
-                    __('The donation form ID is invalid. Please reload the page and try again.', 'give')
+                    esc_html__('The donation form ID is invalid. Please reload the page and try again.', 'give')
                 )
             );
         }
@@ -89,6 +90,6 @@ class ValidateDonationFormRequest
             $wpError->add($errorId, is_array($error) ? $error['message'] : $error);
         }
 
-        throw new DonationFormFieldErrorsException($wpError);
+        throw new DonationFormFieldErrorsException($wpError); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- WP_Error object; its messages are returned as JSON and rendered as text by the form.
     }
 }

@@ -963,15 +963,15 @@ if ( ! class_exists('Give_License') ) :
 
 						<div class="give-license__key<?php echo $license_key ? ' give-has-license-key' : ''; ?>">
 							<?php $value = $license_key ? give_hide_char( $license['license_key'], 5 ) : ''; ?>
-							<label for="give-license-addon-key-field" class="give-license-top-header"><?php _e( 'License Key', 'give' ); ?></label>
+							<label for="give-license-addon-key-field" class="give-license-top-header"><?php esc_html_e( 'License Key', 'give' ); ?></label>
 							<input id="give-license-addon-key-field" type="text" autocomplete="off" value="<?php echo esc_attr( $value ); ?>"<?php echo $value ? ' readonly' : ''; ?>>
 							<?php if ( ! $license_key ) : ?>
 								<button class="give-button__license-activate button-primary" data-addon="<?php echo esc_attr( $addon_dir ); ?>">
-									<?php _e( 'Activate', 'give' ); ?>
+									<?php esc_html_e( 'Activate', 'give' ); ?>
 								</button>
 							<?php elseif ( $license_is_inactive ) : ?>
 								<button class="give-button__license-reactivate button-primary" data-addon="<?php echo esc_attr( $addon_dir ); ?>" data-license="<?php echo esc_attr( $license['license_key'] ); ?>">
-									<?php _e( 'Reactivate', 'give' ); ?>
+									<?php esc_html_e( 'Reactivate', 'give' ); ?>
 								</button>
 							<?php else : ?>
 
@@ -1016,7 +1016,7 @@ if ( ! class_exists('Give_License') ) :
 					</div>
 
 					<div class="give-license-top-column give-license-info-field-wrap">
-						<h3 class="give-license-top-header"><?php _e( 'License Information', 'give' ); ?></h3>
+						<h3 class="give-license-top-header"><?php esc_html_e( 'License Information', 'give' ); ?></h3>
 						<?php
 						// @todo: handle all license status;
 						if ( $license_key ) :
@@ -1057,13 +1057,13 @@ if ( ! class_exists('Give_License') ) :
 							?>
 						<?php else : ?>
 
-							<p class="give-field-description"><?php _e( 'This is an unlicensed add-on and is not receiving updates or support. Please activate your license key to fix the issue.', 'give' ); ?></p>
+							<p class="give-field-description"><?php esc_html_e( 'This is an unlicensed add-on and is not receiving updates or support. Please activate your license key to fix the issue.', 'give' ); ?></p>
 
 						<?php endif; ?>
 					</div>
 
 					<div class="give-license-top-column">
-						<h3 class="give-license-top-header"><?php _e( 'License Actions', 'give' ); ?></h3>
+						<h3 class="give-license-top-header"><?php esc_html_e( 'License Actions', 'give' ); ?></h3>
 
 						<?php
 						// Purchase license link.
