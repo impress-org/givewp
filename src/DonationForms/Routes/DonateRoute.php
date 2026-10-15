@@ -39,6 +39,7 @@ class DonateRoute
     }
 
     /**
+     * @since TBD Include failed field identifiers in validation logs.
      * @since 4.17.0 Sign the donor in from the auth token when the login cookie is unavailable.
      * @since 3.0.0
      *
@@ -73,7 +74,7 @@ class DonateRoute
             $this->donateController->donate($data, $data->getGateway());
         } catch (DonationFormFieldErrorsException $exception) {
             $type = DonationFormErrorTypes::VALIDATION;
-            $this->logError($type, $exception->getMessage(), $formData);
+            $this->logError($type, $exception->getMessage(), $formData, $exception->getError()->get_error_codes());
             $this->sendJsonError($type, $exception->getError());
         } catch (PaymentGatewayException $exception) {
             $type = DonationFormErrorTypes::GATEWAY;
@@ -91,21 +92,26 @@ class DonateRoute
     }
 
     /**
+     * @since TBD Log form and error details without serializing the submitted form data.
      * @since 3.0.0
      */
     private function logError(
         string $type,
         string $exceptionMessage,
-        DonateFormRouteData $formData
+        DonateFormRouteData $formData,
+        array $invalidFields = []
     ) {
-        Log::error(
-            "Donation Route Error: $type",
-            [
-                'error_type' => $type,
-                'exceptionMessage' => $exceptionMessage,
-                'formData' => $formData->toArray(),
-            ]
-        );
+        $context = [
+            'error_type' => $type,
+            'exceptionMessage' => $exceptionMessage,
+            'formId' => $formData->formId,
+        ];
+
+        if ($invalidFields) {
+            $context['invalidFields'] = $invalidFields;
+        }
+
+        Log::error("Donation Route Error: $type", $context);
     }
 
     /**
