@@ -1004,8 +1004,8 @@ if ( ! class_exists('Give_License') ) :
 										'<span class="dashicons dashicons-no"></span> %1$s %2$s',
 										esc_html__( 'License is inactive.', 'give' ),
 										$license_is_inactive
-												/* translators: %1$s: URL of the account page */
 											? wp_kses_post( sprintf(
+												/* translators: %1$s: URL of the account page */
 												__( 'Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details and activate this license to receive updates and support.', 'give' ),
 												esc_url( self::get_account_url() )
 											) )

@@ -399,7 +399,7 @@ class Give_API {
 		$user = Give_Cache::get( md5( 'give_api_user_' . $key ), true );
 
 		if ( false === $user ) {
-			$user = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = %s AND meta_value=%s LIMIT 1", $key, 'give_user_public_key' ) );
+			$user = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = %s AND meta_value=%s LIMIT 1", $key, 'give_user_public_key' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Looks up an API key by usermeta value, which no core function does; the result is cached with Give_Cache::set just below.
 			Give_Cache::set( md5( 'give_api_user_' . $key ), $user, DAY_IN_SECONDS, true );
 		}
 
@@ -430,7 +430,7 @@ class Give_API {
 		$user_public_key = Give_Cache::get( $cache_key, true );
 
 		if ( empty( $user_public_key ) ) {
-			$user_public_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_public_key' AND user_id = %d", $user_id ) );
+			$user_public_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_public_key' AND user_id = %d", $user_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Looks up an API key by usermeta value, which no core function does; the result is cached with Give_Cache::set just below.
 			Give_Cache::set( $cache_key, $user_public_key, HOUR_IN_SECONDS, true );
 		}
 
@@ -455,7 +455,7 @@ class Give_API {
 		$user_secret_key = Give_Cache::get( $cache_key, true );
 
 		if ( empty( $user_secret_key ) ) {
-			$user_secret_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_secret_key' AND user_id = %d", $user_id ) );
+			$user_secret_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_secret_key' AND user_id = %d", $user_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Looks up an API key by usermeta value, which no core function does; the result is cached with Give_Cache::set just below.
 			Give_Cache::set( $cache_key, $user_secret_key, HOUR_IN_SECONDS, true );
 		}
 
@@ -1031,7 +1031,7 @@ class Give_API {
 				array(
 					'post_type'        => 'give_forms',
 					'posts_per_page'   => $this->per_page(),
-					'suppress_filters' => true,
+					'suppress_filters' => true, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters -- intended: the API lists all forms and must not be changed by query filters such as WPML language filtering.
 					'paged'            => $this->get_paged(),
 				)
 			);
@@ -1555,8 +1555,8 @@ class Give_API {
 		} elseif ( isset( $wp_query->query_vars['email'] ) ) {
 			$args  = array(
 				'fields'     => 'ids',
-				'meta_key'   => '_give_payment_donor_email',
-				'meta_value' => $wp_query->query_vars['email'],
+				'meta_key'   => '_give_payment_donor_email', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Finds donations by donor email meta for the API; the email is stored as meta.
+				'meta_value' => $wp_query->query_vars['email'], // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Finds donations by donor email meta for the API; the email is stored as meta.
 				'number'     => $this->per_page(),
 				'page'       => $this->get_paged(),
 			);
@@ -1954,7 +1954,7 @@ class Give_API {
 	 * Process an API key generation/revocation
 	 *
 	 * @access public
-	 * @since  TBD Escape output.
+	 * @since TBD Escape output. Use safe redirects to the admin Tools page. Unslash and sanitize the nonce.
 	 * @since  1.1
 	 *
 	 * @param array $args
@@ -1963,7 +1963,9 @@ class Give_API {
 	 */
 	public function process_api_key( $args ) {
 
-		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'give-api-nonce' ) ) {
+		$nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+		if ( ! wp_verify_nonce( $nonce, 'give-api-nonce' ) ) {
 			wp_die(
 				esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ),
 				esc_html__( 'Error', 'give' ),
@@ -2019,23 +2021,23 @@ class Give_API {
 			case 'generate':
 				if ( $this->generate_api_key( $user_id ) ) {
 					Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
-					wp_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-generated', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) );
+					wp_safe_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-generated', admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) ) );
 					exit();
 				} else {
-					wp_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-failed', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) );
+					wp_safe_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-failed', admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) ) );
 					exit();
 				}
 				break;
 			case 'regenerate':
 				$this->generate_api_key( $user_id, true );
 				Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
-				wp_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-regenerated', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) );
+				wp_safe_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-regenerated', admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) ) );
 				exit();
 				break;
 			case 'revoke':
 				$this->revoke_api_key( $user_id );
 				Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
-				wp_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-revoked', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) );
+				wp_safe_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-revoked', admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) ) );
 				exit();
 				break;
 			default;
@@ -2071,6 +2073,7 @@ class Give_API {
 		$new_public_key = '';
 		$new_secret_key = '';
 
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- WordPress core verifies the nonce before it fires personal_options_update and edit_user_profile_update, and process_api_key() verifies give-api-nonce before the Tools page calls this.
 		if ( ! empty( $_POST['from'] ) && 'profile' === $_POST['from'] ) {
 			// For User Profile Page.
 			if ( ! empty( $_POST['give_set_api_key'] ) ) {
@@ -2083,6 +2086,7 @@ class Give_API {
 			} else {
 				return false;
 			}
+			// phpcs:enable WordPress.Security.NonceVerification.Missing
 		} else {
 			// For Tools > API page.
 			$public_key = $this->get_user_public_key( $user_id );

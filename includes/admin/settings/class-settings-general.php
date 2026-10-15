@@ -597,6 +597,7 @@ if (!class_exists('Give_Settings_General')) :
          */
         public function _give_change_donation_stating_number($update_options, $option_name, $old_options)
         {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- only checks that the field was submitted; this runs from the give_save_settings_* hook after Give_Admin_Settings::verify_nonce() passed.
             if (!isset($_POST['sequential-ordering_number'])) {
                 return false;
             }

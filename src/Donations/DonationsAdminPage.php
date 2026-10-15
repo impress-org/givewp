@@ -52,16 +52,16 @@ class DonationsAdminPage
      * Render admin page container
      *
      * @since 4.6.0 Add new details page view
-     * @since TBD Escape output.
+     * @since TBD Escape output. Guard the id param.
      * @since 2.20.0
      */
     public function render()
     {
-        if (isset($_GET['view']) && 'view-payment-details' === $_GET['view']) {
+        if (isset($_GET['view']) && 'view-payment-details' === $_GET['view']) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
             include GIVE_PLUGIN_DIR . 'includes/admin/payments/view-payment-details.php';
         } else {
             if (self::isShowingDetailsPage()) {
-                $donation = Donation::find(absint($_GET['id']));
+                $donation = Donation::find(absint($_GET['id'] ?? 0)); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only id param; it only selects which record to show and saves nothing.
 
                 if ( ! $donation) {
                     wp_die(esc_html__('Donation not found', 'give'), 404);
@@ -87,7 +87,7 @@ class DonationsAdminPage
      */
     public static function isShowing()
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-payment-history' && ! isset($_GET['id']);
+        return isset($_GET['page']) && $_GET['page'] === 'give-payment-history' && ! isset($_GET['id']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**
@@ -95,7 +95,7 @@ class DonationsAdminPage
      */
     public static function isShowingDetailsPage(): bool
     {
-        return isset($_GET['id'], $_GET['page']) && 'give-payment-history' === $_GET['page'];
+        return isset($_GET['id'], $_GET['page']) && 'give-payment-history' === $_GET['page']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
 

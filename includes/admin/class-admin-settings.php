@@ -82,13 +82,14 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		/**
 		 * Verify admin setting nonce
 		 *
+		 * @since TBD Unslash and sanitize the nonce.
 		 * @since  1.8.14
 		 * @access public
 		 *
 		 * @return bool
 		 */
 		public static function verify_nonce() {
-			if ( empty( $_REQUEST['_give-save-settings'] ) || ! wp_verify_nonce( $_REQUEST['_give-save-settings'], 'give-save-settings' ) ) {
+			if ( empty( $_REQUEST['_give-save-settings'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_give-save-settings'] ) ), 'give-save-settings' ) ) {
 				return false;
 			}
 
@@ -248,6 +249,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			}
 
 			// Save settings if data has been posted.
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- only checks that the form was submitted; save() verifies the nonce with Give_Admin_Settings::verify_nonce() before it saves anything.
 			if ( isset( $_POST['_give-save-settings'] ) ) {
 				self::save();
 			}
@@ -346,7 +348,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
                             <ul>
                                 <?php
                                 foreach ($groups as $slug => $group) {
-                                    $current_group = ! empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup;
+                                    $current_group = ! empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only group param; it only selects which panel to show and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
                                     $active_class = ($slug === $current_group) ? 'active' : '';
 
                                     echo sprintf(
@@ -365,7 +367,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
                     <div class="give-settings-section-group-content">
 						<?php
 						foreach ( $sections as $group => $fields ) {
-							$current_group = ! empty( $_GET['group'] ) ? give_clean( $_GET['group'] ) : $defaultGroup;
+							$current_group = ! empty( $_GET['group'] ) ? give_clean( $_GET['group'] ) : $defaultGroup; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only group param; it only selects which panel to show and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 							$hide_class    = $group !== $current_group ? 'give-hidden' : '';
 
 							printf(
@@ -389,7 +391,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 								echo '<ul class="give-subsubsub">';
 								foreach ( $subGroups as $id => $label ) {
 									$separator       = $lastSubGroupId === $id ? '' : '&nbsp;|&nbsp;';
-									$currentSubGroup = ! empty( $_GET['sub-group'] ) ? give_clean( $_GET['sub-group'] ) : $defaultSubGroup;
+									$currentSubGroup = ! empty( $_GET['sub-group'] ) ? give_clean( $_GET['sub-group'] ) : $defaultSubGroup; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only sub-group param; it only selects which panel to show and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 									$class           = $id === $currentSubGroup ? 'current' : '';
 									printf(
 										'<li><a data-subgroup="%1$s" href="%2$s" class="%5$s">%3$s</a>%4$s</li>',
@@ -403,7 +405,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 								echo '</ul>';
 
 								foreach ( $fields as $id => $subgroup ) {
-									$current_group = ! empty( $_GET['sub-group'] ) ? give_clean( $_GET['sub-group'] ) : $defaultSubGroup;
+									$current_group = ! empty( $_GET['sub-group'] ) ? give_clean( $_GET['sub-group'] ) : $defaultSubGroup; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only sub-group param; it only selects which panel to show and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 									$hide_class    = $id !== $current_group ? 'give-hidden' : '';
 
 									printf(
@@ -1156,7 +1158,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		public static function save_fields( $options, $option_name = '' ) {
 
 			// Fetch form posted super global data.
-			$post_data = give_clean( $_POST );
+			$post_data = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by Give_Admin_Settings::verify_nonce() in save() before this runs.
 
 			// Bailout, if posted data doesn't exists.
 			if ( empty( $post_data ) ) {
@@ -1200,11 +1202,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					parse_str( $option['id'], $option_name_array );
 					$field_option_name = current( array_keys( $option_name_array ) );
 					$setting_name      = key( $option_name_array[ $field_option_name ] );
-					$raw_value         = isset( $_POST[ $field_option_name ][ $setting_name ] ) ? wp_unslash( $_POST[ $field_option_name ][ $setting_name ] ) : null;
+					$raw_value         = isset( $_POST[ $field_option_name ][ $setting_name ] ) ? wp_unslash( $_POST[ $field_option_name ][ $setting_name ] ) : null; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified by Give_Admin_Settings::verify_nonce() in save() before this runs; the value is sanitized by option type below.
 				} else {
 					$field_option_name = $option['id'];
 					$setting_name      = '';
-					$raw_value         = isset( $_POST[ $option['id'] ] ) ? wp_unslash( $_POST[ $option['id'] ] ) : null;
+					$raw_value         = isset( $_POST[ $option['id'] ] ) ? wp_unslash( $_POST[ $option['id'] ] ) : null; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified by Give_Admin_Settings::verify_nonce() in save() before this runs; the value is sanitized by option type below.
 				}
 
 				// Format the value based on option type.
@@ -1323,12 +1325,14 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			}
 
 			// Are we accessing any give page?
+			// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides whether this is a settings screen and saves nothing.
 			if (
 				! isset( $_GET['post_type'], $_GET['page'] )
-				|| 'give_forms' !== give_clean( $_GET['post_type'] )
+				|| 'give_forms' !== give_clean( $_GET['post_type'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 			) {
 				return $is_setting_page;
 			}
+			// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 			// Check fo setting tab.
 			if ( ! empty( $tab ) ) {

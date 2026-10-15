@@ -68,8 +68,8 @@ class Give_Recurring_DB_Subscription_Meta extends Give_DB_Meta {
 		return array(
 			'meta_id'         => '%d',
 			'subscription_id' => '%d',
-			'meta_key'        => '%s',
-			'meta_value'      => '%s',
+			'meta_key'        => '%s', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column format map of the GiveWP meta table, not a query filter.
+			'meta_value'      => '%s', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column format map of the GiveWP meta table, not a query filter.
 		);
 	}
 }

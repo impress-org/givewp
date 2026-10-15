@@ -5,6 +5,7 @@
  *
  * @var array[] $banners
  */
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 ?>
 <div class="givewp-sale-banners-container" style="display: none;">
     <?php

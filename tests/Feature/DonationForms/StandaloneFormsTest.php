@@ -28,9 +28,22 @@ final class StandaloneFormsTest extends RestApiTestCase
     /**
      * @since TBD
      */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        // Other tests define DOING_AJAX, which cannot be undone and sends wp_die() to the ajax die handler.
+        // Route that handler to the test handler too, so wp_die() throws WPDieException in every run order.
+        add_filter('wp_die_ajax_handler', [$this, 'get_wp_die_handler']);
+    }
+
+    /**
+     * @since TBD
+     */
     public function tearDown(): void
     {
-        unset($_GET['page'], $_GET['donationFormID']);
+        unset($_GET['page'], $_GET['donationFormID'], $_REQUEST['_wpnonce']);
+        wp_set_current_user(0);
 
         parent::tearDown();
     }
@@ -47,6 +60,35 @@ final class StandaloneFormsTest extends RestApiTestCase
         $this->assertTrue($form->status->isDraft());
         $this->assertNull(Campaign::findByFormId($formId));
         $this->assertSame(0, give_derive_campaign_id_from_form_id($formId));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testAddFormNeedsTheNonceAndTheCapability(): void
+    {
+        $countForms = static function (): int {
+            return count(get_posts(['post_type' => 'give_forms', 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids']));
+        };
+        $before = $countForms();
+
+        $_GET['page'] = FormBuilderRouteBuilder::SLUG;
+        $_GET['donationFormID'] = 'new';
+
+        wp_set_current_user(self::factory()->user->create(['role' => 'subscriber']));
+        $_REQUEST['_wpnonce'] = wp_create_nonce(FormBuilderRouteBuilder::CREATE_NONCE_ACTION);
+        (new CreateFormRoute())();
+        $this->assertSame($before, $countForms());
+
+        wp_set_current_user(self::factory()->user->create(['role' => 'administrator']));
+        unset($_REQUEST['_wpnonce']);
+
+        try {
+            (new CreateFormRoute())();
+            $this->fail('Expected the missing nonce to stop the request.');
+        } catch (\WPDieException $exception) {
+            $this->assertSame($before, $countForms());
+        }
     }
 
     /**
@@ -89,6 +131,9 @@ final class StandaloneFormsTest extends RestApiTestCase
     {
         $_GET['page'] = FormBuilderRouteBuilder::SLUG;
         $_GET['donationFormID'] = 'new';
+
+        wp_set_current_user(self::factory()->user->create(['role' => 'administrator']));
+        $_REQUEST['_wpnonce'] = wp_create_nonce(FormBuilderRouteBuilder::CREATE_NONCE_ACTION);
 
         $location = $this->captureRedirect(new CreateFormRoute());
         parse_str((string)parse_url($location, PHP_URL_QUERY), $query);

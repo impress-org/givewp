@@ -9,7 +9,7 @@ any of the three subtly wrong produces code that loads without error and simply 
 1. `give.php` ends with `give()->boot()`, executed when WordPress includes the plugin file.
 2. `Give::boot()` defines constants and registers `add_action('plugins_loaded', [$this, 'init'], 0)`
    — **priority 0**, so GiveWP initializes before most other plugins' `plugins_loaded` handlers.
-3. `Give::init()` fires `before_give_init`, binds a couple of core classes, installs the uncaught
+3. `Give::init()` fires `givewp_before_init` (and the deprecated `before_give_init`), binds a couple of core classes, installs the uncaught
    exception handler, then calls `loadServiceProviders()`, loads form templates and routes, and
    fires `give_init`.
 4. `loadServiceProviders()` walks `$serviceProviders` and runs the two-phase cycle below.

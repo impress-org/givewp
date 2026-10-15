@@ -386,7 +386,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 		 * @return bool
 		 */
 		private function is_donations_export_page() {
-			return 'export' === give_get_current_setting_tab() && isset( $_GET['type'] ) && $this->exporter_type === give_clean( $_GET['type'] );
+			return 'export' === give_get_current_setting_tab() && isset( $_GET['type'] ) && $this->exporter_type === give_clean( $_GET['type'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only tab param; it only decides whether to show this export screen and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
 		}
 	}
 

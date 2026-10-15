@@ -235,7 +235,12 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 			if ( is_array( $sql ) && count( $sql ) > 0 ) {
 				foreach ( $sql as $query ) {
-					$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- table and column names come from give_v20_bc_table_details() and Give()->donor_meta; ids are (int) post or donor ids or values added by the give_reset_items filter; the give_reset_add_queries_{$type} filter lets add-ons append raw SQL that runs as-is.
+					$wpdb->query( $query ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- one-off bulk reset of GiveWP tables, posts and options; no WordPress API or object cache covers it. Table and column names come from give_v20_bc_table_details() and Give()->donor_meta; ids are (int) post or donor ids or values added by the give_reset_items filter; the give_reset_add_queries_{$type} filter lets add-ons append raw SQL that runs as-is.
+				}
+
+				// The raw delete above skips the options cache. Clear it so the batch tools do not read removed options.
+				if ( ! empty( $step_ids['other'] ) ) {
+					wp_cache_flush();
 				}
 			}
 
@@ -400,6 +405,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Given a key, get the information from the Database Directly.
 	 *
+	 * @since TBD Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name
@@ -407,8 +413,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * @return mixed       Returns the data from the database.
 	 */
 	private function get_stored_data( $key ) {
-		global $wpdb;
-		$value = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = %s", $key ) );
+		$value = get_option( $key, null );
 
 		if ( empty( $value ) ) {
 			return false;
@@ -425,6 +430,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Give a key, store the value.
 	 *
+	 * @since TBD Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key   The option_name.
@@ -433,28 +439,15 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * @return void
 	 */
 	private function store_data( $key, $value ) {
-		global $wpdb;
-
 		$value = is_array( $value ) ? wp_json_encode( $value ) : esc_attr( $value );
 
-		$data = [
-			'option_name'  => $key,
-			'option_value' => $value,
-			'autoload'     => 'no',
-		];
-
-		$formats = [
-			'%s',
-			'%s',
-			'%s',
-		];
-
-		$wpdb->replace( $wpdb->options, $data, $formats );
+		update_option( $key, $value, false );
 	}
 
 	/**
 	 * Delete an option
 	 *
+	 * @since TBD Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name to delete
@@ -462,13 +455,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * @return void
 	 */
 	private function delete_data( $key ) {
-		global $wpdb;
-		$wpdb->delete(
-			$wpdb->options,
-			[
-				'option_name' => $key,
-			]
-		);
+		delete_option( $key );
 	}
 
 	/**

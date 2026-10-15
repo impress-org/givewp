@@ -181,6 +181,7 @@ class Give_Email_Setting_Field {
 			$default_value = 'global';
 		}
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page param; it only picks the help text to show and saves nothing.
 		$description = isset( $_GET['page'] ) && 'give-settings' === $_GET['page'] ? __( 'Choose whether you want this email enabled or not.', 'give' ) : sprintf( /* translators: %s: URL of the email settings page */ __( 'Global Options are set <a href="%s">in GiveWP settings</a>. You may override them for this form here.', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails' ) );
 
 		return array(

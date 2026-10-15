@@ -16,6 +16,8 @@ use Give\Revenue\Migrations\AddPastDonationsToRevenueTable;
  * @subpackage  Functions/Install
  */
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- installer; it lists sites and GiveWP tables once at install time, and WordPress has no function for SHOW TABLES.
+
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
     exit;
@@ -165,7 +167,7 @@ function give_run_install()
     }
 
     // Bail if activating from network, or bulk.
-    if (is_network_admin() || isset($_GET['activate-multi'])) {
+    if (is_network_admin() || isset($_GET['activate-multi'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- WordPress core sets activate-multi on bulk activation; only its presence is checked and nothing is saved.
         return;
     }
 

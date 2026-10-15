@@ -72,6 +72,6 @@ class AddonsAdminPage
      */
     public static function isShowing()
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-add-ons';
+        return isset($_GET['page']) && $_GET['page'] === 'give-add-ons'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides whether the add-ons promotion shows.
     }
 }

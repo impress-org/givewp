@@ -301,7 +301,7 @@ class Give_Notices {
     {
         $errors = give_get_errors();
 
-        $request_form_id = isset($_REQUEST['form-id']) ? absint($_REQUEST['form-id']) : 0;
+        $request_form_id = isset($_REQUEST['form-id']) ? absint($_REQUEST['form-id']) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form id; it only picks which form shows the error notices and saves nothing.
 
         // Sanity checks first:
         // - Ensure that gateway returned errors display on the appropriate form.
@@ -446,7 +446,7 @@ class Give_Notices {
 	 * @access public
 	 */
 	public function dismiss_notices() {
-		$_post     = give_clean( $_POST );
+		$_post     = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the nonce action includes the notice id, so check_ajax_referer() below runs once the notice id is read; nothing is saved before it.
 		$notice_id = esc_attr( $_post['notice_id'] );
 
 		// Bailout.

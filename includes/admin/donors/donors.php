@@ -113,6 +113,7 @@ function give_get_format_address( $address, $address_args = array() ) {
  *
  * Renders the donors page contents.
  *
+ * @since TBD Unslash the requested view.
  * @since 4.13.1 add early return if showing new details page
  * @since  1.0
  * @return void
@@ -123,7 +124,7 @@ function give_donors_page() {
     }
 
 	$default_views  = give_donor_views();
-	$requested_view = isset( $_GET['view'] ) ? sanitize_text_field( $_GET['view'] ) : 'donors';
+	$requested_view = isset( $_GET['view'] ) ? sanitize_text_field( wp_unslash( $_GET['view'] ) ) : 'donors'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only view name; it selects which donor screen to show and saves nothing.
 	if ( array_key_exists( $requested_view, $default_views ) && function_exists( $default_views[ $requested_view ] ) ) {
 		give_render_donor_view( $requested_view, $default_views );
 	}
@@ -235,12 +236,12 @@ function give_render_donor_view( $view, $callbacks ) {
 		$render = false;
 	}
 
-	if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
+	if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only donor id; it only picks which donor to show and saves nothing.
 		give_set_error( 'give-invalid_donor', __( 'Invalid Donor ID.', 'give' ) );
 		$render = false;
 	}
 
-	$donor_id          = (int) $_GET['id'];
+	$donor_id          = (int) $_GET['id']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only donor id; it only picks which donor to show and saves nothing.
 	$donor             = new Give_Donor( $donor_id );
 
 	if ( empty( $donor->id ) ) {
@@ -1041,7 +1042,7 @@ function give_donor_view( $donor ) {
 /**
  * View the notes of a donor.
  *
- * @since TBD Escape output, including translated strings.
+ * @since TBD Escape output, including translated strings. Sanitize the page number.
  * @since 4.16.6 Escaped the donor name output in the donor notes header.
  * @since 4.6.0 Escape donor note
  * @since  1.0
@@ -1052,8 +1053,7 @@ function give_donor_view( $donor ) {
  */
 function give_donor_notes_view( $donor ) {
 
-	$paged       = isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) ? $_GET['paged'] : 1;
-	$paged       = absint( $paged );
+	$paged       = isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page number; it only picks which notes page to show and saves nothing.
 	$note_count  = $donor->get_notes_count();
 	$per_page    = apply_filters( 'give_donor_notes_per_page', 20 );
 	$total_pages = ceil( $note_count / $per_page );

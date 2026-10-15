@@ -148,6 +148,7 @@ function give_get_timezone_id() {
  *
  * Returns the IP address of the current visitor
  *
+ * @since TBD Unslash and sanitize the server variables.
  * @since 2.33.5  Add $single param.
  * @since       1.0
  *
@@ -160,14 +161,14 @@ function give_get_ip($single = true)
 
 	if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
 		// check ip from share internet
-        $ip_addresses = $_SERVER['HTTP_CLIENT_IP'];
+        $ip_addresses = sanitize_text_field( wp_unslash( $_SERVER['HTTP_CLIENT_IP'] ) );
         $header_type = 'HTTP_CLIENT_IP';
 	} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
 		// to check ip is pass from proxy
-        $ip_addresses = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        $ip_addresses = sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) );
         $header_type = 'HTTP_X_FORWARDED_FOR';
 	} elseif ( ! empty( $_SERVER['REMOTE_ADDR'] ) ) {
-        $ip_addresses = $_SERVER['REMOTE_ADDR'];
+        $ip_addresses = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
         $header_type = 'REMOTE_ADDR';
 	}
 
@@ -355,10 +356,12 @@ function give_payment_gateway_donation_summary( $donation_data, $name_and_email 
  * Returns the webhost this site is using if possible
  *
  * @return string $host if detected, false otherwise
+ * @since TBD Unslash and sanitize the server name.
  * @since 1.0
  */
 function give_get_host() {
-	$find_host = gethostname();
+	$find_host   = gethostname();
+	$server_name = isset( $_SERVER['SERVER_NAME'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) : '';
 
 	if ( strpos( $find_host, 'sgvps.net' ) ) {
 		$host = 'Siteground';
@@ -384,11 +387,11 @@ function give_get_host() {
 		$host = 'Rackspace Cloud';
 	} elseif ( strpos( DB_HOST, '.sysfix.eu' ) !== false ) {
 		$host = 'SysFix.eu Power Hosting';
-	} elseif ( strpos( $_SERVER['SERVER_NAME'], 'Flywheel' ) !== false || strpos( $find_host, 'fw' ) ) {
+	} elseif ( strpos( $server_name, 'Flywheel' ) !== false || strpos( $find_host, 'fw' ) ) {
 		$host = 'Flywheel';
 	} else {
 		// Adding a general fallback for data gathering
-		$host = 'DBH: ' . DB_HOST . ', SRV: ' . $_SERVER['SERVER_NAME'];
+		$host = 'DBH: ' . DB_HOST . ', SRV: ' . $server_name;
 	}
 
 	return $host;
@@ -408,14 +411,14 @@ function give_get_host() {
  * @param string $function    The function that was called.
  * @param string $version     The plugin version that deprecated the function.
  * @param string $replacement Optional. The function that should have been called.
- * @param array  $backtrace   Optional. Contains stack backtrace of deprecated function.
+ * @param array  $backtrace   Unused. Kept so add-ons that still pass a backtrace keep working.
  *
  * @uses do_action() Calls 'give_deprecated_function_run' and passes the function name, what to use instead,
  *       and the version the function was deprecated in.
  * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
  *       trigger or false to not trigger error.
  *
- * @since TBD Escape output. Add translators comments.
+ * @since TBD Escape output. Add translators comments. Stop dumping the backtrace in the notice.
  */
 function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
 
@@ -438,14 +441,10 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
 	if ( WP_DEBUG && apply_filters( 'give_deprecated_function_trigger_error', $show_errors ) ) {
 		if ( ! is_null( $replacement ) ) {
 			/* translators: 1: Function name, 2: GiveWP version, 3: Replacement function name */
-			trigger_error( wp_kses_post( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s! Use %3$s instead.', 'give' ), esc_html( $function ), esc_html( $version ), esc_html( $replacement ) ) ) );
-			trigger_error( esc_html( print_r( $backtrace, 1 ) ) ); // Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
-			// Alternatively we could dump this to a file.
+			wp_trigger_error( '', wp_kses_post( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s! Use %3$s instead.', 'give' ), esc_html( $function ), esc_html( $version ), esc_html( $replacement ) ) ) );
 		} else {
 			/* translators: 1: Function name, 2: GiveWP version */
-			trigger_error( wp_kses_post( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s with no alternative available.', 'give' ), esc_html( $function ), esc_html( $version ) ) ) );
-			trigger_error( esc_html( print_r( $backtrace, 1 ) ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
-			// Alternatively we could dump this to a file.
+			wp_trigger_error( '', wp_kses_post( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s with no alternative available.', 'give' ), esc_html( $function ), esc_html( $version ) ) ) );
 		}
 	}
 }
@@ -458,11 +457,13 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
  * @return string $post_id
  */
 function give_get_admin_post_id() {
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only post ID params; they only tell which post the admin screen is showing and save nothing.
 	$post_id = isset( $_REQUEST['post'] ) ? absint( $_REQUEST['post'] ) : null;
 
 	$post_id = ! empty( $post_id ) ? $post_id : ( isset( $_REQUEST['post_id'] ) ? absint( $_REQUEST['post_id'] ) : null );
 
 	$post_id = ! empty( $post_id ) ? $post_id : ( isset( $_REQUEST['post_ID'] ) ? absint( $_REQUEST['post_ID'] ) : null );
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	return $post_id;
 }
@@ -589,113 +590,6 @@ function give_donation_metabox_menu() {
 add_action( 'current_screen', 'give_donation_metabox_menu' );
 
 /**
- * Array_column backup usage
- *
- * This file is part of the array_column library.
- *
- * @since      : 1.3.0.1
- *
- * @copyright  Copyright (c) Ben Ramsey (http://benramsey.com)
- * @license    https://opensource.org/licenses/MIT MIT
- */
-
-if ( ! function_exists( 'array_column' ) ) {
-	/**
-	 * Returns the values from a single column of the input array, identified by
-	 * the $columnKey.
-	 *
-	 * Optionally, you may provide an $indexKey to index the values in the returned
-	 * array by the values from the $indexKey column in the input array.
-	 *
-	 * @param array      $input     A multi-dimensional array (record set) from which to pull
-	 *                              a column of values.
-	 * @param int|string $columnKey The column of values to return. This value may be the
-	 *                              integer key of the column you wish to retrieve, or it
-	 *                              may be the string key name for an associative array.
-	 * @param mixed      $indexKey  (Optional.) The column to use as the index/keys for
-	 *                              the returned array. This value may be the integer key
-	 *                              of the column, or it may be the string key name.
-	 *
-	 * @since TBD Escape output.
-	 *
-	 * @return array|boolean|null
-	 */
-	function array_column( $input = null, $columnKey = null, $indexKey = null ) {
-		// Using func_get_args() in order to check for proper number of
-		// parameters and trigger errors exactly as the built-in array_column()
-		// does in PHP 5.5.
-		$argc   = func_num_args();
-		$params = func_get_args();
-
-		if ( $argc < 2 ) {
-			trigger_error( esc_html( sprintf( 'array_column() expects at least 2 parameters, %s given.', $argc ) ), E_USER_WARNING );
-
-			return null;
-		}
-
-		if ( ! is_array( $params[0] ) ) {
-			trigger_error( esc_html( sprintf( 'array_column() expects parameter 1 to be array, %s given.', gettype( $params[0] ) ) ), E_USER_WARNING );
-
-			return null;
-		}
-
-		if ( ! is_int( $params[1] ) && ! is_float( $params[1] ) && ! is_string( $params[1] ) && $params[1] !== null && ! ( is_object( $params[1] ) && method_exists( $params[1], '__toString' ) ) ) {
-			trigger_error( 'array_column(): The column key should be either a string or an integer.', E_USER_WARNING );
-
-			return false;
-		}
-
-		if ( isset( $params[2] ) && ! is_int( $params[2] ) && ! is_float( $params[2] ) && ! is_string( $params[2] ) && ! ( is_object( $params[2] ) && method_exists( $params[2], '__toString' ) ) ) {
-			trigger_error( 'array_column(): The index key should be either a string or an integer.', E_USER_WARNING );
-
-			return false;
-		}
-
-		$paramsInput     = $params[0];
-		$paramsColumnKey = ( $params[1] !== null ) ? (string) $params[1] : null;
-
-		$paramsIndexKey = null;
-		if ( isset( $params[2] ) ) {
-			if ( is_float( $params[2] ) || is_int( $params[2] ) ) {
-				$paramsIndexKey = (int) $params[2];
-			} else {
-				$paramsIndexKey = (string) $params[2];
-			}
-		}
-
-		$resultArray = [];
-
-		foreach ( $paramsInput as $row ) {
-			$key    = $value = null;
-			$keySet = $valueSet = false;
-
-			if ( $paramsIndexKey !== null && array_key_exists( $paramsIndexKey, $row ) ) {
-				$keySet = true;
-				$key    = (string) $row[ $paramsIndexKey ];
-			}
-
-			if ( $paramsColumnKey === null ) {
-				$valueSet = true;
-				$value    = $row;
-			} elseif ( is_array( $row ) && array_key_exists( $paramsColumnKey, $row ) ) {
-				$valueSet = true;
-				$value    = $row[ $paramsColumnKey ];
-			}
-
-			if ( $valueSet ) {
-				if ( $keySet ) {
-					$resultArray[ $key ] = $value;
-				} else {
-					$resultArray[] = $value;
-				}
-			}
-		}
-
-		return $resultArray;
-	}
-}// End if().
-
-/**
  * Determines the receipt visibility status.
  *
  * @param int $donation_id Donation ID.
@@ -758,7 +652,7 @@ function give_can_view_receipt( $donation_id ) {
 		// The give_nl cookie must be a scalar string token; give_clean() does not coerce arrays
 		// to a string, so require is_string() explicitly before treating it as a token.
 		$email_access_token = ! empty( $_COOKIE['give_nl'] ) && is_string( $_COOKIE['give_nl'] )
-			? give_clean( $_COOKIE['give_nl'] )
+			? give_clean( $_COOKIE['give_nl'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 			: false;
 
 		if (
@@ -957,12 +851,15 @@ function give_delete_donation_stats( $date_range = '', $args = [] ) {
  * Check if admin creating new donation form or not.
  *
  * @return bool
+ * @since TBD Unslash and sanitize the request URI, and read it safely when it is not set.
  * @since 2.0
  */
 function give_is_add_new_form_page() {
 	$status = false;
 
-	if ( false !== strpos( $_SERVER['REQUEST_URI'], '/wp-admin/post-new.php?post_type=give_forms' ) ) {
+	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+
+	if ( false !== strpos( $request_uri, '/wp-admin/post-new.php?post_type=give_forms' ) ) {
 		$status = true;
 	}
 
@@ -1379,10 +1276,24 @@ function give_list_pluck( $list, $field, $index_key = null ) {
  *                           Default false.
  *
  * @return int|false Meta ID on success, false on failure.
+ * @since TBD Renamed from add_donor_meta().
  * @since 1.8.13
  */
-function add_donor_meta( $donor_id, $meta_key, $meta_value, $unique = false ) {
+function give_add_donor_meta( $donor_id, $meta_key, $meta_value, $unique = false ) {
 	return add_metadata( 'give_customer', $donor_id, $meta_key, $meta_value, $unique );
+}
+
+/**
+ * Add meta data field to a donor.
+ *
+ * @since TBD Renamed to give_add_donor_meta(); this old name is a deprecated alias.
+ * @since 1.8.13
+ * @deprecated TBD Use give_add_donor_meta() instead.
+ */
+function add_donor_meta($donor_id, $meta_key, $meta_value, $unique = false) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_add_donor_meta().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_add_donor_meta()' );
+
+	return give_add_donor_meta($donor_id, $meta_key, $meta_value, $unique);
 }
 
 /**
@@ -1397,10 +1308,24 @@ function add_donor_meta( $donor_id, $meta_key, $meta_value, $unique = false ) {
  * @param mixed  $meta_value Optional. Metadata value.
  *
  * @return bool True on success, false on failure.
+ * @since TBD Renamed from delete_donor_meta().
  * @since 1.8.13
  */
-function delete_donor_meta( $donor_id, $meta_key, $meta_value = '' ) {
+function give_delete_donor_meta( $donor_id, $meta_key, $meta_value = '' ) {
 	return delete_metadata( 'give_customer', $donor_id, $meta_key, $meta_value );
+}
+
+/**
+ * Remove metadata matching criteria from a Donor meta.
+ *
+ * @since TBD Renamed to give_delete_donor_meta(); this old name is a deprecated alias.
+ * @since 1.8.13
+ * @deprecated TBD Use give_delete_donor_meta() instead.
+ */
+function delete_donor_meta($donor_id, $meta_key, $meta_value = '') { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_delete_donor_meta().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_delete_donor_meta()' );
+
+	return give_delete_donor_meta($donor_id, $meta_key, $meta_value);
 }
 
 /**
@@ -1412,10 +1337,24 @@ function delete_donor_meta( $donor_id, $meta_key, $meta_value = '' ) {
  *
  * @return mixed Will be an array if $single is false. Will be value of meta data field if $single
  *  is true.
+ * @since TBD Renamed from get_donor_meta().
  * @since 1.8.13
  */
-function get_donor_meta( $donor_id, $key = '', $single = false ) {
+function give_get_donor_meta( $donor_id, $key = '', $single = false ) {
 	return get_metadata( 'give_customer', $donor_id, $key, $single );
+}
+
+/**
+ * Retrieve donor meta field for a donor meta table.
+ *
+ * @since TBD Renamed to give_get_donor_meta(); this old name is a deprecated alias.
+ * @since 1.8.13
+ * @deprecated TBD Use give_get_donor_meta() instead.
+ */
+function get_donor_meta($donor_id, $key = '', $single = false) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_donor_meta().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_get_donor_meta()' );
+
+	return give_get_donor_meta($donor_id, $key, $single);
 }
 
 /**
@@ -1429,10 +1368,24 @@ function get_donor_meta( $donor_id, $key = '', $single = false ) {
  * @param mixed  $prev_value Optional. Previous value to check before removing.
  *
  * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
+ * @since TBD Renamed from update_donor_meta().
  * @since 1.8.13
  */
-function update_donor_meta( $donor_id, $meta_key, $meta_value, $prev_value = '' ) {
+function give_update_donor_meta( $donor_id, $meta_key, $meta_value, $prev_value = '' ) {
 	return update_metadata( 'give_customer', $donor_id, $meta_key, $meta_value, $prev_value );
+}
+
+/**
+ * Update customer meta field based on Donor ID.
+ *
+ * @since TBD Renamed to give_update_donor_meta(); this old name is a deprecated alias.
+ * @since 1.8.13
+ * @deprecated TBD Use give_update_donor_meta() instead.
+ */
+function update_donor_meta($donor_id, $meta_key, $meta_value, $prev_value = '') { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_update_donor_meta().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_update_donor_meta()' );
+
+	return give_update_donor_meta($donor_id, $meta_key, $meta_value, $prev_value);
 }
 
 
@@ -1621,7 +1574,7 @@ function give_donation_history_table_end() {
  * @param string $version deprecated
  *
  * @return void
- * @since  TBD Escape output. Add translators comments.
+ * @since  TBD Escape output. Add translators comments. Stop dumping the backtrace in the notice.
  * @since  1.8.18
  * @since  2.5.13 Refactor function
  */
@@ -1644,8 +1597,7 @@ function give_doing_it_wrong( $function, $message, $version = null ) {
 	// Allow plugin to filter the output error trigger.
 	if ( WP_DEBUG && apply_filters( 'give_doing_it_wrong_trigger_error', $show_errors ) ) {
 		/* translators: 1: Function name, 2: Error message */
-		trigger_error( wp_kses_post( sprintf( __( '%1$s was called <strong>incorrectly</strong>. %2$s', 'give' ), esc_html( $function ), esc_html( $message ) ) ) );
-		trigger_error( esc_html( print_r( wp_debug_backtrace_summary(), 1 ) ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
+		wp_trigger_error( '', wp_kses_post( sprintf( __( '%1$s was called <strong>incorrectly</strong>. %2$s', 'give' ), esc_html( $function ), esc_html( $message ) ) ) );
 	}
 }
 
@@ -1681,7 +1633,7 @@ function give_get_total_post_type_count( $post_type = '', $args = [] ) {
 	}
 
 	$post_types = (array) $post_type;
-	$result     = $wpdb->get_var( $wpdb->prepare( "SELECT count(ID) FROM {$wpdb->posts} WHERE post_type IN (" . implode( ',', array_fill( 0, count( $post_types ), '%s' ) ) . ')', $post_types ) );
+	$result     = $wpdb->get_var( $wpdb->prepare( "SELECT count(ID) FROM {$wpdb->posts} WHERE post_type IN (" . implode( ',', array_fill( 0, count( $post_types ), '%s' ) ) . ')', $post_types ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- One COUNT across several post types; wp_count_posts() counts one type at a time.
 
 	return absint( $result );
 }
@@ -1884,7 +1836,7 @@ function give_get_active_by_user_meta( $banner_addon_name ) {
 		$GLOBALS['give_addon_activated_by_user'] = [];
 
 		// Get the meta of activation banner by user.
-		$activation_banners = $wpdb->get_results(
+		$activation_banners = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds addon activation rows in wp_options by name pattern, which get_option() cannot do.
 			"
 					SELECT option_name, option_value
 					FROM {$wpdb->options}
@@ -1912,6 +1864,7 @@ function give_get_active_by_user_meta( $banner_addon_name ) {
 /**
  * Store recently activated Give's addons to wp options.
  *
+ * @since TBD Unslash and sanitize the request input.
  * @since 4.16.7.1 Moved from includes/admin/plugins.php so the listener is registered on every
  *            request, and fall back to the plugin file passed by the `activated_plugin`
  *            action so add-ons activated outside of plugins.php (REST, WP-CLI,
@@ -1924,18 +1877,24 @@ function give_recently_activated_addons( $activated_plugin = '' ) {
 	$plugins = [];
 
 	// Check if action is set.
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- WordPress core verifies the nonce before it fires activated_plugin; these params only tell which plugins were activated.
 	if ( isset( $_REQUEST['action'] ) ) {
-		$plugin_action = ( '-1' !== $_REQUEST['action'] ) ? $_REQUEST['action'] : ( isset( $_REQUEST['action2'] ) ? $_REQUEST['action2'] : '' );
+		$plugin_action = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) );
+
+		if ( '-1' === $plugin_action ) {
+			$plugin_action = isset( $_REQUEST['action2'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action2'] ) ) : '';
+		}
 
 		switch ( $plugin_action ) {
 			case 'activate': // Single add-on activation.
-				$plugins[] = $_REQUEST['plugin'];
+				$plugins[] = isset( $_REQUEST['plugin'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) : '';
 				break;
 			case 'activate-selected': // If multiple add-ons activated.
-				$plugins = $_REQUEST['checked'];
+				$plugins = isset( $_REQUEST['checked'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_REQUEST['checked'] ) ) : [];
 				break;
 		}
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	/**
 	 * Activations that do not come from the plugins.php form (Harbor's feature manager,
@@ -2128,12 +2087,14 @@ function give_goal_progress_stats( $form ) {
  * @since 2.1.4
  */
 function give_get_admin_messages_key() {
-	$messages = empty( $_GET['give-messages'] ) ? [] : give_clean( $_GET['give-messages'] );
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only notice params from the redirect URL; they only pick which admin notice to show and save nothing.
+	$messages = empty( $_GET['give-messages'] ) ? [] : give_clean( $_GET['give-messages'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 	// backward compatibility.
 	if ( ! empty( $_GET['give-message'] ) ) {
-		$messages[] = give_clean( $_GET['give-message'] );
+		$messages[] = give_clean( $_GET['give-message'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	/**
 	 * Filter to modify the admin messages key.
@@ -2155,7 +2116,7 @@ function give_get_admin_messages_key() {
 function give_get_user_agent() {
 
 	// Get User Agent.
-	$user_agent = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? give_clean( $_SERVER['HTTP_USER_AGENT'] ) : ''; // WPCS: input var ok.
+	$user_agent = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? give_clean( $_SERVER['HTTP_USER_AGENT'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 	return $user_agent;
 }
@@ -2623,14 +2584,14 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 
 	update_option( 'give_licenses_refreshed_last_checked', $refresh, 'no' );
 
-    $platform_fee_percentage = get_platform_fee_from_licenses();
+    $platform_fee_percentage = give_get_platform_fee_from_licenses();
 
     if (!is_null($platform_fee_percentage)) {
         update_option( LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE, $platform_fee_percentage, 'no' );
     }
 
     // Update active license date after license refresh when active license is found
-    $active_license_date = get_active_license_date();
+    $active_license_date = give_get_active_license_date();
 
 	if(!is_null($active_license_date)) {
         update_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE, $active_license_date, 'no');
@@ -2649,8 +2610,10 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 
 /**
  * Get platform fee from stored licenses
+ *
+ * @since TBD Renamed from get_platform_fee_from_licenses().
  */
-function get_platform_fee_from_licenses(): ?float
+function give_get_platform_fee_from_licenses(): ?float
 {
     /** @var LicenseRepository $repository */
     $repository = give(LicenseRepository::class);
@@ -2659,16 +2622,43 @@ function get_platform_fee_from_licenses(): ?float
 }
 
 /**
+ * Get platform fee from stored licenses
+ *
+ * @deprecated TBD Use give_get_platform_fee_from_licenses() instead.
+ */
+function get_platform_fee_from_licenses(): ?float // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_platform_fee_from_licenses().
+{
+    _give_deprecated_function( __FUNCTION__, 'TBD', 'give_get_platform_fee_from_licenses()' );
+
+    return give_get_platform_fee_from_licenses();
+}
+
+/**
  * Set Active License Date
  *
+ * @since TBD Renamed from get_active_license_date().
  * @since 4.8.0
  */
-function get_active_license_date(): ?int
+function give_get_active_license_date(): ?int
 {
     /** @var LicenseRepository $repository */
     $repository = give(LicenseRepository::class);
 
     return $repository->getCurrentActiveLicenseDate();
+}
+
+/**
+ * Set Active License Date
+ *
+ * @since TBD Renamed to give_get_active_license_date(); this old name is a deprecated alias.
+ * @since 4.8.0
+ * @deprecated TBD Use give_get_active_license_date() instead.
+ */
+function get_active_license_date(): ?int // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_active_license_date().
+{
+    _give_deprecated_function( __FUNCTION__, 'TBD', 'give_get_active_license_date()' );
+
+    return give_get_active_license_date();
 }
 
 /**
@@ -2773,4 +2763,21 @@ function give_get_page_by_title(string $page_title, string $output = OBJECT, str
     }
 
     return get_post($pages[0], $output);
+}
+
+/**
+ * Fire the old `before_give_init` action, as deprecated.
+ *
+ * Lives here, not in give.php, so the release step that replaces `TBD` finds the version below.
+ *
+ * @since TBD
+ */
+function give_fire_deprecated_before_init_action() {
+	/**
+	 * Fires before the Give core is initialized. Deprecated: use `givewp_before_init`.
+	 *
+	 * @since TBD Deprecated in favor of `givewp_before_init`.
+	 * @since 1.8.9
+	 */
+	do_action_deprecated( 'before_give_init', [], 'TBD', 'givewp_before_init' );
 }

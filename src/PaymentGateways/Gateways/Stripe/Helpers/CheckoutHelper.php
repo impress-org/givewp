@@ -34,7 +34,7 @@ class CheckoutHelper
      */
     public function maybeHandleRedirect()
     {
-        $get_data          = give_clean( $_GET );
+        $get_data          = give_clean( $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Stripe Checkout return page; it only reads the session id and action to print the redirect script and saves nothing, and Stripe cannot send a WordPress nonce.
         $form_id           = ! empty( $get_data['id'] ) ? absint( $get_data['id'] ) : false;
         $publishable_key   = give_stripe_get_publishable_key( $form_id );
         $session_id        = ! empty( $get_data['session'] ) ? $get_data['session'] : false;

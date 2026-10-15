@@ -25,6 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return      void
  */
 function give_payment_history_page() {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only view param; it only picks which screen to show and saves nothing.
 	if ( isset( $_GET['view'] ) && 'view-payment-details' == $_GET['view'] ) {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/view-payment-details.php';
 	} else {
@@ -57,7 +58,9 @@ function give_payment_history_page() {
 			<input type="hidden" name="post_type" value="give_forms" />
 			<input type="hidden" name="page" value="give-payment-history" />
 			<?php
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only donor filter param; it only changes what is shown and saves nothing.
 			if ( ! empty( $_GET['donor'] ) ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only donor filter param; it only changes what is shown and saves nothing.
 				echo sprintf( '<input type="hidden" name="donor" value="%s"/>', absint( $_GET['donor'] ) );
 			}
 
@@ -94,10 +97,12 @@ function give_view_donation_details_title( $admin_title, $title ) {
 		return $admin_title;
 	}
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only action param; it only picks the page title and saves nothing.
 	if ( ! isset( $_GET['give-action'] ) ) {
 		return $admin_title;
 	}
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only action param; it only picks the page title and saves nothing.
 	switch ( $_GET['give-action'] ) :
 
 		case 'view-payment-details':

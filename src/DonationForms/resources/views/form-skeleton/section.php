@@ -4,6 +4,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 /**
  * One form section: a heading, a line of description, and a field per block. The amount, gateway
  * and summary blocks get their own sketch; every other block is a label and one input row.

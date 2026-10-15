@@ -19,7 +19,7 @@ class SubscriptionsAdminPage
     /**
      * Render the Subscription Details page.
      *
-     * @since TBD Escape output.
+     * @since TBD Escape output. Guard the id param.
      * @since 4.8.0
      */
     public function render()
@@ -27,7 +27,7 @@ class SubscriptionsAdminPage
         if (self::isShowingDetailsPage()) {
             remove_action('give_forms_page_give-subscriptions', 'give_subscriptions_page');
 
-            $subscription = Subscription::find(absint($_GET['id']));
+            $subscription = Subscription::find(absint($_GET['id'] ?? 0)); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only id param; it only selects which record to show and saves nothing.
 
             if ( ! $subscription) {
                 wp_die(esc_html__('Subscription not found', 'give'), 404);
@@ -80,7 +80,7 @@ class SubscriptionsAdminPage
      */
     public static function isShowing()
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-subscriptions' && ! isset($_GET['view']);
+        return isset($_GET['page']) && $_GET['page'] === 'give-subscriptions' && ! isset($_GET['view']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**
@@ -88,6 +88,6 @@ class SubscriptionsAdminPage
      */
     public static function isShowingDetailsPage(): bool
     {
-        return isset($_GET['id'], $_GET['page']) && 'give-subscriptions' === $_GET['page'];
+        return isset($_GET['id'], $_GET['page']) && 'give-subscriptions' === $_GET['page']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 }

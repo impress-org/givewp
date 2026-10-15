@@ -2,7 +2,7 @@
 /**
  * GiveWP Onboarding Setup Guide template file
  *
- * @since TBD Escape output. Add translators comments.
+ * @since TBD Escape output. Add translators comments. Sanitize the Stripe error message.
  * @since 3.15.0 Refactored to make it compatible with v3 forms.
  * @since 2.8.0
  */
@@ -10,6 +10,8 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 /**
  * Variables from onboarding PageView
@@ -28,10 +30,10 @@ if (!defined('ABSPATH')) {
     <hr class="wp-header-end">
 
     <?php
-    if (isset($_GET['give_setup_stripe_error'])) : ?>
+    if (isset($_GET['give_setup_stripe_error'])) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only error message from the Stripe connect redirect; it is escaped on output and saves nothing. ?>
         <div class="notice notice-error">
             <p><?php
-                echo esc_html($_GET['give_setup_stripe_error']); ?></p>
+                echo esc_html(sanitize_text_field(wp_unslash($_GET['give_setup_stripe_error']))); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- same read-only error message as above. ?></p>
         </div>
     <?php
     endif; ?>

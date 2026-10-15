@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Renamed unprefixed GiveWP functions to give_-prefixed names. The old
+  names still work and log a deprecation notice
+timestamp: 2026-10-08T20:50:34.452Z

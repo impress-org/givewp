@@ -172,7 +172,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 	 * @return int Current page number
 	 */
 	public function get_paged() {
-		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
+		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only paging param; it only picks which page of the table is shown and saves nothing.
 	}
 
 
@@ -235,16 +235,19 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 	 * @param $new_value
 	 *
 	 * @access public
+	 * @since  TBD Unslash and sanitize the sort request values.
 	 * @since  1.8.12
 	 *
 	 * @return int
 	 */
 	public function give_sort_total_donations( $old_value, $new_value ) {
 		// If no sort, default to label.
-		$orderby = ( ! empty( $_REQUEST['orderby'] ) ) ? $_REQUEST['orderby'] : 'label';
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only sort params; they only change the order of the table and save nothing.
+		$orderby = ( ! empty( $_REQUEST['orderby'] ) ) ? sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) : 'label';
 
 		// If no order, default to asc.
-		$order = ( ! empty( $_REQUEST['order'] ) ) ? $_REQUEST['order'] : 'asc';
+		$order = ( ! empty( $_REQUEST['order'] ) ) ? sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ) : 'asc';
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		// Determine sort order.
 		$result = strcmp( $old_value[ $orderby ], $new_value[ $orderby ] );

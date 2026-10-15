@@ -30,13 +30,13 @@ class CampaignsAdminPage
     }
 
     /**
-     * @since TBD Escape output.
+     * @since TBD Escape output. Guard the id param.
      * @since 4.0.0
      */
     public function renderCampaignsPage()
     {
         if (self::isShowingDetailsPage()) {
-            $campaign = Campaign::find(absint($_GET['id']));
+            $campaign = Campaign::find(absint($_GET['id'] ?? 0)); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only id param; it only selects which record to show and saves nothing.
 
             if ( ! $campaign) {
                 wp_die(esc_html__('Campaign not found', 'give'), 404);
@@ -55,7 +55,7 @@ class CampaignsAdminPage
      */
     public static function isShowingDetailsPage(): bool
     {
-        return isset($_GET['id'], $_GET['page']) && 'give-campaigns' === $_GET['page'];
+        return isset($_GET['id'], $_GET['page']) && 'give-campaigns' === $_GET['page']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**

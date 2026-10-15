@@ -785,7 +785,7 @@ class GIVE_CLI_COMMAND {
 	private function delete_stats_transients() {
 		global $wpdb;
 
-		$stat_option_names = $wpdb->get_results(
+		$stat_option_names = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- WP-CLI command; finds stats transient rows in wp_options by name pattern, which get_option() cannot do.
 			$wpdb->prepare(
 				"SELECT option_name FROM {$wpdb->options} where (option_name LIKE %s OR option_name LIKE %s)",
 				array(

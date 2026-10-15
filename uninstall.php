@@ -11,6 +11,8 @@
  * @subpackage  Uninstall
  */
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- uninstall script; it drops GiveWP tables and deletes its data once, so there is nothing to cache.
+
 use Give\Uninstall\Actions\DeleteGiveOptions;
 
 // Exit if accessed directly.

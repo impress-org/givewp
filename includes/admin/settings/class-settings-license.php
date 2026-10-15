@@ -100,8 +100,8 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 								<p class="give-field-description">
 									<?php
-										/* translators: %1$s: URL of the account page */
 									echo wp_kses_post( sprintf(
+										/* translators: %1$s: URL of the account page */
 										__( 'Enter your license key below to unlock your GiveWP add-ons. You can access your licenses anytime from the <a href="%1$s" target="_blank">My Account</a> section on the GiveWP website. ', 'give' ),
 										esc_url( Give_License::get_account_url() )
 									) );
@@ -154,8 +154,8 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 									<p class="give-field-description">
 										<?php
-											/* translators: %1$s: URL of the downloads page */
 										echo wp_kses_post( sprintf(
+											/* translators: %1$s: URL of the downloads page */
 											__( 'Drag an add-on zip file below to upload and activate it. Access your downloads by activating a license or via the <a href="%1$s" target="_blank">My Downloads</a> section on the GiveWP website. ', 'give' ),
 											esc_url( Give_License::get_downloads_url() )
 										) );
@@ -166,8 +166,8 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 										<div class="give-notice notice notice-error inline">
 											<p>
 												<?php
-													/* translators: %1$s: URL of the plugin upload page */
 												echo wp_kses_post( sprintf(
+													/* translators: %1$s: URL of the plugin upload page */
 													__( 'Sorry, you can not upload plugin from here because we do not have direct access to file system. Please <a href="%1$s" target="_blank">click here</a> to upload GiveWP Add-on.', 'give' ),
 													esc_url( admin_url( 'plugin-install.php?tab=upload' ) )
 												) );
@@ -218,8 +218,8 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 									<?php endif; ?>
 									<?php
 									else :
-											/* translators: %1$s: URL of the network plugin install page */
 										echo wp_kses_post( sprintf(
+											/* translators: %1$s: URL of the network plugin install page */
 											__( 'Because of security reasons you can not upload add-ons from here. Please <a href="%1$s" target="_blank">visit network plugin install page</a> to install add-ons.', 'give' ),
 											esc_url( network_admin_url( 'plugin-install.php' ) )
 										) );
@@ -255,8 +255,8 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 								</button>
 								<span id="give-last-refresh-notice">
 									<?php
-										/* translators: 1: Date, 2: Time */
 									echo esc_html( sprintf(
+										/* translators: 1: Date, 2: Time */
 										__( 'Last refreshed on %1$s at %2$s', 'give' ),
 										gmdate( give_date_format(), $local_date ),
 										gmdate( 'g:i a', $local_date )

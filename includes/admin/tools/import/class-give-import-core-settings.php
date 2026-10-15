@@ -136,7 +136,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 * @return mixed
 		 */
 		public function update_notices( $messages ) {
-			if ( ! empty( $_GET['tab'] ) && 'import' === give_clean( $_GET['tab'] ) ) {
+			if ( ! empty( $_GET['tab'] ) && 'import' === give_clean( $_GET['tab'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
 				unset( $messages['give-setting-updated'] );
 			}
 
@@ -197,20 +197,22 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Show message after the Core Settings Imported
 		 *
-		 * @since TBD Escape output.
+		 * @since TBD Escape output. Verify a nonce before reverting the imported settings.
 		 * @since 1.8.17
 		 */
 		public function import_success() {
 			// Imported successfully
 
-			$success           = (bool) ( isset( $_GET['success'] ) ? give_clean( $_GET['success'] ) : false );
-			$undo              = (bool) ( isset( $_GET['undo'] ) ? give_clean( $_GET['undo'] ) : false );
+			$success           = (bool) ( isset( $_GET['success'] ) ? give_clean( $_GET['success'] ) : false ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only result flag; it only picks which message and links are shown. give_clean() unslashes and sanitizes with sanitize_text_field().
+			$undo              = (bool) ( isset( $_GET['undo'] ) ? give_clean( $_GET['undo'] ) : false ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- this flag only decides whether to check the nonce below; the settings are not reverted before check_admin_referer() passes. give_clean() unslashes and sanitizes with sanitize_text_field().
 			$query_arg_setting = array(
 				'post_type' => 'give_forms',
 				'page'      => 'give-settings',
 			);
 
 			if ( $undo ) {
+				check_admin_referer( 'give_core_settings_import_undo' );
+
 				$success = false;
 			}
 
@@ -240,12 +242,19 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 
 				$text = __( 'Import Again', 'give' );
 			}
+
+			$result_url = add_query_arg( $query_arg_success, admin_url( 'edit.php' ) );
+
+			// The "Undo Importing" link reverts the settings, so it carries a nonce.
+			if ( $success ) {
+				$result_url = wp_nonce_url( $result_url, 'give_core_settings_import_undo' );
+			}
 			?>
 			<tr valign="top" class="give-import-dropdown">
 				<th colspan="2">
 					<h2><?php echo esc_html( $title ); ?></h2>
 					<p>
-						<a class="button button-large button-secondary" href="<?php echo esc_url( add_query_arg( $query_arg_success, admin_url( 'edit.php' ) ) ); ?>"><?php echo esc_html( $text ); ?></a>
+						<a class="button button-large button-secondary" href="<?php echo esc_url( $result_url ); ?>"><?php echo esc_html( $text ); ?></a>
 						<a class="button button-large button-secondary" href="<?php echo esc_url( add_query_arg( $query_arg_setting, admin_url( 'edit.php' ) ) ); ?>"><?php echo esc_html__( 'View Settings', 'give' ); ?></a>
 					</p>
 				</th>
@@ -259,8 +268,8 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 * @since 1.8.17
 		 */
 		public function start_import() {
-			$type      = ( ! empty( $_GET['type'] ) ? give_clean( $_GET['type'] ) : 'replace' );
-			$file_name = ( ! empty( $_GET['file_name'] ) ? give_clean( $_GET['file_name'] ) : '' );
+			$type      = ( ! empty( $_GET['type'] ) ? give_clean( $_GET['type'] ) : 'replace' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
+			$file_name = ( ! empty( $_GET['file_name'] ) ? give_clean( $_GET['file_name'] ) : '' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
 
 			?>
 			<tr valign="top" class="give-import-dropdown">
@@ -314,7 +323,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 * @return int $step on which step doest the import is on.
 		 */
 		public function get_step() {
-			$step    = (int) ( isset( $_REQUEST['step'] ) ? give_clean( $_REQUEST['step'] ) : 0 );
+			$step    = (int) ( isset( $_REQUEST['step'] ) ? give_clean( $_REQUEST['step'] ) : 0 ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
 			$on_step = 1;
 
 			if ( empty( $step ) || 1 === $step ) {
@@ -347,8 +356,8 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 * @return void
 		 */
 		public function render_upload_html() {
-			$json = ( isset( $_POST['json'] ) ? give_clean( $_POST['json'] ) : '' );
-			$type = ( isset( $_POST['type'] ) ? give_clean( $_POST['type'] ) : 'merge' );
+			$json = ( isset( $_POST['json'] ) ? give_clean( $_POST['json'] ) : '' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
+			$type = ( isset( $_POST['type'] ) ? give_clean( $_POST['type'] ) : 'merge' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
 			$step = $this->get_step();
 
 			?>
@@ -422,7 +431,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 
 			// Validation for first step.
 			if ( 1 === $step ) {
-				$type          = ( ! empty( $_REQUEST['type'] ) ? give_clean( $_REQUEST['type'] ) : 'replace' );
+				$type          = ( ! empty( $_REQUEST['type'] ) ? give_clean( $_REQUEST['type'] ) : 'replace' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- nonce verified by Give_Admin_Settings::save() before it fires give-tools_save_import. give_clean() unslashes and sanitizes with sanitize_text_field().
 				$core_settings = self::upload_widget_settings_file();
 				if ( ! empty( $core_settings['error'] ) ) {
 					Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload a valid JSON settings file.', 'give' ) );
@@ -453,7 +462,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 * @return bool
 		 */
 		private function is_donations_import_page() {
-			return 'import' === give_get_current_setting_tab() && isset( $_GET['importer-type'] ) && $this->importer_type === give_clean( $_GET['importer-type'] );
+			return 'import' === give_get_current_setting_tab() && isset( $_GET['importer-type'] ) && $this->importer_type === give_clean( $_GET['importer-type'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
 		}
 
 		/**
@@ -463,11 +472,11 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 */
 		public static function upload_widget_settings_file() {
 			$upload = false;
-			if ( isset( $_FILES['json'] ) ) {
+			if ( isset( $_FILES['json'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by Give_Admin_Settings::save() before give-tools_save_import fires; this runs from save().
 				add_filter( 'upload_mimes', array( __CLASS__, 'json_upload_mimes' ) );
 				add_filter( 'wp_check_filetype_and_ext', array( __CLASS__, 'filetype_mod' ), 10, 4 );
 
-				$upload = wp_handle_upload( $_FILES['json'], array( 'test_form' => false ) );
+				$upload = wp_handle_upload( $_FILES['json'], array( 'test_form' => false ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by Give_Admin_Settings::save() before give-tools_save_import fires; this runs from save().
 
 				remove_filter( 'upload_mimes', array( __CLASS__, 'json_upload_mimes' ) );
 				remove_filter( 'wp_check_filetype_and_ext', array( __CLASS__, 'filetype_mod' ) );

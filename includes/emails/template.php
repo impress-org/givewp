@@ -158,6 +158,7 @@ function give_email_preview_buttons_callback( $field ) {
  *
  * Displays a header bar with the ability to change donations to preview actual data within the preview. Will not display if
  *
+ * @since TBD Unslash and sanitize the request values.
  * @since 2.14.0 reduce number of queries
  * @since 1.6
  */
@@ -165,7 +166,7 @@ function give_get_preview_email_header() {
 
 	// Payment receipt switcher
 	$payment_count = give_count_payments()->publish;
-	$payment_id    = give_check_variable( give_clean( $_GET ), 'isset', 0, 'preview_id' );
+	$payment_id    = give_check_variable( give_clean( $_GET ), 'isset', 0, 'preview_id' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only preview param; it only picks which donation to preview and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 	if ( $payment_count <= 0 ) {
 		return false;
@@ -202,7 +203,8 @@ function give_get_preview_email_header() {
 	$transaction_header = '<div style="margin:0;padding:10px 0;width:100%;background-color:#FFF;border-bottom:1px solid #eee; text-align:center;">';
 
 	// Remove payment id query param if set from request url.
-	$request_url_data = wp_parse_url( $_SERVER['REQUEST_URI'] );
+	$request_uri      = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+	$request_url_data = wp_parse_url( $request_uri );
 	$query            = $request_url_data['query'];
 	$query            = remove_query_arg( array( 'preview_id' ), $query );
 

@@ -19,8 +19,8 @@ class PaymentsRepository
     {
         $payments = give_get_payments(
             [
-                'meta_key' => '_give_payment_transaction_id',
-                'meta_value' => $paymentId,
+                'meta_key' => '_give_payment_transaction_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Finds a donation by its transaction ID, which is stored only as meta.
+                'meta_value' => $paymentId, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Finds a donation by its transaction ID, which is stored only as meta.
                 'number' => 1,
             ]
         );

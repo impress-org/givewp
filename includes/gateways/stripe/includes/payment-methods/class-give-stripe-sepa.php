@@ -159,6 +159,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 		/**
          * This function will be used for donation processing.
          *
+         * @since TBD Read the payment mode through a sanitizing helper.
          * @since 2.33.0 no longer store the intent secret in the database
          * @since  2.6.1
          *
@@ -227,7 +228,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 							)
 						);
 						give_set_error( 'stripe_error', __( 'The Stripe Gateway returned an error while creating a pending donation.', 'give' ) );
-						give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+						give_send_back_to_checkout( '?payment-mode=' . give_stripe_get_payment_mode_from_request() );
 
 						return;
 					}
@@ -297,7 +298,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 						// Success. Send user to success page.
 						give_send_to_success_page();
 					} else {
-						give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+						give_send_back_to_checkout( '?payment-mode=' . give_stripe_get_payment_mode_from_request() );
 
 						return;
 					}

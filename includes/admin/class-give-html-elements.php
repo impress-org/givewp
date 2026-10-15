@@ -890,7 +890,7 @@ class Give_HTML_Elements {
 		// Ensure selected user is not included in initial query.
 		// This is because sites with many users, it's not a guarantee the selected user will be returned.
 		if ( ! empty( $args['selected'] ) ) {
-			$get_users_args['exclude'] = $args['selected'];
+			$get_users_args['exclude'] = $args['selected']; // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- this is the get_users() exclude argument; it drops only the one selected user.
 		}
 
 		// Initial users array.
