@@ -83,6 +83,7 @@ class Give_Payment_Stats extends Give_Stats {
 	/**
 	 * Retrieve earning stats
 	 *
+	 * @since TBD Prepare SQL with placeholders.
 	 * @since 4.18.0 Sum donation totals with one SQL query instead of loading every ID and formatting each amount
 	 * @since  1.0
 	 * @access public
@@ -157,12 +158,17 @@ class Give_Payment_Stats extends Give_Stats {
 
 			if ( ! empty( $payments ) ) {
 				$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
-				$query           = "SELECT {$donation_id_col} as id, meta_value as total
+
+				$payments = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT %i as id, meta_value as total
 					FROM {$wpdb->donationmeta}
 					WHERE meta_key='_give_payment_total'
-					AND {$donation_id_col} IN ('" . implode( '\',\'', $payments ) . "')";
-
-				$payments = $wpdb->get_results( $query, ARRAY_A );
+					AND %i IN (" . implode( ',', array_fill( 0, count( $payments ), '%s' ) ) . ')',
+						array_merge( [ $donation_id_col, $donation_id_col ], $payments )
+					),
+					ARRAY_A
+				);
 
 				if ( ! empty( $payments ) ) {
 					foreach ( $payments as $payment ) {
@@ -284,6 +290,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * Returns null when the query args contain something this method does not translate, or when an
 	 * add-on filters `give_donation_amount`, so the caller falls back to the per-donation loop.
 	 *
+	 * @since TBD Document why the query is safe.
 	 * @since 4.18.0
 	 *
 	 * @param array $args Give_Payments_Query arguments.
@@ -311,12 +318,13 @@ class Give_Payment_Stats extends Give_Stats {
 			LEFT JOIN {$wpdb->donationmeta} AS base ON base.{$donation_id_col} = p.ID AND base.meta_key = '_give_cs_base_amount'
 			WHERE p.post_type = 'give_payment' {$where}";
 
-		return (float) $wpdb->get_var( $sql );
+		return (float) $wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by stats_where_sql() from prepare() fragments; $donation_id_col is the donation meta id column name.
 	}
 
 	/**
 	 * Count matching donations in one query instead of loading every ID into PHP.
 	 *
+	 * @since TBD Document why the query is safe.
 	 * @since 4.18.0
 	 *
 	 * @param array $args Give_Payments_Query arguments.
@@ -332,7 +340,7 @@ class Give_Payment_Stats extends Give_Stats {
 			return null;
 		}
 
-		return (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} AS p WHERE p.post_type = 'give_payment' {$where}" );
+		return (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} AS p WHERE p.post_type = 'give_payment' {$where}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by stats_where_sql() from prepare() fragments.
 	}
 
 	/**
@@ -366,6 +374,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * Translate the subset of Give_Payments_Query arguments the stats methods build (status, date
 	 * range, form, parent, and simple meta equality) into a WHERE fragment. Anything else returns null.
 	 *
+	 * @since TBD Prepare SQL with placeholders.
 	 * @since 4.18.0
 	 *
 	 * @param array $args
@@ -460,10 +469,9 @@ class Give_Payment_Stats extends Give_Stats {
 				return null;
 			}
 
-			$placeholders = implode( ',', array_fill( 0, count( $values ), '%s' ) );
-			$where       .= $wpdb->prepare(
-				" AND p.ID IN (SELECT {$donation_id_col} FROM {$wpdb->donationmeta} WHERE meta_key = %s AND meta_value IN ({$placeholders}))",
-				array_merge( [ $condition['key'] ], $values )
+			$where .= $wpdb->prepare(
+				" AND p.ID IN (SELECT %i FROM {$wpdb->donationmeta} WHERE meta_key = %s AND meta_value IN (" . implode( ',', array_fill( 0, count( $values ), '%s' ) ) . '))',
+				array_merge( [ $donation_id_col, $condition['key'] ], $values )
 			);
 		}
 
@@ -473,6 +481,7 @@ class Give_Payment_Stats extends Give_Stats {
 	/**
 	 * Get the best selling forms
 	 *
+	 * @since TBD Prepare SQL with placeholders.
 	 * @since  1.0
 	 * @since 2.9.6 Added an explicit ORDER BY on which to apply a DESC order.
      * @since 2.18.0 Updated sales calculation so that the results are ordered as integers.
@@ -490,11 +499,13 @@ class Give_Payment_Stats extends Give_Stats {
 
 		$give_forms = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT {$meta_table['column']['id']} as form_id, max(ABS(meta_value)) as sales
-				FROM {$meta_table['name']} WHERE meta_key='_give_form_sales' AND meta_value > 0
+				"SELECT %i as form_id, max(ABS(meta_value)) as sales
+				FROM %i WHERE meta_key='_give_form_sales' AND meta_value > 0
 				GROUP BY meta_value+0
 				ORDER BY sales DESC
 				LIMIT %d;",
+				$meta_table['column']['id'],
+				$meta_table['name'],
 				$number
 			)
 		);

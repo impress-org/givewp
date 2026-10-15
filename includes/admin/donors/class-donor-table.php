@@ -366,6 +366,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * Retrieves the search query string.
 	 *
 	 * @access public
+     * @since TBD Unslash the search term. Give_Donors_Query escapes it.
      * @since 3.5.0 Remove escape function
 	 * @since  1.0
 	 *
@@ -377,7 +378,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			return false;
 		}
 
-        $search = urldecode(trim($_GET['s']));
+        $search = urldecode(trim(wp_unslash($_GET['s'])));
 
         return ! empty($search) ? $search : false;
 	}
@@ -487,6 +488,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Get donor query.
 	 *
+     * @since TBD Do not escape the search term here. Give_Donors_Query escapes it.
      * @since 3.5.0 Escape search query string.
 	 * @since  1.8.1
 	 * @access public
@@ -513,7 +515,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			'orderby'    => $orderby,
 			'order'      => $order,
 			'donor'      => $donor,
-            's' => esc_sql($search),
+            's' => $search,
 			'start_date' => $start_date,
 			'end_date'   => $end_date,
 			'give_forms' => $form_id,

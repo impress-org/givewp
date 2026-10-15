@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Prepared the SQL queries in the legacy cache and background processing classes
+timestamp: 2026-10-06T00:24:02.000Z

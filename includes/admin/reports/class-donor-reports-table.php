@@ -267,11 +267,12 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * Retrieves the search query string
 	 *
 	 * @access public
+	 * @since TBD Unslash the search term. Give_Donors_Query escapes it.
 	 * @since  1.0
 	 * @return mixed string If search is present, false otherwise
 	 */
 	public function get_search() {
-		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
+		return ! empty( $_GET['s'] ) ? urldecode( trim( wp_unslash( $_GET['s'] ) ) ) : false;
 	}
 
 	/**

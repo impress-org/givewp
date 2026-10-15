@@ -7,6 +7,8 @@
 /**
  * Return of meta keys for a donation form.
  *
+ * @since TBD Prepare SQL with placeholders.
+ *
  * @see http://wordpress.stackexchange.com/questions/58834/echo-all-meta-keys-of-a-custom-post-type
  */
 function give_export_donations_get_custom_fields() {
@@ -32,45 +34,49 @@ function give_export_donations_get_custom_fields() {
 		'fields'         => 'ids',
 	];
 
-	$donation_list = implode( ',', (array) give_get_payments( $args ) );
+	$donation_ids = array_values( (array) give_get_payments( $args ) );
 
-	$query_and = sprintf(
-		"AND $wpdb->posts.ID IN (%s)
-		AND $wpdb->donationmeta.meta_key != ''
-		AND $wpdb->donationmeta.meta_key NOT RegExp '(^[_0-9].+$)'",
-		$donation_list
-	);
+	$meta_keys        = [];
+	$hidden_meta_keys = [];
 
-	$query = "
+	// Without donations there is nothing to look up: an empty IN () list is not valid SQL.
+	if ( ! empty( $donation_ids ) ) {
+		$meta_keys = $wpdb->get_col(
+			$wpdb->prepare(
+				"
         SELECT DISTINCT($wpdb->donationmeta.meta_key)
         FROM $wpdb->posts
         LEFT JOIN $wpdb->donationmeta
-        ON $wpdb->posts.ID = {$wpdb->donationmeta}.{$donationmeta_table_key}
-        WHERE $wpdb->posts.post_type = '%s'
-    " . $query_and;
-
-	$meta_keys = $wpdb->get_col( $wpdb->prepare( $query, $post_type ) );
+        ON $wpdb->posts.ID = {$wpdb->donationmeta}.%i
+        WHERE $wpdb->posts.post_type = %s
+    AND $wpdb->posts.ID IN (" . implode( ',', array_fill( 0, count( $donation_ids ), '%d' ) ) . ")
+		AND $wpdb->donationmeta.meta_key != ''
+		AND $wpdb->donationmeta.meta_key NOT RegExp '(^[_0-9].+$)'",
+				array_merge( [ $donationmeta_table_key, $post_type ], $donation_ids )
+			)
+		);
+	}
 
 	if ( ! empty( $meta_keys ) ) {
 		$responses['standard_fields'] = array_values( $meta_keys );
 	}
 
-	$query_and = sprintf(
-		"AND $wpdb->posts.ID IN (%s)
-		AND $wpdb->donationmeta.meta_key != ''
-		AND $wpdb->donationmeta.meta_key NOT RegExp '^[^_]'",
-		$donation_list
-	);
-
-	$query = "
+	if ( ! empty( $donation_ids ) ) {
+		$hidden_meta_keys = $wpdb->get_col(
+			$wpdb->prepare(
+				"
         SELECT DISTINCT($wpdb->donationmeta.meta_key)
         FROM $wpdb->posts
         LEFT JOIN $wpdb->donationmeta
-        ON $wpdb->posts.ID = {$wpdb->donationmeta}.{$donationmeta_table_key}
-        WHERE $wpdb->posts.post_type = '%s'
-    " . $query_and;
-
-	$hidden_meta_keys = $wpdb->get_col( $wpdb->prepare( $query, $post_type ) );
+        ON $wpdb->posts.ID = {$wpdb->donationmeta}.%i
+        WHERE $wpdb->posts.post_type = %s
+    AND $wpdb->posts.ID IN (" . implode( ',', array_fill( 0, count( $donation_ids ), '%d' ) ) . ")
+		AND $wpdb->donationmeta.meta_key != ''
+		AND $wpdb->donationmeta.meta_key NOT RegExp '^[^_]'",
+				array_merge( [ $donationmeta_table_key, $post_type ], $donation_ids )
+			)
+		);
+	}
 
 	/**
 	 * Filter to modify hidden keys that are going to be ignore when displaying the hidden keys
