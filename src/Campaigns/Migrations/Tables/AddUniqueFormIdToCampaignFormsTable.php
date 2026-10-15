@@ -14,7 +14,7 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
  * is changed: where several campaigns name the same default form, the others keep naming it
  * but lose their link, and CampaignRepository::validateFormIsNotDefault() keeps it from moving.
  *
- * @since TBD
+ * @since 4.19.0
  */
 class AddUniqueFormIdToCampaignFormsTable extends Migration
 {

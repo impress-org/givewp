@@ -35,7 +35,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Say "No campaign" when the donation has no campaign or its campaign no longer exists.
+     * @since 4.19.0 Say "No campaign" when the donation has no campaign or its campaign no longer exists.
      * @since 4.8.0 Added class to link
      * @since 4.3.0
      *

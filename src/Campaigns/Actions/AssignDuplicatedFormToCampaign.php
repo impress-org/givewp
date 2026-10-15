@@ -25,7 +25,7 @@ class AssignDuplicatedFormToCampaign
     }
 
     /**
-     * @since TBD Leave the copy of a form with no campaign standalone instead of logging an error.
+     * @since 4.19.0 Leave the copy of a form with no campaign standalone instead of logging an error.
      * @since 4.0.0
      */
     public function __invoke($duplicatedFormID, $originalFormID)

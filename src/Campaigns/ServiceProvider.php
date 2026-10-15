@@ -84,7 +84,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since TBD add AddUniqueFormIdToCampaignFormsTable
+     * @since 4.19.0 add AddUniqueFormIdToCampaignFormsTable
      * @since 4.8.0 add CacheCampaignData
      * @since 4.0.0
      */

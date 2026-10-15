@@ -11,7 +11,7 @@ namespace Give\Framework\Support;
  * it back — global $id in particular, which network_edit_site_nav() uses to build Multisite site
  * links — so a secondary loop has to put these back itself.
  *
- * @since TBD
+ * @since 4.19.0
  */
 final class PostDataGlobals
 {
@@ -36,7 +36,7 @@ final class PostDataGlobals
      * Globals that are not set are omitted rather than recorded as null, so that restore() can
      * tell "was absent" apart from "was null" and avoid declaring a global that never existed.
      *
-     * @since TBD
+     * @since 4.19.0
      *
      * @return array{id?: mixed, authordata?: mixed, currentday?: mixed, currentmonth?: mixed, page?: mixed,
      *               pages?: mixed, multipage?: mixed, more?: mixed, numpages?: mixed} Values keyed by global
@@ -58,7 +58,7 @@ final class PostDataGlobals
     /**
      * Returns the globals setup_postdata() writes to back to their recorded values.
      *
-     * @since TBD
+     * @since 4.19.0
      *
      * @param array{id?: mixed, authordata?: mixed, currentday?: mixed, currentmonth?: mixed, page?: mixed,
      *              pages?: mixed, multipage?: mixed, more?: mixed, numpages?: mixed} $snapshot Values keyed

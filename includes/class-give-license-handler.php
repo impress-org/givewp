@@ -579,7 +579,7 @@ if ( ! class_exists('Give_License') ) :
 		 *
 		 * @return array
 		 *
-		 * @since TBD look up Harbor features by catalog slug instead of plugin dirname, and prefer Harbor over an expired or inactive legacy license
+		 * @since 4.19.0 look up Harbor features by catalog slug instead of plugin dirname, and prefer Harbor over an expired or inactive legacy license
          * @since 4.15.0 add support for Harbor unified licenses
 		 * @since  2.5.0
 		 * @access public
@@ -699,7 +699,7 @@ if ( ! class_exists('Give_License') ) :
 		 * Render license section
 		 *
 		 * @return string
-		 * @since TBD list add-ons covered by a Liquid Web license without a valid legacy license key
+		 * @since 4.19.0 list add-ons covered by a Liquid Web license without a valid legacy license key
 		 * @since 2.5.0
 		 */
 		public static function render_licenses_list() {
@@ -798,7 +798,8 @@ if ( ! class_exists('Give_License') ) :
 		 * @param $plugin
 		 *
 		 * @return string
-		 * @since TBD show add-ons covered by a Liquid Web license as licensed and escape output.
+		 * @since TBD escape output.
+		 * @since 4.19.0 show add-ons covered by a Liquid Web license as licensed
 		 * @since 2.5.0
 		 */
 		public static function html_by_plugin( $plugin ) {
@@ -858,7 +859,7 @@ if ( ! class_exists('Give_License') ) :
 		 * License row html for an add-on covered by a Liquid Web license
 		 *
 		 * @return string
-		 * @since TBD
+		 * @since 4.19.0
 		 */
 		private static function html_harbor_license_row() {
 			return sprintf(

@@ -23,8 +23,8 @@ type CampaignFormGroupProps = {
 }
 
 /**
- * @since TBD Add a "No campaign" option, which clears the form and lists standalone forms.
- * @since TBD Keep the form select mounted when only the form changes, so it keeps focus and its loaded options.
+ * @since 4.19.0 Add a "No campaign" option, which clears the form and lists standalone forms.
+ * @since 4.19.0 Keep the form select mounted when only the form changes, so it keeps focus and its loaded options.
  * @since 4.11.0
  */
 export default function CampaignFormGroup({ campaignIdFieldName, formIdFieldName }: CampaignFormGroupProps) {

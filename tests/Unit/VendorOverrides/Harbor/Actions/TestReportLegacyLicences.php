@@ -294,7 +294,7 @@ class TestReportLegacyLicences extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testReportsLicensesOnTheFilterHarborApplies(): void
     {

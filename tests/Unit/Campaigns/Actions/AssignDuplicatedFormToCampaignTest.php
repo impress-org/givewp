@@ -34,7 +34,7 @@ final class AssignDuplicatedFormToCampaignTest extends TestCase
     }
 
     /**
-     * @since TBD Assert the copy stays standalone and nothing is logged.
+     * @since 4.19.0 Assert the copy stays standalone and nothing is logged.
      */
     public function testDuplicatingFormWithoutCampaignLeavesTheCopyStandalone()
     {

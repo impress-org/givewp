@@ -13,7 +13,7 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 /**
  * The donations list form filter loads its options from the core route for the give_forms post type.
  *
- * @since TBD
+ * @since 4.19.0
  */
 class FormsPostTypeRouteTest extends RestApiTestCase
 {
@@ -23,7 +23,7 @@ class FormsPostTypeRouteTest extends RestApiTestCase
     use HasDefaultGiveWPUsers;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testListsPublishedV2AndV3FormsByTitle()
     {
@@ -48,7 +48,7 @@ class FormsPostTypeRouteTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testListsDraftFormsOnlyForUsersWhoCanEditForms()
     {

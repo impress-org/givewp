@@ -11,7 +11,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give_Payments_Query;
 
 /**
- * @since TBD
+ * @since 4.19.0
  *
  * @covers Give_Payments_Query::get_payments
  */
@@ -20,14 +20,14 @@ class PaymentsQueryPostDataGlobalsTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      *
      * @var Generator
      */
     private $faker;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function setUp(): void
     {
@@ -37,7 +37,7 @@ class PaymentsQueryPostDataGlobalsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function tearDown(): void
     {
@@ -50,7 +50,7 @@ class PaymentsQueryPostDataGlobalsTest extends TestCase
      * Network Admin holds the site being edited in global $id and reads it back after
      * admin_enqueue_scripts, so a donation query run on that hook must leave it alone.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     public function testDoesNotLeaveTheDonationIdInTheGlobalScope(): void
     {
@@ -85,7 +85,7 @@ class PaymentsQueryPostDataGlobalsTest extends TestCase
      * A global $post does not imply setup_postdata() ran for it, so its ID cannot be assumed to be
      * what global $id held on the way in.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     public function testDoesNotDeriveTheGlobalIdFromAnOuterPost(): void
     {

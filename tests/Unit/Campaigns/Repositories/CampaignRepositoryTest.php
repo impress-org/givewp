@@ -293,7 +293,7 @@ final class CampaignRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testRemoveCampaignFormDetachesTheForm(): void
     {
@@ -308,7 +308,7 @@ final class CampaignRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testRemoveCampaignFormRefusesTheDefaultForm(): void
     {
@@ -322,7 +322,7 @@ final class CampaignRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testMoveCampaignFormLeavesTheFormInOnlyTheNewCampaign(): void
     {
@@ -340,7 +340,7 @@ final class CampaignRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testMoveCampaignFormAttachesAStandaloneForm(): void
     {
@@ -355,7 +355,7 @@ final class CampaignRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testMoveCampaignFormRefusesTheDefaultForm(): void
     {
@@ -369,7 +369,7 @@ final class CampaignRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testMoveAndRemoveRefuseAFormThatAnotherCampaignUsesAsItsDefault(): void
     {

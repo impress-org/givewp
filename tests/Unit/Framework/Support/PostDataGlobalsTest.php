@@ -8,21 +8,21 @@ use Give\Framework\Support\PostDataGlobals;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.19.0
  *
  * @covers \Give\Framework\Support\PostDataGlobals
  */
 class PostDataGlobalsTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.0
      *
      * @var Generator
      */
     private $faker;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function setUp(): void
     {
@@ -32,7 +32,7 @@ class PostDataGlobalsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testRestoresTheValuesThatWereSetBeforeTheSnapshot(): void
     {
@@ -57,7 +57,7 @@ class PostDataGlobalsTest extends TestCase
      * A global that did not exist beforehand must not exist afterwards either, otherwise restoring
      * declares it as null and code guarding with isset() starts taking the wrong branch.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     public function testUnsetsGlobalsThatDidNotExistBeforeTheSnapshot(): void
     {
@@ -73,7 +73,7 @@ class PostDataGlobalsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testPreservesAGlobalThatWasExplicitlyNull(): void
     {

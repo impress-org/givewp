@@ -129,7 +129,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
-     * @since TBD Resolve isDefaultCampaignForm from the row's campaign when the request names none; expose campaignType and campaignTitle
+     * @since 4.19.0 Resolve isDefaultCampaignForm from the row's campaign when the request names none; expose campaignType and campaignTitle
      * @since 3.22.0 Add locale support
      * @since 2.24.0 Change this to use the new ListTable class
      *
@@ -260,7 +260,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
-     * @since TBD Add "campaign" filter: a campaign id or "none" for standalone forms; campaign id filter includes the campaign's default form
+     * @since 4.19.0 Add "campaign" filter: a campaign id or "none" for standalone forms; campaign id filter includes the campaign's default form
      * @since      4.0.0 Add "campaignId" support
      * @since      2.24.0
      *

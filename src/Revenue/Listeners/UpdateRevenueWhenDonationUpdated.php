@@ -12,7 +12,7 @@ use Give\Revenue\Repositories\Revenue;
 class UpdateRevenueWhenDonationUpdated
 {
     /**
-     * @since TBD Added support to update revenue formId
+     * @since 4.19.0 Added support to update revenue formId
      * @since 4.1.0 Added support to update revenue campaignId
      * @since 3.3.0 updated to accept Donation model
      * @since 2.22.1

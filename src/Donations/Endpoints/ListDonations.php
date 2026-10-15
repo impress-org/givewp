@@ -49,7 +49,7 @@ class ListDonations extends Endpoint
     /**
      * @inheritDoc
      *
-     * @since TBD Add formId parameter and accept "none" for campaignId
+     * @since 4.19.0 Add formId parameter and accept "none" for campaignId
      * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      * @since 3.4.0
      */
@@ -313,7 +313,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD Filter by formId, and by campaignId "none" for donations that have no campaign.
+     * @since 4.19.0 Filter by formId, and by campaignId "none" for donations that have no campaign.
      * @since 4.18.0 Match name and email searches by prefix through indexed subqueries, and filter test mode the same way instead of HAVING
      * @since 4.12.0 Updated status filtering to accept multiple comma-separated values
      * @since 4.8.0 Added support for subscriptionId parameter to filter donations

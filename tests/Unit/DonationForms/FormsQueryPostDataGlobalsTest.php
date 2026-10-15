@@ -10,7 +10,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give_Forms_Query;
 
 /**
- * @since TBD
+ * @since 4.19.0
  *
  * @covers Give_Forms_Query::get_forms
  */
@@ -19,14 +19,14 @@ class FormsQueryPostDataGlobalsTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      *
      * @var Generator
      */
     private $faker;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function setUp(): void
     {
@@ -36,7 +36,7 @@ class FormsQueryPostDataGlobalsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function tearDown(): void
     {
@@ -46,7 +46,7 @@ class FormsQueryPostDataGlobalsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testDoesNotLeaveTheFormIdInTheGlobalScope(): void
     {
@@ -81,7 +81,7 @@ class FormsQueryPostDataGlobalsTest extends TestCase
      * A global $post does not imply setup_postdata() ran for it, so its ID cannot be assumed to be
      * what global $id held on the way in.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     public function testDoesNotDeriveTheGlobalIdFromAnOuterPost(): void
     {

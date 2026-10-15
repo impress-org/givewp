@@ -215,7 +215,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * query is run, or the filter on the arguments (existing mainly for backwards
 	 * compatibility).
 	 *
-	 * @since TBD Restore the globals setup_postdata() writes to once the results loop is done.
+	 * @since 4.19.0 Restore the globals setup_postdata() writes to once the results loop is done.
 	 * @since  1.0
 	 * @since 2.9.6 Normalize post IDs from either an array of IDs or Post objects.
 	 *

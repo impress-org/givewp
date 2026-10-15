@@ -14,7 +14,7 @@ use Give\License\Repositories\LicenseRepository;
  *
  * Hooked into the `lw-harbor/legacy_licenses` filter.
  *
- * @since TBD Report each add-on by its Harbor catalog slug.
+ * @since 4.19.0 Report each add-on by its Harbor catalog slug.
  * @since 4.15.0
  */
 class ReportLegacyLicences
@@ -25,12 +25,12 @@ class ReportLegacyLicences
     private LicenseRepository $licenseRepository;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     private GetFeatureSlugByPluginDirname $getFeatureSlug;
 
     /**
-     * @since TBD Added $getFeatureSlug.
+     * @since 4.19.0 Added $getFeatureSlug.
      * @since 4.15.0
      */
     public function __construct(LicenseRepository $licenseRepository, GetFeatureSlugByPluginDirname $getFeatureSlug)
@@ -40,7 +40,7 @@ class ReportLegacyLicences
     }
 
     /**
-     * @since TBD Report each add-on by its Harbor catalog slug.
+     * @since 4.19.0 Report each add-on by its Harbor catalog slug.
      * @since 4.15.0
      * @param array $licenses Existing licenses already added by other plugins.
      * @return array

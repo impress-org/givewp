@@ -469,7 +469,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @param string       $column_name The name of the column.
 	 *
 	 * @access public
-	 * @since  TBD Say No campaign when the donation has no campaign.
+	 * @since  4.19.0 Say No campaign when the donation has no campaign.
 	 * @since  1.0
      * @since 4.3.0 show campaign name instead of the form name
 	 *
