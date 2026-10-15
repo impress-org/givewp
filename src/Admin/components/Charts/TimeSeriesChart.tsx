@@ -104,7 +104,7 @@ export default function TimeSeriesChart({endpoint, amountFormatter, title = ''}:
         xaxis: {
             type: 'datetime',
             labels: {
-                formatter: (val) => formatTimestamp(val, false),
+                formatter: (val) => formatTimestamp(val.toString(), false),
             },
         },
         yaxis: {
