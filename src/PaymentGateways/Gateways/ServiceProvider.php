@@ -27,6 +27,7 @@ use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Li
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\InvoicePaymentSucceeded;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentPaymentFailed;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentSucceeded;
+use Give\PaymentGateways\Gateways\Stripe\Webhooks\Listeners\PaymentIntentRequiresAction;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\PaymentGateways\Gateways\TestOffsiteGateway\TestOffsiteGateway;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -106,6 +107,15 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction(
             'give_stripe_processing_payment_intent_failed',
             PaymentIntentPaymentFailed::class
+        );
+
+        /*
+         * The server-confirmed gateways handle microdeposit verification synchronously; the Stripe
+         * Payment Element only reports it through the generic webhook event.
+         */
+        Hooks::addAction(
+            'give_stripe_event_payment_intent.requires_action',
+            PaymentIntentRequiresAction::class
         );
 
         Hooks::addAction(

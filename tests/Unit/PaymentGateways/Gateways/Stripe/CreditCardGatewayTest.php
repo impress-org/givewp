@@ -5,7 +5,9 @@ use Give\Framework\Database\DB;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
+use Give\PaymentGateways\Gateways\Stripe\Actions\RecordMicrodepositVerification;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway;
+use Give\PaymentGateways\Gateways\Stripe\Exceptions\PaymentIntentException;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 
 /**
@@ -102,6 +104,52 @@ class CreditCardGatewayTest extends \Give\Tests\TestCase
         );
     }
 
+    /** @test */
+    public function it_creates_a_processing_payment_and_records_verification_when_stripe_requires_microdeposits()
+    {
+        $gateway = new CreditCardGateway();
+        $hostedVerificationUrl = 'https://payments.stripe.com/microdeposit/test';
+
+        $this->mock(RecordMicrodepositVerification::class)
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with($this->anything(), $hostedVerificationUrl);
+
+        $this->mock(Give_Stripe_Payment_Intent::class, function () use ($hostedVerificationUrl) {
+            return new Give_Stripe_Payment_Intent('requires_action', [
+                'type' => 'verify_with_microdeposits',
+                'verify_with_microdeposits' => [
+                    'hosted_verification_url' => $hostedVerificationUrl,
+                ],
+            ]);
+        });
+
+        $this->assertInstanceOf(
+            PaymentProcessing::class,
+            $gateway->createPayment(
+                $this->getDonationModel(),
+                [ 'stripePaymentMethod' => new PaymentMethod('pm_1234') ]
+            )
+        );
+    }
+
+    /** @test */
+    public function it_throws_when_stripe_requires_action_without_a_redirect_url()
+    {
+        $gateway = new CreditCardGateway();
+
+        $this->mock(Give_Stripe_Payment_Intent::class, function () {
+            return new Give_Stripe_Payment_Intent('requires_action', ['type' => 'use_stripe_sdk']);
+        });
+
+        $this->expectException(PaymentIntentException::class);
+
+        $gateway->createPayment(
+            $this->getDonationModel(),
+            [ 'stripePaymentMethod' => new PaymentMethod('pm_1234') ]
+        );
+    }
+
     /**
      * @throws Exception
      */
@@ -163,10 +211,12 @@ class Give_Stripe_Customer
 class Give_Stripe_Payment_Intent
 {
     protected $status;
+    protected $nextAction;
 
-    public function __construct($status)
+    public function __construct($status, $nextAction = null)
     {
         $this->status = $status;
+        $this->nextAction = $nextAction;
     }
 
     public function create()
@@ -176,9 +226,9 @@ class Give_Stripe_Payment_Intent
                 'id' => 'pi_1234',
                 'status' => $this->status,
                 'client_secret' => 'pi_secret',
-                'next_action' => [
+                'next_action' => $this->nextAction ?? [
                     'redirect_to_url' => [
-                        'url' => '',
+                        'url' => 'https://example.com/3ds',
                     ]
                 ]
             ])

@@ -69,7 +69,11 @@ class CreatePaymentIntent
 
         DonationNote::create([
             'donationId' => $donation->id,
-            'content' => sprintf(__('Stripe Charge/Payment Intent ID: %s', 'give'), $intent->id())
+            'content' => sprintf(
+                /* translators: %s: Stripe Payment Intent ID */
+                __('Stripe Charge/Payment Intent ID: %s', 'give'),
+                $intent->id()
+            )
         ]);
 
         if ('requires_action' === $intent->status()) {
@@ -78,11 +82,19 @@ class CreatePaymentIntent
                 'content' => __('Stripe requires additional action to be fulfilled. Check your Stripe account.', 'give')
             ]);
 
-            give_update_meta(
-                $donation->id,
-                '_give_stripe_payment_intent_require_action_url',
-                $intent->nextActionRedirectUrl()
-            );
+            /*
+             * Microdeposit verification has no redirect URL. The gateway status handler records it
+             * and emails the donor, so only persist the URL when Stripe is actually redirecting.
+             */
+            $redirectUrl = $intent->nextActionRedirectUrl();
+
+            if ($redirectUrl) {
+                give_update_meta(
+                    $donation->id,
+                    '_give_stripe_payment_intent_require_action_url',
+                    $redirectUrl
+                );
+            }
         }
 
         return $intent;
