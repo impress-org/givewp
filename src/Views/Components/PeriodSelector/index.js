@@ -2,12 +2,17 @@
 import {useState} from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import {__} from '@wordpress/i18n';
+import {getSettings} from '@wordpress/date';
 // react-dates dependencies
 import 'react-dates/initialize';
 import {DateRangePicker} from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
+import {phpToMomentDateFormat} from '@givewp/src/Admin/common/phpToMomentDateFormat';
 import styles from './style.module.scss';
+
+const getDisplayFormat = () => phpToMomentDateFormat(getSettings().formats.date);
 
 const PeriodSelector = ({period = {startDate: null, endDate: null}, setDates = () => {}}) => {
     const [focusedInput, setFocusedInput] = useState(null);
@@ -46,6 +51,10 @@ const PeriodSelector = ({period = {startDate: null, endDate: null}, setDates = (
                     }}
                     isOutsideRange={(day) => moment().diff(day) < 0}
                     numberOfMonths={1}
+                    startDatePlaceholderText={__('Start Date', 'give')}
+                    endDatePlaceholderText={__('End Date', 'give')}
+                    weekDayFormat="ddd"
+                    displayFormat={getDisplayFormat}
                 />
             </div>
         </div>
