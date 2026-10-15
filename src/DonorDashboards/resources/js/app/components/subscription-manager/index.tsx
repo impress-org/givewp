@@ -32,7 +32,7 @@ const normalizeAmount = (float, decimals) => Number.parseFloat(float).toFixed(de
 const UPDATABLE_STATUSES = ['active', 'failing'];
 
 /**
- * @since TBD Allow failing subscriptions to be updated.
+ * @since TBD Allow failing subscriptions to be updated, and show Resume Subscription only when paused.
  * @since 3.19.0 Add support for hiding amount controls via filter
  */
 const SubscriptionManager = ({id, subscription}) => {
@@ -142,11 +142,12 @@ const SubscriptionManager = ({id, subscription}) => {
                         >
                             <PauseDurationDropdown handlePause={handlePause} closeModal={toggleModal} />
                         </ModalDialog>
-                        {subscriptionStatus === 'active' ? (
+                        {subscriptionStatus === 'active' && (
                             <Button variant onClick={toggleModal}>
                                 {__('Pause Subscription', 'give')}
                             </Button>
-                        ) : (
+                        )}
+                        {subscriptionStatus === 'paused' && (
                             <Button variant onClick={handleResume}>
                                 {__('Resume Subscription', 'give')}
                             </Button>
@@ -154,11 +155,7 @@ const SubscriptionManager = ({id, subscription}) => {
                     </>
                 )}
 
-                <Button
-                    disabled={!canUpdate}
-                    classnames={!canUpdate && 'disabled'}
-                    onClick={handleUpdate}
-                >
+                <Button disabled={!canUpdate} classnames={!canUpdate && 'disabled'} onClick={handleUpdate}>
                     {updated ? (
                         <Fragment>
                             {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth />
