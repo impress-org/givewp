@@ -2,6 +2,10 @@
 
 use Give\Framework\Permissions\Facades\UserPermissions;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Class Give_Updates
  *
@@ -252,7 +256,7 @@ class Give_Updates {
 		// Bailout.
 		if ( ! $this->get_total_update_count() ) {
 			// Show complete update message if still on update setting page.
-			if ( isset( $_GET['page'] ) && 'give-updates' === $_GET['page'] ) {
+			if ( isset( $_GET['page'] ) && 'give-updates' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides whether to show the updates screen and saves nothing.
 				// Upgrades
 				add_submenu_page(
 					'edit.php?post_type=give_forms',
@@ -276,7 +280,7 @@ class Give_Updates {
 			sprintf(
 				'%1$s <span class="update-plugins"%2$s><span class="plugin-count give-update-progress-count">%3$s%4$s</span></span>',
 				__( 'Updates', 'give' ),
-				isset( $_GET['give-pause-db-upgrades'] ) ? ' style="display:none;"' : '',
+				isset( $_GET['give-pause-db-upgrades'] ) ? ' style="display:none;"' : '', // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only flag; it only hides the menu count after a pause and saves nothing.
 				$is_update ?
 					$this->get_db_update_processing_percentage() :
 					$this->get_total_update_count(),
@@ -292,6 +296,7 @@ class Give_Updates {
 	/**
 	 * Show update related notices
 	 *
+     * @since TBD Use a safe redirect.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
@@ -302,11 +307,11 @@ class Give_Updates {
 			! wp_doing_ajax() &&
 			current_user_can( 'manage_give_settings' ) &&
 			get_option( 'give_show_db_upgrade_complete_notice' ) &&
-			! isset( $_GET['give-db-update-completed'] )
+			! isset( $_GET['give-db-update-completed'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only flag; it only skips the completed notice redirect and saves nothing.
 		) {
 			delete_option( 'give_show_db_upgrade_complete_notice' );
 
-			wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-updates&give-db-update-completed=give_db_upgrade_completed' ) );
+			wp_safe_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-updates&give-db-update-completed=give_db_upgrade_completed' ) );
 			exit();
 		}
 	}
@@ -315,6 +320,7 @@ class Give_Updates {
 	/**
 	 * Pause db upgrade
 	 *
+     * @since TBD Verify a nonce and the capability before pausing. Write the log data as JSON.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.1
 	 * @access public
@@ -329,9 +335,9 @@ class Give_Updates {
 			! $force &&
 			(
 				wp_doing_ajax() ||
-				! isset( $_GET['page'] ) ||
-				'give-updates' !== $_GET['page'] ||
-				! isset( $_GET['give-pause-db-upgrades'] ) ||
+				! isset( $_GET['page'] ) || // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only tells whether this is the updates screen. The upgrade action itself is verified by is_verified_upgrade_request().
+				'give-updates' !== $_GET['page'] || // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only tells whether this is the updates screen. The upgrade action itself is verified by is_verified_upgrade_request().
+				! $this->is_verified_upgrade_request( 'give-pause-db-upgrades', 'give_pause_db_upgrades' ) ||
 				self::$background_updater->is_paused_process()
 			)
 
@@ -365,7 +371,7 @@ class Give_Updates {
 		delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );
 		wp_clear_scheduled_hook( self::$background_updater->get_cron_identifier() );
 
-		Give()->logs->add( 'Update Pause', print_r( $batch, true ), 0, 'update' );
+		Give()->logs->add( 'Update Pause', wp_json_encode( $batch ), 0, 'update' );
 
 		/**
 		 * Fire action when pause db updates
@@ -380,6 +386,7 @@ class Give_Updates {
 	/**
 	 * Restart db upgrade
 	 *
+     * @since TBD Verify a nonce and the capability before restarting. Write the log data as JSON.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.1
 	 * @access public
@@ -390,9 +397,9 @@ class Give_Updates {
 		// Bailout.
 		if (
 			wp_doing_ajax() ||
-			! isset( $_GET['page'] ) ||
-			'give-updates' !== $_GET['page'] ||
-			! isset( $_GET['give-restart-db-upgrades'] ) ||
+			! isset( $_GET['page'] ) || // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only tells whether this is the updates screen. The upgrade action itself is verified by is_verified_upgrade_request().
+			'give-updates' !== $_GET['page'] || // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only tells whether this is the updates screen. The upgrade action itself is verified by is_verified_upgrade_request().
+			! $this->is_verified_upgrade_request( 'give-restart-db-upgrades', 'give_restart_db_upgrades' ) ||
 			! self::$background_updater->is_paused_process()
 		) {
 			return false;
@@ -407,7 +414,7 @@ class Give_Updates {
 
 			delete_option( 'give_paused_batches' );
 
-			Give()->logs->add( 'Update Restart', print_r( $batch, true ), 0, 'update' );
+			Give()->logs->add( 'Update Restart', wp_json_encode( $batch ), 0, 'update' );
 
 			/** Fire action when restart db updates
 			 *
@@ -424,6 +431,7 @@ class Give_Updates {
 	/**
 	 * Health check for updates.
 	 *
+     * @since TBD Write the log data as JSON.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
@@ -448,7 +456,7 @@ class Give_Updates {
 
 		if ( ! empty( $doing_upgrade_args ) ) {
 			$log_data .= 'Doing update:' . "\n";
-			$log_data .= print_r( $doing_upgrade_args, true ) . "\n";
+			$log_data .= wp_json_encode( $doing_upgrade_args ) . "\n";
 		}
 
 		/**
@@ -457,7 +465,7 @@ class Give_Updates {
 		if ( ! empty( $batch->data ) ) {
 
 			foreach ( $batch->data as $index => $update ) {
-				$log_data = print_r( $update, true ) . "\n";
+				$log_data = wp_json_encode( $update ) . "\n";
 
 				if ( ! is_callable( $update['callback'] ) ) {
 					$log_data .= 'Removing missing callback update: ' . "{$update['id']}\n";
@@ -498,7 +506,7 @@ class Give_Updates {
 
 			if ( ! empty( $new_updates ) ) {
 				$log_data .= 'Adding new update: ' . "\n";
-				$log_data .= print_r( $new_updates, true ) . "\n";
+				$log_data .= wp_json_encode( $new_updates ) . "\n";
 
 				$batch->data = array_merge( (array) $batch->data, $new_updates );
 				update_option( 'give_db_update_count', ( absint( get_option( 'give_db_update_count' ) ) + count( $new_updates ) ), false );
@@ -523,7 +531,7 @@ class Give_Updates {
 		} elseif ( array_diff( wp_list_pluck( $batch->data, 'id' ), $old_batch_update_ids ) ) {
 
 			$log_data .= 'Updating batch' . "\n";
-			$log_data .= print_r( $batch, true );
+			$log_data .= wp_json_encode( $batch );
 
 			if ( ! empty( $batch->key ) ) {
 				wp_cache_delete( $batch->key, 'options' );
@@ -578,7 +586,7 @@ class Give_Updates {
 			update_option( 'give_doing_upgrade', $doing_upgrade_args, false );
 
 			$log_data .= 'Updated doing update:' . "\n";
-			$log_data .= print_r( $doing_upgrade_args, true ) . "\n";
+			$log_data .= wp_json_encode( $doing_upgrade_args ) . "\n";
 		}
 
 		Give()->logs->add( 'Update Health Check', $log_data, 0, 'update' );
@@ -588,6 +596,7 @@ class Give_Updates {
 	/**
 	 * Show update related notices
 	 *
+     * @since TBD Escape translated output. Add nonces to the run and restart updater links.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
@@ -606,7 +615,7 @@ class Give_Updates {
 		}
 
 		// Run DB updates.
-		if ( ! empty( $_GET['give-run-db-update'] ) ) {
+		if ( $this->is_verified_upgrade_request( 'give-run-db-update', 'give_run_db_update' ) ) {
 			$this->run_db_update();
 		}
 
@@ -621,17 +630,17 @@ class Give_Updates {
 
 			$upgrade_error = get_option( 'give_upgrade_error' );
 			if ( ! $upgrade_error ) : ?>
-				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
-				&nbsp;&#8211;&nbsp;<?php _e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a backup before proceeding.', 'give' ); ?>
+				<strong><?php esc_html_e( 'Database Update', 'give' ); ?></strong>
+				&nbsp;&#8211;&nbsp;<?php esc_html_e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a backup before proceeding.', 'give' ); ?>
 				<br>
 				<br>
-				<a href="<?php echo esc_url( add_query_arg( [ 'give-restart-db-upgrades' => 1 ], admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ) ); ?>" class="button button-primary give-restart-updater-btn">
-					<?php _e( 'Restart the updater', 'give' ); ?>
+				<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'give-restart-db-upgrades' => 1 ], admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ), 'give_restart_db_upgrades' ) ); ?>" class="button button-primary give-restart-updater-btn">
+					<?php esc_html_e( 'Restart the updater', 'give' ); ?>
 				</a>
 			<?php else : ?>
-				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
-				&nbsp;&#8211;&nbsp;<?php _e( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ); ?>
-				<a href="<?php echo esc_url( 'http://docs.givewp.com/troubleshooting-db-updates' ); ?>" target="_blank"><?php _e( 'Read More', 'give' ); ?> &raquo;</a>
+				<strong><?php esc_html_e( 'Database Update', 'give' ); ?></strong>
+				&nbsp;&#8211;&nbsp;<?php esc_html_e( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ); ?>
+				<a href="<?php echo esc_url( 'http://docs.givewp.com/troubleshooting-db-updates' ); ?>" target="_blank"><?php esc_html_e( 'Read More', 'give' ); ?> &raquo;</a>
 				<?php
 			endif;
 			$desc_html = ob_get_clean();
@@ -652,7 +661,7 @@ class Give_Updates {
 		}
 
 		// Show db upgrade completed notice.
-		if ( ! empty( $_GET['give-db-update-completed'] ) ) {
+		if ( ! empty( $_GET['give-db-update-completed'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only flag; it only shows the completed notice and saves nothing.
 			Give()->notices->register_notice(
 				[
 					'id'          => 'give_db_upgrade_completed',
@@ -663,7 +672,7 @@ class Give_Updates {
 			);
 
 			// Start update.
-		} elseif ( ! empty( $_GET['give-run-db-update'] ) ) {
+		} elseif ( $this->is_verified_upgrade_request( 'give-run-db-update', 'give_run_db_update' ) ) {
 			$this->run_db_update();
 
 			// Show run the update notice.
@@ -671,12 +680,12 @@ class Give_Updates {
 			ob_start();
 			?>
 			<p>
-				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
-				&nbsp;&#8211;&nbsp;<?php _e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a complete backup before proceeding.', 'give' ); ?>
+				<strong><?php esc_html_e( 'Database Update', 'give' ); ?></strong>
+				&nbsp;&#8211;&nbsp;<?php esc_html_e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a complete backup before proceeding.', 'give' ); ?>
 			</p>
 			<p class="submit">
-				<a href="<?php echo esc_url( add_query_arg( [ 'give-run-db-update' => 1 ], admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ) ); ?>" class="button button-primary give-run-update-now">
-					<?php _e( 'Run the updater', 'give' ); ?>
+				<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'give-run-db-update' => 1 ], admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ), 'give_run_db_update' ) ); ?>" class="button button-primary give-run-update-now">
+					<?php esc_html_e( 'Run the updater', 'give' ); ?>
 				</a>
 			</p>
 			<?php
@@ -711,6 +720,26 @@ class Give_Updates {
 	 */
 	public function render_page() {
 		include_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/views/upgrades.php';
+	}
+
+	/**
+	 * Whether the request asks for an upgrade action, comes from a user who can manage GiveWP and carries a valid nonce.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $query_arg    Query arg that asks for the action.
+	 * @param string $nonce_action Nonce action of the link that sends the request.
+	 *
+	 * @return bool
+	 */
+	private function is_verified_upgrade_request( $query_arg, $nonce_action ) {
+		$nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+
+		if ( ! current_user_can( 'manage_give_settings' ) || ! wp_verify_nonce( $nonce, $nonce_action ) ) {
+			return false;
+		}
+
+		return ! empty( $_GET[ $query_arg ] );
 	}
 
 	/**
@@ -770,6 +799,7 @@ class Give_Updates {
 	/**
 	 * Initialize updates
 	 *
+     * @since TBD Verify the nonce the script already sends, before the permission check and the dispatch. Do not dispatch for users without permission.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
@@ -777,18 +807,20 @@ class Give_Updates {
 	 * @return void
 	 */
 	public function give_start_updating() {
+		check_ajax_referer( self::$background_updater->get_identifier(), 'nonce' );
+
 		// Check permission.
-		if (
-			! current_user_can( 'manage_give_settings' ) ||
-			$this->is_doing_updates()
-		) {
+		if ( ! current_user_can( 'manage_give_settings' ) ) {
+			wp_send_json_error();
+		}
+
+		if ( $this->is_doing_updates() ) {
 			// Run update via ajax
 			self::$background_updater->dispatch();
 
 			wp_send_json_error();
 		}
 
-		// @todo: validate nonce
 		// @todo: set http method to post
 		if ( empty( $_POST['run_db_update'] ) ) {
 			wp_send_json_error();

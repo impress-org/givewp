@@ -212,14 +212,14 @@ class Give_Donation_Form_Grid_Block {
 			'ids'                 => implode(',',
                 array_map(
                     static function ($id) {
-                        _give_redirect_form_id($id);
+                        give_redirect_form_id($id);
 
                         return $id;
                     },
                     $this->getAsArray($attributes['formIDs'])
                 )
             ),
-			'exclude'             => implode(',', $this->getAsArray($attributes['excludedFormIDs'] ) ),
+			'exclude'             => implode(',', $this->getAsArray($attributes['excludedFormIDs'] ) ), // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- this is a shortcode attribute, not a query argument; hiding the chosen forms is the feature.
 			'orderby'             => $attributes['orderBy'],
 			'order'               => $attributes['order'],
 			'cats'                => implode(',', $this->getAsArray($attributes['categories'] ) ),

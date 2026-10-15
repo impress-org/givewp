@@ -17,6 +17,10 @@ use Give\FormAPI\Section;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\Views\Admin\UpsellNotice;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Give_Meta_Box_Form_Data Class.
  */
@@ -789,6 +793,7 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Output metabox settings.
 	 *
+	 * @since TBD Escape output.
 	 * @since 1.8
 	 *
 	 * @return void
@@ -798,6 +803,7 @@ class Give_MetaBox_Form_Data {
 		if ( $form_data_tabs = $this->get_tabs() ) :
 			Template\LegacyFormSettingCompatibility::migrateExistingFormSettings();
 
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only tab name; it only selects which panel to show and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 			$active_tab = ! empty( $_GET['give_tab'] ) ? give_clean( $_GET['give_tab'] ) : 'form_template_options';
 			wp_nonce_field( 'give_save_form_meta', 'give_form_meta_nonce' );
 
@@ -811,28 +817,28 @@ class Give_MetaBox_Form_Data {
 						// Determine if current tab is active.
 						$is_active = $active_tab === $form_data_tab['id'] ? true : false;
 						?>
-						<li class="<?php echo "{$form_data_tab['id']}_tab" . ( $is_active ? ' active' : '' ) . ( $this->has_sub_tab( $form_data_tab ) ? ' has-sub-fields' : '' ); ?>">
-							<a href="#<?php echo $form_data_tab['id']; ?>"
-							   data-tab-id="<?php echo $form_data_tab['id']; ?>">
+						<li class="<?php echo esc_attr( "{$form_data_tab['id']}_tab" . ( $is_active ? ' active' : '' ) . ( $this->has_sub_tab( $form_data_tab ) ? ' has-sub-fields' : '' ) ); ?>">
+							<a href="#<?php echo esc_attr( $form_data_tab['id'] ); ?>"
+							   data-tab-id="<?php echo esc_attr( $form_data_tab['id'] ); ?>">
 								<?php if ( ! empty( $form_data_tab['icon-html'] ) ) : ?>
-									<?php echo $form_data_tab['icon-html']; ?>
+									<?php echo wp_kses_post( $form_data_tab['icon-html'] ); ?>
 								<?php else : ?>
 									<i class="fas fa-angle-right"></i>
 								<?php endif; ?>
-								<span class="give-label"><?php echo $form_data_tab['label']; ?></span>
+								<span class="give-label"><?php echo esc_html( $form_data_tab['label'] ); ?></span>
 							</a>
 							<?php if ( $this->has_sub_tab( $form_data_tab ) ) : ?>
 								<ul class="give-metabox-sub-tabs give-hidden">
 									<?php foreach ( $form_data_tab['sub-fields'] as $sub_tab ) : ?>
-										<li class="<?php echo "{$sub_tab['id']}_tab"; ?>">
-											<a href="#<?php echo $sub_tab['id']; ?>"
-											   data-tab-id="<?php echo $sub_tab['id']; ?>">
+										<li class="<?php echo esc_attr( "{$sub_tab['id']}_tab" ); ?>">
+											<a href="#<?php echo esc_attr( $sub_tab['id'] ); ?>"
+											   data-tab-id="<?php echo esc_attr( $sub_tab['id'] ); ?>">
 												<?php if ( ! empty( $sub_tab['icon-html'] ) ) : ?>
-													<?php echo $sub_tab['icon-html']; ?>
+													<?php echo wp_kses_post( $sub_tab['icon-html'] ); ?>
 												<?php else : ?>
 													<i class="fas fa-angle-right"></i>
 												<?php endif; ?>
-												<span class="give-label"><?php echo $sub_tab['label']; ?></span>
+												<span class="give-label"><?php echo esc_html( $sub_tab['label'] ); ?></span>
 											</a>
 										</li>
 									<?php endforeach; ?>
@@ -848,11 +854,11 @@ class Give_MetaBox_Form_Data {
 					// Determine if current panel is active.
 					$is_active = $active_tab === $setting['id'];
 					?>
-					<div id="<?php echo $setting['id']; ?>"
+					<div id="<?php echo esc_attr( $setting['id'] ); ?>"
 						 class="panel give_options_panel<?php echo( $is_active ? ' active' : '' ); ?>">
 						<?php
 						if ( ! $added_upsells_notice ) {
-							echo UpsellNotice::recurringAddon();
+							echo wp_kses_post( UpsellNotice::recurringAddon() );
 							$added_upsells_notice = true;
 						}
 						?>
@@ -869,7 +875,7 @@ class Give_MetaBox_Form_Data {
 					<?php if ( $this->has_sub_tab( $setting ) ) : ?>
 						<?php if ( ! empty( $setting['sub-fields'] ) ) : ?>
 							<?php foreach ( $setting['sub-fields'] as $index => $sub_fields ) : ?>
-								<div id="<?php echo $sub_fields['id']; ?>" class="panel give_options_panel give-hidden">
+								<div id="<?php echo esc_attr( $sub_fields['id'] ); ?>" class="panel give_options_panel give-hidden">
 									<?php if ( ! empty( $sub_fields['fields'] ) ) : ?>
 										<?php foreach ( $sub_fields['fields'] as $sub_field ) : ?>
 											<?php give_render_field( $sub_field ); ?>
@@ -891,13 +897,14 @@ class Give_MetaBox_Form_Data {
 	 * @param object $post Post Object.
 	 *
 	 * @access public
+	 * @since  TBD Escape output.
 	 * @since  2.1.0
 	 *
 	 * @return void
 	 */
 	public function output_goal( $post ) {
 
-		echo give_admin_form_goal_stats( $post->ID );
+		echo wp_kses_post( give_admin_form_goal_stats( $post->ID ) );
 
 	}
 
@@ -947,6 +954,7 @@ class Give_MetaBox_Form_Data {
 	 * @param int        $post_id Post ID.
 	 * @param int|object $post    Post Object.
 	 *
+	 * @since TBD Unslash and sanitize the request values.
 	 * @since 1.8
 	 *
 	 * @return void
@@ -964,7 +972,7 @@ class Give_MetaBox_Form_Data {
 		}
 
 		// Check the nonce.
-		if ( empty( $_POST['give_form_meta_nonce'] ) || ! wp_verify_nonce( $_POST['give_form_meta_nonce'], 'give_save_form_meta' ) ) {
+		if ( empty( $_POST['give_form_meta_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['give_form_meta_nonce'] ) ), 'give_save_form_meta' ) ) {
 			return;
 		}
 
@@ -1005,16 +1013,17 @@ class Give_MetaBox_Form_Data {
 						switch ( $setting_field['type'] ) {
 							case 'textarea':
 							case 'wysiwyg':
-								$form_meta_value = wp_kses_post( $_POST[ $form_meta_key ] );
+								$form_meta_value = wp_slash( wp_kses_post( wp_unslash( $_POST[ $form_meta_key ] ) ) ); // update_post_meta() unslashes the value once more, so it is slashed again here.
 								break;
 
 							case 'donation_limit':
-								$form_meta_value = $_POST[ $form_meta_key ];
+								$form_meta_value = give_clean( $_POST[ $form_meta_key ] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 								break;
 
 							case 'group':
 								$form_meta_value = [];
 
+								// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- the values stay slashed on purpose: wp_kses_post() and give_clean() below handle them, and update_post_meta() unslashes them once when saving.
 								foreach ( $_POST[ $form_meta_key ] as $index => $group ) {
 
 									// Do not save template input field values.
@@ -1044,7 +1053,7 @@ class Give_MetaBox_Form_Data {
 								break;
 
 							default:
-								$form_meta_value = give_clean( $_POST[ $form_meta_key ] );
+								$form_meta_value = give_clean( $_POST[ $form_meta_key ] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 						}// End switch().
 
 						/**
@@ -1095,6 +1104,7 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Save form template setting handler
 	 *
+	 * @since TBD Check that the request values are set.
 	 * @since 4.16.2 Normalize file field values as URLs when saving form template settings.
 	 *
 	 * @param string $meta_key
@@ -1107,7 +1117,8 @@ class Give_MetaBox_Form_Data {
 			return;
 		}
 
-		$options = $_POST[ $new_template ];
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified by save() before this runs; the options stay slashed on purpose and are sanitized by field type below.
+		$options = isset( $_POST[ $new_template ] ) ? $_POST[ $new_template ] : [];
 
 		// Exit
 		if ( empty( $options ) ) {
@@ -1497,11 +1508,14 @@ class Give_MetaBox_Form_Data {
 	 * @return string The URL after redirect.
 	 */
 	public function maintain_active_tab( $location, $post_id ) {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- WordPress core verifies the nonce before it fires redirect_post_location.
 		if (
 			'give_forms' === get_post_type( $post_id ) &&
 			! empty( $_POST['give_form_active_tab'] )
 		) {
-			$location = esc_url_raw( add_query_arg( 'give_tab', give_clean( $_POST['give_form_active_tab'] ), $location ) ); }
+			$location = esc_url_raw( add_query_arg( 'give_tab', give_clean( $_POST['give_form_active_tab'] ), $location ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		}
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		return $location;
 	}

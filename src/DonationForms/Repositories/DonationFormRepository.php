@@ -117,22 +117,22 @@ class DonationFormRepository
             DB::table('give_formmeta')
                 ->insert([
                     'form_id' => $donationFormId,
-                    'meta_key' => DonationFormMetaKeys::SETTINGS()->getValue(),
-                    'meta_value' => $donationForm->settings->toJson(),
+                    'meta_key' => DonationFormMetaKeys::SETTINGS()->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the form meta table, not a query filter.
+                    'meta_value' => $donationForm->settings->toJson(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the form meta table, not a query filter.
                 ]);
 
             DB::table('give_formmeta')
                 ->insert([
                     'form_id' => $donationFormId,
-                    'meta_key' => DonationFormMetaKeys::FIELDS()->getValue(),
-                    'meta_value' => $donationForm->blocks->toJson(),
+                    'meta_key' => DonationFormMetaKeys::FIELDS()->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the form meta table, not a query filter.
+                    'meta_value' => $donationForm->blocks->toJson(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the form meta table, not a query filter.
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
             Log::error('Failed creating a donation form', compact('donationForm'));
 
-            throw new Exception('Failed creating a donation form', 0, $exception);
+            throw new Exception('Failed creating a donation form', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -193,7 +193,7 @@ class DonationFormRepository
                 ->where('form_id', $donationForm->id)
                 ->where('meta_key', DonationFormMetaKeys::SETTINGS()->getValue())
                 ->update([
-                    'meta_value' => $donationForm->settings->toJson(),
+                    'meta_value' => $donationForm->settings->toJson(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the form meta table, not a query filter.
                 ]);
 
 
@@ -201,14 +201,14 @@ class DonationFormRepository
                 ->where('form_id', $donationForm->id)
                 ->where('meta_key', DonationFormMetaKeys::FIELDS()->getValue())
                 ->update([
-                    'meta_value' => $donationForm->blocks->toJson(),
+                    'meta_value' => $donationForm->blocks->toJson(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the form meta table, not a query filter.
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
             Log::error('Failed updating a donation form', compact('donationForm'));
 
-            throw new Exception('Failed updating a donation form', 0, $exception);
+            throw new Exception('Failed updating a donation form', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -241,7 +241,7 @@ class DonationFormRepository
 
             Log::error('Failed deleting a donation form', compact('donationForm'));
 
-            throw new Exception('Failed deleting a donation form', 0, $exception);
+            throw new Exception('Failed deleting a donation form', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -252,6 +252,7 @@ class DonationFormRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.0.0
      *
      * @param  DonationForm  $donationForm
@@ -262,7 +263,7 @@ class DonationFormRepository
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($donationForm->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
     }

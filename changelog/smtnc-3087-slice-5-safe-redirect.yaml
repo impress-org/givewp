@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Used safe redirects for internal URLs and stopped the login, logout, registration and profile editor forms from redirecting donors to other sites
+timestamp: 2026-10-08T17:00:00.000Z

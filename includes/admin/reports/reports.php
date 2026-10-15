@@ -25,17 +25,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Renders the reports page contents.
  *
+ * @since TBD Escape output. Unslash and sanitize the tab request value.
  * @since 1.0
  * @return void
  */
 function give_reports_page() {
 	$current_page = admin_url( 'edit.php?post_type=give_forms&page=give-reports' );
-	$active_tab   = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
+	$active_tab   = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'earnings'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only tab name; it selects which report tab to show and saves nothing.
 	$views        = give_reports_default_views();
 	?>
 	<div class="wrap give-settings-page">
 
-		<h1 class="screen-reader-text"><?php echo get_admin_page_title(); ?></h1>
+		<h1 class="screen-reader-text"><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
 		<h2 class="nav-tab-wrapper">
 			<?php foreach ( $views as $tab => $label ) { ?>
@@ -136,16 +137,21 @@ function give_reports_default_views() {
  *
  * @param string $default Default view to use.
  *
+ * @since TBD Unslash and sanitize the view request value.
  * @since 1.0
  * @return string $view Report View
  */
 function give_get_reporting_view( $default = 'earnings' ) {
 
-	if ( ! isset( $_GET['view'] ) || ! in_array( $_GET['view'], array_keys( give_reports_default_views() ) ) ) {
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only view name; it selects which report to show and saves nothing.
+	$requested_view = isset( $_GET['view'] ) ? sanitize_text_field( wp_unslash( $_GET['view'] ) ) : '';
+
+	if ( ! isset( $_GET['view'] ) || ! in_array( $requested_view, array_keys( give_reports_default_views() ) ) ) {
 		$view = $default;
 	} else {
-		$view = $_GET['view'];
+		$view = $requested_view;
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	return apply_filters( 'give_get_reporting_view', $view );
 }
@@ -153,21 +159,26 @@ function give_get_reporting_view( $default = 'earnings' ) {
 /**
  * Renders the Reports page
  *
+ * @since TBD Escape output. Unslash and sanitize the tab request value.
  * @since 1.0
  * @return void
  */
 function give_reports_tab_reports() {
 
 	if ( ! current_user_can( 'view_give_reports' ) ) {
-		wp_die( __( 'You do not have permission to access this report', 'give' ), __( 'Error', 'give' ), [ 'response' => 403 ] );
+		wp_die( esc_html__( 'You do not have permission to access this report', 'give' ), esc_html__( 'Error', 'give' ), [ 'response' => 403 ] );
 	}
 
 	$current_view = 'earnings';
 	$views        = give_reports_default_views();
 
-	if ( isset( $_GET['tab'] ) && array_key_exists( $_GET['tab'], $views ) ) {
-		$current_view = $_GET['tab'];
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only tab name; it selects which report to show and saves nothing.
+	$requested_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
+
+	if ( isset( $_GET['tab'] ) && array_key_exists( $requested_tab, $views ) ) {
+		$current_view = $requested_tab;
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	/**
 	 * Fires the report page view.
@@ -182,12 +193,13 @@ add_action( 'give_reports_tab_reports', 'give_reports_tab_reports' );
 /**
  * Renders the Reports Page Views Drop Downs
  *
+ * @since TBD Escape output. Unslash and sanitize the view request value.
  * @since 1.0
  * @return void
  */
 function give_report_views() {
 	$views        = give_reports_default_views();
-	$current_view = isset( $_GET['view'] ) ? $_GET['view'] : 'earnings';
+	$current_view = isset( $_GET['view'] ) ? sanitize_text_field( wp_unslash( $_GET['view'] ) ) : 'earnings'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only view name; it selects which report is shown and saves nothing.
 	/**
 	 * Fires before the report page actions form.
 	 *
@@ -199,7 +211,7 @@ function give_report_views() {
 		<select id="give-reports-view" name="view">
 			<option value="-1"><?php esc_html_e( 'Report Type', 'give' ); ?></option>
 			<?php foreach ( $views as $view_id => $label ) : ?>
-				<option value="<?php echo esc_attr( $view_id ); ?>" <?php selected( $view_id, $current_view ); ?>><?php echo $label; ?></option>
+				<option value="<?php echo esc_attr( $view_id ); ?>" <?php selected( $view_id, $current_view ); ?>><?php echo esc_html( $label ); ?></option>
 			<?php endforeach; ?>
 		</select>
 
@@ -237,7 +249,7 @@ function give_report_views() {
  */
 function give_reports_forms_table() {
 
-	if ( isset( $_GET['form-id'] ) ) {
+	if ( isset( $_GET['form-id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form filter; it only picks the table or the form report and saves nothing.
 		return;
 	}
 
@@ -262,7 +274,7 @@ add_action( 'give_reports_view_forms', 'give_reports_forms_table' );
  * @return void
  */
 function give_reports_form_details() {
-	if ( ! isset( $_GET['form-id'] ) ) {
+	if ( ! isset( $_GET['form-id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form filter; it only picks the table or the form report and saves nothing.
 		return;
 	}
 	?>
@@ -272,7 +284,7 @@ function give_reports_form_details() {
 		</div>
 	</div>
 	<?php
-	give_reports_graph_of_form( absint( $_GET['form-id'] ) );
+	give_reports_graph_of_form( absint( $_GET['form-id'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form filter; it only picks which form report is shown and saves nothing.
 }
 
 add_action( 'give_reports_view_forms', 'give_reports_form_details' );
@@ -298,18 +310,19 @@ add_action( 'give_reports_view_gateways', 'give_reports_gateways_table' );
 /**
  * Renders the Reports Earnings Graphs
  *
+ * @since TBD Escape output, including translated strings.
  * @since 3.22.1 added permissions check
  * @since 1.0
  * @return void
  */
 function give_reports_earnings() {
     if (!current_user_can('view_give_reports')){
-        wp_die(__('You do not have permission to access this report', 'give'), __('Error', 'give'), ['response' => 403]);
+        wp_die(esc_html__('You do not have permission to access this report', 'give'), esc_html__('Error', 'give'), ['response' => 403]);
     }
 
 	?>
 	<div class="tablenav top reports-table-nav">
-		<h2 class="reports-earnings-title screen-reader-text"><?php _e( 'Revenue Report', 'give' ); ?></h2>
+		<h2 class="reports-earnings-title screen-reader-text"><?php esc_html_e( 'Revenue Report', 'give' ); ?></h2>
 	</div>
 	<?php
 	give_reports_graph();
@@ -321,6 +334,7 @@ add_action( 'give_reports_view_earnings', 'give_reports_earnings' );
 /**
  * Retrieves estimated monthly earnings and sales
  *
+ * @since TBD Use gmdate() instead of date().
  * @since 1.0
  * @return array
  */
@@ -340,9 +354,9 @@ function give_estimated_monthly_stats() {
 		$to_date_earnings = $stats->get_earnings( 0, 'this_month' );
 		$to_date_sales    = $stats->get_sales( 0, 'this_month' );
 
-		$current_day   = date( 'd', current_time( 'timestamp' ) );
-		$current_month = date( 'n', current_time( 'timestamp' ) );
-		$current_year  = date( 'Y', current_time( 'timestamp' ) );
+		$current_day   = gmdate( 'd', current_time( 'timestamp' ) );
+		$current_month = gmdate( 'n', current_time( 'timestamp' ) );
+		$current_year  = gmdate( 'Y', current_time( 'timestamp' ) );
 		$days_in_month = cal_days_in_month( CAL_GREGORIAN, $current_month, $current_year );
 
 		$estimated['earnings'] = ( $to_date_earnings / $current_day ) * $days_in_month;

@@ -13,6 +13,7 @@ trait HasStripeStatementDescriptorText
      * Return filtered stripe statement descriptor text.
      * Check Stripe statement descriptor requirements: https://stripe.com/docs/statement-descriptors#requirements
      *
+     * @since TBD Escape exception message.
      * @since 2.19.0
      *
      * @param string $statementDescriptor
@@ -37,6 +38,7 @@ trait HasStripeStatementDescriptorText
 
         if (array_intersect($unsupportedCharacters, str_split($statementDescriptor))) {
             throw new InvalidArgumentException(
+                // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- constant string rendered as HTML in the admin modal (stripe-admin.js) and asserted verbatim by HasStripeStatementDescriptorTextTest.
                 __(
                     'Stripe statement descriptor text should not contain any of the special characters <code>< > \ \' " *</code>.',
                     'give'

@@ -3,7 +3,15 @@
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 /**
+ * @since TBD Escape output.
+ *
  * @var array    $attributes
  * @var Campaign $campaign
  */
@@ -34,6 +42,7 @@ $isEditor = defined('REST_REQUEST') && REST_REQUEST;
             esc_html($buttonText)
         );
     } else {
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_form_shortcode() renders the whole donation form; its own output is escaped internally.
         echo give_form_shortcode([
         'id' => $formId,
         'campaign_id' => $campaign->id,
@@ -46,6 +55,7 @@ $isEditor = defined('REST_REQUEST') && REST_REQUEST;
     }
 
     $final_output = ob_get_clean();
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $final_output is the buffered button/form markup above, already escaped internally.
     echo $final_output;
     ?>
 </div>

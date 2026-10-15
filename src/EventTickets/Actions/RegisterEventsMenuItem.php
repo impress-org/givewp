@@ -26,15 +26,16 @@ class RegisterEventsMenuItem
     /**
      * Render admin page container
      *
+     * @since TBD Escape output. Use the give text domain in the event not found message.
      * @since 3.6.0
      */
     public function render()
     {
-        if(isset($_GET['id'])) {
-            $event = Event::find(absint($_GET['id']));
+        if(isset($_GET['id'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only id param; it only selects which record to show and saves nothing.
+            $event = Event::find(absint($_GET['id'])); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only id param; it only selects which record to show and saves nothing.
 
             if (!$event) {
-                wp_die(__('Event not found', 'give-event-tickets'), 404);
+                wp_die(esc_html__('Event not found', 'give'), 404);
             }
 
             give(EnqueueEventDetailsScripts::class)($event);

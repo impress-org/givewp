@@ -11,6 +11,16 @@ class FormBuilderRouteBuilder
     const SLUG = 'givewp-form-builder';
 
     /**
+     * @since TBD
+     */
+    const CREATE_NONCE_ACTION = 'givewp_create_form';
+
+    /**
+     * @since TBD
+     */
+    const AJAX_NONCE_ACTION = 'givewp_form_builder_ajax';
+
+    /**
      * @var int|string
      */
     protected $donationFormID;
@@ -60,6 +70,7 @@ class FormBuilderRouteBuilder
     }
 
     /**
+     * @since TBD Add the create form nonce to the create route and sanitize the campaign id.
      * @since 4.0.0 add p2p param
      * @since 3.22.0 Add locale support
      * @since 3.0.0
@@ -73,8 +84,13 @@ class FormBuilderRouteBuilder
             'locale' => $this->locale,
         ];
 
+        if ('new' === $this->donationFormID) {
+            $queryArgs['_wpnonce'] = wp_create_nonce(self::CREATE_NONCE_ACTION);
+        }
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- campaign id is passed on to the next URL and saves nothing here.
         if (isset($_GET['campaignId'])) {
-            $queryArgs['campaignId'] = $_GET['campaignId'];
+            $queryArgs['campaignId'] = absint($_GET['campaignId']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- same read-only campaign id as above.
         }
 
         // Check if it's P2P form
@@ -96,10 +112,15 @@ class FormBuilderRouteBuilder
     }
 
     /**
+     * @since TBD Compare unslashed, sanitized query args.
      * @since 3.0.0
      */
     public static function isRoute(): bool
     {
-        return isset($_GET['post_type'], $_GET['page']) && $_GET['post_type'] === 'give_forms' && $_GET['page'] === self::SLUG;
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides whether to load the form builder assets.
+        return isset($_GET['post_type'], $_GET['page'])
+            && 'give_forms' === sanitize_key(wp_unslash($_GET['post_type']))
+            && self::SLUG === sanitize_key(wp_unslash($_GET['page']));
+        // phpcs:enable WordPress.Security.NonceVerification.Recommended
     }
 }

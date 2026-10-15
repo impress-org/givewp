@@ -91,6 +91,7 @@ function give_register_form( $redirect = '' ) {
 /**
  * Process Login Form
  *
+ * @since TBD Redirect only to URLs on this site.
  * @since 1.0
  *
  * @param array $data Data sent from the login form
@@ -130,7 +131,7 @@ function give_process_login_form( $data ) {
 
 		if ( ! $errors ) {
 			$redirect = apply_filters( 'give_login_redirect', $data['give_login_redirect'], $user_id );
-			wp_redirect( $redirect );
+			wp_safe_redirect( wp_validate_redirect( $redirect, home_url() ) );
 			give_die();
 		}
 	}
@@ -142,6 +143,7 @@ add_action( 'give_user_login', 'give_process_login_form' );
 /**
  * Process User Logout
  *
+ * @since TBD Redirect only to URLs on this site.
  * @since 1.0
  *
  * @param array $data Data sent from the give login form page
@@ -171,7 +173,7 @@ function give_process_user_logout( $data ) {
 		 */
 		do_action( 'give_after_user_logout' );
 
-		wp_redirect( $data['give_logout_redirect'] );
+		wp_safe_redirect( wp_validate_redirect( $data['give_logout_redirect'], home_url() ) );
 		give_die();
 	}
 }
@@ -224,6 +226,7 @@ function give_log_user_in( $user_id, $user_login, $user_pass ) {
 /**
  * Process Register Form
  *
+ * @since TBD Use gmdate() instead of date(), and redirect only to URLs on this site.
  * @since 4.16.6  Require a valid nonce before processing registration.
  * @since 2.0
  *
@@ -303,12 +306,12 @@ function give_process_register_form( $data ) {
 				'user_login'      => $data['give_user_login'],
 				'user_pass'       => $data['give_user_pass'],
 				'user_email'      => $data['give_user_email'],
-				'user_registered' => date( 'Y-m-d H:i:s' ),
+				'user_registered' => gmdate( 'Y-m-d H:i:s' ),
 				'role'            => get_option( 'default_role' ),
 			)
 		);
 
-		wp_redirect( $redirect );
+		wp_safe_redirect( wp_validate_redirect( $redirect, home_url() ) );
 		give_die();
 	}
 }
@@ -319,6 +322,7 @@ add_action( 'give_user_register', 'give_process_register_form' );
 /**
  * Email access login form.
  *
+ * @since TBD Unslash and sanitize the request input.
  * @since 1.8.17
  *
  * @return bool
@@ -326,12 +330,12 @@ add_action( 'give_user_register', 'give_process_register_form' );
 function give_email_access_login() {
 
 	// Verify nonce.
-	if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
+	if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'give' ) ) {
 		return false;
 	}
 
 	// Need email to proceed.
-	$email = isset( $_POST['give_email'] ) ? give_clean( $_POST['give_email'] ) : '';
+	$email = isset( $_POST['give_email'] ) ? give_clean( $_POST['give_email'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 	if ( empty( $email ) ) {
 		give_set_error( 'give_empty_email', __( 'Please enter the email address you used for your donation.', 'give' ) );
 	}
@@ -345,8 +349,8 @@ function give_email_access_login() {
 
 		$args = array(
 			'secret'   => $recaptcha_secret,
-			'response' => $_POST['g-recaptcha-response'],
-			'remoteip' => $_POST['give_ip'],
+			'response' => isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '',
+			'remoteip' => isset( $_POST['give_ip'] ) ? sanitize_text_field( wp_unslash( $_POST['give_ip'] ) ) : '',
 		);
 
 		if ( ! empty( $args['response'] ) ) {

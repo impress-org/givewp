@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Added translator comments in views, gateways and templates, and numbered
+  the placeholders in their messages
+timestamp: 2026-10-06T23:58:09.607Z

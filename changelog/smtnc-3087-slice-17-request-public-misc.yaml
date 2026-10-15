@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Sanitized and unslashed request input in the donor login, profile and history features
+timestamp: 2026-10-08T19:30:00.000Z

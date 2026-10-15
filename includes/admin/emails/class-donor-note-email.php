@@ -30,6 +30,7 @@ if ( ! class_exists( 'Give_Donor_Note_Email' ) ) :
 		 * Create a class instance.
 		 *
 		 * @access  public
+		 * @since TBD Add translators comments.
 		 * @since   2.3.0
 		 */
 		public function init() {
@@ -44,6 +45,7 @@ if ( ! class_exists( 'Give_Donor_Note_Email' ) ) :
 					'notification_status'   => 'enabled',
 					'recipient_group_name'  => __( 'Donor', 'give' ),
 					'default_email_subject' => sprintf(
+						/* translators: 1: Email tag for the donation, 2: Email tag for the donation date */
 						esc_attr__( 'Note added to your %1$s donation from %2$s', 'give' ),
 						'{donation}',
 						'{date}'

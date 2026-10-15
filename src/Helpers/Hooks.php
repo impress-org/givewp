@@ -11,6 +11,7 @@ class Hooks
      * A function which extends the WordPress add_action method to handle the instantiation of a class
      * once the action is fired. This prevents the need to instantiate a class before adding it to hook.
      *
+     * @since TBD Escape exception message.
      * @since 2.8.0
      *
      * @param string $tag
@@ -24,7 +25,7 @@ class Hooks
     public static function addAction($tag, $class, $method = '__invoke', $priority = 10, $acceptedArgs = 1)
     {
         if ( ! method_exists($class, $method)) {
-            throw new InvalidArgumentException("The method $method does not exist on $class");
+            throw new InvalidArgumentException(esc_html("The method $method does not exist on $class"));
         }
 
         add_action(
@@ -51,6 +52,7 @@ class Hooks
      * A function which extends the WordPress add_filter method to handle the instantiation of a class
      * once the filter is fired. This prevents the need to instantiate a class before adding it to hook.
      *
+     * @since TBD Escape exception message.
      * @since 2.8.0
      *
      * @param string $tag
@@ -64,7 +66,7 @@ class Hooks
     public static function addFilter($tag, $class, $method = '__invoke', $priority = 10, $acceptedArgs = 1)
     {
         if ( ! method_exists($class, $method)) {
-            throw new InvalidArgumentException("The method $method does not exist on $class");
+            throw new InvalidArgumentException(esc_html("The method $method does not exist on $class"));
         }
 
         add_filter(
