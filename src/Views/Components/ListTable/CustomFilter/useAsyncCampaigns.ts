@@ -11,7 +11,7 @@ const CAMPAIGNS_PER_PAGE = 30;
 /**
  * The core-data entity an async select loads its options from.
  *
- * @since TBD
+ * @since 4.19.0
  */
 export type AsyncSelectEntity = {
     kind: string;
@@ -31,7 +31,7 @@ const formRecordQuery = {context: 'view', _fields: 'id,title,status'};
  * Draft forms are listed as well, since a form taken offline keeps its donations. The route only accepts a
  * request for drafts from users who can edit forms, so `editorListQuery` applies to them alone.
  *
- * @since TBD
+ * @since 4.19.0
  */
 export const asyncSelectEntities: Record<'campaign' | 'form', AsyncSelectEntity> = {
     campaign: {
@@ -77,8 +77,8 @@ type UseCampaignAsyncSelectReturn = {
 /**
  * Custom hook for handling async campaign or form selection with pagination and search
  *
- * @since TBD Accept the entity to load, defaulting to campaigns, and load options through core-data.
- * @since TBD Work out the page from the options already loaded, so a search can load past its first page.
+ * @since 4.19.0 Accept the entity to load, defaulting to campaigns, and load options through core-data.
+ * @since 4.19.0 Work out the page from the options already loaded, so a search can load past its first page.
  * @since 4.10.0
  */
 export function useCampaignAsyncSelect(

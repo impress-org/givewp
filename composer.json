@@ -20,7 +20,8 @@
         "stellarwp/admin-notices": "^2.0.1",
         "stellarwp/arrays": "^1.3",
         "moneyphp/money": "^3.3.3",
-        "stellarwp/harbor": "^1.6.2"
+        "stellarwp/harbor": "2.0.2",
+        "stellarwp/banners": "^1.0"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
@@ -109,7 +110,8 @@
                 "symfony/polyfill-ctype",
                 "symfony/polyfill-mbstring",
                 "symfony/http-foundation",
-                "stellarwp/harbor"
+                "stellarwp/harbor",
+                "stellarwp/banners"
             ],
             "exclude_from_copy": {
                 "packages": [

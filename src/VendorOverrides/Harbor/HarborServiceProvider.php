@@ -34,7 +34,7 @@ class HarborServiceProvider implements ServiceProviderContract
     }
 
     /**
-     * @since TBD Report legacy licenses on the lw-harbor/legacy_licenses filter, the one Harbor applies.
+     * @since 4.19.0 Report legacy licenses on the lw-harbor/legacy_licenses filter, the one Harbor applies.
      * @since 4.15.0
      *
      * @inheritDoc

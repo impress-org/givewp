@@ -10,14 +10,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.19.0
  */
 final class AddUniqueFormIdToCampaignFormsTableTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testKeepsTheCampaignThatOwnsTheFormAsDefaultAndDropsTheOtherLinks(): void
     {
@@ -39,7 +39,7 @@ final class AddUniqueFormIdToCampaignFormsTableTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testKeepsTheLowestCampaignIdWhenNoCampaignOwnsTheFormAsDefault(): void
     {
@@ -61,7 +61,7 @@ final class AddUniqueFormIdToCampaignFormsTableTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testKeepsEveryCampaignsDefaultFormWhenCampaignsShareOne(): void
     {
@@ -83,7 +83,7 @@ final class AddUniqueFormIdToCampaignFormsTableTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testRunningTwiceIsSafe(): void
     {

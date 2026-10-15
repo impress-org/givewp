@@ -174,7 +174,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     /**
      * Add-on covered by Harbor with no legacy license should be reported as licensed.
      *
-     * @since TBD Harbor knows the add-on by its catalog slug, not its plugin dirname.
+     * @since 4.19.0 Harbor knows the add-on by its catalog slug, not its plugin dirname.
      * @since 4.15.0
      */
     public function testGetLicenseByPluginDirnameReturnsValidWhenHarborCoversAddon(): void
@@ -188,7 +188,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testGetLicenseByPluginDirnameReturnsValidWhenCatalogSlugMatchesDirname(): void
     {
@@ -200,7 +200,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testLicensesTabShowsHarborCoveredAddonAsLicensed(): void
     {
@@ -252,7 +252,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testGetLicenseByPluginDirnamePrefersHarborOverExpiredLegacyLicense(): void
     {
@@ -268,7 +268,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testGetLicenseByPluginDirnameKeepsExpiredLegacyLicenseWhenHarborDoesNotCoverAddon(): void
     {
@@ -284,7 +284,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testLicensesTabMovesHarborCoveredAddonOutOfExpiredAllAccessPass(): void
     {

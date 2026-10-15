@@ -27,7 +27,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since TBD Defer the legacy check to admin_menu and register the "Forms" submenu only for users
+     * @since 4.19.0 Defer the legacy check to admin_menu and register the "Forms" submenu only for users
      *            who have not switched to the legacy list, since the React bundle is only enqueued for it.
      *
      * @inheritDoc

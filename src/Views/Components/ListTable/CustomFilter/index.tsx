@@ -37,7 +37,7 @@ const MENU_MAX_WIDTH_REM = 24;
  * A menu opens from its select's left edge. When it would run past the right edge of the page, it opens from the
  * select's right edge instead.
  *
- * @since TBD
+ * @since 4.19.0
  */
 function useMenuAlignment(inputId: string) {
     const [alignMenuEnd, setAlignMenuEnd] = useState(false);
@@ -69,7 +69,7 @@ export default function CustomFilter(props: CustomFilterProps) {
 }
 
 /**
- * @since TBD Keep the open menu inside the page.
+ * @since 4.19.0 Keep the open menu inside the page.
  * @since 4.10.0
  */
 function DefaultFilter({name, options, ariaLabel, placeholder, onChange, value, isSearchable, isSelectable, isClearable}: CustomFilterProps) {
@@ -117,10 +117,10 @@ function DefaultFilter({name, options, ariaLabel, placeholder, onChange, value, 
 }
 
 /**
- * @since TBD Load forms as well as campaigns through `asyncEntity`.
- * @since TBD Label the select for screen readers with `ariaLabel`.
- * @since TBD Pin any static `options` (for example "No campaign") above the async results.
- * @since TBD Keep the open menu inside the page.
+ * @since 4.19.0 Load forms as well as campaigns through `asyncEntity`.
+ * @since 4.19.0 Label the select for screen readers with `ariaLabel`.
+ * @since 4.19.0 Pin any static `options` (for example "No campaign") above the async results.
+ * @since 4.19.0 Keep the open menu inside the page.
  * @since 4.10.0
  */
 function AsyncFilter({name, options = [], ariaLabel, placeholder, onChange, value, isSearchable, isClearable, asyncEntity}: CustomFilterProps) {

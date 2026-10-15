@@ -8,7 +8,7 @@ use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
- * @since TBD form_id is unique: a form belongs to one campaign. Existing tables get the key from AddUniqueFormIdToCampaignFormsTable.
+ * @since 4.19.0 form_id is unique: a form belongs to one campaign. Existing tables get the key from AddUniqueFormIdToCampaignFormsTable.
  * @since 4.0.0
  * Creates give_campaign_forms table
  */

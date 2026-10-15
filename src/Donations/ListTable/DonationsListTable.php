@@ -31,7 +31,7 @@ class DonationsListTable extends ListTable
     }
 
     /**
-     * @since TBD Added Form column
+     * @since 4.19.0 Added Form column
      * @since 4.10.0 Updated columns order
      * @since 4.8.0 Added Subscription Donation Type column
      * @since 2.24.0
@@ -55,7 +55,7 @@ class DonationsListTable extends ListTable
     }
 
     /**
-     * @since TBD Show the Form column by default
+     * @since 4.19.0 Show the Form column by default
      * @since 2.24.0
      *
      * @inheritDoc

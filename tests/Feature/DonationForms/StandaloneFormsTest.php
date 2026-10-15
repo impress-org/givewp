@@ -17,7 +17,7 @@ use WP_REST_Server;
  * A donation form that belongs to no campaign, from the Add form button through the forms list to
  * linking it to a campaign later.
  *
- * @since TBD
+ * @since 4.19.0
  */
 final class StandaloneFormsTest extends RestApiTestCase
 {
@@ -26,7 +26,7 @@ final class StandaloneFormsTest extends RestApiTestCase
     use InterruptsRedirects;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function setUp(): void
     {
@@ -49,7 +49,7 @@ final class StandaloneFormsTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testAddFormCreatesADraftFormWithNoCampaign(): void
     {
@@ -63,7 +63,7 @@ final class StandaloneFormsTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testAddFormNeedsTheNonceAndTheCapability(): void
     {
@@ -125,7 +125,7 @@ final class StandaloneFormsTest extends RestApiTestCase
      * Runs the admin_init route the forms list's Add form button points at and returns the id of
      * the form it redirects to.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     private function createFormThroughTheFormBuilder(): int
     {
@@ -144,7 +144,7 @@ final class StandaloneFormsTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     private function listForms(array $params = []): array
     {
@@ -158,7 +158,7 @@ final class StandaloneFormsTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     private function findListRow(int $formId): array
     {
