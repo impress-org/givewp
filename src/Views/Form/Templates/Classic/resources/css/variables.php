@@ -1,3 +1,4 @@
+<?php if (!defined('ABSPATH')) { exit; } ?>
 :root {
     --give-primary-color: <?= $primaryColor ?>;
     --give-header-background-image: url("<?= $headerBackgroundImage ?>");

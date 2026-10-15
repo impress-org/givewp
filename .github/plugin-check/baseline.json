@@ -38,7 +38,6 @@
     "badly_named_files": 16,
     "block_api_version_too_low": 2,
     "license_mismatch": 1,
-    "missing_direct_file_access_protection": 141,
     "plugin_header_no_license": 1,
     "plugin_updater_detected": 1
   },

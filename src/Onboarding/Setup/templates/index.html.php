@@ -6,6 +6,10 @@
  * @since 2.8.0
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Variables from onboarding PageView
  *

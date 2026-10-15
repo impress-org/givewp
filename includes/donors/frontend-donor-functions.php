@@ -11,6 +11,10 @@
 
 use Give\Donations\ValueObjects\DonationMetaKeys;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Get the donor's Gravatar with a nice fallback.
  *

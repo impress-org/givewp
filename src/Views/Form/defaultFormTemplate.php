@@ -8,6 +8,10 @@
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use Give\Views\IframeContentView;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $formId = FrontendFormTemplateUtils::getFormId();
 $iframeView = new IframeContentView();
 

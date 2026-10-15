@@ -18,6 +18,10 @@
 
 use Give\Framework\Views\View;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $modifier = $design === 'two-panel-steps' ? 'two-panel' : $design;
 $headerHtml = $header ? View::load('DonationForms.form-skeleton/header', compact('goal', 'image')) : '';
 $firstSectionHtml = View::load('DonationForms.form-skeleton/section', [

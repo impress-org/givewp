@@ -1,3 +1,4 @@
+<?php if (!defined('ABSPATH')) { exit; } ?>
 <div class="form_grid_options_wrap inner-panel">
     <div class="form-template-introduction">
 

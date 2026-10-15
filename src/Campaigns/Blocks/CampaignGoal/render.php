@@ -3,6 +3,10 @@
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * @var array    $attributes
  * @var Campaign $campaign

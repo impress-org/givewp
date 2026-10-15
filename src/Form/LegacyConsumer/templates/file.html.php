@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /** @var Give\Framework\FieldsAPI\File $field */ ?>
 <?php
 /** @var string $fieldIdAttribute */ ?>

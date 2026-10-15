@@ -3,6 +3,10 @@
  * @since 3.13.0
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /** @var array[] $banners */
  foreach ($banners as $banner):
     $id = $banner['id'];

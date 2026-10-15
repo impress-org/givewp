@@ -11,6 +11,10 @@
  * @since 4.11.0
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 ?>
 
 <section <?php echo $elements->customWrapperAttributes; ?>

@@ -2,6 +2,10 @@
 
 use Give\Form\Template\Options;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $price_placeholder = give_format_decimal('1.00', false, false);
 
 return [

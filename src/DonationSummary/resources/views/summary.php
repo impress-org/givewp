@@ -1,3 +1,4 @@
+<?php if (!defined('ABSPATH')) { exit; } ?>
 <style>
     .give-donation-summary-table-wrapper {
         --primary-color: <?php echo $this->getPrimaryColor(); ?>;

@@ -8,6 +8,10 @@
  * @var $campaignsPageUrl
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 ?>
 
 <div <?php echo $elements->customWrapperAttributes; ?>

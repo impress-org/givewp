@@ -5,6 +5,10 @@
 
 use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 global $give_receipt_args, $donation;
 
 // Validation: Ensure $donation var is set.

@@ -3,6 +3,10 @@
  * This template is used to display the progress of [give_totals]
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 // Bail out if total goal is empty.
 if ( empty( $total_goal ) ) {
 	return false;

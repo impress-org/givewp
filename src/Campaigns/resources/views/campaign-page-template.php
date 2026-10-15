@@ -2,6 +2,10 @@
 
 use Give\Framework\Views\View;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $template_html = do_blocks(View::load('Campaigns.campaign-page-content'));
 ?>
 <!DOCTYPE html>

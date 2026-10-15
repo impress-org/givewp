@@ -3,6 +3,10 @@
 use Give\Form\Template\Options;
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 global $pagenow;
 $formInfo = get_post(FrontendFormTemplateUtils::getFormId());
 

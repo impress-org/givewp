@@ -6,6 +6,10 @@
  * refresh the users session
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 global $give_access_form_outputted;
 
 // Only output the form once.

@@ -1,3 +1,4 @@
+<?php if (!defined('ABSPATH')) { exit; } ?>
 <?php /** @var array[] $banners */?>
 <div class="givewp-sale-banners-container" style="display: none;">
     <?php

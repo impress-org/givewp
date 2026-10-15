@@ -17,6 +17,10 @@ use Give\FormAPI\Section;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\Views\Admin\UpsellNotice;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Give_Meta_Box_Form_Data Class.
  */

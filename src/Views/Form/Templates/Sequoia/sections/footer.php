@@ -1,3 +1,4 @@
+<?php if (!defined('ABSPATH')) { exit; } ?>
 <div class="form-footer">
     <div class="navigator-tracker">
         <button class="step-tracker current" data-step="0"></button>
