@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get formatted address
  *
+ * @since TBD Escape output.
  * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  *
@@ -53,24 +54,24 @@ function give_get_format_address( $address, $address_args = array() ) {
 	$address_html  = '';
 	$address_html .= sprintf(
 		'<span data-address-type="line1">%1$s</span>%2$s',
-		$address['line1'],
+		esc_html( $address['line1'] ),
 		( ! empty( $address['line2'] ) ? '<br>' : '' )
 	);
 	$address_html .= sprintf(
 		'<span data-address-type="line2">%1$s</span>%2$s',
-		$address['line2'],
+		esc_html( $address['line2'] ),
 		( ! empty( $address['city'] ) ? '<br>' : '' )
 	);
 	$address_html .= sprintf(
 		'<span data-address-type="city">%1$s</span><span data-address-type="state">%2$s</span><span data-address-type="zip">%3$s</span>%4$s',
-		$address['city'],
-		( ! empty( $address['state'] ) ? ", {$address['state']}" : '' ),
-		( ! empty( $address['zip'] ) ? " {$address['zip']}" : '' ),
+		esc_html( $address['city'] ),
+		( ! empty( $address['state'] ) ? ', ' . esc_html( $address['state'] ) : '' ),
+		( ! empty( $address['zip'] ) ? ' ' . esc_html( $address['zip'] ) : '' ),
 		( ! empty( $address['country'] ) ? '<br>' : '' )
 	);
 	$address_html .= sprintf(
 		'<span data-address-type="country">%s</span><br>',
-		$address['country']
+		esc_html( $address['country'] )
 	);
 
 	// Address action.
@@ -99,8 +100,8 @@ function give_get_format_address( $address, $address_args = array() ) {
 	// Add address wrapper.
 	$address_html = sprintf(
 		'<div class="give-grid-col-4"><div data-address-id="%s" class="address"><span class="alignright address-number-label">%s</span>%s</div></div>',
-		$address_id,
-		$address_label,
+		esc_attr( $address_id ),
+		esc_html( $address_label ),
 		$address_html
 	);
 
@@ -167,6 +168,7 @@ function give_donor_tabs() {
 /**
  * List table of donors.
  *
+ * @since  TBD Escape output.
  * @since  1.0
  * @return void
  */
@@ -178,7 +180,7 @@ function give_donors_list() {
 	$donors_table->prepare_items();
 	?>
 	<div class="wrap">
-		<h1 class="wp-heading-inline"><?php echo get_admin_page_title(); ?></h1>
+		<h1 class="wp-heading-inline"><?php echo esc_html( get_admin_page_title() ); ?></h1>
 		<?php
 		/**
 		 * Fires in donors screen, above the table.
@@ -189,7 +191,7 @@ function give_donors_list() {
 		?>
 
 		<hr class="wp-header-end">
-		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
+		<form id="give-donors-filter" method="get" action="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors' ) ); ?>">
 			<?php
 			$donors_table->advanced_filters();
 			$donors_table->display();
@@ -213,6 +215,7 @@ function give_donors_list() {
 /**
  * Renders the donor view wrapper.
  *
+ * @since  TBD Escape output.
  * @since  4.16.8 Relinking donors is handled only through the nonce-protected edit action.
  * @since  1.0
  *
@@ -253,9 +256,9 @@ function give_render_donor_view( $view, $callbacks ) {
 			<?php
 			printf(
 				/* translators: %s: donor first name */
-				__( 'Edit Donor: %1$s %2$s', 'give' ),
-				$donor->get_first_name(),
-				$donor->get_last_name()
+				esc_html__( 'Edit Donor: %1$s %2$s', 'give' ),
+				esc_html( $donor->get_first_name() ),
+				esc_html( $donor->get_last_name() )
 			);
 			?>
 		</h1>
@@ -303,6 +306,7 @@ function give_render_donor_view( $view, $callbacks ) {
 /**
  * View a donor
  *
+ * @since TBD Escape output.
  * @since 4.16.4 Escaped the donor company and phone output.
  * @since 3.7.0 Add "phone" field
  * @since  1.0
@@ -362,7 +366,7 @@ function give_donor_view( $donor ) {
 							$donor_gravatar_image = '<div class="give-donor-admin-avatar">' . $donor_name_initial . '</div>';
 						}
 
-						echo $donor_gravatar_image;
+						echo wp_kses_post( $donor_gravatar_image );
 						?>
 					</div>
 					<div id="donor-name-wrap" class="left">
@@ -382,7 +386,7 @@ function give_donor_view( $donor ) {
 								}
 								?>
 							</select>
-							<input <?php echo $read_only; ?> size="15" data-key="first_name"
+							<input <?php echo $read_only; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $read_only is a hardcoded 'readonly="readonly"' attribute fragment or empty string; esc_attr() would encode its own quotes. ?> size="15" data-key="first_name"
 															 name="donor_info[first_name]" type="text"
 															 value="<?php echo esc_html( $donor->get_first_name() ); ?>"
 															 placeholder="<?php esc_html_e( 'First Name', 'give' ); ?>"/>
@@ -391,7 +395,7 @@ function give_donor_view( $donor ) {
 									<i class="give-icon give-icon-locked"></i>
 								</a>
 							<?php endif; ?>
-							<input <?php echo $read_only; ?> size="15" data-key="last_name"
+							<input <?php echo $read_only; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $read_only is a hardcoded 'readonly="readonly"' attribute fragment or empty string; esc_attr() would encode its own quotes. ?> size="15" data-key="last_name"
 															 name="donor_info[last_name]" type="text"
 															 value="<?php echo esc_html( $donor->get_last_name() ); ?>"
 															 placeholder="<?php esc_html_e( 'Last Name', 'give' ); ?>"/>
@@ -407,7 +411,7 @@ function give_donor_view( $donor ) {
 					</div>
 					<p class="donor-since info-item">
 						<?php esc_html_e( 'Donor since', 'give' ); ?>
-						<?php echo date_i18n( give_date_format(), strtotime( $donor->date_created ) ); ?>
+						<?php echo esc_html( date_i18n( give_date_format(), strtotime( $donor->date_created ) ) ); ?>
 					</p>
 					<?php if ( current_user_can( $donor_edit_role ) ) : ?>
 						<a href="#" id="edit-donor" class="button info-item editable donor-edit-link">
@@ -450,14 +454,14 @@ function give_donor_view( $donor ) {
 											$user_args['selected'] = $user_id;
 										}
 
-										echo Give()->html->ajax_user_search( $user_args );
+										echo Give()->html->ajax_user_search( $user_args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ajax_user_search() builds a <select> control via Give_HTML_Elements::select(); wp_kses_post() would strip the select/option elements.
 										?>
 									</span>
 
 								<span class="donor-user-id info-item editable">
 										<?php if ( ! empty( $userdata ) ) : ?>
 											<span
-												data-key="user_id">#<?php echo $donor->user_id . ' - ' . $userdata->display_name; ?></span>
+												data-key="user_id">#<?php echo esc_html( $donor->user_id . ' - ' . $userdata->display_name ); ?></span>
 										<?php else : ?>
 											<span
 												data-key="user_id"><?php esc_html_e( 'Unregistered', 'give' ); ?></span>
@@ -497,7 +501,7 @@ function give_donor_view( $donor ) {
                             <td>
 								<span class="donor-user-id info-item edit-item">
                                     <?php
-                                    echo IntlTelInput::getHtmlInput($donor_phone_number, "give_donor_phone_number"); ?>
+                                    echo IntlTelInput::getHtmlInput($donor_phone_number, "give_donor_phone_number"); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getHtmlInput() builds an <input> control; wp_kses_post() would strip it. ?>
 								</span>
 
                                 <span class="donor-user-id info-item editable">
@@ -556,18 +560,18 @@ function give_donor_view( $donor ) {
 	<div id="donor-stats-wrapper" class="donor-section postbox clear">
 		<ul>
 			<li>
-				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . absint( $donor->id ) ); ?>">
+				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . absint( $donor->id ) ) ); ?>">
 					<span class="dashicons dashicons-heart"></span>
 					<?php
 					// Completed Donations.
 					$completed_donations_text = sprintf( _n( '%d Completed Donation', '%d Completed Donations', $donor->purchase_count, 'give' ), $donor->purchase_count );
-					echo apply_filters( 'give_donor_completed_donations', $completed_donations_text, $donor );
+					echo esc_html( apply_filters( 'give_donor_completed_donations', $completed_donations_text, $donor ) );
 					?>
 				</a>
 			</li>
 			<li>
 				<span class="dashicons dashicons-chart-area"></span>
-				<?php echo give_currency_filter( give_format_amount( $donor->get_total_donation_amount(), array( 'sanitize' => false ) ) ); ?> <?php _e( 'Lifetime Donations', 'give' ); ?>
+				<?php echo esc_html( give_currency_filter( give_format_amount( $donor->get_total_donation_amount(), array( 'sanitize' => false ) ) ) ); ?> <?php esc_html_e( 'Lifetime Donations', 'give' ); ?>
 			</li>
 			<?php
 			/**
@@ -616,26 +620,26 @@ function give_donor_view( $donor ) {
 									case is_array( end( $addresses ) ):
 										$index = 1;
 										foreach ( $addresses as $id => $address ) {
-											echo give_get_format_address(
+											echo wp_kses_post( give_get_format_address(
 												$address,
 												array(
 													'type' => $address_type,
 													'id'   => $id,
 													'index' => $index,
 												)
-											);
+											) );
 
 											$index ++;
 										}
 										break;
 
 									case is_string( end( $addresses ) ):
-										echo give_get_format_address(
+										echo wp_kses_post( give_get_format_address(
 											$addresses,
 											array(
 												'type' => $address_type,
 											)
-										);
+										) );
 										break;
 								}
 							}
@@ -666,11 +670,11 @@ function give_donor_view( $donor ) {
 								</th>
 								<td>
 									<?php
-									echo Give()->html->select(
+									echo Give()->html->select( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- html->select() builds a <select> control; wp_kses_post() would strip the select/option elements.
 										array(
-											'options'      => give_get_country_list(),
+											'options'      => give_get_country_list(), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- data consumed internally by html->select(), not printed directly.
 											'name'         => 'country',
-											'selected'     => give_get_option( 'base_country' ),
+											'selected'     => give_get_option( 'base_country' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- data consumed internally by html->select(), not printed directly.
 											'show_option_all' => false,
 											'show_option_none' => false,
 											'chosen'       => true,
@@ -735,7 +739,7 @@ function give_donor_view( $donor ) {
 													'value' => give_get_option( 'base_state' ),
 												)
 											);
-											echo Give()->html->text( $state_args );
+											echo Give()->html->text( $state_args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- html->text() builds an <input> control; wp_kses_post() would strip it.
 										} else {
 
 											// Show Chosen DropDown, if states are not empty.
@@ -751,7 +755,7 @@ function give_donor_view( $donor ) {
 													'data' => array( 'search-type' => 'no_ajax' ),
 												)
 											);
-											echo Give()->html->select( $state_args );
+											echo Give()->html->select( $state_args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- html->select() builds a <select> control; wp_kses_post() would strip the select/option elements.
 										}
 										?>
 									</td>
@@ -823,7 +827,7 @@ function give_donor_view( $donor ) {
 			<?php if ( ! empty( $donor->emails ) ) { ?>
 
 				<?php foreach ( $donor->emails as $key => $email ) : ?>
-					<tr data-key="<?php echo $key; ?>">
+					<tr data-key="<?php echo esc_attr( $key ); ?>">
 						<td>
 							<?php echo esc_html( $email ); ?>
 							<?php if ( 'primary' === $key ) : ?>
@@ -866,7 +870,7 @@ function give_donor_view( $donor ) {
 				<tr class="add-donor-email-row">
 					<td colspan="2" class="add-donor-email-td">
 						<div class="add-donor-email-wrapper">
-							<input type="hidden" name="donor-id" value="<?php echo $donor->id; ?>"/>
+							<input type="hidden" name="donor-id" value="<?php echo (int) $donor->id; ?>"/>
 							<?php wp_nonce_field( 'give_add_donor_email', 'add_email_nonce', false, true ); ?>
 							<input type="email" name="additional-email" value=""
 								   placeholder="<?php _e( 'Email Address', 'give' ); ?>"/>&nbsp;
@@ -914,32 +918,32 @@ function give_donor_view( $donor ) {
 			<?php if ( ! empty( $payments ) ) { ?>
 				<?php foreach ( $payments as $payment ) : ?>
 					<tr>
-						<td><?php echo Give()->seq_donation_number->get_serial_code( $payment->ID ); ?></td>
+						<td><?php echo esc_html( Give()->seq_donation_number->get_serial_code( $payment->ID ) ); ?></td>
 						<td>
 						<?php
-						echo give_donation_amount(
+						echo esc_html( give_donation_amount(
 							$payment->ID,
 							array(
 								'currency' => true,
 								'amount'   => true,
 								'type'     => 'donor',
 							)
-						);
+						) );
 						?>
 							</td>
-						<td><?php echo date_i18n( give_date_format(), strtotime( $payment->post_date ) ); ?></td>
-						<td><?php echo give_get_payment_status( $payment, true ); ?></td>
+						<td><?php echo esc_html( date_i18n( give_date_format(), strtotime( $payment->post_date ) ) ); ?></td>
+						<td><?php echo esc_html( give_get_payment_status( $payment, true ) ); ?></td>
 						<td>
 							<?php
 							printf(
 								'<a href="%1$s" aria-label="%2$s">%3$s</a>',
-								admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $payment->ID ),
+								esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $payment->ID ) ),
 								sprintf(
 									/* translators: %s: Donation ID */
 									esc_attr__( 'View Donation %s.', 'give' ),
-									$payment->ID
+									(int) $payment->ID
 								),
-								__( 'View Donation', 'give' )
+								esc_html__( 'View Donation', 'give' )
 							);
 							?>
 
@@ -984,7 +988,7 @@ function give_donor_view( $donor ) {
 			<?php if ( ! empty( $donations ) ) { ?>
 				<?php foreach ( $donations as $donation ) : ?>
 					<tr>
-						<td><?php echo $donation->post_title; ?></td>
+						<td><?php echo esc_html( $donation->post_title ); ?></td>
 						<td>
 							<?php
 							printf(
@@ -993,9 +997,9 @@ function give_donor_view( $donor ) {
 								sprintf(
 									/* translators: %s: form name */
 									esc_attr__( 'View Form %s.', 'give' ),
-									$donation->post_title
+									esc_attr( $donation->post_title )
 								),
-								__( 'View Form', 'give' )
+								esc_html__( 'View Form', 'give' )
 							);
 							?>
 						</td>
@@ -1036,6 +1040,7 @@ function give_donor_view( $donor ) {
 /**
  * View the notes of a donor.
  *
+ * @since TBD Escape output.
  * @since 4.16.6 Escaped the donor name output in the donor notes header.
  * @since 4.6.0 Escape donor note
  * @since  1.0
@@ -1063,10 +1068,10 @@ function give_donor_notes_view( $donor ) {
 		<?php if ( 1 == $paged ) : ?>
 			<div style="display: block; margin-bottom: 55px;">
 				<form id="give-add-donor-note" method="post"
-					  action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $donor->id ); ?>">
+					  action="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $donor->id ) ); ?>">
 					<textarea id="donor-note" name="donor_note" class="donor-note-input" rows="10"></textarea>
 					<br/>
-					<input type="hidden" id="donor-id" name="customer_id" value="<?php echo $donor->id; ?>"/>
+					<input type="hidden" id="donor-id" name="customer_id" value="<?php echo (int) $donor->id; ?>"/>
 					<input type="hidden" name="give_action" value="add-donor-note"/>
 					<?php wp_nonce_field( 'add-donor-note', 'add_donor_note_nonce', true, true ); ?>
 					<input id="add-donor-note" class="right button-primary" type="submit" value="Add Note"/>
@@ -1083,7 +1088,7 @@ function give_donor_notes_view( $donor ) {
 			'show_all' => true,
 		);
 
-		echo paginate_links( $pagination_args );
+		echo wp_kses_post( paginate_links( $pagination_args ) );
 		?>
 
 		<div id="give-donor-notes" class="postbox">
@@ -1091,7 +1096,7 @@ function give_donor_notes_view( $donor ) {
 				<?php foreach ( $donor_notes as $key => $note ) : ?>
 					<div class="donor-note-wrapper dashboard-comment-wrap comment-item">
 					<span class="note-content-wrap">
-						<?php echo stripslashes( esc_html( $note ) ); ?>
+						<?php echo esc_html( stripslashes( $note ) ); ?>
 					</span>
 					</div>
 				<?php endforeach; ?>
@@ -1102,7 +1107,7 @@ function give_donor_notes_view( $donor ) {
 			<?php } ?>
 		</div>
 
-		<?php echo paginate_links( $pagination_args ); ?>
+		<?php echo wp_kses_post( paginate_links( $pagination_args ) ); ?>
 
 	</div>
 
@@ -1112,6 +1117,7 @@ function give_donor_notes_view( $donor ) {
 /**
  * The donor delete view.
  *
+ * @since TBD Escape output.
  * @since 4.16.6 Escaped the donor name output in the delete donor view.
  * @since  1.0
  *
@@ -1136,7 +1142,7 @@ function give_donor_delete_view( $donor ) {
 	<div class="info-wrapper donor-section">
 
 		<form id="delete-donor" method="post"
-			  action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $donor->id ); ?>">
+			  action="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $donor->id ) ); ?>">
 
 			<div class="donor-notes-header">
 				<?php echo get_avatar( $donor->email, 30 ); ?> <span><?php echo esc_html( $donor->name ); ?></span>
@@ -1148,7 +1154,7 @@ function give_donor_delete_view( $donor ) {
 				<span class="delete-donor-options">
 					<p>
 						<?php
-						echo Give()->html->checkbox(
+						echo Give()->html->checkbox( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- html->checkbox() builds an <input> control; wp_kses_post() would strip it.
 							array(
 								'name' => 'give-donor-delete-confirm',
 							)
@@ -1160,7 +1166,7 @@ function give_donor_delete_view( $donor ) {
 
 					<p>
 						<?php
-						echo Give()->html->checkbox(
+						echo Give()->html->checkbox( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- html->checkbox() builds an <input> control; wp_kses_post() would strip it.
 							array(
 								'name'    => 'give-donor-delete-records',
 								'options' => array(
@@ -1188,13 +1194,13 @@ function give_donor_delete_view( $donor ) {
 				</span>
 
 				<span id="donor-edit-actions">
-					<input type="hidden" name="donor_id" value="<?php echo $donor->id; ?>"/>
+					<input type="hidden" name="donor_id" value="<?php echo (int) $donor->id; ?>"/>
 					<?php wp_nonce_field( 'give-delete-donor', '_wpnonce', false, true ); ?>
 					<input type="hidden" name="give_action" value="delete_donor"/>
 					<input type="submit" disabled="disabled" id="give-delete-donor" class="button-primary"
 						   value="<?php _e( 'Delete Donor', 'give' ); ?>"/>
 					<a id="give-delete-donor-cancel"
-					   href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor->id ); ?>"
+					   href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor->id ) ); ?>"
 					   class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
 				</span>
 

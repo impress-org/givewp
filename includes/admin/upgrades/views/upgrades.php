@@ -8,6 +8,7 @@
  * @subpackage  Admin/Upgrades
  * @copyright   Copyright (c) 2017, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
+ * @since       TBD Escape output.
  * @since       1.8.12
  */
 
@@ -22,7 +23,7 @@ $give_updates = Give_Updates::get_instance();
 
 	<div class="give-settings-header">
 		<h1 id="give-updates-h1"
-			class="wp-heading-inline"><?php echo sprintf( __( 'GiveWP %s Updates', 'give' ), '<span class="give-settings-heading-sep dashicons dashicons-arrow-right-alt2"></span>' ); ?></h1>
+			class="wp-heading-inline"><?php echo sprintf( esc_html__( 'GiveWP %s Updates', 'give' ), '<span class="give-settings-heading-sep dashicons dashicons-arrow-right-alt2"></span>' ); ?></h1>
 	</div>
 
 	<?php $db_updates = $give_updates->get_pending_db_update_count(); ?>
@@ -44,7 +45,7 @@ $give_updates = Give_Updates::get_instance();
 			$width            = ! empty( $resume_updates ) ? $resume_updates['percentage'] : 0;
 			?>
 			<div class="give-update-panel-content">
-				<p><?php printf( __( 'GiveWP regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of GiveWP core and its add-ons.  <strong>If you do not have a backup already, please create a full backup before updating.</strong> To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), admin_url( '' ) ); ?></p>
+				<p><?php echo wp_kses_post( sprintf( __( 'GiveWP regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of GiveWP core and its add-ons.  <strong>If you do not have a backup already, please create a full backup before updating.</strong> To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), esc_url( admin_url( '' ) ) ) ); ?></p>
 			</div>
 
 			<div id="give-db-updates" data-resume-update="<?php echo absint( $give_updates->is_doing_updates() ); ?>">
@@ -58,26 +59,26 @@ $give_updates = Give_Updates::get_instance();
 									if ( ! give_test_ajax_works() ) {
 										echo sprintf(
 											'<div class="notice notice-warning inline"><p>%s</p></div>',
-											__( 'GiveWP is currently updating the database. Please do not refresh or leave this page while the update is in progress.', 'give' )
+											esc_html__( 'GiveWP is currently updating the database. Please do not refresh or leave this page while the update is in progress.', 'give' )
 										);
 									}
 									?>
 									<span
 										class="give-doing-update-text-p" <?php echo Give_Updates::$background_updater->is_paused_process() ? 'style="display:none;"' : ''; ?>>
 										<?php
-										echo sprintf(
+										echo wp_kses_post( sprintf(
 											__( '%1$s <a href="%2$s" class="give-update-now %3$s">%4$s</a>', 'give' ),
 											$is_doing_updates
 												? sprintf(
 													'%s%s',
-													__( 'GiveWP is currently updating the database', 'give' ),
-													give_test_ajax_works() ? ' ' . __( 'in the background.', 'give' ) : '.'
+													esc_html__( 'GiveWP is currently updating the database', 'give' ),
+													give_test_ajax_works() ? ' ' . esc_html__( 'in the background.', 'give' ) : '.'
 												)
-												: __( 'GiveWP needs to update the database.', 'give' ),
+												: esc_html__( 'GiveWP needs to update the database.', 'give' ),
 											esc_url( $db_update_url ),
-											( $is_doing_updates ? 'give-hidden' : '' ),
-											__( 'Update now', 'give' )
-										);
+											esc_attr( $is_doing_updates ? 'give-hidden' : '' ),
+											esc_html__( 'Update now', 'give' )
+										) );
 										?>
 									</span>
 									<span
@@ -100,11 +101,11 @@ $give_updates = Give_Updates::get_instance();
 									<?php if ( Give_Updates::$background_updater->is_paused_process() ) : ?>
 										<?php $is_disabled = isset( $_GET['give-restart-db-upgrades'] ) ? ' disabled' : ''; ?>
 										<button id="give-restart-upgrades" class="button button-primary alignright"
-												data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ) ); ?>"<?php echo $is_disabled; ?>><?php _e( 'Restart Upgrades', 'give' ); ?></button>
+												data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ) ); ?>"<?php echo esc_attr( $is_disabled ); ?>><?php _e( 'Restart Upgrades', 'give' ); ?></button>
 									<?php elseif ( $give_updates->is_doing_updates() ) : ?>
 										<?php $is_disabled = isset( $_GET['give-pause-db-upgrades'] ) ? ' disabled' : ''; ?>
 										<button id="give-pause-upgrades" class="button button-primary alignright"
-												data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-pause-db-upgrades=1' ) ); ?>"<?php echo $is_disabled; ?>>
+												data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-pause-db-upgrades=1' ) ); ?>"<?php echo esc_attr( $is_disabled ); ?>>
 											<?php _e( 'Pause Upgrades', 'give' ); ?>
 										</button>
 									<?php endif; ?>
@@ -115,9 +116,9 @@ $give_updates = Give_Updates::get_instance();
 									<strong>
 										<?php
 										echo sprintf(
-											__( 'Update %1$s of %2$s', 'give' ),
-											$give_updates->get_running_db_update(),
-											$give_updates->get_total_new_db_update_count()
+											esc_html__( 'Update %1$s of %2$s', 'give' ),
+											esc_html( $give_updates->get_running_db_update() ),
+											esc_html( $give_updates->get_total_new_db_update_count() )
 										);
 										?>
 									</strong>
@@ -131,7 +132,7 @@ $give_updates = Give_Updates::get_instance();
 											<?php endif; ?>
 
 											<div class="give-progress">
-												<div style="width: <?php echo $width; ?>%;"></div>
+												<div style="width: <?php echo esc_attr( $width ); ?>%;"></div>
 											</div>
 										</div>
 									<?php endif; ?>
@@ -165,16 +166,16 @@ $give_updates = Give_Updates::get_instance();
 							<div class="panel-content">
 								<p>
 									<?php
-									printf(
+									echo wp_kses_post( sprintf(
 										_n(
 											'There is %1$d GiveWP addon that needs to be updated. <a href="%2$s">Update now</a>',
 											'There are %1$d GiveWP addons that need to be updated. <a href="%2$s">Update now</a>',
 											$plugin_updates,
 											'give'
 										),
-										$plugin_updates,
+										(int) $plugin_updates,
 										esc_url( $plugin_update_url )
-									);
+									) );
 									?>
 								</p>
 								<?php include_once 'plugins-update-section.php'; ?>

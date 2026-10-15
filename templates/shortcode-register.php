@@ -1,6 +1,8 @@
 <?php
 /**
  * This template is used to display the registration form with [give_register]
+ *
+ * @since TBD Escape output.
  */
 Give()->notices->render_frontend_notices( 0 ); ?>
 
@@ -65,7 +67,7 @@ Give()->notices->render_frontend_notices( 0 ); ?>
 			<input type="hidden" name="give_honeypot" value="" />
 			<input type="hidden" name="give_action" value="user_register" />
 			<input type="hidden" name="give_redirect" value="<?php echo esc_url( $give_register_redirect ); ?>" />
-			<input type="hidden" name="give_register_nonce" value="<?php echo wp_create_nonce( 'give-register-nonce' ); ?>" />
+			<input type="hidden" name="give_register_nonce" value="<?php echo esc_attr( wp_create_nonce( 'give-register-nonce' ) ); ?>" />
 		</div>
 
 		<div class="form-row">

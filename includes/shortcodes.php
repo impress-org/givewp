@@ -26,6 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Displays a user's donation history.
  *
+ * @since TBD Escape output.
  * @since 3.7.0 Sanitize attributes
  * @since 3.1.0 pass form id by reference in give_totals shortcode.
  * @since  1.0
@@ -75,7 +76,7 @@ function give_donation_history( $atts, $content = false ) {
 			echo sprintf(
 				'<a href="%s">%s</a>',
 				esc_url($_SERVER['HTTP_REFERER'] ),
-				__( '&laquo; Return to All Donations', 'give' )
+				esc_html__( '&laquo; Return to All Donations', 'give' )
 			);
 		}
 
@@ -109,7 +110,7 @@ function give_donation_history( $atts, $content = false ) {
 
 	} else {
 
-		echo apply_filters( 'give_donation_history_nonuser_message', Give_Notices::print_frontend_notice( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
+		echo wp_kses_post( apply_filters( 'give_donation_history_nonuser_message', Give_Notices::print_frontend_notice( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) ) );
 		echo do_shortcode( '[give_login]' );
 	}
 
@@ -134,6 +135,7 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * Show the Give donation form.
  *
+ * @since TBD Escape output.
  * @since 4.3.0 Add check for 'modal' in display_style to allow v2 forms to be shown in a modal.
  * @since 3.7.0 Sanitize attributes
  * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
@@ -194,6 +196,7 @@ function give_form_shortcode( $atts ) {
 
 		ConfirmDonation::storePostedDataInDonationSession();
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- IframeView::render() outputs the complete iframe document built from escaped parts.
 		echo $iframeView->setFormId( $formId )
 				   ->showInModal( $showIframeInModal )
 				   ->setButtonTitle( $atts['continue_button_title'] )
@@ -634,6 +637,7 @@ add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
  *
  * Shows a donation total.
  *
+ * @since TBD Escape output.
  * @since 3.14.0 Replace "_give_form_earnings" form meta with $query->form($post)->sumAmount()
  * @since 3.7.0 Sanitize attributes
  * @since  2.1
@@ -812,7 +816,7 @@ function give_totals_shortcode( $atts ) {
 			give_show_goal_totals_progress( $total, $total_goal );
 		}
 
-		echo sprintf( $message ) . $donate_link;
+		echo wp_kses_post( sprintf( $message ) . $donate_link );
 		?>
 	</div>
 	<?php
@@ -880,6 +884,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  * @type string $display_style How the form is displayed, either in new page or modal popup.
  *                                       Default 'redirect'. Accepts 'redirect', 'modal'.
  *
+ * @since TBD Escape output.
  * @return string|bool The markup of the form grid or false.
  */
 function give_form_grid_shortcode( $atts ) {
@@ -1115,7 +1120,7 @@ function give_form_grid_shortcode( $atts ) {
 
 			printf(
 				'<div class="give-page-numbers">%s</div>',
-				paginate_links( $paginate_args )
+				wp_kses_post( paginate_links( $paginate_args ) )
 			);
 		}
 		echo '</div><!-- .give-wrap -->';

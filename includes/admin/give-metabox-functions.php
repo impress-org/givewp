@@ -224,6 +224,7 @@ function give_render_field( $field ) {
 /**
  * Output a text input box.
  *
+ * @since  TBD Escape output.
  * @since  1.8
  *
  * @param  array $field         {
@@ -276,19 +277,19 @@ function give_text_input( $field ) {
 
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
-	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
-	<?php echo $field['before_field']; ?>
+	<label for="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+	<?php echo wp_kses_post( $field['before_field'] ); ?>
 	<input
 			type="<?php echo esc_attr( $field['type'] ); ?>"
 			style="<?php echo esc_attr( $field['style'] ); ?>"
-			name="<?php echo give_get_field_name( $field ); ?>"
+			name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"
 			id="<?php echo esc_attr( $field['id'] ); ?>"
 			value="<?php echo esc_attr( $field['value'] ); ?>"
-		<?php echo give_get_attribute_str( $field ); ?>
+		<?php echo give_get_attribute_str( $field ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
 	/>
-	<?php echo $field['after_field']; ?>
+	<?php echo wp_kses_post( $field['after_field'] ); ?>
 	<?php
-	echo give_get_field_description( $field );
+	echo wp_kses_post( give_get_field_description( $field ) );
 	echo '</p>';
 }
 
@@ -314,6 +315,7 @@ function give_text_input( $field ) {
  *                                               => '****' )
  * }
  *
+ * @since  TBD Escape output.
  * @since 2.1
  *
  * @return void
@@ -326,7 +328,7 @@ function give_chosen_input( $field ) {
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['before_field']  = '';
 	$field['after_field']   = '';
-	$placeholder            = isset( $field['placeholder'] ) ? 'data-placeholder="' . $field['placeholder'] . '"' : '';
+	$placeholder            = isset( $field['placeholder'] ) ? 'data-placeholder="' . esc_attr( $field['placeholder'] ) . '"' : '';
 	$data_type              = ! empty( $field['data_type'] ) ? $field['data_type'] : '';
 	$type                   = '';
 	$field['value']         = array_filter( (array) give_get_field_value( $field, $thepostid ) );
@@ -353,10 +355,10 @@ function give_chosen_input( $field ) {
 		<select
 				class="give-select-chosen give-chosen-settings"
 				style="<?php echo esc_attr( $field['style'] ); ?>"
-				name="<?php echo $fieldName; ?>"
+				name="<?php echo esc_attr( $fieldName ); ?>"
 				id="<?php echo esc_attr( $field['id'] ); ?>"
-			<?php echo "{$type} {$allow_new_values} {$placeholder}"; ?>
-            <?php echo give_get_attribute_str( $field ); ?>
+			<?php echo esc_attr( $type ) . ' ' . $allow_new_values . ' ' . $placeholder; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $allow_new_values and $placeholder are static 'attr="value"' strings with their values already escaped above; esc_attr() on the whole string would entity-encode the quotes and break both attributes. ?>
+            <?php echo give_get_attribute_str( $field ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
 		>
 			<?php
 			foreach ( $choices as $key => $name ) {
@@ -364,13 +366,13 @@ function give_chosen_input( $field ) {
 					'<option %1$s value="%2$s">%3$s</option>',
 					in_array( $key, $field['value'] ) ? 'selected="selected"' : '',
 					esc_attr( $key ),
-					$name
+					esc_html( $name )
 				);
 			}
 			?>
 		</select>
 		<?php echo esc_attr( $field['after_field'] ); ?>
-		<?php echo give_get_field_description( $field ); ?>
+		<?php echo wp_kses_post( give_get_field_description( $field ) ); ?>
 	</p>
 	<?php
 }
@@ -390,6 +392,7 @@ function give_chosen_input( $field ) {
  * @type string $after_field   Text/HTML to add after input field. Default ''.
  * }
  *
+ * @since  TBD Escape output.
  * @since 2.7.0
  *
  * @return void
@@ -405,9 +408,9 @@ function give_label_field( $field ) {
 	?>
 	<p class=" <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
 		<?php echo esc_attr( $field['before_field'] ); ?>
-		<?php echo $field['title']; ?>
+		<?php echo wp_kses_post( $field['title'] ); ?>
 		<?php echo esc_attr( $field['after_field'] ); ?>
-		<?php echo give_get_field_description( $field ); ?>
+		<?php echo wp_kses_post( give_get_field_description( $field ) ); ?>
 	</p>
 	<?php
 }
@@ -416,6 +419,7 @@ function give_label_field( $field ) {
  * Give range slider field.
  * Note: only for internal logic
  *
+ * @since  TBD Escape output.
  * @since 2.1
  *
  * @param  array $field         {
@@ -481,7 +485,7 @@ function give_donation_limit( $field ) {
 		: $field_options['options']['maximum'];
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field_options['id'] ); ?>_field <?php echo esc_attr( $field_options['wrapper_class'] ); ?>">
-	<label for="<?php echo give_get_field_name( $field_options ); ?>"><?php echo wp_kses_post( $field_options['name'] ); ?></label>
+	<label for="<?php echo esc_attr( give_get_field_name( $field_options ) ); ?>"><?php echo wp_kses_post( $field_options['name'] ); ?></label>
 	<span class="give_donation_limit_display">
 		<?php
 		foreach ( $field_options['value'] as $amount_range => $amount_value ) {
@@ -527,24 +531,24 @@ function give_donation_limit( $field ) {
 			echo '<span class=give-minmax-wrap>';
 			printf( '<label for="%1$s_give_donation_limit_%2$s">%3$s</label>', esc_attr( $field_options['id'] ), esc_attr( $amount_range ), esc_html( $price_field_labels ) );
 
-			echo isset( $before_html ) ? $before_html : '';
+			echo isset( $before_html ) ? wp_kses_post( $before_html ) : '';
 			?>
 			<input
-					name="<?php echo give_get_field_name( $field_options ); ?>[<?php echo esc_attr( $amount_range ); ?>]"
+					name="<?php echo esc_attr( give_get_field_name( $field_options ) ); ?>[<?php echo esc_attr( $amount_range ); ?>]"
 					type="text"
-					id="<?php echo $field_options['id']; ?>_give_donation_limit_<?php echo $amount_range; ?>"
+					id="<?php echo esc_attr( $field_options['id'] ); ?>_give_donation_limit_<?php echo esc_attr( $amount_range ); ?>"
 					data-range_type="<?php echo esc_attr( $amount_range ); ?>"
-					value="<?php echo give_format_decimal( esc_attr( $field_options['value'][ $amount_range ] ) ); ?>"
-					placeholder="<?php echo give_format_decimal( $field_options['options'][ $amount_range ] ); ?>"
-				<?php echo give_get_attribute_str( $field_options ); ?>
+					value="<?php echo esc_attr( give_format_decimal( $field_options['value'][ $amount_range ] ) ); ?>"
+					placeholder="<?php echo esc_attr( give_format_decimal( $field_options['options'][ $amount_range ] ) ); ?>"
+				<?php echo give_get_attribute_str( $field_options ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
 			/>
 			<?php
-			echo isset( $after_html ) ? $after_html : '';
+			echo isset( $after_html ) ? wp_kses_post( $after_html ) : '';
 			echo '</span>';
 		}
 		?>
 	</span>
-		<?php echo give_get_field_description( $field_options ); ?>
+		<?php echo wp_kses_post( give_get_field_description( $field_options ) ); ?>
 	</p>
 	<?php
 }
@@ -552,6 +556,7 @@ function give_donation_limit( $field ) {
 /**
  * Output a hidden input box.
  *
+ * @since  TBD Escape output.
  * @since  1.8
  *
  * @param  array $field      {
@@ -586,10 +591,10 @@ function give_hidden_input( $field ) {
 
 	<input
 			type="hidden"
-			name="<?php echo give_get_field_name( $field ); ?>"
+			name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"
 			id="<?php echo esc_attr( $field['id'] ); ?>"
 			value="<?php echo esc_attr( $field['value'] ); ?>"
-		<?php echo give_get_attribute_str( $field ); ?>
+		<?php echo give_get_attribute_str( $field ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
 	/>
 	<?php
 }
@@ -598,6 +603,7 @@ function give_hidden_input( $field ) {
  * Output a textarea input box.
  *
  * @since  1.8
+ * @since  TBD Escape output.
  * @since  1.8
  *
  * @param  array $field         {
@@ -628,21 +634,22 @@ function give_textarea_input( $field ) {
 	];
 	?>
 	<div class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
-		<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+		<label for="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
 		<textarea
 				style="<?php echo esc_attr( $field['style'] ); ?>"
-				name="<?php echo give_get_field_name( $field ); ?>"
+				name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"
 				id="<?php echo esc_attr( $field['id'] ); ?>"
-			<?php echo give_get_attribute_str( $field, $default_attributes ); ?>
+			<?php echo give_get_attribute_str( $field, $default_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
 		><?php echo esc_textarea( $field['value'] ); ?></textarea>
 		<?php
-		echo give_get_field_description( $field );
+		echo wp_kses_post( give_get_field_description( $field ) );
 		echo '</div>';
 }
 
 /**
  * Output a wysiwyg.
  *
+ * @since  TBD Escape output.
  * @since  1.8
  *
  * @param  array $field         {
@@ -679,18 +686,21 @@ function give_wysiwyg( $field ) {
 		'editor_css'    => esc_attr( $field['style'] ),
 		'editor_class'  => $field['attributes']['class'],
 	];
-	$data_wp_editor    = ' data-wp-editor="' . base64_encode(
-		json_encode(
-			[
-				$field['value'],
-				$field['unique_field_id'],
-				$editor_attributes,
-			]
+	$data_wp_editor    = ' data-wp-editor="' . esc_attr(
+		base64_encode(
+			json_encode(
+				[
+					$field['value'],
+					$field['unique_field_id'],
+					$editor_attributes,
+				]
+			)
 		)
 	) . '"';
 	$data_wp_editor    = isset( $field['repeatable_field_id'] ) ? $data_wp_editor : '';
 
-	echo '<div class="give-field-wrap ' . $field['unique_field_id'] . '_field ' . esc_attr( $field['wrapper_class'] ) . '"' . $data_wp_editor . '><label for="' . $field['unique_field_id'] . '">' . wp_kses_post( $field['name'] ) . '</label>';
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data_wp_editor is a pre-built ' data-wp-editor="..."' attribute string; its value is escaped above and esc_attr() here would encode the surrounding quotes.
+	echo '<div class="give-field-wrap ' . esc_attr( $field['unique_field_id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"' . $data_wp_editor . '><label for="' . esc_attr( $field['unique_field_id'] ) . '">' . wp_kses_post( $field['name'] ) . '</label>';
 
 	wp_editor(
 		$field['value'],
@@ -698,13 +708,14 @@ function give_wysiwyg( $field ) {
 		$editor_attributes
 	);
 
-	echo give_get_field_description( $field );
+	echo wp_kses_post( give_get_field_description( $field ) );
 	echo '</div>';
 }
 
 /**
  * Output a checkbox input box.
  *
+ * @since  TBD Escape output.
  * @since  1.8
  *
  * @param  array $field         {
@@ -734,24 +745,25 @@ function give_checkbox( $field ) {
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
-	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+	<label for="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
 	<input
 			type="checkbox"
 			style="<?php echo esc_attr( $field['style'] ); ?>"
-			name="<?php echo give_get_field_name( $field ); ?>"
+			name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"
 			id="<?php echo esc_attr( $field['id'] ); ?>"
 			value="<?php echo esc_attr( $field['cbvalue'] ); ?>"
 		<?php echo checked( $field['value'], $field['cbvalue'], false ); ?>
-		<?php echo give_get_attribute_str( $field ); ?>
+		<?php echo give_get_attribute_str( $field ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
 	/>
 	<?php
-	echo give_get_field_description( $field );
+	echo wp_kses_post( give_get_field_description( $field ) );
 	echo '</p>';
 }
 
 /**
  * Output multi checkbox input box.
  *
+ * @since  TBD Escape output.
  * @since  2.9.0
  *
  * @param  array $field         {
@@ -793,10 +805,10 @@ function give_multicheck( $field ) {
 				<label>
 					<input
 						type="checkbox"
-						name="<?php echo give_get_field_name( $field ); ?>[]"
+						name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>[]"
 						value="<?php echo esc_attr( $key ); ?>"
 						style="<?php echo esc_attr( $field['style'] ); ?>"
-						<?php echo give_get_attribute_str( $field ); ?>
+						<?php echo give_get_attribute_str( $field ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
 						<?php
 						if ( in_array( $key, $field['value'] ) ) {
 							echo 'checked="checked"';}
@@ -806,7 +818,7 @@ function give_multicheck( $field ) {
 			</li>
 		<?php endforeach; ?>
 		</ul>
-		<?php echo give_get_field_description( $field ); ?>
+		<?php echo wp_kses_post( give_get_field_description( $field ) ); ?>
 	</fieldset>
 	<?php
 }
@@ -814,6 +826,7 @@ function give_multicheck( $field ) {
 /**
  * Output a select input box.
  *
+ * @since  TBD Escape output.
  * @since  1.8
  *
  * @param  array $field         {
@@ -843,25 +856,26 @@ function give_select( $field ) {
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
-	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+	<label for="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
 	<select
 	id="<?php echo esc_attr( $field['id'] ); ?>"
-	name="<?php echo give_get_field_name( $field ); ?>"
+	name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"
 	style="<?php echo esc_attr( $field['style'] ); ?>"
-	<?php echo give_get_attribute_str( $field ); ?>
+	<?php echo give_get_attribute_str( $field ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
 	>
 	<?php
 	foreach ( $field['options'] as $key => $value ) {
 		echo '<option value="' . esc_attr( $key ) . '" ' . selected( esc_attr( $field['value'] ), esc_attr( $key ), false ) . '>' . esc_html( $value ) . '</option>';
 	}
 	echo '</select>';
-	echo give_get_field_description( $field );
+	echo wp_kses_post( give_get_field_description( $field ) );
 	echo '</p>';
 }
 
 /**
  * Output a radio input box.
  *
+ * @since  TBD Escape output.
  * @since  1.8
  *
  * @param  array $field         {
@@ -896,24 +910,25 @@ function give_radio( $field ) {
 	foreach ( $field['options'] as $key => $value ) {
 
 		echo '<li><label><input
-				name="' . give_get_field_name( $field ) . '"
+				name="' . esc_attr( give_get_field_name( $field ) ) . '"
 				value="' . esc_attr( $key ) . '"
 				type="radio"
 				style="' . esc_attr( $field['style'] ) . '"
 				' . checked( esc_attr( $field['value'] ), esc_attr( $key ), false ) . ' '
-			 . give_get_attribute_str( $field ) . '
+			 . /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). */ give_get_attribute_str( $field ) . '
 				/> ' . esc_html( $value ) . '</label>
 		</li>';
 	}
 	echo '</ul>';
 
-	echo give_get_field_description( $field );
+	echo wp_kses_post( give_get_field_description( $field ) );
 	echo '</fieldset>';
 }
 
 /**
  * Output a multi-line radio input box.
  *
+ * @since  TBD Escape output.
  * @since  2.9.0
  *
  * @param  array $field         {
@@ -954,11 +969,11 @@ function give_multiradio( $field ) {
 				<label>
 					<input
 						type="radio"
-						name="<?php echo give_get_field_name( $field ); ?>"
+						name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"
 						value="<?php echo esc_attr( $key ); ?>"
 						style="<?php echo esc_attr( $field['style'] ); ?>"
 						<?php echo checked( esc_attr( $field['value'] ), esc_attr( $key ), false ); ?>
-						<?php echo give_get_attribute_str( $field ); ?>
+						<?php echo give_get_attribute_str( $field ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
 						/> <?php echo esc_html( $data['label'] ); ?>
 				</label>
 				<?php if ( isset( $data['description'] ) ) : ?>
@@ -969,7 +984,7 @@ function give_multiradio( $field ) {
 			</li>
 		<?php endforeach; ?>
 		</ul>
-		<?php echo give_get_field_description( $field ); ?>
+		<?php echo wp_kses_post( give_get_field_description( $field ) ); ?>
 	</fieldset>
 	<?php
 }
@@ -977,6 +992,7 @@ function give_multiradio( $field ) {
 /**
  * Output a colorpicker.
  *
+ * @since  TBD Escape output.
  * @since  1.8
  *
  * @param  array $field         {
@@ -1005,17 +1021,17 @@ function give_colorpicker( $field ) {
 	$field['type']          = 'text';
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
-	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+	<label for="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
 	<input
 		type="<?php echo esc_attr( $field['type'] ); ?>"
 		style="<?php echo esc_attr( $field['style'] ); ?>"
-		name="<?php echo give_get_field_name( $field ); ?>"
+		name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"
 		id="<?php echo esc_attr( $field['id'] ); ?>"
 		value="<?php echo esc_attr( $field['value'] ); ?>"
-		<?php echo give_get_attribute_str( $field ); ?>
+		<?php echo give_get_attribute_str( $field ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
 	/>
 	<?php
-	echo give_get_field_description( $field );
+	echo wp_kses_post( give_get_field_description( $field ) );
 	echo '</p>';
 }
 
@@ -1034,6 +1050,7 @@ function give_file( $field ) {
 /**
  * Output a media upload field.
  *
+ * @since  TBD Escape output.
  * @since  1.8
  *
  * @param array $field
@@ -1059,19 +1076,19 @@ function give_media( $field ) {
 	$is_show_preview          = in_array( $preview_image_extension, $allow_media_preview_tags );
 	?>
 	<fieldset class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
-		<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+		<label for="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
 		<input
-				name="<?php echo give_get_field_name( $field ); ?>"
+				name="<?php echo esc_attr( give_get_field_name( $field ) ); ?>"
 				id="<?php echo esc_attr( $field['id'] ); ?>"
 				type="text"
-				value="<?php echo $field['value']; ?>"
+				value="<?php echo esc_attr( $field['value'] ); ?>"
 				style="<?php echo esc_attr( $field['style'] ); ?>"
-			<?php echo give_get_attribute_str( $field ); ?>
-		/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-upload-button button" type="button" value="<?php echo $button_label; ?>" data-fvalue="<?php echo $field['fvalue']; ?>" data-field-type="<?php echo $field['type']; ?>">
-		<?php echo give_get_field_description( $field ); ?>
+			<?php echo give_get_attribute_str( $field ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
+		/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-upload-button button" type="button" value="<?php echo esc_attr( $button_label ); ?>" data-fvalue="<?php echo esc_attr( $field['fvalue'] ); ?>" data-field-type="<?php echo esc_attr( $field['type'] ); ?>">
+		<?php echo wp_kses_post( give_get_field_description( $field ) ); ?>
 		<div class="give-image-thumb<?php echo ! $field['value'] || ! $is_show_preview ? ' give-hidden' : ''; ?>">
 			<span class="give-delete-image-thumb dashicons dashicons-no-alt"></span>
-			<img src="<?php echo $preview_image_src; ?>" alt="">
+			<img src="<?php echo esc_url( $preview_image_src ); ?>" alt="">
 		</div>
 	</fieldset>
 	<?php
@@ -1112,6 +1129,7 @@ function give_default_gateway( $field ) {
 /**
  * Output the documentation link.
  *
+ * @since  TBD Escape output.
  * @since  1.8
  *
  * @param  array $field      {
@@ -1134,7 +1152,7 @@ function give_docs_link( $field ) {
 
 	echo '<p class="give-docs-link"><a href="' . esc_url( $field['url'] )
 		 . '" target="_blank">'
-		 . sprintf( esc_html__( 'Need Help? See docs on "%s"', 'give' ), $field['title'] )
+		 . sprintf( esc_html__( 'Need Help? See docs on "%s"', 'give' ), esc_html( $field['title'] ) )
 		 . '<span class="dashicons dashicons-editor-help"></span></a></p>';
 }
 
@@ -1142,6 +1160,7 @@ function give_docs_link( $field ) {
 /**
  * Output preview buttons.
  *
+ * @since  TBD Escape output.
  * @since 2.0
  *
  * @param $field
@@ -1154,7 +1173,7 @@ function give_email_preview_buttons( $field ) {
 
 	ob_start();
 
-	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label>';
+	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field"><label for="' . esc_attr( give_get_field_name( $field ) ) . '">' . wp_kses_post( $field['name'] ) . '</label>';
 
 	echo sprintf(
 		'<a href="%1$s" class="button-secondary" target="_blank">%2$s</a>',
@@ -1171,7 +1190,7 @@ function give_email_preview_buttons( $field ) {
                  'give-preview-email'
             )
         ),
-		$field['name']
+		wp_kses_post( $field['name'] )
 	);
 
 	echo sprintf(
@@ -1199,7 +1218,7 @@ function give_email_preview_buttons( $field ) {
 
 	echo '</p>';
 
-	echo ob_get_clean();
+	echo wp_kses_post( ob_get_clean() );
 }
 
 /**
@@ -1395,6 +1414,7 @@ function give_get_field_name( $field ) {
  *
  * @TODO   : Add support for wysiwyg type field.
  *
+ * @since  TBD Escape output.
  * @since  1.8
  *
  * @param  array $fields
@@ -1413,14 +1433,14 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 	$close_tabs      = isset( $fields['options']['close_tabs'] ) ? (int) $fields['options']['close_tabs'] : 0;
 	$wrapper_class   = isset( $fields['wrapper_class'] ) ? $fields['wrapper_class'] : '';
 	?>
-	<div class="give-repeatable-field-section <?php echo esc_attr( $wrapper_class ); ?>" id="<?php echo "{$fields['id']}_field"; ?>"
-		 data-group-numbering="<?php echo $group_numbering; ?>" data-close-tabs="<?php echo $close_tabs; ?>">
+	<div class="give-repeatable-field-section <?php echo esc_attr( $wrapper_class ); ?>" id="<?php echo esc_attr( "{$fields['id']}_field" ); ?>"
+		 data-group-numbering="<?php echo (int) $group_numbering; ?>" data-close-tabs="<?php echo (int) $close_tabs; ?>">
 		<?php if ( ! empty( $fields['name'] ) ) : ?>
-			<p class="give-repeater-field-name"><?php echo $fields['name']; ?></p>
+			<p class="give-repeater-field-name"><?php echo wp_kses_post( $fields['name'] ); ?></p>
 		<?php endif; ?>
 
 		<?php if ( ! empty( $fields['description'] ) ) : ?>
-			<p class="give-repeater-field-description"><?php echo $fields['description']; ?></p>
+			<p class="give-repeater-field-description"><?php echo wp_kses_post( $fields['description'] ); ?></p>
 		<?php endif; ?>
 
 		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
@@ -1449,7 +1469,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 				$add_default_donation_field = true;
 			}
 			?>
-			<tbody class="container"<?php echo " data-rf-row-count=\"{$fields_count}\""; ?>>
+			<tbody class="container"<?php echo ' data-rf-row-count="' . (int) $fields_count . '"'; ?>>
 			<!--Repeater field group template-->
 			<tr class="give-template give-row">
 				<td class="give-repeater-field-wrap give-column" colspan="2">
@@ -1458,7 +1478,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 						</button>
 						<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-</span>
 						<h2>
-							<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
+							<span data-header-title="<?php echo esc_attr( $header_title ); ?>"><?php echo wp_kses_post( $header_title ); ?></span>
 						</h2>
 					</div>
 					<div class="give-row-body">
@@ -1494,7 +1514,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 								<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
 								</span>
 								<h2>
-									<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
+									<span data-header-title="<?php echo esc_attr( $header_title ); ?>"><?php echo wp_kses_post( $header_title ); ?></span>
 								</h2>
 							</div>
 							<div class="give-row-body">
@@ -1533,7 +1553,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 							<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
 							</span>
 							<h2>
-								<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
+								<span data-header-title="<?php echo esc_attr( $header_title ); ?>"><?php echo wp_kses_post( $header_title ); ?></span>
 							</h2>
 						</div>
 						<div class="give-row-body">
@@ -1573,7 +1593,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 					: esc_html__( 'Add Row', 'give' );
 				?>
 				<td colspan="2" class="give-add-repeater-field-section-row-wrap">
-					<span class="button button-primary give-add-repeater-field-section-row"><?php echo $add_row_btn_title; ?></span>
+					<span class="button button-primary give-add-repeater-field-section-row"><?php echo wp_kses_post( $add_row_btn_title ); ?></span>
 				</td>
 			</tr>
 			</tfoot>
@@ -1677,6 +1697,7 @@ add_filter( 'give_get_field_name', 'give_repeater_field_set_editor_id', 10, 2 );
 /**
  * Output Donation form radio input box.
  *
+ * @since  TBD Escape output.
  * @since  2.1.3
  *
  * @param  array $field {
@@ -1729,11 +1750,11 @@ function give_donation_form_goal( $field ) {
 			$attributes = empty( $field['attributes'] ) ? '' : give_get_attribute_str( $field['attributes'] );
 			printf(
 				'<li><label><input name="%s" value="%s" type="radio" style="%s" %s %s /> %s </label></li>',
-				give_get_field_name( $field ),
+				esc_attr( give_get_field_name( $field ) ),
 				esc_attr( $key ),
 				esc_attr( $field['style'] ),
 				checked( esc_attr( $field['value'] ), esc_attr( $key ), false ),
-				$attributes,
+				$attributes, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr().
 				esc_html( $value )
 			);
 		}
@@ -1750,7 +1771,7 @@ function give_donation_form_goal( $field ) {
 	 */
 	do_action( 'give_donation_form_goal_before_description', $field );
 
-	echo give_get_field_description( $field );
+	echo wp_kses_post( give_get_field_description( $field ) );
 
 	echo '</fieldset>';
 }

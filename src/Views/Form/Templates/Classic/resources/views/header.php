@@ -1,5 +1,6 @@
 <?php
 /**
+ * @since TBD Escape output.
  * @var string $title
  * @var string $description
  * @var bool $isSecureBadgeEnabled
@@ -11,14 +12,14 @@
 ?>
 <div class="give-form-header">
     <div class="give-form-header-top-wrap">
-        <h1 class="give-form-title"><?= $title ?></h1>
-        <p class="give-form-description"><?= $description ?></p>
+        <h1 class="give-form-title"><?= esc_html($title) ?></h1>
+        <p class="give-form-description"><?= wp_kses_post($description) ?></p>
         <?php if ($isSecureBadgeEnabled) : ?>
             <aside class="give-form-secure-badge">
                 <svg class="give-form-secure-icon">
                     <use href="#give-icon-lock"/>
                 </svg>
-                <?= $secureBadgeContent ?>
+                <?= wp_kses_post($secureBadgeContent) ?>
             </aside>
         <?php endif; ?>
     </div>
@@ -27,29 +28,29 @@
             <ul class="give-form-stats-panel-list">
                 <li class="give-form-stats-panel-stat">
                     <span class="give-form-stats-panel-stat-number">
-                        <?= $goalStats[ 'raised' ]; ?>
-                    </span> <?= __('Raised', 'give'); ?>
+                        <?= esc_html($goalStats[ 'raised' ]); ?>
+                    </span> <?= esc_html__('Raised', 'give'); ?>
                 </li>
                 <li class="give-form-stats-panel-stat">
                     <span class="give-form-stats-panel-stat-number">
-                         <?= $goalStats[ 'count' ]; ?>
-                    </span> <?= $goalStats[ 'countLabel' ]; ?>
+                         <?= esc_html($goalStats[ 'count' ]); ?>
+                    </span> <?= esc_html($goalStats[ 'countLabel' ]); ?>
                 </li>
                 <li class="give-form-stats-panel-stat">
                     <span class="give-form-stats-panel-stat-number">
-                        <?= $goalStats[ 'goal' ]; ?>
-                    </span> <?= __('Goal', 'give'); ?>
+                        <?= esc_html($goalStats[ 'goal' ]); ?>
+                    </span> <?= esc_html__('Goal', 'give'); ?>
                 </li>
                 <li class="give-form-goal-progress">
                     <div
                         role="meter"
                         class="give-form-goal-progress-meter"
-                        style="--progress: <?= $goalStats[ 'progress' ]; ?>%"
-                        aria-label="<?= sprintf(__('%s of %s goal', 'give'), $goalStats[ 'raised' ], $goalStats[ 'goal' ]); ?>"
+                        style="--progress: <?= esc_attr($goalStats[ 'progress' ]); ?>%"
+                        aria-label="<?= esc_attr(sprintf(__('%s of %s goal', 'give'), $goalStats[ 'raised' ], $goalStats[ 'goal' ])); ?>"
                         aria-valuemin="0"
-                        aria-valuemax="<?= $goalStats[ 'goalRaw' ]; ?>"
-                        aria-valuenow="<?= $goalStats[ 'raisedRaw' ]; ?>"
-                        aria-valuetext="<?= $goalStats[ 'progress' ]; ?>%"
+                        aria-valuemax="<?= esc_attr($goalStats[ 'goalRaw' ]); ?>"
+                        aria-valuenow="<?= esc_attr($goalStats[ 'raisedRaw' ]); ?>"
+                        aria-valuetext="<?= esc_attr($goalStats[ 'progress' ]); ?>%"
                     >
                     </div>
                 </li>

@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Escaped output in legacy core helpers, the API keys UI, admin/frontend notices and AJAX handlers.
+timestamp: 2026-09-23T00:00:00.000Z

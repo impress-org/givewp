@@ -234,6 +234,7 @@ class Give_Email_Notifications {
 	/**
 	 * Displays the email preview
 	 *
+	 * @since  TBD Escape output.
 	 * @since  2.0
 	 * @access public
 	 * @return bool|null
@@ -302,6 +303,7 @@ class Give_Email_Notifications {
 				 * @param array                   $email_preview_data
 				 * @param Give_Email_Notification $email
 				 */
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renders the complete standalone email preview HTML document; wp_kses_post() would strip its html/head/body structure.
 				echo apply_filters( "give_{$email_type}_email_preview_message", $email_message, $email_preview_data, $email );
 
 				exit();
@@ -313,6 +315,7 @@ class Give_Email_Notifications {
 	/**
 	 * Add header to donation receipt email preview
 	 *
+	 * @since   TBD Escape output.
 	 * @since   2.0
 	 * @since 4.16.6 Re-check capability/nonce here, since this callback is also reachable via a direct action dispatch that bypasses the check normally done in preview_email().
 	 * @access  public
@@ -333,6 +336,7 @@ class Give_Email_Notifications {
 		 */
 		$email_preview_header = apply_filters( 'give_email_preview_header', give_get_preview_email_header(), $email );
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renders a donor-preview <select> control; wp_kses_post() would strip it.
 		echo $email_preview_header;
 	}
 

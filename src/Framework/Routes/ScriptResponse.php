@@ -98,6 +98,7 @@ class ScriptResponse
             exit;
         }
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- writes a JavaScript response body (Content-Type: application/javascript), not HTML; $prologue is built with wp_json_encode().
         echo $prologue;
         readfile($this->file);
         exit;

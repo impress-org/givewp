@@ -250,6 +250,7 @@ class DonationReceiptWidget extends Widget_Base
      *
      * Written in PHP and used to generate the final HTML.
      *
+     * @since TBD Escape output.
      * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access protected
      */
@@ -290,6 +291,7 @@ class DonationReceiptWidget extends Widget_Base
 
             echo '<div class="givewp-elementor-widget give_receipt">';
 
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $html is do_shortcode() output of our own shortcode; the shortcode template escapes its values.
             echo $html;
 
             echo '</div>';
@@ -298,13 +300,13 @@ class DonationReceiptWidget extends Widget_Base
 			<div id="give-receipt">
 				<div class="give_notices give_errors" id="give_error_fail">
 					<p class="give_notice give_error">
-						<?php echo (!empty($error) ? $error : __('You are missing the donation ID to view this donation receipt.', 'give')); ?>
+						<?php echo !empty($error) ? $error : esc_html(__('You are missing the donation ID to view this donation receipt.', 'give')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $error is already esc_html()'d above; escaping it again would double-encode entities like '&'. ?>
 					</p>
 				</div>
 				<?php if ('yes' == $settings['status_notice']) : ?>
 				<div class="give_notices give_errors" id="give_error_success">
 					<p class="give_notice give_success">
-						<?php echo (!empty($success) ? $success : __('Thank you for your donation.', 'give')); ?>
+						<?php echo !empty($success) ? $success : esc_html(__('Thank you for your donation.', 'give')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $success is already esc_html()'d above; escaping it again would double-encode entities like '&'. ?>
 					</p>
 				</div>
 				<?php endif; ?>

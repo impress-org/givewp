@@ -68,6 +68,7 @@ class Classic extends Template implements Hookable, Scriptable
     }
 
     /**
+     * @since TBD Escape output.
      * @inheritDoc
      */
     public function loadHooks()
@@ -108,7 +109,7 @@ class Classic extends Template implements Hookable, Scriptable
             [$start, $end] = array_pad($section['hooks'], 2, null);
 
             add_action($start, function () use ($section) {
-                printf('<section class="give-form-section %s">', $section[ 'class' ]);
+                printf('<section class="give-form-section %s">', esc_attr($section[ 'class' ]));
             }, -10000);
 
             add_action($end ? : $start, function () {
@@ -219,11 +220,12 @@ class Classic extends Template implements Hookable, Scriptable
     }
 
     /**
+     * @since TBD Escape output.
      * @inheritDoc
      */
     public function renderLoadingView($formId = null)
     {
-        echo $this->getLoadingView();
+        echo $this->getLoadingView(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getLoadingView() returns loading.php's buffered output, already escaped internally.
     }
 
     /**
@@ -239,6 +241,7 @@ class Classic extends Template implements Hookable, Scriptable
     /**
      * Render donation form header
      *
+     * @since TBD Escape output.
      * @since 2.19.0 use trinary operator instead of Coalesce operator to make code php 5.6 compatible.
      *
      * @param  int  $formId
@@ -249,34 +252,41 @@ class Classic extends Template implements Hookable, Scriptable
     {
         $hasGoal = $form->has_goal();
 
-        echo $this->loadFile('views/header.php', [
+        $headerArgs = [
             'title'                => isset($this->options['visual_appearance']['main_heading']) ? $this->options['visual_appearance']['main_heading'] : $form->post_title,
             'description'          => $this->options[ 'visual_appearance' ][ 'description' ],
             'isSecureBadgeEnabled' => $this->options[ 'visual_appearance' ][ 'secure_badge' ] === 'enabled',
             'secureBadgeContent'   => $this->options[ 'visual_appearance' ][ 'secure_badge_text' ],
             'hasGoal'              => $hasGoal,
             'goalStats'            => $hasGoal ? $this->getFormGoalStats($form) : []
-        ]);
+        ];
+
+        echo $this->loadFile('views/header.php', $headerArgs); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- header.php escapes each of these values internally.
     }
 
     /**
      * Render donation amount heading
+     *
+     * @since TBD Escape output.
      */
     public function renderDonationAmountHeading()
     {
-        echo $this->loadFile('views/donation-amount-heading.php', [
+        $headingArgs = [
             'content' => $this->options[ 'donation_amount' ][ 'headline' ],
-        ]);
+        ];
+
+        echo wp_kses_post( $this->loadFile('views/donation-amount-heading.php', $headingArgs) );
     }
 
     /**
      * Render the SVG icon definitions.
      *
+     * @since TBD Escape output.
      * @void
      */
     public function renderIconDefinitions()
     {
-        echo $this->loadFile('views/icon-defs.php');
+        echo $this->loadFile('views/icon-defs.php'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG icon definitions with no dynamic data; wp_kses_post() would strip the svg/defs/path elements.
     }
 
     /**
