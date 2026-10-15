@@ -1,5 +1,5 @@
 import {expect, Locator, Page, test} from '@wordpress/e2e-test-utils-playwright';
-import {chooseOption, openOptions} from './utils/async-select';
+import {chooseOption, openOptions, scrollMenuToEnd} from './utils/async-select';
 import {createCampaignWithForm} from './utils/campaign';
 import {createStandaloneForm} from './utils/standalone-form';
 
@@ -133,6 +133,47 @@ test.describe('Forms list', () => {
 
         await picker.fill(current.title);
         await expect(dialog.getByText('No options')).toBeVisible();
+    });
+
+    test('loads the next page of campaigns into the picker as its menu scrolls', async ({
+        page,
+        admin,
+        requestUtils,
+    }) => {
+        const prefix = `Paging campaign ${Date.now()}`;
+
+        // More than a page of campaigns share the prefix, so searching for it fills the first page.
+        for (let i = 1; i <= 32; i++) {
+            await requestUtils.rest({
+                method: 'POST',
+                path: '/givewp/v3/campaigns',
+                data: {title: `${prefix} ${String(i).padStart(2, '0')}`, goal: 1000, goalType: 'amount'},
+            });
+        }
+
+        // The form is moved out of a campaign on the first page, so the menu opens one short of a full page.
+        const [current] = await requestUtils.rest<{title: string}[]>({
+            path: '/givewp/v3/campaigns',
+            params: {status: 'active,draft', search: prefix, per_page: 30, page: 1},
+        });
+
+        await admin.visitAdminPage('edit.php', `${FORMS_LIST}&search=${encodeURIComponent(current.title)}`);
+
+        const dialog = await openCampaignDialog(page, formRow(page, current.title), 'Change campaign');
+        await dialog.getByRole('combobox', {name: 'Move to'}).fill(prefix);
+
+        await expect(openOptions(page)).toHaveCount(29);
+
+        await expect
+            .poll(
+                async () => {
+                    await scrollMenuToEnd(page);
+
+                    return openOptions(page).count();
+                },
+                {message: 'Scrolling the menu to its end should load the rest of the campaigns'}
+            )
+            .toBe(31);
     });
 
     test("moves a form from a campaign's Forms tab", async ({page, admin, requestUtils}) => {
