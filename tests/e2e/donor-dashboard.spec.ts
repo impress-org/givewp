@@ -92,6 +92,9 @@ test.describe('Donor dashboard logout', () => {
             ]);
 
             await page.goto('/?give-embed=donor-dashboard');
+
+            // The auth modal is absent before React mounts too, so the signed-in layout has to render first.
+            await expect(page.locator(`.give-donor-dashboard-${layout.name}-layout`)).toBeVisible();
             await expect(page.locator('.give-donor-dashboard__auth-modal')).toHaveCount(0);
 
             await layout.openMenu(page);
@@ -100,8 +103,10 @@ test.describe('Donor dashboard logout', () => {
             const dialog = page.getByRole('dialog', {name: 'Are you sure you want to logout?'});
             await expect(dialog).toBeVisible();
 
+            // After the logout response the app navigates to the page URL without the embed query.
             const [logout] = await Promise.all([
                 page.waitForResponse((response) => response.url().includes('/give-api/v2/donor-dashboard/logout')),
+                page.waitForURL((url) => !url.searchParams.has('give-embed')),
                 dialog.getByRole('button', {name: 'Yes, logout'}).click(),
             ]);
             expect(logout.ok()).toBe(true);
