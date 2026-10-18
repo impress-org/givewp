@@ -187,4 +187,19 @@ class TestElementorDonationFormWidget extends TestCase
             $widget->getDefaultFormOption($widget->getFormOptionsWithCampaigns())
         );
     }
+
+    /**
+     * @since TBD
+     */
+    public function testDefaultFormOptionIsTheFirstStandaloneFormWhenNoFormBelongsToACampaign(): void
+    {
+        $form = DonationForm::factory()->create(['title' => 'A standalone form']);
+
+        $widget = new ElementorDonationFormWidget();
+
+        $this->assertSame(
+            (string)$form->id,
+            $widget->getDefaultFormOption($widget->getFormOptionsWithCampaigns())
+        );
+    }
 }
