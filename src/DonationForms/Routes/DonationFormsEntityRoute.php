@@ -25,7 +25,7 @@ class DonationFormsEntityRoute
 
 
     /**
-     * @since TBD Register the detach route
+     * @since 4.19.0 Register the detach route
      * @since 4.2.0
      */
     public function __invoke()
@@ -156,7 +156,7 @@ class DonationFormsEntityRoute
     /**
      * Detach donation forms from their campaigns, leaving them standalone
      *
-     * @since TBD
+     * @since 4.19.0
      */
     public function registerDetachFormsFromCampaign()
     {

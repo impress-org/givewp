@@ -19,7 +19,7 @@ class DonationFormViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since TBD check the signed route URLs are valid instead of comparing them to URLs built earlier
+     * @since 4.19.0 check the signed route URLs are valid instead of comparing them to URLs built earlier
      * @since 3.6.0 added includeHeaderInMultiStep to form design exports
      * @since 3.0.0
      */
@@ -157,7 +157,7 @@ class DonationFormViewModelTest extends TestCase
     /**
      * Assert the URL is a signed route URL that expires in one day and that the route itself would accept.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     private function assertSignedRouteUrl(string $route, string $signatureId, string $url): void
     {

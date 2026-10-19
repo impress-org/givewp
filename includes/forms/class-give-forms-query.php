@@ -86,7 +86,7 @@ class Give_Forms_Query {
 	 * query is run, or the filter on the arguments (existing mainly for backwards
 	 * compatibility).
 	 *
-	 * @since TBD Restore the globals setup_postdata() writes to once the results loop is done.
+	 * @since 4.19.0 Restore the globals setup_postdata() writes to once the results loop is done.
 	 * @since  2.5.0
 	 * @access public
 	 *

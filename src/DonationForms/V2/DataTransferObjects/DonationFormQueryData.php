@@ -156,7 +156,7 @@ final class DonationFormQueryData
 
 
     /**
-     * @since TBD Fall back to the form goal when the form has no campaign.
+     * @since 4.19.0 Fall back to the form goal when the form has no campaign.
      * @since 4.6.0 Cast $queryObject->goalFormat to string
      * @since 4.3.0
      */

@@ -271,7 +271,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @since TBD use 30 days, as described, instead of the exact boundary
+     * @since 4.19.0 use 30 days, as described, instead of the exact boundary
      * @since 4.8.0
      */
     public function testGetPlatformFeePercentageReturnsZeroWhenInGracePeriodViaLastActiveDate(): void
@@ -317,7 +317,7 @@ class TestLicenseRepository extends TestCase
 
 
     /**
-     * @since TBD stay a minute inside the boundary so a clock tick can't push it past
+     * @since 4.19.0 stay a minute inside the boundary so a clock tick can't push it past
      * @since 4.8.0
      */
     public function testGetPlatformFeePercentageReturnsZeroWhenAtGracePeriodBoundary(): void

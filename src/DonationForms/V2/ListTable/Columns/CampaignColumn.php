@@ -10,7 +10,7 @@ use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @since TBD
+ * @since 4.19.0
  *
  * @extends ModelColumn<DonationForm>
  */
@@ -22,7 +22,7 @@ class CampaignColumn extends ModelColumn
      * Prefixed so the givewp_list_table_cell_value_{id} filter does not collide with the donations
      * campaign column, whose filters expect a Donation.
      *
-     * @since TBD
+     * @since 4.19.0
      *
      * @inheritDoc
      */
@@ -32,7 +32,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      *
      * @inheritDoc
      */
@@ -42,7 +42,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      *
      * @inheritDoc
      *

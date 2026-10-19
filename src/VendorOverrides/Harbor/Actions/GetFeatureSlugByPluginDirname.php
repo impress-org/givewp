@@ -8,14 +8,14 @@ namespace Give\VendorOverrides\Harbor\Actions;
  * Harbor identifies an add-on by its catalog slug. GiveWP identifies an add-on
  * by its plugin directory name, and for the add-ons listed here the two differ.
  *
- * @since TBD
+ * @since 4.19.0
  */
 class GetFeatureSlugByPluginDirname
 {
     /**
      * Plugin directory name => Harbor catalog slug, for add-ons where they differ.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     private const SLUGS = [
         'give-2checkout' => 'give-2checkout-gateway',
@@ -41,7 +41,7 @@ class GetFeatureSlugByPluginDirname
     ];
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function __invoke(string $pluginDirname): string
     {

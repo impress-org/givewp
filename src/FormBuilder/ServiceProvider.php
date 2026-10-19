@@ -33,7 +33,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since TBD The forms list localizes its own newFormUrl, so the GiveNextGen script data is gone.
+     * @since 4.19.0 The forms list localizes its own newFormUrl, so the GiveNextGen script data is gone.
      *
      * @inheritDoc
      */

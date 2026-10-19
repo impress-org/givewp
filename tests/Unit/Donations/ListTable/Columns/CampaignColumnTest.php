@@ -9,14 +9,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.19.0
  */
 class CampaignColumnTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testSaysNoCampaignWhenDonationHasNoCampaign()
     {
@@ -29,7 +29,7 @@ class CampaignColumnTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testSaysNoCampaignWhenCampaignNoLongerExists()
     {
@@ -42,7 +42,7 @@ class CampaignColumnTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testLinksToCampaignWhenDonationHasCampaign()
     {

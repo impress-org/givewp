@@ -32,7 +32,7 @@ class DonationFormDataRepository
     private array $campaignSubscriptionDonorsCount = [];
 
     /**
-     * @since TBD
+     * @since 4.19.0
      *
      * @var array<int, object{id: int, title: string, defaultFormId: int, type: string}> keyed by form id
      */
@@ -99,7 +99,7 @@ class DonationFormDataRepository
      * Load the campaign each form belongs to. Forms attached through the campaign forms table
      * come first; the campaign's own default form id covers Peer-to-Peer forms that have no row there.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     public function setFormsCampaigns(array $ids): void
     {
@@ -143,7 +143,7 @@ class DonationFormDataRepository
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      *
      * @return object{id: int, title: string, defaultFormId: int, type: string}|null
      */
