@@ -28,7 +28,6 @@ class ConvertDonationAmountBlockToFieldsApi
 {
 
     /**
-     * @since TBD Require the submitted currency to match the form currency.
      * @since 4.16.8 Exempt admin-defined amounts from the custom amount minimum and maximum, and fall back
      *            to the lowest admin-defined amount when no custom amount minimum applies.
      * @since 4.16.5 Set default value for the levelId hidden field.
@@ -98,7 +97,7 @@ class ConvertDonationAmountBlockToFieldsApi
             $currencyNode = $group->getNodeByName('currency');
             $currencyNode
                 ->defaultValue($currency)
-                ->rules('required', new CurrencyRule($currency));
+                ->rules('required', new CurrencyRule());
         });
 
         if (!$block->isRecurringEnabled()) {

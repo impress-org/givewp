@@ -12,22 +12,24 @@ use Money\Currency;
  * Replaces the generic stellar validation library currency rule to ensure consistency
  * with GiveWP's configured currencies and filters.
  *
- * @since TBD Require the currency to match the form currency when one is provided.
+ * @since TBD Require the currency to be one of the form's supported currencies when they are provided.
  * @since 4.10.0
  */
 class CurrencyRule implements ValidationRule
 {
     /**
-     * @var string|null
+     * @var string[]
      */
-    protected $formCurrency;
+    protected $allowedCurrencies;
 
     /**
      * @since TBD
+     *
+     * @param string[] $allowedCurrencies Currency codes the form accepts. An empty array applies no form-level restriction.
      */
-    public function __construct(?string $formCurrency = null)
+    public function __construct(array $allowedCurrencies = [])
     {
-        $this->formCurrency = $formCurrency;
+        $this->allowedCurrencies = $allowedCurrencies;
     }
 
     /**
@@ -49,11 +51,11 @@ class CurrencyRule implements ValidationRule
 
     /**
      * Validates that the currency code is in GiveWP's supported currency list
-     * and, when a form currency is set, matches that currency.
+     * and, when supported currencies are set, is one of those currencies.
      * Uses give_get_currencies_list() to get the current supported currencies
      * and provides clear error messages with valid currency options.
      *
-     * @since TBD Require the currency to match the form currency when one is provided.
+     * @since TBD Require the currency to be one of the form's supported currencies when they are provided.
      * @since 4.10.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
@@ -74,10 +76,10 @@ class CurrencyRule implements ValidationRule
                     $value
                 )
             );
-        } elseif ($this->formCurrency !== null && $value !== $this->formCurrency) {
+        } elseif ($this->allowedCurrencies && !in_array($value, $this->allowedCurrencies, true)) {
             $fail(
                 sprintf(
-                    __('%s must match the donation form currency', 'give'),
+                    __('%s must be a currency supported by this donation form', 'give'),
                     '{field}'
                 )
             );

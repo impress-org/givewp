@@ -1,4 +1,4 @@
 significance: patch
 type: security
-entry: Improved validation of the donation currency on donation forms.
+entry: Improved donation currency validation so the submitted currency must be supported by the form, including currencies enabled by the Currency Switcher.
 timestamp: 2026-10-19T17:35:09.165Z

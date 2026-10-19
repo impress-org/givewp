@@ -206,39 +206,51 @@ class TestCurrencyRule extends TestCase
     /**
      * @since TBD
      */
-    public function testCurrencyRulePassesWhenCurrencyMatchesFormCurrency(): void
+    public function testCurrencyRulePassesForAnyAllowedCurrency(): void
     {
-        $rule = new CurrencyRule('USD');
+        $rule = new CurrencyRule(['USD', 'EUR']);
 
         self::assertValidationRulePassed($rule, 'USD');
+        self::assertValidationRulePassed($rule, 'EUR');
     }
 
     /**
      * @since TBD
      */
-    public function testCurrencyRuleFailsWhenCurrencyDoesNotMatchFormCurrency(): void
+    public function testCurrencyRuleFailsForCurrencyOutsideAllowedSet(): void
     {
-        $rule = new CurrencyRule('USD');
+        $rule = new CurrencyRule(['USD', 'EUR']);
 
-        self::assertValidationRuleFailed($rule, 'EUR');
+        self::assertValidationRuleFailed($rule, 'GBP');
     }
 
     /**
      * @since TBD
      */
-    public function testCurrencyRuleFormCurrencyErrorMessage(): void
+    public function testCurrencyRuleAllowsAnySupportedCurrencyWhenNoAllowedSetIsProvided(): void
     {
-        $rule = new CurrencyRule('USD');
+        $rule = new CurrencyRule();
+
+        self::assertValidationRulePassed($rule, 'USD');
+        self::assertValidationRuleFailed($rule, 'XYZ');
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testCurrencyRuleAllowedSetErrorMessage(): void
+    {
+        $rule = new CurrencyRule(['USD', 'EUR']);
 
         $error = null;
         $fail = function ($message) use (&$error) {
             $error = $message;
         };
 
-        $rule('EUR', $fail, 'test_field', []);
+        $rule('GBP', $fail, 'test_field', []);
 
         $this->assertIsString($error);
-        $this->assertStringContainsString('must match the donation form currency', $error);
+        $this->assertStringContainsString('must be a currency supported by this donation form', $error);
     }
 
     /**
