@@ -76,7 +76,7 @@ class CurrencyRule implements ValidationRule
                     $value
                 )
             );
-        } elseif ($this->allowedCurrencies && !in_array($value, $this->allowedCurrencies, true)) {
+        } elseif (!empty($this->allowedCurrencies) && !in_array($value, $this->allowedCurrencies, true)) {
             $fail(
                 sprintf(
                     __('%s must be a currency supported by this donation form', 'give'),
