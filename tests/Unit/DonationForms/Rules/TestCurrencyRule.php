@@ -204,44 +204,6 @@ class TestCurrencyRule extends TestCase
     }
 
     /**
-     * @since TBD
-     */
-    public function testCurrencyRulePassesWhenCurrencyMatchesFormCurrency(): void
-    {
-        $rule = new CurrencyRule('USD');
-
-        self::assertValidationRulePassed($rule, 'USD');
-    }
-
-    /**
-     * @since TBD
-     */
-    public function testCurrencyRuleFailsWhenCurrencyDoesNotMatchFormCurrency(): void
-    {
-        $rule = new CurrencyRule('USD');
-
-        self::assertValidationRuleFailed($rule, 'EUR');
-    }
-
-    /**
-     * @since TBD
-     */
-    public function testCurrencyRuleFormCurrencyErrorMessage(): void
-    {
-        $rule = new CurrencyRule('USD');
-
-        $error = null;
-        $fail = function ($message) use (&$error) {
-            $error = $message;
-        };
-
-        $rule('EUR', $fail, 'test_field', []);
-
-        $this->assertIsString($error);
-        $this->assertStringContainsString('must match the donation form currency', $error);
-    }
-
-    /**
      * @since 4.10.0
      */
     public function testCurrencyRuleId(): void

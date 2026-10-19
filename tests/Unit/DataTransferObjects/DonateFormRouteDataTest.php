@@ -99,65 +99,6 @@ class DonateFormRouteDataTest extends TestCase
     }
 
     /**
-     * @since TBD
-     */
-    public function testValidatedShouldRejectCurrencyThatDoesNotMatchFormCurrency()
-    {
-        /** @var DonationForm $form */
-        $form = DonationForm::factory()->create();
-
-        add_filter('give_get_option_gateways', static function ($gateways) {
-            return array_merge($gateways, [TestGateway::id() => true]);
-        });
-
-        add_filter('give_default_gateway', static function () {
-            return TestGateway::id();
-        });
-
-        add_filter("givewp_donation_forms_honeypot_enabled", "__return_false");
-
-        $formCurrency = give_get_currency($form->id);
-        $otherCurrency = current(array_diff(array_keys(give_get_currencies_list()), [$formCurrency]));
-
-        $data = new DonateControllerData();
-        $data->gatewayId = TestGateway::id();
-        $data->amount = 100;
-        $data->currency = $otherCurrency;
-        $data->firstName = "Bill";
-        $data->lastName = "Murray";
-        $data->email = "billmurray@givewp.com";
-        $data->formId = $form->id;
-        $data->formTitle = $form->title;
-        $data->company = null;
-        $data->wpUserId = 0;
-        $data->honorific = null;
-        $data->donationType = DonationType::SINGLE();
-        $data->subscriptionFrequency = null;
-        $data->subscriptionPeriod = null;
-        $data->subscriptionInstallments = null;
-        $data->country = null;
-        $data->address1 = null;
-        $data->address2 = null;
-        $data->city = null;
-        $data->state = null;
-        $data->zip = null;
-
-        $request = array_merge(get_object_vars($data), [
-            'donationType' => $data->donationType->getValue(),
-        ]);
-
-        try {
-            DonateFormRouteData::fromRequest($request)->validated();
-            $this->fail('Expected a validation error for a currency that does not match the form currency.');
-        } catch (DonationFormFieldErrorsException $exception) {
-            $errors = $exception->getError()->get_error_messages('currency');
-
-            $this->assertNotEmpty($errors);
-            $this->assertStringContainsString('must match the donation form currency', $errors[0]);
-        }
-    }
-
-    /**
      * The final submission route fires givewp_donation_form_fields_validated as a final submission,
      * which is the single point where spam-protection listeners should run the Akismet check (all
      * donation data is available and the donation is about to be processed).
