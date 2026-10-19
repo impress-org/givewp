@@ -12,10 +12,24 @@ use Money\Currency;
  * Replaces the generic stellar validation library currency rule to ensure consistency
  * with GiveWP's configured currencies and filters.
  *
+ * @since TBD Require the currency to match the form currency when one is provided.
  * @since 4.10.0
  */
 class CurrencyRule implements ValidationRule
 {
+    /**
+     * @var string|null
+     */
+    protected $formCurrency;
+
+    /**
+     * @since TBD
+     */
+    public function __construct(?string $formCurrency = null)
+    {
+        $this->formCurrency = $formCurrency;
+    }
+
     /**
      * @since 4.10.0
      */
@@ -34,10 +48,12 @@ class CurrencyRule implements ValidationRule
     }
 
     /**
-     * Validates that the currency code is in GiveWP's supported currency list.
+     * Validates that the currency code is in GiveWP's supported currency list
+     * and, when a form currency is set, matches that currency.
      * Uses give_get_currencies_list() to get the current supported currencies
      * and provides clear error messages with valid currency options.
      *
+     * @since TBD Require the currency to match the form currency when one is provided.
      * @since 4.10.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
@@ -56,6 +72,13 @@ class CurrencyRule implements ValidationRule
                     __('%s must be a valid currency. Provided: %s', 'give'),
                     '{field}',
                     $value
+                )
+            );
+        } elseif ($this->formCurrency !== null && $value !== $this->formCurrency) {
+            $fail(
+                sprintf(
+                    __('%s must match the donation form currency', 'give'),
+                    '{field}'
                 )
             );
         }
