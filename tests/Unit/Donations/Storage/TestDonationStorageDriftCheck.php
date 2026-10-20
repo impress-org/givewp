@@ -6,6 +6,7 @@ use Give\Donations\Migrations\CreateDonationsTable;
 use Give\Donations\Models\Donation;
 use Give\Donations\Storage\DonationStorageDriftCheck;
 use Give\Donations\Storage\DonationStorageFlag;
+use Give\Donations\Storage\DonationTableSync;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
@@ -31,6 +32,14 @@ class TestDonationStorageDriftCheck extends TestCase
         delete_option(DonationStorageFlag::OPTION);
         delete_option(DonationStorageDriftCheck::OPTION);
         (new CreateDonationsTable())->run();
+    }
+
+    /**
+     * @since TBD
+     */
+    private function row(int $donationId)
+    {
+        return DB::get_row(DB::prepare('SELECT * FROM ' . DB::prefix('give_donations') . ' WHERE id = %d', $donationId));
     }
 
     /**
@@ -91,6 +100,38 @@ class TestDonationStorageDriftCheck extends TestCase
         $this->assertSame([$donation->id], $report['amount']['sampleIds']);
         $this->assertSame(1200, $report['sums'][0]['posts']);
         $this->assertSame(1000, $report['sums'][0]['table']);
+    }
+
+    /**
+     * Two post shapes that the decoder maps correctly and a naive inverse would flag: a renewal
+     * whose post_status is publish rather than give_subscription, and a flagged initial donation
+     * with no subscription_id meta.
+     *
+     * @since TBD
+     */
+    public function testCorrectlyDecodedEdgeCasesAreNotDrift()
+    {
+        $subscription = Subscription::factory()->createWithDonation();
+        $renewal = Donation::factory()->create([
+            'donorId' => $subscription->donorId,
+            'subscriptionId' => $subscription->id,
+            'type' => DonationType::RENEWAL(),
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+        give_update_payment_status($renewal->id, 'publish');
+
+        $flagged = Donation::factory()->create();
+        give()->payment_meta->add_meta($flagged->id, DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION, 1);
+
+        give(DonationTableSync::class)->flush();
+
+        $this->assertSame('publish', get_post_status($renewal->id));
+        $this->assertSame('renewal', $this->row($renewal->id)->type);
+        $this->assertSame('subscription', $this->row($flagged->id)->type);
+
+        $report = (new DonationStorageDriftCheck())->run();
+
+        $this->assertFalse($report['drift'], json_encode($report));
     }
 
     /**
