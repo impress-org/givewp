@@ -63,10 +63,11 @@ class CreateDonationsTable extends Migration
 
         // id is the legacy post ID, with no AUTO_INCREMENT, while the two storages are kept in sync.
         //
-        // The two generated columns are signed. An admin can edit a donation's total below its
-        // recovered fee, legacy storage accepts that, and the legacy intended-amount sum goes
-        // negative with it. An unsigned column would reject the row under strict SQL mode and
-        // silently store 0 without it, so signed is the only choice that keeps both storages equal.
+        // The two generated columns are signed, and both operands are cast before subtracting. An
+        // admin can edit a donation's total below its recovered fee, legacy storage accepts that,
+        // and the legacy intended-amount sum goes negative with it. Unsigned arithmetic would
+        // reject the row under strict SQL mode and silently store 0 without it, so signed is the
+        // only choice that keeps both storages equal.
         //
         // Index prefixes on the two VARCHAR(255) columns keep each key under the 767-byte limit of
         // older InnoDB row formats under utf8mb4, the same reason WordPress core indexes
@@ -87,8 +88,8 @@ class CreateDonationsTable extends Migration
             currency CHAR(3) NOT NULL,
             base_currency CHAR(3) NOT NULL,
             exchange_rate DECIMAL(20,10) NOT NULL DEFAULT 1,
-            amount_intended BIGINT GENERATED ALWAYS AS (amount_total - IFNULL(fee_amount_recovered, 0)) STORED,
-            amount_intended_base BIGINT GENERATED ALWAYS AS (ROUND((amount_total - IFNULL(fee_amount_recovered, 0)) / exchange_rate)) STORED,
+            amount_intended BIGINT GENERATED ALWAYS AS (CAST(amount_total AS SIGNED) - CAST(IFNULL(fee_amount_recovered, 0) AS SIGNED)) STORED,
+            amount_intended_base BIGINT GENERATED ALWAYS AS (ROUND((CAST(amount_total AS SIGNED) - CAST(IFNULL(fee_amount_recovered, 0) AS SIGNED)) / exchange_rate)) STORED,
             sequential_number BIGINT UNSIGNED NULL,
             purchase_key VARCHAR(64) NULL,
             email VARCHAR(255) NOT NULL,
@@ -124,7 +125,8 @@ class CreateDonationsTable extends Migration
         try {
             DB::query($sql);
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while creating the {$table} table", 0, $exception);
+            // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- the previous exception cannot be escaped
+            throw new DatabaseMigrationException(esc_html("An error occurred while creating the {$table} table"), 0, $exception);
         }
     }
 }
