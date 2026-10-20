@@ -16,6 +16,8 @@ use Give\Framework\Database\DB;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
+use Give_Payment;
+use Give_Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -229,6 +231,63 @@ class TestDonationTableSync extends TestCase
         }
 
         $this->assertSame(DonationTableSync::FLUSH_THRESHOLD, (int)DB::get_var('SELECT COUNT(*) FROM ' . DB::prefix(DonationTableRepository::TABLE)));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testLegacyPaymentSaveAndLegacyRenewalReachTheTable()
+    {
+        $donor = Donor::factory()->create();
+
+        $payment = new Give_Payment();
+        $payment->total = 100;
+        $payment->form_id = 1;
+        $payment->customer_id = $donor->id;
+        $payment->first_name = $donor->firstName;
+        $payment->last_name = $donor->lastName;
+        $payment->email = $donor->email;
+        $payment->currency = 'USD';
+        $payment->status = 'publish';
+        $payment->gateway = TestGateway::id();
+        $payment->mode = 'test';
+        $payment->save();
+
+        $subscriptionId = (int)(new Give_Subscription())->create([
+            'customer_id' => $donor->id,
+            'parent_payment_id' => $payment->ID,
+            'form_id' => 1,
+            'period' => 'month',
+            'frequency' => 1,
+            'initial_amount' => 100,
+            'recurring_amount' => 80,
+            'status' => 'active',
+        ])->id;
+        (new Give_Subscription($subscriptionId))->add_payment([
+            'amount' => 80,
+            'transaction_id' => 'renewal-txn',
+            'gateway' => TestGateway::id(),
+        ]);
+
+        give(DonationTableSync::class)->flush();
+
+        // Give_Subscription::create() writes no subscription meta on the parent payment, so the
+        // parent decodes as a single donation, exactly as the model reads it from posts today.
+        $initial = $this->row($payment->ID);
+        $this->assertSame(10000, (int)$initial->amount_total);
+        $this->assertSame('publish', $initial->status);
+        $this->assertSame('single', $initial->type);
+
+        $renewalId = (int)DB::table('give_donationmeta')
+            ->where('meta_key', DonationMetaKeys::GATEWAY_TRANSACTION_ID)
+            ->where('meta_value', 'renewal-txn')
+            ->value('donation_id');
+        $renewal = $this->row($renewalId);
+        $this->assertSame('give_subscription', get_post_status($renewalId));
+        $this->assertSame('publish', $renewal->status);
+        $this->assertSame('renewal', $renewal->type);
+        $this->assertSame($subscriptionId, (int)$renewal->subscription_id);
+        $this->assertSame(8000, (int)$renewal->amount_total);
     }
 
     /**
