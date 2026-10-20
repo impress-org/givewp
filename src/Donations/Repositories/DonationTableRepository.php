@@ -21,15 +21,17 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 class DonationTableRepository
 {
     /**
+     * One or many: the sync and the backfill insert a chunk of donations in one statement.
+     *
      * @since TBD
      */
-    public function insert(Donation $donation): void
+    public function insert(Donation ...$donations): void
     {
-        if (!$this->enabled()) {
+        if (!$donations || !$this->enabled()) {
             return;
         }
 
-        $this->upsertRows([$this->rowFromModel($donation)]);
+        $this->upsert(array_map([$this, 'rowFromModel'], $donations));
     }
 
     /**
@@ -41,7 +43,7 @@ class DonationTableRepository
             return;
         }
 
-        $this->upsertRows([$this->rowFromModel($donation)]);
+        $this->upsert([$this->rowFromModel($donation)]);
     }
 
     /**
@@ -68,20 +70,20 @@ class DonationTableRepository
      */
     public function delete(Donation $donation): void
     {
-        $this->deleteByIds($donation->id);
+        if (!$this->enabled()) {
+            return;
+        }
+
+        DB::query(DB::prepare("DELETE FROM " . DB::prefix('give_donations') . " WHERE id = %d", $donation->id));
     }
 
     /**
-     * Rows already in table shape, from any mapping. One INSERT ... ON DUPLICATE KEY UPDATE for
-     * all of them; generated columns are never listed.
+     * One INSERT ... ON DUPLICATE KEY UPDATE for every row; generated columns are never listed.
      *
      * @since TBD
      */
-    public function upsertRows(array $rows): void
+    private function upsert(array $rows): void
     {
-        if (!$rows || !$this->enabled()) {
-            return;
-        }
 
         $columns = array_keys($rows[0]);
         $columnList = implode(', ', $columns);
@@ -97,20 +99,6 @@ class DonationTableRepository
             "INSERT INTO " . DB::prefix('give_donations') . " ({$columnList}) VALUES " . implode(', ', $values) .
             " ON DUPLICATE KEY UPDATE {$updates}"
         );
-    }
-
-    /**
-     * @since TBD
-     */
-    public function deleteByIds(int ...$donationIds): void
-    {
-        if (!$donationIds || !$this->enabled()) {
-            return;
-        }
-
-        $in = implode(',', array_map('intval', $donationIds));
-
-        DB::query("DELETE FROM " . DB::prefix('give_donations') . " WHERE id IN ({$in})");
     }
 
     /**
@@ -134,9 +122,8 @@ class DonationTableRepository
     }
 
     /**
-     * The row for a donation as the model describes it. Column for column the same shape as
-     * DonationTableSync::buildRow(), which decodes it from posts; the parity test in the storage
-     * suite fails when the two disagree.
+     * The row for a donation as the model describes it. The only mapping from a donation to its
+     * row: the sync and the backfill load models and come through here too.
      *
      * @since TBD
      */
