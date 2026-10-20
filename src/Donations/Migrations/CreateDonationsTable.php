@@ -58,7 +58,9 @@ class CreateDonationsTable extends Migration
     {
         global $wpdb;
 
-        $table = $wpdb->give_donations;
+        // Resolved from the current prefix, not the cached $wpdb property: a network-wide install
+        // switches blogs before running upgrades and the property is not refreshed.
+        $table = DB::prefix('give_donations');
         $charset = DB::get_charset_collate();
 
         // id is the legacy post ID, with no AUTO_INCREMENT, while the two storages are kept in sync.
