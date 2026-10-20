@@ -33,7 +33,25 @@ class DonationRepository
      */
     public $notes;
 
-    /**
+        /**
+     * Meta keys that getCoreDonationMetaForDatabase() only emits while the model holds a value.
+     *
+     * @since TBD
+     */
+    private $clearableMetaKeys = [
+        DonationMetaKeys::FEE_AMOUNT_RECOVERED,
+        DonationMetaKeys::HONORIFIC,
+        DonationMetaKeys::COMPANY,
+        DonationMetaKeys::COMMENT,
+        DonationMetaKeys::BILLING_ADDRESS1,
+        DonationMetaKeys::BILLING_ADDRESS2,
+        DonationMetaKeys::BILLING_CITY,
+        DonationMetaKeys::BILLING_STATE,
+        DonationMetaKeys::BILLING_ZIP,
+        DonationMetaKeys::BILLING_COUNTRY,
+    ];
+
+/**
      * @since 2.21.0
      */
     public function __construct()
@@ -198,7 +216,7 @@ class DonationRepository
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.8.1 Moved campaignId assignment logic to getCoreDonationMetaForDatabase method to eliminate code duplication.
      * @since 3.20.0 store meta using native WP functions
-     * @since TBD Write the give_donations row inside the same transaction.
+     * @since TBD Write the give_donations row from the model inside the same transaction, and resolve the mode and purchase key defaults onto the model before saving.
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_creating and givewp_donation_created
      * @since 2.20.0 mutate model and return void
@@ -217,6 +235,17 @@ class DonationRepository
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
         $dateUpdated = $donation->updatedAt ?? $dateCreated;
         $dateUpdatedFormatted = Temporal::getFormattedDateTime($dateUpdated);
+
+        // Defaults the meta used to fill in silently now live on the model, so the meta and the
+        // give_donations row are built from the same values.
+        $donation->createdAt = $dateCreated;
+        $donation->updatedAt = $dateUpdated;
+        if (!isset($donation->mode)) {
+            $donation->mode = $this->getDefaultDonationMode();
+        }
+        if (!isset($donation->purchaseKey)) {
+            $donation->purchaseKey = Call::invoke(GeneratePurchaseKey::class, $donation->email);
+        }
 
         DB::query('START TRANSACTION');
 
@@ -240,7 +269,7 @@ class DonationRepository
                 give()->payment_meta->add_meta($donationId, $metaKey, $metaValue);
             }
 
-            give(DonationTableSync::class)->sync($donationId);
+            give(DonationTableSync::class)->write($donation, $donationId);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -253,15 +282,8 @@ class DonationRepository
 
         $donation->id = $donationId;
 
-        $donation->createdAt = $dateCreated;
-        $donation->updatedAt = $dateUpdated;
-
         if (!isset($donation->formTitle)) {
             $donation->formTitle = $this->getFormTitle($donation->formId);
-        }
-
-        if (!isset($donation->purchaseKey)) {
-            $donation->purchaseKey = $donationMeta[DonationMetaKeys::PURCHASE_KEY];
         }
 
         Hooks::doAction('givewp_donation_created', $donation);
@@ -273,7 +295,7 @@ class DonationRepository
     }
 
     /**
-     * @since TBD Write the give_donations row inside the same transaction.
+     * @since TBD Write the give_donations row from the model inside the same transaction, and remove the meta of optional fields the model has cleared.
      * @since 4.19.0 Refresh the form title when the donation moves to another form
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.6.0 Turn createdAt property updatable
@@ -301,6 +323,11 @@ class DonationRepository
         $now = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
         $nowFormatted = Temporal::getFormattedDateTime($now);
 
+        $donation->updatedAt = $now;
+        if (!isset($donation->mode)) {
+            $donation->mode = $this->getDefaultDonationMode();
+        }
+
         DB::query('START TRANSACTION');
 
         try {
@@ -316,11 +343,22 @@ class DonationRepository
                     'post_parent' => $this->deriveLegacyDonationParentId($donation),
                 ]);
 
-            foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
+            $donationMeta = $this->getCoreDonationMetaForDatabase($donation);
+
+            foreach ($donationMeta as $metaKey => $metaValue) {
                 give()->payment_meta->update_meta($donation->id, $metaKey, $metaValue);
             }
 
-            give(DonationTableSync::class)->sync($donation->id);
+            // Optional fields cleared on the model are only present in the meta array while they
+            // have a value, so their meta rows are removed here. Otherwise the stored donation
+            // keeps a fee, company or address the model no longer has.
+            foreach ($this->clearableMetaKeys as $metaKey) {
+                if (!array_key_exists($metaKey, $donationMeta)) {
+                    give()->payment_meta->delete_meta($donation->id, $metaKey);
+                }
+            }
+
+            give(DonationTableSync::class)->write($donation, $donation->id);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -328,8 +366,6 @@ class DonationRepository
 
             throw new Exception('Failed updating a donation', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
-
-        $donation->updatedAt = $now;
 
         DB::query('COMMIT');
 
@@ -401,7 +437,7 @@ class DonationRepository
                 ->where('ID', $donation->id)
                 ->update(['post_status' => 'trash']);
 
-            give(DonationTableSync::class)->sync($donation->id);
+            give(DonationTableSync::class)->updateStatus($donation->id, 'trash');
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -442,7 +478,7 @@ class DonationRepository
                 ->where('id', $donation->id)
                 ->update(['post_status' => $previousStatus]);
 
-            give(DonationTableSync::class)->sync($donation->id);
+            give(DonationTableSync::class)->updateStatus($donation->id, $previousStatus);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 

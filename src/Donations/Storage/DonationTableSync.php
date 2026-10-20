@@ -2,21 +2,25 @@
 
 namespace Give\Donations\Storage;
 
+use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Log\Log;
 use Throwable;
 
 /**
- * Keeps give_donations in step with the posts storage. Every write, whichever path made it, ends
- * in one call here: read the donation back from posts and meta, build the row, upsert it. One
- * mapping for the repository, the legacy listeners and the backfill means they cannot drift.
+ * Keeps give_donations in step with the posts storage. Two mappings produce a row and they must
+ * agree: rowFromModel() for the repository, which writes the row straight from the model inside
+ * its own transaction, and buildRow() for everything else, which reads the donation back from
+ * posts and meta and decodes it. The parity test in the storage suite pins the two together,
+ * and the daily drift check grades the stored rows against the posts-side decode in production.
  *
  * Legacy writes arrive as a burst of post and meta hooks, so listeners queue the donation ID and
- * the queue is flushed once at shutdown. Repository writes call sync() directly inside their
- * transaction, so a failed table write rolls the whole donation back.
+ * the queue is flushed once at shutdown.
  *
  * @since TBD
  */
@@ -94,6 +98,44 @@ class DonationTableSync
                 'error' => $exception->getMessage(),
             ]);
         }
+    }
+
+    /**
+     * Write a donation's row from the model. Used by the repository inside its transaction, so a
+     * failure here rolls the posts write back with it.
+     *
+     * @since TBD
+     */
+    public function write(Donation $donation, int $donationId): void
+    {
+        if (!$this->isEnabled()) {
+            return;
+        }
+
+        unset($this->queued[$donationId]);
+
+        $this->upsert([$this->rowFromModel($donation, $donationId)]);
+    }
+
+    /**
+     * Change only the status column, for trash and restore, which change only post_status.
+     *
+     * @since TBD
+     */
+    public function updateStatus(int $donationId, string $postStatus): void
+    {
+        if (!$this->isEnabled()) {
+            return;
+        }
+
+        [$status] = DonationStatusDecoder::decode($postStatus, 0, []);
+
+        DB::query(DB::prepare(
+            "UPDATE " . DB::prefix('give_donations') . " SET status = %s, updated_at = %s WHERE id = %d",
+            $status,
+            current_time('mysql', true),
+            $donationId
+        ));
     }
 
     /**
@@ -252,6 +294,54 @@ class DonationTableSync
     }
 
     /**
+     * The row for a donation as the model describes it. Column for column the same shape as
+     * buildRow(), so keep the two in step; the parity test fails when they are not.
+     *
+     * @since TBD
+     */
+    private function rowFromModel(Donation $donation, int $donationId): array
+    {
+        $currency = $donation->amount->getCurrency()->getCode();
+        $exchangeRate = $donation->exchangeRate ?? '';
+        $address = $donation->billingAddress;
+
+        return [
+            'id' => $donationId,
+            'donor_id' => (int)$donation->donorId,
+            'campaign_id' => $donation->campaignId ?: null,
+            'form_id' => $donation->formId ?: null,
+            'subscription_id' => $donation->subscriptionId ?: null,
+            'status' => $donation->status->isRenewal() ? DonationStatus::COMPLETE : $donation->status->getValue(),
+            'type' => $donation->type->getValue(),
+            'mode' => $donation->mode->getValue(),
+            'gateway_id' => (string)$donation->gatewayId,
+            'gateway_transaction_id' => $this->textValue($donation->gatewayTransactionId ?? null),
+            'amount_total' => (int)$donation->amount->formatToMinorAmount(),
+            'fee_amount_recovered' => $donation->feeAmountRecovered ? (int)$donation->feeAmountRecovered->formatToMinorAmount() : null,
+            'currency' => $currency,
+            'base_currency' => give_get_option('currency', 'USD'),
+            'exchange_rate' => is_numeric($exchangeRate) && $exchangeRate > 0 ? (string)$exchangeRate : '1',
+            'sequential_number' => give()->donations->getSequentialId($donationId),
+            'purchase_key' => $this->textValue($donation->purchaseKey ?? null),
+            'email' => (string)$donation->email,
+            'honorific' => $this->textValue($donation->honorific ?? null),
+            'first_name' => (string)$donation->firstName,
+            'last_name' => (string)$donation->lastName,
+            'phone' => $this->textValue($donation->phone ?? null),
+            'company' => $this->textValue($donation->company ?? null),
+            'billing_address1' => $this->textValue($address->address1 ?? null),
+            'billing_address2' => $this->textValue($address->address2 ?? null),
+            'billing_city' => $this->textValue($address->city ?? null),
+            'billing_state' => $this->textValue($address->state ?? null),
+            'billing_zip' => $this->textValue($address->zip ?? null),
+            'billing_country' => $this->textValue($address->country ?? null),
+            'anonymous' => (int)(bool)$donation->anonymous,
+            'created_at' => get_gmt_from_date(Temporal::getFormattedDateTime(Temporal::withoutMicroseconds($donation->createdAt))),
+            'updated_at' => get_gmt_from_date(Temporal::getFormattedDateTime(Temporal::withoutMicroseconds($donation->updatedAt))),
+        ];
+    }
+
+    /**
      * One INSERT ... ON DUPLICATE KEY UPDATE for every row. Generated columns are never listed.
      *
      * @since TBD
@@ -307,8 +397,18 @@ class DonationTableSync
      */
     private function text(array $meta, string $key): ?string
     {
-        $value = $meta[$key] ?? '';
+        return $this->textValue($meta[$key] ?? null);
+    }
 
+    /**
+     * Nullable text columns hold NULL, never an empty string, from either mapping.
+     *
+     * @since TBD
+     *
+     * @param mixed $value
+     */
+    private function textValue($value): ?string
+    {
         return $value === '' || $value === null ? null : (string)$value;
     }
 
