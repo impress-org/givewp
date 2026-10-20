@@ -5,6 +5,7 @@ namespace Give\Campaigns\Repositories;
 use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\Donations\Repositories\DonationTableRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -444,7 +445,7 @@ class CampaignRepository
             // The donations table is written with raw SQL here too, since this UPDATE bypasses the
             // repository and the meta hooks that normally keep it in step.
             DB::query(
-                DB::prepare("UPDATE " . DB::prefix('give_donations') . " SET campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
+                DB::prepare("UPDATE " . DB::prefix(DonationTableRepository::TABLE) . " SET campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
                     [
                         $destinationCampaign->id,
                     ])

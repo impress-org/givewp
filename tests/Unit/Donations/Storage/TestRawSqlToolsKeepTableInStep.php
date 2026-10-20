@@ -7,6 +7,7 @@ use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Migrations\CreateDonationsTable;
 use Give\Donations\Models\Donation;
+use Give\Donations\Repositories\DonationTableRepository;
 use Give\Donations\Storage\DonationStorageFlag;
 use Give\FormMigration\Actions\TransferDonations;
 use Give\Framework\Database\DB;
@@ -95,7 +96,7 @@ class TestRawSqlToolsKeepTableInStep extends TestCase
      */
     private function row(int $donationId)
     {
-        return DB::get_row(DB::prepare('SELECT * FROM ' . DB::prefix('give_donations') . ' WHERE id = %d', $donationId));
+        return DB::get_row(DB::prepare('SELECT * FROM ' . DB::prefix(DonationTableRepository::TABLE) . ' WHERE id = %d', $donationId));
     }
 
     /**
@@ -103,6 +104,6 @@ class TestRawSqlToolsKeepTableInStep extends TestCase
      */
     private function rowCount(): int
     {
-        return (int)DB::get_var('SELECT COUNT(*) FROM ' . DB::prefix('give_donations'));
+        return (int)DB::get_var('SELECT COUNT(*) FROM ' . DB::prefix(DonationTableRepository::TABLE));
     }
 }

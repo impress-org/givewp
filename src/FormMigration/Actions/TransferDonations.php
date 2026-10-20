@@ -3,6 +3,7 @@
 namespace Give\FormMigration\Actions;
 
 use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\Donations\Repositories\DonationTableRepository;
 use Give\Framework\Database\DB;
 
 class TransferDonations
@@ -42,7 +43,7 @@ class TransferDonations
                 ->update(['meta_value' => $destinationId]);
 
             // Bypasses the meta hooks, so the donations table is moved here too.
-            DB::table('give_donations')
+            DB::table(DonationTableRepository::TABLE)
                 ->where('form_id', $this->sourceId)
                 ->update(['form_id' => $destinationId]);
 
