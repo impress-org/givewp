@@ -69,6 +69,11 @@ class CreateDonationsTable extends Migration
         // reject the row under strict SQL mode and silently store 0 without it, so signed is the
         // only choice that keeps both storages equal.
         //
+        // sequential_number is a plain index, not UNIQUE, even though give_sequential_ordering makes
+        // it unique in practice. The sync upserts with ON DUPLICATE KEY UPDATE, and a second unique
+        // key would let a stale row that still carries a reused number be overwritten with another
+        // donation's data instead of that donation getting its own row.
+        //
         // Index prefixes on the two VARCHAR(255) columns keep each key under the 767-byte limit of
         // older InnoDB row formats under utf8mb4, the same reason WordPress core indexes
         // post_name(191).
@@ -108,7 +113,7 @@ class CreateDonationsTable extends Migration
             created_at DATETIME NOT NULL,
             updated_at DATETIME NOT NULL,
             PRIMARY KEY (id),
-            UNIQUE KEY sequential_number (sequential_number),
+            KEY sequential_number (sequential_number),
             KEY campaign_totals (status, mode, campaign_id, donor_id, amount_intended_base),
             KEY timeline_totals (status, mode, created_at, amount_intended_base),
             KEY donor_totals (donor_id, status, mode, created_at, amount_intended_base),
