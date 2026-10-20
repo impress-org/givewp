@@ -269,7 +269,7 @@ class DonationRepository
                 give()->payment_meta->add_meta($donationId, $metaKey, $metaValue);
             }
 
-            give(DonationTableSync::class)->write($donation);
+            give(DonationTableRepository::class)->insert($donation);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -359,7 +359,7 @@ class DonationRepository
                 }
             }
 
-            give(DonationTableSync::class)->write($donation);
+            give(DonationTableRepository::class)->update($donation);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -397,7 +397,7 @@ class DonationRepository
                 ->where('donation_id', $donation->id)
                 ->delete();
 
-            give(DonationTableSync::class)->delete($donation->id);
+            give(DonationTableRepository::class)->delete($donation);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -438,7 +438,7 @@ class DonationRepository
                 ->where('ID', $donation->id)
                 ->update(['post_status' => 'trash']);
 
-            give(DonationTableSync::class)->updateStatus($donation->id, 'trash');
+            give(DonationTableRepository::class)->trash($donation);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -479,7 +479,7 @@ class DonationRepository
                 ->where('id', $donation->id)
                 ->update(['post_status' => $previousStatus]);
 
-            give(DonationTableSync::class)->updateStatus($donation->id, $previousStatus);
+            give(DonationTableRepository::class)->restore($donation, new DonationStatus($previousStatus));
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 

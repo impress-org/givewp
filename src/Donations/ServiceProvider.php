@@ -28,6 +28,7 @@ use Give\Donations\Migrations\UnserializeTitlePrefix;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationNotesRepository;
 use Give\Donations\Repositories\DonationRepository;
+use Give\Donations\Repositories\DonationTableRepository;
 use Give\Donations\Storage\DonationTableSync;
 use Give\Donations\Storage\SyncPostsWritesToDonationTable;
 use Give\Framework\Migrations\MigrationsRegister;
@@ -47,6 +48,7 @@ class ServiceProvider implements ServiceProviderInterface
         $wpdb->give_donations = $wpdb->prefix . 'give_donations';
 
         give()->singleton('donations', DonationRepository::class);
+        give()->singleton(DonationTableRepository::class);
         give()->singleton(DonationTableSync::class);
         give()->singleton(SyncPostsWritesToDonationTable::class);
         give()->singleton('donationNotes', DonationNotesRepository::class);
