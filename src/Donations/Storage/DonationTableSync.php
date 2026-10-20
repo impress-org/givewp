@@ -106,15 +106,15 @@ class DonationTableSync
      *
      * @since TBD
      */
-    public function write(Donation $donation, int $donationId): void
+    public function write(Donation $donation): void
     {
         if (!$this->isEnabled()) {
             return;
         }
 
-        unset($this->queued[$donationId]);
+        unset($this->queued[$donation->id]);
 
-        $this->upsert([$this->rowFromModel($donation, $donationId)]);
+        $this->upsert([$this->rowFromModel($donation)]);
     }
 
     /**
@@ -299,8 +299,9 @@ class DonationTableSync
      *
      * @since TBD
      */
-    private function rowFromModel(Donation $donation, int $donationId): array
+    private function rowFromModel(Donation $donation): array
     {
+        $donationId = (int)$donation->id;
         $currency = $donation->amount->getCurrency()->getCode();
         $exchangeRate = $donation->exchangeRate ?? '';
         $address = $donation->billingAddress;
