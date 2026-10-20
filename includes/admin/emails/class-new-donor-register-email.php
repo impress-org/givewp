@@ -127,12 +127,14 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		/**
 		 * email preview header.
 		 *
+		 * @since TBD Return '' instead of null, so later give_email_preview_header callbacks get a string.
 		 * @since  2.0
 		 * @access public
 		 *
 		 * @param string                        $email_preview_header
 		 * @param Give_New_Donor_Register_Email $email
-		 * @return string
+		 *
+		 * @return string Unchanged header for other emails; '' for this one, which prints its own switcher.
 		 */
 		public function email_preview_header( $email_preview_header, $email ) {
 			// Bailout.
@@ -225,6 +227,8 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				<!-- Closing tag-->
 			</div>
 			<?php
+
+			return '';
 		}
 	}
 
