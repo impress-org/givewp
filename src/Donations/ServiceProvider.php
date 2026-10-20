@@ -28,6 +28,8 @@ use Give\Donations\Migrations\UnserializeTitlePrefix;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationNotesRepository;
 use Give\Donations\Repositories\DonationRepository;
+use Give\Donations\Storage\DonationTableSync;
+use Give\Donations\Storage\SyncPostsWritesToDonationTable;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -45,6 +47,7 @@ class ServiceProvider implements ServiceProviderInterface
         $wpdb->give_donations = $wpdb->prefix . 'give_donations';
 
         give()->singleton('donations', DonationRepository::class);
+        give()->singleton(DonationTableSync::class);
         give()->singleton('donationNotes', DonationNotesRepository::class);
         give()->singleton(DonationsListTable::class, function () {
             $listTable = new DonationsListTable();
@@ -61,6 +64,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         $this->bootListeners();
         $this->bootLegacyListeners();
+        $this->bootDonationTableSync();
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
         $this->loadDonationAdminOptions();
@@ -75,6 +79,26 @@ class ServiceProvider implements ServiceProviderInterface
             AddIndexesToDonationMetaTable::class,
             CreateDonationsTable::class,
         ]);
+    }
+
+    /**
+     * Legacy hooks on purpose: these are the only hooks that see Give_Payment::save(),
+     * give_insert_payment(), give_update_payment_status(), give_delete_donation() and add-on meta
+     * writes. The repository syncs its own writes inside its transaction. Both meta types are
+     * hooked because sites that never ran the 2.2 meta rename still fire *_payment_meta.
+     *
+     * @since TBD
+     */
+    private function bootDonationTableSync()
+    {
+        Hooks::addAction('save_post_give_payment', SyncPostsWritesToDonationTable::class, 'onSavePost');
+        Hooks::addAction('delete_post', SyncPostsWritesToDonationTable::class, 'onDeletePost');
+
+        foreach (['donation', 'payment'] as $metaType) {
+            foreach (['added', 'updated', 'deleted'] as $event) {
+                Hooks::addAction("{$event}_{$metaType}_meta", SyncPostsWritesToDonationTable::class, 'onMetaChange', 10, 2);
+            }
+        }
     }
 
     /**
