@@ -45,7 +45,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         global $wpdb;
 
-        $wpdb->give_donations = $wpdb->prefix . 'give_donations';
+        $wpdb->give_donations = $wpdb->prefix . DonationTableRepository::TABLE;
 
         give()->singleton('donations', DonationRepository::class);
         give()->singleton(DonationTableRepository::class);
