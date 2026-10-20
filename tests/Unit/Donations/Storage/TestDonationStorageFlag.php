@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\Tests\Unit\Donations;
+namespace Give\Tests\Unit\Donations\Storage;
 
-use Give\Donations\DonationStorageFlag;
+use Give\Donations\Storage\DonationStorageFlag;
 use Give\Donations\ValueObjects\DonationStorageMode;
 use Give\Tests\TestCase;
 use InvalidArgumentException;

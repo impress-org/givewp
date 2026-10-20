@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Donations;
+namespace Give\Donations\Storage;
 
 use Give\Donations\ValueObjects\DonationStorageMode;
 use InvalidArgumentException;
