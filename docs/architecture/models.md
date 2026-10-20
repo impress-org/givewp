@@ -124,7 +124,7 @@ Practically, for new work:
 Donations are stored as `give_payment` posts plus `give_donationmeta` rows. A purpose-built
 `give_donations` table now exists alongside them (`Give\Donations\Migrations\CreateDonationsTable`),
 created empty on upgrade. Nothing reads from it yet. Which storage is authoritative is recorded by
-`Give\Donations\DonationStorageFlag`, one option with three states: `posts` (the default for every
+`Give\Donations\Storage\DonationStorageFlag`, one option with three states: `posts` (the default for every
 site), `syncing` (the table is kept in step with the posts while the posts stay authoritative) and
 `table` (reads come from the table). The flag can move back from `table` to `syncing`, never to
 `posts`.
