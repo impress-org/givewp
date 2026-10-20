@@ -144,6 +144,18 @@ failure is logged, never thrown, and the daily drift check exists to catch it.
 `type` columns (`give_subscription` means complete + renewal; type comes from subscription meta
 and `post_parent`). The backfill must use it too.
 
+`DonationStorageDriftCheck` runs daily through Action Scheduler (`givewp_donation_storage_drift_check`)
+once the flag has left `posts`, and on demand with `wp give check-donation-storage`. It compares
+counts per mode, sums per mode and currency, IDs present on one side only, and per-row status,
+type, mode and amount, with up to 50 sample IDs each. The last report is stored in the
+`give_donation_storage_drift` option and logged as a warning when anything differs. It never
+corrects. Its SQL joins the lowest `meta_id` per key because legacy `add_meta()` is not unique
+and both `get_metadata()` and the sync take the first row.
+
+The `Donation Storage Parity` PHPUnit suite (`tests/Unit/Donations/Storage`) writes through
+every route above and asserts the row matches the decoded legacy state. It runs with the rest
+of the unit tests on every pull request.
+
 Two things about the table are deliberate and easy to undo by accident:
 
 - `id` is the legacy post ID with no `AUTO_INCREMENT`, so the two storages never grow separate ID

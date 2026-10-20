@@ -1,0 +1,117 @@
+<?php
+
+namespace Give\Tests\Unit\Donations\Storage;
+
+use Give\Donations\Migrations\CreateDonationsTable;
+use Give\Donations\Models\Donation;
+use Give\Donations\Storage\DonationStorageDriftCheck;
+use Give\Donations\Storage\DonationStorageFlag;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationType;
+use Give\Framework\Database\DB;
+use Give\Framework\Support\ValueObjects\Money;
+use Give\Subscriptions\Models\Subscription;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
+
+/**
+ * @since TBD
+ */
+class TestDonationStorageDriftCheck extends TestCase
+{
+    use RefreshDatabase;
+
+    /**
+     * @since TBD
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+        delete_option(DonationStorageFlag::OPTION);
+        delete_option(DonationStorageDriftCheck::OPTION);
+        (new CreateDonationsTable())->run();
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testStoragesInStepReportNoDrift()
+    {
+        Donation::factory()->create(['amount' => new Money(1500, 'USD'), 'status' => DonationStatus::COMPLETE()]);
+        Donation::factory()->create(['amount' => new Money(2500, 'EUR'), 'status' => DonationStatus::PENDING()]);
+        $subscription = Subscription::factory()->createWithDonation();
+        Donation::factory()->create([
+            'donorId' => $subscription->donorId,
+            'subscriptionId' => $subscription->id,
+            'type' => DonationType::RENEWAL(),
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+
+        $report = (new DonationStorageDriftCheck())->run();
+
+        $this->assertFalse($report['drift'], json_encode($report));
+        $this->assertSame(4, $report['counts']['test']['posts']);
+        $this->assertSame(4, $report['counts']['test']['table']);
+        $this->assertSame($report, get_option(DonationStorageDriftCheck::OPTION));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testStatusChangedBehindTheSyncIsReported()
+    {
+        $donation = Donation::factory()->create(['status' => DonationStatus::PENDING()]);
+
+        DB::table('posts')->where('ID', $donation->id)->update(['post_status' => 'publish']);
+
+        $report = (new DonationStorageDriftCheck())->run();
+
+        $this->assertTrue($report['drift']);
+        $this->assertSame(1, $report['status']['count']);
+        $this->assertSame([$donation->id], $report['status']['sampleIds']);
+        $this->assertSame(0, $report['amount']['count']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testAmountChangedBehindTheSyncIsReported()
+    {
+        $donation = Donation::factory()->create(['amount' => new Money(1000, 'USD')]);
+
+        DB::table('give_donationmeta')
+            ->where('donation_id', $donation->id)
+            ->where('meta_key', DonationMetaKeys::AMOUNT)
+            ->update(['meta_value' => '12.00']);
+
+        $report = (new DonationStorageDriftCheck())->run();
+
+        $this->assertTrue($report['drift']);
+        $this->assertSame([$donation->id], $report['amount']['sampleIds']);
+        $this->assertSame(1200, $report['sums'][0]['posts']);
+        $this->assertSame(1000, $report['sums'][0]['table']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testRowsMissingFromEitherSideAreReported()
+    {
+        $kept = Donation::factory()->create();
+        $removedFromTable = Donation::factory()->create();
+        $removedFromPosts = Donation::factory()->create();
+
+        DB::table('give_donations')->where('id', $removedFromTable->id)->delete();
+        DB::table('posts')->where('ID', $removedFromPosts->id)->delete();
+
+        $report = (new DonationStorageDriftCheck())->run();
+
+        $this->assertTrue($report['drift']);
+        $this->assertSame([$removedFromTable->id], $report['missingFromTable']['sampleIds']);
+        $this->assertSame([$removedFromPosts->id], $report['missingFromPosts']['sampleIds']);
+        $this->assertSame(2, $report['counts']['test']['posts']);
+        $this->assertSame(2, $report['counts']['test']['table']);
+        $this->assertNotContains($kept->id, $report['missingFromTable']['sampleIds']);
+    }
+}
