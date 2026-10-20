@@ -67,6 +67,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
+	 * @since TBD Delete the give_donations table rows as well.
 	 * @since 4.10.0 Added deletion logic for campaigns, campaign pages, subscriptions, events, logs, revenue, usermeta, etc.
 	 * @since  1.5
 	 * @global object $wpdb Used to query the database using the WordPress
@@ -141,6 +142,9 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 						// Delete all the meta rows of donation exists in donation meta table.
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_donationmeta";
+
+						// Delete the donations table rows, which no hook keeps in step with the deletes above.
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_donations";
 
 						// Delete all the Give related sequential ordering entries for donations.
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_sequential_ordering WHERE payment_id IN ($ids)";
