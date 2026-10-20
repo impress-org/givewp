@@ -52,6 +52,7 @@
 .lintstagedrc.json
 .distignore
 .stylelintignore
+.coderabbit.yaml
 jsconfig.json
 globals.d.ts
 tsconfig.json
