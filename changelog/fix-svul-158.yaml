@@ -1,0 +1,5 @@
+significance: patch
+type: security
+entry: Added additional validation to donation form template appearance
+  settings. Thanks Karthik Ramakrishnan for responsibly disclosing this issue.
+timestamp: 2026-10-20T13:36:38.679Z
