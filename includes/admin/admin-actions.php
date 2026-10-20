@@ -965,6 +965,7 @@ add_action( 'wp_ajax_give_subscription_import', 'give_subscription_import_callba
  * Load core settings import ajax callback
  * Fire when importing from JSON start
  *
+ * @since TBD Require a valid JSON array before replacing the stored settings.
  * @since  1.8.17
  */
 
@@ -1003,32 +1004,36 @@ function give_core_settings_import_callback() {
 		$json_string   = give_get_core_settings_json( $file_name );
 		$json_to_array = json_decode( $json_string, true );
 
-		// get the current setting from the options table.
-		$host_give_options = Give_Cache_Setting::get_settings();
+		if ( ! is_array( $json_to_array ) ) {
+			Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid JSON file.', 'give' ) );
+		} else {
+			// get the current setting from the options table.
+			$host_give_options = Give_Cache_Setting::get_settings();
 
-		// Save old settins for backup.
-		update_option( 'give_settings_old', $host_give_options, false );
+			// Save old settins for backup.
+			update_option( 'give_settings_old', $host_give_options, false );
 
-		/**
-		 * Filter to Modify Core Settings that are being going to get import in options table as give settings.
-		 *
-		 * @access public
-		 *
-		 * @since  1.8.17
-		 *
-		 * @param array $type Type of Import
-		 * @param array $host_give_options Setting old setting that used to be in the options table.
-		 * @param array $fields Data that is being send from the ajax
-		 *
-		 * @param array $json_to_array Setting that are being going to get imported
-		 *
-		 * @return array $json_to_array Setting that are being going to get imported
-		 */
-		$json_to_array = (array) apply_filters( 'give_import_core_settings_data', $json_to_array, $type, $host_give_options, $fields );
+			/**
+			 * Filter to Modify Core Settings that are being going to get import in options table as give settings.
+			 *
+			 * @access public
+			 *
+			 * @since  1.8.17
+			 *
+			 * @param array $type Type of Import
+			 * @param array $host_give_options Setting old setting that used to be in the options table.
+			 * @param array $fields Data that is being send from the ajax
+			 *
+			 * @param array $json_to_array Setting that are being going to get imported
+			 *
+			 * @return array $json_to_array Setting that are being going to get imported
+			 */
+			$json_to_array = (array) apply_filters( 'give_import_core_settings_data', $json_to_array, $type, $host_give_options, $fields );
 
-		update_option( 'give_settings', $json_to_array, false );
+			update_option( 'give_settings', $json_to_array, false );
 
-		$json_data['success'] = true;
+			$json_data['success'] = true;
+		}
 	}
 
 	$json_data['percentage'] = 100;

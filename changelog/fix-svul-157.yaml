@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Improved validation of the core settings import.
+timestamp: 2026-10-20T18:23:15.848Z
