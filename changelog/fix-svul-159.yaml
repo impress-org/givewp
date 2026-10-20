@@ -1,0 +1,6 @@
+significance: patch
+type: security
+entry: Determine the page being edited from the current request context before
+  granting page capabilities. Thanks Karthik Ramakrishnan for responsibly
+  disclosing this issue.
+timestamp: 2026-10-20T20:40:58.057Z

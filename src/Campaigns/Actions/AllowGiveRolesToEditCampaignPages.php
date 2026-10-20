@@ -27,6 +27,20 @@ class AllowGiveRolesToEditCampaignPages
     private static array $campaignPageCache = [];
 
     /**
+     * Resolved post ID for the current request.
+     *
+     * @var int|null
+     */
+    private static ?int $editingPostId = null;
+
+    /**
+     * Whether the current request's post ID has already been resolved.
+     *
+     * @var bool
+     */
+    private static bool $editingPostIdResolved = false;
+
+    /**
      * Filter meta capabilities for campaign pages.
      *
      * Hooked to 'map_meta_cap' filter.
@@ -69,6 +83,7 @@ class AllowGiveRolesToEditCampaignPages
      *
      * Hooked to 'user_has_cap' filter.
      *
+     * @since TBD Grant page capabilities based on the page actually being edited.
      * @since 4.14.0
      */
     public function grantPublishCapability(array $allcaps, array $caps, array $args, WP_User $user): array
@@ -147,44 +162,37 @@ class AllowGiveRolesToEditCampaignPages
     }
 
     /**
-     * Get the post ID currently being edited (with static caching).
+     * Get the post ID currently being edited.
      *
+     * The ID is resolved from the REST route or the global $post, matching the
+     * page the current request or screen is actually operating on. Only a
+     * resolved ID is cached, so the grant is not locked out when an early
+     * capability check runs before the edit context exists.
+     *
+     * @since TBD Resolve the edited page from the request context instead of the query string, caching only resolved IDs.
      * @since 4.14.0
      */
     private function getCurrentEditingPostId(): ?int
     {
-        static $cachedPostId = null;
-        static $checked = false;
-
-        if ($checked) {
-            return $cachedPostId;
-        }
-        $checked = true;
-
-        // Check for post ID in query string (standard edit screen)
-        if (!empty($_GET['post'])) {
-            $cachedPostId = (int)$_GET['post'];
-            return $cachedPostId;
+        if (self::$editingPostIdResolved) {
+            return self::$editingPostId;
         }
 
-        // Check REST API for post ID (query param or route)
+        // Check REST API route for the post ID
         if (wp_is_serving_rest_request()) {
-            if (!empty($_GET['post_id'])) {
-                $cachedPostId = (int)$_GET['post_id'];
-                return $cachedPostId;
-            }
-
-            $cachedPostId = $this->getPostIdFromRestRoute();
-            if ($cachedPostId) {
-                return $cachedPostId;
+            self::$editingPostId = $this->getPostIdFromRestRoute();
+            if (self::$editingPostId) {
+                self::$editingPostIdResolved = true;
+                return self::$editingPostId;
             }
         }
 
         // Check global $post
         global $post;
         if ($post instanceof \WP_Post) {
-            $cachedPostId = $post->ID;
-            return $cachedPostId;
+            self::$editingPostId = $post->ID;
+            self::$editingPostIdResolved = true;
+            return self::$editingPostId;
         }
 
         return null;
