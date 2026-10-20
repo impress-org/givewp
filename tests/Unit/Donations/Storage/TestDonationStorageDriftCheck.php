@@ -157,6 +157,31 @@ class TestDonationStorageDriftCheck extends TestCase
     }
 
     /**
+     * Legacy amounts with more precision than the currency are rounded per donation on both
+     * sides, so the sums agree whenever every row agrees.
+     *
+     * @since TBD
+     */
+    public function testSumsRoundEachDonationLikeTheSync()
+    {
+        $donations = Donation::factory()->count(3)->create();
+
+        foreach ($donations as $donation) {
+            DB::table('give_donationmeta')
+                ->where('donation_id', $donation->id)
+                ->where('meta_key', DonationMetaKeys::AMOUNT)
+                ->update(['meta_value' => '10.005']);
+        }
+        give(DonationTableSync::class)->sync(...array_column($donations, 'id'));
+
+        $report = (new DonationStorageDriftCheck())->run();
+
+        $this->assertFalse($report['drift'], json_encode($report));
+        $this->assertSame(3003, $report['sums'][0]['posts']);
+        $this->assertSame(3003, $report['sums'][0]['table']);
+    }
+
+    /**
      * Legacy add_meta() is not unique. A duplicated key must read like get_metadata() does, first
      * row wins, and never count as drift or double a sum.
      *

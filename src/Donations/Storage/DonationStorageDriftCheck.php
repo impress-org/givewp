@@ -131,27 +131,28 @@ class DonationStorageDriftCheck
     {
         global $wpdb;
 
-        $siteCurrency = give_get_option('currency', 'USD');
+        $currency = DB::prepare("IFNULL(NULLIF(currency.meta_value, ''), %s)", give_get_option('currency', 'USD'));
         $sums = [];
 
-        $posts = DB::get_results(DB::prepare(
+        // Each donation is rounded to minor units before summing, as the sync rounds each row, so
+        // sub-minor-unit legacy amounts cannot make the sums disagree while every row agrees.
+        $posts = DB::get_results(
             "SELECT {$this->modeExpression('mode')} AS mode,
-                    IFNULL(NULLIF(currency.meta_value, ''), %s) AS currency,
-                    SUM(CAST(IFNULL(NULLIF(total.meta_value, ''), '0') AS DECIMAL(20, 10))) AS total
+                    {$currency} AS currency,
+                    SUM({$this->minorUnits('total', $currency)}) AS total
              FROM {$wpdb->posts} p
              LEFT JOIN {$this->meta('mode', DonationMetaKeys::MODE)}
              LEFT JOIN {$this->meta('currency', DonationMetaKeys::CURRENCY)}
              LEFT JOIN {$this->meta('total', DonationMetaKeys::AMOUNT)}
              WHERE p.post_type = 'give_payment'
-             GROUP BY 1, 2",
-            $siteCurrency
-        ));
+             GROUP BY 1, 2"
+        );
 
         foreach ($posts as $row) {
             $sums["{$row->mode}:{$row->currency}"] = [
                 'mode' => $row->mode,
                 'currency' => $row->currency,
-                'posts' => (int)Money::fromDecimal(rtrim(rtrim($row->total, '0'), '.') ?: '0', $row->currency)->formatToMinorAmount(),
+                'posts' => (int)$row->total,
                 'table' => 0,
             ];
         }
@@ -218,7 +219,7 @@ class DonationStorageDriftCheck
             WHEN IFNULL(subscription.meta_value, '') NOT IN ('', '0') THEN 'renewal'
             ELSE 'single' END)";
         $mode = "(d.mode <> {$this->modeExpression('mode')})";
-        $amount = "(d.amount_total <> ROUND(CAST(IFNULL(NULLIF(total.meta_value, ''), '0') AS DECIMAL(20, 10)) * {$this->minorUnitsPerMajor()}))";
+        $amount = "(d.amount_total <> {$this->minorUnits('total', 'd.currency')})";
 
         $from = "FROM {$this->table()} d
              INNER JOIN {$wpdb->posts} p ON p.ID = d.id AND p.post_type = 'give_payment'
@@ -303,21 +304,24 @@ class DonationStorageDriftCheck
     }
 
     /**
-     * @since TBD
+     * The legacy decimal amount in the joined meta alias, rounded to minor units of the currency
+     * the given expression yields: the same conversion as the sync's Money::fromDecimal().
      *
-     * A CASE over every currency in the table giving its minor units per major unit, so the
-     * amount comparison uses the same conversion as the sync's Money::fromDecimal().
+     * @since TBD
      */
-    private function minorUnitsPerMajor(): string
+    private function minorUnits(string $amountAlias, string $currencyExpression): string
     {
-        global $wpdb;
+        $currencies = array_unique(array_merge(
+            [give_get_option('currency', 'USD')],
+            DB::get_col("SELECT DISTINCT currency FROM {$this->table()}")
+        ));
 
         $cases = '';
 
-        foreach (DB::get_col("SELECT DISTINCT currency FROM {$this->table()}") as $currency) {
+        foreach ($currencies as $currency) {
             $cases .= DB::prepare(' WHEN %s THEN %d', $currency, Money::fromDecimal('1', $currency)->formatToMinorAmount());
         }
 
-        return $cases ? "(CASE d.currency{$cases} ELSE 100 END)" : '100';
+        return "ROUND(CAST(IFNULL(NULLIF({$amountAlias}.meta_value, ''), '0') AS DECIMAL(20, 10)) * (CASE {$currencyExpression}{$cases} ELSE 100 END))";
     }
 }
