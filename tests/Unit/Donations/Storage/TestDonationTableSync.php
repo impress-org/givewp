@@ -5,6 +5,7 @@ namespace Give\Tests\Unit\Donations\Storage;
 use Give\Donations\Migrations\CreateDonationsTable;
 use Give\Donations\Models\Donation;
 use Give\Donations\Properties\BillingAddress;
+use Give\Donations\Repositories\DonationTableRepository;
 use Give\Donations\Storage\DonationStorageFlag;
 use Give\Donations\Storage\DonationTableSync;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -227,7 +228,7 @@ class TestDonationTableSync extends TestCase
             $sync->queue($donation->id);
         }
 
-        $this->assertSame(DonationTableSync::FLUSH_THRESHOLD, (int)DB::get_var('SELECT COUNT(*) FROM ' . DB::prefix('give_donations')));
+        $this->assertSame(DonationTableSync::FLUSH_THRESHOLD, (int)DB::get_var('SELECT COUNT(*) FROM ' . DB::prefix(DonationTableRepository::TABLE)));
     }
 
     /**
@@ -247,6 +248,6 @@ class TestDonationTableSync extends TestCase
      */
     private function row(int $donationId)
     {
-        return DB::get_row(DB::prepare('SELECT * FROM ' . DB::prefix('give_donations') . ' WHERE id = %d', $donationId));
+        return DB::get_row(DB::prepare('SELECT * FROM ' . DB::prefix(DonationTableRepository::TABLE) . ' WHERE id = %d', $donationId));
     }
 }

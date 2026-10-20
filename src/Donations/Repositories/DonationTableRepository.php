@@ -21,6 +21,14 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 class DonationTableRepository
 {
     /**
+     * The table name without the site prefix. Resolve it with DB::prefix() at the point of use;
+     * a cached, prefixed name goes stale when a multisite request switches blogs.
+     *
+     * @since TBD
+     */
+    const TABLE = 'give_donations';
+
+    /**
      * One or many: the sync and the backfill insert a chunk of donations in one statement.
      *
      * @since TBD
@@ -74,7 +82,7 @@ class DonationTableRepository
             return;
         }
 
-        DB::query(DB::prepare("DELETE FROM " . DB::prefix('give_donations') . " WHERE id = %d", $donation->id));
+        DB::query(DB::prepare("DELETE FROM " . DB::prefix(self::TABLE) . " WHERE id = %d", $donation->id));
     }
 
     /**
@@ -96,7 +104,7 @@ class DonationTableRepository
         }, $rows);
 
         DB::query(
-            "INSERT INTO " . DB::prefix('give_donations') . " ({$columnList}) VALUES " . implode(', ', $values) .
+            "INSERT INTO " . DB::prefix(self::TABLE) . " ({$columnList}) VALUES " . implode(', ', $values) .
             " ON DUPLICATE KEY UPDATE {$updates}"
         );
     }
@@ -114,7 +122,7 @@ class DonationTableRepository
         }
 
         DB::query(DB::prepare(
-            "UPDATE " . DB::prefix('give_donations') . " SET status = %s, updated_at = %s WHERE id = %d",
+            "UPDATE " . DB::prefix(self::TABLE) . " SET status = %s, updated_at = %s WHERE id = %d",
             $status->isRenewal() ? DonationStatus::COMPLETE : $status->getValue(),
             current_time('mysql', true),
             $donationId
