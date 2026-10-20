@@ -109,6 +109,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Get list of donors.
      *
+     * @since TBD Exclude anonymous donors when the with-donations filter is disabled.
      * @since 4.14.0 Use Headers::addPagination() helper for pagination headers
      * @since 4.8.0 Add support for search parameter
      * @since 4.0.0
@@ -138,6 +139,8 @@ class DonorController extends WP_REST_Controller
             $mode = $request->get_param('mode');
             $campaignId = $request->get_param('campaignId');
             $query->whereDonorsHaveDonations($mode, $campaignId, $donorAnonymousMode->isExcluded());
+        } elseif ($donorAnonymousMode->isExcluded()) {
+            $query->whereDonorsAreNotAnonymous();
         }
 
         $totalQuery = $query->clone();
