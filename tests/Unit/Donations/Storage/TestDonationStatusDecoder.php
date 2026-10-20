@@ -29,7 +29,7 @@ class TestDonationStatusDecoder extends TestCase
             'single' => ['publish', 0, [], ['publish', 'single']],
             'legacy renewal status' => ['give_subscription', 12, [DonationMetaKeys::SUBSCRIPTION_ID => 3], ['publish', 'renewal']],
             'initial donation by flag' => ['publish', 0, [DonationMetaKeys::SUBSCRIPTION_ID => 3, DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION => '1'], ['publish', 'subscription']],
-            'initial donation by parent' => ['pending', 0, [DonationMetaKeys::SUBSCRIPTION_ID => 3], ['pending', 'subscription']],
+            'renewal without a parent' => ['pending', 0, [DonationMetaKeys::SUBSCRIPTION_ID => 3], ['pending', 'renewal']],
             'pending renewal' => ['pending', 12, [DonationMetaKeys::SUBSCRIPTION_ID => 3], ['pending', 'renewal']],
             'trashed keeps trash' => ['trash', 12, [DonationMetaKeys::SUBSCRIPTION_ID => 3], ['trash', 'renewal']],
         ];
