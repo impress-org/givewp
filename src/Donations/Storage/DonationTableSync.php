@@ -2,25 +2,24 @@
 
 namespace Give\Donations\Storage;
 
-use Give\Donations\Models\Donation;
+use Give\Donations\Repositories\DonationTableRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
-use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
-use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Log\Log;
 use Throwable;
 
 /**
- * Keeps give_donations in step with the posts storage. Two mappings produce a row and they must
- * agree: rowFromModel() for the repository, which writes the row straight from the model inside
- * its own transaction, and buildRow() for everything else, which reads the donation back from
- * posts and meta and decodes it. The parity test in the storage suite pins the two together,
- * and the daily drift check grades the stored rows against the posts-side decode in production.
+ * Keeps give_donations in step with writes that did not go through the repository: reads the
+ * donation back from posts and meta, decodes it, and upserts the row through
+ * DonationTableRepository. The repository itself writes rows from the model; buildRow() here
+ * must produce the same row, and the parity test in the storage suite fails when it does not.
+ * The daily drift check grades stored rows against this decode in production.
  *
  * Legacy writes arrive as a burst of post and meta hooks, so listeners queue the donation ID and
- * the queue is flushed once at shutdown.
+ * the queue is flushed once at shutdown. This class, the legacy listeners and the decoder are
+ * the temporary half of the design and go away when the posts storage is retired.
  *
  * @since TBD
  */
@@ -101,44 +100,6 @@ class DonationTableSync
     }
 
     /**
-     * Write a donation's row from the model. Used by the repository inside its transaction, so a
-     * failure here rolls the posts write back with it.
-     *
-     * @since TBD
-     */
-    public function write(Donation $donation): void
-    {
-        if (!$this->isEnabled()) {
-            return;
-        }
-
-        unset($this->queued[$donation->id]);
-
-        $this->upsert([$this->rowFromModel($donation)]);
-    }
-
-    /**
-     * Change only the status column, for trash and restore, which change only post_status.
-     *
-     * @since TBD
-     */
-    public function updateStatus(int $donationId, string $postStatus): void
-    {
-        if (!$this->isEnabled()) {
-            return;
-        }
-
-        [$status] = DonationStatusDecoder::decode($postStatus, 0, []);
-
-        DB::query(DB::prepare(
-            "UPDATE " . DB::prefix('give_donations') . " SET status = %s, updated_at = %s WHERE id = %d",
-            $status,
-            current_time('mysql', true),
-            $donationId
-        ));
-    }
-
-    /**
      * Upsert the given donations from posts storage. Donations that no longer exist as
      * give_payment posts are removed from the table.
      *
@@ -167,7 +128,7 @@ class DonationTableSync
             }
 
             if ($rows) {
-                $this->upsert(array_values($rows));
+                give(DonationTableRepository::class)->upsertRows(array_values($rows));
             }
         }
     }
@@ -177,15 +138,7 @@ class DonationTableSync
      */
     public function delete(int ...$donationIds): void
     {
-        if (!$donationIds || !$this->isEnabled()) {
-            return;
-        }
-
-        global $wpdb;
-
-        $in = implode(',', array_map('intval', $donationIds));
-
-        DB::query("DELETE FROM " . DB::prefix('give_donations') . " WHERE id IN ({$in})");
+        give(DonationTableRepository::class)->deleteByIds(...$donationIds);
     }
 
     /**
@@ -294,98 +247,6 @@ class DonationTableSync
     }
 
     /**
-     * The row for a donation as the model describes it. Column for column the same shape as
-     * buildRow(), so keep the two in step; the parity test fails when they are not.
-     *
-     * @since TBD
-     */
-    private function rowFromModel(Donation $donation): array
-    {
-        $donationId = (int)$donation->id;
-        $currency = $donation->amount->getCurrency()->getCode();
-        $exchangeRate = $donation->exchangeRate ?? '';
-        $address = $donation->billingAddress;
-
-        return [
-            'id' => $donationId,
-            'donor_id' => (int)$donation->donorId,
-            'campaign_id' => $donation->campaignId ?: null,
-            'form_id' => $donation->formId ?: null,
-            'subscription_id' => $donation->subscriptionId ?: null,
-            'status' => $donation->status->isRenewal() ? DonationStatus::COMPLETE : $donation->status->getValue(),
-            'type' => $donation->type->getValue(),
-            'mode' => $donation->mode->getValue(),
-            'gateway_id' => (string)$donation->gatewayId,
-            'gateway_transaction_id' => $this->textValue($donation->gatewayTransactionId ?? null),
-            'amount_total' => (int)$donation->amount->formatToMinorAmount(),
-            'fee_amount_recovered' => $donation->feeAmountRecovered ? (int)$donation->feeAmountRecovered->formatToMinorAmount() : null,
-            'currency' => $currency,
-            'base_currency' => give_get_option('currency', 'USD'),
-            'exchange_rate' => is_numeric($exchangeRate) && $exchangeRate > 0 ? (string)$exchangeRate : '1',
-            'sequential_number' => give()->donations->getSequentialId($donationId),
-            'purchase_key' => $this->textValue($donation->purchaseKey ?? null),
-            'email' => (string)$donation->email,
-            'honorific' => $this->textValue($donation->honorific ?? null),
-            'first_name' => (string)$donation->firstName,
-            'last_name' => (string)$donation->lastName,
-            'phone' => $this->textValue($donation->phone ?? null),
-            'company' => $this->textValue($donation->company ?? null),
-            'billing_address1' => $this->textValue($address->address1 ?? null),
-            'billing_address2' => $this->textValue($address->address2 ?? null),
-            'billing_city' => $this->textValue($address->city ?? null),
-            'billing_state' => $this->textValue($address->state ?? null),
-            'billing_zip' => $this->textValue($address->zip ?? null),
-            'billing_country' => $this->textValue($address->country ?? null),
-            'anonymous' => (int)(bool)$donation->anonymous,
-            'created_at' => get_gmt_from_date(Temporal::getFormattedDateTime(Temporal::withoutMicroseconds($donation->createdAt))),
-            'updated_at' => get_gmt_from_date(Temporal::getFormattedDateTime(Temporal::withoutMicroseconds($donation->updatedAt))),
-        ];
-    }
-
-    /**
-     * One INSERT ... ON DUPLICATE KEY UPDATE for every row. Generated columns are never listed.
-     *
-     * @since TBD
-     */
-    private function upsert(array $rows): void
-    {
-        global $wpdb;
-
-        $columns = array_keys($rows[0]);
-        $columnList = implode(', ', $columns);
-        $updates = implode(', ', array_map(static function ($column) {
-            return "{$column} = VALUES({$column})";
-        }, array_diff($columns, ['id'])));
-
-        $values = array_map(function (array $row) {
-            return '(' . implode(', ', array_map([$this, 'literal'], $row)) . ')';
-        }, $rows);
-
-        DB::query(
-            "INSERT INTO " . DB::prefix('give_donations') . " ({$columnList}) VALUES " . implode(', ', $values) .
-            " ON DUPLICATE KEY UPDATE {$updates}"
-        );
-    }
-
-    /**
-     * @since TBD
-     *
-     * @param mixed $value
-     */
-    private function literal($value): string
-    {
-        if ($value === null) {
-            return 'NULL';
-        }
-
-        if (is_int($value)) {
-            return (string)$value;
-        }
-
-        return DB::prepare('%s', $value);
-    }
-
-    /**
      * @since TBD
      */
     private function minorUnits(string $decimal, string $currency): int
@@ -398,18 +259,8 @@ class DonationTableSync
      */
     private function text(array $meta, string $key): ?string
     {
-        return $this->textValue($meta[$key] ?? null);
-    }
+        $value = $meta[$key] ?? '';
 
-    /**
-     * Nullable text columns hold NULL, never an empty string, from either mapping.
-     *
-     * @since TBD
-     *
-     * @param mixed $value
-     */
-    private function textValue($value): ?string
-    {
         return $value === '' || $value === null ? null : (string)$value;
     }
 
