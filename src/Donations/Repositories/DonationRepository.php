@@ -32,24 +32,6 @@ class DonationRepository
      */
     public $notes;
 
-        /**
-     * Meta keys that getCoreDonationMetaForDatabase() only emits while the model holds a value.
-     *
-     * @since TBD
-     */
-    private $clearableMetaKeys = [
-        DonationMetaKeys::FEE_AMOUNT_RECOVERED,
-        DonationMetaKeys::HONORIFIC,
-        DonationMetaKeys::COMPANY,
-        DonationMetaKeys::COMMENT,
-        DonationMetaKeys::BILLING_ADDRESS1,
-        DonationMetaKeys::BILLING_ADDRESS2,
-        DonationMetaKeys::BILLING_CITY,
-        DonationMetaKeys::BILLING_STATE,
-        DonationMetaKeys::BILLING_ZIP,
-        DonationMetaKeys::BILLING_COUNTRY,
-    ];
-
 /**
      * @since 2.21.0
      */
@@ -266,7 +248,9 @@ class DonationRepository
             $donationMeta = $this->getCoreDonationMetaForDatabase($donation);
 
             foreach ($donationMeta as $metaKey => $metaValue) {
-                give()->payment_meta->add_meta($donationId, $metaKey, $metaValue);
+                if ($metaValue !== null) {
+                    give()->payment_meta->add_meta($donationId, $metaKey, $metaValue);
+                }
             }
 
             give(DonationTableRepository::class)->insert($donation);
@@ -296,7 +280,7 @@ class DonationRepository
     }
 
     /**
-     * @since TBD Write the give_donations row from the model inside the same transaction, and remove the meta of optional fields the model has cleared.
+     * @since TBD Write the give_donations row from the model inside the same transaction, and remove the meta of optional fields the model has cleared (a null in the meta array).
      * @since 4.19.0 Refresh the form title when the donation moves to another form
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.6.0 Turn createdAt property updatable
@@ -344,18 +328,12 @@ class DonationRepository
                     'post_parent' => $this->deriveLegacyDonationParentId($donation),
                 ]);
 
-            $donationMeta = $this->getCoreDonationMetaForDatabase($donation);
-
-            foreach ($donationMeta as $metaKey => $metaValue) {
-                give()->payment_meta->update_meta($donation->id, $metaKey, $metaValue);
-            }
-
-            // Optional fields cleared on the model are only present in the meta array while they
-            // have a value, so their meta rows are removed here. Otherwise the stored donation
-            // keeps a fee, company or address the model no longer has.
-            foreach ($this->clearableMetaKeys as $metaKey) {
-                if (!array_key_exists($metaKey, $donationMeta)) {
+            // A null value means the model no longer has the field, so its meta row goes too.
+            foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
+                if ($metaValue === null) {
                     give()->payment_meta->delete_meta($donation->id, $metaKey);
+                } else {
+                    give()->payment_meta->update_meta($donation->id, $metaKey, $metaValue);
                 }
             }
 
@@ -496,6 +474,7 @@ class DonationRepository
     }
 
     /**
+     * @since TBD Optional fields are always listed, null when the model has none.
      * @since 4.8.1 Consolidated campaignId assignment logic from insert method to eliminate duplication and ensure donation model is updated.
      * @since 4.0.0 added campaignId
      * @since 3.9.0 Added meta for phone property
@@ -541,18 +520,18 @@ class DonationRepository
             $meta[DonationMetaKeys::CAMPAIGN_ID] = $donation->campaignId;
         }
 
-        if ($donation->feeAmountRecovered !== null) {
-            $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = $donation->feeAmountRecovered->formatToDecimal();
-        }
-
-        if ($donation->billingAddress !== null) {
-            $meta[DonationMetaKeys::BILLING_COUNTRY] = $donation->billingAddress->country;
-            $meta[DonationMetaKeys::BILLING_ADDRESS2] = $donation->billingAddress->address2;
-            $meta[DonationMetaKeys::BILLING_CITY] = $donation->billingAddress->city;
-            $meta[DonationMetaKeys::BILLING_ADDRESS1] = $donation->billingAddress->address1;
-            $meta[DonationMetaKeys::BILLING_STATE] = $donation->billingAddress->state;
-            $meta[DonationMetaKeys::BILLING_ZIP] = $donation->billingAddress->zip;
-        }
+        // Optional fields are always listed, null when the model has none, so insert() can skip
+        // them and update() can remove them.
+        $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = $donation->feeAmountRecovered ? $donation->feeAmountRecovered->formatToDecimal() : null;
+        $meta[DonationMetaKeys::COMPANY] = $donation->company;
+        $meta[DonationMetaKeys::COMMENT] = $donation->comment;
+        $meta[DonationMetaKeys::HONORIFIC] = $donation->honorific;
+        $meta[DonationMetaKeys::BILLING_COUNTRY] = $donation->billingAddress->country ?? null;
+        $meta[DonationMetaKeys::BILLING_ADDRESS2] = $donation->billingAddress->address2 ?? null;
+        $meta[DonationMetaKeys::BILLING_CITY] = $donation->billingAddress->city ?? null;
+        $meta[DonationMetaKeys::BILLING_ADDRESS1] = $donation->billingAddress->address1 ?? null;
+        $meta[DonationMetaKeys::BILLING_STATE] = $donation->billingAddress->state ?? null;
+        $meta[DonationMetaKeys::BILLING_ZIP] = $donation->billingAddress->zip ?? null;
 
         if (isset($donation->subscriptionId)) {
             $meta[DonationMetaKeys::SUBSCRIPTION_ID] = $donation->subscriptionId;
@@ -561,18 +540,6 @@ class DonationRepository
         if ($donation->type->isSubscription()) {
             $meta[DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION] = 1;
             $meta[DonationMetaKeys::IS_RECURRING] = 1;
-        }
-
-        if ($donation->company !== null) {
-            $meta[DonationMetaKeys::COMPANY] = $donation->company;
-        }
-
-        if ($donation->comment !== null) {
-            $meta[DonationMetaKeys::COMMENT] = $donation->comment;
-        }
-
-        if ($donation->honorific !== null) {
-            $meta[DonationMetaKeys::HONORIFIC] = $donation->honorific;
         }
 
         return $meta;
