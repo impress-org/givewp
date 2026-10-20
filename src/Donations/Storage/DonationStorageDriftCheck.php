@@ -214,8 +214,9 @@ class DonationStorageDriftCheck
         $status = "(CASE WHEN d.status = 'publish' AND d.type = 'renewal' THEN 'give_subscription' ELSE d.status END <> p.post_status)";
         $type = "(d.type <> CASE
             WHEN p.post_status = 'give_subscription' THEN 'renewal'
+            WHEN IFNULL(initial.meta_value, '') NOT IN ('', '0') THEN 'subscription'
             WHEN IFNULL(subscription.meta_value, '') IN ('', '0') THEN 'single'
-            WHEN initial.meta_value = '1' OR p.post_parent = 0 THEN 'subscription'
+            WHEN p.post_parent = 0 THEN 'subscription'
             ELSE 'renewal' END)";
         $mode = "(d.mode <> {$this->modeExpression('mode')})";
         $amount = "(d.amount_total <> ROUND(CAST(IFNULL(NULLIF(total.meta_value, ''), '0') AS DECIMAL(20, 10)) * {$this->minorUnitsPerMajor()}))";

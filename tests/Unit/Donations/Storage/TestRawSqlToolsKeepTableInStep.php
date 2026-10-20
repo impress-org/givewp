@@ -92,6 +92,30 @@ class TestRawSqlToolsKeepTableInStep extends TestCase
     }
 
     /**
+     * Reset Stats runs in batches. A stopped run must leave the table in step with the posts,
+     * so each batch removes only its own rows.
+     *
+     * @since TBD
+     */
+    public function testResetStatsRemovesRowsBatchByBatch()
+    {
+        require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-export.php';
+        require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export.php';
+        require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-reset-stats.php';
+
+        Donation::factory()->count(3)->create();
+
+        $tool = new Give_Tools_Reset_Stats(1);
+        $tool->per_step = 1;
+        $tool->pre_fetch();
+        $tool->get_data();
+
+        $remainingPosts = DB::table('posts')->where('post_type', 'give_payment')->count();
+        $this->assertSame($remainingPosts, $this->rowCount());
+        $this->assertLessThan(3, $this->rowCount());
+    }
+
+    /**
      * @since TBD
      */
     private function row(int $donationId)
