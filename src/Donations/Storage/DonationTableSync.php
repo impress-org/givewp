@@ -114,15 +114,19 @@ class DonationTableSync
             unset($this->queued[$donationId]);
         }
 
-        $rows = $this->buildRows($donationIds);
+        // Chunked so a large caller, the backfill for one, never builds a multi-megabyte
+        // statement or holds a hundred thousand meta rows in memory.
+        foreach (array_chunk($donationIds, self::FLUSH_THRESHOLD) as $chunk) {
+            $rows = $this->buildRows($chunk);
 
-        $missing = array_diff($donationIds, array_keys($rows));
-        if ($missing) {
-            $this->delete(...$missing);
-        }
+            $missing = array_diff($chunk, array_keys($rows));
+            if ($missing) {
+                $this->delete(...$missing);
+            }
 
-        if ($rows) {
-            $this->upsert(array_values($rows));
+            if ($rows) {
+                $this->upsert(array_values($rows));
+            }
         }
     }
 
