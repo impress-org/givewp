@@ -180,6 +180,73 @@ class TestDonationTableSync extends TestCase
     /**
      * @since TBD
      */
+    public function testCoreTrashAndUntrashFollowThrough()
+    {
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
+
+        wp_trash_post($donation->id);
+        give(DonationTableSync::class)->flush();
+        $this->assertSame('trash', $this->row($donation->id)->status);
+
+        wp_untrash_post($donation->id);
+        give(DonationTableSync::class)->flush();
+        $this->assertSame(get_post_status($donation->id), $this->row($donation->id)->status);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDeletedMetaResyncsTheRow()
+    {
+        $donation = Donation::factory()->create(['feeAmountRecovered' => new Money(100, 'USD')]);
+        $this->assertSame(100, (int)$this->row($donation->id)->fee_amount_recovered);
+
+        give_delete_meta($donation->id, DonationMetaKeys::FEE_AMOUNT_RECOVERED);
+        give(DonationTableSync::class)->flush();
+
+        $this->assertNull($this->row($donation->id)->fee_amount_recovered);
+    }
+
+    /**
+     * A donation queued earlier in the request and gone by flush time is removed from the table.
+     *
+     * @since TBD
+     */
+    public function testFlushRemovesRowsWhosePostIsGone()
+    {
+        $donation = Donation::factory()->create();
+        $sync = give(DonationTableSync::class);
+
+        $sync->queue($donation->id);
+        DB::table('posts')->where('ID', $donation->id)->delete();
+        $this->assertNotNull($this->row($donation->id));
+
+        $sync->flush();
+
+        $this->assertNull($this->row($donation->id));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testQueueFlushesItselfAtTheThreshold()
+    {
+        update_option(DonationStorageFlag::OPTION, 'posts');
+        $donations = Donation::factory()->count(DonationTableSync::FLUSH_THRESHOLD)->create();
+        update_option(DonationStorageFlag::OPTION, 'syncing');
+
+        $sync = give(DonationTableSync::class);
+        foreach ($donations as $donation) {
+            $this->assertNull($this->row($donation->id));
+            $sync->queue($donation->id);
+        }
+
+        $this->assertSame(DonationTableSync::FLUSH_THRESHOLD, (int)DB::get_var('SELECT COUNT(*) FROM ' . DB::prefix('give_donations')));
+    }
+
+    /**
+     * @since TBD
+     */
     public function testNothingIsWrittenWhileStorageIsPosts()
     {
         update_option(DonationStorageFlag::OPTION, 'posts');
