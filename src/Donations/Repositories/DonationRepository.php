@@ -18,7 +18,6 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Receipts\DonationReceiptBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
-use Give\Helpers\Call;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 
@@ -244,7 +243,7 @@ class DonationRepository
             $donation->mode = $this->getDefaultDonationMode();
         }
         if (!isset($donation->purchaseKey)) {
-            $donation->purchaseKey = Call::invoke(GeneratePurchaseKey::class, $donation->email);
+            $donation->purchaseKey = (new GeneratePurchaseKey())($donation->email);
         }
 
         DB::query('START TRANSACTION');
@@ -262,6 +261,7 @@ class DonationRepository
                 ]);
 
             $donationId = DB::last_insert_id();
+            $donation->id = $donationId;
 
             $donationMeta = $this->getCoreDonationMetaForDatabase($donation);
 
@@ -269,9 +269,12 @@ class DonationRepository
                 give()->payment_meta->add_meta($donationId, $metaKey, $metaValue);
             }
 
-            give(DonationTableSync::class)->write($donation, $donationId);
+            give(DonationTableSync::class)->write($donation);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
+
+            // The row is gone with the rollback, so the model must not look saved.
+            $donation->id = null;
 
             Log::error('Failed creating a donation', compact('donation'));
 
@@ -279,8 +282,6 @@ class DonationRepository
         }
 
         DB::query('COMMIT');
-
-        $donation->id = $donationId;
 
         if (!isset($donation->formTitle)) {
             $donation->formTitle = $this->getFormTitle($donation->formId);
@@ -358,7 +359,7 @@ class DonationRepository
                 }
             }
 
-            give(DonationTableSync::class)->write($donation, $donation->id);
+            give(DonationTableSync::class)->write($donation);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -523,10 +524,7 @@ class DonationRepository
             DonationMetaKeys::MODE => isset($donation->mode) ?
                 $donation->mode->getValue() :
                 $this->getDefaultDonationMode()->getValue(),
-            DonationMetaKeys::PURCHASE_KEY => $donation->purchaseKey ?? Call::invoke(
-                    GeneratePurchaseKey::class,
-                    $donation->email
-                ),
+            DonationMetaKeys::PURCHASE_KEY => $donation->purchaseKey ?? (new GeneratePurchaseKey())($donation->email),
             DonationMetaKeys::DONOR_IP => $donation->donorIp ?? give_get_ip(),
             DonationMetaKeys::LEVEL_ID => $donation->levelId,
             DonationMetaKeys::ANONYMOUS => (int)$donation->anonymous,
