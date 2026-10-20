@@ -112,7 +112,7 @@ class DonationStorageDriftCheck
             $counts[$row->mode]['posts'] = (int)$row->total;
         }
 
-        $table = DB::get_results("SELECT mode, COUNT(*) AS total FROM {$wpdb->give_donations} GROUP BY mode");
+        $table = DB::get_results("SELECT mode, COUNT(*) AS total FROM {$this->table()} GROUP BY mode");
 
         foreach ($table as $row) {
             $counts[$row->mode]['table'] = (int)$row->total;
@@ -157,7 +157,7 @@ class DonationStorageDriftCheck
         }
 
         $table = DB::get_results(
-            "SELECT mode, currency, SUM(amount_total) AS total FROM {$wpdb->give_donations} GROUP BY mode, currency"
+            "SELECT mode, currency, SUM(amount_total) AS total FROM {$this->table()} GROUP BY mode, currency"
         );
 
         foreach ($table as $row) {
@@ -179,7 +179,7 @@ class DonationStorageDriftCheck
 
         return $this->countAndSample(
             "FROM {$wpdb->posts} p
-             LEFT JOIN {$wpdb->give_donations} d ON d.id = p.ID
+             LEFT JOIN {$this->table()} d ON d.id = p.ID
              WHERE p.post_type = 'give_payment' AND d.id IS NULL",
             'p.ID'
         );
@@ -193,7 +193,7 @@ class DonationStorageDriftCheck
         global $wpdb;
 
         return $this->countAndSample(
-            "FROM {$wpdb->give_donations} d
+            "FROM {$this->table()} d
              LEFT JOIN {$wpdb->posts} p ON p.ID = d.id AND p.post_type = 'give_payment'
              WHERE p.ID IS NULL",
             'd.id'
@@ -220,7 +220,7 @@ class DonationStorageDriftCheck
         $mode = "(d.mode <> {$this->modeExpression('mode')})";
         $amount = "(d.amount_total <> ROUND(CAST(IFNULL(NULLIF(total.meta_value, ''), '0') AS DECIMAL(20, 10)) * {$this->minorUnitsPerMajor()}))";
 
-        $from = "FROM {$wpdb->give_donations} d
+        $from = "FROM {$this->table()} d
              INNER JOIN {$wpdb->posts} p ON p.ID = d.id AND p.post_type = 'give_payment'
              LEFT JOIN {$this->meta('subscription', DonationMetaKeys::SUBSCRIPTION_ID)}
              LEFT JOIN {$this->meta('initial', DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION)}
@@ -259,6 +259,16 @@ class DonationStorageDriftCheck
                 ? array_map('intval', DB::get_col("SELECT {$idColumn} {$fromAndWhere} ORDER BY {$idColumn} LIMIT " . self::SAMPLE_LIMIT))
                 : [],
         ];
+    }
+
+    /**
+     * Resolved per call so a blog switch on multisite is respected.
+     *
+     * @since TBD
+     */
+    private function table(): string
+    {
+        return DB::prefix('give_donations');
     }
 
     /**
@@ -304,7 +314,7 @@ class DonationStorageDriftCheck
 
         $cases = '';
 
-        foreach (DB::get_col("SELECT DISTINCT currency FROM {$wpdb->give_donations}") as $currency) {
+        foreach (DB::get_col("SELECT DISTINCT currency FROM {$this->table()}") as $currency) {
             $cases .= DB::prepare(' WHEN %s THEN %d', $currency, Money::fromDecimal('1', $currency)->formatToMinorAmount());
         }
 
