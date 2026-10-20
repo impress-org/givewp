@@ -128,19 +128,22 @@ forward; `table` can fall back to `syncing`, never to `posts`.
 
 What the code does not tell you:
 
-- **Two mappings to a row, and they must agree.** The repository builds the row from the model
-  inside its own transaction, so a failed table write rolls the donation back. Everything else
-  (legacy functions, the importer, add-on meta writes) is caught by post and meta hooks, queued,
-  flushed once per request, and decoded from posts and meta. A parity test in
-  `tests/Unit/Donations/Storage` asserts both mappings produce the same row; a new column or a
-  changed rule has to land in both or that test fails. Never add a third mapping.
+- **One mapping, from the model to the row.** `DonationTableRepository` is the only thing that
+  writes rows, and only from a `Donation`. `DonationRepository` calls it inside its own
+  transaction, so a failed table write rolls the donation back. Everything else (legacy
+  functions, the importer, add-on meta writes) is caught by post and meta hooks, queued, loaded
+  through the model once per request, and handed to the same five verbs. Never add a second
+  way to build a row, and never make a raw-row method public: every public method on that
+  repository is add-on API the day it ships.
 - **Bulk SQL on donation storage must be mirrored by hand.** A bulk `UPDATE` or `DELETE` on
   `give_donationmeta` or `wp_posts` bypasses both paths. Campaign merge, form transfer and Reset
   Stats each carry a matching statement; a new one needs the same, plus a test in
   `tests/Unit/Donations/Storage`.
-- **`post_status` is overloaded.** `give_subscription` means complete plus renewal, and the type
-  comes from subscription meta and `post_parent`. Decode it, never copy it, and the backfill must
-  reuse the same decoder.
+- **`post_status` is overloaded, and the model is the decoder.** `give_subscription` means
+  complete plus renewal, a status the model does not know reads as pending, and the type comes
+  from subscription meta. The table stores what the model reads, never the raw post value, so
+  anything that writes rows loads the model first. The drift check's SQL mirrors the model's
+  hydration rules; change them in both places.
 - **Duplicate meta rows exist.** Legacy `add_meta()` is not unique. Everything that reads meta for
   the table takes the lowest `meta_id`, which is what `get_metadata()` returns; the drift check
   must do the same or it reports ghosts.

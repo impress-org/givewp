@@ -3,6 +3,7 @@
 namespace Give\Donations\Storage;
 
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Log\Log;
@@ -203,8 +204,9 @@ class DonationStorageDriftCheck
 
     /**
      * Rows present in both storages whose status, type, mode or amount disagree. The status and
-     * type expressions decode the post the same way DonationStatusDecoder does, forward, so a
-     * wrong decode shows up here even when counts and sums match.
+     * type expressions apply the model's hydration rules in SQL (see DonationQueryData), so a
+     * row that does not match what the model would read shows up here even when counts and
+     * sums match.
      *
      * @since TBD
      */
@@ -212,7 +214,11 @@ class DonationStorageDriftCheck
     {
         global $wpdb;
 
-        $status = "(d.status <> CASE WHEN p.post_status = 'give_subscription' THEN 'publish' ELSE p.post_status END)";
+        $validStatuses = "'" . implode("','", array_map('esc_sql', array_diff(DonationStatus::toArray(), ['give_subscription']))) . "'";
+        $status = "(d.status <> CASE
+            WHEN p.post_status = 'give_subscription' THEN 'publish'
+            WHEN p.post_status IN ({$validStatuses}) THEN p.post_status
+            ELSE 'pending' END)";
         $type = "(d.type <> CASE
             WHEN p.post_status = 'give_subscription' THEN 'renewal'
             WHEN IFNULL(initial.meta_value, '') NOT IN ('', '0') THEN 'subscription'

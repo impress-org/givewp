@@ -33,6 +33,7 @@ class TestRawSqlToolsKeepTableInStep extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->refreshDatabase();
         delete_option(DonationStorageFlag::OPTION);
         (new CreateDonationsTable())->run();
     }

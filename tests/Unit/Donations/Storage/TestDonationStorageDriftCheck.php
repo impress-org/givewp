@@ -29,6 +29,10 @@ class TestDonationStorageDriftCheck extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        // Data providers elsewhere in the suite create legacy payments while the suite is built,
+        // before any test's tearDown has run, so start from an empty database.
+        $this->refreshDatabase();
+        give_update_option('sequential-ordering_status', 'disabled');
         delete_option(DonationStorageFlag::OPTION);
         delete_option(DonationStorageDriftCheck::OPTION);
         (new CreateDonationsTable())->run();
@@ -103,9 +107,9 @@ class TestDonationStorageDriftCheck extends TestCase
     }
 
     /**
-     * Two post shapes that the decoder maps correctly and a naive inverse would flag: a renewal
-     * whose post_status is publish rather than give_subscription, and a flagged initial donation
-     * with no subscription_id meta.
+     * Post shapes the model normalises and a naive comparison would flag: a renewal whose
+     * post_status is publish rather than give_subscription, a flagged initial donation with no
+     * subscription_id meta, and a post core restored to draft, which the model reads as pending.
      *
      * @since TBD
      */
@@ -123,11 +127,17 @@ class TestDonationStorageDriftCheck extends TestCase
         $flagged = Donation::factory()->create();
         give()->payment_meta->add_meta($flagged->id, DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION, 1);
 
+        $drafted = Donation::factory()->create();
+        wp_trash_post($drafted->id);
+        wp_untrash_post($drafted->id);
+
         give(DonationTableSync::class)->flush();
 
         $this->assertSame('publish', get_post_status($renewal->id));
         $this->assertSame('renewal', $this->row($renewal->id)->type);
         $this->assertSame('subscription', $this->row($flagged->id)->type);
+        $this->assertSame('draft', get_post_status($drafted->id));
+        $this->assertSame('pending', $this->row($drafted->id)->status);
 
         $report = (new DonationStorageDriftCheck())->run();
 
