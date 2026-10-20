@@ -96,6 +96,56 @@ class TestDonationStorageDriftCheck extends TestCase
     /**
      * @since TBD
      */
+    public function testTypeAndModeChangedBehindTheSyncAreReported()
+    {
+        $flagged = Donation::factory()->create();
+        $modeChanged = Donation::factory()->create();
+
+        give()->payment_meta->add_meta($flagged->id, DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION, 1);
+        DB::table('give_donationmeta')
+            ->where('donation_id', $modeChanged->id)
+            ->where('meta_key', DonationMetaKeys::MODE)
+            ->update(['meta_value' => 'live']);
+        DB::table('give_donations')->where('id', $flagged->id)->update(['type' => 'single']);
+
+        $report = (new DonationStorageDriftCheck())->run();
+
+        $this->assertSame([$flagged->id], $report['type']['sampleIds']);
+        $this->assertSame([$modeChanged->id], $report["mode"]["sampleIds"], json_encode($report));
+        $this->assertSame(0, $report['status']['count']);
+    }
+
+    /**
+     * Legacy add_meta() is not unique. A duplicated key must read like get_metadata() does, first
+     * row wins, and never count as drift or double a sum.
+     *
+     * @since TBD
+     */
+    public function testDuplicateMetaRowsAreNotDrift()
+    {
+        $donation = Donation::factory()->create(['amount' => new Money(1000, 'USD')]);
+
+        DB::table('give_donationmeta')->insert([
+            'donation_id' => $donation->id,
+            'meta_key' => DonationMetaKeys::AMOUNT,
+            'meta_value' => '99.00',
+        ]);
+        DB::table('give_donationmeta')->insert([
+            'donation_id' => $donation->id,
+            'meta_key' => DonationMetaKeys::MODE,
+            'meta_value' => 'live',
+        ]);
+
+        $report = (new DonationStorageDriftCheck())->run();
+
+        $this->assertFalse($report['drift'], json_encode($report));
+        $this->assertSame(1, $report['counts']['test']['posts']);
+        $this->assertSame(1000, $report['sums'][0]['posts']);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testRowsMissingFromEitherSideAreReported()
     {
         $kept = Donation::factory()->create();
