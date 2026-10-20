@@ -17,6 +17,9 @@ class SyncPostsWritesToDonationTable
      */
     private $sync;
 
+    /**
+     * @since TBD
+     */
     public function __construct(DonationTableSync $sync)
     {
         $this->sync = $sync;

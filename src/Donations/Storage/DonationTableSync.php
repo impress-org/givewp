@@ -143,6 +143,8 @@ class DonationTableSync
     }
 
     /**
+     * @since TBD
+     *
      * @return array<int, array> rows keyed by donation ID, in column order
      */
     private function buildRows(array $donationIds): array
@@ -247,6 +249,8 @@ class DonationTableSync
 
     /**
      * One INSERT ... ON DUPLICATE KEY UPDATE for every row. Generated columns are never listed.
+     *
+     * @since TBD
      */
     private function upsert(array $rows): void
     {
@@ -269,6 +273,8 @@ class DonationTableSync
     }
 
     /**
+     * @since TBD
+     *
      * @param mixed $value
      */
     private function literal($value): string
@@ -284,11 +290,17 @@ class DonationTableSync
         return DB::prepare('%s', $value);
     }
 
+    /**
+     * @since TBD
+     */
     private function minorUnits(string $decimal, string $currency): int
     {
         return (int)Money::fromDecimal(is_numeric($decimal) ? $decimal : '0', $currency)->formatToMinorAmount();
     }
 
+    /**
+     * @since TBD
+     */
     private function text(array $meta, string $key): ?string
     {
         $value = $meta[$key] ?? '';
@@ -296,11 +308,17 @@ class DonationTableSync
         return $value === '' || $value === null ? null : (string)$value;
     }
 
+    /**
+     * @since TBD
+     */
     private function id(array $meta, string $key): ?int
     {
         return empty($meta[$key]) ? null : (int)$meta[$key];
     }
 
+    /**
+     * @since TBD
+     */
     private function utc(string $gmt, string $local): string
     {
         return $gmt && $gmt !== '0000-00-00 00:00:00' ? $gmt : get_gmt_from_date($local);

@@ -265,6 +265,11 @@ class DonationRepository
         }
 
         Hooks::doAction('givewp_donation_created', $donation);
+
+        // Created listeners still write legacy data outside the transaction (the sequential
+        // number, for one) without firing a post hook, so the row is refreshed once more at
+        // shutdown.
+        give(DonationTableSync::class)->queue($donation->id);
     }
 
     /**

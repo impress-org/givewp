@@ -24,6 +24,9 @@ class TestDonationTableSync extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @since TBD
+     */
     public function setUp(): void
     {
         parent::setUp();
@@ -151,6 +154,30 @@ class TestDonationTableSync extends TestCase
     }
 
     /**
+     * The sequential number is written by a created listener after the repository commits, so
+     * it only reaches the table on the shutdown flush.
+     *
+     * @since TBD
+     */
+    public function testSequentialNumberArrivesOnFlush()
+    {
+        give_update_option('sequential-ordering_status', 'enabled');
+
+        $donation = Donation::factory()->create();
+
+        $this->assertNull($this->row($donation->id)->sequential_number);
+
+        give(DonationTableSync::class)->flush();
+
+        $this->assertSame(
+            give()->donations->getSequentialId($donation->id),
+            (int)$this->row($donation->id)->sequential_number
+        );
+
+        give_update_option('sequential-ordering_status', 'disabled');
+    }
+
+    /**
      * @since TBD
      */
     public function testNothingIsWrittenWhileStorageIsPosts()
@@ -162,6 +189,9 @@ class TestDonationTableSync extends TestCase
         $this->assertNull($this->row($donation->id));
     }
 
+    /**
+     * @since TBD
+     */
     private function row(int $donationId)
     {
         return DB::get_row(DB::prepare('SELECT * FROM ' . DB::prefix('give_donations') . ' WHERE id = %d', $donationId));

@@ -20,6 +20,9 @@ class TestDonationStatusDecoder extends TestCase
         $this->assertSame($expected, DonationStatusDecoder::decode($postStatus, $postParent, $meta));
     }
 
+    /**
+     * @since TBD
+     */
     public function cases(): array
     {
         return [
