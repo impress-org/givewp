@@ -67,7 +67,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since TBD Delete the give_donations table rows as well.
+	 * @since TBD Delete the give_donations table rows as well, and stop when a query fails.
 	 * @since TBD Document why the reset queries are safe, and clear the cache of the deleted options only.
 	 * @since 4.10.0 Added deletion logic for campaigns, campaign pages, subscriptions, events, logs, revenue, usermeta, etc.
 	 * @since  1.5
@@ -243,7 +243,17 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 			if ( is_array( $sql ) && count( $sql ) > 0 ) {
 				foreach ( $sql as $query ) {
-					$wpdb->query( $query ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- one-off bulk reset of GiveWP tables, posts and options; no WordPress API or object cache covers it. Table and column names come from give_v20_bc_table_details() and Give()->donor_meta; ids are (int) post or donor ids or values added by the give_reset_items filter; the give_reset_add_queries_{$type} filter lets add-ons append raw SQL that runs as-is.
+					if ( false === $wpdb->query( $query ) ) { // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- one-off bulk reset of GiveWP tables, posts and options; no WordPress API or object cache covers it. Table and column names come from give_v20_bc_table_details() and Give()->donor_meta; ids are (int) post or donor ids or values added by the give_reset_items filter; the give_reset_add_queries_{$type} filter lets add-ons append raw SQL that runs as-is.
+						// Stop here rather than acknowledge the step: the two donation storages
+						// would otherwise be left out of step with no way to tell.
+						wp_die(
+							esc_html__( 'A database query failed while resetting data. Check the database error log, then run the tool again.', 'give' ),
+							esc_html__( 'Error', 'give' ),
+							[
+								'response' => 500,
+							]
+						);
+					}
 				}
 
 				// The raw delete above skips the options cache. Clear it so the batch tools do not read removed options.
