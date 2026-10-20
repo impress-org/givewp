@@ -410,7 +410,7 @@ class TestDonationTableSync extends TestCase
     {
         $good = Donation::factory()->create(['amount' => new Money(500, 'USD')]);
         $bad = Donation::factory()->create(['amount' => new Money(700, 'USD')]);
-        DB::query(DB::prepare('DELETE FROM ' . DB::prefix('give_donations') . ' WHERE id IN (%d, %d)', $good->id, $bad->id));
+        DB::query(DB::prepare('DELETE FROM ' . DB::prefix(DonationTableRepository::TABLE) . ' WHERE id IN (%d, %d)', $good->id, $bad->id));
         DB::table('give_donationmeta')->where('donation_id', $bad->id)->where('meta_key', DonationMetaKeys::CURRENCY)->update(['meta_value' => '']);
 
         give(DonationTableSync::class)->sync($good->id, $bad->id);
@@ -483,7 +483,7 @@ class TestDonationTableSync extends TestCase
 
         give(DonationTableSync::class)->sync(...array_column($donations, 'id'));
 
-        $this->assertSame(DonationTableSync::FLUSH_THRESHOLD + 1, (int)DB::get_var('SELECT COUNT(*) FROM ' . DB::prefix('give_donations')));
+        $this->assertSame(DonationTableSync::FLUSH_THRESHOLD + 1, (int)DB::get_var('SELECT COUNT(*) FROM ' . DB::prefix(DonationTableRepository::TABLE)));
     }
 
     /**
@@ -493,7 +493,7 @@ class TestDonationTableSync extends TestCase
     {
         $donation = Donation::factory()->create();
         $pageId = wp_insert_post(['post_type' => 'page', 'post_title' => 'Page', 'post_status' => 'publish']);
-        DB::table('give_donations')->where('id', $donation->id)->update(['id' => $pageId]);
+        DB::table(DonationTableRepository::TABLE)->where('id', $donation->id)->update(['id' => $pageId]);
 
         wp_delete_post($pageId, true);
 
@@ -521,7 +521,7 @@ class TestDonationTableSync extends TestCase
      */
     public function tearDown(): void
     {
-        DB::query('DROP TABLE ' . DB::prefix('give_donations'));
+        DB::query('DROP TABLE ' . DB::prefix(DonationTableRepository::TABLE));
         (new CreateDonationsTable())->run();
 
         parent::tearDown();
@@ -536,7 +536,7 @@ class TestDonationTableSync extends TestCase
      */
     private function breakTheTable(): void
     {
-        DB::query('ALTER TABLE ' . DB::prefix('give_donations') . ' DROP COLUMN email');
+        DB::query('ALTER TABLE ' . DB::prefix(DonationTableRepository::TABLE) . ' DROP COLUMN email');
     }
 
     /**

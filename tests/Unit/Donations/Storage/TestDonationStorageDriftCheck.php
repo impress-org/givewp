@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\Donations\Storage;
 
 use Give\Donations\Migrations\CreateDonationsTable;
 use Give\Donations\Models\Donation;
+use Give\Donations\Repositories\DonationTableRepository;
 use Give\Donations\Storage\DonationStorageDriftCheck;
 use Give\Donations\Storage\DonationStorageFlag;
 use Give\Donations\Storage\DonationTableSync;
@@ -43,7 +44,7 @@ class TestDonationStorageDriftCheck extends TestCase
      */
     private function row(int $donationId)
     {
-        return DB::get_row(DB::prepare('SELECT * FROM ' . DB::prefix('give_donations') . ' WHERE id = %d', $donationId));
+        return DB::get_row(DB::prepare('SELECT * FROM ' . DB::prefix(DonationTableRepository::TABLE) . ' WHERE id = %d', $donationId));
     }
 
     /**
@@ -157,7 +158,7 @@ class TestDonationStorageDriftCheck extends TestCase
             ->where('donation_id', $modeChanged->id)
             ->where('meta_key', DonationMetaKeys::MODE)
             ->update(['meta_value' => 'live']);
-        DB::table('give_donations')->where('id', $flagged->id)->update(['type' => 'single']);
+        DB::table(DonationTableRepository::TABLE)->where('id', $flagged->id)->update(['type' => 'single']);
 
         $report = (new DonationStorageDriftCheck())->run();
 
@@ -228,7 +229,7 @@ class TestDonationStorageDriftCheck extends TestCase
         $removedFromTable = Donation::factory()->create();
         $removedFromPosts = Donation::factory()->create();
 
-        DB::table('give_donations')->where('id', $removedFromTable->id)->delete();
+        DB::table(DonationTableRepository::TABLE)->where('id', $removedFromTable->id)->delete();
         DB::table('posts')->where('ID', $removedFromPosts->id)->delete();
 
         $report = (new DonationStorageDriftCheck())->run();

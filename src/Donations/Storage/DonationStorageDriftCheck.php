@@ -2,6 +2,7 @@
 
 namespace Give\Donations\Storage;
 
+use Give\Donations\Repositories\DonationTableRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
@@ -275,7 +276,7 @@ class DonationStorageDriftCheck
      */
     private function table(): string
     {
-        return DB::prefix('give_donations');
+        return DB::prefix(DonationTableRepository::TABLE);
     }
 
     /**
