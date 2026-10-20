@@ -11,9 +11,6 @@
     verbose="true"
 >
     <testsuites>
-        <testsuite name="Donation Storage Parity">
-            <directory prefix="Test" suffix=".php">./tests/Unit/Donations/Storage</directory>
-        </testsuite>
         <testsuite name="Unit Tests">
             <directory suffix="Test.php">./tests/Unit</directory>
             <directory prefix="Test" suffix=".php">./tests/Unit</directory>
