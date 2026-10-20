@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\Donations\Storage;
 
 use Give\Donations\Migrations\CreateDonationsTable;
 use Give\Donations\Models\Donation;
+use Give\Donations\Properties\BillingAddress;
 use Give\Donations\Storage\DonationStorageFlag;
 use Give\Donations\Storage\DonationTableSync;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -242,6 +243,74 @@ class TestDonationTableSync extends TestCase
         }
 
         $this->assertSame(DonationTableSync::FLUSH_THRESHOLD, (int)DB::get_var('SELECT COUNT(*) FROM ' . DB::prefix('give_donations')));
+    }
+
+    /**
+     * The repository writes the row from the model; everything else decodes it from posts. The
+     * two mappings must produce the same row for the same donation, after every kind of write.
+     *
+     * @since TBD
+     */
+    public function testModelAndPostsMappingsAgree()
+    {
+        give_update_option('sequential-ordering_status', 'enabled');
+        $subscription = Subscription::factory()->createWithDonation();
+        $donation = Donation::factory()->create([
+            'donorId' => $subscription->donorId,
+            'subscriptionId' => $subscription->id,
+            'type' => DonationType::RENEWAL(),
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(123456, 'EUR'),
+            'feeAmountRecovered' => new Money(456, 'EUR'),
+            'exchangeRate' => '1.25',
+            'honorific' => 'Dr',
+            'phone' => '+1555',
+            'company' => 'Analytical Engines',
+            'billingAddress' => BillingAddress::fromArray([
+                'address1' => '1 Main St',
+                'address2' => 'Suite 2',
+                'city' => 'London',
+                'state' => 'LDN',
+                'zip' => 'N1',
+                'country' => 'GB',
+            ]),
+            'anonymous' => true,
+            'gatewayTransactionId' => 'pi_123',
+        ]);
+        give(DonationTableSync::class)->flush();
+
+        $this->assertMappingsAgree($donation->id, 'after insert');
+
+        $donation->status = DonationStatus::PENDING();
+        $donation->amount = new Money(5000, 'EUR');
+        $donation->feeAmountRecovered = null;
+        $donation->company = null;
+        $donation->save();
+        $this->assertMappingsAgree($donation->id, 'after update');
+
+        $donation->trash();
+        $this->assertMappingsAgree($donation->id, 'after trash');
+
+        $donation->unTrash();
+        $this->assertMappingsAgree($donation->id, 'after untrash');
+
+        give_update_option('sequential-ordering_status', 'disabled');
+    }
+
+    /**
+     * @since TBD
+     */
+    private function assertMappingsAgree(int $donationId, string $when): void
+    {
+        $fromModel = (array)$this->row($donationId);
+        unset($fromModel['updated_at']);
+
+        give(DonationTableSync::class)->sync($donationId);
+
+        $fromPosts = (array)$this->row($donationId);
+        unset($fromPosts['updated_at']);
+
+        $this->assertSame($fromPosts, $fromModel, "Model and posts mappings differ {$when}");
     }
 
     /**
