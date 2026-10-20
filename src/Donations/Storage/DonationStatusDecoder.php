@@ -30,12 +30,16 @@ class DonationStatusDecoder
             return [DonationStatus::COMPLETE, DonationType::RENEWAL];
         }
 
+        // The initial-donation flag wins on its own, as it does when the model is hydrated from
+        // posts, so a flagged donation that lost its subscription_id meta stays a subscription.
+        if (!empty($meta[DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION])) {
+            return [$postStatus, DonationType::SUBSCRIPTION];
+        }
+
         if (empty($meta[DonationMetaKeys::SUBSCRIPTION_ID])) {
             return [$postStatus, DonationType::SINGLE];
         }
 
-        $isInitialDonation = !empty($meta[DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION]) || $postParent === 0;
-
-        return [$postStatus, $isInitialDonation ? DonationType::SUBSCRIPTION : DonationType::RENEWAL];
+        return [$postStatus, $postParent === 0 ? DonationType::SUBSCRIPTION : DonationType::RENEWAL];
     }
 }
