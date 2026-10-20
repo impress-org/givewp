@@ -143,7 +143,7 @@ class DonationTableSync
 
         $in = implode(',', array_map('intval', $donationIds));
 
-        DB::query("DELETE FROM {$wpdb->give_donations} WHERE id IN ({$in})");
+        DB::query("DELETE FROM " . DB::prefix('give_donations') . " WHERE id IN ({$in})");
     }
 
     /**
@@ -271,7 +271,7 @@ class DonationTableSync
         }, $rows);
 
         DB::query(
-            "INSERT INTO {$wpdb->give_donations} ({$columnList}) VALUES " . implode(', ', $values) .
+            "INSERT INTO " . DB::prefix('give_donations') . " ({$columnList}) VALUES " . implode(', ', $values) .
             " ON DUPLICATE KEY UPDATE {$updates}"
         );
     }
