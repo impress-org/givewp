@@ -22,6 +22,8 @@ class DonationStatusDecoder
      *
      * @param array $meta meta_key => meta_value for the donation
      *
+     * @param int $postParent kept for callers; the type no longer depends on it
+     *
      * @return array{0: string, 1: string} [status, type]
      */
     public static function decode(string $postStatus, int $postParent, array $meta): array
@@ -30,16 +32,18 @@ class DonationStatusDecoder
             return [DonationStatus::COMPLETE, DonationType::RENEWAL];
         }
 
-        // The initial-donation flag wins on its own, as it does when the model is hydrated from
-        // posts, so a flagged donation that lost its subscription_id meta stays a subscription.
+        // Same precedence as the model when it is hydrated from posts: the initial-donation flag
+        // makes a subscription, a subscription_id alone makes a renewal, nothing makes a single.
+        // post_parent is not consulted; a renewal whose initial donation was deleted has 0 there
+        // and is still a renewal.
         if (!empty($meta[DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION])) {
             return [$postStatus, DonationType::SUBSCRIPTION];
         }
 
-        if (empty($meta[DonationMetaKeys::SUBSCRIPTION_ID])) {
-            return [$postStatus, DonationType::SINGLE];
+        if (!empty($meta[DonationMetaKeys::SUBSCRIPTION_ID])) {
+            return [$postStatus, DonationType::RENEWAL];
         }
 
-        return [$postStatus, $postParent === 0 ? DonationType::SUBSCRIPTION : DonationType::RENEWAL];
+        return [$postStatus, DonationType::SINGLE];
     }
 }
