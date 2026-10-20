@@ -117,7 +117,7 @@ class DonorsQuery
                         ->andOn('dm2.meta_value', '1', true);
                 })
                 ->where('dm1.meta_key', DonationMetaKeys::DONOR_ID)
-                ->whereRaw(sprintf('AND dm1.meta_value = %s', $this->query->prefixTable('give_donors.id')));
+                ->whereRaw(sprintf('AND dm1.meta_value = CONCAT(%s)', $this->query->prefixTable('give_donors.id')));
         });
 
         return $this;
