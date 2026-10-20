@@ -2,6 +2,8 @@
 
 namespace Give\Donations\Storage;
 
+use Give\Donations\Repositories\DonationTableRepository;
+
 /**
  * Catches every donation write that does not go through DonationRepository: Give_Payment::save(),
  * give_insert_payment(), give_update_payment_status(), give_delete_donation(), the importer and
@@ -49,8 +51,8 @@ class SyncPostsWritesToDonationTable
     }
 
     /**
-     * delete_post: the post still exists here, so the type check works. Deletion is immediate
-     * rather than queued, since the record is gone once this request ends.
+     * delete_post: the post still exists here, so it can be loaded one last time. Deletion is
+     * immediate rather than queued, since the record is gone once this request ends.
      *
      * @since TBD
      */
@@ -60,6 +62,10 @@ class SyncPostsWritesToDonationTable
             return;
         }
 
-        $this->sync->delete($postId);
+        $donation = give()->donations->getById($postId);
+
+        if ($donation) {
+            give(DonationTableRepository::class)->delete($donation);
+        }
     }
 }
