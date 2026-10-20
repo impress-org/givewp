@@ -145,8 +145,9 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						// Delete all the meta rows of donation exists in donation meta table.
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_donationmeta";
 
-						// Delete the donations table rows, which no hook keeps in step with the deletes above.
-						$sql[] = "DELETE FROM {$wpdb->prefix}give_donations";
+						// Delete this batch's donations table rows, which no hook keeps in step with the
+						// post deletes above. Scoped to the batch so a stopped run leaves the two in step.
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_donations WHERE id IN ($ids)";
 
 						// Delete all the Give related sequential ordering entries for donations.
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_sequential_ordering WHERE payment_id IN ($ids)";
