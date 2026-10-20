@@ -202,8 +202,8 @@ class DonationStorageDriftCheck
 
     /**
      * Rows present in both storages whose status, type, mode or amount disagree. The status and
-     * type expressions are the SQL inverse of DonationStatusDecoder, so a wrong decode shows up
-     * here even when counts and sums match.
+     * type expressions decode the post the same way DonationStatusDecoder does, forward, so a
+     * wrong decode shows up here even when counts and sums match.
      *
      * @since TBD
      */
@@ -211,13 +211,12 @@ class DonationStorageDriftCheck
     {
         global $wpdb;
 
-        $status = "(CASE WHEN d.status = 'publish' AND d.type = 'renewal' THEN 'give_subscription' ELSE d.status END <> p.post_status)";
+        $status = "(d.status <> CASE WHEN p.post_status = 'give_subscription' THEN 'publish' ELSE p.post_status END)";
         $type = "(d.type <> CASE
             WHEN p.post_status = 'give_subscription' THEN 'renewal'
             WHEN IFNULL(initial.meta_value, '') NOT IN ('', '0') THEN 'subscription'
-            WHEN IFNULL(subscription.meta_value, '') IN ('', '0') THEN 'single'
-            WHEN p.post_parent = 0 THEN 'subscription'
-            ELSE 'renewal' END)";
+            WHEN IFNULL(subscription.meta_value, '') NOT IN ('', '0') THEN 'renewal'
+            ELSE 'single' END)";
         $mode = "(d.mode <> {$this->modeExpression('mode')})";
         $amount = "(d.amount_total <> ROUND(CAST(IFNULL(NULLIF(total.meta_value, ''), '0') AS DECIMAL(20, 10)) * {$this->minorUnitsPerMajor()}))";
 
