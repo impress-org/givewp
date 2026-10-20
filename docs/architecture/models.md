@@ -128,11 +128,12 @@ forward; `table` can fall back to `syncing`, never to `posts`.
 
 What the code does not tell you:
 
-- **One mapping, from posts to row.** A table row is only ever built by reading the donation back
-  from posts and meta and decoding it. The repository does that inside its own transaction, so a
-  failed table write rolls the donation back. Everything else (legacy functions, the importer,
-  add-on meta writes) is caught by post and meta hooks, queued, and flushed once per request.
-  Never build a row from the model, and never add a second decoder.
+- **Two mappings to a row, and they must agree.** The repository builds the row from the model
+  inside its own transaction, so a failed table write rolls the donation back. Everything else
+  (legacy functions, the importer, add-on meta writes) is caught by post and meta hooks, queued,
+  flushed once per request, and decoded from posts and meta. A parity test in
+  `tests/Unit/Donations/Storage` asserts both mappings produce the same row; a new column or a
+  changed rule has to land in both or that test fails. Never add a third mapping.
 - **Bulk SQL on donation storage must be mirrored by hand.** A bulk `UPDATE` or `DELETE` on
   `give_donationmeta` or `wp_posts` bypasses both paths. Campaign merge, form transfer and Reset
   Stats each carry a matching statement; a new one needs the same, plus a test in
