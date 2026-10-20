@@ -38,6 +38,8 @@ class TestDonationTableSync extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->refreshDatabase();
+        give_update_option('sequential-ordering_status', 'disabled');
         delete_option(DonationStorageFlag::OPTION);
         (new CreateDonationsTable())->run();
     }
@@ -377,8 +379,8 @@ class TestDonationTableSync extends TestCase
     }
 
     /**
-     * Bad or missing meta falls back the way the model does: mode to live, currency to the site
-     * currency, exchange rate to 1, and a zero GMT date converts from the local one.
+     * Bad meta reaches the row the way the model reads it: an unknown mode is live, a zero
+     * exchange rate is 1, and a zero GMT date is converted from the local one.
      *
      * @since TBD
      */
@@ -387,7 +389,6 @@ class TestDonationTableSync extends TestCase
         $donation = Donation::factory()->create(['amount' => new Money(500, 'USD')]);
 
         DB::table('give_donationmeta')->where('donation_id', $donation->id)->where('meta_key', DonationMetaKeys::MODE)->update(['meta_value' => 'bogus']);
-        DB::table('give_donationmeta')->where('donation_id', $donation->id)->where('meta_key', DonationMetaKeys::CURRENCY)->update(['meta_value' => '']);
         DB::table('give_donationmeta')->where('donation_id', $donation->id)->where('meta_key', DonationMetaKeys::EXCHANGE_RATE)->update(['meta_value' => '0']);
         DB::table('posts')->where('ID', $donation->id)->update(['post_date_gmt' => '0000-00-00 00:00:00', 'post_date' => '2026-03-04 05:06:07']);
 
@@ -395,9 +396,30 @@ class TestDonationTableSync extends TestCase
 
         $row = $this->row($donation->id);
         $this->assertSame('live', $row->mode);
-        $this->assertSame(give_get_option('currency', 'USD'), $row->currency);
         $this->assertSame('1.0000000000', $row->exchange_rate);
         $this->assertSame(get_gmt_from_date('2026-03-04 05:06:07'), $row->created_at);
+    }
+
+    /**
+     * A donation the model cannot load, here one with no currency, is logged on its own and does
+     * not stop the rest of its chunk from syncing.
+     *
+     * @since TBD
+     */
+    public function testUnloadableDonationIsLoggedAndSkipped()
+    {
+        $good = Donation::factory()->create(['amount' => new Money(500, 'USD')]);
+        $bad = Donation::factory()->create(['amount' => new Money(700, 'USD')]);
+        DB::query(DB::prepare('DELETE FROM ' . DB::prefix('give_donations') . ' WHERE id IN (%d, %d)', $good->id, $bad->id));
+        DB::table('give_donationmeta')->where('donation_id', $bad->id)->where('meta_key', DonationMetaKeys::CURRENCY)->update(['meta_value' => '']);
+
+        give(DonationTableSync::class)->sync($good->id, $bad->id);
+
+        $this->assertSame(500, (int)$this->row($good->id)->amount_total);
+        $this->assertNull($this->row($bad->id));
+        $logs = give(LogRepository::class)->getLogsByType('error');
+        $this->assertNotEmpty($logs);
+        $this->assertStringContainsString('give_donations', $logs[0]->getMessage());
     }
 
     /**
