@@ -5,6 +5,7 @@ namespace Give\Campaigns\Repositories;
 use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\Donations\Repositories\DonationTableRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -392,6 +393,7 @@ class CampaignRepository
     }
 
     /**
+     * @since TBD Move the merged campaigns' donations in the give_donations table as well.
      * @since 4.19.0 Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
@@ -440,6 +442,15 @@ class CampaignRepository
             );
 
             // Delete campaigns to merge now that we already migrated the necessary data to the destination campaign
+            // The donations table is written with raw SQL here too, since this UPDATE bypasses the
+            // repository and the meta hooks that normally keep it in step.
+            DB::query(
+                DB::prepare("UPDATE " . DB::prefix(DonationTableRepository::TABLE) . " SET campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
+                    [
+                        $destinationCampaign->id,
+                    ])
+            );
+
             DB::query("DELETE FROM " . DB::prefix('give_campaigns') . " WHERE id IN ($campaignsToMergeIdsString)");
         } catch (Exception $exception) {
             DB::query('ROLLBACK');

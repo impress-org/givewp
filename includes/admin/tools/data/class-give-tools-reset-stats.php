@@ -67,6 +67,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
+	 * @since TBD Delete the give_donations table rows as well, and stop when a query fails.
 	 * @since 4.10.0 Added deletion logic for campaigns, campaign pages, subscriptions, events, logs, revenue, usermeta, etc.
 	 * @since  1.5
 	 * @global object $wpdb Used to query the database using the WordPress
@@ -141,6 +142,10 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 						// Delete all the meta rows of donation exists in donation meta table.
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_donationmeta";
+
+						// Delete this batch's donations table rows, which no hook keeps in step with the
+						// post deletes above. Scoped to the batch so a stopped run leaves the two in step.
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_donations WHERE id IN ($ids)";
 
 						// Delete all the Give related sequential ordering entries for donations.
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_sequential_ordering WHERE payment_id IN ($ids)";
@@ -234,7 +239,17 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 			if ( is_array( $sql ) && count( $sql ) > 0 ) {
 				foreach ( $sql as $query ) {
-					$wpdb->query( $query );
+					if ( false === $wpdb->query( $query ) ) {
+						// Stop here rather than acknowledge the step: the two donation storages
+						// would otherwise be left out of step with no way to tell.
+						wp_die(
+							esc_html__( 'A database query failed while resetting data. Check the database error log, then run the tool again.', 'give' ),
+							esc_html__( 'Error', 'give' ),
+							[
+								'response' => 500,
+							]
+						);
+					}
 				}
 			}
 
