@@ -2,7 +2,6 @@
 
 namespace Give\DonationForms\V2;
 
-use Give\Campaigns\CampaignsAdminPage;
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
@@ -13,7 +12,6 @@ use Give\Helpers\EnqueueScript;
 use Give\Helpers\Language;
 use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Post;
-use WP_REST_Request;
 
 /**
  * @since 2.19.0
@@ -84,18 +82,47 @@ class DonationFormsAdminPage
     /**
      * Load scripts
      *
+     * @since TBD Move the localized data to getScriptData() so the campaign details page can share it.
      * @since 4.19.0 Localize newFormUrl here instead of relying on the form builder to attach it to this script.
      * @since 3.22.0 Add locale support
      */
     public function loadScripts()
     {
-        $data = [
+        EnqueueScript::make('give-admin-donation-forms', 'build/assets/dist/js/give-admin-donation-forms.js')
+            ->dependencies([RegisterListTableAssets::HANDLE])
+            ->loadInFooter()
+            ->registerTranslations()
+            ->registerLocalizeData('GiveDonationForms', $this->getScriptData())->enqueue();
+
+        $this->enqueueStyles();
+    }
+
+    /**
+     * Gives the campaign details page the data its "Forms" tab needs. The tab is part of that page's own
+     * script, so the forms list script is not loaded there: a second copy of the list engine would run.
+     *
+     * @since TBD
+     */
+    public function localizeScriptData(string $handle)
+    {
+        wp_localize_script($handle, 'GiveDonationForms', $this->getScriptData());
+
+        $this->enqueueStyles();
+    }
+
+    /**
+     * The `GiveDonationForms` data. Rows are not included: the list loads them from the REST API.
+     *
+     * @since TBD Leave out the preloaded rows and the SWR options; the list engine fetches its own rows.
+     */
+    private function getScriptData(): array
+    {
+        return [
             'apiRoot' => $this->apiRoot,
             'bannerActionUrl' => $this->bannerActionUrl,
             'tooltipActionUrl' => $this->tooltipActionUrl,
             'defaultFormActionUrl' => $this->defaultFormActionUrl,
             'apiNonce' => $this->apiNonce,
-            'preload' => $this->preloadDonationForms(),
             'authors' => $this->getAuthors(),
             'table' => give(DonationFormsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
@@ -107,17 +134,14 @@ class DonationFormsAdminPage
             'isOptionBasedFormEditorEnabled' => OptionBasedFormEditor::isEnabled(),
             'locale' => Language::getLocale(),
             'newFormUrl' => FormBuilderRouteBuilder::makeCreateFormRoute()->getUrl(),
-            'swrConfig' => [
-                'revalidateOnFocus' => false
-            ],
         ];
+    }
 
-        EnqueueScript::make('give-admin-donation-forms', 'build/assets/dist/js/give-admin-donation-forms.js')
-            ->dependencies([RegisterListTableAssets::HANDLE])
-            ->loadInFooter()
-            ->registerTranslations()
-            ->registerLocalizeData('GiveDonationForms', $data)->enqueue();
-
+    /**
+     * @since TBD
+     */
+    private function enqueueStyles()
+    {
         wp_enqueue_style(
             'give-admin-ui-font',
             'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400..700&display=swap',
@@ -198,35 +222,6 @@ class DonationFormsAdminPage
 
             wp_enqueue_style('givewp-design-system-foundation');
         }
-    }
-
-    /**
-     * Get first page of results from REST API to display as initial table data
-     *
-     * @since 4.0.0 Add campaignId parameter on campaigns page
-     * @since 2.20.0
-     * @return array
-     */
-    private function preloadDonationForms()
-    {
-        $queryParameters = [
-            'page' => 1,
-            'perPage' => 30,
-
-        ];
-
-        if (CampaignsAdminPage::isShowingDetailsPage()) {
-            $queryParameters['campaignId'] = isset($_GET['id']) ? absint($_GET['id']) : null;
-        }
-
-        $request = WP_REST_Request::from_url(
-            add_query_arg(
-                $queryParameters,
-                $this->apiRoot
-            )
-        );
-
-        return rest_do_request($request)->get_data();
     }
 
     /**
