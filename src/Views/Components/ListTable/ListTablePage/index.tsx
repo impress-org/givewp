@@ -66,11 +66,6 @@ export const ShowConfirmModalContext = createContext(
 );
 
 /**
- * @deprecated TBD The list engine owns selection. Only the old table code, removed with it, reads this.
- */
-export const CheckboxContext = createContext(null);
-
-/**
  * The record id a legacy row action button carries in `data-actionid`.
  */
 const actionIdOf = (event: {target: EventTarget}) =>

@@ -1,35 +1,19 @@
-import useSWR from 'swr';
-import lagData from './hooks/lagData';
-import useFallbackAsInitial from '@givewp/components/ListTable/hooks/useFallbackAsInitial';
-
+/**
+ * Calls a list endpoint's actions (`/trash`, `/delete`, `/setStatus`, …) with the nonce of the screen's
+ * API settings. The list itself is fetched by `useListTableQuery`.
+ *
+ * @since TBD Keep only the request helper; the list engine fetches rows with SWR and `apiFetch`.
+ */
 export default class ListTableApi {
     private readonly apiRoot: string;
-    private controller: AbortController | null;
     private readonly headers: {'X-WP-Nonce': string; 'Content-Type': string};
-    private readonly swrOptions;
 
-    constructor({apiNonce, apiRoot, preload = null, swrConfig = {}}) {
-        this.controller = null;
+    constructor({apiNonce, apiRoot}: {apiNonce: string; apiRoot: string; [key: string]: unknown}) {
         this.apiRoot = apiRoot;
         this.headers = {
             'Content-Type': 'application/json',
             'X-WP-Nonce': apiNonce,
         };
-        this.swrOptions = {
-            use: [lagData],
-            ...swrConfig,
-            onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
-                //don't retry if we cancelled the initial request
-                if (error.name == 'AbortError') return;
-                if (retryCount >= 5) return;
-                const retryAfter = (retryCount + 1) * 500;
-                setTimeout(() => revalidate({retryCount}), retryAfter);
-            },
-        };
-        if (preload) {
-            this.swrOptions.fallbackData = preload;
-            this.swrOptions.use.push(useFallbackAsInitial);
-        }
     }
 
     fetchWithArgs = (endpoint, args, method = 'GET', signal = null) => {
@@ -49,38 +33,5 @@ export default class ListTableApi {
             }
             return res.json();
         });
-    };
-
-    fetcher = (params) => {
-        if (this.controller instanceof AbortController) this.controller.abort();
-        this.controller = new AbortController();
-        return this.fetchWithArgs('', params, 'GET', this.controller.signal);
-    };
-
-    // SWR Fetcher
-    useListTable = ({page, perPage, sortColumn, sortDirection, locale, testMode, ...filters}) => {
-        const {data, error, mutate, isValidating} = useSWR(
-            {
-                page,
-                perPage,
-                sortColumn,
-                sortDirection,
-                locale,
-                testMode,
-                ...filters,
-            },
-            this.fetcher,
-            this.swrOptions
-        );
-        return {data, error, mutate, isValidating};
-    };
-
-    useStats = (testMode) => {
-        const {data, error, mutate, isValidating} = useSWR(
-            {testMode},
-            (params) => this.fetchWithArgs('/stats', params, 'GET'),
-            this.swrOptions
-        );
-        return {data, error, mutate, isValidating};
     };
 }
