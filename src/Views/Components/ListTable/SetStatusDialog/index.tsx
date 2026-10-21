@@ -1,44 +1,31 @@
 import {useState} from 'react';
+import type {ReactNode} from 'react';
 import {__} from '@wordpress/i18n';
 import {Modal, SelectControl} from '@wordpress/components';
-import type ListTableApi from '@givewp/components/ListTable/api';
-import BulkActionConfirm from '@givewp/components/ListTable/BulkActionConfirm';
-import {getItemName} from '@givewp/components/ListTable/adapters/getItemName';
-import {normalizeActionResult} from '@givewp/components/ListTable/adapters/normalizeActionResult';
-import type {ListTableActionDialogProps} from '@givewp/components/ListTable/ListTablePage';
-
-/**
- * The statuses an admin can set from the list, in the order the old "Set To …" actions had.
- */
-const SETTABLE_STATUSES = [
-    'publish',
-    'pending',
-    'processing',
-    'refunded',
-    'revoked',
-    'failed',
-    'cancelled',
-    'abandoned',
-    'preapproval',
-];
+import type ListTableApi from '../api';
+import BulkActionConfirm from '../BulkActionConfirm';
+import {getItemName} from '../adapters/getItemName';
+import {normalizeActionResult} from '../adapters/normalizeActionResult';
+import type {ListTableActionDialogProps} from '../ListTablePage/types';
 
 const label = __('Set status', 'give');
 
 /**
  * @since TBD
  */
-export type SetDonationStatusDialogProps = ListTableActionDialogProps & {
+export type SetStatusDialogProps = ListTableActionDialogProps & {
     api: ListTableApi;
-    statuses: Record<string, string>;
+    statuses: Array<{value: string; label: string}>;
+    message: ReactNode;
 };
 
 /**
- * Sets one status on the chosen donations. Replaces the nine "Set To …" bulk actions, so the row
- * menu and the selection bar list one action instead of nine.
+ * Sets one status on the chosen records through the list endpoint's `/setStatus` action. Replaces a
+ * "Set To …" bulk action per status, so the row menu and the selection bar list one action.
  *
  * @since TBD
  */
-export default function SetDonationStatusDialog({
+export default function SetStatusDialog({
     items,
     onClose,
     refresh,
@@ -46,7 +33,8 @@ export default function SetDonationStatusDialog({
     clearSelection,
     api,
     statuses,
-}: SetDonationStatusDialogProps) {
+    message,
+}: SetStatusDialogProps) {
     const [status, setStatus] = useState('');
     const [isBusy, setIsBusy] = useState(false);
     const ids = items.map((item) => String(item.id));
@@ -77,15 +65,12 @@ export default function SetDonationStatusDialog({
             <BulkActionConfirm
                 message={
                     <>
-                        <p>{__('Set status for the following donations?', 'give')}</p>
+                        {message}
                         <SelectControl
                             label={__('Status', 'give')}
                             value={status}
                             onChange={setStatus}
-                            options={[
-                                {value: '', label: __('Choose a status', 'give'), disabled: true},
-                                ...SETTABLE_STATUSES.map((value) => ({value, label: statuses[value] ?? value})),
-                            ]}
+                            options={[{value: '', label: __('Choose a status', 'give'), disabled: true}, ...statuses]}
                         />
                     </>
                 }

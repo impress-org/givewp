@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
 import {donationRowActions, isDonationsTrashView} from './DonationRowActions';
-import SetDonationStatusDialog from './SetDonationStatusDialog';
+import SetStatusDialog from '@givewp/components/ListTable/SetStatusDialog';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import styles from './ListTable.module.scss';
@@ -73,6 +73,11 @@ const filters: Array<FilterConfig> = [
 ];
 
 /**
+ * The statuses an admin can set from the list, in the order the old "Set To …" actions had.
+ */
+const DONATION_STATUSES = ['publish', 'pending', 'processing', 'refunded', 'revoked', 'failed', 'cancelled', 'abandoned', 'preapproval'];
+
+/**
  * The Donations actions: the ones shared with the subscription details tab, plus "Set status" and
  * "Resend Email Receipts" for rows and selections.
  *
@@ -86,7 +91,15 @@ const rowActions: Array<ListTableRowAction> = [
         supportsBulk: true,
         isVisible: (data, parameters) => !isDonationsTrashView(parameters),
         Dialog: (props) => (
-            <SetDonationStatusDialog {...props} api={API} statuses={window.GiveDonations.donationStatuses ?? {}} />
+            <SetStatusDialog
+                {...props}
+                api={API}
+                message={<p>{__('Set status for the following donations?', 'give')}</p>}
+                statuses={DONATION_STATUSES.map((value) => ({
+                    value,
+                    label: window.GiveDonations.donationStatuses?.[value] ?? value,
+                }))}
+            />
         ),
     },
     {
