@@ -51,8 +51,9 @@ A modern list table has three parts:
    `Give\Framework\ListTable\ListTable`, declaring `ModelColumn` objects.
 2. **A REST endpoint** (`src/<Domain>/Endpoints/List*.php`) that runs the query, calls
    `$listTable->items($models)`, and returns rows.
-3. **A React page** (`src/Views/Components/ListTable/`) that fetches from the endpoint with SWR.
-   See its [README](../../src/Views/Components/ListTable/README.MD) for the component props.
+3. **A React page** (`src/Views/Components/ListTable/`) that renders the rows through the WordPress
+   list engine, `@wordpress/dataviews`. See [The React page](#the-react-page-dataviews) below and the
+   folder's [README](../../src/Views/Components/ListTable/README.MD).
 
 Donations, Donors, Subscriptions, Campaigns, Event Tickets and v2 Donation Forms each have their
 own set. The v2 forms list is a different, older system — see
@@ -219,6 +220,40 @@ expression over several (sorting the list by amount is still a full scan), and n
 aggregates that must touch every row; those remain the case for moving donations into their own
 table.
 
+## The React page: DataViews
+
+Every list screen renders through `ListTablePage`, which hands the rows to `@wordpress/dataviews`. The
+screen's settings stay the same shape (columns from `ModelColumn::toArray()`, filter settings, bulk
+actions); small pure functions in `ListTable/adapters/` turn them into DataViews fields, view and
+actions, and turn the view back into the endpoint's request parameters (`viewToParameters` is the
+only place that knows those names). Sorting, filtering, searching and paging stay on the server.
+
+- **Stock behavior inside the list.** Toolbar, filter chips, row menu, selection bar, loading state
+  and pagination are DataViews' own, as WordPress core uses them. Give adds the page header, stat
+  tiles, empty states, confirm bodies and action notices around it. Where the pinned DataViews lags
+  the current WordPress release, a short commented CSS rule in `DataViewsListTable/styles.scss`
+  matches the newer behavior (row checkboxes always visible).
+- **Version pin.** DataViews is bundled, not provided by WordPress, while the `@wordpress/components`
+  and other `wp-*` packages it uses come from the site. So the pin is the DataViews line the
+  **oldest supported** WordPress ships (`readme.txt` "Requires at least"), currently 10.1.x for 6.9.
+  A newer line needs script handles and components the floor release does not have. Move the pin
+  only when the floor moves.
+- **One shared chunk.** Webpack puts DataViews and the shared list code in `build/givewp-list-table.js`
+  (`splitChunks.cacheGroups.listTable`). It has no `.asset.php` dependencies of its own, so
+  `Give\Framework\ListTable\Actions\RegisterListTableAssets` registers the `givewp-list-table`
+  handle and every list screen's script depends on it. `bin/list-table-bundle-size.mjs` checks each
+  screen's JavaScript against the 100 KB gzip budget.
+- **Actions are data.** Screens pass `ListTableRowAction[]`: "Edit" (or "Restore" in a trash view) is
+  the inline action, the rest are in the row menu, and `supportsBulk` makes one action serve rows and
+  selections. DataViews lists every bulk action in each row's menu, so a separate bulk action for the
+  same job would show twice. An action with its own modal uses `Dialog`. Results go to the shared
+  notifications store: a snackbar for what changed, an error notice for what failed. Old-style
+  `bulkActions` configs and a row-actions render function still work through the adapters.
+- **Add-on bulk actions.** `window.GiveDonations.addonsBulkActions` (localized as `[]` and filled by
+  add-ons) is read on every list screen and appended to the screen's actions.
+- **No preloaded rows.** The list fetches its own first page; do not localize rows into the page (see
+  [pii.md](pii.md)).
+
 ## Checklist for a new column
 
 - Does it need data beyond what the model already loaded? → extend the endpoint's bulk fetch and
@@ -235,4 +270,5 @@ table.
 - `src/Framework/ListTable/` — `ListTable`, `ModelColumn`, and the `Columns`, `IsFilterable`,
   `ListTableData` concerns
 - `src/Views/Components/ListTable/` — the React side ([README](../../src/Views/Components/ListTable/README.MD))
+- `src/Framework/ListTable/Actions/RegisterListTableAssets.php` — the shared `givewp-list-table` script handle
 - `src/Framework/QueryBuilder/` — what the endpoints build queries with ([README](../../src/Framework/QueryBuilder/README.md))
