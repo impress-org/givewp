@@ -523,4 +523,78 @@ class DonorRouteUpdateTest extends RestApiTestCase
         $this->assertEmpty($updatedDonor->additionalEmails);
         $this->assertEquals('5551234567', $updatedDonor->phone);
     }
+
+    /**
+     * @since TBD
+     */
+    public function testNonAdminCannotSetPrimaryEmailNotOnDonorRecord()
+    {
+        $user = $this->factory()->user->create([
+            'role' => 'subscriber',
+            'user_login' => 'testPrimaryEmailFilter',
+            'user_email' => 'testPrimaryEmailFilter@test.com',
+        ]);
+        wp_set_current_user($user);
+
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create([
+            'userId' => $user,
+            'email' => 'primary@test.com',
+            'additionalEmails' => ['existing@test.com'],
+        ]);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
+        $request = new WP_REST_Request('PATCH', $route);
+        $request->set_body_params([
+            'email' => 'newemail@test.com',
+            'phone' => '5551234567',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(200, $response->get_status());
+        $data = $response->get_data();
+
+        $this->assertEquals('primary@test.com', $data['email']);
+        $this->assertEquals('5551234567', $data['phone']);
+
+        $updatedDonor = Donor::find($donor->id);
+        $this->assertEquals('primary@test.com', $updatedDonor->email);
+        $this->assertEquals(['existing@test.com'], $updatedDonor->additionalEmails);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testNonAdminCanSetExistingAdditionalEmailAsPrimaryEmail()
+    {
+        $user = $this->factory()->user->create([
+            'role' => 'subscriber',
+            'user_login' => 'testPrimaryEmailSwap',
+            'user_email' => 'testPrimaryEmailSwap@test.com',
+        ]);
+        wp_set_current_user($user);
+
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create([
+            'userId' => $user,
+            'email' => 'primary@test.com',
+            'additionalEmails' => ['existing@test.com'],
+        ]);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
+        $request = new WP_REST_Request('PATCH', $route);
+        $request->set_body_params([
+            'email' => 'existing@test.com',
+            'additionalEmails' => ['primary@test.com'],
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(200, $response->get_status());
+
+        $updatedDonor = Donor::find($donor->id);
+        $this->assertEquals('existing@test.com', $updatedDonor->email);
+        $this->assertEquals(['primary@test.com'], $updatedDonor->additionalEmails);
+    }
 }
