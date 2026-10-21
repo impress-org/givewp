@@ -19,12 +19,40 @@ class DonationFormViewControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    private const DESIGN_SYSTEM_VERSION_FILE = GIVE_PLUGIN_DIR . 'build/assets/dist/css/design-system/version';
+
+    /**
+     * @var bool Whether setUp() wrote the design system version file.
+     */
+    private $createdVersionFile = false;
+
+    /**
+     * The form render reads the design system version from the asset build, which the PHP test
+     * workflows do not run. A placeholder is written only when no build is present.
+     *
+     * @since TBD
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        if (!file_exists(self::DESIGN_SYSTEM_VERSION_FILE)) {
+            wp_mkdir_p(dirname(self::DESIGN_SYSTEM_VERSION_FILE));
+            file_put_contents(self::DESIGN_SYSTEM_VERSION_FILE, '0.0.0');
+            $this->createdVersionFile = true;
+        }
+    }
+
     /**
      * @since TBD
      */
     public function tearDown(): void
     {
         wp_set_current_user(0);
+
+        if ($this->createdVersionFile) {
+            unlink(self::DESIGN_SYSTEM_VERSION_FILE);
+        }
 
         parent::tearDown();
     }
