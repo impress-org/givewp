@@ -38,8 +38,8 @@ test.describe('Campaigns', () => {
 
         await expect(formRow).toContainText('Published');
 
-        const editHref = await formRow.getByRole('link', {name: 'Edit'}).getAttribute('href');
-        const formId = Number(new URL(editHref).searchParams.get('post'));
+        // The row's "Edit" is an action button now, so the id comes from the row's ID badge.
+        const formId = Number(await formRow.locator('.idBadge').textContent());
 
         expect(formId, `Campaign ${campaignId} should list a default form`).toBeTruthy();
 
