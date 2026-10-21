@@ -5,6 +5,14 @@
     border-radius: var(--givewp-rounded-8);
 }
 
+// DataViews scrolls inside its own box, with the header row and the footer (pagination and bulk
+// actions) sticky to that box. The Site Editor gives the box the window's height; without a height
+// the box never scrolls and the footer ends up below the last row. Cap it at the window height so
+// the footer stays in view.
+.givewp-list-table .dataviews-wrapper {
+    max-height: calc(100vh - var(--wp-admin--admin-bar--height, 32px));
+}
+
 // Row checkboxes are always visible, as in the DataViews that WordPress 7.x ships. The pinned
 // 10.1.7 (WordPress 6.9 line) hides them until the row is hovered. Remove this rule when the pin
 // moves to a version with the newer behavior.

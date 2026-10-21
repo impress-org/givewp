@@ -228,8 +228,9 @@
         }
     }
 
+    // A fixed width, so every bar in the column has the same length whatever sits next to the amount.
     .goalProgress {
-        width: 95%;
+        width: 9rem;
         height: 0.5rem;
         position: relative;
         background: rgba(238, 238, 238);
@@ -237,11 +238,31 @@
         overflow: hidden;
         margin: 0.3125rem 0 0.125rem;
 
-        &--achieved {
-            position: absolute;
+        // The amount line, with the "Achieved" pill next to it.
+        &__amount {
+            align-items: center;
             display: flex;
-            font-size: 0.8rem;
-            padding-block: 6px;
+            gap: var(--givewp-spacing-2);
+            white-space: nowrap;
+        }
+
+        &--achieved {
+            align-items: center;
+            background-color: var(--givewp-green-100);
+            border-radius: 0.75rem;
+            color: var(--givewp-green-900);
+            display: inline-flex;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            gap: 0.1875rem;
+            line-height: 1.125rem;
+            padding: 0 var(--givewp-spacing-2);
+
+            img {
+                flex-shrink: 0;
+                height: 0.625rem;
+                width: 0.625rem;
+            }
         }
 
         & > span {
@@ -267,21 +288,9 @@
     }
 }
 
+// Plain text, like the other cells. The class name stays because the e2e tests find rows by it.
 .idBadge {
-    align-items: center;
-    background-color: var(--givewp-neutral-50);
-    border-radius: var(--givewp-rounded-8);
-    border: 1px solid var(--givewp-neutral-200);
-    color: var(--givewp-neutral-700);
-    display: inline-flex;
-    flex-grow: 0;
-    flex-shrink: 0;
-    font-size: 0.875rem;
-    font-weight: 600;
-    line-height: 1.25rem;
-    padding: calc(0.5 * var(--givewp-spacing-1)) var(--givewp-spacing-2);
-    text-align: center;
-    width: fit-content;
+    font-variant-numeric: tabular-nums;
 
     &::before {
         content: '#';
