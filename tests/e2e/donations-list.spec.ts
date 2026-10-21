@@ -43,11 +43,12 @@ test.describe('Donations list', () => {
         // A donation in a campaign names the campaign as well as the form, and each links to its own screen.
         const campaignRow = rowById(page, inCampaign);
         await expect(campaignRow).not.toContainText('No campaign');
-        await expect(campaignRow.getByRole('link', {name: 'Visit campaign page'})).toHaveAttribute(
+        await expect(campaignRow.locator('a.campaignLink')).toHaveText(campaign.title);
+        await expect(campaignRow.locator('a.campaignLink')).toHaveAttribute(
             'href',
             new RegExp(`page=give-campaigns&id=${campaign.campaignId}`)
         );
-        await expect(campaignRow.getByRole('link', {name: campaign.title})).toHaveAttribute(
+        await expect(campaignRow.locator('a:not(.campaignLink)', {hasText: campaign.title})).toHaveAttribute(
             'href',
             new RegExp(`post\\.php\\?post=${campaign.formId}&action=edit`)
         );

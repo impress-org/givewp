@@ -39,6 +39,7 @@ class DonorColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Drop the aria-label so the link is named by its visible text.
      * @since 2.24.0
      *
      * @inheritDoc
@@ -48,9 +49,8 @@ class DonorColumn extends ModelColumn
     public function getCellValue($model): string
     {
         return sprintf(
-            '<a href="%s" aria-label="%s">%s</a>',
+            '<a href="%s">%s</a>',
             admin_url("edit.php?post_type=give_forms&page=give-donors&view=overview&id=$model->donorId"),
-            __('View donor information', 'give'),
             trim("$model->firstName $model->lastName")
         );
     }

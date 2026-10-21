@@ -192,41 +192,19 @@
         }
     }
 
+    // The name link takes the stock DataViews title style; the email is a quieter second line.
     .donorInformation {
-        position: relative;
         display: flex;
         flex-flow: column;
-        gap: var(--givewp-spacing-1);
-
-        & > a {
-            color: #2271b1;
-            font-size: 1rem;
-            font-weight: 600;
-            line-height: 1.5;
-        }
+        min-width: 0;
 
         &__email {
-            font-size: 0.875rem;
-            line-height: 1.43;
-            max-width: calc(100% - 4rem);
-            min-width: 0;
+            color: #757575;
+            font-weight: 400;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-    }
-
-    .giveDonationFormsLink {
-        color: #2271b1;
-        display: block;
-        font-size: 1rem;
-        font-weight: 700;
-        max-width: 32ch;
-        overflow: hidden;
-        position: relative;
-        text-decoration: none;
-        text-overflow: ellipsis;
-        white-space: nowrap;
     }
 
     .shortcode {
