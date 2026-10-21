@@ -1,0 +1,4 @@
+significance: patch
+type: changed
+entry: Avoid serializing submitted donation form data in error logs.
+timestamp: 2026-10-10T08:33:30.313Z
