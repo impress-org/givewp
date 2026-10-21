@@ -1,0 +1,9 @@
+// The product recommendation renders a table row; until spec 4 moves it out of the table, it sits in
+// a one-row table above the list.
+.givewp-list-table-recommendation {
+    width: 100%;
+    margin-bottom: var(--givewp-spacing-4);
+    border-collapse: collapse;
+    background-color: var(--givewp-shades-white);
+    border-radius: var(--givewp-rounded-8);
+}

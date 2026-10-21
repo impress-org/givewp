@@ -21,6 +21,8 @@ const jsdomEnvironment = require.resolve('jest-environment-jsdom', {
 module.exports = {
     ...defaultConfig,
     testEnvironment: jsdomEnvironment,
+    // jsdom picks packages' browser builds, and some of those (uuid, used by @wordpress/components) are ES modules.
+    testEnvironmentOptions: {customExportConditions: ['node', 'node-addons']},
     roots: ['<rootDir>/src'],
     // The Form Builder test predates this config, was never run, and needs the builder's window data.
     testPathIgnorePatterns: ['/node_modules/', '<rootDir>/src/FormBuilder/'],
