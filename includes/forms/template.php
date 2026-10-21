@@ -1025,7 +1025,7 @@ function give_user_info_fields( $form_id ) {
                      *
                      * @since 2.4.1
                      */
-                    echo esc_html( apply_filters('give_anonymous_donation_checkbox_label',
+                    echo wp_kses_post( apply_filters('give_anonymous_donation_checkbox_label',
                         __('Make this an anonymous donation.', 'give'), $form_id) );
 
                     if ( give_field_is_required( 'give_comment', $form_id ) ) {
@@ -1936,7 +1936,7 @@ function give_terms_agreement( $form_id ) {
 
 		<input name="give_agree_to_terms" class="required" type="checkbox"
 			   id="give_agree_to_terms-<?php echo (int) $form_id; ?>" value="1" required aria-required="true"/>
-		<label for="give_agree_to_terms-<?php echo (int) $form_id; ?>"><?php echo esc_html( $label ); ?></label>
+		<label for="give_agree_to_terms-<?php echo (int) $form_id; ?>"><?php echo wp_kses_post( $label ); ?></label>
 
 	</fieldset>
 	<?php
