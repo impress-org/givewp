@@ -3,6 +3,7 @@
 namespace Give\EventTickets\Actions;
 
 use Give\EventTickets\ListTable\EventTicketsListTable;
+use Give\Framework\ListTable\Actions\RegisterListTableAssets;
 use Give\Helpers\EnqueueScript;
 
 class EnqueueListTableScripts
@@ -19,6 +20,7 @@ class EnqueueListTableScripts
         ];
 
         EnqueueScript::make('give-admin-event-tickets', 'build/assets/dist/js/give-admin-event-tickets.js')
+            ->dependencies([RegisterListTableAssets::HANDLE])
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveEventTickets', $data)->enqueue();
