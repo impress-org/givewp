@@ -965,7 +965,7 @@ add_action( 'wp_ajax_give_subscription_import', 'give_subscription_import_callba
  * Load core settings import ajax callback
  * Fire when importing from JSON start
  *
- * @since TBD Require a valid JSON array before replacing the stored settings.
+ * @since 4.19.0.1 Require a valid JSON array before replacing the stored settings.
  * @since  1.8.17
  */
 
@@ -1218,7 +1218,7 @@ function give_get_donor_safe_user_roles() {
 /**
  * Ajax handle for donor address.
  *
- * @since TBD Require the donor edit capability and a nonce issued for the donor being changed.
+ * @since 4.19.0.1 Require the donor edit capability and a nonce issued for the donor being changed.
  * @since 2.0
  * @since 2.11.0 decode url before parsing and sanitizing url when set $post.
  * @since 4.9.0 rename function - PHP 8 compatibility
@@ -1484,7 +1484,7 @@ add_action( 'personal_options_update', 'give_update_donor_name_on_user_update', 
  * Updates the email address of a donor record when the email on a user is updated
  * Note: for internal use only.
  *
- * @since TBD Only sync an email that is already on the donor record for non-admin callers.
+ * @since 4.19.0.1 Only sync an email that is already on the donor record for non-admin callers.
  * @since  1.4.3
  * @access public
  *

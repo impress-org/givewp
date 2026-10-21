@@ -525,7 +525,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testNonAdminCannotSetPrimaryEmailNotOnDonorRecord()
     {
@@ -562,7 +562,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testNonAdminCanSetExistingAdditionalEmailAsPrimaryEmail()
     {

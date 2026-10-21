@@ -12,7 +12,7 @@ use Money\Currency;
  * Replaces the generic stellar validation library currency rule to ensure consistency
  * with GiveWP's configured currencies and filters.
  *
- * @since TBD Require the currency to be one of the form's supported currencies when they are provided.
+ * @since 4.19.0.1 Require the currency to be one of the form's supported currencies when they are provided.
  * @since 4.10.0
  */
 class CurrencyRule implements ValidationRule
@@ -23,7 +23,7 @@ class CurrencyRule implements ValidationRule
     protected $allowedCurrencies;
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      *
      * @param string[] $allowedCurrencies Currency codes the form accepts. An empty array applies no form-level restriction.
      */
@@ -55,7 +55,7 @@ class CurrencyRule implements ValidationRule
      * Uses give_get_currencies_list() to get the current supported currencies
      * and provides clear error messages with valid currency options.
      *
-     * @since TBD Require the currency to be one of the form's supported currencies when they are provided.
+     * @since 4.19.0.1 Require the currency to be one of the form's supported currencies when they are provided.
      * @since 4.10.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)

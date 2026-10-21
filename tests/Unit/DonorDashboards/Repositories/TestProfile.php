@@ -198,7 +198,7 @@ final class TestProfile extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testUpdateShouldIgnorePrimaryEmailNotOnDonorRecord(): void
     {
@@ -228,7 +228,7 @@ final class TestProfile extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testUpdateShouldNotAllowRejectedPrimaryEmailAsAdditionalEmail(): void
     {

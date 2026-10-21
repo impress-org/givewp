@@ -7,14 +7,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.19.0.1
  */
 final class DonorEmailSyncOnUserUpdateTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function setUp(): void
     {
@@ -26,7 +26,7 @@ final class DonorEmailSyncOnUserUpdateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testNonAdminCannotSyncNewEmailToDonor(): void
     {
@@ -54,7 +54,7 @@ final class DonorEmailSyncOnUserUpdateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testNonAdminCanSyncExistingAdditionalEmailToDonor(): void
     {
@@ -83,7 +83,7 @@ final class DonorEmailSyncOnUserUpdateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testAdminCanSyncNewEmailToDonor(): void
     {

@@ -101,7 +101,7 @@ class DonateFormRouteDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testValidatedShouldRejectCurrencyThatDoesNotMatchFormCurrency()
     {
@@ -125,7 +125,7 @@ class DonateFormRouteDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testValidatedShouldAcceptCurrencyEnabledByCurrencySwitcher(): void
     {
@@ -537,7 +537,7 @@ class DonateFormRouteDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     private function donationRequestData(DonationForm $form, string $currency): array
     {

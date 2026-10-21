@@ -101,7 +101,7 @@ class DonorsQuery
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function whereDonorsAreNotAnonymous(): self
     {

@@ -109,7 +109,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Get list of donors.
      *
-     * @since TBD Exclude anonymous donors when the with-donations filter is disabled.
+     * @since 4.19.0.1 Exclude anonymous donors when the with-donations filter is disabled.
      * @since 4.14.0 Use Headers::addPagination() helper for pagination headers
      * @since 4.8.0 Add support for search parameter
      * @since 4.0.0
@@ -192,7 +192,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Update a single donor.
      *
-     * @since TBD Return an error when a non-admin caller sets a primary email that is not on the donor record.
+     * @since 4.19.0.1 Return an error when a non-admin caller sets a primary email that is not on the donor record.
      * @since 4.17.0 Non-admin callers may no longer add unverified email addresses.
      * @since 4.16.6 Skip readonly schema properties when applying PATCH updates.
      * @since 4.8.0 Update donor name when firstName or lastName is updated

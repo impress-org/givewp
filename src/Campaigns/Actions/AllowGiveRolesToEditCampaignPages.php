@@ -83,7 +83,7 @@ class AllowGiveRolesToEditCampaignPages
      *
      * Hooked to 'user_has_cap' filter.
      *
-     * @since TBD Grant page capabilities based on the page actually being edited.
+     * @since 4.19.0.1 Grant page capabilities based on the page actually being edited.
      * @since 4.14.0
      */
     public function grantPublishCapability(array $allcaps, array $caps, array $args, WP_User $user): array
@@ -169,7 +169,7 @@ class AllowGiveRolesToEditCampaignPages
      * resolved ID is cached, so the grant is not locked out when an early
      * capability check runs before the edit context exists.
      *
-     * @since TBD Resolve the edited page from the request context instead of the query string, caching only resolved IDs.
+     * @since 4.19.0.1 Resolve the edited page from the request context instead of the query string, caching only resolved IDs.
      * @since 4.14.0
      */
     private function getCurrentEditingPostId(): ?int

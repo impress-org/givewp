@@ -204,7 +204,7 @@ class TestCurrencyRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testCurrencyRulePassesForAnyAllowedCurrency(): void
     {
@@ -215,7 +215,7 @@ class TestCurrencyRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testCurrencyRuleFailsForCurrencyOutsideAllowedSet(): void
     {
@@ -225,7 +225,7 @@ class TestCurrencyRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testCurrencyRuleAllowsAnySupportedCurrencyWhenNoAllowedSetIsProvided(): void
     {
@@ -236,7 +236,7 @@ class TestCurrencyRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testCurrencyRuleAllowedSetErrorMessage(): void
     {

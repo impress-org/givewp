@@ -46,7 +46,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     /**
      * Clear the static caches between tests.
      *
-     * @since TBD Reset the resolved post ID statics along with the campaign page cache.
+     * @since 4.19.0.1 Reset the resolved post ID statics along with the campaign page cache.
      */
     private function clearStaticCache(): void
     {
@@ -185,7 +185,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @since TBD Establish the edit context with the global post instead of the query string.
+     * @since 4.19.0.1 Establish the edit context with the global post instead of the query string.
      * @since 4.14.0
      */
     public function testGrantPublishCapabilityGrantsCapsForCampaignPage(): void
@@ -216,7 +216,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @since TBD Establish the edit context with the global post instead of the query string.
+     * @since 4.19.0.1 Establish the edit context with the global post instead of the query string.
      * @since 4.14.0
      */
     public function testGrantPublishCapabilityGrantsMultipleCaps(): void
@@ -248,7 +248,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @since TBD Establish the edit context with the global post instead of the query string.
+     * @since 4.19.0.1 Establish the edit context with the global post instead of the query string.
      * @since 4.14.0
      */
     public function testGrantPublishCapabilityDoesNotGrantCapsForNonCampaignPage(): void
@@ -278,7 +278,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @since TBD Establish the edit context with the global post instead of the query string.
+     * @since 4.19.0.1 Establish the edit context with the global post instead of the query string.
      * @since 4.14.0
      */
     public function testGrantPublishCapabilityDoesNotGrantCapsWhenUserLacksEditGiveFormsCapability(): void
@@ -313,7 +313,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
      * route or the global $post), never from a post ID in the query string —
      * otherwise a request could attach the grant to a page it is not editing.
      *
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testGrantPublishCapabilityDoesNotGrantCapsFromQueryStringPostId(): void
     {
@@ -348,7 +348,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
      * global $post must not lock in a missing resolution for the whole request —
      * the grant still applies once the edit context appears.
      *
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testGrantPublishCapabilityResolvesPageIdWhenContextAppearsLater(): void
     {

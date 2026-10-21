@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.19.0
+Stable tag: 4.19.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,16 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 4.19.0.1: October 22nd, 2026 =
+* Security: Improved donation currency validation so the submitted currency must be supported by the form, including currencies enabled by the Currency Switcher. Reported by Shirshak.
+* Security: Enhanced security for the donation form view. Reported by vuxvinh.
+* Security: Improved validation of donor profile e-mail changes. Reported by Kaveesha Nirmal.
+* Security: Improved validation of the core settings import. Reported by Karthik Ramakrishnan.
+* Security: Added additional validation to donation form template appearance settings. Reported by Karthik Ramakrishnan.
+* Security: Determine the page being edited from the current request context before granting page capabilities. Reported by Karthik Ramakrishnan.
+* Security: Added additional validation to donor address management. Reported by Hariom Singh.
+* Security: Improved anonymous donor filtering in the donor list. Reported by Vũ Quang Huy.
+
 = 4.19.0: October 13th, 2026 =
 * Feature: Added the ability to create and edit donation forms without a campaign, and brought back the Forms list with a Campaign column, a "No campaign" filter, and a link-to-campaign action
 * Feature: Added a campaign action on the Forms screen to assign a form to a campaign, move it to another one, or remove it from its campaign

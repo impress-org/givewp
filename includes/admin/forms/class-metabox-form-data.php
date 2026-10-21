@@ -1095,7 +1095,7 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Save form template setting handler
 	 *
-	 * @since TBD Sanitize colour-picker settings as hex colours when saving.
+	 * @since 4.19.0.1 Sanitize colour-picker settings as hex colours when saving.
 	 * @since 4.16.2 Normalize file field values as URLs when saving form template settings.
 	 *
 	 * @param string $meta_key

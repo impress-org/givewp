@@ -5,12 +5,12 @@ namespace Give\Tests\Unit\Views\Form\Templates\Classic;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.19.0.1
  */
 final class LoadingViewTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testPrimaryColorIsEscapedForTheStyleAttribute(): void
     {
@@ -29,7 +29,7 @@ final class LoadingViewTest extends TestCase
      * Render the Classic loading view with the given primary_color. The view reads $options
      * from local scope, so it is required under output buffering with a crafted array.
      *
-     * @since TBD
+     * @since 4.19.0.1
      */
     private function renderView(string $primaryColor): string
     {

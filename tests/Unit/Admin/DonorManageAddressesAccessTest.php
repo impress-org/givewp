@@ -12,7 +12,7 @@ use WPDieException;
  * The donor_manage_addresses AJAX handler must only change a donor's addresses for a user who holds
  * the donor-edit capability and sends a nonce issued for that donor.
  *
- * @since TBD
+ * @since 4.19.0.1
  *
  * @covers ::give_ajax_donor_manage_addresses
  */
@@ -41,7 +41,7 @@ final class DonorManageAddressesAccessTest extends TestCase
     private $editorUserId;
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function setUp(): void
     {
@@ -78,7 +78,7 @@ final class DonorManageAddressesAccessTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function tearDown(): void
     {
@@ -90,7 +90,7 @@ final class DonorManageAddressesAccessTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testViewOnlyUserCannotAddAddress(): void
     {
@@ -103,7 +103,7 @@ final class DonorManageAddressesAccessTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testViewOnlyUserCannotUpdateAddress(): void
     {
@@ -123,7 +123,7 @@ final class DonorManageAddressesAccessTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testViewOnlyUserCannotRemoveAddress(): void
     {
@@ -139,7 +139,7 @@ final class DonorManageAddressesAccessTest extends TestCase
     /**
      * A nonce issued for one donor's page is not accepted for another donor.
      *
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testNonceForOneDonorIsRejectedForAnotherDonor(): void
     {
@@ -152,7 +152,7 @@ final class DonorManageAddressesAccessTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testInvalidNonceIsRejected(): void
     {
@@ -165,7 +165,7 @@ final class DonorManageAddressesAccessTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testDonorEditorCanAddUpdateAndRemoveAddress(): void
     {
@@ -197,7 +197,7 @@ final class DonorManageAddressesAccessTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     private function nonceFor(int $donorId): string
     {
@@ -205,7 +205,7 @@ final class DonorManageAddressesAccessTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      *
      * @return array{line1: string, line2: string, city: string, state: string, zip: string, country: string}
      */
@@ -222,7 +222,7 @@ final class DonorManageAddressesAccessTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      *
      * @return array{line1: string, line2: string, city: string, state: string, zip: string, country: string}
      */
@@ -235,7 +235,7 @@ final class DonorManageAddressesAccessTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      *
      * @return array<int, array<string, string>>
      */
@@ -250,7 +250,7 @@ final class DonorManageAddressesAccessTest extends TestCase
      * Runs the handler with a request shaped like the one the donor screen sends and returns the
      * decoded JSON response.
      *
-     * @since TBD
+     * @since 4.19.0.1
      *
      * @param array<string, string> $address
      *

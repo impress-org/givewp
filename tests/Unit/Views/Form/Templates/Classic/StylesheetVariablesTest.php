@@ -5,12 +5,12 @@ namespace Give\Tests\Unit\Views\Form\Templates\Classic;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.19.0.1
  */
 final class StylesheetVariablesTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testPrimaryColorIsSanitizedAsAHexColor(): void
     {
@@ -22,7 +22,7 @@ final class StylesheetVariablesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testValidHexColorIsKept(): void
     {
@@ -35,7 +35,7 @@ final class StylesheetVariablesTest extends TestCase
      * Render the Classic stylesheet-variables partial with the given primary_color. The partial
      * reads its values from local scope, so it is required under output buffering.
      *
-     * @since TBD
+     * @since 4.19.0.1
      */
     private function renderView(string $primaryColor): string
     {

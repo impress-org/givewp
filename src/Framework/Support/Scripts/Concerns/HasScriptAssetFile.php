@@ -28,7 +28,7 @@ trait HasScriptAssetFile {
      *
      * @return array{dependencies: array<string>, version: int|string}
      *
-     * @since TBD Fall back to the plugin version when the asset file is missing.
+     * @since 4.19.0.1 Fall back to the plugin version when the asset file is missing.
      * @since 3.0.0
      */
     protected function getScriptAsset(string $path): array

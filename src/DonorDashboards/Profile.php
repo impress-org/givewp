@@ -34,7 +34,7 @@ class Profile
     /**
      * Handles updating relevant profile fields in donor database and meta database
      *
-     * @since TBD The primary email can only change to an email already on the donor record.
+     * @since 4.19.0.1 The primary email can only change to an email already on the donor record.
      * @since 4.17.0 Logged-in donors can no longer add unverified email addresses.
      * @since 2.27.3 Use Donor model to update data used by webhooks addon to prevent multiple events creation
      * @since      2.10.0

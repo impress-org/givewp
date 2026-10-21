@@ -5,12 +5,12 @@ namespace Give\Tests\Unit\Views\Form\Templates\Sequoia;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.19.0.1
  */
 final class LoadingViewTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testPrimaryColorIsEscapedForTheStyleAttribute(): void
     {
@@ -28,7 +28,7 @@ final class LoadingViewTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     private function createFormWithPrimaryColor(string $primaryColor): int
     {
@@ -54,7 +54,7 @@ final class LoadingViewTest extends TestCase
      * Render the Sequoia loading view for the given form. The view reads $formId from local
      * scope, so it is required under output buffering.
      *
-     * @since TBD
+     * @since 4.19.0.1
      */
     private function renderView(int $formId): string
     {

@@ -8,7 +8,7 @@ use WPDieException;
 /**
  * Covers the file name validation added to the core settings import.
  *
- * @since TBD
+ * @since 4.19.0.1
  *
  * @covers ::give_get_core_settings_json
  * @covers ::give_core_settings_import_callback
@@ -21,7 +21,7 @@ final class CoreSettingsImportPathTest extends TestCase
     private $uploadDir;
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function setUp(): void
     {
@@ -55,7 +55,7 @@ final class CoreSettingsImportPathTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function tearDown(): void
     {
@@ -73,7 +73,7 @@ final class CoreSettingsImportPathTest extends TestCase
     /**
      * A bare file name inside the uploads directory is still readable.
      *
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testReadsFileInsideUploads(): void
     {
@@ -91,7 +91,7 @@ final class CoreSettingsImportPathTest extends TestCase
     /**
      * A file name containing a path separator is refused.
      *
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testRejectsFileNameWithTraversal(): void
     {
@@ -109,7 +109,7 @@ final class CoreSettingsImportPathTest extends TestCase
     /**
      * An empty or non-string file name is refused.
      *
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testRejectsEmptyFileName(): void
     {
@@ -120,7 +120,7 @@ final class CoreSettingsImportPathTest extends TestCase
     /**
      * Importing a file that does not decode to an array leaves the stored settings untouched.
      *
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testNonJsonImportDoesNotReplaceSettings(): void
     {

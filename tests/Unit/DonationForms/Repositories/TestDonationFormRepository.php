@@ -415,7 +415,7 @@ final class TestDonationFormRepository extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testGetFormSchemaFromBlocksAllowsCurrencySwitcherCurrencies(): void
     {
@@ -440,7 +440,7 @@ final class TestDonationFormRepository extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.1
      */
     public function testGetFormSchemaFromBlocksRejectsCurrencyNotOfferedByTheForm(): void
     {

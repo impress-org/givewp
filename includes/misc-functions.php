@@ -1543,7 +1543,7 @@ function give_get_wp_upload_dir() {
  * @param string $file_name filename of the json file that is being uploaded
  *
  * @return string|bool $file_contents File content
- * @since TBD Reject file names that resolve outside the uploads directory.
+ * @since 4.19.0.1 Reject file names that resolve outside the uploads directory.
  * @since 1.8.17
  */
 function give_get_core_settings_json( $file_name ) {

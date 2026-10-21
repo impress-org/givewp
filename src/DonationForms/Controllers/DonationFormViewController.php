@@ -13,7 +13,7 @@ class DonationFormViewController
     /**
      * This renders the donation form view.
      *
-     * @since TBD Require a published form unless the current user can edit forms.
+     * @since 4.19.0.1 Require a published form unless the current user can edit forms.
      * @since 4.14.3 Prevent triggering a fatal error due to form not found.
      * @since 3.0.0
      */
@@ -43,7 +43,7 @@ class DonationFormViewController
     /**
      * This renders the donation form preview
      *
-     * @since TBD Require a published form unless the current user can edit forms.
+     * @since 4.19.0.1 Require a published form unless the current user can edit forms.
      * @since 4.14.3 Prevent triggering a fatal error due to form not found.
      * @since 3.0.0
      */
@@ -74,7 +74,7 @@ class DonationFormViewController
     /**
      * Whether the current request may render this form.
      *
-     * @since TBD
+     * @since 4.19.0.1
      */
     private function canView(DonationForm $donationForm): bool
     {

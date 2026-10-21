@@ -439,7 +439,7 @@ class DonationFormRepository
     }
 
     /**
-     * @since TBD Build the currency rule from the form's supported currencies.
+     * @since 4.19.0.1 Build the currency rule from the form's supported currencies.
      * @since 3.0.0
      * @throws NameCollisionException
      */
