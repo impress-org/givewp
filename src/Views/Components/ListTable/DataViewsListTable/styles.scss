@@ -1,0 +1,13 @@
+@import '~@wordpress/dataviews/build-style/style.css';
+
+.givewp-list-table {
+    background-color: var(--givewp-shades-white);
+    border-radius: var(--givewp-rounded-8);
+}
+
+// Row checkboxes are always visible, as in the DataViews that WordPress 7.x ships. The pinned
+// 10.1.7 (WordPress 6.9 line) hides them until the row is hovered. Remove this rule when the pin
+// moves to a version with the newer behavior.
+.givewp-list-table .dataviews-view-table tbody .components-checkbox-control__input.components-checkbox-control__input {
+    opacity: 1;
+}
