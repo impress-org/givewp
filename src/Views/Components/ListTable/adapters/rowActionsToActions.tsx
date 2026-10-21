@@ -13,45 +13,51 @@ import {normalizeActionResult} from './normalizeActionResult';
 export type RowActionContext = {
     report: ReportOutcome;
     refresh: () => Promise<unknown>;
+    clearSelection: () => void;
 };
 
 /**
- * Runs a row action, reports what it did and reloads the list.
+ * Runs an action, reports what it did and reloads the list. A selection that fully succeeded clears.
  */
-async function runRowAction(rowAction: ListTableRowAction, item: ListTableItem, context: RowActionContext) {
-    const ids = [item.id];
+async function runRowAction(rowAction: ListTableRowAction, items: ListTableItem[], context: RowActionContext) {
+    const ids = items.map((item) => item.id);
     let outcome;
 
     try {
-        outcome = normalizeActionResult(await rowAction.run(item), ids);
+        outcome = normalizeActionResult(await rowAction.run(items), ids);
     } catch (error) {
         outcome = normalizeActionResult(error, ids);
     }
 
     context.report(outcome, rowAction.label);
+
+    if (outcome.failed === 0 && !outcome.notice) {
+        context.clearSelection();
+    }
+
     await context.refresh();
 }
 
 type RowActionModalProps = {
     rowAction: ListTableRowAction;
-    item: ListTableItem;
+    items: ListTableItem[];
     closeModal?: () => void;
     context: RowActionContext;
 };
 
-function RowActionModal({rowAction, item, closeModal, context}: RowActionModalProps) {
+function RowActionModal({rowAction, items, closeModal, context}: RowActionModalProps) {
     const [isBusy, setIsBusy] = useState(false);
 
     const onConfirm = async () => {
         setIsBusy(true);
         closeModal?.();
-        await runRowAction(rowAction, item, context);
+        await runRowAction(rowAction, items, context);
     };
 
     return (
         <BulkActionConfirm
-            message={rowAction.confirm.body(item)}
-            items={[{id: item.id, name: getItemName(item)}]}
+            message={rowAction.confirm.body(items)}
+            items={items.map((item) => ({id: item.id, name: getItemName(item)}))}
             confirmLabel={rowAction.confirm.confirmLabel}
             variant={rowAction.isDestructive ? 'danger' : 'normal'}
             isBusy={isBusy}
@@ -62,7 +68,7 @@ function RowActionModal({rowAction, item, closeModal, context}: RowActionModalPr
 }
 
 /**
- * Maps typed row actions to DataViews actions. A row action never runs on a selection.
+ * Maps typed actions to DataViews actions. Only an action with `supportsBulk` runs on a selection.
  *
  * - `href`: navigates to the address.
  * - `run` with `confirm`: asks first in a modal.
@@ -81,6 +87,7 @@ export function rowActionsToActions(
             label: rowAction.label,
             isPrimary: rowAction.isPrimary ?? false,
             isDestructive: rowAction.isDestructive ?? false,
+            ...(rowAction.supportsBulk && {supportsBulk: true}),
             ...(rowAction.isEligible && {isEligible: rowAction.isEligible}),
         };
 
@@ -96,12 +103,12 @@ export function rowActionsToActions(
             return {
                 ...base,
                 modalHeader: rowAction.confirm.title,
-                RenderModal: ({items: [item], closeModal}) => (
-                    <RowActionModal rowAction={rowAction} item={item} closeModal={closeModal} context={context} />
+                RenderModal: ({items, closeModal}) => (
+                    <RowActionModal rowAction={rowAction} items={items} closeModal={closeModal} context={context} />
                 ),
             };
         }
 
-        return {...base, callback: ([item]) => runRowAction(rowAction, item, context)};
+        return {...base, callback: (items) => runRowAction(rowAction, items, context)};
     });
 }

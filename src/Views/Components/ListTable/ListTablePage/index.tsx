@@ -1,5 +1,5 @@
 import {createContext, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState} from 'react';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import type {Field} from '@wordpress/dataviews';
 import cx from 'classnames';
 import {GiveIcon} from '@givewp/components';
@@ -9,6 +9,7 @@ import ListTableApi from '../api';
 import ListTableStats from '../ListTableStats/ListTableStats';
 import DataViewsListTable from '../DataViewsListTable';
 import ListTableErrorState from '../ListTableErrorState';
+import FilteredEmptyState from '../EmptyStates/FilteredEmptyState';
 import LegacyRowActions, {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
 import {columnsToFields, titleFieldId, visibleFieldIds} from '../adapters/columnsToFields';
 import {filterSettingsToFields} from '../adapters/filterSettingsToFields';
@@ -116,11 +117,13 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const [scope] = useState(() => scopeFromFilterSettings(filterSettings, contentMode, urlSearch));
         const [testMode, setTestMode] = useState(paymentMode);
         const [legacyConfirm, setLegacyConfirm] = useState<LegacyConfirmRequest | null>(null);
-        const [customAction, setCustomAction] = useState<{config: BulkActionsConfig; items: ListTableItem[]} | null>(
-            null
-        );
+        const [customAction, setCustomAction] = useState<{
+            config: BulkActionsConfig;
+            items: ListTableItem[];
+            isOpen: boolean;
+        } | null>(null);
 
-        const {view, onChangeView} = useListTableView(() => {
+        const {view, onChangeView, hasActiveFilters, clearFilters} = useListTableView(() => {
             const titleField = titleFieldId(columns);
             const fields = [...visibleFieldIds(columns, titleField), ...(legacyRowActions ? [LEGACY_ROW_ACTIONS_FIELD] : [])];
 
@@ -206,17 +209,40 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             const addonBulkActions = bulkActions ? window.GiveDonations?.addonsBulkActions ?? [] : [];
 
             return [
-                ...(typedRowActions ? rowActionsToActions(typedRowActions, {report, refresh}) : []),
+                ...(typedRowActions
+                    ? rowActionsToActions(typedRowActions, {report, refresh, clearSelection: () => onChangeSelection([])})
+                    : []),
                 ...bulkActionsToActions([...(bulkActions ?? []), ...addonBulkActions], {
                     data,
                     parameters,
                     report,
                     refresh,
                     clearSelection: () => onChangeSelection([]),
-                    openCustomAction: (config, items) => setCustomAction({config, items}),
+                    openCustomAction: (config, items) => {
+                        const minSelected = config.minSelected ?? 1;
+                        // From a row's menu the action gets that row alone; an action that needs several rows uses the selection.
+                        const selectedItems = (data?.items ?? []).filter((item) => selection.includes(String(item.id)));
+                        const actionItems = items.length < minSelected ? selectedItems : items;
+
+                        if (actionItems.length < minSelected) {
+                            report({
+                                changed: 0,
+                                failed: 0,
+                                notice: sprintf(
+                                    /* translators: 1: number of records, 2: record type, plural */
+                                    __('Select at least %1$d %2$s to use this action.', 'give'),
+                                    minSelected,
+                                    pluralName
+                                ),
+                            });
+                            return;
+                        }
+
+                        setCustomAction({config, items: actionItems, isOpen: true});
+                    },
                 }),
             ];
-        }, [typedRowActions, bulkActions, data, parameters, report, refresh, onChangeSelection]);
+        }, [typedRowActions, bulkActions, data, parameters, report, refresh, selection, onChangeSelection, pluralName]);
 
         const showConfirmModal = useCallback(
             (label, confirm, action, type = null, confirmButtonText = __('Confirm', 'give')) =>
@@ -277,7 +303,15 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                             isLoading={isLoading}
                             selection={selection}
                             onChangeSelection={onChangeSelection}
-                            empty={error ? <ListTableErrorState pluralName={pluralName} onRetry={refresh} /> : listTableBlankSlate}
+                            empty={
+                                error ? (
+                                    <ListTableErrorState pluralName={pluralName} onRetry={refresh} />
+                                ) : hasActiveFilters ? (
+                                    <FilteredEmptyState pluralName={pluralName} onClearFilters={clearFilters} />
+                                ) : (
+                                    listTableBlankSlate
+                                )
+                            }
                             perPageSizes={PER_PAGE_SIZES}
                             search={filters.searchParam !== null}
                             searchLabel={
@@ -300,12 +334,14 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                     />
                 )}
 
+                {/* A closed custom dialog stays mounted, as with the old table: its buttons close it mid-click. */}
                 {customAction &&
                     customAction.config.confirm(
                         customAction.items.map((item) => String(item.id)),
                         customAction.items.map(getItemName),
-                        true,
-                        (isOpen) => !isOpen && setCustomAction(null)
+                        customAction.isOpen,
+                        (isOpen = false) => setCustomAction((current) => current && {...current, isOpen}),
+                        {refresh, clearSelection: () => onChangeSelection([])}
                     )}
             </ShowConfirmModalContext.Provider>
         );

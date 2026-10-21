@@ -17,7 +17,7 @@ export default function useListTableActionNotices(singleName: string, pluralName
     const {addSnackbarNotice, addNotice, dismissNotification} = useDispatch('givewp/admin-details-page-notifications');
 
     return useCallback(
-        ({changed, failed, message}: ActionOutcome, actionLabel?: string) => {
+        ({changed, failed, message, notice}: ActionOutcome, actionLabel?: string) => {
             dismissNotification(ERROR_NOTICE_ID);
 
             if (changed > 0) {
@@ -31,6 +31,10 @@ export default function useListTableActionNotices(singleName: string, pluralName
                         : /* translators: 1: number of records, 2: record type (singular or plural) */
                           sprintf(__('%1$d %2$s updated.', 'give'), changed, records),
                 });
+            }
+
+            if (notice) {
+                addNotice({id: ERROR_NOTICE_ID, type: 'error', content: notice});
             }
 
             if (failed > 0) {

@@ -5,10 +5,10 @@ import {rowActionsToActions} from './rowActionsToActions';
 
 (globalThis as {IS_REACT_ACT_ENVIRONMENT?: boolean}).IS_REACT_ACT_ENVIRONMENT = true;
 
-const context = () => ({report: jest.fn(), refresh: jest.fn(async () => undefined)});
+const context = () => ({report: jest.fn(), refresh: jest.fn(async () => undefined), clearSelection: jest.fn()});
 
 describe('rowActionsToActions', () => {
-    it('keeps the primary flag and eligibility, and never makes a bulk action', () => {
+    it('keeps the primary flag and eligibility, and makes a bulk action only when asked', () => {
         const isEligible = () => true;
         const [action] = rowActionsToActions(
             [{id: 'edit', label: 'Edit', isPrimary: true, isEligible, href: (item) => `edit?id=${item.id}`}],
@@ -17,6 +17,10 @@ describe('rowActionsToActions', () => {
 
         expect(action).toMatchObject({id: 'edit', label: 'Edit', isPrimary: true, isEligible});
         expect(action.supportsBulk).toBeUndefined();
+
+        const [bulk] = rowActionsToActions([{id: 'delete', label: 'Delete', supportsBulk: true, run: jest.fn()}], context());
+
+        expect(bulk.supportsBulk).toBe(true);
     });
 
     it('navigates for an href action', () => {
@@ -33,15 +37,16 @@ describe('rowActionsToActions', () => {
         Object.defineProperty(window, 'location', {value: location, configurable: true});
     });
 
-    it('runs an action without confirm at once, then reports and refreshes', async () => {
+    it('runs an action without confirm at once, then reports, clears the selection and refreshes', async () => {
         const pageContext = context();
         const run = jest.fn(async () => ({errors: [], successes: [9]}));
         const [action] = rowActionsToActions([{id: 'duplicate', label: 'Duplicate', run}], pageContext);
 
         await ('callback' in action && action.callback([{id: 9}], {registry: null}));
 
-        expect(run).toHaveBeenCalledWith({id: 9});
+        expect(run).toHaveBeenCalledWith([{id: 9}]);
         expect(pageContext.report).toHaveBeenCalledWith({changed: 1, failed: 0}, 'Duplicate');
+        expect(pageContext.clearSelection).toHaveBeenCalled();
         expect(pageContext.refresh).toHaveBeenCalled();
     });
 
@@ -52,7 +57,7 @@ describe('rowActionsToActions', () => {
             id: 'trash',
             label: 'Trash',
             isDestructive: true,
-            confirm: {title: 'Trash donation', body: (item) => <p>Trash #{item.id}?</p>, confirmLabel: 'Move to trash'},
+            confirm: {title: 'Trash donation', body: ([item]) => <p>Trash #{item.id}?</p>, confirmLabel: 'Move to trash'},
             run,
         };
         const [action] = rowActionsToActions([rowAction], pageContext);
@@ -70,8 +75,21 @@ describe('rowActionsToActions', () => {
             [...container.querySelectorAll('button')].find((button) => button.textContent === 'Move to trash').click();
         });
 
-        expect(run).toHaveBeenCalledWith({id: 9, donor: 'Jane'});
+        expect(run).toHaveBeenCalledWith([{id: 9, donor: 'Jane'}]);
         expect(pageContext.report).toHaveBeenCalledWith({changed: 1, failed: 0}, 'Trash');
+    });
+
+    it('keeps the selection when the action fails', async () => {
+        const pageContext = context();
+        const run = jest.fn(async () => {
+            throw new Error('Not allowed');
+        });
+        const [action] = rowActionsToActions([{id: 'delete', label: 'Delete', supportsBulk: true, run}], pageContext);
+
+        await ('callback' in action && action.callback([{id: 1}, {id: 2}], {registry: null}));
+
+        expect(pageContext.report).toHaveBeenCalledWith({changed: 0, failed: 2, message: 'Not allowed'}, 'Delete');
+        expect(pageContext.clearSelection).not.toHaveBeenCalled();
     });
 
     it('passes a screen modal through', () => {
