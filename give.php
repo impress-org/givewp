@@ -280,23 +280,29 @@ final class Give
     /**
      * Init Give when WordPress Initializes.
      *
-     * @since TBD Fire `givewp_before_init`. The old `before_give_init` still fires, as deprecated.
+     * @since TBD Fire `give_before_init`. The old `before_give_init` still fires, without a deprecation notice.
      * @since 3.19.0 Move the loading of the `give` textdomain to the `init` action hook.
      * @since 1.8.9
      */
     public function init()
     {
-        // The service providers load this file later, but the deprecated action must fire before them.
-        require_once GIVE_PLUGIN_DIR . 'includes/misc-functions.php';
-
-        give_fire_deprecated_before_init_action();
+        /**
+         * Fires before the Give core is initialized. Use `give_before_init` in new code.
+         *
+         * Not deprecated yet: add-ons hook it to register their service providers, and a deprecation
+         * notice would fire on every request. Deprecate it once the add-ons use `give_before_init`.
+         *
+         * @since TBD Kept for add-ons; `give_before_init` fires right after it.
+         * @since 1.8.9
+         */
+        do_action('before_give_init'); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- kept for add-ons that hook it to register their service providers; deprecate once they move to give_before_init.
 
         /**
          * Fires before the Give core is initialized.
          *
          * @since TBD Replaces `before_give_init`.
          */
-        do_action('givewp_before_init');
+        do_action('give_before_init');
 
         $this->bindClasses();
 

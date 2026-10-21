@@ -1744,7 +1744,7 @@ class Give_Donor {
 	/**
 	 * Retrieves a donor's initials (first name and last name).
 	 *
-	 * @since TBD Filter with `givewp_get_donor_initials`. The old `get_donor_initals` filter still runs, as deprecated.
+	 * @since TBD Filter with `give_get_donor_initials`. The old `get_donor_initals` filter still runs, as deprecated.
 	 * @since   2.1
 	 *
 	 * @return string The donor's two initials (no middle).
@@ -1758,19 +1758,19 @@ class Give_Donor {
 		);
 
 		/**
-		 * Filter the donor name initials. Deprecated: use `givewp_get_donor_initials`.
+		 * Filter the donor name initials. Deprecated: use `give_get_donor_initials`.
 		 *
-		 * @since TBD Deprecated in favor of `givewp_get_donor_initials`.
+		 * @since TBD Deprecated in favor of `give_get_donor_initials`.
 		 * @since 2.1.0
 		 */
-		$initials = apply_filters_deprecated( 'get_donor_initals', [ $initials ], 'TBD', 'givewp_get_donor_initials' );
+		$initials = apply_filters_deprecated( 'get_donor_initals', [ $initials ], 'TBD', 'give_get_donor_initials' );
 
 		/**
 		 * Filter the donor name initials.
 		 *
 		 * @since TBD Replaces `get_donor_initals`.
 		 */
-		return apply_filters( 'givewp_get_donor_initials', $initials );
+		return apply_filters( 'give_get_donor_initials', $initials );
 
 	}
 

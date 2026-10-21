@@ -55,21 +55,20 @@ class RenamedHookAliasesTest extends TestCase
     /**
      * @since TBD
      */
-    public function testBeforeInitActionFiresOldThenNew()
+    public function testBeforeInitActionFiresOldThenNewWithoutNotice()
     {
-        $this->setExpectedDeprecated('before_give_init');
         $calls = [];
         add_action('before_give_init', function () use (&$calls) {
             $calls[] = 'old';
         });
-        add_action('givewp_before_init', function () use (&$calls) {
+        add_action('give_before_init', function () use (&$calls) {
             $calls[] = 'new';
         });
 
         give()->init();
 
         $this->assertSame(['old', 'new'], array_slice($calls, 0, 2));
-        $this->assertSame(['before_give_init'], $this->deprecatedHooks);
+        $this->assertSame([], $this->deprecatedHooks);
     }
 
     /**
@@ -78,7 +77,7 @@ class RenamedHookAliasesTest extends TestCase
     public function testBeforeInitActionHasNoNoticeWithoutOldListener()
     {
         $calls = 0;
-        add_action('givewp_before_init', function () use (&$calls) {
+        add_action('give_before_init', function () use (&$calls) {
             $calls++;
         });
 
@@ -93,7 +92,7 @@ class RenamedHookAliasesTest extends TestCase
      */
     public function testDonorInitialsNewFilterRuns()
     {
-        add_filter('givewp_get_donor_initials', function ($initials) {
+        add_filter('give_get_donor_initials', function ($initials) {
             return $initials . '!';
         });
 
@@ -113,7 +112,7 @@ class RenamedHookAliasesTest extends TestCase
 
             return 'X' . $initials;
         });
-        add_filter('givewp_get_donor_initials', function ($initials) {
+        add_filter('give_get_donor_initials', function ($initials) {
             return $initials . '!';
         });
 
@@ -128,7 +127,7 @@ class RenamedHookAliasesTest extends TestCase
     public function testFeaturedImagePlaceholderNewFilterRuns()
     {
         $postId = $this->makePostId();
-        add_filter('givewp_single_form_image_html', function ($html, $id) use ($postId) {
+        add_filter('give_single_form_image_html', function ($html, $id) use ($postId) {
             return $id === $postId ? '<b>new</b>' : $html;
         }, 10, 2);
 
@@ -174,13 +173,13 @@ class RenamedHookAliasesTest extends TestCase
         add_filter('single_give_form_large_thumbnail_size', function ($value) {
             return $value . '-old';
         });
-        add_filter('givewp_single_form_large_thumbnail_size', function ($value) {
+        add_filter('give_single_form_large_thumbnail_size', function ($value) {
             return $value . '-new';
         });
         add_filter('single_give_form_image_html', function ($html) {
             return $html . '<!--old-->';
         });
-        add_filter('givewp_single_form_image_html', function ($html) {
+        add_filter('give_single_form_image_html', function ($html) {
             return $html . '<!--new-->';
         });
 
