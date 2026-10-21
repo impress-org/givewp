@@ -49,7 +49,15 @@ class TestFormGridFeaturedImage extends TestCase
             'settings' => FormSettings::fromArray(['designSettingsImageUrl' => $imageUrl]),
         ]);
 
-        $output = give_form_grid_shortcode(['ids' => (string)$form->id, 'columns' => $columns]);
+        /*
+         * The default modal_reveal style also renders the v3 form, which enqueues the built JS bundle. CI runs
+         * PHPUnit without building assets, so the redirect style keeps the test on the card markup.
+         */
+        $output = give_form_grid_shortcode([
+            'ids' => (string)$form->id,
+            'columns' => $columns,
+            'display_style' => 'redirect',
+        ]);
 
         $this->assertStringContainsString($imageUrl, $output);
     }
