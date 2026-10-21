@@ -28,7 +28,10 @@ const changed = (items: ListTableItem[]) => ({errors: [], successes: items.map((
  * @since TBD Declare the actions as data for the list engine; Trash, Delete and Edit author or status
  *            serve both the row menu and the selection bar; errors show as notices.
  */
-export function useDonationFormsRowActions(entity?: CampaignEntity, isCampaignDetailsPage = false): ListTableRowAction[] {
+export function useDonationFormsRowActions(
+    entity?: CampaignEntity,
+    isCampaignDetailsPage = false
+): ListTableRowAction[] {
     return useMemo<ListTableRowAction[]>(
         () => [
             {
@@ -115,7 +118,10 @@ export function useDonationFormsRowActions(entity?: CampaignEntity, isCampaignDe
                 },
                 successMessage: ([item]) =>
                     /* translators: %d: donation form id */
-                    sprintf(__('The shortcode for Donation Form #%d has been copied to your clipboard!', 'give'), item.id),
+                    sprintf(
+                        __('The shortcode for Donation Form #%d has been copied to your clipboard!', 'give'),
+                        item.id
+                    ),
             },
             {
                 id: 'make-default',
@@ -149,7 +155,8 @@ export function useDonationFormsRowActions(entity?: CampaignEntity, isCampaignDe
                 id: 'assign-campaign',
                 label: ([item]) => (item?.campaignId ? __('Change campaign', 'give') : __('Assign campaign', 'give')),
                 isVisible: outsideTrash,
-                isEligible: (item) => item.campaignType !== 'p2p' && (Boolean(item.campaignId) || !isCampaignDetailsPage),
+                isEligible: (item) =>
+                    item.campaignType !== 'p2p' && (Boolean(item.campaignId) || !isCampaignDetailsPage),
                 Dialog: ({items: [item], onClose, refresh}) => (
                     <AssignCampaignModal
                         isOpen

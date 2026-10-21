@@ -52,9 +52,16 @@ describe('bulkActionsToActions', () => {
     });
 
     it('accepts add-on actions in the Give Recurring shape and a null core list', () => {
-        const addon = {label: 'Cancel', value: 'cancel', action: async () => ({errors: [], successes: []}), confirm: () => 'Sure?'};
+        const addon = {
+            label: 'Cancel',
+            value: 'cancel',
+            action: async () => ({errors: [], successes: []}),
+            confirm: () => 'Sure?',
+        };
 
-        expect(() => bulkActionsToActions([...([] as BulkActionsConfig[]), addon as BulkActionsConfig], context())).not.toThrow();
+        expect(() =>
+            bulkActionsToActions([...([] as BulkActionsConfig[]), addon as BulkActionsConfig], context())
+        ).not.toThrow();
     });
 
     it('runs the action on confirm, then reports, clears the selection and refreshes', async () => {
@@ -66,7 +73,13 @@ describe('bulkActionsToActions', () => {
 
         act(() =>
             createRoot(container).render(
-                <RenderModal items={[{id: 4, title: 'Spring'}, {id: 5, title: 'Fall'}]} closeModal={closeModal} />
+                <RenderModal
+                    items={[
+                        {id: 4, title: 'Spring'},
+                        {id: 5, title: 'Fall'},
+                    ]}
+                    closeModal={closeModal}
+                />
             )
         );
 

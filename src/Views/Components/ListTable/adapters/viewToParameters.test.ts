@@ -12,7 +12,13 @@ const donationFilters: FilterConfig[] = [
         name: 'filterBy',
         type: 'filterby',
         groupedOptions: [
-            {id: 'showTrashed', apiParam: 'status', name: 'Status', type: 'toggle', options: [{text: 'Show trashed', value: 'trash'}]},
+            {
+                id: 'showTrashed',
+                apiParam: 'status',
+                name: 'Status',
+                type: 'toggle',
+                options: [{text: 'Show trashed', value: 'trash'}],
+            },
             {
                 id: 'status',
                 apiParam: 'status',
@@ -24,20 +30,41 @@ const donationFilters: FilterConfig[] = [
                     {text: 'Pending', value: 'pending'},
                 ],
             },
-            {id: 'period', apiParam: 'start', name: 'Period', type: 'radio', options: [{text: 'Last 7 days', value: '2026-10-13'}]},
+            {
+                id: 'period',
+                apiParam: 'start',
+                name: 'Period',
+                type: 'radio',
+                options: [{text: 'Last 7 days', value: '2026-10-13'}],
+            },
         ],
     },
 ];
 
 const formFilters: FilterConfig[] = [
-    {name: 'status', type: 'select', options: [{value: 'any', text: 'All'}, {value: 'trash', text: 'Trash'}]},
+    {
+        name: 'status',
+        type: 'select',
+        options: [
+            {value: 'any', text: 'All'},
+            {value: 'trash', text: 'Trash'},
+        ],
+    },
     {name: 'search', type: 'search'},
     {name: 'campaign', type: 'campaignselect'},
     {name: 'campaignId', type: 'hidden'},
 ];
 
 const view = (overrides: Partial<View> = {}): View =>
-    ({type: 'table', page: 1, perPage: 30, sort: {field: 'id', direction: 'desc'}, search: '', filters: [], ...overrides}) as View;
+    ({
+        type: 'table',
+        page: 1,
+        perPage: 30,
+        sort: {field: 'id', direction: 'desc'},
+        search: '',
+        filters: [],
+        ...overrides,
+    } as View);
 
 const is = (id: string, value: unknown) => ({field: filterFieldId(id), operator: 'is' as const, value});
 
@@ -93,13 +120,17 @@ describe('viewToParameters', () => {
 
     it('sends the first select option when the select filter is not applied, as the old default', () => {
         expect(viewToParameters(view(), formFilters, {}, {locale: 'en-US'})).toMatchObject({status: 'any'});
-        expect(viewToParameters(view({filters: [is('status', 'trash')]}), formFilters, {}, {locale: 'en-US'})).toMatchObject({
+        expect(
+            viewToParameters(view({filters: [is('status', 'trash')]}), formFilters, {}, {locale: 'en-US'})
+        ).toMatchObject({
             status: 'trash',
         });
     });
 
     it('merges the table scope into every request', () => {
-        expect(viewToParameters(view(), formFilters, {campaignId: 7}, {locale: 'en-US'})).toMatchObject({campaignId: 7});
+        expect(viewToParameters(view(), formFilters, {campaignId: 7}, {locale: 'en-US'})).toMatchObject({
+            campaignId: 7,
+        });
     });
 
     it('caps the page size at 100', () => {

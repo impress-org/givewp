@@ -114,9 +114,10 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const [urlSearch] = useState(() => new URLSearchParams(window.location.search));
         const [scope] = useState(() => scopeFromFilterSettings(filterSettings, contentMode, urlSearch));
         const [legacyConfirm, setLegacyConfirm] = useState<LegacyConfirmRequest | null>(null);
-        const [actionDialog, setActionDialog] = useState<{rowAction: ListTableRowAction; items: ListTableItem[]} | null>(
-            null
-        );
+        const [actionDialog, setActionDialog] = useState<{
+            rowAction: ListTableRowAction;
+            items: ListTableItem[];
+        } | null>(null);
         const [customAction, setCustomAction] = useState<{
             config: BulkActionsConfig;
             items: ListTableItem[];
@@ -125,12 +126,22 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
 
         const {view, onChangeView, hasActiveFilters, clearFilters} = useListTableView(() => {
             const titleField = titleFieldId(columns);
-            const fields = [...visibleFieldIds(columns, titleField), ...(legacyRowActions ? [LEGACY_ROW_ACTIONS_FIELD] : [])];
+            const fields = [
+                ...visibleFieldIds(columns, titleField),
+                ...(legacyRowActions ? [LEGACY_ROW_ACTIONS_FIELD] : []),
+            ];
 
-            const initialView = viewFromInitialState(filterSettings, {perPage, fields, titleField, contentMode}, urlSearch);
+            const initialView = viewFromInitialState(
+                filterSettings,
+                {perPage, fields, titleField, contentMode},
+                urlSearch
+            );
 
             return testModeFilter && paymentMode
-                ? {...initialView, filters: [...initialView.filters, {field: testModeField, operator: 'is', value: true}]}
+                ? {
+                      ...initialView,
+                      filters: [...initialView.filters, {field: testModeField, operator: 'is', value: true}],
+                  }
                 : initialView;
         });
         // A screen with the test-mode toggle keeps test mode in the view, so it shows as a chip.
@@ -151,7 +162,12 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             [view, filterSettings, scope, locale, testMode]
         );
 
-        const {data, error, isLoading, refresh: refreshList} = useListTableQuery<ListTableResponse>(apiRoot, parameters);
+        const {
+            data,
+            error,
+            isLoading,
+            refresh: refreshList,
+        } = useListTableQuery<ListTableResponse>(apiRoot, parameters);
         const {data: stats, refresh: refreshStats} = useListTableQuery<Record<string, number>>(
             statsConfig ? `${apiRoot}/stats` : null,
             {testMode}

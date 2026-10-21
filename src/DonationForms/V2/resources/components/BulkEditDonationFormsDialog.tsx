@@ -16,7 +16,13 @@ const label = __('Edit author or status', 'give');
  *
  * @since TBD Controlled fields in place of reading the old confirm dialog's markup.
  */
-export default function BulkEditDonationFormsDialog({items, onClose, refresh, report, clearSelection}: ListTableActionDialogProps) {
+export default function BulkEditDonationFormsDialog({
+    items,
+    onClose,
+    refresh,
+    report,
+    clearSelection,
+}: ListTableActionDialogProps) {
     const [author, setAuthor] = useState('');
     const [status, setStatus] = useState('');
     const [isBusy, setIsBusy] = useState(false);
@@ -33,7 +39,10 @@ export default function BulkEditDonationFormsDialog({items, onClose, refresh, re
         let outcome;
 
         try {
-            outcome = normalizeActionResult(await API.fetchWithArgs('/edit', {ids: ids.join(','), author, status}, 'UPDATE'), ids);
+            outcome = normalizeActionResult(
+                await API.fetchWithArgs('/edit', {ids: ids.join(','), author, status}, 'UPDATE'),
+                ids
+            );
         } catch (error) {
             outcome = normalizeActionResult(error, ids);
         }

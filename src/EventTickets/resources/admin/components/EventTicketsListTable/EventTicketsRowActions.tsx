@@ -36,7 +36,10 @@ export const eventTicketsRowActions: ListTableRowAction[] = [
                 throw new Error(__('An event cannot be deleted while it has donations associated with it.', 'give'));
             }
 
-            return apiFetch({url: addQueryArgs(API_ROOT, {ids: items.map((item) => item.id).join(',')}), method: 'DELETE'});
+            return apiFetch({
+                url: addQueryArgs(API_ROOT, {ids: items.map((item) => item.id).join(',')}),
+                method: 'DELETE',
+            });
         },
     },
 ];

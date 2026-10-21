@@ -46,7 +46,9 @@ function groupField(group: FilterByGroupedOptions): Field<ListTableItem> {
     if (group.type === 'toggle') {
         const [option] = group.options;
 
-        return filterField(group.id, option?.text ?? group.name, 'is', [{value: option?.value, label: __('Yes', 'give')}]);
+        return filterField(group.id, option?.text ?? group.name, 'is', [
+            {value: option?.value, label: __('Yes', 'give')},
+        ]);
     }
 
     return filterField(group.id, group.name, group.type === 'checkbox' ? 'isAny' : 'is', toElements(group.options));
@@ -82,7 +84,9 @@ export function filterSettingsToFields(
                 searchParam = filter.name;
                 break;
             case 'select':
-                fields.push(filterField(filter.name, filter.text ?? filter.name, 'is', toElements(filter.options?.slice(1))));
+                fields.push(
+                    filterField(filter.name, filter.text ?? filter.name, 'is', toElements(filter.options?.slice(1)))
+                );
                 break;
             case 'campaignselect':
             case 'formselect': {
@@ -100,14 +104,20 @@ export function filterSettingsToFields(
             }
             case 'checkbox':
                 if (filter.name === 'toggle') {
-                    fields.push(filterField(TEST_MODE_FILTER, __('Test mode', 'give'), 'is', [{value: true, label: __('On', 'give')}]));
+                    fields.push(
+                        filterField(TEST_MODE_FILTER, __('Test mode', 'give'), 'is', [
+                            {value: true, label: __('On', 'give')},
+                        ])
+                    );
                 }
                 break;
             case 'hidden': {
                 const value = viewFilterValue(view, filter.name);
 
                 if (!options.contentMode && value !== undefined && value !== '') {
-                    fields.push(filterField(filter.name, filter.text ?? filter.name, 'is', [{value, label: String(value)}]));
+                    fields.push(
+                        filterField(filter.name, filter.text ?? filter.name, 'is', [{value, label: String(value)}])
+                    );
                 }
                 break;
             }

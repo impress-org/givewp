@@ -2,9 +2,11 @@ import type {ActionOutcome} from '../ListTablePage/types';
 
 const count = (entries: unknown): number => (Array.isArray(entries) ? entries.length : Number(entries) || 0);
 
-const countTruthy = (entries: unknown): number => (Array.isArray(entries) ? entries.filter(Boolean).length : count(entries));
+const countTruthy = (entries: unknown): number =>
+    Array.isArray(entries) ? entries.filter(Boolean).length : count(entries);
 
-const countFalsy = (entries: unknown): number => (Array.isArray(entries) ? entries.filter((entry) => !entry).length : 0);
+const countFalsy = (entries: unknown): number =>
+    Array.isArray(entries) ? entries.filter((entry) => !entry).length : 0;
 
 const decodeQuotes = (text: string) => text.replace(/&#0?39;/g, "'").replace(/&quot;/g, '"');
 

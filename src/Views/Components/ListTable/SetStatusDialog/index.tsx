@@ -45,7 +45,10 @@ export default function SetStatusDialog({
         let outcome;
 
         try {
-            outcome = normalizeActionResult(await api.fetchWithArgs('/setStatus', {ids: ids.join(','), status}, 'POST'), ids);
+            outcome = normalizeActionResult(
+                await api.fetchWithArgs('/setStatus', {ids: ids.join(','), status}, 'POST'),
+                ids
+            );
         } catch (error) {
             outcome = normalizeActionResult(error, ids);
         }

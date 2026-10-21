@@ -28,7 +28,11 @@ describe('normalizeActionResult', () => {
     });
 
     it('reads the message of an apiFetch error object', () => {
-        expect(normalizeActionResult({code: 'x', message: 'Nope'}, ['1'])).toEqual({changed: 0, failed: 1, message: 'Nope'});
+        expect(normalizeActionResult({code: 'x', message: 'Nope'}, ['1'])).toEqual({
+            changed: 0,
+            failed: 1,
+            message: 'Nope',
+        });
     });
 
     it('reports nothing for an action that returns nothing', () => {

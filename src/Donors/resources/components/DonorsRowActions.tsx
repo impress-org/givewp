@@ -80,7 +80,8 @@ export const donorsRowActions: ListTableRowAction[] = [
         id: 'edit',
         label: __('Edit', 'give'),
         isPrimary: true,
-        href: (item) => `${window.GiveDonors.adminUrl}edit.php?post_type=give_forms&page=give-donors&view=overview&id=${item.id}`,
+        href: (item) =>
+            `${window.GiveDonors.adminUrl}edit.php?post_type=give_forms&page=give-donors&view=overview&id=${item.id}`,
     },
     {
         id: 'delete',
