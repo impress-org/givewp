@@ -102,7 +102,7 @@ class CreateDonationsTable extends Migration
             email VARCHAR(255) NOT NULL,
             honorific VARCHAR(20) NULL,
             first_name VARCHAR(255) NOT NULL,
-            last_name VARCHAR(255) NOT NULL,
+            last_name VARCHAR(255) NULL,
             phone VARCHAR(50) NULL,
             company VARCHAR(255) NULL,
             billing_address1 VARCHAR(255) NULL,
