@@ -17,7 +17,7 @@ export default function useListTableActionNotices(singleName: string, pluralName
     const {addSnackbarNotice, addNotice, dismissNotification} = useDispatch('givewp/admin-details-page-notifications');
 
     return useCallback(
-        ({changed, failed, message, notice}: ActionOutcome, actionLabel?: string) => {
+        ({changed, failed, message, notice, successMessage}: ActionOutcome, actionLabel?: string) => {
             dismissNotification(ERROR_NOTICE_ID);
 
             if (changed > 0) {
@@ -25,7 +25,9 @@ export default function useListTableActionNotices(singleName: string, pluralName
 
                 addSnackbarNotice({
                     id: `givewp-list-table-action-${Date.now()}`,
-                    content: actionLabel
+                    content: successMessage
+                        ? successMessage
+                        : actionLabel
                         ? /* translators: 1: action name, 2: number of records, 3: record type (singular or plural) */
                           sprintf(__('%1$s: %2$d %3$s updated.', 'give'), actionLabel, changed, records)
                         : /* translators: 1: number of records, 2: record type (singular or plural) */

@@ -48,8 +48,10 @@ export type {
     FilterConfig,
     LegacyRowActionArgs,
     LegacyRowActions,
+    ListTableActionDialogProps,
     ListTableItem,
     ListTablePageProps,
+    ListTableParameters,
     ListTablePageRef,
     ListTableRowAction,
 } from './types';
@@ -117,6 +119,9 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const [scope] = useState(() => scopeFromFilterSettings(filterSettings, contentMode, urlSearch));
         const [testMode, setTestMode] = useState(paymentMode);
         const [legacyConfirm, setLegacyConfirm] = useState<LegacyConfirmRequest | null>(null);
+        const [actionDialog, setActionDialog] = useState<{rowAction: ListTableRowAction; items: ListTableItem[]} | null>(
+            null
+        );
         const [customAction, setCustomAction] = useState<{
             config: BulkActionsConfig;
             items: ListTableItem[];
@@ -210,7 +215,17 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
 
             return [
                 ...(typedRowActions
-                    ? rowActionsToActions(typedRowActions, {report, refresh, clearSelection: () => onChangeSelection([])})
+                    ? rowActionsToActions(
+                          typedRowActions.filter(
+                              (rowAction) => !rowAction.isVisible || rowAction.isVisible(data, parameters)
+                          ),
+                          {
+                              report,
+                              refresh,
+                              clearSelection: () => onChangeSelection([]),
+                              openDialog: (rowAction, items) => setActionDialog({rowAction, items}),
+                          }
+                      )
                     : []),
                 ...bulkActionsToActions([...(bulkActions ?? []), ...addonBulkActions], {
                     data,
@@ -331,6 +346,16 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                         onClose={() => setLegacyConfirm(null)}
                         report={report}
                         refresh={refresh}
+                    />
+                )}
+
+                {actionDialog && (
+                    <actionDialog.rowAction.Dialog
+                        items={actionDialog.items}
+                        onClose={() => setActionDialog(null)}
+                        refresh={refresh}
+                        report={report}
+                        clearSelection={() => onChangeSelection([])}
                     />
                 )}
 

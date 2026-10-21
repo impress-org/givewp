@@ -5,7 +5,12 @@ import {rowActionsToActions} from './rowActionsToActions';
 
 (globalThis as {IS_REACT_ACT_ENVIRONMENT?: boolean}).IS_REACT_ACT_ENVIRONMENT = true;
 
-const context = () => ({report: jest.fn(), refresh: jest.fn(async () => undefined), clearSelection: jest.fn()});
+const context = () => ({
+    report: jest.fn(),
+    refresh: jest.fn(async () => undefined),
+    clearSelection: jest.fn(),
+    openDialog: jest.fn(),
+});
 
 describe('rowActionsToActions', () => {
     it('keeps the primary flag and eligibility, and makes a bulk action only when asked', () => {
@@ -97,5 +102,35 @@ describe('rowActionsToActions', () => {
         const [action] = rowActionsToActions([{id: 'assign', label: 'Assign', RenderModal}], context());
 
         expect('RenderModal' in action && action.RenderModal).toBe(RenderModal);
+    });
+
+    it('opens a screen dialog through the page', () => {
+        const pageContext = context();
+        const Dialog = () => <div />;
+        const rowAction = {id: 'assign', label: 'Assign', Dialog};
+        const [action] = rowActionsToActions([rowAction], pageContext);
+
+        'callback' in action && action.callback([{id: 4}], {registry: null});
+
+        expect(pageContext.openDialog).toHaveBeenCalledWith(rowAction, [{id: 4}]);
+    });
+
+    it('uses the action label of the items and its own success message', async () => {
+        const pageContext = context();
+        const [action] = rowActionsToActions(
+            [
+                {
+                    id: 'copy',
+                    label: ([item]) => `Copy #${item.id}`,
+                    run: async () => ({errors: [], successes: [7]}),
+                    successMessage: ([item]) => `Copied #${item.id}`,
+                },
+            ],
+            pageContext
+        );
+
+        await ('callback' in action && action.callback([{id: 7}], {registry: null}));
+
+        expect(pageContext.report).toHaveBeenCalledWith({changed: 1, failed: 0, successMessage: 'Copied #7'}, 'Copy #7');
     });
 });

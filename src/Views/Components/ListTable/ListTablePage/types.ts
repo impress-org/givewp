@@ -153,6 +153,8 @@ export type ActionOutcome = {
     message?: string;
     /** An error to show although no record failed, for example an action that could not start. */
     notice?: string;
+    /** The snackbar text, in place of the generic "updated" message. */
+    successMessage?: string;
 };
 
 /**
@@ -167,19 +169,23 @@ export type ReportOutcome = (outcome: ActionOutcome, actionLabel?: string) => vo
  * With `supportsBulk` the same action also runs on a selection, as in WordPress core: DataViews lists
  * every bulk action in each row's menu, so a separate bulk action would show twice there.
  *
- * Exactly one of `href`, `run` or `RenderModal`. `run` and `confirm.body` get one item from a row's
- * menu and the eligible selected items from the selection bar.
+ * Exactly one of `href`, `run`, `RenderModal` or `Dialog`. `run` and `confirm.body` get one item from
+ * a row's menu and the eligible selected items from the selection bar.
  *
  * @since TBD
  */
 export interface ListTableRowAction<Item extends ListTableItem = ListTableItem> {
     id: string;
-    label: string;
+    label: string | ((items: Item[]) => string);
     /** Only "Edit", or "Restore" on trashed rows. */
     isPrimary?: boolean;
     supportsBulk?: boolean;
+    /** Same rule as a bulk action's: checked on every render against the response and the request parameters. */
+    isVisible?: (data: ListTableResponse | undefined, parameters: ListTableParameters) => boolean;
     isEligible?: (item: Item) => boolean;
     isDestructive?: boolean;
+    /** The snackbar text when the action succeeds, in place of the generic "updated" message. */
+    successMessage?: (items: Item[]) => string;
     href?: (item: Item) => string;
     confirm?: {
         title: string;
@@ -188,7 +194,20 @@ export interface ListTableRowAction<Item extends ListTableItem = ListTableItem> 
     };
     run?: (items: Item[]) => Promise<unknown>;
     RenderModal?: (props: RenderModalProps<Item>) => ReactElement;
+    /** A screen dialog that renders its own modal; the page shows it outside the list engine. */
+    Dialog?: (props: ListTableActionDialogProps<Item>) => ReactElement;
 }
+
+/**
+ * @since TBD
+ */
+export type ListTableActionDialogProps<Item extends ListTableItem = ListTableItem> = {
+    items: Item[];
+    onClose: () => void;
+    refresh: () => Promise<unknown>;
+    report: ReportOutcome;
+    clearSelection: () => void;
+};
 
 /**
  * The arguments today's row-actions render function receives.

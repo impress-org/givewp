@@ -14,7 +14,11 @@ export type RowActionContext = {
     report: ReportOutcome;
     refresh: () => Promise<unknown>;
     clearSelection: () => void;
+    openDialog: (rowAction: ListTableRowAction, items: ListTableItem[]) => void;
 };
+
+const labelOf = (rowAction: ListTableRowAction, items: ListTableItem[]) =>
+    typeof rowAction.label === 'function' ? rowAction.label(items) : rowAction.label;
 
 /**
  * Runs an action, reports what it did and reloads the list. A selection that fully succeeded clears.
@@ -29,7 +33,11 @@ async function runRowAction(rowAction: ListTableRowAction, items: ListTableItem[
         outcome = normalizeActionResult(error, ids);
     }
 
-    context.report(outcome, rowAction.label);
+    if (outcome.changed > 0 && rowAction.successMessage) {
+        outcome = {...outcome, successMessage: rowAction.successMessage(items)};
+    }
+
+    context.report(outcome, labelOf(rowAction, items));
 
     if (outcome.failed === 0 && !outcome.notice) {
         context.clearSelection();
@@ -73,7 +81,8 @@ function RowActionModal({rowAction, items, closeModal, context}: RowActionModalP
  * - `href`: navigates to the address.
  * - `run` with `confirm`: asks first in a modal.
  * - `run` alone: runs at once.
- * - `RenderModal`: the screen's own modal.
+ * - `RenderModal`: a modal body DataViews shows in its own modal.
+ * - `Dialog`: a screen dialog with its own modal, opened by the page outside DataViews.
  *
  * @since TBD
  */
@@ -93,6 +102,10 @@ export function rowActionsToActions(
 
         if (rowAction.href) {
             return {...base, callback: ([item]) => window.location.assign(rowAction.href(item))};
+        }
+
+        if (rowAction.Dialog) {
+            return {...base, callback: (items) => context.openDialog(rowAction, items)};
         }
 
         if (rowAction.RenderModal) {
