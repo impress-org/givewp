@@ -3,19 +3,25 @@
 namespace Give\Tests\Unit\Donations\Storage;
 
 use Give\Donations\Migrations\CreateDonationsTable;
+use DateTime;
 use Give\Donations\Models\Donation;
 use Give\Donations\Properties\BillingAddress;
 use Give\Donations\Repositories\DonationTableRepository;
 use Give\Donations\Storage\DonationStorageFlag;
 use Give\Donations\Storage\DonationTableSync;
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\Log\LogRepository;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
+use Give_Payment;
+use Give_Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -32,6 +38,8 @@ class TestDonationTableSync extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->refreshDatabase();
+        give_update_option('sequential-ordering_status', 'disabled');
         delete_option(DonationStorageFlag::OPTION);
         (new CreateDonationsTable())->run();
     }
@@ -234,6 +242,267 @@ class TestDonationTableSync extends TestCase
     /**
      * @since TBD
      */
+    public function testLegacyPaymentSaveAndLegacyRenewalReachTheTable()
+    {
+        $donor = Donor::factory()->create();
+
+        $payment = new Give_Payment();
+        $payment->total = 100;
+        $payment->form_id = 1;
+        $payment->customer_id = $donor->id;
+        $payment->first_name = $donor->firstName;
+        $payment->last_name = $donor->lastName;
+        $payment->email = $donor->email;
+        $payment->currency = 'USD';
+        $payment->status = 'publish';
+        $payment->gateway = TestGateway::id();
+        $payment->mode = 'test';
+        $payment->save();
+
+        $subscriptionId = (int)(new Give_Subscription())->create([
+            'customer_id' => $donor->id,
+            'parent_payment_id' => $payment->ID,
+            'form_id' => 1,
+            'period' => 'month',
+            'frequency' => 1,
+            'initial_amount' => 100,
+            'recurring_amount' => 80,
+            'status' => 'active',
+        ])->id;
+        (new Give_Subscription($subscriptionId))->add_payment([
+            'amount' => 80,
+            'transaction_id' => 'renewal-txn',
+            'gateway' => TestGateway::id(),
+        ]);
+
+        give(DonationTableSync::class)->flush();
+
+        // Give_Subscription::create() writes no subscription meta on the parent payment, so the
+        // parent decodes as a single donation, exactly as the model reads it from posts today.
+        $initial = $this->row($payment->ID);
+        $this->assertSame(10000, (int)$initial->amount_total);
+        $this->assertSame('publish', $initial->status);
+        $this->assertSame('single', $initial->type);
+
+        $renewalId = (int)DB::table('give_donationmeta')
+            ->where('meta_key', DonationMetaKeys::GATEWAY_TRANSACTION_ID)
+            ->where('meta_value', 'renewal-txn')
+            ->value('donation_id');
+        $renewal = $this->row($renewalId);
+        $this->assertSame('give_subscription', get_post_status($renewalId));
+        $this->assertSame('publish', $renewal->status);
+        $this->assertSame('renewal', $renewal->type);
+        $this->assertSame($subscriptionId, (int)$renewal->subscription_id);
+        $this->assertSame(8000, (int)$renewal->amount_total);
+    }
+
+    /**
+     * Every column, from a donation with every field set, through the repository path.
+     *
+     * @since TBD
+     */
+    public function testEveryColumnIsMapped()
+    {
+        give_update_option('sequential-ordering_status', 'enabled');
+        $donor = Donor::factory()->create();
+        $donation = Donation::factory()->create([
+            'donorId' => $donor->id,
+            'campaignId' => 7,
+            'formId' => 9,
+            'status' => DonationStatus::COMPLETE(),
+            'type' => DonationType::SINGLE(),
+            'mode' => DonationMode::LIVE(),
+            'gatewayId' => 'stripe',
+            'gatewayTransactionId' => 'pi_123',
+            'amount' => new Money(123456, 'EUR'),
+            'feeAmountRecovered' => new Money(456, 'EUR'),
+            'exchangeRate' => '1.25',
+            'purchaseKey' => 'key-abc',
+            'email' => 'donor@example.com',
+            'honorific' => 'Dr',
+            'firstName' => 'Ada',
+            'lastName' => 'Lovelace',
+            'phone' => '+1555',
+            'company' => 'Analytical Engines',
+            'billingAddress' => BillingAddress::fromArray([
+                'address1' => '1 Main St',
+                'address2' => 'Suite 2',
+                'city' => 'London',
+                'state' => 'LDN',
+                'zip' => 'N1',
+                'country' => 'GB',
+            ]),
+            'anonymous' => true,
+            'createdAt' => new DateTime('2026-01-02 03:04:05'),
+        ]);
+        give(DonationTableSync::class)->flush();
+        give_update_option('sequential-ordering_status', 'disabled');
+
+        $row = (array)$this->row($donation->id);
+        unset($row['updated_at']);
+
+        $this->assertSame([
+            'id' => (string)$donation->id,
+            'donor_id' => (string)$donor->id,
+            'campaign_id' => '7',
+            'form_id' => '9',
+            'subscription_id' => null,
+            'status' => 'publish',
+            'type' => 'single',
+            'mode' => 'live',
+            'gateway_id' => 'stripe',
+            'gateway_transaction_id' => 'pi_123',
+            'amount_total' => '123456',
+            'fee_amount_recovered' => '456',
+            'currency' => 'EUR',
+            'base_currency' => give_get_option('currency', 'USD'),
+            'exchange_rate' => '1.2500000000',
+            'amount_intended' => '123000',
+            'amount_intended_base' => '98400',
+            'sequential_number' => (string)give()->donations->getSequentialId($donation->id),
+            'purchase_key' => 'key-abc',
+            'email' => 'donor@example.com',
+            'honorific' => 'Dr',
+            'first_name' => 'Ada',
+            'last_name' => 'Lovelace',
+            'phone' => '+1555',
+            'company' => 'Analytical Engines',
+            'billing_address1' => '1 Main St',
+            'billing_address2' => 'Suite 2',
+            'billing_city' => 'London',
+            'billing_state' => 'LDN',
+            'billing_zip' => 'N1',
+            'billing_country' => 'GB',
+            'anonymous' => '1',
+            'created_at' => get_gmt_from_date('2026-01-02 03:04:05'),
+        ], $row);
+    }
+
+    /**
+     * Bad meta reaches the row the way the model reads it: an unknown mode is live, a zero
+     * exchange rate is 1, and a zero GMT date is converted from the local one.
+     *
+     * @since TBD
+     */
+    public function testMetaFallbacks()
+    {
+        $donation = Donation::factory()->create(['amount' => new Money(500, 'USD')]);
+
+        DB::table('give_donationmeta')->where('donation_id', $donation->id)->where('meta_key', DonationMetaKeys::MODE)->update(['meta_value' => 'bogus']);
+        DB::table('give_donationmeta')->where('donation_id', $donation->id)->where('meta_key', DonationMetaKeys::EXCHANGE_RATE)->update(['meta_value' => '0']);
+        DB::table('posts')->where('ID', $donation->id)->update(['post_date_gmt' => '0000-00-00 00:00:00', 'post_date' => '2026-03-04 05:06:07']);
+
+        give(DonationTableSync::class)->sync($donation->id);
+
+        $row = $this->row($donation->id);
+        $this->assertSame('live', $row->mode);
+        $this->assertSame('1.0000000000', $row->exchange_rate);
+        $this->assertSame(get_gmt_from_date('2026-03-04 05:06:07'), $row->created_at);
+    }
+
+    /**
+     * A donation the model cannot load, here one with no currency, is logged on its own and does
+     * not stop the rest of its chunk from syncing.
+     *
+     * @since TBD
+     */
+    public function testUnloadableDonationIsLoggedAndSkipped()
+    {
+        $good = Donation::factory()->create(['amount' => new Money(500, 'USD')]);
+        $bad = Donation::factory()->create(['amount' => new Money(700, 'USD')]);
+        DB::query(DB::prepare('DELETE FROM ' . DB::prefix(DonationTableRepository::TABLE) . ' WHERE id IN (%d, %d)', $good->id, $bad->id));
+        DB::table('give_donationmeta')->where('donation_id', $bad->id)->where('meta_key', DonationMetaKeys::CURRENCY)->update(['meta_value' => '']);
+
+        give(DonationTableSync::class)->sync($good->id, $bad->id);
+
+        $this->assertSame(500, (int)$this->row($good->id)->amount_total);
+        $this->assertNull($this->row($bad->id));
+        $logs = give(LogRepository::class)->getLogsByType('error');
+        $this->assertNotEmpty($logs);
+        $this->assertStringContainsString('give_donations', $logs[0]->getMessage());
+    }
+
+    /**
+     * SOFT-5084: if either write fails, neither happens.
+     *
+     * @since TBD
+     */
+    public function testRepositoryWriteRollsBackWhenTheTableWriteFails()
+    {
+        $this->breakTheTable();
+
+        try {
+            Donation::factory()->create();
+            $this->fail('Expected the donation insert to fail');
+        } catch (Exception $exception) {
+            $this->assertSame('Failed creating a donation', $exception->getMessage());
+        }
+
+        $this->assertSame(0, DB::table('posts')->where('post_type', 'give_payment')->count());
+    }
+
+    /**
+     * A legacy write already happened by the time the queue flushes, so a table failure is
+     * logged and swallowed rather than breaking the request.
+     *
+     * @since TBD
+     */
+    public function testLegacyFlushLogsInsteadOfThrowingWhenTheTableWriteFails()
+    {
+        $donor = Donor::factory()->create();
+        $donationId = give_insert_payment([
+            'price' => '5.00',
+            'give_form_title' => 'Legacy Form',
+            'give_form_id' => 1,
+            'date' => current_time('mysql'),
+            'user_email' => $donor->email,
+            'purchase_key' => 'legacy-key-2',
+            'currency' => 'USD',
+            'user_info' => ['id' => 0, 'email' => $donor->email, 'first_name' => 'A', 'last_name' => 'B'],
+            'status' => 'pending',
+            'gateway' => TestGateway::id(),
+        ]);
+        $this->breakTheTable();
+
+        give(DonationTableSync::class)->flush();
+
+        $this->assertSame('give_payment', get_post_type($donationId));
+        $logs = give(LogRepository::class)->getLogsByType('error');
+        $this->assertNotEmpty($logs);
+        $this->assertStringContainsString('give_donations', $logs[0]->getMessage());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testSyncChunksLargeBatches()
+    {
+        update_option(DonationStorageFlag::OPTION, 'posts');
+        $donations = Donation::factory()->count(DonationTableSync::FLUSH_THRESHOLD + 1)->create();
+        update_option(DonationStorageFlag::OPTION, 'syncing');
+
+        give(DonationTableSync::class)->sync(...array_column($donations, 'id'));
+
+        $this->assertSame(DonationTableSync::FLUSH_THRESHOLD + 1, (int)DB::get_var('SELECT COUNT(*) FROM ' . DB::prefix(DonationTableRepository::TABLE)));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDeletingAnotherPostTypeLeavesTheTableAlone()
+    {
+        $donation = Donation::factory()->create();
+        $pageId = wp_insert_post(['post_type' => 'page', 'post_title' => 'Page', 'post_status' => 'publish']);
+        DB::table(DonationTableRepository::TABLE)->where('id', $donation->id)->update(['id' => $pageId]);
+
+        wp_delete_post($pageId, true);
+
+        $this->assertNotNull($this->row($pageId));
+    }
+
+    /**
+     * @since TBD
+     */
     public function testNothingIsWrittenWhileStorageIsPosts()
     {
         update_option(DonationStorageFlag::OPTION, 'posts');
@@ -241,6 +510,33 @@ class TestDonationTableSync extends TestCase
         $donation = Donation::factory()->create();
 
         $this->assertNull($this->row($donation->id));
+    }
+
+    /**
+     * The WordPress test suite turns CREATE TABLE and DROP TABLE into their TEMPORARY forms, and
+     * the temporary table lives on across tests on the same connection, so after a test that broke
+     * it the table is rebuilt from scratch.
+     *
+     * @since TBD
+     */
+    public function tearDown(): void
+    {
+        DB::query('DROP TABLE ' . DB::prefix(DonationTableRepository::TABLE));
+        (new CreateDonationsTable())->run();
+
+        parent::tearDown();
+    }
+
+    /**
+     * Makes every write to the table fail. Dropping the table only peels off the per-test
+     * temporary copy, and WordPress strips strict SQL mode so a NOT NULL column is silently
+     * defaulted, so a column every INSERT names is removed instead.
+     *
+     * @since TBD
+     */
+    private function breakTheTable(): void
+    {
+        DB::query('ALTER TABLE ' . DB::prefix(DonationTableRepository::TABLE) . ' DROP COLUMN email');
     }
 
     /**

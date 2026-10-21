@@ -121,38 +121,41 @@ Practically, for new work:
 
 ## Donation storage: the `give_donations` table
 
-Donations are stored as `give_payment` posts plus `give_donationmeta` rows. A purpose-built
-`give_donations` table now exists alongside them (`Give\Donations\Migrations\CreateDonationsTable`),
-created empty on upgrade. Nothing reads from it yet. Which storage is authoritative is recorded by
-`Give\Donations\Storage\DonationStorageFlag`, one option with three states: `posts` (no table, nothing written), `syncing` (set by the
-migration once the table exists; every write is mirrored while the posts stay authoritative for
-reads) and `table` (reads come from the table). The flag can move back from `table` to `syncing`, never to
-`posts`.
+While Phase 1 is on, donations live in two places: the `give_payment` posts with their meta,
+which stay authoritative for reads, and the `give_donations` table, kept in step with every
+write. One option says which is authoritative (`posts`, `syncing`, `table`). It only moves
+forward; `table` can fall back to `syncing`, never to `posts`.
 
-The table is kept in step with the posts storage by `Give\Donations\Storage\DonationTableSync`,
-and there is only one way a row gets there: read the donation back from posts and meta, decode
-it, upsert it. `DonationRepository::insert()`, `update()`, `trash()`, `unTrash()` and `delete()`
-call it inside their own transaction, so a failed table write rolls the donation back. Every
-other write path (`Give_Payment::save()`, `give_insert_payment()`, `give_update_payment_status()`,
-`give_delete_donation()`, the importer, add-on meta writes) is caught by
-`SyncPostsWritesToDonationTable` on `save_post_give_payment`, the `*_donation_meta` hooks and
-`delete_post`. Those listeners only queue the donation ID; the queue is flushed once at
-`shutdown`, because a legacy save fires the meta hooks thirty times for one donation. A flush
-failure is logged, never thrown, and the daily drift check exists to catch it.
+What the code does not tell you:
 
-`DonationStatusDecoder` is the one place `post_status` is turned into the separate `status` and
-`type` columns (`give_subscription` means complete + renewal; type comes from subscription meta
-and `post_parent`). The backfill must use it too.
+- **One mapping, from the model to the row.** `DonationTableRepository` is the only thing that
+  writes rows, and only from a `Donation`. `DonationRepository` calls it inside its own
+  transaction, so a failed table write rolls the donation back. Everything else (legacy
+  functions, the importer, add-on meta writes) is caught by post and meta hooks, queued, loaded
+  through the model once per request, and handed to the same five verbs. Never add a second
+  way to build a row, and never make a raw-row method public: every public method on that
+  repository is add-on API the day it ships.
+- **Bulk SQL on donation storage must be mirrored by hand.** A bulk `UPDATE` or `DELETE` on
+  `give_donationmeta` or `wp_posts` bypasses both paths. Campaign merge, form transfer and Reset
+  Stats each carry a matching statement; a new one needs the same, plus a test in
+  `tests/Unit/Donations/Storage`.
+- **`post_status` is overloaded, and the model is the decoder.** `give_subscription` means
+  complete plus renewal, a status the model does not know reads as pending, and the type comes
+  from subscription meta. The table stores what the model reads, never the raw post value, so
+  anything that writes rows loads the model first. The drift check's SQL mirrors the model's
+  hydration rules; change them in both places.
+- **Duplicate meta rows exist.** Legacy `add_meta()` is not unique. Everything that reads meta for
+  the table takes the lowest `meta_id`, which is what `get_metadata()` returns; the drift check
+  must do the same or it reports ghosts.
+- **The table's shape is deliberate.** `id` is the post ID with no `AUTO_INCREMENT`, so there is
+  one ID space. The intended-amount columns are generated and signed, because a total can be
+  edited below its fee. `sequential_number` is indexed but not unique: the upsert is
+  `ON DUPLICATE KEY UPDATE`, and a second unique key could merge two donations. `dbDelta()`
+  cannot parse generated columns, so the migration is raw SQL.
 
-Two things about the table are deliberate and easy to undo by accident:
-
-- `id` is the legacy post ID with no `AUTO_INCREMENT`, so the two storages never grow separate ID
-  spaces while they are kept in sync.
-- `amount_intended` and `amount_intended_base` are stored generated columns, signed because an
-  admin can edit a total below its recovered fee and legacy storage accepts that, and the covering
-  indexes end in `amount_intended_base`. Totals are answered from the index alone; the repository
-  never maintains those two values. `dbDelta()` does not parse generated columns, which is why the
-  migration is a raw `CREATE TABLE`.
+The daily drift check never corrects. It stores its last report in an option and logs a warning
+when anything differs; until the migration screen exists, that log and the WP-CLI command are
+the only places to see it.
 
 ## Checklist
 
