@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import {CheckVerified, StarsIcon} from '@givewp/components/AdminUI/Icons';
@@ -5,9 +6,15 @@ import Button from '@givewp/components/AdminUI/Button';
 import styles from '../style.module.scss';
 import {createInterpolateElement} from '@wordpress/element';
 
+/**
+ * @since TBD Show a failed upgrade in the dialog instead of a browser alert.
+ */
 export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose}) {
     const {supportedAddons, supportedGateways, migrationApiRoot, apiNonce} = window.GiveDonationForms;
+    const [error, setError] = useState('');
     const handleUpgrade = async () => {
+        setError('');
+
         // @ts-ignore
         const response = await fetch(migrationApiRoot + '/' + window.give_vars.post_id, {
             method: 'post',
@@ -22,7 +29,7 @@ export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose
         if (response.ok) {
             window.location = data.redirect;
         } else {
-            alert('Error migrating form');
+            setError(__('The form could not be upgraded. Please try again.', 'give'));
         }
     };
 
@@ -85,6 +92,12 @@ export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose
                             ))}
                         </div>
                     </>
+                )}
+
+                {error && (
+                    <p className={styles.message} role="alert">
+                        {error}
+                    </p>
                 )}
 
                 {isUpgrading || isEditing ? (
