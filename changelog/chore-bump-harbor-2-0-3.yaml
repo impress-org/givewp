@@ -1,5 +1,0 @@
-significance: patch
-type: fix
-entry: Resolved an issue with nexcess licensing not respecting the deactivated
-  grace period
-timestamp: 2026-10-21T18:59:10.605Z
