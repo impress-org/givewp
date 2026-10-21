@@ -189,7 +189,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Update a single donor.
      *
-     * @since TBD Non-admin callers can only change the primary email to an email already on the donor record.
+     * @since TBD Return an error when a non-admin caller sets a primary email that is not on the donor record.
      * @since 4.17.0 Non-admin callers may no longer add unverified email addresses.
      * @since 4.16.6 Skip readonly schema properties when applying PATCH updates.
      * @since 4.8.0 Update donor name when firstName or lastName is updated
@@ -223,7 +223,11 @@ class DonorController extends WP_REST_Controller
         );
 
         if (!DonorPermissions::canEdit() && $request->has_param('email') && !$donor->hasEmail((string)$request->get_param('email'))) {
-            $request->set_param('email', $donor->email);
+            return new WP_Error(
+                'donor_email_not_allowed',
+                __('The email must already belong to this donor.', 'give'),
+                ['status' => 403]
+            );
         }
 
         if (!DonorPermissions::canEdit() && $request->has_param('additionalEmails')) {

@@ -552,14 +552,12 @@ class DonorRouteUpdateTest extends RestApiTestCase
 
         $response = $this->dispatchRequest($request);
 
-        $this->assertEquals(200, $response->get_status());
-        $data = $response->get_data();
-
-        $this->assertEquals('primary@test.com', $data['email']);
-        $this->assertEquals('5551234567', $data['phone']);
+        $this->assertEquals(403, $response->get_status());
+        $this->assertEquals('donor_email_not_allowed', $response->get_data()['code']);
 
         $updatedDonor = Donor::find($donor->id);
         $this->assertEquals('primary@test.com', $updatedDonor->email);
+        $this->assertEquals($donor->phone, $updatedDonor->phone);
         $this->assertEquals(['existing@test.com'], $updatedDonor->additionalEmails);
     }
 
