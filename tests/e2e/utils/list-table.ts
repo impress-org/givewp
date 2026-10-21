@@ -88,8 +88,8 @@ export async function applyFilter(
 }
 
 /**
- * The selection bar shown while rows are selected.
+ * The selection bar shown above the table while rows are selected. The footer has a second copy.
  */
 export function selectionBar(page: Page): Locator {
-    return listTable(page).locator('.dataviews-bulk-actions-footer__container');
+    return listTable(page).locator('.givewp-list-table__bulk-actions .dataviews-bulk-actions-footer__container');
 }

@@ -236,8 +236,8 @@ only place that knows those names). Sorting, filtering, searching and paging sta
 - **One layout change: the selection bar sits above the table.** In the Site Editor the list fills
   the window, so the footer with the selection bar is always in view. On Give's pages the list is
   part of a longer page, and the footer ends up below the last row. `DataViewsListTable` uses the
-  DataViews sub-components to show the stock `BulkActionToolbar` in place of the search row while
-  rows are selected; the footer keeps only the pagination.
+  DataViews sub-components to also show the stock `BulkActionToolbar` in place of the search row
+  while rows are selected; the stock footer keeps its own copy next to the pagination.
 - **Version pin.** DataViews is bundled, not provided by WordPress, while the `@wordpress/components`
   and other `wp-*` packages it uses come from the site. So the pin is the DataViews line the
   **oldest supported** WordPress ships (`readme.txt` "Requires at least"), currently 10.1.x for 6.9.

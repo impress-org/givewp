@@ -27,20 +27,18 @@ export interface DataViewsListTableProps {
 const getItemId = (item: ListTableItem) => String(item.id);
 
 /**
- * The stock DataViews layout, with one change: while rows are selected, the bulk actions take the
- * place of the search row above the table, so they show where the selection starts. The footer
- * keeps only the pagination.
+ * The stock DataViews layout, with one change: while rows are selected, the bulk actions also take
+ * the place of the search row above the table, so they show where the selection starts. The stock
+ * footer keeps its own copy next to the pagination.
  *
  * @since TBD
  */
 function ListTableLayout({
     hasSelection,
-    hasPages,
     search,
     searchLabel,
 }: {
     hasSelection: boolean;
-    hasPages: boolean;
     search: boolean;
     searchLabel?: string;
 }) {
@@ -64,11 +62,7 @@ function ListTableLayout({
             )}
             <DataViews.FiltersToggled className="dataviews-filters__container" />
             <DataViews.Layout />
-            {hasPages && (
-                <HStack expanded={false} justify="end" className="dataviews-footer">
-                    <DataViews.Pagination />
-                </HStack>
-            )}
+            <DataViews.Footer />
         </>
     );
 }
@@ -115,7 +109,6 @@ export default function DataViewsListTable({
             >
                 <ListTableLayout
                     hasSelection={selection.length > 0}
-                    hasPages={paginationInfo.totalItems > 0 && paginationInfo.totalPages > 1}
                     search={search}
                     searchLabel={searchLabel}
                 />
