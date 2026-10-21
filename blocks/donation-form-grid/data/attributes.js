@@ -101,7 +101,7 @@ const blockAttributes = {
     },
     progressBarColor: {
         type: 'string',
-        default: '#69b86b'
+        default: '#438D45'
     }
 };
 
