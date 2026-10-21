@@ -1466,6 +1466,7 @@ add_action( 'personal_options_update', 'give_update_donor_name_on_user_update', 
  * Updates the email address of a donor record when the email on a user is updated
  * Note: for internal use only.
  *
+ * @since TBD Only sync an email that is already on the donor record for non-admin callers.
  * @since  1.4.3
  * @access public
  *
@@ -1486,6 +1487,15 @@ function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = 
 	$user = get_userdata( $user_id );
 
 	if ( ! empty( $user ) && $user->user_email !== $donor->email ) {
+		$can_sync_unverified_email = current_user_can( 'manage_options' ) || ( defined( 'WP_CLI' ) && WP_CLI );
+
+		if ( ! $can_sync_unverified_email ) {
+			$email_donor = new Give_Donor( $user->user_email );
+
+			if ( ! $email_donor->id || (int) $email_donor->id !== (int) $donor->id ) {
+				return false;
+			}
+		}
 
 		$success = Give()->donors->update(
 			$donor->id,
