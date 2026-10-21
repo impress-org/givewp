@@ -303,6 +303,7 @@ function give_render_donor_view( $view, $callbacks ) {
 /**
  * View a donor
  *
+ * @since TBD Issue the address form nonce for the displayed donor.
  * @since 4.16.4 Escaped the donor company and phone output.
  * @since 3.7.0 Add "phone" field
  * @since  1.0
@@ -769,7 +770,7 @@ function give_donor_view( $donor ) {
 							</tr>
 							<tr>
 								<td colspan="2">
-									<?php wp_nonce_field( 'give-manage-donor-addresses', '_wpnonce', false ); ?>
+									<?php wp_nonce_field( 'give-manage-donor-addresses-' . $donor->id, '_wpnonce', false ); ?>
 									<input type="hidden" name="address-action" value="add">
 									<input type="hidden" name="address-id" value="">
 									<input type="submit" class="button button-primary js-save"

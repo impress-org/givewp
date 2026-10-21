@@ -1213,6 +1213,7 @@ function give_get_donor_safe_user_roles() {
 /**
  * Ajax handle for donor address.
  *
+ * @since TBD Require the donor edit capability and a nonce issued for the donor being changed.
  * @since 2.0
  * @since 2.11.0 decode url before parsing and sanitizing url when set $post.
  * @since 4.9.0 rename function - PHP 8 compatibility
@@ -1248,13 +1249,25 @@ function give_ajax_donor_manage_addresses() {
 	];
 
 	// Security check.
-	if ( ! wp_verify_nonce( $form_data['_wpnonce'], 'give-manage-donor-addresses' ) ) {
+	if ( ! wp_verify_nonce( $form_data['_wpnonce'], 'give-manage-donor-addresses-' . $donorID ) ) {
 		wp_send_json_error(
 			[
 				'error'     => 1,
 				'error_msg' => wp_sprintf(
 					'<div class="notice notice-error"><p>%s</p></div>',
 					__( 'Error: Security issue.', 'give' )
+				),
+			]
+		);
+	}
+
+	if ( ! current_user_can( apply_filters( 'give_edit_donors_role', 'edit_give_payments' ) ) ) {
+		wp_send_json_error(
+			[
+				'error'     => 1,
+				'error_msg' => wp_sprintf(
+					'<div class="notice notice-error"><p>%s</p></div>',
+					__( 'You do not have permission to edit this donor.', 'give' )
 				),
 			]
 		);
