@@ -2,8 +2,6 @@
 
 namespace Give\Tests\Unit\Admin;
 
-use Faker\Factory;
-use Faker\Generator;
 use Give\Donors\Models\Donor;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -21,11 +19,6 @@ use WPDieException;
 final class DonorManageAddressesAccessTest extends TestCase
 {
     use RefreshDatabase;
-
-    /**
-     * @var Generator
-     */
-    private $faker;
 
     /**
      * @var Donor
@@ -80,7 +73,6 @@ final class DonorManageAddressesAccessTest extends TestCase
         $this->viewOnlyUserId = self::factory()->user->create(['role' => 'give_test_donor_viewer']);
         $this->editorUserId = self::factory()->user->create(['role' => 'give_test_donor_editor']);
 
-        $this->faker = Factory::create();
         $this->donor = Donor::factory()->create(['addresses' => []]);
         $this->otherDonor = Donor::factory()->create(['addresses' => []]);
     }
@@ -220,11 +212,11 @@ final class DonorManageAddressesAccessTest extends TestCase
     private function addressFields(): array
     {
         return [
-            'line1' => $this->faker->streetAddress(),
+            'line1' => '123 Main St',
             'line2' => '',
-            'city' => $this->faker->city(),
+            'city' => 'San Diego',
             'state' => 'CA',
-            'zip' => $this->faker->postcode(),
+            'zip' => '92101',
             'country' => 'US',
         ];
     }
