@@ -5,12 +5,10 @@
     border-radius: var(--givewp-rounded-8);
 }
 
-// DataViews scrolls inside its own box, with the header row and the footer (pagination and bulk
-// actions) sticky to that box. The Site Editor gives the box the window's height; without a height
-// the box never scrolls and the footer ends up below the last row. Cap it at the window height so
-// the footer stays in view.
-.givewp-list-table .dataviews-wrapper {
-    max-height: calc(100vh - var(--wp-admin--admin-bar--height, 32px));
+// The bulk actions sit in the search row while rows are selected. Keep the row as tall as the
+// search field, so the table does not jump when the selection starts or ends.
+.givewp-list-table__bulk-actions {
+    min-height: 64px;
 }
 
 // Row checkboxes are always visible, as in the DataViews that WordPress 7.x ships. The pinned
