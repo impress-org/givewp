@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Enabled the 'Update Subscription' button in the Donor Dashboard for failing subscriptions, so donors can replace an expired or declined card
+timestamp: 2026-10-09T21:31:03.227Z
