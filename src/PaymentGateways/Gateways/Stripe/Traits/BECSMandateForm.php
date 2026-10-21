@@ -49,7 +49,7 @@ trait BECSMandateForm
                 <div class="form-row form-row-responsive give-stripe-becs-mandate-acceptance-text">
                     <?php
                     if ( give_is_setting_enabled( give_get_option( 'stripe_becs_mandate_acceptance_option', 'enabled' ) ) ) {
-                        echo give_stripe_get_mandate_acceptance_text( 'becs' );
+                        echo give_stripe_get_mandate_acceptance_text( 'becs', $form_id );
                     }
                     ?>
                 </div>
