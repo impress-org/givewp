@@ -2084,7 +2084,6 @@ function give_get_donation_form_submit_button( $form_id, $args = [] ) {
  * @since        1.6   Add template for Give Goals Shortcode.
  *               More info is on https://github.com/impress-org/give/issues/411
  *
- * @since TBD Escape output.
  * @since        1.0
  */
 function give_show_goal_progress( $form_id, $args = [] ) {
@@ -2103,7 +2102,8 @@ function give_show_goal_progress( $form_id, $args = [] ) {
 	 *
 	 * @since 2.0
 	 */
-	echo wp_kses_post( apply_filters( 'give_goal_output', ob_get_clean(), $form_id, $args ) );
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- goal markup from the shortcode-goal template, which escapes its own values; wp_kses_post() would strip markup add-ons and themes add through this filter.
+	echo apply_filters( 'give_goal_output', ob_get_clean(), $form_id, $args );
 
 	return true;
 }
@@ -2117,7 +2117,6 @@ add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
  * @param int $total_goal Total Goal amount passed by Admin.
  *
  * @return mixed
- * @since TBD Escape output.
  * @since  2.1
  */
 function give_show_goal_totals_progress( $total, $total_goal ) {
@@ -2136,7 +2135,8 @@ function give_show_goal_totals_progress( $total, $total_goal ) {
 		]
 	);
 
-	echo wp_kses_post( apply_filters( 'give_total_progress_output', ob_get_clean() ) );
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- progress markup from the shortcode-totals-progress template, which escapes its own values; wp_kses_post() would strip markup add-ons and themes add through this filter.
+	echo apply_filters( 'give_total_progress_output', ob_get_clean() );
 
 	return true;
 }
@@ -2210,7 +2210,6 @@ add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
  * @param array $args    An array of form arguments.
  *
  * @return void
- * @since TBD Escape output.
  * @since  1.0
  */
 function give_form_display_content( $form_id, $args ) {
@@ -2254,7 +2253,8 @@ function give_form_display_content( $form_id, $args ) {
 	 *
 	 * @since 1.0
 	 */
-	echo wp_kses_post( apply_filters( 'give_form_content_output', $output, $form_id, $args ) );
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- post content an editor wrote, already run through the_content/do_shortcode; wp_kses_post() would strip embeds, iframes and nested form shortcodes.
+	echo apply_filters( 'give_form_content_output', $output, $form_id, $args );
 
 	// remove action to prevent content output on addition forms on page.
 	// @see: https://github.com/impress-org/give/issues/634.

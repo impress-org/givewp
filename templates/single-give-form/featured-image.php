@@ -35,12 +35,14 @@ do_action( 'give_pre_featured_thumbnail' );
 		$image_size = give_get_option( 'featured_image_size' );
 		$image      = get_the_post_thumbnail( $post->ID, apply_filters( 'single_give_form_large_thumbnail_size', ( ! empty( $image_size ) ? $image_size : 'large' ) ) );
 
-		echo wp_kses_post( apply_filters( 'single_give_form_image_html', $image ) );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- image markup from get_the_post_thumbnail() or an escaped placeholder; wp_kses_post() would strip attributes themes add through this filter.
+		echo apply_filters( 'single_give_form_image_html', $image );
 
 	} else {
 
 		// Placeholder Image
-		echo wp_kses_post( apply_filters( 'single_give_form_image_html', sprintf( '<img src="%s" alt="%s" />', esc_url( give_get_placeholder_img_src() ), esc_attr__( 'Placeholder', 'give' ) ), $post->ID ) );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- image markup from get_the_post_thumbnail() or an escaped placeholder; wp_kses_post() would strip attributes themes add through this filter.
+		echo apply_filters( 'single_give_form_image_html', sprintf( '<img src="%s" alt="%s" />', esc_url( give_get_placeholder_img_src() ), esc_attr__( 'Placeholder', 'give' ) ), $post->ID );
 
 	}
 	?>
