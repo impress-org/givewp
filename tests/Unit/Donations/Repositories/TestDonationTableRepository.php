@@ -88,6 +88,19 @@ class TestDonationTableRepository extends TestCase
     /**
      * @since TBD
      */
+    public function testBlankLastNameIsStoredAsNull()
+    {
+        [$donation] = $this->donationsWithoutRows(1);
+        $donation->lastName = '';
+
+        (new DonationTableRepository())->insert($donation);
+
+        $this->assertNull($this->row($donation->id)->last_name);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testTrashAndRestoreChangeOnlyTheStatus()
     {
         [$donation] = $this->donationsWithoutRows(1);

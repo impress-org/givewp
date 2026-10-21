@@ -161,7 +161,7 @@ class DonationTableRepository
             'email' => (string)$donation->email,
             'honorific' => $this->text($donation->honorific ?? null),
             'first_name' => (string)$donation->firstName,
-            'last_name' => (string)$donation->lastName,
+            'last_name' => $this->text($donation->lastName ?? null),
             'phone' => $this->text($donation->phone ?? null),
             'company' => $this->text($donation->company ?? null),
             'billing_address1' => $this->text($address->address1 ?? null),
