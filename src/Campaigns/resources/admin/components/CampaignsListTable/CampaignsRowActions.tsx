@@ -1,41 +1,36 @@
-import {useContext} from 'react';
-import {useSWRConfig} from 'swr';
 import {__, sprintf} from '@wordpress/i18n';
-import RowAction from '@givewp/components/ListTable/RowAction';
-import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
-import ListTableApi from '@givewp/components/ListTable/api';
-import {getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
+import apiFetch from '@wordpress/api-fetch';
+import type {ListTableRowAction} from '@givewp/components/ListTable/ListTablePage';
 
-const API = new ListTableApi(getCampaignOptionsWindowData());
+/**
+ * Campaign row actions: "Edit" inline, "Duplicate" in the row menu.
+ *
+ * @since TBD Declare the row actions as data for the list engine.
+ */
+export const campaignsRowActions: ListTableRowAction[] = [
+    {
+        id: 'edit',
+        label: __('Edit', 'give'),
+        isPrimary: true,
+        href: (item) => `edit.php?post_type=give_forms&page=give-campaigns&id=${item.id}`,
+    },
+    {
+        id: 'duplicate',
+        label: __('Duplicate', 'give'),
+        confirm: {
+            title: __('Duplicate campaign', 'give'),
+            body: ([item]) => (
+                <p>
+                    {/* translators: %s: campaign title */}
+                    {sprintf(__('Are you sure you want to duplicate the following campaign: %s?', 'give'), item.titleRaw)}
+                </p>
+            ),
+            confirmLabel: __('Duplicate', 'give'),
+        },
+        run: async ([item]) => {
+            await apiFetch({path: `/givewp/v3/campaigns/${item.id}/duplicate`, method: 'POST'});
 
-export function CampaignsRowActions({item, setUpdateErrors, parameters}) {
-    const showConfirmModal = useContext(ShowConfirmModalContext);
-    const {mutate} = useSWRConfig();
-
-    const duplicateItem = async () => {
-        const response = await API.fetchWithArgs(`/${item.id}/duplicate`, {}, 'POST');
-        setUpdateErrors(response);
-        await mutate(parameters);
-        return response;
-    };
-
-    const confirmDuplicate = () => (
-        <p>{sprintf(__('Are you sure you want to duplicate the following campaign: %s?', 'give'), item.titleRaw)}</p>
-    );
-
-    const confirmModal = () => showConfirmModal(__('Duplicate', 'give'), confirmDuplicate, duplicateItem, 'info');
-
-    return (
-        <>
-            <RowAction
-                href={`edit.php?post_type=give_forms&page=give-campaigns&id=${item.id}`}
-                displayText={__('Edit', 'give')}
-            />
-            <RowAction
-                actionId={item.id}
-                displayText={__('Duplicate', 'give')}
-                onClick={confirmModal}
-            />
-        </>
-    );
-}
+            return {errors: [], successes: [item.id]};
+        },
+    },
+];
