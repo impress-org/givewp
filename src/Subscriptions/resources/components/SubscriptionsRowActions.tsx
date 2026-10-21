@@ -1,75 +1,92 @@
-import {useContext} from 'react';
-import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
-import {__, sprintf} from '@wordpress/i18n';
-import RowAction from '@givewp/components/ListTable/RowAction';
-import {useSWRConfig} from 'swr';
+import {__} from '@wordpress/i18n';
 import ListTableApi from '@givewp/components/ListTable/api';
+import SetStatusDialog from '@givewp/components/ListTable/SetStatusDialog';
+import type {ListTableItem, ListTableParameters, ListTableRowAction} from '@givewp/components/ListTable/ListTablePage';
 
 const subscriptionsApi = new ListTableApi(window.GiveSubscriptions);
 
-export function SubscriptionsRowActions({item, setUpdateErrors, parameters}) {
-    const showConfirmModal = useContext(ShowConfirmModalContext);
-    const {mutate} = useSWRConfig();
+const idsOf = (items: ListTableItem[]) => items.map((item) => item.id).join(',');
 
-    const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
-        const response = await subscriptionsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
-        setUpdateErrors(response);
-        await mutate(parameters);
-        return response;
-    };
+const isTrashView = (parameters: ListTableParameters) => [].concat(parameters?.status ?? []).includes('trashed');
 
-    const deleteItem = async () => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE');
-    const trashItem = async () => await fetchAndUpdateErrors(parameters, '/trash', item.id, 'DELETE');
-    const restoreItem = async () => await fetchAndUpdateErrors(parameters, '/untrash', item.id, 'POST');
+/**
+ * The statuses an admin can set from the list, in the order the old "Set To …" actions had.
+ */
+const SUBSCRIPTION_STATUSES = [
+    {value: 'active', label: __('Active', 'give')},
+    {value: 'expired', label: __('Expired', 'give')},
+    {value: 'completed', label: __('Completed', 'give')},
+    {value: 'cancelled', label: __('Cancelled', 'give')},
+    {value: 'pending', label: __('Pending', 'give')},
+    {value: 'failing', label: __('Failing', 'give')},
+    {value: 'suspended', label: __('Suspended', 'give')},
+    {value: 'abandoned', label: __('Abandoned', 'give')},
+];
 
-    const confirmDelete = () => <p>{sprintf(__('Really delete subscription #%d?', 'give'), item.id)}</p>;
-    const confirmTrash = () => <p>{sprintf(__('Trash the following subscription #%d?', 'give'), item.id)}</p>;
-    const confirmRestore = () => <p>{sprintf(__('Restore the following subscription #%d?', 'give'), item.id)}</p>;
-
-    const confirmDeleteModal = () => {
-        showConfirmModal(__('Delete', 'give'), confirmDelete, deleteItem, 'danger');
-    };
-
-    const confirmTrashModal = () => {
-        showConfirmModal(__('Trash', 'give'), confirmTrash, trashItem, 'warning');
-    };
-
-    const confirmRestoreModal = () => {
-        showConfirmModal(__('Restore', 'give'), confirmRestore, restoreItem, 'normal');
-    };
-
-    return (
-        <>
-            {parameters?.status?.includes('trashed') ? (
-                <>
-                    <RowAction
-                        onClick={confirmRestoreModal}
-                        actionId={item.id}
-                        displayText={__('Restore', 'give')}
-                    />
-                    <RowAction
-                        onClick={confirmDeleteModal}
-                        actionId={item.id}
-                        displayText={__('Delete', 'give')}
-                        hiddenText={item.name}
-                        highlight
-                    />
-                </>
-            ) : (
-                <>
-                    <RowAction
-                        href={`edit.php?post_type=give_forms&page=give-subscriptions&id=${item.id}`}
-                        displayText={__('Edit', 'give')}
-                    />
-                    <RowAction
-                        onClick={confirmTrashModal}
-                        actionId={item.id}
-                        displayText={__('Trash', 'give')}
-                        hiddenText={item.name}
-                        highlight
-                    />
-                </>
-            )}
-        </>
-    );
-}
+/**
+ * Subscription actions: "Edit" inline ("Restore" in the trash view); "Trash", "Set status" (or
+ * "Delete permanently" in the trash view) in the row menu. All but "Edit" also run on a selection.
+ *
+ * @since TBD Declare the actions as data for the list engine; one "Set status" replaces the "Set To …" bulk actions.
+ */
+export const subscriptionsRowActions: ListTableRowAction[] = [
+    {
+        id: 'edit',
+        label: __('Edit', 'give'),
+        isPrimary: true,
+        isVisible: (data, parameters) => !isTrashView(parameters),
+        href: (item) => `edit.php?post_type=give_forms&page=give-subscriptions&id=${item.id}`,
+    },
+    {
+        id: 'restore',
+        label: __('Restore', 'give'),
+        isPrimary: true,
+        supportsBulk: true,
+        isVisible: (data, parameters) => isTrashView(parameters),
+        confirm: {
+            title: __('Restore subscriptions', 'give'),
+            body: () => <p>{__('Are you sure you want remove from trash the following subscriptions?', 'give')}</p>,
+            confirmLabel: __('Restore', 'give'),
+        },
+        run: (items) => subscriptionsApi.fetchWithArgs('/untrash', {ids: idsOf(items)}, 'POST'),
+    },
+    {
+        id: 'trash',
+        label: __('Trash', 'give'),
+        supportsBulk: true,
+        isVisible: (data, parameters) => !isTrashView(parameters),
+        confirm: {
+            title: __('Trash subscriptions', 'give'),
+            body: () => <p>{__('Are you sure you want add to trash the following subscriptions?', 'give')}</p>,
+            confirmLabel: __('Move to trash', 'give'),
+        },
+        run: (items) => subscriptionsApi.fetchWithArgs('/trash', {ids: idsOf(items)}, 'DELETE'),
+    },
+    {
+        id: 'set-status',
+        label: __('Set status', 'give'),
+        supportsBulk: true,
+        isVisible: (data, parameters) => !isTrashView(parameters),
+        Dialog: (props) => (
+            <SetStatusDialog
+                {...props}
+                api={subscriptionsApi}
+                message={<p>{__('Set status for the following subscriptions?', 'give')}</p>}
+                statuses={SUBSCRIPTION_STATUSES}
+            />
+        ),
+    },
+    {
+        id: 'delete',
+        label: __('Delete permanently', 'give'),
+        isDestructive: true,
+        supportsBulk: true,
+        isVisible: (data, parameters) => isTrashView(parameters),
+        confirm: {
+            title: __('Delete subscriptions', 'give'),
+            body: () => <p>{__('Really delete the following subscriptions?', 'give')}</p>,
+            confirmLabel: __('Delete', 'give'),
+        },
+        run: (items) => subscriptionsApi.fetchWithArgs('/delete', {ids: idsOf(items)}, 'DELETE'),
+    },
+];
