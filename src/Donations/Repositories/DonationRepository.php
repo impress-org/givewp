@@ -5,6 +5,7 @@ namespace Give\Donations\Repositories;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\Models\Donation;
+use Give\Donations\Storage\DonationTableSync;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
@@ -17,7 +18,6 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Receipts\DonationReceiptBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
-use Give\Helpers\Call;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 
@@ -32,7 +32,7 @@ class DonationRepository
      */
     public $notes;
 
-    /**
+/**
      * @since 2.21.0
      */
     public function __construct()
@@ -197,6 +197,7 @@ class DonationRepository
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.8.1 Moved campaignId assignment logic to getCoreDonationMetaForDatabase method to eliminate code duplication.
      * @since 3.20.0 store meta using native WP functions
+     * @since TBD Write the give_donations row from the model inside the same transaction, and resolve the mode and purchase key defaults onto the model before saving.
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_creating and givewp_donation_created
      * @since 2.20.0 mutate model and return void
@@ -216,6 +217,17 @@ class DonationRepository
         $dateUpdated = $donation->updatedAt ?? $dateCreated;
         $dateUpdatedFormatted = Temporal::getFormattedDateTime($dateUpdated);
 
+        // Defaults the meta used to fill in silently now live on the model, so the meta and the
+        // give_donations row are built from the same values.
+        $donation->createdAt = $dateCreated;
+        $donation->updatedAt = $dateUpdated;
+        if (!isset($donation->mode)) {
+            $donation->mode = $this->getDefaultDonationMode();
+        }
+        if (!isset($donation->purchaseKey)) {
+            $donation->purchaseKey = (new GeneratePurchaseKey())($donation->email);
+        }
+
         DB::query('START TRANSACTION');
 
         try {
@@ -231,14 +243,22 @@ class DonationRepository
                 ]);
 
             $donationId = DB::last_insert_id();
+            $donation->id = $donationId;
 
             $donationMeta = $this->getCoreDonationMetaForDatabase($donation);
 
             foreach ($donationMeta as $metaKey => $metaValue) {
-                give()->payment_meta->add_meta($donationId, $metaKey, $metaValue);
+                if ($metaValue !== null) {
+                    give()->payment_meta->add_meta($donationId, $metaKey, $metaValue);
+                }
             }
+
+            give(DonationTableRepository::class)->insert($donation);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
+
+            // The row is gone with the rollback, so the model must not look saved.
+            $donation->id = null;
 
             Log::error('Failed creating a donation', compact('donation'));
 
@@ -247,23 +267,20 @@ class DonationRepository
 
         DB::query('COMMIT');
 
-        $donation->id = $donationId;
-
-        $donation->createdAt = $dateCreated;
-        $donation->updatedAt = $dateUpdated;
-
         if (!isset($donation->formTitle)) {
             $donation->formTitle = $this->getFormTitle($donation->formId);
         }
 
-        if (!isset($donation->purchaseKey)) {
-            $donation->purchaseKey = $donationMeta[DonationMetaKeys::PURCHASE_KEY];
-        }
-
         Hooks::doAction('givewp_donation_created', $donation);
+
+        // Created listeners still write legacy data outside the transaction (the sequential
+        // number, for one) without firing a post hook, so the row is refreshed once more at
+        // shutdown.
+        give(DonationTableSync::class)->queue($donation->id);
     }
 
     /**
+     * @since TBD Write the give_donations row from the model inside the same transaction, and remove the meta of optional fields the model has cleared (a null in the meta array).
      * @since 4.19.0 Refresh the form title when the donation moves to another form
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.6.0 Turn createdAt property updatable
@@ -291,6 +308,11 @@ class DonationRepository
         $now = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
         $nowFormatted = Temporal::getFormattedDateTime($now);
 
+        $donation->updatedAt = $now;
+        if (!isset($donation->mode)) {
+            $donation->mode = $this->getDefaultDonationMode();
+        }
+
         DB::query('START TRANSACTION');
 
         try {
@@ -306,9 +328,16 @@ class DonationRepository
                     'post_parent' => $this->deriveLegacyDonationParentId($donation),
                 ]);
 
+            // A null value means the model no longer has the field, so its meta row goes too.
             foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
-                give()->payment_meta->update_meta($donation->id, $metaKey, $metaValue);
+                if ($metaValue === null) {
+                    give()->payment_meta->delete_meta($donation->id, $metaKey);
+                } else {
+                    give()->payment_meta->update_meta($donation->id, $metaKey, $metaValue);
+                }
             }
+
+            give(DonationTableRepository::class)->update($donation);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -317,14 +346,13 @@ class DonationRepository
             throw new Exception('Failed updating a donation', 0, $exception);
         }
 
-        $donation->updatedAt = $now;
-
         DB::query('COMMIT');
 
         Hooks::doAction('givewp_donation_updated', $donation);
     }
 
     /**
+     * @since TBD Remove the give_donations row inside the same transaction.
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 2.21.0 replace actions with givewp_donation_deleting and givewp_donation_deleted
      * @since 2.20.0 consolidate meta deletion into a single query
@@ -346,6 +374,8 @@ class DonationRepository
             DB::table('give_donationmeta')
                 ->where('donation_id', $donation->id)
                 ->delete();
+
+            give(DonationTableRepository::class)->delete($donation);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -362,7 +392,8 @@ class DonationRepository
     }
 
      /**
-      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
+     * @since TBD Write the give_donations row inside the same transaction.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.6.0
      *
      * @throws Exception
@@ -384,6 +415,8 @@ class DonationRepository
             DB::table('posts')
                 ->where('ID', $donation->id)
                 ->update(['post_status' => 'trash']);
+
+            give(DonationTableRepository::class)->trash($donation);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -400,6 +433,7 @@ class DonationRepository
     }
 
     /**
+     * @since TBD Write the give_donations row inside the same transaction.
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.12.0
      *
@@ -422,6 +456,8 @@ class DonationRepository
             DB::table('posts')
                 ->where('id', $donation->id)
                 ->update(['post_status' => $previousStatus]);
+
+            give(DonationTableRepository::class)->restore($donation, new DonationStatus($previousStatus));
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -438,6 +474,7 @@ class DonationRepository
     }
 
     /**
+     * @since TBD Optional fields are always listed, null when the model has none.
      * @since 4.8.1 Consolidated campaignId assignment logic from insert method to eliminate duplication and ensure donation model is updated.
      * @since 4.0.0 added campaignId
      * @since 3.9.0 Added meta for phone property
@@ -466,10 +503,7 @@ class DonationRepository
             DonationMetaKeys::MODE => isset($donation->mode) ?
                 $donation->mode->getValue() :
                 $this->getDefaultDonationMode()->getValue(),
-            DonationMetaKeys::PURCHASE_KEY => $donation->purchaseKey ?? Call::invoke(
-                    GeneratePurchaseKey::class,
-                    $donation->email
-                ),
+            DonationMetaKeys::PURCHASE_KEY => $donation->purchaseKey ?? (new GeneratePurchaseKey())($donation->email),
             DonationMetaKeys::DONOR_IP => $donation->donorIp ?? give_get_ip(),
             DonationMetaKeys::LEVEL_ID => $donation->levelId,
             DonationMetaKeys::ANONYMOUS => (int)$donation->anonymous,
@@ -486,18 +520,18 @@ class DonationRepository
             $meta[DonationMetaKeys::CAMPAIGN_ID] = $donation->campaignId;
         }
 
-        if ($donation->feeAmountRecovered !== null) {
-            $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = $donation->feeAmountRecovered->formatToDecimal();
-        }
-
-        if ($donation->billingAddress !== null) {
-            $meta[DonationMetaKeys::BILLING_COUNTRY] = $donation->billingAddress->country;
-            $meta[DonationMetaKeys::BILLING_ADDRESS2] = $donation->billingAddress->address2;
-            $meta[DonationMetaKeys::BILLING_CITY] = $donation->billingAddress->city;
-            $meta[DonationMetaKeys::BILLING_ADDRESS1] = $donation->billingAddress->address1;
-            $meta[DonationMetaKeys::BILLING_STATE] = $donation->billingAddress->state;
-            $meta[DonationMetaKeys::BILLING_ZIP] = $donation->billingAddress->zip;
-        }
+        // Optional fields are always listed, null when the model has none, so insert() can skip
+        // them and update() can remove them.
+        $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = $donation->feeAmountRecovered ? $donation->feeAmountRecovered->formatToDecimal() : null;
+        $meta[DonationMetaKeys::COMPANY] = $donation->company;
+        $meta[DonationMetaKeys::COMMENT] = $donation->comment;
+        $meta[DonationMetaKeys::HONORIFIC] = $donation->honorific;
+        $meta[DonationMetaKeys::BILLING_COUNTRY] = $donation->billingAddress->country ?? null;
+        $meta[DonationMetaKeys::BILLING_ADDRESS2] = $donation->billingAddress->address2 ?? null;
+        $meta[DonationMetaKeys::BILLING_CITY] = $donation->billingAddress->city ?? null;
+        $meta[DonationMetaKeys::BILLING_ADDRESS1] = $donation->billingAddress->address1 ?? null;
+        $meta[DonationMetaKeys::BILLING_STATE] = $donation->billingAddress->state ?? null;
+        $meta[DonationMetaKeys::BILLING_ZIP] = $donation->billingAddress->zip ?? null;
 
         if (isset($donation->subscriptionId)) {
             $meta[DonationMetaKeys::SUBSCRIPTION_ID] = $donation->subscriptionId;
@@ -506,18 +540,6 @@ class DonationRepository
         if ($donation->type->isSubscription()) {
             $meta[DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION] = 1;
             $meta[DonationMetaKeys::IS_RECURRING] = 1;
-        }
-
-        if ($donation->company !== null) {
-            $meta[DonationMetaKeys::COMPANY] = $donation->company;
-        }
-
-        if ($donation->comment !== null) {
-            $meta[DonationMetaKeys::COMMENT] = $donation->comment;
-        }
-
-        if ($donation->honorific !== null) {
-            $meta[DonationMetaKeys::HONORIFIC] = $donation->honorific;
         }
 
         return $meta;
