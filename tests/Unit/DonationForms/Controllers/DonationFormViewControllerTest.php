@@ -19,16 +19,23 @@ class DonationFormViewControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private const DESIGN_SYSTEM_VERSION_FILE = GIVE_PLUGIN_DIR . 'build/assets/dist/css/design-system/version';
-
     /**
-     * @var bool Whether setUp() wrote the design system version file.
+     * Build files the form render reads without checking that they exist, keyed by path, with the
+     * placeholder contents written when the file is missing.
      */
-    private $createdVersionFile = false;
+    private const BUILD_PLACEHOLDERS = [
+        GIVE_PLUGIN_DIR . 'build/assets/dist/css/design-system/version' => '0.0.0',
+        GIVE_PLUGIN_DIR . 'build/classicFormDesignJs.asset.php' => "<?php return ['dependencies' => [], 'version' => '0.0.0'];\n",
+    ];
 
     /**
-     * The form render reads the design system version from the asset build, which the PHP test
-     * workflows do not run. A placeholder is written only when no build is present.
+     * @var string[] Paths of the placeholder files setUp() wrote.
+     */
+    private $createdPlaceholders = [];
+
+    /**
+     * The form render reads files from the asset build, which the PHP test workflows do not run.
+     * A placeholder is written only for a file the build has not produced.
      *
      * @since TBD
      */
@@ -36,10 +43,14 @@ class DonationFormViewControllerTest extends TestCase
     {
         parent::setUp();
 
-        if (!file_exists(self::DESIGN_SYSTEM_VERSION_FILE)) {
-            wp_mkdir_p(dirname(self::DESIGN_SYSTEM_VERSION_FILE));
-            file_put_contents(self::DESIGN_SYSTEM_VERSION_FILE, '0.0.0');
-            $this->createdVersionFile = true;
+        foreach (self::BUILD_PLACEHOLDERS as $path => $contents) {
+            if (file_exists($path)) {
+                continue;
+            }
+
+            wp_mkdir_p(dirname($path));
+            file_put_contents($path, $contents);
+            $this->createdPlaceholders[] = $path;
         }
     }
 
@@ -50,8 +61,8 @@ class DonationFormViewControllerTest extends TestCase
     {
         wp_set_current_user(0);
 
-        if ($this->createdVersionFile) {
-            unlink(self::DESIGN_SYSTEM_VERSION_FILE);
+        foreach ($this->createdPlaceholders as $path) {
+            unlink($path);
         }
 
         parent::tearDown();
