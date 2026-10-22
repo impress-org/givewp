@@ -1526,13 +1526,14 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
  * @param string $where Where clause.
  *
  * @access public
+ * @since TBD Use gmdate() instead of date().
  * @since  1.0
  *
  * @return string $where Modified where clause.
  */
 function give_filter_where_older_than_week( $where = '' ) {
 	// Payments older than one week.
-	$start  = date( 'Y-m-d', strtotime( '-7 days' ) );
+	$start  = gmdate( 'Y-m-d', strtotime( '-7 days' ) );
 	$where .= " AND post_date <= '{$start}'";
 
 	return $where;

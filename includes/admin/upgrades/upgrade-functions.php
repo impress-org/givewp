@@ -2931,6 +2931,7 @@ function give_v230_add_missing_comment_tables() {
 /**
  * Move donor notes to comment table
  *
+ * @since TBD Use gmdate() instead of date().
  * @since 2.3.0
  */
 function give_v230_move_donor_note_callback() {
@@ -2971,8 +2972,8 @@ function give_v230_move_donor_note_callback() {
 						[
 							'comment_content'  => $note[1],
 							'user_id'          => absint( Give()->donors->get_column_by( 'user_id', 'id', $donor->id ) ),
-							'comment_date'     => date( 'Y-m-d H:i:s', $timestamp ),
-							'comment_date_gmt' => get_gmt_from_date( date( 'Y-m-d H:i:s', $timestamp ) ),
+							'comment_date'     => gmdate( 'Y-m-d H:i:s', $timestamp ),
+							'comment_date_gmt' => get_gmt_from_date( gmdate( 'Y-m-d H:i:s', $timestamp ) ),
 							'comment_parent'   => $donor->id,
 							'comment_type'     => 'donor',
 						]
@@ -2989,6 +2990,7 @@ function give_v230_move_donor_note_callback() {
 /**
  * Move donation notes to comment table
  *
+ * @since TBD Use gmdate() instead of date().
  * @since 2.3.0
  */
 function give_v230_move_donation_note_callback() {
@@ -3038,8 +3040,8 @@ function give_v230_move_donation_note_callback() {
 				[
 					'comment_content'  => $comment->comment_content,
 					'user_id'          => $comment->user_id,
-					'comment_date'     => date( 'Y-m-d H:i:s', strtotime( $comment->comment_date ) ),
-					'comment_date_gmt' => get_gmt_from_date( date( 'Y-m-d H:i:s', strtotime( $comment->comment_date_gmt ) ) ),
+					'comment_date'     => gmdate( 'Y-m-d H:i:s', strtotime( $comment->comment_date ) ),
+					'comment_date_gmt' => get_gmt_from_date( gmdate( 'Y-m-d H:i:s', strtotime( $comment->comment_date_gmt ) ) ),
 					'comment_parent'   => $comment->comment_post_ID,
 					'comment_type'     => is_numeric( get_comment_meta( $comment->comment_ID, '_give_donor_id', true ) )
 						? 'donor_donation'

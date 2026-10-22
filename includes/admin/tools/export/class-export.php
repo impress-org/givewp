@@ -45,6 +45,7 @@ class Give_Export {
 	 * Set the export headers
 	 *
 	 * @access public
+	 * @since TBD Use gmdate() and wp_date() instead of date().
 	 * @since  1.0
 	 * @return void
 	 */
@@ -61,7 +62,7 @@ class Give_Export {
 		 *
 		 * @return $file_name string file name
 		 */
-		$file_name = apply_filters( 'give_export_filename', 'give-export-' . $this->export_type . '-' . date( 'm-d-Y' ), $this->export_type );
+		$file_name = apply_filters( 'give_export_filename', 'give-export-' . $this->export_type . '-' . wp_date( 'm-d-Y', null, new DateTimeZone( 'UTC' ) ), $this->export_type );
 
 		nocache_headers();
 		header( 'Content-Type: text/csv; charset=utf-8' );
@@ -123,6 +124,7 @@ class Give_Export {
 	 * Get the data being exported
 	 *
 	 * @access public
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 * @return array $data Data for Export
 	 */
@@ -131,11 +133,11 @@ class Give_Export {
 		$data = array(
 			0 => array(
 				'id'   => '',
-				'data' => date( 'F j, Y' ),
+				'data' => gmdate( 'F j, Y' ),
 			),
 			1 => array(
 				'id'   => '',
-				'data' => date( 'F j, Y' ),
+				'data' => gmdate( 'F j, Y' ),
 			),
 		);
 

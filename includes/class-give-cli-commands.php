@@ -365,6 +365,7 @@ class GIVE_CLI_COMMAND {
 	 * wp give donors --number=1000
 	 * wp give donors --form-id=1024
 	 *
+	 * @since TBD Use gmdate() and wp_date() instead of date().
 	 * @since         1.7
 	 * @access        public
 	 *
@@ -547,7 +548,7 @@ class GIVE_CLI_COMMAND {
 					break;
 
 				case 'csv':
-					$file_path = trailingslashit( WP_CONTENT_DIR ) . 'uploads/give_donors_' . date( 'Y_m_d_s', current_time( 'timestamp' ) ) . '.csv';
+					$file_path = trailingslashit( WP_CONTENT_DIR ) . 'uploads/give_donors_' . wp_date( 'Y_m_d_s', current_time( 'timestamp' ), new DateTimeZone( 'UTC' ) ) . '.csv';
 					$fp        = fopen( $file_path, 'w' );
 
 					if ( is_writable( $file_path ) ) {

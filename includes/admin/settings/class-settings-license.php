@@ -79,6 +79,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 		/**
 		 * Render  license key field
 		 *
+		 * @since TBD Use gmdate() instead of date().
 		 * @since 2.5.0
 		 */
 		public function output() {
@@ -233,9 +234,9 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 							<?php
 							$refresh_status   = Give_License::refresh_license_status();
-							$is_allow_refresh = ( $refresh_status['compare'] === date( 'Ymd' ) && 5 > $refresh_status['count'] ) || ( $refresh_status['compare'] < date( 'Ymd' ) );
+							$is_allow_refresh = ( $refresh_status['compare'] === gmdate( 'Ymd' ) && 5 > $refresh_status['count'] ) || ( $refresh_status['compare'] < gmdate( 'Ymd' ) );
 							$button_title     = __( 'Refresh limit reached. Licenses can only be refreshed 5 times per day.', 'give' );
-							$local_date       = strtotime( get_date_from_gmt( date( 'Y-m-d H:i:s', $refresh_status['time'] ) ) );
+							$local_date       = strtotime( get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $refresh_status['time'] ) ) );
 							?>
 
 							<div id="give-refresh-button-wrap">
@@ -252,8 +253,8 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 									<?php
 									echo esc_html( sprintf(
 										__( 'Last refreshed on %1$s at %2$s', 'give' ),
-										date( give_date_format(), $local_date ),
-										date( 'g:i a', $local_date )
+										gmdate( give_date_format(), $local_date ),
+										gmdate( 'g:i a', $local_date )
 									) );
 									?>
 									</span>

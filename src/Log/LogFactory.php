@@ -57,6 +57,8 @@ class LogFactory
     /**
      * Get log default fields array
      *
+     * @since TBD Use gmdate() instead of date().
+     *
      * @return array
      */
     public static function getDefaults()
@@ -68,7 +70,7 @@ class LogFactory
             'source' => esc_html__('Give Core', 'give'),
             'context' => [],
             'id' => null,
-            'date' => date('Y-m-d H:i:s'),
+            'date' => gmdate('Y-m-d H:i:s'),
         ];
     }
 }

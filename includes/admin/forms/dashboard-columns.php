@@ -375,6 +375,7 @@ add_action( 'save_post', 'give_price_save_quick_edit' );
 /**
  * Function is used to filter the query for search result.
  *
+ * @since TBD Use gmdate() instead of date().
  * @since 2.4.0
  *
  * @param $wp WP WordPress environment instance (passed by reference).
@@ -389,8 +390,8 @@ function give_form_search_query_filter( $wp ) {
 
 		$wp->query_vars['date_query'] =
 			[
-				'after'     => ! empty( $_GET['start-date'] ) ? date( 'Y-m-d', strtotime( give_clean( $_GET['start-date'] ) ) ) : false,
-				'before'    => ! empty( $_GET['end-date'] ) ? date( 'Y-m-d 23:59:59 ', strtotime( give_clean( $_GET['end-date'] ) ) ) : false,
+				'after'     => ! empty( $_GET['start-date'] ) ? gmdate( 'Y-m-d', strtotime( give_clean( $_GET['start-date'] ) ) ) : false,
+				'before'    => ! empty( $_GET['end-date'] ) ? gmdate( 'Y-m-d 23:59:59 ', strtotime( give_clean( $_GET['end-date'] ) ) ) : false,
 				'inclusive' => true,
 			];
 		switch ( $_GET['give-forms-goal-filter'] ) {
@@ -472,7 +473,7 @@ add_filter( 'pre_get_posts', 'give_search_form_by_id' );
 /**
  * Outputs advanced filter html in Give forms list admin screen.
  *
- * @since TBD Escape output, including translated strings.
+ * @since TBD Escape output, including translated strings, and use gmdate() instead of date().
  * @sicne 2.4.0
  *
  * @param $which
@@ -520,7 +521,7 @@ function give_forms_advanced_filter( $which ) {
 					   class="give_datepicker"
 					   autocomplete="off"
 					   value="<?php echo $start_date ? esc_attr( date_i18n( give_date_format(), $start_date ) ) : ''; ?>"
-					   data-standard-date="<?php echo esc_attr( $start_date ? date( 'Y-m-d', $start_date ) : $start_date ); ?>"
+					   data-standard-date="<?php echo esc_attr( $start_date ? gmdate( 'Y-m-d', $start_date ) : $start_date ); ?>"
 					   placeholder="<?php esc_attr_e( 'Start Date', 'give' ); ?>"
 				/>
 			</div>
@@ -532,7 +533,7 @@ function give_forms_advanced_filter( $which ) {
 					   class="give_datepicker"
 					   autocomplete="off"
 					   value="<?php echo $end_date ? esc_attr( date_i18n( give_date_format(), $end_date ) ) : ''; ?>"
-					   data-standard-date="<?php echo esc_attr( $end_date ? date( 'Y-m-d', $end_date ) : $end_date ); ?>"
+					   data-standard-date="<?php echo esc_attr( $end_date ? gmdate( 'Y-m-d', $end_date ) : $end_date ); ?>"
 					   placeholder="<?php esc_attr_e( 'End Date', 'give' ); ?>"
 				/>
 			</div>

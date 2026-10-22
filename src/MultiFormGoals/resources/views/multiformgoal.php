@@ -3,7 +3,7 @@
  * Multi-Form Goals block/shortcode template
  * Styles for this template are defined in 'blocks/multi-form-goals/common.scss'
  *
- * @since TBD Escape output.
+ * @since TBD Escape output and replace short echo tags with escaped echo.
  *
  * @var Give\MultiFormGoals\MultiFormGoal\Model $this
  */
@@ -19,14 +19,14 @@ if ( ! empty($this->getInnerBlocks())) {
     <div class="give-multi-form-goal-block">
         <div class="give-multi-form-goal-block__content">
             <div class="give-multi-form-goal-block__image">
-                <img src="<?= esc_url($this->getImageSrc()) ?>"  alt="goal image"/>
+                <img src="<?php echo esc_url($this->getImageSrc()); ?>"  alt="goal image"/>
             </div>
             <div class="give-multi-form-goal-block__text">
                 <h2>
-                    <?= esc_html($this->getHeading()) ?>
+                    <?php echo esc_html($this->getHeading()); ?>
                 </h2>
                 <p>
-                    <?= esc_html($this->getSummary()) ?>
+                    <?php echo esc_html($this->getSummary()); ?>
                 </p>
             </div>
         </div>

@@ -6,7 +6,7 @@
  * @subpackage  Admin/Payments
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since TBD Escape output, including translated strings.
+ * @since TBD Escape output, including translated strings, and use gmdate() instead of date().
  * @since       1.0
  */
 
@@ -195,7 +195,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 											<?php $date_format = give_date_format(); ?>
 											<p>
 												<label for="give-payment-date" class="strong"><?php esc_html_e( 'Date:', 'give' ); ?></label>&nbsp;
-												<input type="text" id="give-payment-date" name="give-payment-date" data-standard-date="<?php echo esc_attr( date( 'Y-m-d', $payment_date ) ); ?>" value="<?php echo esc_attr( date_i18n( $date_format, $payment_date ) ); ?>" autocomplete="off" class="medium-text give_datepicker" placeholder="<?php esc_attr_e( 'Date', 'give' ); ?>"/>
+												<input type="text" id="give-payment-date" name="give-payment-date" data-standard-date="<?php echo esc_attr( gmdate( 'Y-m-d', $payment_date ) ); ?>" value="<?php echo esc_attr( date_i18n( $date_format, $payment_date ) ); ?>" autocomplete="off" class="medium-text give_datepicker" placeholder="<?php esc_attr_e( 'Date', 'give' ); ?>"/>
 											</p>
 										</div>
 
@@ -203,7 +203,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 											<p>
 												<label for="give-payment-time-hour" class="strong"><?php esc_html_e( 'Time:', 'give' ); ?></label>&nbsp;
 												<input type="number" step="1" max="24" id="give-payment-time-hour" name="give-payment-time-hour" value="<?php echo esc_attr( date_i18n( 'H', $payment_date ) ); ?>" class="small-text give-payment-time-hour"/>&nbsp;:&nbsp;
-												<input type="number" step="1" max="59" id="give-payment-time-min" name="give-payment-time-min" value="<?php echo esc_attr( date( 'i', $payment_date ) ); ?>" class="small-text give-payment-time-min"/>
+												<input type="number" step="1" max="59" id="give-payment-time-min" name="give-payment-time-min" value="<?php echo esc_attr( gmdate( 'i', $payment_date ) ); ?>" class="small-text give-payment-time-min"/>
 											</p>
 										</div>
 

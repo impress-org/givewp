@@ -663,6 +663,7 @@ class Give_Subscription {
 	 * subscription status as necessary. If the subscription has reached the total number of bill times the
 	 * subscription will be completed.
 	 *
+	 * @since TBD Use gmdate() instead of date().
 	 * @since       1.0
 	 * @return bool
 	 */
@@ -677,15 +678,15 @@ class Give_Subscription {
 			$base_date = current_time( 'timestamp' );
 		}
 
-		$last_day   = cal_days_in_month( CAL_GREGORIAN, date( 'n', $base_date ), date( 'Y', $base_date ) );
+		$last_day   = cal_days_in_month( CAL_GREGORIAN, gmdate( 'n', $base_date ), gmdate( 'Y', $base_date ) );
 		if ( $this->period == "quarter" ) {
-				$expiration = date( 'Y-m-d H:i:s', strtotime( '+3 months 23:59:59', $base_date ) );
+				$expiration = gmdate( 'Y-m-d H:i:s', strtotime( '+3 months 23:59:59', $base_date ) );
 		} else {
-				$expiration = date( 'Y-m-d H:i:s', strtotime( '+1 ' . $this->period . ' 23:59:59', $base_date ) );
+				$expiration = gmdate( 'Y-m-d H:i:s', strtotime( '+1 ' . $this->period . ' 23:59:59', $base_date ) );
 		}
 
-		if ( date( 'j', $base_date ) == $last_day && 'day' != $this->period ) {
-			$expiration = date( 'Y-m-d H:i:s', strtotime( $expiration . ' +2 days' ) );
+		if ( gmdate( 'j', $base_date ) == $last_day && 'day' != $this->period ) {
+			$expiration = gmdate( 'Y-m-d H:i:s', strtotime( $expiration . ' +2 days' ) );
 		}
 
 		$expiration = apply_filters( 'give_subscription_renewal_expiration', $expiration, $this->id, $this );
@@ -1074,6 +1075,8 @@ class Give_Subscription {
 	/**
 	 * Get the Subscription Renewal Date.
 	 *
+	 * @since TBD Use gmdate() instead of date().
+	 *
 	 * @param bool $localized Flag to return date in localized format or not
 	 *
 	 * @return string
@@ -1087,7 +1090,7 @@ class Give_Subscription {
         if ($expires > current_time('timestamp') && ($this->is_active() || $this->is_paused())) {
 			return $localized
 				? date_i18n( give_date_format(), strtotime( $this->expiration ) )
-				: date( 'Y-m-d H:i:s', strtotime( $this->expiration ) );
+				: gmdate( 'Y-m-d H:i:s', strtotime( $this->expiration ) );
 		}
 
 		$last_payment = $this->get_last_payment();
@@ -1099,7 +1102,7 @@ class Give_Subscription {
 
 		return $localized
 			? date_i18n( give_date_format(), $renewal_timestamp )
-			: date( 'Y-m-d H:i:s', $renewal_timestamp );
+			: gmdate( 'Y-m-d H:i:s', $renewal_timestamp );
 
 	}
 

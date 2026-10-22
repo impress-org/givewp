@@ -1,5 +1,5 @@
 <?php
-/** @since TBD Escape output. */
+/** @since TBD Escape output and replace short echo tags with escaped echo. */
 
 use Give\Helpers\Form\Template;
 use Give\Receipt\DonationReceipt;
@@ -55,15 +55,15 @@ ob_start();
             <div class="give-form-header-top-wrap">
                 <aside class="give-form-secure-badge">
                     <svg class="give-form-secure-icon">
-                        <use href="<?= esc_attr($data['badgeIcon']) ?>"/>
+                        <use href="<?php echo esc_attr($data['badgeIcon']); ?>"/>
                     </svg>
-                    <?= esc_html($data['badgeText']) ?>!
+                    <?php echo esc_html($data['badgeText']); ?>!
                 </aside>
                 <h1 class="give-receipt-title">
-                    <?= wp_kses_post($data['title']) ?>
+                    <?php echo wp_kses_post($data['title']); ?>
                 </h1>
                 <p class="give-form-description">
-                    <?= wp_kses_post($data['description']) ?>
+                    <?php echo wp_kses_post($data['description']); ?>
                 </p>
             </div>
         </div>
@@ -71,15 +71,15 @@ ob_start();
         <?php if ('enabled' === $option('social_sharing') && ! $hasDonationFailed()) : ?>
             <div class="social-sharing">
                 <p class="instruction">
-                    <?= esc_html__($option('sharing_instructions'),'give' ); ?>
+                    <?php echo esc_html__($option('sharing_instructions'),'give' ); ?>
                 </p>
                 <div class="btn-row">
                     <button class="give-btn social-btn facebook-btn" onclick="GiveClassicTemplate.share(this);">
-                        <?= esc_html__('Share on Facebook', 'give'); ?>
+                        <?php echo esc_html__('Share on Facebook', 'give'); ?>
                         <i class="fab fa-facebook"></i>
                     </button>
                     <button class="give-btn social-btn twitter-btn" onclick="GiveClassicTemplate.share(this);">
-                        <?= esc_html__('Share on Twitter', 'give'); ?>
+                        <?php echo esc_html__('Share on Twitter', 'give'); ?>
                         <i class="fab fa-twitter"></i>
                     </button>
                 </div>
@@ -99,7 +99,7 @@ ob_start();
                 <div class="details">
                     <?php if ($section->label) : ?>
                         <h2 class="headline">
-                            <?= esc_html($section->label); ?>
+                            <?php echo esc_html($section->label); ?>
                         </h2>
                     <?php endif; ?>
                     <dl class="details-table">
@@ -117,11 +117,11 @@ ob_start();
                             }
                             ?>
 
-                            <div class="details-row details-row--<?= esc_attr($lineItem->id) ?>">
-                                <?= $lineItem->icon /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $lineItem->icon is developer-authored markup set via the public Section::addLineItem() API (PHP code, never request input); wp_kses_post() would strip a custom SVG icon. */ ?>
-                                <dt class="detail"><?= esc_html($lineItem->label) ?></dt>
+                            <div class="details-row details-row--<?php echo esc_attr($lineItem->id); ?>">
+                                <?php echo $lineItem->icon; /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $lineItem->icon is developer-authored markup set via the public Section::addLineItem() API (PHP code, never request input); wp_kses_post() would strip a custom SVG icon. */ ?>
+                                <dt class="detail"><?php echo esc_html($lineItem->label); ?></dt>
                                 <dd class="value"
-                                    data-value="<?= esc_attr($lineItem->value) ?>"><?= wp_kses_post($lineItem->value) ?></dd>
+                                    data-value="<?php echo esc_attr($lineItem->value); ?>"><?php echo wp_kses_post($lineItem->value); ?></dd>
                             </div>
                         <?php
                         endforeach; ?>
@@ -134,13 +134,13 @@ ob_start();
         </div>
 
         <div class="dashboard-link-container">
-            <a class="dashboard-link" href="<?= esc_url($donorDashboardUrl); ?>" target="_parent">
-                <?= esc_html__('Go to my Donor Dashboard', 'give'); ?><i class="fas fa-long-arrow-alt-right"></i>
+            <a class="dashboard-link" href="<?php echo esc_url($donorDashboardUrl); ?>" target="_parent">
+                <?php echo esc_html__('Go to my Donor Dashboard', 'give'); ?><i class="fas fa-long-arrow-alt-right"></i>
             </a>
             <?php
             if (isset($section['receiptLink'])) : ?>
                 <div class="give-btn download-btn">
-                    <?= wp_kses_post($section['receiptLink']->value); ?>
+                    <?php echo wp_kses_post($section['receiptLink']->value); ?>
                 </div>
             <?php
             endif; ?>

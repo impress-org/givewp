@@ -724,6 +724,7 @@ class Give_API {
 	 * Sets up the dates used to retrieve earnings/donations
 	 *
 	 * @access public
+	 * @since  TBD Use gmdate() instead of date().
 	 * @since  1.2
 	 *
 	 * @param array $args Arguments to override defaults
@@ -748,41 +749,41 @@ class Give_API {
 		if ( 'range' === $args['date'] ) {
 			$startdate          = strtotime( $args['startdate'] );
 			$enddate            = strtotime( $args['enddate'] );
-			$dates['day_start'] = date( 'd', $startdate );
-			$dates['day_end']   = date( 'd', $enddate );
-			$dates['m_start']   = date( 'n', $startdate );
-			$dates['m_end']     = date( 'n', $enddate );
-			$dates['year']      = date( 'Y', $startdate );
-			$dates['year_end']  = date( 'Y', $enddate );
+			$dates['day_start'] = gmdate( 'd', $startdate );
+			$dates['day_end']   = gmdate( 'd', $enddate );
+			$dates['m_start']   = gmdate( 'n', $startdate );
+			$dates['m_end']     = gmdate( 'n', $enddate );
+			$dates['year']      = gmdate( 'Y', $startdate );
+			$dates['year_end']  = gmdate( 'Y', $enddate );
 		} else {
 			// Modify dates based on predefined ranges
 			switch ( $args['date'] ) :
 
 				case 'this_month':
 					$dates['day']     = null;
-					$dates['m_start'] = date( 'n', $current_time );
-					$dates['m_end']   = date( 'n', $current_time );
-					$dates['year']    = date( 'Y', $current_time );
+					$dates['m_start'] = gmdate( 'n', $current_time );
+					$dates['m_end']   = gmdate( 'n', $current_time );
+					$dates['year']    = gmdate( 'Y', $current_time );
 					break;
 
 				case 'last_month':
 					$dates['day']     = null;
-					$dates['m_start'] = date( 'n', $current_time ) == 1 ? 12 : date( 'n', $current_time ) - 1;
+					$dates['m_start'] = gmdate( 'n', $current_time ) == 1 ? 12 : gmdate( 'n', $current_time ) - 1;
 					$dates['m_end']   = $dates['m_start'];
-					$dates['year']    = date( 'n', $current_time ) == 1 ? date( 'Y', $current_time ) - 1 : date( 'Y', $current_time );
+					$dates['year']    = gmdate( 'n', $current_time ) == 1 ? gmdate( 'Y', $current_time ) - 1 : gmdate( 'Y', $current_time );
 					break;
 
 				case 'today':
-					$dates['day']     = date( 'd', $current_time );
-					$dates['m_start'] = date( 'n', $current_time );
-					$dates['m_end']   = date( 'n', $current_time );
-					$dates['year']    = date( 'Y', $current_time );
+					$dates['day']     = gmdate( 'd', $current_time );
+					$dates['m_start'] = gmdate( 'n', $current_time );
+					$dates['m_end']   = gmdate( 'n', $current_time );
+					$dates['year']    = gmdate( 'Y', $current_time );
 					break;
 
 				case 'yesterday':
-					$year  = date( 'Y', $current_time );
-					$month = date( 'n', $current_time );
-					$day   = date( 'd', $current_time );
+					$year  = gmdate( 'Y', $current_time );
+					$month = gmdate( 'n', $current_time );
+					$day   = gmdate( 'd', $current_time );
 
 					if ( $month == 1 && $day == 1 ) {
 
@@ -809,7 +810,7 @@ class Give_API {
 					break;
 
 				case 'this_quarter':
-					$month_now = date( 'n', $current_time );
+					$month_now = gmdate( 'n', $current_time );
 
 					$dates['day'] = null;
 
@@ -817,31 +818,31 @@ class Give_API {
 
 						$dates['m_start'] = 1;
 						$dates['m_end']   = 3;
-						$dates['year']    = date( 'Y', $current_time );
+						$dates['year']    = gmdate( 'Y', $current_time );
 
 					} elseif ( $month_now <= 6 ) {
 
 						$dates['m_start'] = 4;
 						$dates['m_end']   = 6;
-						$dates['year']    = date( 'Y', $current_time );
+						$dates['year']    = gmdate( 'Y', $current_time );
 
 					} elseif ( $month_now <= 9 ) {
 
 						$dates['m_start'] = 7;
 						$dates['m_end']   = 9;
-						$dates['year']    = date( 'Y', $current_time );
+						$dates['year']    = gmdate( 'Y', $current_time );
 
 					} else {
 
 						$dates['m_start'] = 10;
 						$dates['m_end']   = 12;
-						$dates['year']    = date( 'Y', $current_time );
+						$dates['year']    = gmdate( 'Y', $current_time );
 
 					}
 					break;
 
 				case 'last_quarter':
-					$month_now = date( 'n', $current_time );
+					$month_now = gmdate( 'n', $current_time );
 
 					$dates['day'] = null;
 
@@ -849,25 +850,25 @@ class Give_API {
 
 						$dates['m_start'] = 10;
 						$dates['m_end']   = 12;
-						$dates['year']    = date( 'Y', $current_time ) - 1; // Previous year
+						$dates['year']    = gmdate( 'Y', $current_time ) - 1; // Previous year
 
 					} elseif ( $month_now <= 6 ) {
 
 						$dates['m_start'] = 1;
 						$dates['m_end']   = 3;
-						$dates['year']    = date( 'Y', $current_time );
+						$dates['year']    = gmdate( 'Y', $current_time );
 
 					} elseif ( $month_now <= 9 ) {
 
 						$dates['m_start'] = 4;
 						$dates['m_end']   = 6;
-						$dates['year']    = date( 'Y', $current_time );
+						$dates['year']    = gmdate( 'Y', $current_time );
 
 					} else {
 
 						$dates['m_start'] = 7;
 						$dates['m_end']   = 9;
-						$dates['year']    = date( 'Y', $current_time );
+						$dates['year']    = gmdate( 'Y', $current_time );
 
 					}
 					break;
@@ -876,14 +877,14 @@ class Give_API {
 					$dates['day']     = null;
 					$dates['m_start'] = null;
 					$dates['m_end']   = null;
-					$dates['year']    = date( 'Y', $current_time );
+					$dates['year']    = gmdate( 'Y', $current_time );
 					break;
 
 				case 'last_year':
 					$dates['day']     = null;
 					$dates['m_start'] = null;
 					$dates['m_end']   = null;
-					$dates['year']    = date( 'Y', $current_time ) - 1;
+					$dates['year']    = gmdate( 'Y', $current_time ) - 1;
 					break;
 
 			endswitch;
@@ -1166,6 +1167,7 @@ class Give_API {
 	/**
 	 * Process Get Stats API Request
 	 *
+	 * @since TBD Use gmdate() instead of date().
 	 * @since 1.1
 	 *
 	 * @global WPDB $wpdb Used to query the database using the WordPress.
@@ -1255,7 +1257,7 @@ class Give_API {
 
 							while ( $d <= $num_of_days ) :
 								$sale_count = give_get_sales_by_date( $d, $i, $y );
-								$date_key   = date( 'Ymd', strtotime( $y . '/' . $i . '/' . $d ) );
+								$date_key   = gmdate( 'Ymd', strtotime( $y . '/' . $i . '/' . $d ) );
 								if ( ! isset( $donations['sales'][ $date_key ] ) ) {
 									$donations['sales'][ $date_key ] = 0;
 								}
@@ -1393,7 +1395,7 @@ class Give_API {
 
 							while ( $d <= $num_of_days ) :
 								$earnings_stat = give_get_earnings_by_date( $d, $i, $y );
-								$date_key      = date( 'Ymd', strtotime( $y . '/' . $i . '/' . $d ) );
+								$date_key      = gmdate( 'Ymd', strtotime( $y . '/' . $i . '/' . $d ) );
 								if ( ! isset( $earnings['earnings'][ $date_key ] ) ) {
 									$earnings['earnings'][ $date_key ] = 0;
 								}
@@ -1519,6 +1521,7 @@ class Give_API {
 	 * Retrieves Recent Donations
 	 *
 	 * @access public
+	 * @since  TBD Use gmdate() instead of date().
 	 * @since  1.1
 	 *
 	 * @param $args array
@@ -1578,13 +1581,13 @@ class Give_API {
 
 				case 'today':
 					// Set and Format Start and End Date to be date of today.
-					$start_date = $end_date = date( 'Y/m/d', $current_time );
+					$start_date = $end_date = gmdate( 'Y/m/d', $current_time );
 
 					break;
 
 				case 'yesterday':
 					// Set and Format Start and End Date to be date of yesterday.
-					$start_date = $end_date = date( 'Y/m', $current_time ) . '/' . ( date( 'd', $current_time ) - 1 );
+					$start_date = $end_date = gmdate( 'Y/m', $current_time ) . '/' . ( gmdate( 'd', $current_time ) - 1 );
 
 					break;
 
@@ -2153,6 +2156,7 @@ class Give_API {
 	 * Generate the public key for a user
 	 *
 	 * @access private
+	 * @since  TBD Use gmdate() instead of date().
 	 * @since  1.1
 	 *
 	 * @param string $user_email
@@ -2161,7 +2165,7 @@ class Give_API {
 	 */
 	private function generate_public_key( $user_email = '' ) {
 		$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
-		$public   = hash( 'md5', $user_email . $auth_key . date( 'U' ) );
+		$public   = hash( 'md5', $user_email . $auth_key . gmdate( 'U' ) );
 
 		return $public;
 	}
@@ -2170,6 +2174,7 @@ class Give_API {
 	 * Generate the secret key for a user
 	 *
 	 * @access private
+	 * @since  TBD Use gmdate() instead of date().
 	 * @since  1.1
 	 *
 	 * @param int $user_id
@@ -2178,7 +2183,7 @@ class Give_API {
 	 */
 	private function generate_private_key( $user_id = 0 ) {
 		$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
-		$secret   = hash( 'md5', $user_id . $auth_key . date( 'U' ) );
+		$secret   = hash( 'md5', $user_id . $auth_key . gmdate( 'U' ) );
 
 		return $secret;
 	}

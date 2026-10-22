@@ -844,6 +844,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Decode preview email template tags.
 		 *
+		 * @since TBD Use gmdate() instead of date().
 		 * @since 2.14.0 display payment sequential number as id
 		 * @since 2.0
 		 *
@@ -903,7 +904,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'payment_id'              => $payment_id ? $payment->number : rand( 2000, 2050 ),
 					'receipt_link_url'        => $receipt_link_url,
 					'receipt_link'            => $receipt_link,
-					'date'                    => $payment_id ? date( give_date_format(), strtotime( $payment->date ) ) : date( give_date_format(), current_time( 'timestamp' ) ),
+					'date'                    => $payment_id ? gmdate( give_date_format(), strtotime( $payment->date ) ) : gmdate( give_date_format(), current_time( 'timestamp' ) ),
 					'donation'                => $payment_id ? give_email_tag_donation( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title', 'give' ),
 					'form_title'              => $payment_id ? give_email_tag_form_title( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title - Sample Donation Level', 'give' ),
 					'sitename'                => $payment_id ? give_email_tag_sitename( array( 'payment_id' => $payment_id ) ) : get_bloginfo( 'name' ),

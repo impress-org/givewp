@@ -367,6 +367,7 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * If querying a specific date, add the proper filters.
 	 *
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -386,11 +387,11 @@ class Give_Payments_Query extends Give_Stats {
 			$date_query = [];
 
 			if ( $is_start_date && ! is_wp_error( $this->start_date ) ) {
-				$date_query['after'] = date( 'Y-m-d H:i:s', $this->start_date );
+				$date_query['after'] = gmdate( 'Y-m-d H:i:s', $this->start_date );
 			}
 
 			if ( $is_end_date && ! is_wp_error( $this->end_date ) ) {
-				$date_query['before'] = date( 'Y-m-d H:i:s', $this->end_date );
+				$date_query['before'] = gmdate( 'Y-m-d H:i:s', $this->end_date );
 			}
 
 			// Include Start Date and End Date while querying.

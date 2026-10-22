@@ -3,6 +3,7 @@
  * One form section: a heading, a line of description, and a field per block. The amount, gateway
  * and summary blocks get their own sketch; every other block is a label and one input row.
  *
+ * @since TBD Replace short echo tags with escaped echo.
  * @since 4.17.0
  *
  * @var string[] $blocks   Block names in the section.
@@ -17,7 +18,7 @@
     </div>
     <?php foreach ($blocks as $block) : ?>
         <?php $variant = $variants[$block] ?? 'field'; ?>
-        <div class="givewp-embed-skeleton__field givewp-embed-skeleton__field--<?= esc_attr($variant) ?>">
+        <div class="givewp-embed-skeleton__field givewp-embed-skeleton__field--<?php echo esc_attr($variant); ?>">
             <span class="givewp-embed-skeleton__bar givewp-embed-skeleton__label"></span>
             <?php if ($variant === 'amount') : ?>
                 <span class="givewp-embed-skeleton__bar givewp-embed-skeleton__input givewp-embed-skeleton__input--tall"></span>

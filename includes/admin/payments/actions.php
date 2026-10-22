@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
  *
  * Process the payment details edit
  *
- * @since TBD Escape output.
+ * @since TBD Escape output and use gmdate() instead of date().
  * @since 2.27.0 Change to save comment to donations meta table
  * @since  1.0
  *
@@ -68,7 +68,7 @@ function give_update_payment_details( $data ) {
 
 	$curr_total = $payment->total;
 	$new_total  = give_maybe_sanitize_amount( ( ! empty( $data['give-payment-total'] ) ? $data['give-payment-total'] : 0 ) );
-	$date       = date( 'Y-m-d', strtotime( give_clean( $data['give-payment-date'] ) ) ) . ' ' . $hour . ':' . $minute . ':00';
+	$date       = gmdate( 'Y-m-d', strtotime( give_clean( $data['give-payment-date'] ) ) ) . ' ' . $hour . ':' . $minute . ':00';
 
 	$curr_donor_id = sanitize_text_field( $data['give-current-donor'] );
 	$new_donor_id  = sanitize_text_field( $data['donor-id'] );

@@ -312,7 +312,7 @@ class DonationFormViewModel
      *
      * @since 4.16.7 Isolate the printed assets from anything enqueued after the form has been prepared
      * @since 4.14.3 Escape HTML attributes for classNames property
-     * @since TBD Escape output.
+     * @since TBD Escape output and replace short echo tags with escaped echo.
      * @since 3.20.0 Adds class for form design
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
@@ -353,7 +353,7 @@ class DonationFormViewModel
 
         <div data-theme="light" id="root-givewp-donation-form"
              data-iframe-height
-             class="<?= esc_attr(implode(' ', $classNames)) ?>"><?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $this->skeleton is RenderFormSkeleton's output, which escapes internally (see form-skeleton.php). ?><?= $this->skeleton ?></div>
+             class="<?php echo esc_attr(implode(' ', $classNames)); ?>"><?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $this->skeleton is RenderFormSkeleton's output, which escapes internally (see form-skeleton.php). ?><?php echo $this->skeleton; ?></div>
 
         <?php if ($this->skeleton): ?>
             <script>parent.postMessage({type: 'givewp-embed-shell', height: document.documentElement.scrollHeight}, '*');</script>

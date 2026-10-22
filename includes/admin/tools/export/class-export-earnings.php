@@ -37,6 +37,7 @@ class Give_Earnings_Export extends Give_Export
      * Set the export headers
      *
      * @access public
+     * @since  TBD Use gmdate() and wp_date() instead of date().
      * @since  1.6
      * @return void
      */
@@ -49,7 +50,7 @@ class Give_Earnings_Export extends Give_Export
         header(
             'Content-Disposition: attachment; filename=' . apply_filters(
                 'give_earnings_export_filename',
-                'give-export-' . $this->export_type . '-' . date('n') . '-' . date('Y')
+                'give-export-' . $this->export_type . '-' . wp_date('n', null, new DateTimeZone('UTC')) . '-' . wp_date('Y', null, new DateTimeZone('UTC'))
             ) . '.csv'
         );
         header('Expires: 0');
@@ -138,6 +139,7 @@ class Give_Earnings_Export extends Give_Export
     }
 
     /**
+     * @since TBD Use gmdate() instead of date().
      * @since 2.21.2
      *
      * @return object|null
@@ -150,10 +152,10 @@ class Give_Earnings_Export extends Give_Export
 
         if ($firstDonation === null ) {
             return (object)[
-                'startYear' => date('Y'),
-                'endYear' => date('Y' ),
-                'startMonth' => date('m'),
-                'endMonth' => date('m')
+                'startYear' => gmdate('Y'),
+                'endYear' => gmdate('Y' ),
+                'startMonth' => gmdate('m'),
+                'endMonth' => gmdate('m')
             ];
         }
 

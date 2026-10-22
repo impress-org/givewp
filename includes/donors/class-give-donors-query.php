@@ -616,6 +616,7 @@ class Give_Donors_Query {
 	 * If querying a specific date, add the proper filters.
 	 * Note: This function currently only accept dates with admin defined core date format
 	 *
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  2.4.0
 	 * @access public
 	 *
@@ -633,7 +634,7 @@ class Give_Donors_Query {
 		$date_query = [];
 
 		if ( ! empty( $this->args['start_date'] ) ) {
-			$date_query['after'] = date(
+			$date_query['after'] = gmdate(
 				'Y-m-d H:i:s',
 				is_numeric( $this->args['start_date'] )
 					? $this->args['start_date']
@@ -642,7 +643,7 @@ class Give_Donors_Query {
 		}
 
 		if ( ! empty( $this->args['end_date'] ) ) {
-			$date_query['before'] = date(
+			$date_query['before'] = gmdate(
 				'Y-m-d H:i:s',
 				is_numeric( $this->args['end_date'] )
 					? $this->args['end_date']

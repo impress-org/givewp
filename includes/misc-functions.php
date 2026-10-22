@@ -106,6 +106,7 @@ function give_is_cc_verify_enabled() {
  * Retrieve timezone.
  *
  * @return string $timezone The timezone ID.
+ * @since TBD Use gmdate() instead of date().
  * @since 1.0
  */
 function give_get_timezone_id() {
@@ -126,7 +127,7 @@ function give_get_timezone_id() {
 	// last try, guess timezone string manually.
 	if ( $timezone === false ) {
 
-		$is_dst = date( 'I' );
+		$is_dst = gmdate( 'I' );
 
 		foreach ( timezone_abbreviations_list() as $abbr ) {
 			foreach ( $abbr as $city ) {
@@ -793,6 +794,8 @@ if ( ! function_exists( 'cal_days_in_month' ) ) {
 	/**
 	 * cal_days_in_month
 	 *
+	 * @since TBD Use gmdate() instead of date().
+	 *
 	 * @param int $calendar
 	 * @param int $month
 	 * @param int $year
@@ -800,7 +803,7 @@ if ( ! function_exists( 'cal_days_in_month' ) ) {
 	 * @return bool|string
 	 */
 	function cal_days_in_month( $calendar, $month, $year ) {
-		return date( 't', mktime( 0, 0, 0, $month, 1, $year ) );
+		return gmdate( 't', gmmktime( 0, 0, 0, $month, 1, $year ) );
 	}
 }
 
@@ -1710,6 +1713,7 @@ function give_maybe_define_constant( $name, $value ) {
  * @param int    $timestamp
  *
  * @return string
+ * @since TBD Use gmdate() instead of date().
  * @since 2.1.0
  */
 function give_time_do_tags( $string, $timestamp = 0 ) {
@@ -1729,15 +1733,15 @@ function give_time_do_tags( $string, $timestamp = 0 ) {
 			'{S}',
 		],
 		[
-			date( 'j', $current_time ),
-			date( 'd', $current_time ),
-			date( 'n', $current_time ),
-			date( 'm', $current_time ),
-			date( 'Y', $current_time ),
-			date( 'Y', $current_time ),
-			date( 'G', $current_time ),
-			date( 'H', $current_time ),
-			date( 's', $current_time ),
+			gmdate( 'j', $current_time ),
+			gmdate( 'd', $current_time ),
+			gmdate( 'n', $current_time ),
+			gmdate( 'm', $current_time ),
+			gmdate( 'Y', $current_time ),
+			gmdate( 'Y', $current_time ),
+			gmdate( 'G', $current_time ),
+			gmdate( 'H', $current_time ),
+			gmdate( 's', $current_time ),
 		],
 		$string
 	);

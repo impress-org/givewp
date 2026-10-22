@@ -82,7 +82,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @since TBD Escape output.
+     * @since TBD Escape output and replace short echo tags with escaped echo.
      * @since 4.1.0 add campaign colors
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
@@ -133,8 +133,8 @@ class DonationConfirmationReceiptViewModel
              data-iframe-height
              class="givewp-donation-confirmation-receipt"
              style="
-                     --givewp-primary-color:<?= esc_attr($primaryColor) ?>;
-                     --givewp-secondary-color:<?= esc_attr($secondaryColor) ?>;
+                     --givewp-primary-color:<?php echo esc_attr($primaryColor); ?>;
+                     --givewp-secondary-color:<?php echo esc_attr($secondaryColor); ?>;
                      "
         ></div>
 
