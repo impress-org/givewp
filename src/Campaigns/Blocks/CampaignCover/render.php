@@ -3,6 +3,11 @@
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * @since TBD Escape output.
  */

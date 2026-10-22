@@ -12,6 +12,10 @@
  * @since 4.11.0
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 ?>
 
 <section <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $elements->customWrapperAttributes escapes each attribute value internally. ?><?php echo $elements->customWrapperAttributes; ?>

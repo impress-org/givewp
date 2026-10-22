@@ -8,6 +8,10 @@
 
 use Give\Views\IframeContentView;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $pageId     = give_get_option('donor_dashboard_page');
 $iframeView = new IframeContentView();
 

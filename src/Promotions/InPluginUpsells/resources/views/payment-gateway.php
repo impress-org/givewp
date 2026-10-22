@@ -3,6 +3,10 @@
  * @since TBD Escape translated output.
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 echo '
         <tr class =givewp-payment-gateway-fee-recovery-recommendation-row>
             <td colspan="10">

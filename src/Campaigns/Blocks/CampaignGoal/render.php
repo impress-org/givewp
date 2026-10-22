@@ -3,6 +3,10 @@
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * @since TBD Escape output and replace short echo tags with escaped echo.
  *

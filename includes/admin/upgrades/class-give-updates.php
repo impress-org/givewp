@@ -2,6 +2,10 @@
 
 use Give\Framework\Permissions\Facades\UserPermissions;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Class Give_Updates
  *

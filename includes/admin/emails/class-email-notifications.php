@@ -11,6 +11,10 @@
  * @since       2.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Class Give_Email_Notifications
  *

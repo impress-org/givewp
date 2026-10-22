@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Multi-Form Goals block/shortcode template
  * Styles for this template are defined in 'blocks/multi-form-goals/common.scss'
