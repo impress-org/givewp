@@ -61,6 +61,7 @@ class DonorRepositoryProxy
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.19.6
      *
      * @param  string  $method
@@ -83,6 +84,6 @@ class DonorRepositoryProxy
             return $this->legacyDonorRepository->{$method}(...$parameters);
         }
 
-        throw new InvalidArgumentException("$method does not exist.");
+        throw new InvalidArgumentException(esc_html("$method does not exist."));
     }
 }

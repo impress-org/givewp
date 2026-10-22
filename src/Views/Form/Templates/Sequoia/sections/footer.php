@@ -1,3 +1,8 @@
+<?php
+/**
+ * @since TBD Escape translated output.
+ */
+?>
 <div class="form-footer">
     <div class="navigator-tracker">
         <button class="step-tracker current" data-step="0"></button>
@@ -9,12 +14,12 @@
         if (is_ssl()) : ?>
             <i class="fas fa-lock"></i>
             <?php
-            _e('Secure Donation', 'give'); ?>
+            esc_html_e('Secure Donation', 'give'); ?>
         <?php
         else : ?>
             <i class="fas fa-exclamation-triangle"></i>
             <?php
-            _e('Insecure Donation', 'give'); ?>
+            esc_html_e('Insecure Donation', 'give'); ?>
         <?php
         endif; ?>
     </div>

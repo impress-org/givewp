@@ -84,7 +84,7 @@ class AddIndexesToDonationMetaTable extends Migration
                 return;
             }
 
-            throw new DatabaseMigrationException("An error occurred while adding indexes to the {$table} table", 0, $exception);
+            throw new DatabaseMigrationException("An error occurred while adding indexes to the {$table} table", 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by MigrationsRunner and shown as React text in the migration log, never as HTML; esc_html() would corrupt a custom $table_prefix containing '&'/'<'. $exception is the previous-exception object, not string output.
         }
     }
 }

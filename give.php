@@ -357,6 +357,7 @@ final class Give
     /**
      * Load all the service providers to bootstrap the various parts of the application.
      *
+     * @since TBD Escape exception message.
      * @since 2.8.0
      */
     private function loadServiceProviders()
@@ -370,7 +371,7 @@ final class Give
         foreach ($this->serviceProviders as $serviceProvider) {
             if (!is_subclass_of($serviceProvider, ServiceProvider::class)) {
                 throw new InvalidArgumentException(
-                    "$serviceProvider class must implement the ServiceProvider interface"
+                    esc_html("$serviceProvider class must implement the ServiceProvider interface")
                 );
             }
 

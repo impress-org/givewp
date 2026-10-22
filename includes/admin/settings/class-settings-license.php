@@ -6,7 +6,7 @@
  * @subpackage  Classes/Give_Settings_License
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       TBD Escape output.
+ * @since TBD Escape output, including translated strings.
  * @since       1.8
  */
 
@@ -94,7 +94,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 								<h2 class="give-license-widget-heading">
 									<span class="dashicons dashicons-plugins-checked"></span>
-									<?php _e( 'Activate an Add-on License', 'give' ); ?>
+									<?php esc_html_e( 'Activate an Add-on License', 'give' ); ?>
 								</h2>
 
 								<p class="give-field-description">
@@ -115,20 +115,20 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 									<label
 										for="give-license-activator"
 										class="screen-reader-text">
-										<?php _e( 'Activate License', 'give' ); ?>
+										<?php esc_html_e( 'Activate License', 'give' ); ?>
 									</label>
 
 									<input
 										id="give-license-activator"
 										type="text"
 										name="give_license_key"
-										placeholder="<?php _e( 'Enter your license key', 'give' ); ?>"
+										placeholder="<?php esc_attr_e( 'Enter your license key', 'give' ); ?>"
 									/>
 
 									<input
-										data-activate="<?php _e( 'Activate License', 'give' ); ?>"
-										data-activating="<?php _e( 'Verifying License...', 'give' ); ?>"
-										value="<?php _e( 'Activate License', 'give' ); ?>"
+										data-activate="<?php esc_attr_e( 'Activate License', 'give' ); ?>"
+										data-activating="<?php esc_attr_e( 'Verifying License...', 'give' ); ?>"
+										value="<?php esc_attr_e( 'Activate License', 'give' ); ?>"
 										type="submit"
 										class="button button-primary"
 									/>
@@ -145,7 +145,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 							<div id="give-addon-uploader-inner">
 								<h2 class="give-license-widget-heading">
 									<span class="dashicons dashicons-upload"></span>
-									<?php _e( 'Upload and Activate an Add-on', 'give' ); ?>
+									<?php esc_html_e( 'Upload and Activate an Add-on', 'give' ); ?>
 								</h2>
 
 								<?php if ( ! is_multisite() ) : ?>
@@ -182,31 +182,31 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 												<div class="give-activate-addon-wrap">
 													<p><span
-															class="dashicons dashicons-yes"></span> <?php _e( 'Add-on succesfully uploaded.', 'give' ); ?>
+															class="dashicons dashicons-yes"></span> <?php esc_html_e( 'Add-on succesfully uploaded.', 'give' ); ?>
 													</p>
 													<button
 														class="give-activate-addon-btn button-primary"
-														data-activate="<?php _e( 'Activate Add-on', 'give' ); ?>"
-														data-activating="<?php _e( 'Activating Add-on...', 'give' ); ?>"
-													><?php _e( 'Activate Add-on', 'give' ); ?></button>
+														data-activate="<?php esc_attr_e( 'Activate Add-on', 'give' ); ?>"
+														data-activating="<?php esc_attr_e( 'Activating Add-on...', 'give' ); ?>"
+													><?php esc_html_e( 'Activate Add-on', 'give' ); ?></button>
 												</div>
 
 												<?php wp_nonce_field( 'give-upload-addon', '_give_upload_addon' ); ?>
 
 												<p class="give-upload-addon-instructions">
-													<?php _e( 'Drag a plugin zip file here to upload', 'give' ); ?><br>
-													<span><?php _e( 'or', 'give' ); ?></span>
+													<?php esc_html_e( 'Drag a plugin zip file here to upload', 'give' ); ?><br>
+													<span><?php esc_html_e( 'or', 'give' ); ?></span>
 												</p>
 
 												<label for="give-upload-addon-file-select" class="button button-small">
-													<?php _e( 'Select a File', 'give' ); ?>
+													<?php esc_html_e( 'Select a File', 'give' ); ?>
 												</label>
 
 												<input
 													id="give-upload-addon-file-select"
 													type="file"
 													name="addon"
-													value="<?php _e( 'Select File', 'give' ); ?>"
+													value="<?php esc_attr_e( 'Select File', 'give' ); ?>"
 												/>
 
 											</form>
@@ -229,7 +229,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 					<div class="give-grid-col-12">
 
 						<div class="give-licenses-list-header give-clearfix">
-							<h2><?php _e( 'Licenses and Add-ons', 'give' ); ?></h2>
+							<h2><?php esc_html_e( 'Licenses and Add-ons', 'give' ); ?></h2>
 
 							<?php
 							$refresh_status   = Give_License::refresh_license_status();
@@ -241,12 +241,12 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 							<div id="give-refresh-button-wrap">
 								<button id="give-button__refresh-licenses"
 										class="button-secondary"
-										data-activate="<?php _e( 'Refresh All Licenses', 'give' ); ?>"
-										data-activating="<?php _e( 'Refreshing All Licenses...', 'give' ); ?>"
+										data-activate="<?php esc_attr_e( 'Refresh All Licenses', 'give' ); ?>"
+										data-activating="<?php esc_attr_e( 'Refreshing All Licenses...', 'give' ); ?>"
 										data-nonce="<?php echo esc_attr( wp_create_nonce( 'give-refresh-all-licenses' ) ); ?>"
 									<?php echo $is_allow_refresh ? '' : 'disabled'; ?>
 									<?php echo $is_allow_refresh ? '' : sprintf( 'title="%1$s"', esc_attr( $button_title ) ); ?>>
-									<?php _e( 'Refresh All Licenses', 'give' ); ?>
+									<?php esc_html_e( 'Refresh All Licenses', 'give' ); ?>
 								</button>
 								<span id="give-last-refresh-notice">
 									<?php
@@ -260,7 +260,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 							</div>
 
 							<hr>
-							<p class="give-field-description"><?php _e( 'The following list displays your add-ons and their corresponding activation and license statuses.', 'give' ); ?></p>
+							<p class="give-field-description"><?php esc_html_e( 'The following list displays your add-ons and their corresponding activation and license statuses.', 'give' ); ?></p>
 
 						</div>
 

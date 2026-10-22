@@ -124,6 +124,7 @@ class Revenue
     /**
      * Validate new revenue data.
      *
+     * @since TBD Escape exception message.
      * @since 2.9.0
      * @since 2.9.4 Mention donation id in exception message.
      *
@@ -154,8 +155,8 @@ class Revenue
             throw new InvalidArgumentException(
                 sprintf(
                     '%2$sTo insert revenue, please provide valid %1$s.',
-                    implode(', ', $required),
-                    $errorMessage
+                    esc_html(implode(', ', $required)),
+                    esc_html($errorMessage)
                 )
             );
         }

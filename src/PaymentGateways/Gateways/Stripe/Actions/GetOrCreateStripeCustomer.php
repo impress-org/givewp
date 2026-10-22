@@ -12,6 +12,7 @@ class GetOrCreateStripeCustomer
 {
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.20.0 add second param support to function.
      *             This param is optional because we use it only when donor subscribe for recurring donation.
      * @since 2.21.0 Update function first argument type to Donation model
@@ -24,7 +25,7 @@ class GetOrCreateStripeCustomer
         $giveStripeCustomer = new Give_Stripe_Customer($donation->email, $stripePaymentMethodId);
 
         if (!$giveStripeCustomer->get_id()) {
-            throw new StripeCustomerException(__('Unable to find or create stripe customer object.', 'give'));
+            throw new StripeCustomerException(esc_html__('Unable to find or create stripe customer object.', 'give'));
         }
 
         $this->saveStripeCustomerId($donation, $giveStripeCustomer->get_id());

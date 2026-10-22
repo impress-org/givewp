@@ -193,6 +193,8 @@ class FormEntry implements Objects
     /**
      * Take array and return object.
      *
+     * @since TBD Escape exception message.
+     *
      * @param $array
      *
      * @return FormEntry
@@ -213,7 +215,7 @@ class FormEntry implements Objects
 
         if ( ! ArrayDataSet::hasRequiredKeys($array, $expectedKeys)) {
             throw new InvalidArgumentException(
-                'Invalid FormEntries object, must have the exact following keys: ' . implode(', ', $expectedKeys)
+                'Invalid FormEntries object, must have the exact following keys: ' . esc_html(implode(', ', $expectedKeys))
             );
         }
 
