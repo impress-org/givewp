@@ -12,6 +12,8 @@ use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
+use Give\Framework\FieldsAPI\DonationForm as DonationFormNode;
+use Give\Framework\FieldsAPI\Properties\DonationForm\CurrencySwitcherSetting;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Tests\TestCase;
@@ -96,6 +98,52 @@ class DonateFormRouteDataTest extends TestCase
         $formData = DonateFormRouteData::fromRequest($request);
 
         $this->assertEquals($formData->validated(), $data);
+    }
+
+    /**
+     * @since 4.19.0.1
+     */
+    public function testValidatedShouldRejectCurrencyThatDoesNotMatchFormCurrency()
+    {
+        /** @var DonationForm $form */
+        $form = DonationForm::factory()->create();
+
+        $formCurrency = give_get_currency($form->id);
+        $otherCurrency = current(array_diff(array_keys(give_get_currencies_list()), [$formCurrency]));
+
+        $this->assertIsString($otherCurrency);
+
+        try {
+            DonateFormRouteData::fromRequest($this->donationRequestData($form, $otherCurrency))->validated();
+            $this->fail('Expected a validation error for a currency the form does not offer.');
+        } catch (DonationFormFieldErrorsException $exception) {
+            $errors = $exception->getError()->get_error_messages('currency');
+
+            $this->assertNotEmpty($errors);
+            $this->assertStringContainsString('must be a currency supported by this donation form', $errors[0]);
+        }
+    }
+
+    /**
+     * @since 4.19.0.1
+     */
+    public function testValidatedShouldAcceptCurrencyEnabledByCurrencySwitcher(): void
+    {
+        /** @var DonationForm $form */
+        $form = DonationForm::factory()->create();
+
+        add_action('givewp_donation_form_schema', static function (DonationFormNode $schema) {
+            $schema->currencySwitcherSettings(
+                new CurrencySwitcherSetting('USD', 1, [], 2),
+                new CurrencySwitcherSetting('EUR', 2, [], 2)
+            );
+
+            $schema->getNodeByName('currency')->defaultValue('EUR');
+        });
+
+        $data = DonateFormRouteData::fromRequest($this->donationRequestData($form, 'EUR'))->validated();
+
+        $this->assertSame('EUR', $data->currency);
     }
 
     /**
@@ -486,5 +534,48 @@ class DonateFormRouteDataTest extends TestCase
         }
 
         return $notAllowed;
+    }
+
+    /**
+     * @since 4.19.0.1
+     */
+    private function donationRequestData(DonationForm $form, string $currency): array
+    {
+        add_filter('give_get_option_gateways', static function ($gateways) {
+            return array_merge($gateways, [TestGateway::id() => true]);
+        });
+
+        add_filter('give_default_gateway', static function () {
+            return TestGateway::id();
+        });
+
+        add_filter('givewp_donation_forms_honeypot_enabled', '__return_false');
+
+        $data = new DonateControllerData();
+        $data->gatewayId = TestGateway::id();
+        $data->amount = 100;
+        $data->currency = $currency;
+        $data->firstName = "Bill";
+        $data->lastName = "Murray";
+        $data->email = "billmurray@givewp.com";
+        $data->formId = $form->id;
+        $data->formTitle = $form->title;
+        $data->company = null;
+        $data->wpUserId = 0;
+        $data->honorific = null;
+        $data->donationType = DonationType::SINGLE();
+        $data->subscriptionFrequency = null;
+        $data->subscriptionPeriod = null;
+        $data->subscriptionInstallments = null;
+        $data->country = null;
+        $data->address1 = null;
+        $data->address2 = null;
+        $data->city = null;
+        $data->state = null;
+        $data->zip = null;
+
+        return array_merge(get_object_vars($data), [
+            'donationType' => $data->donationType->getValue(),
+        ]);
     }
 }

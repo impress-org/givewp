@@ -6,6 +6,7 @@ use Closure;
 use Give\DonationForms\Actions\ConvertDonationFormBlocksToFieldsApi;
 use Give\DonationForms\DonationQuery;
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\Rules\CurrencyRule;
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Blocks\BlockCollection;
@@ -438,6 +439,7 @@ class DonationFormRepository
     }
 
     /**
+     * @since 4.19.0.1 Build the currency rule from the form's supported currencies.
      * @since 3.0.0
      * @throws NameCollisionException
      */
@@ -474,6 +476,25 @@ class DonationFormRepository
         }
 
         Hooks::doAction('givewp_donation_form_schema', $form, $formId, $blockNodeRelationships);
+
+        /** @var Hidden|null $currencyNode */
+        $currencyNode = $form->getNodeByName('currency');
+
+        if ($currencyNode) {
+            $allowedCurrencies = [
+                give_get_currency($formId),
+                (string)$currencyNode->getDefaultValue(),
+            ];
+
+            foreach ($form->getCurrencySwitcherSettings() as $setting) {
+                $allowedCurrencies[] = $setting->getId();
+            }
+
+            $currencyNode->getValidationRules()->replaceOrAppendRule(
+                CurrencyRule::id(),
+                new CurrencyRule(array_values(array_unique(array_filter($allowedCurrencies))))
+            );
+        }
 
         return $form;
     }
