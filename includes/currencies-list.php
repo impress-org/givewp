@@ -34,6 +34,10 @@
  * @since       2.4.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 return array(
 	'USD' => array(
 		/* translators: %1$s: Currency symbol */

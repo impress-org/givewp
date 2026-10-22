@@ -6,6 +6,7 @@
  * @subpackage  Classes/Give_Settings_Advanced
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since       TBD Escape output.
  * @since       1.8
  */
 
@@ -385,7 +386,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
         {
             ?>
             <tr valign="top" <?php
-            echo ! empty($field['wrapper_class']) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
+            echo ! empty($field['wrapper_class']) ? 'class="' . esc_attr($field['wrapper_class']) . '"' : ''; ?>>
                 <th scope="row" class="titledesc">
                     <label
                         for="<?php
@@ -398,7 +399,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
                             class="button button-secondary"><?php
                         echo esc_html($field['buttonTitle']); ?></button>
                     <?php
-                    echo Give_Admin_Settings::get_field_description($field ); ?>
+                    echo wp_kses_post( Give_Admin_Settings::get_field_description($field) ); ?>
                     <?php wp_nonce_field('give_cache_flush', 'give_cache_flush_nonce'); ?>
                 </td>
             </tr>
@@ -458,7 +459,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
             if (OptionBasedFormEditor::isEnabled()) {
                 ?>
                 <tr valign="top" <?php
-                echo ! empty($field['wrapper_class']) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
+                echo ! empty($field['wrapper_class']) ? 'class="' . esc_attr($field['wrapper_class']) . '"' : ''; ?>>
                     <th scope="row" class="titledesc">
                     </th>
                     <td class="give-forminp">

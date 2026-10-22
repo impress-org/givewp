@@ -210,7 +210,7 @@ class DonateController
     }
 
     /**
-     * @since TBD Add translators comments.
+     * @since TBD Escape exception message. Add translators comments.
      *
      * @throws PaymentGatewayException
      */
@@ -222,11 +222,11 @@ class DonateController
             throw new PaymentGatewayException(
                 sprintf(
                     /* translators: %s: Payment gateway name */
-                    __(
+                    esc_html__(
                         "[%s] This payment gateway does not support recurring payments, please try selecting another payment gateway.",
                         'give'
                     ),
-                    $gatewayName
+                    $gatewayName // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- gateway label shown on the donation form as JSON/text; esc_html() here would double-encode.
                 )
             );
         }

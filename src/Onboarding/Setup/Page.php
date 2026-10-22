@@ -119,11 +119,13 @@ class Page
     /**
      * Render the submenu page
      *
+     * @since TBD Escape output.
      * @since 2.8.0
      */
     public function render_page()
     {
         $view = give()->make(PageView::class);
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renders the whole onboarding page; its own output is escaped internally.
         echo $view->render();
     }
 }

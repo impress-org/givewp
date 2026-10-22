@@ -9,6 +9,10 @@
  * @since       2.4.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Class Give_Admin
  */

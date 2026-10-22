@@ -39,6 +39,7 @@ class ServiceProvider implements GiveServiceProvider
     }
 
     /**
+     * @since TBD Escape output.
      * @inheritDoc
      */
     public function boot()
@@ -54,6 +55,7 @@ class ServiceProvider implements GiveServiceProvider
             try {
                 $this->loadAddonsServiceProviders();
             } catch (InvalidArgumentException $e) {
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- writes a WP-CLI terminal message, not HTML.
                 exit($e->getMessage());
             }
         }
@@ -61,6 +63,8 @@ class ServiceProvider implements GiveServiceProvider
 
     /**
      * Load addons service providers for TestData
+     *
+     * @since TBD Escape exception message.
      */
     private function loadAddonsServiceProviders()
     {
@@ -70,7 +74,7 @@ class ServiceProvider implements GiveServiceProvider
         foreach (Addons::getActiveAddons() as $addon) {
             if ( ! is_subclass_of($addon['serviceProvider'], GiveServiceProvider::class)) {
                 throw new InvalidArgumentException(
-                    "{$addon['serviceProvider']} class must implement the ServiceProvider interface"
+                    esc_html("{$addon['serviceProvider']} class must implement the ServiceProvider interface")
                 );
             }
 

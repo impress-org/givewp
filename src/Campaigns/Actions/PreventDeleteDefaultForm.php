@@ -10,7 +10,7 @@ use Give\Campaigns\Models\Campaign;
 class PreventDeleteDefaultForm
 {
     /**
-      * @since TBD Number the placeholders and add translators comments.
+     * @since TBD Escape output. Number the placeholders and add translators comments.
      * @since 4.1.0
      */
     public function __invoke($postId)
@@ -23,15 +23,15 @@ class PreventDeleteDefaultForm
 
         if ($campaign && $campaign->defaultFormId == $postId) {
             /* translators: 1: Form title, 2: Form ID */
-            wp_die(sprintf(__('The form %1$s with ID %2$d cannot be deleted because it is the default form for a campaign.',
+            wp_die(esc_html(sprintf(__('The form %1$s with ID %2$d cannot be deleted because it is the default form for a campaign.',
                 'give'),
                 $campaign->defaultForm()->title,
-                $postId));
+                (int) $postId)));
         }
     }
 
     /**
-      * @since TBD Number the placeholders and add translators comments.
+     * @since TBD Escape output. Number the placeholders and add translators comments.
      * @since 4.1.0
      */
     public function preventTrashStatusChange($newStatus, $oldStatus, $post)
@@ -47,10 +47,10 @@ class PreventDeleteDefaultForm
                 ]);
 
                 /* translators: 1: Form title, 2: Form ID */
-                wp_die(sprintf(__('The form %1$s with ID %2$d cannot be moved to trash because it is the default form for a campaign.',
+                wp_die(esc_html(sprintf(__('The form %1$s with ID %2$d cannot be moved to trash because it is the default form for a campaign.',
                     'give'),
                     $campaign->defaultForm()->title,
-                    $post->ID));
+                    (int) $post->ID)));
             }
         }
     }

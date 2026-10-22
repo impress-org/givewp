@@ -1,11 +1,18 @@
 <?php
+/** @since TBD Escape output. */
 
 /**
  * @var int $formId
+ *
+ * @since TBD Escape translated output.
  */
 
 use Give\DonationForms\DonationQuery;
 use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModal;
+
+if (!defined('ABSPATH')) {
+    exit;
+}
 
 /**
  * @since 3.14.0 Use sumIntendedAmount() and getDonationCount() methods to retrieve the proper values for the raised amount and donations count
@@ -68,26 +75,26 @@ if ($form->has_goal()) : ?>
         <div class="raised">
             <div class="number">
                 <?php
-                echo $raised; ?>
+                echo esc_html($raised); ?>
             </div>
             <div class="text"><?php
-                _e('raised', 'give'); ?></div>
+                esc_html_e('raised', 'give'); ?></div>
         </div>
         <div class="count">
             <div class="number">
                 <?php
-                echo $count; ?>
+                echo esc_html($count); ?>
             </div>
             <div class="text"><?php
-                echo $countLabel; ?></div>
+                echo esc_html($countLabel); ?></div>
         </div>
         <div class="goal">
             <div class="number">
                 <?php
-                echo $goal; ?>
+                echo esc_html($goal); ?>
             </div>
             <div class="text"><?php
-                _e('goal', 'give'); ?></div>
+                esc_html_e('goal', 'give'); ?></div>
         </div>
     </div>
 <?php

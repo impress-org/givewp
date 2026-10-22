@@ -34,6 +34,7 @@ class Profile
     /**
      * Handles updating relevant profile fields in donor database and meta database
      *
+     * @since 4.19.0.1 The primary email can only change to an email already on the donor record.
      * @since 4.17.0 Logged-in donors can no longer add unverified email addresses.
      * @since 2.27.3 Use Donor model to update data used by webhooks addon to prevent multiple events creation
      * @since      2.10.0
@@ -48,10 +49,14 @@ class Profile
     {
         $donor = Donor::find($this->donor->id);
 
+        $canChangePrimaryEmail = $donor->hasEmail((string)$data['primaryEmail']);
+
         $allowed = array_merge($donor->additionalEmails ?? [], [$donor->email]);
         $donor->additionalEmails = array_values(array_intersect($data['additionalEmails'] ?: [], $allowed));
 
-        $donor->email = $data['primaryEmail'];
+        if ($canChangePrimaryEmail) {
+            $donor->email = $data['primaryEmail'];
+        }
 
         if ( ! empty($data['firstName']) && ! empty($data['lastName'])) {
             $firstName = $data['firstName'];

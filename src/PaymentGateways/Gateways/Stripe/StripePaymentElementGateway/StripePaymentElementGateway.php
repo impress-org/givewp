@@ -165,7 +165,7 @@ class StripePaymentElementGateway extends PaymentGateway implements PaymentGatew
     }
 
     /**
-      * @since TBD Add translators comments.
+     * @since TBD Escape exception message. Add translators comments.
      * @since 4.7.0
      *
      * @throws Exception
@@ -204,7 +204,7 @@ class StripePaymentElementGateway extends PaymentGateway implements PaymentGatew
             ]);
 
             /* translators: %s: Error message */
-            throw new PaymentGatewayException(sprintf(__('Stripe API error: %s', 'give'), $e->getMessage()));
+            throw new PaymentGatewayException(sprintf(__('Stripe API error: %s', 'give'), $e->getMessage())); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Stripe API text shown on the donation form as JSON/text (HandleHttpResponses); esc_html() here would double-encode quotes.
         }
     }
 }

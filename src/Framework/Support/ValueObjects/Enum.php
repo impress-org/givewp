@@ -11,6 +11,7 @@ use Give\Framework\Support\Facades\Str;
 abstract class Enum extends BaseEnum
 {
     /**
+     * @since TBD Escape exception message.
      * @since 2.20.0
      *
      * Adds support for is{Value} methods. So if an Enum has an ACTIVE value, then an isActive() instance method is
@@ -27,13 +28,13 @@ abstract class Enum extends BaseEnum
             $constant = Str::upper(Str::snake(Str::after($name, 'is')));
 
             if ( ! self::hasConstant($constant)) {
-                throw new BadMethodCallException("$name does not match a corresponding enum constant.");
+                throw new BadMethodCallException(esc_html("$name does not match a corresponding enum constant."));
             }
 
             return $this->equals(parent::$constant());
         }
 
-        throw new BadMethodCallException("Method $name does not exist on enum");
+        throw new BadMethodCallException(esc_html("Method $name does not exist on enum"));
     }
 
     /**

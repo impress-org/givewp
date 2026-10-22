@@ -131,7 +131,7 @@ class PayPalOrder
     /**
      * Validate order given in array format.
      *
-      * @since TBD Add translators comments.
+     * @since TBD Escape exception message. Add translators comments.
      * @since 2.9.0
      *
      * @param array $array
@@ -154,7 +154,7 @@ class PayPalOrder
                 sprintf(
                     /* translators: %1$s: List of the required fields, separated by commas */
                     esc_html__('To create a PayPalOrder object, please provide valid %1$s', 'give'),
-                    implode(', ', $required)
+                    esc_html(implode(', ', $required))
                 )
             );
         }

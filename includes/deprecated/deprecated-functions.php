@@ -942,6 +942,7 @@ function give_get_localized_date_format_to_js() {
 /**
  * Get donor latest comment
  *
+ * @since TBD Document why the query is safe.
  * @since 2.2.0
  * @deprecated 2.3.0
  *
@@ -1017,7 +1018,7 @@ function give_get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 
 	$sql = Give()->comment->db->get_sql( $comment_args );
 
-	$comment = current( $wpdb->get_results( $sql ) );
+	$comment = current( $wpdb->get_results( $sql ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $sql comes from get_sql(), which returns a prepared query.
 
 	return $comment;
 }

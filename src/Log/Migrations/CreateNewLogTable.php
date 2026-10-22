@@ -39,6 +39,9 @@ class CreateNewLogTable extends Migration
         return strtotime('2021-01-28 12:00');
     }
 
+    /**
+     * @since TBD Escape exception message.
+     */
     public function run()
     {
         global $wpdb;
@@ -62,7 +65,11 @@ class CreateNewLogTable extends Migration
         try {
             DB::delta($sql);
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException('An error occurred while creating the give_log table', 0, $exception);
+            throw new DatabaseMigrationException(
+                'An error occurred while creating the give_log table',
+                0,
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
     }
 }

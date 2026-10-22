@@ -245,6 +245,7 @@ class Actions
     /**
      * Add wrapper and introduction text to payment information section
      *
+     * @since TBD Escape output.
      * @since 4.16.4 Escaped the headline output.
      * @since 2.7.0
      *
@@ -264,7 +265,7 @@ class Actions
         printf(
             '<div class="give-section payment"><div class="heading">%1$s</div><div class="subheading">%2$s</div>',
             esc_html($headline),
-            $description
+            esc_html($description)
         );
     }
 
@@ -281,7 +282,7 @@ class Actions
     /**
      * Start choose amount section
      *
-      * @since TBD Add translators comments.
+     * @since TBD Escape output. Add translators comments.
      * @since 4.16.4 Escaped the donate button label output.
      * @since 2.7.0
      */
@@ -303,13 +304,13 @@ class Actions
         printf(
             '<button class="give-btn advance-btn">%1$s<i class="fas fa-chevron-%2$s"></i></button></div>',
             esc_html($label),
-            $arrow
+            esc_html($arrow)
         );
 
         if ( ! empty($content)) {
             printf(
                 '<div class="give-section choose-amount"><p class="content">%1$s</p>',
-                $content
+                esc_html($content)
             );
         } else {
             echo "<div class='give-section choose-amount'>";
@@ -319,6 +320,7 @@ class Actions
     /**
      * Close choose amount section
      *
+     * @since TBD Escape output.
      * @since 4.16.4 Escaped the continue button label output.
      * @since 2.7.0
      */
@@ -333,7 +335,7 @@ class Actions
         printf(
             '<button class="give-btn advance-btn">%1$s<i class="fas fa-chevron-%2$s"></i></button></div>',
             esc_html($label),
-            $arrow
+            esc_html($arrow)
         );
     }
 

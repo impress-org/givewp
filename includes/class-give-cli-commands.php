@@ -367,7 +367,7 @@ class GIVE_CLI_COMMAND {
 	 * wp give donors --number=1000
 	 * wp give donors --form-id=1024
 	 *
-	 * @since TBD Add translators comments.
+	 * @since TBD Use gmdate() and wp_date() instead of date(), and add translators comments.
 	 * @since         1.7
 	 * @access        public
 	 *
@@ -552,7 +552,7 @@ class GIVE_CLI_COMMAND {
 					break;
 
 				case 'csv':
-					$file_path = trailingslashit( WP_CONTENT_DIR ) . 'uploads/give_donors_' . date( 'Y_m_d_s', current_time( 'timestamp' ) ) . '.csv';
+					$file_path = trailingslashit( WP_CONTENT_DIR ) . 'uploads/give_donors_' . wp_date( 'Y_m_d_s', current_time( 'timestamp' ), new DateTimeZone( 'UTC' ) ) . '.csv';
 					$fp        = fopen( $file_path, 'w' );
 
 					if ( is_writable( $file_path ) ) {
@@ -776,6 +776,7 @@ class GIVE_CLI_COMMAND {
 	/**
 	 * Delete all form stat transient
 	 *
+	 * @since TBD Remove the quotes around the placeholders.
 	 * @since     1.7
 	 * @access    private
 	 *
@@ -786,7 +787,7 @@ class GIVE_CLI_COMMAND {
 
 		$stat_option_names = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT option_name FROM {$wpdb->options} where (option_name LIKE '%s' OR option_name LIKE '%s')",
+				"SELECT option_name FROM {$wpdb->options} where (option_name LIKE %s OR option_name LIKE %s)",
 				array(
 					'%_transient_give_stats_%',
 					'%give_cache%',

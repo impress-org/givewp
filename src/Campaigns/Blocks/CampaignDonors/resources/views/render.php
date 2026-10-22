@@ -3,6 +3,10 @@
 use Give\Campaigns\Actions\RenderDonateButton;
 use Give\Campaigns\Models\Campaign;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * @var Campaign $campaign
  * @var array $attributes

@@ -2,6 +2,10 @@
 
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Insert donor comment to donation.
  *

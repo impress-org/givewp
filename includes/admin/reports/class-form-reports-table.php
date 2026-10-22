@@ -190,6 +190,8 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @since  1.0
 	 * @access protected
 	 *
+	 * @since TBD Escape translated output.
+	 *
 	 * @param string $which
 	 */
 	protected function display_tablenav( $which ) {
@@ -202,7 +204,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 
 			<?php if ( 'top' === $which ) { ?>
 				<h2 class="alignleft reports-earnings-title screen-reader-text">
-					<?php _e( 'Donation Forms Report', 'give' ); ?>
+					<?php esc_html_e( 'Donation Forms Report', 'give' ); ?>
 				</h2>
 			<?php } ?>
 
@@ -226,6 +228,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Attaches the category filter to the log views
 	 *
 	 * @access public
+	 * @since  TBD Escape output.
 	 * @since  1.0
 	 *
 	 * @return void
@@ -234,6 +237,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 
 		$categories = get_terms( 'form_category' );
 		if ( $categories && ! is_wp_error( $categories ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- category_dropdown() renders a <select> control; wp_kses_post() would strip it, and its own values are escaped internally.
 			echo Give()->html->category_dropdown( 'category', $this->get_category() );
 		}
 	}

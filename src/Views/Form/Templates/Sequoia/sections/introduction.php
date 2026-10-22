@@ -1,11 +1,16 @@
 <?php
 
 /**
+ * @since TBD Escape output.
  * @since 4.16.4 Escaped the introduction headline output.
  * @since 4.16.2 Escape introduction image URL when rendering the template.
  */
 
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
+
+if (!defined('ABSPATH')) {
+    exit;
+}
 
 $formInfo = get_post(FrontendFormTemplateUtils::getFormId());
 
@@ -28,7 +33,7 @@ $image = $formTemplate->getFormFeaturedImage($formInfo->ID);
         <div class="seperator"></div>
         <p class="description">
             <?php
-            echo $description; ?>
+            echo wp_kses_post($description); ?>
         </p>
     <?php
     endif; ?>

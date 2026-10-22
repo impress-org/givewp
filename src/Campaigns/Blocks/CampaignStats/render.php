@@ -6,7 +6,12 @@ use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Support\ValueObjects\Money;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
+ * @since TBD Escape output and replace short echo tags with escaped echo.
  * @since 4.0.0
  *
  * @var array    $attributes
@@ -38,7 +43,7 @@ $amount = $donationStat && $donationStat->amount
 $title = $attributes['statistic'] === 'top-donation' ? __('Top Donation', 'give') : __('Average Donation', 'give');
 ?>
 
-<div <?= get_block_wrapper_attributes(['class' => 'givewp-campaign-stats-block']) ?>>
-    <span><?php echo $title ?></span>
+<div <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_block_wrapper_attributes() escapes its output. ?><?php echo get_block_wrapper_attributes(['class' => 'givewp-campaign-stats-block']); ?>>
+    <span><?php echo esc_html($title) ?></span>
     <strong><?php echo esc_html($amount->formatToLocale()) ?></strong>
 </div>
