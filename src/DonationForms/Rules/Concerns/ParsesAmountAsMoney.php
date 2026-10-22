@@ -11,12 +11,12 @@ use function is_string;
  * Parses a submitted amount the same way the donation's Money is created from it, so amount rules compare
  * the value that is stored and charged rather than a cast of the raw string.
  *
- * @since TBD
+ * @since 4.19.0.2
  */
 trait ParsesAmountAsMoney
 {
     /**
-     * @since TBD
+     * @since 4.19.0.2
      *
      * @return float|null The decimal amount, or null when it cannot be parsed as money in the currency.
      */
@@ -32,7 +32,7 @@ trait ParsesAmountAsMoney
     /**
      * The currency submitted with the amount, or the site currency when none is submitted.
      *
-     * @since TBD
+     * @since 4.19.0.2
      */
     protected function submittedCurrency(array $values): string
     {

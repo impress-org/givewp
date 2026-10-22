@@ -1,5 +1,0 @@
-significance: patch
-type: security
-entry: Added additional validation to account registration on donation forms.
-  Reported by Pablo Alaniz
-timestamp: 2026-10-22T17:07:53.617Z

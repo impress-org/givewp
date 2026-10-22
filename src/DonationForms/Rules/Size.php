@@ -66,7 +66,7 @@ class Size implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
-     * @since TBD Compare the amount as parsed into Money in the submitted currency.
+     * @since 4.19.0.2 Compare the amount as parsed into Money in the submitted currency.
      * @since 3.0.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)

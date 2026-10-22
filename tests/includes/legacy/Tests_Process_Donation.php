@@ -269,7 +269,7 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	/**
 	 * Checkout registration must not accept an email that already belongs to a guest donor.
 	 *
-	 * @since TBD
+	 * @since 4.19.0.2
 	 */
 	public function test_validate_new_user_rejects_existing_donor_primary_email() {
 
@@ -295,7 +295,7 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	/**
 	 * Checkout registration must not accept a donor's additional email either.
 	 *
-	 * @since TBD
+	 * @since 4.19.0.2
 	 */
 	public function test_validate_new_user_rejects_existing_donor_additional_email() {
 
@@ -322,7 +322,7 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	/**
 	 * Checkout registration still accepts an email no donor or user has.
 	 *
-	 * @since TBD
+	 * @since 4.19.0.2
 	 */
 	public function test_validate_new_user_accepts_unused_email() {
 
@@ -338,7 +338,7 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * @since TBD
+	 * @since 4.19.0.2
 	 */
 	private function new_user_post( $email ) {
 		$form = Give_Helper_Form::create_simple_form();

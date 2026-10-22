@@ -150,7 +150,7 @@ class DonateFormRouteDataTest extends TestCase
      * The default form has a $1 custom amount minimum and a $100 level. "0100" casts to the exempt level
      * but is parsed as money as $0.10, below the minimum.
      *
-     * @since TBD
+     * @since 4.19.0.2
      */
     public function testValidatedShouldRejectAmountThatParsesBelowTheMinimum(): void
     {

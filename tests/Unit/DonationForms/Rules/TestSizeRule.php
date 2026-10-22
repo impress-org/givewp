@@ -7,7 +7,7 @@ use Give\Tests\TestCase;
 use Give\Tests\Unit\DonationForms\TestTraits\HasValidationRules;
 
 /**
- * @since TBD
+ * @since 4.19.0.2
  * @covers Give\DonationForms\Rules\Size
  */
 class TestSizeRule extends TestCase
@@ -15,7 +15,7 @@ class TestSizeRule extends TestCase
     use HasValidationRules;
 
     /**
-     * @since TBD
+     * @since 4.19.0.2
      */
     public function testPassesWhenAmountMatchesTheSize(): void
     {
@@ -28,7 +28,7 @@ class TestSizeRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.2
      */
     public function testFailsWhenAmountDiffersFromTheSize(): void
     {
@@ -39,7 +39,7 @@ class TestSizeRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.2
      */
     public function testFailsWhenTheParsedMoneyAmountDiffersFromTheSize(): void
     {
@@ -51,7 +51,7 @@ class TestSizeRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.2
      */
     public function testKeepsAFractionalSize(): void
     {
@@ -62,7 +62,7 @@ class TestSizeRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.2
      */
     public function testParsesTheAmountInTheSubmittedCurrency(): void
     {
@@ -73,7 +73,7 @@ class TestSizeRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.2
      */
     public function testFailsWhenTheCurrencyIsUnknown(): void
     {

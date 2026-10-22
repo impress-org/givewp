@@ -93,7 +93,7 @@ class TestMaxRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.2
      */
     public function testFailsWhenTheAmountCannotBeParsedAsMoney(): void
     {

@@ -954,7 +954,7 @@ function give_donation_form_validate_logged_in_user() {
  * Donate Form Validate New User
  *
  * @access private
- * @since TBD Validate the email as a new user registration so it cannot claim an existing donor.
+ * @since 4.19.0.2 Validate the email as a new user registration so it cannot claim an existing donor.
  * @since 4.16.6 Flag data as coming from the checkout registration flow.
  * @since  1.0
  *

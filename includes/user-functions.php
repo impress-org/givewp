@@ -351,7 +351,7 @@ function give_validate_username( $username, $form_id = 0 ) {
  * @param string $email                User email.
  * @param bool   $registering_new_user Flag to check user register or not.
  *
- * @since TBD Reject any email that already belongs to a donor when registering a new user, not only additional emails.
+ * @since 4.19.0.2 Reject any email that already belongs to a donor when registering a new user, not only additional emails.
  * @since 1.8
  *
  * @return bool

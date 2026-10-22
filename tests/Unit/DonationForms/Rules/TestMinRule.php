@@ -88,7 +88,7 @@ class TestMinRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0.2
      */
     public function testFailsWhenTheParsedMoneyAmountIsBelowTheMinimum(): void
     {
