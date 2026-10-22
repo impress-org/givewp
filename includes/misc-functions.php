@@ -1665,28 +1665,18 @@ function give_ignore_user_abort() {
  * @param array  $args
  *
  * @return int
+ * @since TBD Prepare SQL with placeholders.
  * @since 2.0.2
  */
 function give_get_total_post_type_count( $post_type = '', $args = [] ) {
 	global $wpdb;
-	$where = '';
 
 	if ( ! $post_type ) {
 		return 0;
 	}
 
-	// Bulit where query
-	if ( ! empty( $post_type ) ) {
-		$where .= ' WHERE';
-
-		if ( is_array( $post_type ) ) {
-			$where .= " post_type='" . implode( "' OR post_type='", $post_type ) . "'";
-		} else {
-			$where .= " post_type='{$post_type}'";
-		}
-	}
-
-	$result = $wpdb->get_var( "SELECT count(ID) FROM {$wpdb->posts}{$where}" );
+	$post_types = (array) $post_type;
+	$result     = $wpdb->get_var( $wpdb->prepare( "SELECT count(ID) FROM {$wpdb->posts} WHERE post_type IN (" . implode( ',', array_fill( 0, count( $post_types ), '%s' ) ) . ')', $post_types ) );
 
 	return absint( $result );
 }

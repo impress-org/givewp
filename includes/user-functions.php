@@ -613,6 +613,7 @@ function give_donor_email_exists( $email ) {
  *
  * @param string $email Donor Email.
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since 1.8.13
  *
  * @return bool
@@ -620,9 +621,9 @@ function give_donor_email_exists( $email ) {
 function give_is_additional_email( $email ) {
 	global $wpdb;
 
-	$meta_table = Give()->donor_meta->table_name;
-	$meta_type  = Give()->donor_meta->meta_type;
-	$donor_id   = $wpdb->get_var( $wpdb->prepare( "SELECT {$meta_type}_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $email ) );
+	$meta_type = Give()->donor_meta->meta_type;
+	// Use the table name of GiveWP's own donor meta. Other plugins, such as Charitable, can overwrite $wpdb->donormeta.
+	$donor_id  = $wpdb->get_var( $wpdb->prepare( "SELECT %i FROM %i WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $meta_type . '_id', Give()->donor_meta->table_name, $email ) );
 
 	if ( empty( $donor_id ) ) {
 		return false;
