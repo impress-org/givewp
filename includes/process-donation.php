@@ -954,6 +954,7 @@ function give_donation_form_validate_logged_in_user() {
  * Donate Form Validate New User
  *
  * @access private
+ * @since TBD Validate the email as a new user registration so it cannot claim an existing donor.
  * @since 4.16.6 Flag data as coming from the checkout registration flow.
  * @since  1.0
  *
@@ -985,8 +986,6 @@ function give_donation_form_validate_new_user() {
 		give_set_error( 'invalid_nonce', __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ) );
 	}
 
-	$registering_new_user = false;
-
 	give_donation_form_validate_name_fields( $user_data );
 
 	// Start an empty array to collect valid user data.
@@ -1012,7 +1011,7 @@ function give_donation_form_validate_new_user() {
 	$valid_user_data['user_login'] = $user_data['give_email'];
 
 	// Check if we have an email to verify.
-	if ( give_validate_user_email( $user_data['give_email'], $registering_new_user ) ) {
+	if ( give_validate_user_email( $user_data['give_email'], true ) ) {
 		$valid_user_data['user_email'] = $user_data['give_email'];
 	}
 

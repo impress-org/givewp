@@ -351,6 +351,7 @@ function give_validate_username( $username, $form_id = 0 ) {
  * @param string $email                User email.
  * @param bool   $registering_new_user Flag to check user register or not.
  *
+ * @since TBD Reject any email that already belongs to a donor when registering a new user, not only additional emails.
  * @since 1.8
  *
  * @return bool
@@ -373,14 +374,10 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 		give_set_error( 'email_invalid', __( 'Invalid email.', 'give' ) );
 		$valid = false;
 
-	} elseif ( $registering_new_user ) {
-
-		// If donor email is not primary.
-		if ( ! email_exists( $email ) && give_donor_email_exists( $email ) && give_is_additional_email( $email ) ) {
-			// Check if email exists.
-			give_set_error( 'email_used', __( 'The email address provided is already associated with another donor in the system. Please log in or use a different email', 'give' ) );
-			$valid = false;
-		}
+	} elseif ( $registering_new_user && give_donor_email_exists( $email ) ) {
+		// A new account must not take over a donor record it has not proven it owns.
+		give_set_error( 'email_used', __( 'The email address provided is already associated with a donor in the system. Please log in, donate without creating an account, or use a different email.', 'give' ) );
+		$valid = false;
 	}
 
 	/**
