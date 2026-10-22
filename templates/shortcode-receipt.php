@@ -157,7 +157,8 @@ if ( 'offline' === give_get_payment_gateway( $donation_id ) && 'pending' === $st
 		 * @param Give_Payment $donation            Donation object.
 		 * @param integer      $form_id             Donation form id.
 		 */
-		echo wp_kses_post( apply_filters( 'give_receipt_offline_payment_instruction', $offline_instruction, $donation, $form_id ) );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- offline instructions an admin wrote in the editor; wp_kses_post() would strip embeds and markup add-ons add through this filter.
+		echo apply_filters( 'give_receipt_offline_payment_instruction', $offline_instruction, $donation, $form_id );
 		?>
 	</div>
 	<?php

@@ -12,10 +12,26 @@ use Money\Currency;
  * Replaces the generic stellar validation library currency rule to ensure consistency
  * with GiveWP's configured currencies and filters.
  *
+ * @since 4.19.0.1 Require the currency to be one of the form's supported currencies when they are provided.
  * @since 4.10.0
  */
 class CurrencyRule implements ValidationRule
 {
+    /**
+     * @var string[]
+     */
+    protected $allowedCurrencies;
+
+    /**
+     * @since 4.19.0.1
+     *
+     * @param string[] $allowedCurrencies Currency codes the form accepts. An empty array applies no form-level restriction.
+     */
+    public function __construct(array $allowedCurrencies = [])
+    {
+        $this->allowedCurrencies = $allowedCurrencies;
+    }
+
     /**
      * @since 4.10.0
      */
@@ -34,11 +50,13 @@ class CurrencyRule implements ValidationRule
     }
 
     /**
-     * Validates that the currency code is in GiveWP's supported currency list.
+     * Validates that the currency code is in GiveWP's supported currency list
+     * and, when supported currencies are set, is one of those currencies.
      * Uses give_get_currencies_list() to get the current supported currencies
      * and provides clear error messages with valid currency options.
      *
      * @since TBD Number the placeholders and add translators comments.
+     * @since 4.19.0.1 Require the currency to be one of the form's supported currencies when they are provided.
      * @since 4.10.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
@@ -59,6 +77,14 @@ class CurrencyRule implements ValidationRule
                     __('%1$s must be a valid currency. Provided: %2$s', 'give'),
                     '{field}',
                     $value
+                )
+            );
+        } elseif (!empty($this->allowedCurrencies) && !in_array($value, $this->allowedCurrencies, true)) {
+            $fail(
+                sprintf(
+                    /* translators: %s: field name */
+                    __('%s must be a currency supported by this donation form', 'give'),
+                    '{field}'
                 )
             );
         }

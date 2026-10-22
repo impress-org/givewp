@@ -1507,19 +1507,43 @@ function give_get_wp_upload_dir() {
  * @param string $file_name filename of the json file that is being uploaded
  *
  * @return string|bool $file_contents File content
+ * @since 4.19.0.1 Reject file names that resolve outside the uploads directory.
  * @since 1.8.17
  */
 function give_get_core_settings_json( $file_name ) {
 	$upload_dir = give_get_wp_upload_dir();
-	$file_path  = $upload_dir . '/' . $file_name;
 
-	if ( is_wp_error( $file_path ) || empty( $file_path ) ) {
+	if ( empty( $upload_dir ) || ! is_string( $file_name ) || '' === $file_name ) {
 		Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid JSON file.', 'give' ) );
+
+		return false;
+	}
+
+	if ( basename( $file_name ) !== $file_name ) {
+		Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid JSON file.', 'give' ) );
+
+		return false;
+	}
+
+	$upload_dir = realpath( $upload_dir );
+
+	if ( false === $upload_dir ) {
+		Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid JSON file.', 'give' ) );
+
+		return false;
+	}
+
+	$file_path = realpath( $upload_dir . DIRECTORY_SEPARATOR . $file_name );
+
+	if ( false === $file_path || 0 !== strpos( $file_path, $upload_dir . DIRECTORY_SEPARATOR ) ) {
+		Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid JSON file.', 'give' ) );
+
+		return false;
 	}
 
 	$file_contents = file_get_contents( $file_path );
 
-	return $file_contents;
+	return false !== $file_contents ? $file_contents : false;
 }
 
 /**

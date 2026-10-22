@@ -66,7 +66,8 @@ do_action( 'give_pre_featured_thumbnail' );
 		 *
 		 * @since TBD Replaces `single_give_form_image_html`.
 		 */
-		echo wp_kses_post( apply_filters( 'give_single_form_image_html', $image ) );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- image markup from get_the_post_thumbnail() or an escaped placeholder; wp_kses_post() would strip attributes themes add through this filter.
+		echo apply_filters( 'give_single_form_image_html', $image );
 
 	} else {
 
@@ -77,7 +78,8 @@ do_action( 'give_pre_featured_thumbnail' );
 		$placeholder = apply_filters_deprecated( 'single_give_form_image_html', [ $placeholder, $post->ID ], 'TBD', 'give_single_form_image_html' );
 
 		/** This filter is documented above. */
-		echo wp_kses_post( apply_filters( 'give_single_form_image_html', $placeholder, $post->ID ) );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- image markup from get_the_post_thumbnail() or an escaped placeholder; wp_kses_post() would strip attributes themes add through this filter.
+		echo apply_filters( 'give_single_form_image_html', $placeholder, $post->ID );
 
 	}
 	?>

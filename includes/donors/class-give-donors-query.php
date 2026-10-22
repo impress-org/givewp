@@ -353,9 +353,11 @@ class Give_Donors_Query {
 
 			if ( is_array( $this->args['email'] ) ) {
 
-				$where .= $wpdb->prepare( "AND {$wpdb->donors}.email IN( " . implode( ', ', array_fill( 0, count( $this->args['email'] ), '%s' ) ) . ' )', $this->args['email'] );
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table_name is the donors table of this class; the search value is a prepared argument.
+				$where .= $wpdb->prepare( "AND {$this->table_name}.email IN( " . implode( ', ', array_fill( 0, count( $this->args['email'] ), '%s' ) ) . ' )', $this->args['email'] );
 			} else {
-				$where .= $wpdb->prepare( "AND {$wpdb->donors}.email = %s", $this->args['email'] );
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table_name is the donors table of this class; the search value is a prepared argument.
+				$where .= $wpdb->prepare( "AND {$this->table_name}.email = %s", $this->args['email'] );
 			}
 		}
 
@@ -448,19 +450,24 @@ class Give_Donors_Query {
 				switch ( $search_parts[0] ) {
 					// Backward compatibility.
 					case 'name':
-						$where = $wpdb->prepare( "AND {$wpdb->donors}.name LIKE %s", '%' . $wpdb->esc_like( $search_parts[1] ) . '%' );
+						// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table_name is the donors table of this class; the search value is a prepared argument.
+						$where = $wpdb->prepare( "AND {$this->table_name}.name LIKE %s", '%' . $wpdb->esc_like( $search_parts[1] ) . '%' );
 						break;
 					case 'note':
-						$where = $wpdb->prepare( "AND {$wpdb->donors}.notes LIKE %s", '%' . $wpdb->esc_like( $search_parts[1] ) . '%' );
+						// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table_name is the donors table of this class; the search value is a prepared argument.
+						$where = $wpdb->prepare( "AND {$this->table_name}.notes LIKE %s", '%' . $wpdb->esc_like( $search_parts[1] ) . '%' );
 						break;
 				}
 			}
 		} elseif ( is_numeric( $this->args['s'] ) ) {
-			$where = $wpdb->prepare( "AND {$wpdb->donors}.id =%s", $this->args['s'] );
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table_name is the donors table of this class; the search value is a prepared argument.
+			$where = $wpdb->prepare( "AND {$this->table_name}.id =%s", $this->args['s'] );
 		} elseif ( is_email( $this->args['s'] ) ) {
-			$where = $wpdb->prepare( "AND {$wpdb->donors}.email LIKE %s", '%' . $wpdb->esc_like( $this->args['s'] ) . '%' );
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table_name is the donors table of this class; the search value is a prepared argument.
+			$where = $wpdb->prepare( "AND {$this->table_name}.email LIKE %s", '%' . $wpdb->esc_like( $this->args['s'] ) . '%' );
 		} else {
-			$where = $wpdb->prepare( "AND {$wpdb->donors}.name LIKE %s", '%' . $wpdb->esc_like( $this->args['s'] ) . '%' );
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table_name is the donors table of this class; the search value is a prepared argument.
+			$where = $wpdb->prepare( "AND {$this->table_name}.name LIKE %s", '%' . $wpdb->esc_like( $this->args['s'] ) . '%' );
 		}
 
 		return $where;
