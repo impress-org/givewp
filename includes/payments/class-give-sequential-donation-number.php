@@ -315,6 +315,7 @@ class Give_Sequential_Donation_Number {
 	/**
 	 * Get maximum donation number
 	 *
+	 * @since TBD Use %i for the table name.
 	 * @since  2.1.0
 	 * @access public
 	 *
@@ -326,12 +327,15 @@ class Give_Sequential_Donation_Number {
 
 		return absint(
 			$wpdb->get_var(
-				"
-				SELECT ID
-				FROM {$table_name}
-				ORDER BY id DESC
-				LIMIT 1
-				"
+				$wpdb->prepare(
+					'
+					SELECT ID
+					FROM %i
+					ORDER BY id DESC
+					LIMIT 1
+					',
+					$table_name
+				)
 			)
 		);
 	}

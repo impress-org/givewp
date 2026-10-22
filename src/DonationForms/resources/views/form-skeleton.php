@@ -5,6 +5,7 @@
  * the form-skeleton directory. The bars are decorative, so the whole sketch is hidden from
  * assistive tech and the element that embeds it carries the loading announcement.
  *
+ * @since TBD Replace short echo tags with escaped echo.
  * @since 4.17.0
  *
  * @var string     $design   One of classic, multi-step, two-panel-steps.
@@ -18,6 +19,10 @@
 
 use Give\Framework\Views\View;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $modifier = $design === 'two-panel-steps' ? 'two-panel' : $design;
 $headerHtml = $header ? View::load('DonationForms.form-skeleton/header', compact('goal', 'image')) : '';
 $firstSectionHtml = View::load('DonationForms.form-skeleton/section', [
@@ -26,21 +31,26 @@ $firstSectionHtml = View::load('DonationForms.form-skeleton/section', [
     'variants' => $variants,
 ]);
 ?>
-<div class="givewp-embed-skeleton givewp-embed-skeleton--<?= esc_attr($modifier) ?>" aria-hidden="true">
+<div class="givewp-embed-skeleton givewp-embed-skeleton--<?php echo esc_attr($modifier); ?>" aria-hidden="true">
     <?php if ($design === 'classic') : ?>
-        <?= $headerHtml ?>
+        <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $headerHtml is View::load() output, which escapes internally. ?>
+        <?php echo $headerHtml; ?>
         <div class="givewp-embed-skeleton__form">
             <?php foreach ($sections as $blocks) : ?>
-                <?= View::load('DonationForms.form-skeleton/section', compact('blocks', 'gateways', 'variants')) ?>
+                <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- View::load() output escapes internally. ?>
+                <?php echo View::load('DonationForms.form-skeleton/section', compact('blocks', 'gateways', 'variants')); ?>
             <?php endforeach; ?>
             <div class="givewp-embed-skeleton__section">
                 <span class="givewp-embed-skeleton__bar givewp-embed-skeleton__button"></span>
             </div>
         </div>
     <?php elseif ($design === 'two-panel-steps') : ?>
-        <?= $headerHtml ?>
-        <?= View::load('DonationForms.form-skeleton/step', ['content' => $firstSectionHtml]) ?>
+        <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $headerHtml is View::load() output, which escapes internally. ?>
+        <?php echo $headerHtml; ?>
+        <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- View::load() output escapes internally; $firstSectionHtml is likewise pre-escaped. ?>
+        <?php echo View::load('DonationForms.form-skeleton/step', ['content' => $firstSectionHtml]); ?>
     <?php else : ?>
-        <?= View::load('DonationForms.form-skeleton/step', ['content' => $header ? $headerHtml : $firstSectionHtml]) ?>
+        <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- View::load() output escapes internally; $headerHtml/$firstSectionHtml are likewise pre-escaped. ?>
+        <?php echo View::load('DonationForms.form-skeleton/step', ['content' => $header ? $headerHtml : $firstSectionHtml]); ?>
     <?php endif; ?>
 </div>

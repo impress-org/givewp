@@ -6,6 +6,7 @@ use Closure;
 use Give\DonationForms\Actions\ConvertDonationFormBlocksToFieldsApi;
 use Give\DonationForms\DonationQuery;
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\Rules\CurrencyRule;
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Blocks\BlockCollection;
@@ -132,7 +133,7 @@ class DonationFormRepository
 
             Log::error('Failed creating a donation form', compact('donationForm'));
 
-            throw new Exception('Failed creating a donation form', 0, $exception);
+            throw new Exception('Failed creating a donation form', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -208,7 +209,7 @@ class DonationFormRepository
 
             Log::error('Failed updating a donation form', compact('donationForm'));
 
-            throw new Exception('Failed updating a donation form', 0, $exception);
+            throw new Exception('Failed updating a donation form', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -241,7 +242,7 @@ class DonationFormRepository
 
             Log::error('Failed deleting a donation form', compact('donationForm'));
 
-            throw new Exception('Failed deleting a donation form', 0, $exception);
+            throw new Exception('Failed deleting a donation form', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -252,6 +253,7 @@ class DonationFormRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.0.0
      *
      * @param  DonationForm  $donationForm
@@ -262,7 +264,7 @@ class DonationFormRepository
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($donationForm->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
     }
@@ -438,6 +440,7 @@ class DonationFormRepository
     }
 
     /**
+     * @since 4.19.0.1 Build the currency rule from the form's supported currencies.
      * @since 3.0.0
      * @throws NameCollisionException
      */
@@ -474,6 +477,25 @@ class DonationFormRepository
         }
 
         Hooks::doAction('givewp_donation_form_schema', $form, $formId, $blockNodeRelationships);
+
+        /** @var Hidden|null $currencyNode */
+        $currencyNode = $form->getNodeByName('currency');
+
+        if ($currencyNode) {
+            $allowedCurrencies = [
+                give_get_currency($formId),
+                (string)$currencyNode->getDefaultValue(),
+            ];
+
+            foreach ($form->getCurrencySwitcherSettings() as $setting) {
+                $allowedCurrencies[] = $setting->getId();
+            }
+
+            $currencyNode->getValidationRules()->replaceOrAppendRule(
+                CurrencyRule::id(),
+                new CurrencyRule(array_values(array_unique(array_filter($allowedCurrencies))))
+            );
+        }
 
         return $form;
     }

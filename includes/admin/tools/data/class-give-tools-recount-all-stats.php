@@ -403,6 +403,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 	/**
 	 * Given a key, get the information from the Database Directly
 	 *
+	 * @since TBD Remove the quotes around the placeholder.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name
@@ -411,7 +412,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 	 */
 	private function get_stored_data( $key ) {
 		global $wpdb;
-		$value = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = '%s'", $key ) );
+		$value = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = %s", $key ) );
 		if ( empty( $value ) ) {
 			return false;
 		}

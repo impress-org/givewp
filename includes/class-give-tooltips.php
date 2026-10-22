@@ -80,6 +80,7 @@ class Give_Tooltips {
 	/**
 	 * Render tooltip
 	 *
+	 * @since  TBD Attribute values, including aria-label, are escaped by give_get_attribute_str().
 	 * @since  2.0
 	 * @access public
 	 *
@@ -132,7 +133,7 @@ class Give_Tooltips {
 			$args['attributes']['href'] = esc_url( $args['link'] );
 		}
 
-		return sprintf( '<%1$s %2$s rel="tooltip">%3$s</%1$s>', $args['tag'], give_get_attribute_str( $args['attributes'] ), $args['tag_content'] );
+		return sprintf( '<%1$s %2$s rel="tooltip">%3$s</%1$s>', tag_escape( $args['tag'] ), give_get_attribute_str( $args['attributes'] ), $args['tag_content'] );
 	}
 
 
@@ -196,5 +197,25 @@ class Give_Tooltips {
 		$tooltip_markup              = $this->render_span( $args );
 
 		return $tooltip_markup;
+	}
+
+	/**
+	 * Echo a help tooltip.
+	 *
+	 * Safe to echo without an additional escaping wrap: every attribute value (including
+	 * aria-label) goes through esc_attr() and the tag name through tag_escape() inside
+	 * give_get_attribute_str()/render(), and the inner content is a fixed icon literal that
+	 * callers cannot override. Only render_help()'s output is safe this way — render(),
+	 * render_span() and render_link() accept a caller-supplied tag_content that is not escaped,
+	 * so do not add print_render()/print_render_span()/print_render_link() variants.
+	 *
+	 * @since TBD
+	 *
+	 * @param array|string $args
+	 *
+	 * @return void
+	 */
+	public function print_render_help( $args ) {
+		echo $this->render_help( $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- render_help() escapes every attribute value (including aria-label) and the tag name; its content is a fixed icon literal, see the docblock above.
 	}
 }

@@ -196,4 +196,72 @@ final class TestProfile extends TestCase
         $this->assertContains('primary@test.com', $updatedDonor->additionalEmails);
         $this->assertContains('secondary@test.com', $updatedDonor->additionalEmails);
     }
+
+    /**
+     * @since 4.19.0.1
+     */
+    public function testUpdateShouldIgnorePrimaryEmailNotOnDonorRecord(): void
+    {
+        $user = self::factory()->user->create_and_get();
+
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create([
+            'userId' => $user->ID,
+            'email' => 'primary@test.com',
+            'additionalEmails' => ['existing@test.com'],
+        ]);
+
+        wp_set_current_user($user->ID);
+
+        $profile = new Profile();
+        $profile->update([
+            'primaryEmail' => 'newemail@test.com',
+            'additionalEmails' => ['existing@test.com'],
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+        ]);
+
+        $updatedDonor = Donor::find($donor->id);
+
+        $this->assertEquals('primary@test.com', $updatedDonor->email);
+        $this->assertEquals(['existing@test.com'], $updatedDonor->additionalEmails);
+    }
+
+    /**
+     * @since 4.19.0.1
+     */
+    public function testUpdateShouldNotAllowRejectedPrimaryEmailAsAdditionalEmail(): void
+    {
+        $user = self::factory()->user->create_and_get();
+
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create([
+            'userId' => $user->ID,
+            'email' => 'primary@test.com',
+            'additionalEmails' => [],
+        ]);
+
+        wp_set_current_user($user->ID);
+
+        $profile = new Profile();
+        $profile->update([
+            'primaryEmail' => 'newemail@test.com',
+            'additionalEmails' => [],
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+        ]);
+
+        $profile = new Profile();
+        $profile->update([
+            'primaryEmail' => 'primary@test.com',
+            'additionalEmails' => ['newemail@test.com'],
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+        ]);
+
+        $updatedDonor = Donor::find($donor->id);
+
+        $this->assertEquals('primary@test.com', $updatedDonor->email);
+        $this->assertEmpty($updatedDonor->additionalEmails);
+    }
 }

@@ -1,6 +1,8 @@
 <?php
 /**
  * Admin View: Import Donations
+ *
+ * @since TBD Escape output, including translated strings.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,12 +24,12 @@ do_action( 'give_tools_import_donations_main_before' );
 		<div class="postbox">
 			<h1 class="give-importer-h1" align="center">
 				<?php
-				_e( 'Import Donations', 'give' );
+				esc_html_e( 'Import Donations', 'give' );
 
 				if ( ! empty( $_POST['mapto'] ) && ! empty( $_GET['dry_run'] ) ) {
 					printf(
 						'<strong> %s</strong>',
-						__( '(Dry Run)', 'give' )
+						esc_html__( '(Dry Run)', 'give' )
 					);
 				}
 				?>

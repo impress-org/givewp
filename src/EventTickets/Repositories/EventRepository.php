@@ -82,7 +82,7 @@ class EventRepository
 
             Log::error('Failed creating an event', compact('event'));
 
-            throw new Exception('Failed creating an event', 0, $exception);
+            throw new Exception('Failed creating an event', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         $event->id = $eventId;
@@ -128,7 +128,7 @@ class EventRepository
 
             Log::error('Failed updating an event', compact('event'));
 
-            throw new Exception('Failed updating an event', 0, $exception);
+            throw new Exception('Failed updating an event', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         $event->updatedAt = $updatedDateTime;
@@ -159,7 +159,7 @@ class EventRepository
 
             Log::error('Failed deleting an event', compact('event'));
 
-            throw new Exception('Failed deleting an event', 0, $exception);
+            throw new Exception('Failed deleting an event', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -170,13 +170,14 @@ class EventRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.6.0
      */
     private function validate(Event $event): void
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($event->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
     }

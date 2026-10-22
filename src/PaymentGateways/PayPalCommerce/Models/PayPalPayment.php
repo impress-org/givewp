@@ -98,6 +98,7 @@ class PayPalPayment
     /**
      * Validate order given in array format.
      *
+     * @since TBD Escape exception message.
      * @since 2.9.0
      *
      * @param array $array
@@ -111,7 +112,7 @@ class PayPalPayment
 
         if (array_diff($required, array_keys($array))) {
             throw new InvalidArgumentException(
-                __(
+                esc_html__(
                     'To create a PayPalPayment object, please provide valid id, amount, status, create_time, update_time and links',
                     'give'
                 )

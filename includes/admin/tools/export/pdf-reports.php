@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param string $data Data.
  *
+ * @since  TBD Escape output, and use gmdate() instead of date().
  * @since  1.0
  *
  * @uses   give_pdf
@@ -28,15 +29,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_generate_pdf( $data ) {
 
 	if ( ! current_user_can( 'view_give_reports' ) ) {
-		wp_die( __( 'You do not have permission to generate PDF sales reports.', 'give' ), __( 'Error', 'give' ), [ 'response' => 403 ] );
+		wp_die( esc_html__( 'You do not have permission to generate PDF sales reports.', 'give' ), esc_html__( 'Error', 'give' ), [ 'response' => 403 ] );
 	}
 
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'give_generate_pdf' ) ) {
-		wp_die( __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), __( 'Error', 'give' ), [ 'response' => 403 ] );
+		wp_die( esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), esc_html__( 'Error', 'give' ), [ 'response' => 403 ] );
 	}
 
 	if ( ! file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/give-pdf.php' ) ) {
-		wp_die( __( 'Dependency missing.', 'give' ), __( 'Error', 'give' ), [ 'response' => 403 ] );
+		wp_die( esc_html__( 'Dependency missing.', 'give' ), esc_html__( 'Error', 'give' ), [ 'response' => 403 ] );
 	}
 
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/give-pdf.php';
@@ -45,7 +46,7 @@ function give_generate_pdf( $data ) {
 		sprintf(
 		/* translators: 1: start date 2: end date */
 			__( '%1$s to %2$s', 'give' ),
-			date_i18n( give_date_format(), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ),
+			date_i18n( give_date_format(), mktime( 0, 0, 0, 1, 1, gmdate( 'Y' ) ) ),
 			date_i18n( give_date_format() )
 		)
 	);
@@ -225,6 +226,7 @@ add_action( 'give_generate_pdf', 'give_generate_pdf' );
  * @uses   GoogleChartShapeMarker
  * @uses   GoogleChartTextMarker
  * @uses   GoogleChartAxis
+ * @since  TBD Use gmdate() instead of date().
  * @since  1.1.4.0
  */
 function give_draw_chart_image() {
@@ -239,8 +241,8 @@ function give_draw_chart_image() {
 	$sales    = '';
 
 	while ( $i <= 12 ) :
-		$earnings .= give_get_earnings_by_date( null, $i, date( 'Y' ) ) . ',';
-		$sales    .= give_get_sales_by_date( null, $i, date( 'Y' ) ) . ',';
+		$earnings .= give_get_earnings_by_date( null, $i, gmdate( 'Y' ) ) . ',';
+		$sales    .= give_get_sales_by_date( null, $i, gmdate( 'Y' ) ) . ',';
 		$i ++;
 	endwhile;
 

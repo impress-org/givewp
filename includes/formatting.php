@@ -826,6 +826,7 @@ function give_let_to_num($size)
 /**
  * Verify nonce.
  *
+ * @since TBD Escape output.
  * @since 1.8
  *
  * @param string $nonce       Nonce Hash.
@@ -860,8 +861,9 @@ function give_validate_nonce($nonce, $action = -1, $wp_die_args = [])
         );
 
         wp_die(
-            $wp_die_args['message'],
-            $wp_die_args['title'],
+            wp_kses_post( $wp_die_args['message'] ),
+            esc_html( $wp_die_args['title'] ),
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $wp_die_args['args'] is wp_die()'s response-code/back-link config array, not text output.
             $wp_die_args['args']
         );
     }

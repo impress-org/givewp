@@ -58,6 +58,7 @@ class AddAmountColumnToEventTicketsTable extends Migration
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.20.0
      *
      * @throws DatabaseMigrationException
@@ -70,26 +71,39 @@ class AddAmountColumnToEventTicketsTable extends Migration
         try {
             maybe_add_column($eventTicketsTable, 'amount', $sql);
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while adding the amount column to the $eventTicketsTable table", 0, $exception);
+            throw new DatabaseMigrationException(
+                "An error occurred while adding the amount column to the $eventTicketsTable table", // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by MigrationsRunner and shown as React text in the migration log, never as HTML; esc_html() would corrupt a custom $table_prefix containing '&' or '<'.
+                0,
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
     }
 
     /**
+     * @since TBD Escape exception message and use %i for the table names.
      * @since 3.20.0
      *
      * @throws DatabaseMigrationException
      */
     private function migrateTicketPrices($wpdb, $eventTicketsTable, $eventTicketTypesTable)
     {
-        $sql = "UPDATE $eventTicketsTable eventTickets
-                JOIN $eventTicketTypesTable evenTicketTypes
-                ON eventTickets.ticket_type_id = evenTicketTypes.id
-                SET eventTickets.amount = evenTicketTypes.price";
-
         try {
-            $wpdb->query($sql);
+            $wpdb->query(
+                $wpdb->prepare(
+                    "UPDATE %i eventTickets
+                JOIN %i evenTicketTypes
+                ON eventTickets.ticket_type_id = evenTicketTypes.id
+                SET eventTickets.amount = evenTicketTypes.price",
+                    $eventTicketsTable,
+                    $eventTicketTypesTable
+                )
+            );
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while migrating data to the amount column in the $eventTicketsTable table", 0, $exception);
+            throw new DatabaseMigrationException(
+                "An error occurred while migrating data to the amount column in the $eventTicketsTable table", // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by MigrationsRunner and shown as React text in the migration log, never as HTML; esc_html() would corrupt a custom $table_prefix containing '&' or '<'.
+                0,
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
     }
 };

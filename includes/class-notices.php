@@ -204,6 +204,7 @@ class Give_Notices {
 	/**
 	 * Display notice.
 	 *
+	 * @since TBD Escape output.
 	 * @since 1.8.9
 	 */
 	public function render_admin_notices() {
@@ -243,7 +244,8 @@ class Give_Notices {
 
 			// Render custom html.
 			if ( ! empty( $notice['description_html'] ) ) {
-				$output .= "{$notice['description_html']} \n";
+				// description_html is trusted, code-controlled markup that register_notice() explicitly documents as accepting custom HTML (including form controls); appended raw, not wp_kses_post()'d below, which would strip elements this API is meant to support.
+				$output .= "{$notice['description_html']} \n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- see the note above.
 				continue;
 			}
 
@@ -259,8 +261,8 @@ class Give_Notices {
 
 			$css_id = ( false === strpos( $notice['id'], 'give' ) ? "give-{$notice['id']}" : $notice['id'] );
 
-			$css_class = 'give-notice notice ' . ( empty( $notice['dismissible'] ) ? 'non' : 'is' ) . "-dismissible {$notice['type']} notice-{$notice['type']}";
-			$output   .= sprintf(
+			$css_class      = 'give-notice notice ' . ( empty( $notice['dismissible'] ) ? 'non' : 'is' ) . "-dismissible {$notice['type']} notice-{$notice['type']}";
+			$notice_output  = sprintf(
 				'<div id="%1$s" class="%2$s" data-dismissible="%3$s" data-dismissible-type="%4$s" data-dismiss-interval="%5$s" data-notice-id="%6$s" data-security="%7$s" data-dismiss-interval-time="%8$s" style="display: none">' . " \n",
 				$css_id,
 				$css_class,
@@ -272,11 +274,14 @@ class Give_Notices {
 				$notice['dismiss_interval_time']
 			);
 
-			$output .= ( 0 === strpos( $notice['description'], '<div' ) || 0 === strpos( $notice['description'], '<p' ) ? $notice['description'] : "<p>{$notice['description']}</p>" );
-			$output .= "</div> \n";
+			$notice_output .= ( 0 === strpos( $notice['description'], '<div' ) || 0 === strpos( $notice['description'], '<p' ) ? $notice['description'] : "<p>{$notice['description']}</p>" );
+			$notice_output .= "</div> \n";
+
+			// Escaped per-notice, in registration order, so description_html notices (appended raw above) keep their original position relative to these.
+			$output .= wp_kses_post( $notice_output );
 		}
 
-		echo $output;
+		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- each piece above is either wp_kses_post()'d (regular notices) or trusted code-controlled markup (description_html); see the notes above.
 
 		$this->print_js();
 	}
@@ -333,6 +338,7 @@ class Give_Notices {
 	/**
 	 * Print notice js.
 	 *
+	 * @since  TBD Escape output.
 	 * @since  1.8.9
 	 * @access private
 	 */
@@ -399,7 +405,7 @@ class Give_Notices {
 						}
 
 						jQuery.post(
-							'<?php echo admin_url(); ?>admin-ajax.php',
+							<?php echo wp_json_encode( esc_url_raw( admin_url( 'admin-ajax.php' ) ) ); ?>,
 							data,
 							function (response) {
 
@@ -575,6 +581,7 @@ class Give_Notices {
 	/**
 	 * Print frontend errors.
 	 *
+	 * @since  TBD Escape output.
 	 * @since  1.8.9
 	 * @access public
 	 *
@@ -599,7 +606,7 @@ class Give_Notices {
 		// Note: we will remove give_errors class in future.
 		$classes = apply_filters( 'give_error_class', [ 'give_notices', 'give_errors' ] );
 
-		echo sprintf( '<div class="%s">', implode( ' ', $classes ) );
+		echo sprintf( '<div class="%s">', esc_attr( implode( ' ', $classes ) ) );
 
 		// Loop error codes and display errors.
 		foreach ( $errors as $error_id => $error ) {
@@ -620,16 +627,16 @@ class Give_Notices {
 			 */
 			$notice_args = apply_filters( 'give_frontend_errors_args', $notice_args );
 
-			echo sprintf(
+			echo wp_kses_post( sprintf(
 				'<div class="give_error give_notice" id="give_error_%1$s" data-dismissible="%2$s" data-dismiss-interval="%3$d">
 						<p><strong>%4$s</strong>: %5$s</p>
 					</div>',
-				$error_id,
-				give_clean( $notice_args['dismissible'] ),
+				esc_attr( $error_id ),
+				esc_attr( give_clean( $notice_args['dismissible'] ) ),
 				absint( $notice_args['dismiss_interval'] ),
 				esc_html__( 'Error', 'give' ),
-				$error['message']
-			);
+				wp_kses_post( $error['message'] )
+			) );
 		}
 
 		echo '</div>';
@@ -639,6 +646,7 @@ class Give_Notices {
 	 * Print frontend notice.
 	 * Notice: notice type can be success/error/warning
 	 *
+     * @since TBD Escape output.
      * @since 3.7.0 Escape attributes
 	 * @since  1.8.9
 	 * @access public
@@ -705,7 +713,7 @@ class Give_Notices {
 			return $error;
 		}
 
-		echo $error;
+		echo wp_kses_post( $error );
 	}
 
 	/**
@@ -717,6 +725,7 @@ class Give_Notices {
 	 * @todo   Implement render_admin_notices function within this function in future.
 	 *
 	 * @access public
+	 * @since  TBD Escape output.
 	 * @since  1.8.17
 	 *
 	 * @return string
@@ -741,15 +750,15 @@ class Give_Notices {
 		$css_class .= ( $notice_args['dismissible'] ) ? ' is-dismissible' : '';
 		$output    .= sprintf(
 			'<div id="%1$s" class="%2$s"><p>%3$s</p></div>',
-			$css_id,
-			$css_class,
-			$notice_args['description']
+			esc_attr( $css_id ),
+			esc_attr( $css_class ),
+			wp_kses_post( $notice_args['description'] )
 		);
 
 		if ( ! $notice_args['echo'] ) {
 			return $output;
 		}
 
-		echo $output;
+		echo wp_kses_post( $output );
 	}
 }

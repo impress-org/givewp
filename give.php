@@ -6,7 +6,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 4.19.0
+ * Version: 4.19.0.1
  * Requires at least: 6.9
  * Requires PHP: 7.4
  * Text Domain: give
@@ -357,6 +357,7 @@ final class Give
     /**
      * Load all the service providers to bootstrap the various parts of the application.
      *
+     * @since TBD Escape exception message.
      * @since 2.8.0
      */
     private function loadServiceProviders()
@@ -370,7 +371,7 @@ final class Give
         foreach ($this->serviceProviders as $serviceProvider) {
             if (!is_subclass_of($serviceProvider, ServiceProvider::class)) {
                 throw new InvalidArgumentException(
-                    "$serviceProvider class must implement the ServiceProvider interface"
+                    esc_html("$serviceProvider class must implement the ServiceProvider interface")
                 );
             }
 
@@ -426,7 +427,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '4.19.0');
+            define('GIVE_VERSION', '4.19.0.1');
         }
 
         // Plugin Root File.
@@ -622,6 +623,8 @@ function give(?string $abstract = null)
 }
 
 require __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/src/Framework/Http/Response/functions.php';
+require_once __DIR__ . '/src/FormMigration/functions.php';
 require __DIR__ . '/vendor/vendor-prefixed/autoload.php';
 require __DIR__ . '/vendor/woocommerce/action-scheduler/action-scheduler.php';
 

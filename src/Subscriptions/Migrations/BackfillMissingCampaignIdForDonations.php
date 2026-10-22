@@ -62,6 +62,7 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
     }
 
     /**
+     * @since TBD Escape exception message.
      * @inheritDoc
      * @throws DatabaseMigrationException
      */
@@ -88,7 +89,11 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
             $this->processDonationsBulk($donationIds);
 
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException('An error occurred while backfilling missing campaignId for donations', 0, $exception);
+            throw new DatabaseMigrationException(
+                'An error occurred while backfilling missing campaignId for donations',
+                0,
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
     }
 
@@ -325,6 +330,7 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
     /**
      * Bulk insert meta data while avoiding duplicates
      *
+     * @since TBD Document why the query is safe.
      * @since 4.3.2
      */
     private function bulkInsertMeta(array $metaInserts): void
@@ -370,7 +376,7 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
         $sql = "INSERT INTO {$wpdb->prefix}give_donationmeta (donation_id, meta_key, meta_value) VALUES " .
                implode(', ', $placeholders);
 
-        $wpdb->query($wpdb->prepare($sql, $values));
+        $wpdb->query($wpdb->prepare($sql, $values)); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $sql is a literal INSERT plus one "(%d, %s, %s)" group per row; every value goes through prepare().
     }
 
     /**

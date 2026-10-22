@@ -126,6 +126,7 @@ add_action( 'wp_ajax_give_hide_outdated_php_notice', 'give_hide_outdated_php_not
 /**
  * Register admin notices.
  *
+ * @since TBD Use gmdate() instead of date().
  * @since 2.25.2 Add nonce check for bulk action.
  * @since      1.8.9
  */
@@ -541,8 +542,8 @@ function _give_register_admin_notices() {
 		global $wpdb;
 
 		$current_time               = current_time( 'timestamp' );
-		$end_of_current_time_in_gmt = get_gmt_from_date( date( 'Y-m-d H:i:s', strtotime( 'tomorrow', $current_time ) ), 'U' );
-		$current_time_gmt           = get_gmt_from_date( date( 'Y-m-d H:i:s', $current_time ), 'U' );
+		$end_of_current_time_in_gmt = get_gmt_from_date( gmdate( 'Y-m-d H:i:s', strtotime( 'tomorrow', $current_time ) ), 'U' );
+		$current_time_gmt           = get_gmt_from_date( gmdate( 'Y-m-d H:i:s', $current_time ), 'U' );
 
 		$spam_count = DB::get_var(
 			DB::prepare( "SELECT COUNT(id) FROM {$wpdb->give_log} WHERE log_type = %s AND date >= CURDATE();", LogType::SPAM )
@@ -640,18 +641,19 @@ add_action( 'admin_head', '_give_test_mode_notice_admin_bar_css' );
 /**
  * Add Link to Import page in from donation archive and donation single page
  *
+ * @since TBD Escape output, including translated strings.
  * @since 1.8.13
  */
 function give_import_page_link_callback() {
 	?>
 	<a href="<?php echo esc_url( give_import_page_url() ); ?>"
-	   class="page-import-action page-title-action"><?php _e( 'Import Donations', 'give' ); ?></a>
+	   class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give' ); ?></a>
     <script>
         function showReactTable () {
             fetch( '<?php echo esc_url_raw(rest_url('give-api/v2/admin/donations/view?isLegacy=0')) ?>', {
                 method: 'GET',
                 headers: {
-                    ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                    ['X-WP-Nonce']: '<?php echo esc_js( wp_create_nonce('wp_rest') ) ?>'
                 }
             })
             .then((res) => {
@@ -660,7 +662,7 @@ function give_import_page_link_callback() {
         }
     </script>
     <button onclick="showReactTable()" class="page-title-action">
-        <?php _e('Switch to New View', 'give') ?>
+        <?php esc_html_e('Switch to New View', 'give') ?>
     </button>
 
 	<?php
@@ -965,6 +967,7 @@ add_action( 'wp_ajax_give_subscription_import', 'give_subscription_import_callba
  * Load core settings import ajax callback
  * Fire when importing from JSON start
  *
+ * @since 4.19.0.1 Require a valid JSON array before replacing the stored settings.
  * @since  1.8.17
  */
 
@@ -1003,32 +1006,36 @@ function give_core_settings_import_callback() {
 		$json_string   = give_get_core_settings_json( $file_name );
 		$json_to_array = json_decode( $json_string, true );
 
-		// get the current setting from the options table.
-		$host_give_options = Give_Cache_Setting::get_settings();
+		if ( ! is_array( $json_to_array ) ) {
+			Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid JSON file.', 'give' ) );
+		} else {
+			// get the current setting from the options table.
+			$host_give_options = Give_Cache_Setting::get_settings();
 
-		// Save old settins for backup.
-		update_option( 'give_settings_old', $host_give_options, false );
+			// Save old settins for backup.
+			update_option( 'give_settings_old', $host_give_options, false );
 
-		/**
-		 * Filter to Modify Core Settings that are being going to get import in options table as give settings.
-		 *
-		 * @access public
-		 *
-		 * @since  1.8.17
-		 *
-		 * @param array $type Type of Import
-		 * @param array $host_give_options Setting old setting that used to be in the options table.
-		 * @param array $fields Data that is being send from the ajax
-		 *
-		 * @param array $json_to_array Setting that are being going to get imported
-		 *
-		 * @return array $json_to_array Setting that are being going to get imported
-		 */
-		$json_to_array = (array) apply_filters( 'give_import_core_settings_data', $json_to_array, $type, $host_give_options, $fields );
+			/**
+			 * Filter to Modify Core Settings that are being going to get import in options table as give settings.
+			 *
+			 * @access public
+			 *
+			 * @since  1.8.17
+			 *
+			 * @param array $type Type of Import
+			 * @param array $host_give_options Setting old setting that used to be in the options table.
+			 * @param array $fields Data that is being send from the ajax
+			 *
+			 * @param array $json_to_array Setting that are being going to get imported
+			 *
+			 * @return array $json_to_array Setting that are being going to get imported
+			 */
+			$json_to_array = (array) apply_filters( 'give_import_core_settings_data', $json_to_array, $type, $host_give_options, $fields );
 
-		update_option( 'give_settings', $json_to_array, false );
+			update_option( 'give_settings', $json_to_array, false );
 
-		$json_data['success'] = true;
+			$json_data['success'] = true;
+		}
 	}
 
 	$json_data['percentage'] = 100;
@@ -1112,6 +1119,7 @@ add_action( 'user_profile_update_errors', 'give_validate_user_profile', 10, 3 );
 /**
  * Show Donor Information on User Profile Page.
  *
+ * @since TBD Escape output, including translated strings.
  * @since 2.0
  *
  * @param object $user User Object.
@@ -1124,10 +1132,10 @@ function give_donor_information_profile_fields( $user ) {
 	if ( ! empty( $donor->user_id ) ) :
 		?>
 		<tr>
-			<th scope="row"><?php _e( 'Donor', 'give' ); ?></th>
+			<th scope="row"><?php esc_html_e( 'Donor', 'give' ); ?></th>
 			<td>
-				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ); ?>">
-					<?php _e( 'View Donor Information', 'give' ); ?>
+				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) ); ?>">
+					<?php esc_html_e( 'View Donor Information', 'give' ); ?>
 				</a>
 			</td>
 		</tr>
@@ -1213,6 +1221,7 @@ function give_get_donor_safe_user_roles() {
 /**
  * Ajax handle for donor address.
  *
+ * @since 4.19.0.1 Require the donor edit capability and a nonce issued for the donor being changed.
  * @since 2.0
  * @since 2.11.0 decode url before parsing and sanitizing url when set $post.
  * @since 4.9.0 rename function - PHP 8 compatibility
@@ -1248,13 +1257,25 @@ function give_ajax_donor_manage_addresses() {
 	];
 
 	// Security check.
-	if ( ! wp_verify_nonce( $form_data['_wpnonce'], 'give-manage-donor-addresses' ) ) {
+	if ( ! wp_verify_nonce( $form_data['_wpnonce'], 'give-manage-donor-addresses-' . $donorID ) ) {
 		wp_send_json_error(
 			[
 				'error'     => 1,
 				'error_msg' => wp_sprintf(
 					'<div class="notice notice-error"><p>%s</p></div>',
 					__( 'Error: Security issue.', 'give' )
+				),
+			]
+		);
+	}
+
+	if ( ! current_user_can( apply_filters( 'give_edit_donors_role', 'edit_give_payments' ) ) ) {
+		wp_send_json_error(
+			[
+				'error'     => 1,
+				'error_msg' => wp_sprintf(
+					'<div class="notice notice-error"><p>%s</p></div>',
+					__( 'You do not have permission to edit this donor.', 'give' )
 				),
 			]
 		);
@@ -1466,6 +1487,7 @@ add_action( 'personal_options_update', 'give_update_donor_name_on_user_update', 
  * Updates the email address of a donor record when the email on a user is updated
  * Note: for internal use only.
  *
+ * @since 4.19.0.1 Only sync an email that is already on the donor record for non-admin callers.
  * @since  1.4.3
  * @access public
  *
@@ -1486,6 +1508,15 @@ function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = 
 	$user = get_userdata( $user_id );
 
 	if ( ! empty( $user ) && $user->user_email !== $donor->email ) {
+		$can_sync_unverified_email = current_user_can( 'manage_options' ) || ( defined( 'WP_CLI' ) && WP_CLI );
+
+		if ( ! $can_sync_unverified_email ) {
+			$email_donor = new Give_Donor( $user->user_email );
+
+			if ( ! $email_donor->id || (int) $email_donor->id !== (int) $donor->id ) {
+				return false;
+			}
+		}
 
 		$success = Give()->donors->update(
 			$donor->id,

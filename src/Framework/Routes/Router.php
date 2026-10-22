@@ -211,6 +211,7 @@ class Router
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.22.0 Add locale support
      * @since 3.0.0
      *
@@ -237,7 +238,7 @@ class Router
             }
 
             if (!method_exists($action, $method)) {
-                throw new InvalidArgumentException("The method $method does not exist on $action");
+                throw new InvalidArgumentException(esc_html("The method $method does not exist on $action"));
             }
 
             return give($action)->$method($request);

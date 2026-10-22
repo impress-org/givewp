@@ -92,7 +92,7 @@ class DonationNotesRepository
 
             Log::error('Failed creating a donation note', compact('donationNote'));
 
-            throw new Exception('Failed creating a donation note', 0, $exception);
+            throw new Exception('Failed creating a donation note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -136,7 +136,7 @@ class DonationNotesRepository
 
             Log::error('Failed updating a donation note', compact('donationNote'));
 
-            throw new Exception('Failed updating a donation note', 0, $exception);
+            throw new Exception('Failed updating a donation note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -172,7 +172,7 @@ class DonationNotesRepository
 
             Log::error('Failed deleting a donation note', compact('donationNote'));
 
-            throw new Exception('Failed deleting a donation note', 0, $exception);
+            throw new Exception('Failed deleting a donation note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -197,6 +197,7 @@ class DonationNotesRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.21.0
      *
      * @param DonationNote $donationNote
@@ -207,7 +208,7 @@ class DonationNotesRepository
     {
         foreach ($this->requiredDonationProperties as $key) {
             if (!isset($donationNote->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
 

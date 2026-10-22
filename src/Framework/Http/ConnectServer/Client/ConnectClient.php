@@ -104,6 +104,7 @@ class ConnectClient
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.25.0
      *
      * @param array|WP_Error $response
@@ -119,8 +120,8 @@ class ConnectClient
                         'The request to the %1$s failed. Error:  %2$s',
                         'give'
                     ),
-                    $this->apiUrl,
-                    $response->get_error_message()
+                    esc_html($this->apiUrl),
+                    esc_html($response->get_error_message())
                 )
             );
         }

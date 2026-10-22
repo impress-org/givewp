@@ -96,7 +96,7 @@ class AddUniqueFormIdToCampaignFormsTable extends Migration
                     : "ALTER TABLE $table ADD UNIQUE KEY form_id (form_id)"
             );
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while updating the $table table", 0, $exception);
+            throw new DatabaseMigrationException("An error occurred while updating the $table table", 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by MigrationsRunner and shown as React text in the migration log, never as HTML; esc_html() would corrupt a custom $table_prefix containing '&'/'<'. $exception is the previous-exception object, not string output.
         }
     }
 }

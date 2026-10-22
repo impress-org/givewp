@@ -129,4 +129,68 @@ class Tests_Email_Notification_Filters extends Give_Unit_Test_Case {
 
 		$this->assertSame( '', $output );
 	}
+
+	/**
+	 * Data provider for test_donor_register_email_preview_header_filter_returns_string.
+	 *
+	 * @since TBD
+	 *
+	 * @return array<string, array{0: string}>
+	 */
+	public function donor_register_email_ids_provider(): array {
+		return [
+			'donor-register'     => [ 'donor-register' ],
+			'new-donor-register' => [ 'new-donor-register' ],
+		];
+	}
+
+	/**
+	 * The donor register callbacks print the donor switcher themselves. They must still return a
+	 * string, because later `give_email_preview_header` callbacks (Peer-to-Peer) type the
+	 * parameter as string and fatal on null.
+	 *
+	 * @since TBD
+	 * @cover Give_Donor_Register_Email::email_preview_header
+	 * @cover Give_New_Donor_Register_Email::email_preview_header
+	 *
+	 * @dataProvider donor_register_email_ids_provider
+	 *
+	 * @param string $email_id Email notification ID.
+	 */
+	public function test_donor_register_email_preview_header_filter_returns_string( string $email_id ): void {
+		$request_uri_backup     = $_SERVER['REQUEST_URI'] ?? null;
+		$_SERVER['REQUEST_URI'] = '/?give_action=preview_email&email_type=' . $email_id;
+
+		$email = $this->get_email_notification( $email_id );
+
+		ob_start();
+		$email_preview_header = apply_filters( 'give_email_preview_header', give_get_preview_email_header(), $email );
+		$output               = ob_get_clean();
+
+		if ( null === $request_uri_backup ) {
+			unset( $_SERVER['REQUEST_URI'] );
+		} else {
+			$_SERVER['REQUEST_URI'] = $request_uri_backup;
+		}
+
+		$this->assertSame( '', $email_preview_header );
+		$this->assertStringContainsString( 'give_preview_email_user_id', $output );
+	}
+
+	/**
+	 * @since TBD
+	 *
+	 * @param string $email_id Email notification ID.
+	 *
+	 * @return Give_Email_Notification
+	 */
+	private function get_email_notification( string $email_id ): Give_Email_Notification {
+		foreach ( Give_Email_Notifications::get_instance()->get_email_notifications() as $email ) {
+			if ( $email_id === $email->config['id'] ) {
+				return $email;
+			}
+		}
+
+		$this->fail( "{$email_id} email notification not found." );
+	}
 }
