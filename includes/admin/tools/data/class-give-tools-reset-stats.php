@@ -67,7 +67,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since TBD Document why the reset queries are safe.
+	 * @since TBD Document why the reset queries are safe, and clear the cache of the deleted options only.
 	 * @since 4.10.0 Added deletion logic for campaigns, campaign pages, subscriptions, events, logs, revenue, usermeta, etc.
 	 * @since  1.5
 	 * @global object $wpdb Used to query the database using the WordPress
@@ -87,6 +87,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 		$step_items = array_slice( $items, $offset, $this->per_step );
 
 		if ( $step_items ) {
+			$deleted_options = [];
 
 			$step_ids = [
 				'customers' => [],
@@ -193,7 +194,9 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						// Create SQL placeholder string for the essential options list
 						$essential_options_placeholder = implode( "','", $essential_options );
 						// Delete all GiveWP options except the essential ones to prevent deactivation issues
-						$sql[] = "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%give%' AND option_name NOT IN ('{$essential_options_placeholder}')";
+						$options_where   = "option_name LIKE '%give%' AND option_name NOT IN ('{$essential_options_placeholder}')";
+						$deleted_options = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE {$options_where}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- reads the names the next query deletes, so their cache entries can be cleared; the essential option names are fixed strings above.
+						$sql[]           = "DELETE FROM {$wpdb->options} WHERE {$options_where}";
 
 						// Clear Action Scheduler data related to GiveWP
 						$sql[] = "DELETE FROM {$wpdb->prefix}actionscheduler_actions WHERE hook LIKE '%give%'";
@@ -239,9 +242,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 				}
 
 				// The raw delete above skips the options cache. Clear it so the batch tools do not read removed options.
-				if ( ! empty( $step_ids['other'] ) ) {
-					wp_cache_flush();
-				}
+				$this->clear_options_cache( $deleted_options );
 			}
 
 			return true;
@@ -442,6 +443,28 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 		$value = is_array( $value ) ? wp_json_encode( $value ) : esc_attr( $value );
 
 		update_option( $key, $value, false );
+	}
+
+	/**
+	 * Remove the given options from the object cache, without flushing the rest of the cache.
+	 *
+	 * @since TBD
+	 *
+	 * @param string[] $option_names Names of options deleted with a raw query.
+	 *
+	 * @return void
+	 */
+	private function clear_options_cache( $option_names ) {
+		if ( empty( $option_names ) ) {
+			return;
+		}
+
+		foreach ( $option_names as $option_name ) {
+			wp_cache_delete( $option_name, 'options' );
+		}
+
+		wp_cache_delete( 'alloptions', 'options' );
+		wp_cache_delete( 'notoptions', 'options' );
 	}
 
 	/**
