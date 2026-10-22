@@ -1,4 +1,7 @@
 <?php
+/**
+ * @since TBD Escape output.
+ */
 
 if (!defined('ABSPATH')) {
     exit;
@@ -6,9 +9,12 @@ if (!defined('ABSPATH')) {
 
 get_header();
 
+$formId = (int) get_the_ID();
+
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- render_block() output is the donation-form block's own markup, escaped internally by its render callback.
 echo render_block(
     parse_blocks(
-        '<!-- wp:givewp/donation-form {"formId":"' . get_the_ID() . '","blockId":"' . get_the_ID() . '"} /-->'
+        '<!-- wp:givewp/donation-form {"formId":"' . $formId . '","blockId":"' . $formId . '"} /-->'
     )[0]
 );
 

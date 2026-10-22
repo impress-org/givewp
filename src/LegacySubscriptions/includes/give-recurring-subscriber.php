@@ -258,6 +258,8 @@ class Give_Recurring_Subscriber extends Give_Donor {
 	 *
 	 * Calculate a new expiration date
 	 *
+	 * @since TBD Use gmdate() instead of date().
+	 *
 	 * @param int    $form_id Donation Form ID.
 	 * @param null   $price_id Price ID.
 	 * @param int    $frequency Frequency/Interval Count.
@@ -284,7 +286,7 @@ class Give_Recurring_Subscriber extends Give_Donor {
 			$period    = 'month';
 		}
 
-		return date( 'Y-m-d H:i:s', strtotime( '+ ' . $frequency . $period . ' 23:59:59' ) );
+		return gmdate( 'Y-m-d H:i:s', strtotime( '+ ' . $frequency . $period . ' 23:59:59' ) );
 	}
 
 	/**

@@ -4,6 +4,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/**
+ * @since TBD Escape output.
+ */
 // Reports widget markup
 // #reports-app is replaced by React app
 ?>
@@ -13,7 +16,7 @@ if (!defined('ABSPATH')) {
             <div class="givewp-spinner"></div>
             <h2>
                 <?php
-                echo __('Loading your latest', 'give') . '<br>' . __('donation activity', 'give'); ?>
+                echo esc_html__('Loading your latest', 'give') . '<br>' . esc_html__('donation activity', 'give'); ?>
             </h2>
         </div>
     </div>

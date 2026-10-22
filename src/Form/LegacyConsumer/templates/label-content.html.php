@@ -1,4 +1,5 @@
 <?php
+/** @since TBD Escape output. */
 
 use Give\Helpers\Form\Template;
 use Give\Views\Form\Templates\Sequoia\Sequoia;
@@ -11,7 +12,7 @@ if (!defined('ABSPATH')) {
 /** @var Give\Framework\FieldsAPI\Field|Give\Framework\FieldsAPI\Text $field */
 ?>
 <?php
-echo $field->getLabel(); ?>
+echo esc_html($field->getLabel()); ?>
 <?php
 if ($field->isRequired()) : ?>
     <span class="give-required-indicator">
@@ -22,12 +23,12 @@ if ($field->isRequired()) : ?>
 <?php
 endif; ?>
 <?php
-echo ($helpText = $field->getHelpText()) ?
-    Give()->tooltips->render_help([
-                                      'label' => $helpText,
-                                      'position' => give(Sequoia::class)->getID() === Template::getActiveID(
-                                          $formId
-                                      ) ? 'right' : 'top',
-                                  ]) :
-    '';
+if ($helpText = $field->getHelpText()) {
+    Give()->tooltips->print_render_help([
+        'label' => $helpText,
+        'position' => give(Sequoia::class)->getID() === Template::getActiveID(
+            $formId
+        ) ? 'right' : 'top',
+    ]);
+}
 ?>

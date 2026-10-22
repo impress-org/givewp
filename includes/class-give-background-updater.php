@@ -147,6 +147,7 @@ class Give_Background_Updater extends WPBackgroundProcess
     /**
      * Is queue empty
      *
+     * @since TBD Use the options table and column names directly in the query.
      * @since 2.4.5
      *
      * @return bool
@@ -155,17 +156,14 @@ class Give_Background_Updater extends WPBackgroundProcess
     {
         global $wpdb;
 
-        $table = $wpdb->options;
-        $column = 'option_name';
-
         $key = $wpdb->esc_like($this->identifier . '_batch_') . '%';
 
         $count = $wpdb->get_var(
             $wpdb->prepare(
                 "
 			SELECT COUNT(*)
-			FROM {$table}
-			WHERE {$column} LIKE %s
+			FROM {$wpdb->options}
+			WHERE option_name LIKE %s
 		",
                 $key
             )
@@ -177,6 +175,7 @@ class Give_Background_Updater extends WPBackgroundProcess
     /**
      * Get batch
      *
+     * @since TBD Use the options table and column names directly in the query.
      * @since 2.4.5
      *
      * @return stdClass Return the first batch from the queue
@@ -185,9 +184,7 @@ class Give_Background_Updater extends WPBackgroundProcess
     {
         global $wpdb;
 
-        $table = $wpdb->options;
         $column = 'option_name';
-        $key_column = 'option_id';
         $value_column = 'option_value';
 
         $key = $wpdb->esc_like($this->identifier . '_batch_') . '%';
@@ -196,9 +193,9 @@ class Give_Background_Updater extends WPBackgroundProcess
             $wpdb->prepare(
                 "
 			SELECT *
-			FROM {$table}
-			WHERE {$column} LIKE %s
-			ORDER BY {$key_column} ASC
+			FROM {$wpdb->options}
+			WHERE option_name LIKE %s
+			ORDER BY option_id ASC
 			LIMIT 1
 		",
                 $key

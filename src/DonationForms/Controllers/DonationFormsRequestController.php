@@ -133,7 +133,7 @@ class DonationFormsRequestController
      * A campaign's default form cannot be moved, forms of non-core campaigns such as
      * Peer-to-Peer stay with their campaign, and nothing is moved into an archived campaign.
      *
-     * @since TBD Move forms that already belong to a campaign, refuse default and non-core campaign forms and archived campaigns, refresh both campaigns' cached totals.
+     * @since 4.19.0 Move forms that already belong to a campaign, refuse default and non-core campaign forms and archived campaigns, refresh both campaigns' cached totals.
      * @since 4.2.0
      *
      * @throws Exception
@@ -214,7 +214,7 @@ class DonationFormsRequestController
      * with the campaign. A campaign's default form and forms of non-core campaigns cannot be
      * detached, and nothing is detached when any form in the request is refused.
      *
-     * @since TBD
+     * @since 4.19.0
      *
      * @throws Exception
      */

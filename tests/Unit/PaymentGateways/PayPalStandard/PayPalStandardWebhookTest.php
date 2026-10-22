@@ -8,6 +8,7 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\PayPalStandard\Controllers\PayPalStandardWebhook;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookValidator;
+use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give_Cache_Setting;
@@ -140,9 +141,10 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
+     * @since 4.18.0.1 Reject instead of pass when the site has no PayPal email.
      * @since 4.16.6.1
      */
-    public function testEmptySitePaypalEmailPasses(): void
+    public function testEmptySitePaypalEmailIsRejected(): void
     {
         give_update_option('paypal_email', '');
 
@@ -150,17 +152,18 @@ class PayPalStandardWebhookTest extends TestCase
             'receiver_email' => 'anyone@example.com',
         ]);
 
-        $this->assertTrue($result);
+        $this->assertFalse($result);
     }
 
     /**
+     * @since 4.18.0.1 Reject instead of pass when both emails are missing.
      * @since 4.16.6.1
      */
-    public function testMissingBothReceiverAndBusinessEmailPasses(): void
+    public function testMissingBothReceiverAndBusinessEmailIsRejected(): void
     {
         $result = $this->invokePrivateMethod('verifyReceiverEmail', []);
 
-        $this->assertTrue($result);
+        $this->assertFalse($result);
     }
 
     /*
@@ -215,6 +218,104 @@ class PayPalStandardWebhookTest extends TestCase
             'mc_gross'    => '0',
             'mc_currency' => 'USD',
         ], $this->donation->id);
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * PayPal charges the gross amount, which includes the fee recovered by the Fee Recovery add-on.
+     *
+     * @since 4.18.0.1
+     */
+    public function testFeeRecoveredDonationMatchesGrossAmount(): void
+    {
+        $donation = $this->createFeeRecoveredDonation();
+
+        $result = $this->invokePrivateMethod('verifyPaymentAmount', [
+            'mc_gross'    => '25.84',
+            'mc_currency' => 'EUR',
+        ], $donation->id, 'web_accept');
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @since 4.18.0.1
+     */
+    public function testFeeRecoveredDonationRejectsAmountWithoutFee(): void
+    {
+        $donation = $this->createFeeRecoveredDonation();
+
+        $result = $this->invokePrivateMethod('verifyPaymentAmount', [
+            'mc_gross'    => '25.00',
+            'mc_currency' => 'EUR',
+        ], $donation->id, 'web_accept');
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * Renewal IPNs reference the initial donation through "custom".
+     *
+     * @since 4.18.0.1
+     */
+    public function testFeeRecoveredRenewalMatchesSubscriptionAmount(): void
+    {
+        $subscription = $this->createFeeRecoveredSubscription();
+
+        $result = $this->invokePrivateMethod('verifyPaymentAmount', [
+            'mc_gross'    => '25.84',
+            'mc_currency' => 'EUR',
+        ], $subscription->initialDonation()->id, 'subscr_payment');
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @since 4.18.0.1
+     */
+    public function testRenewalMatchesSubscriptionAmountThatDiffersFromInitialDonation(): void
+    {
+        $subscription = $this->createFeeRecoveredSubscription();
+        $subscription->amount = new Money(3000, 'EUR');
+        $subscription->save();
+
+        $result = $this->invokePrivateMethod('verifyPaymentAmount', [
+            'mc_gross'    => '30.00',
+            'mc_currency' => 'EUR',
+        ], $subscription->initialDonation()->id, 'subscr_payment');
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @since 4.18.0.1
+     */
+    public function testSubscriptionAmountIsIgnoredForOneTimePayments(): void
+    {
+        $subscription = $this->createFeeRecoveredSubscription();
+        $subscription->amount = new Money(3000, 'EUR');
+        $subscription->save();
+
+        $result = $this->invokePrivateMethod('verifyPaymentAmount', [
+            'mc_gross'    => '30.00',
+            'mc_currency' => 'EUR',
+        ], $subscription->initialDonation()->id, 'web_accept');
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @since 4.18.0.1
+     */
+    public function testRenewalWithTamperedAmountIsRejected(): void
+    {
+        $subscription = $this->createFeeRecoveredSubscription();
+
+        $result = $this->invokePrivateMethod('verifyPaymentAmount', [
+            'mc_gross'    => '0.01',
+            'mc_currency' => 'EUR',
+        ], $subscription->initialDonation()->id, 'subscr_payment');
 
         $this->assertFalse($result);
     }
@@ -281,5 +382,242 @@ class PayPalStandardWebhookTest extends TestCase
         ], $this->donation->id, 'web_accept');
 
         $this->assertTrue($result);
+    }
+
+    /**
+     * @since 4.18.0.1
+     */
+    public function testFeeRecoveredRenewalIpnPassesAllChecks(): void
+    {
+        $subscription = $this->createFeeRecoveredSubscription();
+
+        $result = $this->invokePrivateMethod('verifyEventData', [
+            'txn_type'       => 'subscr_payment',
+            'payment_status' => 'Completed',
+            'receiver_email' => 'merchant@testsite.com',
+            'mc_gross'       => '25.84',
+            'mc_currency'    => 'EUR',
+        ], $subscription->initialDonation()->id, 'subscr_payment');
+
+        $this->assertTrue($result);
+    }
+
+    /*
+     * ── refunds and reversals ────────────────────────────────────────────────
+     */
+
+    /**
+     * @since 4.18.0.1
+     */
+    public function testFullRefundOfInitialPaymentPasses(): void
+    {
+        $result = $this->verifyRefund($this->createCompletedDonation()->id, 'INITIAL-TXN', '-10.00', 'USD');
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @since 4.18.0.1
+     */
+    public function testPartialRefundPasses(): void
+    {
+        $result = $this->verifyRefund($this->createCompletedDonation()->id, 'INITIAL-TXN', '-4.00', 'USD');
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Refunds of renewals reference the initial donation through "custom" and the renewal through "parent_txn_id".
+     *
+     * @since 4.18.0.1
+     */
+    public function testRefundOfRenewalFromSameSubscriptionPasses(): void
+    {
+        $subscription = $this->createFeeRecoveredSubscription();
+        $this->createPayPalRenewal($subscription, 'RENEWAL-TXN');
+
+        $result = $this->verifyRefund($subscription->initialDonation()->id, 'RENEWAL-TXN', '-25.84', 'EUR');
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @since 4.18.0.1
+     */
+    public function testRefundOfRenewalFromAnotherSubscriptionIsRejected(): void
+    {
+        $subscription = $this->createFeeRecoveredSubscription();
+        $otherSubscription = $this->createFeeRecoveredSubscription();
+        $this->createPayPalRenewal($otherSubscription, 'OTHER-RENEWAL-TXN');
+
+        $result = $this->verifyRefund($subscription->initialDonation()->id, 'OTHER-RENEWAL-TXN', '-25.84', 'EUR');
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @since 4.18.0.1
+     */
+    public function testRefundOfAnotherOneTimeDonationIsRejected(): void
+    {
+        $donation = $this->createCompletedDonation();
+        $this->createCompletedDonation('OTHER-TXN');
+
+        $result = $this->verifyRefund($donation->id, 'OTHER-TXN', '-10.00', 'USD');
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @since 4.18.0.1
+     */
+    public function testRefundWithoutParentTransactionIdIsRejected(): void
+    {
+        $result = $this->verifyRefund($this->createCompletedDonation()->id, '', '-10.00', 'USD');
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @since 4.18.0.1
+     */
+    public function testRefundLargerThanDonationIsRejected(): void
+    {
+        $result = $this->verifyRefund($this->createCompletedDonation()->id, 'INITIAL-TXN', '-10.01', 'USD');
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @since 4.18.0.1
+     */
+    public function testRefundLargerThanRenewalIsRejected(): void
+    {
+        $subscription = $this->createFeeRecoveredSubscription();
+        $this->createPayPalRenewal($subscription, 'RENEWAL-TXN', new Money(1000, 'EUR'));
+
+        $result = $this->verifyRefund($subscription->initialDonation()->id, 'RENEWAL-TXN', '-25.84', 'EUR');
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @since 4.18.0.1
+     */
+    public function testRefundWithMismatchedCurrencyIsRejected(): void
+    {
+        $result = $this->verifyRefund($this->createCompletedDonation()->id, 'INITIAL-TXN', '-10.00', 'EUR');
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @since 4.18.0.1
+     *
+     * @dataProvider invalidRefundAmountProvider
+     */
+    public function testRefundWithInvalidAmountIsRejected(string $refundAmount): void
+    {
+        $result = $this->verifyRefund($this->createCompletedDonation()->id, 'INITIAL-TXN', $refundAmount, 'USD');
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @since 4.18.0.1
+     */
+    public function invalidRefundAmountProvider(): array
+    {
+        return [
+            'zero'        => ['0.00'],
+            'positive'    => ['10.00'],
+            'non-numeric' => ['abc'],
+            'empty'       => [''],
+            'exponent'    => ['-1e1'],
+        ];
+    }
+
+    /**
+     * Mirrors the stored shape of a Fee Recovery donation: the amount includes the 0.84 fee.
+     *
+     * @since 4.18.0.1
+     */
+    private function createFeeRecoveredDonation(): Donation
+    {
+        return Donation::factory()->create([
+            'formId'             => $this->formId,
+            'gatewayId'          => 'paypal',
+            'status'             => DonationStatus::PENDING(),
+            'amount'             => new Money(2584, 'EUR'),
+            'feeAmountRecovered' => new Money(84, 'EUR'),
+        ]);
+    }
+
+    /**
+     * @since 4.18.0.1
+     */
+    private function createFeeRecoveredSubscription(): Subscription
+    {
+        return Subscription::factory()->createWithDonation([
+            'gatewayId'          => 'paypal',
+            'amount'             => new Money(2584, 'EUR'),
+            'feeAmountRecovered' => new Money(84, 'EUR'),
+        ], [
+            'formId'               => $this->formId,
+            'feeAmountRecovered'   => new Money(84, 'EUR'),
+            'gatewayTransactionId' => 'INITIAL-TXN',
+        ]);
+    }
+
+    /**
+     * @since 4.18.0.1
+     *
+     * @param Subscription $subscription  Subscription the renewal belongs to.
+     * @param string       $transactionId PayPal transaction ID of the renewal.
+     * @param Money|null   $amount        Renewal amount. Defaults to the subscription amount.
+     */
+    private function createPayPalRenewal(Subscription $subscription, string $transactionId, ?Money $amount = null): Donation
+    {
+        return Subscription::factory()->createRenewal($subscription, 1, [
+            'formId'               => $this->formId,
+            'gatewayId'            => 'paypal',
+            'gatewayTransactionId' => $transactionId,
+            'amount'               => $amount ?? $subscription->amount,
+        ]);
+    }
+
+    /**
+     * @since 4.18.0.1
+     *
+     * @param string $transactionId PayPal transaction ID stored on the donation.
+     */
+    private function createCompletedDonation(string $transactionId = 'INITIAL-TXN'): Donation
+    {
+        return Donation::factory()->create([
+            'formId'               => $this->formId,
+            'gatewayId'            => 'paypal',
+            'status'               => DonationStatus::COMPLETE(),
+            'amount'               => new Money(1000, 'USD'),
+            'gatewayTransactionId' => $transactionId,
+        ]);
+    }
+
+    /**
+     * @since 4.18.0.1
+     *
+     * @param int    $donationId   Donation ID sent in the IPN "custom" field.
+     * @param string $parentTxnId  Transaction ID of the payment being refunded.
+     * @param string $refundAmount IPN mc_gross value.
+     * @param string $currency     IPN mc_currency value.
+     */
+    private function verifyRefund(int $donationId, string $parentTxnId, string $refundAmount, string $currency): bool
+    {
+        return $this->invokePrivateMethod('verifyEventData', [
+            'payment_status' => 'Refunded',
+            'receiver_email' => 'merchant@testsite.com',
+            'parent_txn_id'  => $parentTxnId,
+            'mc_gross'       => $refundAmount,
+            'mc_currency'    => $currency,
+        ], $donationId, '');
     }
 }

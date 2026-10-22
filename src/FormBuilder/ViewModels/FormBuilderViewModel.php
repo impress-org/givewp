@@ -210,7 +210,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since TBD Only offer the campaign goal when the form belongs to a campaign.
+     * @since 4.19.0 Only offer the campaign goal when the form belongs to a campaign.
      * @since 4.1.0
      */
     public function getGoalSourceOptions(int $donationFormId = 0): array

@@ -9,7 +9,7 @@ use Give\Tests\TestCase;
 class GenerateDonateRouteUrlTest extends TestCase
 {
     /**
-     * @since TBD Build the expected URL from the URL's own expiration instead of reading the clock again.
+     * @since 4.19.0 Build the expected URL from the URL's own expiration instead of reading the clock again.
      * @since 4.3.0 Use trailingslashit() method to prevent errors on websites installed in subdirectories
      * @since 3.0.0
      *

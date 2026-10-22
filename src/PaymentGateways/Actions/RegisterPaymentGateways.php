@@ -132,6 +132,7 @@ class RegisterPaymentGateways
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 4.0.0 updated to support authorize and capture
      * @since 3.2.0 Prevent undefined index notice when getting payPalOrderId from gateway data.
      * @since 2.26.0 Add support for the updated PayPal Commerce gateway data.
@@ -155,7 +156,7 @@ class RegisterPaymentGateways
                 }
 
                 if (! $paypalOrderId) {
-                    throw new PayPalOrderIdException(__('PayPal order id is missing.', 'give'));
+                    throw new PayPalOrderIdException(esc_html__('PayPal order id is missing.', 'give'));
                 }
 
                return $gatewayData;

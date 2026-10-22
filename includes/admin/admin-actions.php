@@ -126,6 +126,7 @@ add_action( 'wp_ajax_give_hide_outdated_php_notice', 'give_hide_outdated_php_not
 /**
  * Register admin notices.
  *
+ * @since TBD Use gmdate() instead of date().
  * @since 2.25.2 Add nonce check for bulk action.
  * @since      1.8.9
  */
@@ -541,8 +542,8 @@ function _give_register_admin_notices() {
 		global $wpdb;
 
 		$current_time               = current_time( 'timestamp' );
-		$end_of_current_time_in_gmt = get_gmt_from_date( date( 'Y-m-d H:i:s', strtotime( 'tomorrow', $current_time ) ), 'U' );
-		$current_time_gmt           = get_gmt_from_date( date( 'Y-m-d H:i:s', $current_time ), 'U' );
+		$end_of_current_time_in_gmt = get_gmt_from_date( gmdate( 'Y-m-d H:i:s', strtotime( 'tomorrow', $current_time ) ), 'U' );
+		$current_time_gmt           = get_gmt_from_date( gmdate( 'Y-m-d H:i:s', $current_time ), 'U' );
 
 		$spam_count = DB::get_var(
 			DB::prepare( "SELECT COUNT(id) FROM {$wpdb->give_log} WHERE log_type = %s AND date >= CURDATE();", LogType::SPAM )
@@ -640,18 +641,19 @@ add_action( 'admin_head', '_give_test_mode_notice_admin_bar_css' );
 /**
  * Add Link to Import page in from donation archive and donation single page
  *
+ * @since TBD Escape output, including translated strings.
  * @since 1.8.13
  */
 function give_import_page_link_callback() {
 	?>
 	<a href="<?php echo esc_url( give_import_page_url() ); ?>"
-	   class="page-import-action page-title-action"><?php _e( 'Import Donations', 'give' ); ?></a>
+	   class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give' ); ?></a>
     <script>
         function showReactTable () {
             fetch( '<?php echo esc_url_raw(rest_url('give-api/v2/admin/donations/view?isLegacy=0')) ?>', {
                 method: 'GET',
                 headers: {
-                    ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                    ['X-WP-Nonce']: '<?php echo esc_js( wp_create_nonce('wp_rest') ) ?>'
                 }
             })
             .then((res) => {
@@ -660,7 +662,7 @@ function give_import_page_link_callback() {
         }
     </script>
     <button onclick="showReactTable()" class="page-title-action">
-        <?php _e('Switch to New View', 'give') ?>
+        <?php esc_html_e('Switch to New View', 'give') ?>
     </button>
 
 	<?php
@@ -1112,6 +1114,7 @@ add_action( 'user_profile_update_errors', 'give_validate_user_profile', 10, 3 );
 /**
  * Show Donor Information on User Profile Page.
  *
+ * @since TBD Escape output, including translated strings.
  * @since 2.0
  *
  * @param object $user User Object.
@@ -1124,10 +1127,10 @@ function give_donor_information_profile_fields( $user ) {
 	if ( ! empty( $donor->user_id ) ) :
 		?>
 		<tr>
-			<th scope="row"><?php _e( 'Donor', 'give' ); ?></th>
+			<th scope="row"><?php esc_html_e( 'Donor', 'give' ); ?></th>
 			<td>
-				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ); ?>">
-					<?php _e( 'View Donor Information', 'give' ); ?>
+				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) ); ?>">
+					<?php esc_html_e( 'View Donor Information', 'give' ); ?>
 				</a>
 			</td>
 		</tr>

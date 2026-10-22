@@ -1,6 +1,5 @@
 {
   "errors": {
-    "Generic.PHP.DisallowShortOpenTag.EchoFound": 82,
     "Generic.PHP.ForbiddenFunctions.Found": 2,
     "PluginCheck.CodeAnalysis.Heredoc.NotAllowed": 4,
     "PluginCheck.CodeAnalysis.Localhost.Found": 1,
@@ -9,7 +8,6 @@
     "WordPress.DB.PreparedSQL.NotPrepared": 63,
     "WordPress.DB.PreparedSQLPlaceholders.QuotedSimplePlaceholder": 22,
     "WordPress.DB.RestrictedFunctions.mysql_mysqli_get_server_info": 1,
-    "WordPress.DateTime.RestrictedFunctions.date_date": 269,
     "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 264,
     "WordPress.Security.EscapeOutput.OutputNotEscaped": 1536,
     "WordPress.Security.EscapeOutput.UnsafePrintingFunction": 458,

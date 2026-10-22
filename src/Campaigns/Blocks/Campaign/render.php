@@ -7,6 +7,8 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * @since TBD Replace short echo tags with escaped echo.
+ *
  * @var array    $attributes
  * @var Campaign $campaign
  */
@@ -19,4 +21,4 @@ if (
 }
 
 ?>
-<div data-givewp-campaign-block data-attributes="<?= esc_attr(json_encode($attributes)) ?>"></div>
+<div data-givewp-campaign-block data-attributes="<?php echo esc_attr(json_encode($attributes)); ?>"></div>

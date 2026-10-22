@@ -9,6 +9,8 @@
  * @since       1.0
  */
 
+use Give\Framework\Support\PostDataGlobals;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -213,6 +215,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * query is run, or the filter on the arguments (existing mainly for backwards
 	 * compatibility).
 	 *
+	 * @since 4.19.0 Restore the globals setup_postdata() writes to once the results loop is done.
 	 * @since  1.0
 	 * @since 2.9.6 Normalize post IDs from either an array of IDs or Post objects.
 	 *
@@ -265,7 +268,8 @@ class Give_Payments_Query extends Give_Stats {
 				$results = $query->posts;
 
 			} else {
-				$previous_post = $post;
+				$previous_post     = $post;
+				$post_data_globals = PostDataGlobals::snapshot();
 
 				while ( $query->have_posts() ) {
 					$query->the_post();
@@ -284,6 +288,13 @@ class Give_Payments_Query extends Give_Stats {
 					setup_postdata( $post );
 				}
 
+				/*
+				 * Last, because setup_postdata() above rewrites the same globals from the outer
+				 * post. That post being set does not mean setup_postdata() ever ran for it, so its
+				 * ID is not necessarily what these globals held on the way in.
+				 */
+				PostDataGlobals::restore( $post_data_globals );
+
 				$results = $this->payments;
 			}
 		}
@@ -299,6 +310,7 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Get payments by group
 	 *
+	 * @since TBD Document why the query is safe.
 	 * @since  1.8.17
 	 * @access public
 	 *
@@ -316,7 +328,7 @@ class Give_Payments_Query extends Give_Stats {
 
 				$this->set_filters();
 
-				$new_results = $wpdb->get_results( $this->get_sql(), ARRAY_N );
+				$new_results = $wpdb->get_results( $this->get_sql(), ARRAY_N ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare(), WP_Date_Query, WP_Meta_Query, is_numeric, absint and allowlisted fragments.
 
 				$this->unset_filters();
 
@@ -356,6 +368,7 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * If querying a specific date, add the proper filters.
 	 *
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -375,11 +388,11 @@ class Give_Payments_Query extends Give_Stats {
 			$date_query = [];
 
 			if ( $is_start_date && ! is_wp_error( $this->start_date ) ) {
-				$date_query['after'] = date( 'Y-m-d H:i:s', $this->start_date );
+				$date_query['after'] = gmdate( 'Y-m-d H:i:s', $this->start_date );
 			}
 
 			if ( $is_end_date && ! is_wp_error( $this->end_date ) ) {
-				$date_query['before'] = date( 'Y-m-d H:i:s', $this->end_date );
+				$date_query['before'] = gmdate( 'Y-m-d H:i:s', $this->end_date );
 			}
 
 			// Include Start Date and End Date while querying.
@@ -814,6 +827,7 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * Note: Internal purpose only. We are developing on this fn.
 	 *
+	 * @since TBD Prepare the post status list and allowlist the order.
 	 * @since  1.8.18
 	 * @access public
 	 * @global $wpdb
@@ -843,12 +857,17 @@ class Give_Payments_Query extends Give_Stats {
 			$this->args['orderby'] = 'ID';
 		}
 
-		$where  = "WHERE {$wpdb->posts}.post_type = 'give_payment'";
-		$where .= " AND {$wpdb->posts}.post_status IN ('" . implode( "','", $this->args['post_status'] ) . "')";
+		$where    = "WHERE {$wpdb->posts}.post_type = 'give_payment'";
+		$statuses = (array) $this->args['post_status'];
+		$statuses = $statuses ? $statuses : [ '' ];
+		$where   .= $wpdb->prepare( " AND {$wpdb->posts}.post_status IN (" . implode( ',', array_fill( 0, count( $statuses ), '%s' ) ) . ')', $statuses );
 
 		if ( is_numeric( $this->args['post_parent'] ) ) {
 			$where .= " AND {$wpdb->posts}.post_parent={$this->args['post_parent']}";
 		}
+
+		// Whitelist order.
+		$order = 'ASC' === strtoupper( $this->args['order'] ) ? 'ASC' : 'DESC';
 
 		// Set orderby.
 		$orderby  = "ORDER BY {$wpdb->posts}.{$this->args['orderby']}";
@@ -914,6 +933,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		// Set sql query.
 		$sql = $wpdb->prepare(
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $fields is COUNT() and the allowlisted post_status group by column, set above for the count query.
 			"SELECT {$fields} FROM {$wpdb->posts} LIMIT %d,%d;",
 			absint( $this->args['offset'] ),
 			( empty( $this->args['nopaging'] ) ? absint( $this->args['posts_per_page'] ) : 99999999999 )
@@ -921,7 +941,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		// $where, $orderby and order already prepared query they can generate notice if you re prepare them in above.
 		// WordPress consider LIKE condition as placeholder if start with s,f, or d.
-		$sql = str_replace( 'LIMIT', "{$where} {$group_by} {$orderby} {$this->args['order']} LIMIT", $sql );
+		$sql = str_replace( 'LIMIT', "{$where} {$group_by} {$orderby} {$order} LIMIT", $sql );
 
 		return $sql;
 	}

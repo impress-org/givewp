@@ -78,7 +78,7 @@ class CampaignRepository
     }
 
     /**
-     * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
+     * @since 4.19.0 Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
@@ -141,7 +141,7 @@ class CampaignRepository
     }
 
     /**
-     * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
+     * @since 4.19.0 Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
@@ -191,7 +191,7 @@ class CampaignRepository
     }
 
     /**
-     * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
+     * @since 4.19.0 Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
@@ -236,7 +236,7 @@ class CampaignRepository
      * Detach a form from a campaign. A campaign's default form cannot be detached; choose a
      * new default form first. Past donations keep the campaign they were made to.
      *
-     * @since TBD
+     * @since 4.19.0
      *
      * @throws InvalidArgumentException when the form is a campaign's default form
      */
@@ -260,7 +260,7 @@ class CampaignRepository
      * and only donations made after the move count toward the new one. A campaign's default
      * form cannot be moved.
      *
-     * @since TBD
+     * @since 4.19.0
      *
      * @return Campaign|null the campaign the form was moved out of, if any
      *
@@ -302,7 +302,7 @@ class CampaignRepository
      * campaign is checked, not only the one the form is linked to, because campaigns that shared
      * a default form before form_id was made unique still name it as their default.
      *
-     * @since TBD
+     * @since 4.19.0
      *
      * @throws InvalidArgumentException
      */
@@ -318,14 +318,14 @@ class CampaignRepository
 
         throw new InvalidArgumentException(
             sprintf(
-                __('This form is the default form for the campaign "%s". Choose a new default form for that campaign first.', 'give'),
-                $campaign->title
+                __('This form is the default form for the campaign "%s". Choose a new default form for that campaign first.', 'give'), // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by DonationFormsRequestController and returned as a JSON 'message' string, never rendered as HTML; esc_html() here would double-encode the campaign title.
+                $campaign->title // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- see the note above.
             )
         );
     }
 
     /**
-     * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
+     * @since 4.19.0 Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
@@ -359,7 +359,7 @@ class CampaignRepository
     }
 
     /**
-     * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
+     * @since 4.19.0 Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
@@ -392,7 +392,7 @@ class CampaignRepository
     }
 
     /**
-     * @since TBD Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
+     * @since 4.19.0 Rethrow the original exception instead of rebuilding it, which failed for exceptions that need more arguments.
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
@@ -460,13 +460,14 @@ class CampaignRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 4.0.0
      */
     private function validateProperties(Campaign $campaign): void
     {
         foreach ($this->requiredProperties as $key) {
             if ( ! isset($campaign->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
     }

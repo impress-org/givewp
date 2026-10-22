@@ -4,6 +4,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/** @since TBD Escape output. */
 /** @var \Give\Framework\FieldsAPI\LegacyNodes\CheckboxGroup $field */ ?>
 <?php
 /** @var string $fieldIdAttribute */ ?>
@@ -24,20 +25,20 @@ if ($field->hasOptions()): ?>
             <?php
             $id = $fieldIdAttribute . '-' . $index; ?>
             <label class="give-label" for="<?php
-            echo $id; ?>">
+            echo esc_attr($id); ?>">
                 <input
                     type="checkbox"
                     name="<?php
-                    echo $field->getName(); ?>[]"
+                    echo esc_attr($field->getName()); ?>[]"
                     id="<?php
-                    echo $id; ?>"
+                    echo esc_attr($id); ?>"
                     <?php
                     echo in_array($option->getValue(), $field->getDefaultValue()) ? 'checked' : ''; ?>
                     value="<?php
-                    echo $option->getValue(); ?>"
+                    echo esc_attr($option->getValue()); ?>"
                 >
                 <?php
-                echo $option->getLabel() ?: $option->getValue(); ?>
+                echo esc_html($option->getLabel() ?: $option->getValue()); ?>
             </label>
         <?php
         endforeach; ?>
@@ -48,7 +49,7 @@ else: ?>
         <input
             type="checkbox"
             name="<?php
-            echo $field->getName(); ?>"
+            echo esc_attr($field->getName()); ?>"
             <?php
             echo $field->isRequired() ? 'required' : ''; ?>
             <?php
@@ -57,7 +58,7 @@ else: ?>
             echo $field->isReadOnly() ? 'readonly' : ''; ?>
         >
         <?php
-        echo $field->getLabel(); ?>
+        echo esc_html($field->getLabel()); ?>
     </label>
 <?php
 endif; ?>

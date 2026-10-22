@@ -16,7 +16,7 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 use TypeError;
 
 /**
- * @since TBD
+ * @since 4.19.0
  */
 class CampaignColumnTest extends TestCase
 {
@@ -24,7 +24,7 @@ class CampaignColumnTest extends TestCase
     use LegacyDonationFormAdapter;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testColumnIdDoesNotCollideWithTheDonationsCampaignColumn()
     {
@@ -33,7 +33,7 @@ class CampaignColumnTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testLinksToTheCampaignPageForACoreCampaign()
     {
@@ -48,7 +48,7 @@ class CampaignColumnTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testRendersAnUnlinkedTitleForANonCoreCampaign()
     {
@@ -67,7 +67,7 @@ class CampaignColumnTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testRendersNoCampaignForAStandaloneForm()
     {
@@ -75,7 +75,7 @@ class CampaignColumnTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testATypeErrorRaisedByACellFilterDoesNotFailTheTable()
     {
@@ -95,7 +95,7 @@ class CampaignColumnTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     private function renderCell($form): string
     {

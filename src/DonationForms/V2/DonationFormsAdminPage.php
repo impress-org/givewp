@@ -62,7 +62,7 @@ class DonationFormsAdminPage
 
     /**
      * Register menu item
-     * @since TBD Show the "Forms" submenu again so standalone forms have a home in the admin.
+     * @since 4.19.0 Show the "Forms" submenu again so standalone forms have a home in the admin.
      * @since 4.14.0 update permission capability to use facade
      * @since 4.0.0 set submenu parent to empty string to hide "all forms" from admin menu
      */
@@ -83,7 +83,7 @@ class DonationFormsAdminPage
     /**
      * Load scripts
      *
-     * @since TBD Localize newFormUrl here instead of relying on the form builder to attach it to this script.
+     * @since 4.19.0 Localize newFormUrl here instead of relying on the form builder to attach it to this script.
      * @since 3.22.0 Add locale support
      */
     public function loadScripts()
@@ -272,6 +272,7 @@ class DonationFormsAdminPage
     /**
      * Display a button on the old donation forms table that switches to the React view
      *
+     * @since TBD Escape output, including translated strings.
      * @since 2.20.0
      */
     public function renderReactSwitch()
@@ -287,7 +288,7 @@ class DonationFormsAdminPage
                 fetch('<?php echo esc_url_raw(rest_url('give-api/v2/admin/forms/view?isLegacy=0')) ?>', {
                     method: 'GET',
                     headers: {
-                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                        ['X-WP-Nonce']: '<?php echo esc_js(wp_create_nonce('wp_rest')) ?>'
                     }
                 })
                     .then((res) => {
@@ -297,10 +298,10 @@ class DonationFormsAdminPage
 
             jQuery(function() {
                 jQuery(jQuery('.wrap .wp-heading-inline')).after(
-                    '<button class="page-title-action switch-new-view" onclick="showReactTable()"><?php _e(
+                    '<button class="page-title-action switch-new-view" onclick="showReactTable()"><?php echo esc_js(__(
                         'Switch to New View',
                         'give'
-                    ) ?></button>'
+                    )) ?></button>'
                 );
                 jQuery('.page-title-action:not(.switch-new-view)').remove();
             });

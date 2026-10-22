@@ -149,7 +149,7 @@ abstract class ListTable implements Arrayable
      * Safely retrieves the cell value for a column. If an exception is thrown, it will be logged and the cell value
      * will be a human-readable error message. This is to prevent fatal errors from breaking the entire table.
      *
-     * @since TBD Catch Throwable so a TypeError from a third-party cell filter costs one cell, not the request.
+     * @since 4.19.0 Catch Throwable so a TypeError from a third-party cell filter costs one cell, not the request.
      * @since 2.24.1
      *
      * @return mixed

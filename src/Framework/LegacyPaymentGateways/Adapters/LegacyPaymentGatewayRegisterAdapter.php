@@ -12,6 +12,7 @@ class LegacyPaymentGatewayRegisterAdapter
      * Run the necessary legacy hooks on our LegacyPaymentGatewayAdapter
      * that prepares data to be sent to each gateway
      *
+     * @since TBD Escape output.
      * @since 2.30.0 check for getLegacyFormFieldMarkup before attempting to use
      *
      * @since 2.19.0
@@ -30,6 +31,7 @@ class LegacyPaymentGatewayRegisterAdapter
             add_action(
                 "give_{$registeredGatewayId}_cc_form",
                 static function ($formId, $args) use ($registeredGateway, $legacyPaymentGatewayAdapter) {
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renders the gateway's own form field markup (inputs, third-party SDK scripts); the gateway is responsible for escaping its own output, and wp_kses_post() would strip form/script elements.
                     echo $legacyPaymentGatewayAdapter->getLegacyFormFieldMarkup($formId, $args, $registeredGateway);
                 },
                 10,

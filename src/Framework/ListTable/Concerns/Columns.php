@@ -19,6 +19,7 @@ trait Columns
     /**
      * Add List Table column
      *
+     * @since TBD Escape exception message.
      * @since 2.24.0
      *
      * @param ModelColumn $column
@@ -31,7 +32,7 @@ trait Columns
         $columnId = $column::getId();
 
         if (isset($this->columns[$columnId])) {
-            throw new ColumnIdCollisionException($columnId);
+            throw new ColumnIdCollisionException(esc_html($columnId));
         }
 
         $this->columns[$columnId] = $column;
@@ -60,6 +61,7 @@ trait Columns
     /**
      * Remove List Table column
      *
+     * @since TBD Escape exception message.
      * @since 2.24.0
      *
      * @return self
@@ -68,7 +70,7 @@ trait Columns
     public function removeColumn(string $columnId): self
     {
         if ( ! isset($this->columns[$columnId])) {
-            throw new ReferenceColumnNotFoundException($columnId);
+            throw new ReferenceColumnNotFoundException(esc_html($columnId));
         }
 
         unset($this->columns[$columnId]);
@@ -108,6 +110,7 @@ trait Columns
     /**
      * Add column before specific column
      *
+     * @since TBD Escape exception message.
      * @since 2.24.0
      *
      * @return self
@@ -119,12 +122,13 @@ trait Columns
             return $this->insertAtIndex($index, $column);
         }
 
-        throw new ReferenceColumnNotFoundException($columnId);
+        throw new ReferenceColumnNotFoundException(esc_html($columnId));
     }
 
     /**
      * Add column after specific column
      *
+     * @since TBD Escape exception message.
      * @since 2.24.0
      *
      * @return self
@@ -136,7 +140,7 @@ trait Columns
             return $this->insertAtIndex($index + 1, $column);
         }
 
-        throw new ReferenceColumnNotFoundException($columnId);
+        throw new ReferenceColumnNotFoundException(esc_html($columnId));
     }
 
     /**

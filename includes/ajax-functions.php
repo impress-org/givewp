@@ -348,6 +348,7 @@ add_action( 'wp_ajax_nopriv_give_form_search', 'give_ajax_form_search' );
 /**
  * Search the donors database via Ajax
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since  1.0
  *
  * @return void
@@ -355,12 +356,12 @@ add_action( 'wp_ajax_nopriv_give_form_search', 'give_ajax_form_search' );
 function give_ajax_donor_search() {
 	global $wpdb;
 
-	$search  = esc_sql( sanitize_text_field( $_POST['s'] ) );
+	$search  = sanitize_text_field( $_POST['s'] );
 	$results = [];
 	if ( ! current_user_can( 'view_give_reports' ) ) {
 		$donors = [];
 	} else {
-		$donors = $wpdb->get_results( "SELECT id,name,email FROM $wpdb->donors WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50" );
+		$donors = $wpdb->get_results( $wpdb->prepare( "SELECT id,name,email FROM $wpdb->donors WHERE `name` LIKE %s OR `email` LIKE %s LIMIT 50", '%' . $search . '%', '%' . $search . '%' ) );
 	}
 
 	if ( $donors ) {
@@ -564,6 +565,7 @@ add_action( 'wp_ajax_give_tags_search', 'give_ajax_tags_search' );
 /**
  * Check for Price Variations (Multi-level donation forms)
  *
+ * @since  TBD Escape output.
  * @since  1.5
  *
  * @return void
@@ -598,6 +600,7 @@ function give_check_for_form_price_variations() {
 				$ajax_response .= '<option value="' . esc_attr( $price['_give_id']['level_id'] ) . '">' . $level_text . '</option>';
 			}
 			$ajax_response .= '</select>';
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $ajax_response renders a <select> control; each value in it is escaped above, and wp_kses_post() would strip the select/option elements.
 			echo $ajax_response;
 		}
 	}
@@ -772,6 +775,7 @@ function give_modal_ajax_url( $args = [] ) {
  * @todo use get_version endpoint to read changelog or cache add-ons infro from update_plugins option
  *
  * @return string
+ * @since TBD Escape output.
  * @since 2.5.0
  */
 function give_get_content_by_ajax_handler() {
@@ -802,21 +806,21 @@ function give_get_content_by_ajax_handler() {
 		$response = wp_remote_get( $url );
 
 		if ( is_wp_error( $response ) ) {
-			echo "$msg<br><br><code>Error: {$response->get_error_message()}</code>";
+			echo esc_html( $msg ) . '<br><br><code>' . esc_html( 'Error: ' . $response->get_error_message() ) . '</code>';
 			exit;
 		}
 
 		$response = wp_remote_retrieve_body( $response );
 
 		if ( false === strpos( $response, '== Changelog ==' ) ) {
-			echo $msg;
+			echo esc_html( $msg );
 			exit;
 		}
 
 		$changelog = explode( '== Changelog ==', $response );
 		$changelog = end( $changelog );
 
-		echo give_get_format_md( $changelog );
+		echo wp_kses_post( give_get_format_md( $changelog ) );
 	}
 
 	do_action( 'give_get_content_by_ajax_handler' );
