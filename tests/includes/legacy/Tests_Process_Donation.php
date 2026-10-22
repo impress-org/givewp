@@ -266,4 +266,92 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Checkout registration must not accept an email that already belongs to a guest donor.
+	 *
+	 * @since TBD
+	 */
+	public function test_validate_new_user_rejects_existing_donor_primary_email() {
+
+		Give()->donors->add(
+			[
+				'name'    => 'Guest Donor',
+				'email'   => 'guest-donor@example.org',
+				'user_id' => 0,
+			]
+		);
+
+		$_POST = $this->new_user_post( 'guest-donor@example.org' );
+
+		$result = give_donation_form_validate_new_user();
+
+		$this->assertArrayHasKey( 'email_used', give_get_errors() );
+		$this->assertArrayNotHasKey( 'user_email', $result );
+
+		give_clear_errors();
+
+	}
+
+	/**
+	 * Checkout registration must not accept a donor's additional email either.
+	 *
+	 * @since TBD
+	 */
+	public function test_validate_new_user_rejects_existing_donor_additional_email() {
+
+		$donor_id = Give()->donors->add(
+			[
+				'name'    => 'Guest Donor',
+				'email'   => 'guest-donor@example.org',
+				'user_id' => 0,
+			]
+		);
+		Give()->donor_meta->add_meta( $donor_id, 'additional_email', 'guest-donor-alt@example.org' );
+
+		$_POST = $this->new_user_post( 'guest-donor-alt@example.org' );
+
+		$result = give_donation_form_validate_new_user();
+
+		$this->assertArrayHasKey( 'email_used', give_get_errors() );
+		$this->assertArrayNotHasKey( 'user_email', $result );
+
+		give_clear_errors();
+
+	}
+
+	/**
+	 * Checkout registration still accepts an email no donor or user has.
+	 *
+	 * @since TBD
+	 */
+	public function test_validate_new_user_accepts_unused_email() {
+
+		$_POST = $this->new_user_post( 'first-time-donor@example.org' );
+
+		$result = give_donation_form_validate_new_user();
+
+		$this->assertEmpty( give_get_errors() );
+		$this->assertSame( 'first-time-donor@example.org', $result['user_email'] );
+
+		give_clear_errors();
+
+	}
+
+	/**
+	 * @since TBD
+	 */
+	private function new_user_post( $email ) {
+		$form = Give_Helper_Form::create_simple_form();
+
+		return [
+			'give-form-id'                 => $form->ID,
+			'give-form-user-register-hash' => wp_create_nonce( "give_form_create_user_nonce_{$form->ID}" ),
+			'give_first'                   => 'New',
+			'give_last'                    => 'Donor',
+			'give_email'                   => $email,
+			'give_user_pass'               => 'password',
+			'give_user_pass_confirm'       => 'password',
+		];
+	}
+
 }
