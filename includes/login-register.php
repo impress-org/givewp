@@ -91,7 +91,6 @@ function give_register_form( $redirect = '' ) {
 /**
  * Process Login Form
  *
- * @since TBD Redirect only to URLs on this site.
  * @since 1.0
  *
  * @param array $data Data sent from the login form
@@ -131,7 +130,8 @@ function give_process_login_form( $data ) {
 
 		if ( ! $errors ) {
 			$redirect = apply_filters( 'give_login_redirect', $data['give_login_redirect'], $user_id );
-			wp_safe_redirect( wp_validate_redirect( $redirect, home_url() ) );
+			// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- the redirect URL comes from the shortcode or block settings and may point to another host (SSO, a subdomain); wp_safe_redirect() would send those users to the home page instead.
+			wp_redirect( $redirect );
 			give_die();
 		}
 	}
@@ -143,7 +143,6 @@ add_action( 'give_user_login', 'give_process_login_form' );
 /**
  * Process User Logout
  *
- * @since TBD Redirect only to URLs on this site.
  * @since 1.0
  *
  * @param array $data Data sent from the give login form page
@@ -173,7 +172,8 @@ function give_process_user_logout( $data ) {
 		 */
 		do_action( 'give_after_user_logout' );
 
-		wp_safe_redirect( wp_validate_redirect( $data['give_logout_redirect'], home_url() ) );
+		// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- the redirect URL comes from the shortcode or block settings and may point to another host (SSO, a subdomain); wp_safe_redirect() would send those users to the home page instead.
+		wp_redirect( $data['give_logout_redirect'] );
 		give_die();
 	}
 }
@@ -226,7 +226,7 @@ function give_log_user_in( $user_id, $user_login, $user_pass ) {
 /**
  * Process Register Form
  *
- * @since TBD Use gmdate() instead of date(), and redirect only to URLs on this site.
+ * @since TBD Use gmdate() instead of date().
  * @since 4.16.6  Require a valid nonce before processing registration.
  * @since 2.0
  *
@@ -311,7 +311,8 @@ function give_process_register_form( $data ) {
 			)
 		);
 
-		wp_safe_redirect( wp_validate_redirect( $redirect, home_url() ) );
+		// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- the redirect URL comes from the shortcode or block settings and may point to another host (SSO, a subdomain); wp_safe_redirect() would send those users to the home page instead.
+		wp_redirect( $redirect );
 		give_die();
 	}
 }

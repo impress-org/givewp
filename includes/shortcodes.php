@@ -455,7 +455,6 @@ add_shortcode( 'give_profile_editor', 'give_profile_editor_shortcode' );
  *
  * Processes the profile updater form by updating the necessary fields.
  *
- * @since TBD Redirect only to URLs on this site.
  * @since  1.0
  *
  * @param  array $data Data sent from the profile editor.
@@ -540,7 +539,8 @@ function give_process_profile_editor_updates( $data ) {
 
 	if ( $errors ) {
 		// Send back to the profile editor if there are errors.
-		wp_safe_redirect( wp_validate_redirect( $data['give_redirect'], home_url() ) );
+		// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- the redirect URL comes from the shortcode or block settings and may point to another host (SSO, a subdomain); wp_safe_redirect() would send those users to the home page instead.
+		wp_redirect( $data['give_redirect'] );
 		give_die();
 	}
 
@@ -622,7 +622,8 @@ function give_process_profile_editor_updates( $data ) {
 		if ( '2' === $update_code || '3' === $update_code ) {
 			wp_logout();
 		} else {
-			wp_safe_redirect( wp_validate_redirect( esc_url_raw( add_query_arg( $profile_edit_redirect_args, $data['give_redirect'] ) ), home_url() ) );
+			// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- the redirect URL comes from the shortcode or block settings and may point to another host (SSO, a subdomain); wp_safe_redirect() would send those users to the home page instead.
+			wp_redirect( esc_url_raw( add_query_arg( $profile_edit_redirect_args, $data['give_redirect'] ) ) );
 		}
 
 		give_die();
