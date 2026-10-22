@@ -273,7 +273,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 4.19.0.2: October 22nd, 2026 =
+= 4.19.0.2: October 26th, 2026 =
 * Security: Added additional validation to account registration on donation forms. Reported by Pablo Alaniz
 * Security: Improved donation amount validation so donations always meet the amount set on the form.
 
