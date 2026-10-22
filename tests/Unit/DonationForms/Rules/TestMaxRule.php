@@ -93,6 +93,18 @@ class TestMaxRule extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testFailsWhenTheAmountCannotBeParsedAsMoney(): void
+    {
+        $rule = (new Max(1000))->exemptAmounts(5000.0);
+
+        self::assertValidationRuleFailed($rule, '1e2', 'amount', ['currency' => 'USD']);
+        self::assertValidationRuleFailed($rule, '+100', 'amount', ['currency' => 'USD']);
+        self::assertValidationRulePassed($rule, '5000', 'amount', ['currency' => 'USD']);
+    }
+
+    /**
      * Runs the rule against a failing value and returns the message it reported.
      *
      * @since 4.16.8

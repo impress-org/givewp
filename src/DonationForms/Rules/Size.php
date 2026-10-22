@@ -3,6 +3,7 @@ namespace Give\DonationForms\Rules;
 
 
 use Closure;
+use Give\DonationForms\Rules\Concerns\ParsesAmountAsMoney;
 use Give\Vendors\StellarWP\Validation\Config;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidatesOnFrontEnd;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
@@ -11,6 +12,8 @@ use function is_numeric;
 
 class Size implements ValidationRule, ValidatesOnFrontEnd
 {
+    use ParsesAmountAsMoney;
+
     /**
      * @var numeric
      */
@@ -63,14 +66,23 @@ class Size implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
+     * @since TBD Compare the amount as parsed into Money in the submitted currency.
      * @since 3.0.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
-        $value = $this->sanitize($value);
-        
         if (is_numeric($value)) {
-            if ($value !== $this->getSize()) {
+            $value = $this->parseAmount((string)$value, $this->submittedCurrency($values));
+
+            if ($value === null) {
+                $fail(sprintf(__('%s must be a valid amount', 'give'), '{field}'));
+
+                return;
+            }
+        }
+
+        if (is_numeric($value)) {
+            if ((float)$value !== (float)$this->getSize()) {
                 $fail(sprintf(__('%s must be exactly %s', 'give'), '{field}', $this->getSize()));
             }
         } elseif (is_string($value)) {

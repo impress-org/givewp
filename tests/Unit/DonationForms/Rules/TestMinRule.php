@@ -88,6 +88,21 @@ class TestMinRule extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testFailsWhenTheParsedMoneyAmountIsBelowTheMinimum(): void
+    {
+        $rule = (new Min(5))->exemptAmounts(100.0);
+
+        foreach (['05', '010', '0100', '0100.0', '1e2', '+100'] as $value) {
+            self::assertValidationRuleFailed($rule, $value, 'amount', ['currency' => 'USD']);
+        }
+
+        self::assertValidationRulePassed($rule, '5', 'amount', ['currency' => 'USD']);
+        self::assertValidationRulePassed($rule, '100.00', 'amount', ['currency' => 'USD']);
+    }
+
+    /**
      * @since 4.16.8
      */
     public function testExemptAmountsDefaultToAnEmptyList(): void

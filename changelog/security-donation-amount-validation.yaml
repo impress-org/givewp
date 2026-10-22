@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Improved donation amount validation so donations always meet the amount set on the form.
+timestamp: 2026-10-22T17:00:00.000Z
