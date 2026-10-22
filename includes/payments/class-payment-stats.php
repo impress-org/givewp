@@ -374,7 +374,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * Translate the subset of Give_Payments_Query arguments the stats methods build (status, date
 	 * range, form, parent, and simple meta equality) into a WHERE fragment. Anything else returns null.
 	 *
-	 * @since TBD Prepare SQL with placeholders.
+	 * @since TBD Use gmdate() instead of date(), and prepare SQL with placeholders.
 	 * @since 4.18.0
 	 *
 	 * @param array $args
@@ -425,11 +425,11 @@ class Give_Payment_Stats extends Give_Stats {
 		}
 
 		if ( ! empty( $args['start_date'] ) && ! is_wp_error( $args['start_date'] ) ) {
-			$where .= $wpdb->prepare( ' AND p.post_date >= %s', date( 'Y-m-d H:i:s', $args['start_date'] ) );
+			$where .= $wpdb->prepare( ' AND p.post_date >= %s', gmdate( 'Y-m-d H:i:s', $args['start_date'] ) );
 		}
 
 		if ( ! empty( $args['end_date'] ) && ! is_wp_error( $args['end_date'] ) ) {
-			$where .= $wpdb->prepare( ' AND p.post_date <= %s', date( 'Y-m-d H:i:s', $args['end_date'] ) );
+			$where .= $wpdb->prepare( ' AND p.post_date <= %s', gmdate( 'Y-m-d H:i:s', $args['end_date'] ) );
 		}
 
 		$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';

@@ -41,6 +41,9 @@ class SetCampaignType extends Migration
 
     /**
      * @inheritDoc
+     *
+     * @since TBD Escape exception message.
+     *
      * @throws DatabaseMigrationException
      */
     public function run()
@@ -52,7 +55,11 @@ class SetCampaignType extends Migration
                     'campaign_type' => CampaignType::PEER_TO_PEER
                 ]);
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException('An error occurred while updating the campaign type', 0, $exception);
+            throw new DatabaseMigrationException(
+                'An error occurred while updating the campaign type',
+                0,
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
     }
 }

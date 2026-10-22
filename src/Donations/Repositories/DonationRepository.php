@@ -242,7 +242,7 @@ class DonationRepository
 
             Log::error('Failed creating a donation', compact('donation'));
 
-            throw new Exception('Failed creating a donation', 0, $exception);
+            throw new Exception('Failed creating a donation', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -264,7 +264,7 @@ class DonationRepository
     }
 
     /**
-     * @since TBD Refresh the form title when the donation moves to another form
+     * @since 4.19.0 Refresh the form title when the donation moves to another form
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.6.0 Turn createdAt property updatable
      * @since 2.23.1 Use give_update_meta() method to update entries on give_donationmeta table
@@ -314,7 +314,7 @@ class DonationRepository
 
             Log::error('Failed updating a donation', compact('donation'));
 
-            throw new Exception('Failed updating a donation', 0, $exception);
+            throw new Exception('Failed updating a donation', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         $donation->updatedAt = $now;
@@ -351,7 +351,7 @@ class DonationRepository
 
             Log::error('Failed deleting a donation', compact('donation'));
 
-            throw new Exception('Failed deleting a donation', 0, $exception);
+            throw new Exception('Failed deleting a donation', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -389,7 +389,7 @@ class DonationRepository
 
             Log::error('Failed trashing a donation', compact('donation'));
 
-            throw new Exception('Failed trashing a donation', 0, $exception);
+            throw new Exception('Failed trashing a donation', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -427,7 +427,7 @@ class DonationRepository
 
             Log::error('Failed untrashing a donation', compact('donation'));
 
-            throw new Exception('Failed untrashing a donation', 0, $exception);
+            throw new Exception('Failed untrashing a donation', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -540,6 +540,7 @@ class DonationRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.19.6
      *
      * @return void
@@ -548,7 +549,7 @@ class DonationRepository
     {
         foreach ($this->requiredDonationProperties as $key) {
             if (!isset($donation->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
 

@@ -224,6 +224,7 @@ function give_log_user_in( $user_id, $user_login, $user_pass ) {
 /**
  * Process Register Form
  *
+ * @since TBD Use gmdate() instead of date().
  * @since 4.16.6  Require a valid nonce before processing registration.
  * @since 2.0
  *
@@ -303,7 +304,7 @@ function give_process_register_form( $data ) {
 				'user_login'      => $data['give_user_login'],
 				'user_pass'       => $data['give_user_pass'],
 				'user_email'      => $data['give_user_email'],
-				'user_registered' => date( 'Y-m-d H:i:s' ),
+				'user_registered' => gmdate( 'Y-m-d H:i:s' ),
 				'role'            => get_option( 'default_role' ),
 			)
 		);

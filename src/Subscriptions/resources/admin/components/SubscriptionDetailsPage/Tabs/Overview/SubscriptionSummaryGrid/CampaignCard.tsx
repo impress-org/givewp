@@ -4,7 +4,7 @@ import {Campaign} from '@givewp/campaigns/admin/components/types';
 import styles from './styles.module.scss';
 
 /**
- * @since TBD Say "No campaign" when there is no campaign.
+ * @since 4.19.0 Say "No campaign" when there is no campaign.
  * @since 4.10.0
  */
 export default function CampaignCard({campaign}: {campaign: Campaign}) {

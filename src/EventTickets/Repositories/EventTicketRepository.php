@@ -104,7 +104,7 @@ class EventTicketRepository
 
             Log::error('Failed creating an event ticket', compact('eventTicket'));
 
-            throw new Exception('Failed creating an event ticket', 0, $exception);
+            throw new Exception('Failed creating an event ticket', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         $eventTicket->id = $eventTicketId;
@@ -186,7 +186,7 @@ class EventTicketRepository
 
             Log::error('Failed updating an event ticket', compact('eventTicket'));
 
-            throw new Exception('Failed updating an event ticket', 0, $exception);
+            throw new Exception('Failed updating an event ticket', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         $eventTicket->updatedAt = $updatedDateTime;
@@ -221,7 +221,7 @@ class EventTicketRepository
 
             Log::error('Failed deleting an event ticket', compact('eventTicket'));
 
-            throw new Exception('Failed deleting an event ticket', 0, $exception);
+            throw new Exception('Failed deleting an event ticket', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -243,13 +243,14 @@ class EventTicketRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.6.0
      */
     private function validate(EventTicket $eventTicket): void
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($eventTicket->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
     }

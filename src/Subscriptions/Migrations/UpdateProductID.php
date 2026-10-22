@@ -44,6 +44,7 @@ class UpdateProductID extends Migration
     }
 
     /**
+     * @since TBD Escape exception message.
      * @inheritDoc
      *
      * @throws DatabaseMigrationException
@@ -66,7 +67,7 @@ class UpdateProductID extends Migration
             ));
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while updating the give_subscriptions table",
-                0, $exception);
+                0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
         }
     }
 }

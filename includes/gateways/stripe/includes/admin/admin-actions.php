@@ -20,6 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Disconnects user from the Give Stripe Connected App.
+ *
+ * @since TBD Escape output.
  */
 function give_stripe_connect_deauthorize() {
 	$get_vars = give_clean( $_GET );
@@ -42,7 +44,7 @@ function give_stripe_connect_deauthorize() {
 			esc_html( $get_vars['error_message'] )
 		);
 
-		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), $message );
+		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), wp_kses_post( $message ) );
 
 	}
 }
@@ -83,6 +85,7 @@ add_action( 'give_view_donation_details_totals_after', 'give_stripe_opt_refund',
 /**
  * Process refund in Stripe.
  *
+ * @since  TBD Escape output.
  * @since  2.5.0
  * @access public
  *
@@ -179,7 +182,7 @@ function give_stripe_process_refund( $donation_id, $new_status, $old_status ) {
 		}
 
 		wp_die(
-			$error,
+			esc_html( $error ),
 			esc_html__( 'Error', 'give' ),
 			[
 				'response' => 400,
@@ -357,6 +360,7 @@ add_action( 'admin_notices', 'give_stripe_show_currency_notice' );
  * @param  int  $donationId  Donation ID.
  *
  * @return void
+ * @since TBD Escape output.
  * @since 2.7.0
  *
  */
@@ -378,7 +382,7 @@ function giveStripeDisplayProcessedStripeAccount( $donationId ) {
 	<div class="give-donation-stripe-account-used give-admin-box-inside">
 		<p>
 			<strong><?php esc_html_e( 'Stripe Account:', 'give' ); ?></strong><br/>
-			<?php echo $account; ?>
+			<?php echo esc_html( $account ); ?>
 		</p>
 	</div>
 	<?php

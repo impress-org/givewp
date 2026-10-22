@@ -11,14 +11,14 @@ use Give_Payment;
 use Give_Payment_History_Table;
 
 /**
- * @since TBD
+ * @since 4.19.0
  */
 final class PaymentHistoryTableCampaignColumnTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function setUp(): void
     {
@@ -29,7 +29,7 @@ final class PaymentHistoryTableCampaignColumnTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testSaysNoCampaignForADonationToAStandaloneForm(): void
     {
@@ -40,7 +40,7 @@ final class PaymentHistoryTableCampaignColumnTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testLinksToTheCampaignOfADonationThatHasOne(): void
     {
@@ -57,7 +57,7 @@ final class PaymentHistoryTableCampaignColumnTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     private function renderCampaignCell(Donation $donation): string
     {

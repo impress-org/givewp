@@ -1,10 +1,21 @@
 name: Static Analysis
 
 on:
+    # Only the main branches. Any other branch gets its run from the pull_request trigger below, so
+    # an unfiltered push would run this twice for every push to a pull request.
     push:
+        branches: [ master, develop, epic/**, release/** ]
     pull_request:
     workflow_call: # Allows you to use this workflow as part of another workflow
     workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+
+# A new push to a pull request cancels the run still going for the older commit; nobody reads the
+# result of a commit that is no longer the head. Only pull requests: every other run (a push to
+# develop or master, a release, a manual run) gets a group of its own from its run id, so it is
+# never cancelled and never waits behind another run.
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
     build:

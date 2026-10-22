@@ -2,8 +2,12 @@
 
 namespace Give\PaymentGateways\Gateways\PayPalStandard\Actions;
 
-use Give\ValueObjects\Money;
-use Give_Payment;
+use Exception;
+use Give\Donations\Models\Donation;
+use Give\Donations\Models\DonationNote;
+use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\Support\ValueObjects\Money;
+use Give\Log\Log;
 use stdClass;
 
 /**
@@ -12,62 +16,102 @@ use stdClass;
 class ProcessIpnDonationRefund
 {
     /**
+     * @since 4.18.0.1 Use the Donation model and skip refunds with a missing, non-negative, or over-total amount.
      * @since 2.19.0
      *
-     * @param stdClass $ipnEventData
-     * @param int $donationId
+     * @param stdClass $ipnEventData PayPal IPN data.
+     * @param int      $donationId   ID of the donation being refunded.
      *
      * @return void
      */
     public function __invoke(stdClass $ipnEventData, $donationId)
     {
-        $donation = new Give_Payment($donationId);
-        if ($this->isPartialRefund($ipnEventData->mc_gross, $donation->currency, $donation->total)) {
-            $donation->add_note(
-                sprintf( /* translators: %s: Paypal parent transaction ID */
+        $donation = Donation::find($donationId);
+
+        if ( ! $donation) {
+            return;
+        }
+
+        $refundedAmount = $this->getRefundedAmount($ipnEventData, $donation->amount->getCurrency()->getCode());
+
+        if ( ! $refundedAmount || ! $this->isValidRefundAmount($refundedAmount, $donation->amount)) {
+            Log::error(
+                'PayPal Standard IPN Error',
+                [
+                    'Message' => sprintf(
+                        'Refund amount (%s) for donation #%d is not valid.',
+                        $ipnEventData->mc_gross ?? '(not set)',
+                        $donationId
+                    ),
+                    'Event Data' => $ipnEventData,
+                ]
+            );
+
+            return;
+        }
+
+        if ($refundedAmount->absolute()->lessThan($donation->amount)) {
+            DonationNote::create([
+                'donationId' => $donation->id,
+                'content' => sprintf( /* translators: %s: Paypal parent transaction ID */
                     __('Partial PayPal refund processed: %s', 'give'),
                     $ipnEventData->parent_txn_id
-                )
-            );
-        } else {
-            $donation->add_note(
-                sprintf( /* translators: 1: Paypal parent transaction ID 2. Paypal reason code */
-                    __('PayPal Payment #%1$s Refunded for reason: %2$s', 'give'),
-                    $ipnEventData->parent_txn_id,
-                    $ipnEventData->reason_code
-                )
-            );
+                ),
+            ]);
 
-            $donation->add_note(
-                sprintf( /* translators: %s: Paypal transaction ID */
-                    __('PayPal Refund Transaction ID: %s', 'give'),
-                    $ipnEventData->txn_id
-                )
-            );
+            return;
+        }
 
-            $donation->update_status('refunded');
+        DonationNote::create([
+            'donationId' => $donation->id,
+            'content' => sprintf( /* translators: 1: Paypal parent transaction ID 2. Paypal reason code */
+                __('PayPal Payment #%1$s Refunded for reason: %2$s', 'give'),
+                $ipnEventData->parent_txn_id,
+                $ipnEventData->reason_code
+            ),
+        ]);
+
+        DonationNote::create([
+            'donationId' => $donation->id,
+            'content' => sprintf( /* translators: %s: Paypal transaction ID */
+                __('PayPal Refund Transaction ID: %s', 'give'),
+                $ipnEventData->txn_id
+            ),
+        ]);
+
+        $donation->status = DonationStatus::REFUNDED();
+        $donation->save();
+    }
+
+    /**
+     * @since 4.18.0.1
+     *
+     * @param stdClass $ipnEventData PayPal IPN data.
+     * @param string   $currency     Donation currency code.
+     *
+     * @return Money|null The IPN mc_gross in the donation currency, or null when it is missing or not a decimal amount.
+     */
+    private function getRefundedAmount(stdClass $ipnEventData, string $currency): ?Money
+    {
+        try {
+            return Money::fromDecimal($ipnEventData->mc_gross ?? '', $currency);
+        } catch (Exception $e) {
+            return null;
         }
     }
 
     /**
-     * @since 2.19.0
+     * PayPal Standard sends refunds as a negative amount that cannot exceed the donation total.
      *
-     * @param string $refundedAmount
-     * @param $currency
-     * @param $donationAmount
+     * @since 4.18.0.1
+     *
+     * @param Money $refundedAmount IPN mc_gross amount.
+     * @param Money $donationAmount Donation total.
      *
      * @return bool
      */
-    protected function isPartialRefund($refundedAmount, $currency, $donationAmount)
+    private function isValidRefundAmount(Money $refundedAmount, Money $donationAmount): bool
     {
-        $donationAmount = Money::of($donationAmount, $currency);
-        $refundedAmountOnPayPal = Money::of(
-        // PayPal Standard sends negative amount when refund payment.
-        // Check details https://developer.paypal.com/api/nvp-soap/ipn/IPNandPDTVariables/
-            $refundedAmount * -1,
-            $currency
-        );
-
-        return $refundedAmountOnPayPal->getMinorAmount() < $donationAmount->getMinorAmount();
+        return $refundedAmount->isNegative() && $refundedAmount->absolute()->lessThanOrEqual($donationAmount);
     }
 }

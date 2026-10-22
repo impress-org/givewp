@@ -19,6 +19,7 @@ class SubscriptionsAdminPage
     /**
      * Render the Subscription Details page.
      *
+     * @since TBD Escape output.
      * @since 4.8.0
      */
     public function render()
@@ -29,7 +30,7 @@ class SubscriptionsAdminPage
             $subscription = Subscription::find(absint($_GET['id']));
 
             if ( ! $subscription) {
-                wp_die(__('Subscription not found', 'give'), 404);
+                wp_die(esc_html__('Subscription not found', 'give'), 404);
             }
 
             give(LoadSubscriptionDetailsAssets::class)();
@@ -43,6 +44,7 @@ class SubscriptionsAdminPage
     /**
      * Display a button on the old subscriptions table that switches to the React view
      *
+     * @since TBD Escape translated output.
      * @since 2.24.0
      */
     public function renderReactSwitch()
@@ -53,7 +55,7 @@ class SubscriptionsAdminPage
                 fetch( '<?php echo esc_url_raw(rest_url('give-api/v2/admin/subscriptions/view?isLegacy=0')) ?>', {
                     method: 'GET',
                     headers: {
-                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                        ['X-WP-Nonce']: '<?php echo esc_js(wp_create_nonce('wp_rest')) ?>'
                     }
                 })
                     .then((res) => {
@@ -62,7 +64,7 @@ class SubscriptionsAdminPage
             }
             jQuery( function() {
                 jQuery(jQuery(".wrap .wp-header-end")).before(
-                    '<button class="page-title-action" onclick="showReactTable()"><?php _e('Switch to New View', 'give') ?></button>'
+                    '<button class="page-title-action" onclick="showReactTable()"><?php echo esc_js(__('Switch to New View', 'give')) ?></button>'
                 );
             });
         </script>

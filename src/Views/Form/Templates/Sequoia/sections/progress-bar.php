@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * @since TBD Escape output.
  * @since 4.16.3 Escaped the goal color when rendering the progress bar.
  *
  * @var int $formId
@@ -17,7 +18,7 @@ if ($form->has_goal()) : ?>
     ?>
     <div class="progress-bar">
         <div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?php
-        echo $goalStats['progress']; ?>">
+        echo esc_attr($goalStats['progress']); ?>">
             <span style="<?php echo esc_attr($style); ?>"></span>
         </div><!-- /.give-progress-bar -->
     </div>

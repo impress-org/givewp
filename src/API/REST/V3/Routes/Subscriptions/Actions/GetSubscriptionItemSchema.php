@@ -11,7 +11,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class GetSubscriptionItemSchema
 {
     /**
-     * @since TBD Allow a null campaignId for subscriptions to standalone forms
+     * @since 4.19.0 Allow a null campaignId for subscriptions to standalone forms
      * @since 4.10.0 added campaignId
      * @since 4.8.0
      */

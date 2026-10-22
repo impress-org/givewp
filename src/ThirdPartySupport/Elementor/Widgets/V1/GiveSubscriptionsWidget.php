@@ -202,6 +202,7 @@ class GiveSubscriptionsWidget extends Widget_Base
      *
      * Written in PHP and used to generate the final HTML.
      *
+     * @since TBD Escape output, including translated strings.
      * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access protected
      */
@@ -233,62 +234,62 @@ class GiveSubscriptionsWidget extends Widget_Base
 			<table id="give_user_history" class="give-table">
 				<thead>
 					<tr class="give_purchase_row">
-							<th><?php _e('Subscription', 'give'); ?></th>
+							<th><?php esc_html_e('Subscription', 'give'); ?></th>
 						<?php if ('yes' === $settings['show_status']) : ?>
-							<th><?php _e('Status', 'give'); ?></th>
+							<th><?php esc_html_e('Status', 'give'); ?></th>
 						<?php endif; ?>
 						<?php if ('yes' === $settings['show_renewal_date']) : ?>
-							<th><?php _e('Renewal Date', 'give'); ?></th>
+							<th><?php esc_html_e('Renewal Date', 'give'); ?></th>
 						<?php endif; ?>
 						<?php if ('yes' === $settings['show_progress']) : ?>
-							<th><?php _e('Progress', 'give'); ?></th>
+							<th><?php esc_html_e('Progress', 'give'); ?></th>
 						<?php endif; ?>
 						<?php if ('yes' === $settings['show_start_date']) : ?>
-							<th><?php _e('Start Date', 'give'); ?></th>
+							<th><?php esc_html_e('Start Date', 'give'); ?></th>
 						<?php endif; ?>
 						<?php if ('yes' === $settings['show_end_date']) : ?>
-							<th><?php _e('End Date', 'give'); ?></th>
+							<th><?php esc_html_e('End Date', 'give'); ?></th>
 						<?php endif; ?>
-							<th><?php _e('Actions', 'give'); ?></th>
+							<th><?php esc_html_e('Actions', 'give'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td>
-							<span class="give-subscription-name"><?php _e('Form with a Goal', 'give'); ?></span><br>
+							<span class="give-subscription-name"><?php esc_html_e('Form with a Goal', 'give'); ?></span><br>
 							<span class="give-subscription-billing-cycle">
-								$25.00 / <?php _e('Monthly', 'give'); ?> </span>
+								$25.00 / <?php esc_html_e('Monthly', 'give'); ?> </span>
 						</td>
 						<?php if ('yes' === $settings['show_status']) : ?>
 						<td>
-							<span class="give-subscription-status"><span class="give-donation-status status-active"><span class="give-donation-status-icon"></span> <?php _e('Active', 'give'); ?></span></span>
+							<span class="give-subscription-status"><span class="give-donation-status status-active"><span class="give-donation-status-icon"></span> <?php esc_html_e('Active', 'give'); ?></span></span>
 						</td>
 						<?php endif; ?>
 						<?php if ('yes' === $settings['show_renewal_date']) : ?>
 						<td>
 							<span class="give-subscription-renewal-date">
-								<?php _e('Auto renew on June 4, 2020', 'give'); ?> </span>
+								<?php esc_html_e('Auto renew on June 4, 2020', 'give'); ?> </span>
 						</td>
 						<?php endif; ?>
 						<?php if ('yes' === $settings['show_progress']) : ?>
 						<td>
-							<span class="give-subscription-times-billed">1 / <?php _e('Ongoing', 'give'); ?></span>
+							<span class="give-subscription-times-billed">1 / <?php esc_html_e('Ongoing', 'give'); ?></span>
 						</td>
 						<?php endif; ?>
 						<?php if ('yes' === $settings['show_start_date']) : ?>
 						<td>
-							<?php _e('May 4, 2020', 'give'); ?>
+							<?php esc_html_e('May 4, 2020', 'give'); ?>
 						</td>
 						<?php endif; ?>
 						<?php if ('yes' === $settings['show_end_date']) : ?>
 						<td>
-						<?php _e('Ongoing', 'give'); ?>
+						<?php esc_html_e('Ongoing', 'give'); ?>
 						</td>
 						<?php endif; ?>
 						<td>
-							<a href="#"><?php _e('View Receipt', 'give'); ?></a>
+							<a href="#"><?php esc_html_e('View Receipt', 'give'); ?></a>
 							&nbsp;|&nbsp;
-							<a href="#" class="give-cancel-subscription"><?php _e('Cancel', 'give'); ?></a>
+							<a href="#" class="give-cancel-subscription"><?php esc_html_e('Cancel', 'give'); ?></a>
 						</td>
 					</tr>
 				</tbody>
@@ -301,6 +302,7 @@ class GiveSubscriptionsWidget extends Widget_Base
 
         echo '<div class="givewp-elementor-widget donation-history">';
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $html is do_shortcode() output of our own shortcode; the shortcode template escapes its values.
         echo $html;
 
         echo '</div>';

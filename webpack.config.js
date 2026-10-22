@@ -286,10 +286,14 @@ const plugins = [
  */
 module.exports = {
     ...defaultConfig,
-    // Persist the build cache under node_modules/.cache/webpack so repeat builds, locally and in CI,
-    // only recompile what changed. Webpack invalidates entries by content hash, so a stale cache is safe.
+    // Persist the build cache under .cache/webpack so repeat builds, locally and in CI, only
+    // recompile what changed. It lives outside node_modules because `npm ci` deletes node_modules
+    // first, and pup's build (.puprc) runs `npm ci` right before `npm run build`, so a cache in
+    // there never lives long enough to be used. .cache is git-ignored and kept out of the plugin zip
+    // by .distignore. Webpack invalidates entries by content hash, so a stale cache is safe.
     cache: {
         type: 'filesystem',
+        cacheDirectory: path.resolve(__dirname, '.cache/webpack'),
         buildDependencies: {
             config: [__filename],
         },

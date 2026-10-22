@@ -440,7 +440,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testTotalItemsCountsEveryMatchingDonation()
     {
@@ -583,7 +583,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.0
      */
     public function testFiltersByCampaignWithTestModeOff()
     {

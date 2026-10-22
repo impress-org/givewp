@@ -615,12 +615,13 @@ function give_get_average_monthly_form_earnings( $form_id = 0 ) {
  *
  * Retrieves the name of a variable price option.
  *
+ * @since 4.19.0   A non-numeric price ID, such as '' or 'custom', no longer matches the first level.
  * @since       1.0
  *
- * @param int  $form_id      ID of the donation form.
- * @param int  $price_id     ID of the price option.
- * @param int  $payment_id   payment ID for use in filters ( optional ).
- * @param bool $use_fallback Outputs the level amount if no level text is provided.
+ * @param int        $form_id      ID of the donation form.
+ * @param int|string $price_id     ID of the price option. Non-numeric values never match a level.
+ * @param int        $payment_id   payment ID for use in filters ( optional ).
+ * @param bool       $use_fallback Outputs the level amount if no level text is provided.
  *
  * @return string $price_name Name of the price option
  */
@@ -634,8 +635,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 	}
 
 	foreach ( $prices as $price ) {
-
-		if ( intval( $price['_give_id']['level_id'] ) === intval( $price_id ) ) {
+		if ( is_numeric( $price_id ) && intval( $price['_give_id']['level_id'] ) === intval( $price_id ) ) {
 
 			$price_text     = apply_filters( 'give_form_level_text', isset( $price['_give_text'] ) ? $price['_give_text'] : '', $form_id, $price );
 			$price_fallback = $use_fallback ?
@@ -853,6 +853,7 @@ function give_get_form_maximum_price( $form_id = 0 ) {
 /**
  * Displays a formatted price for a donation form
  *
+ * @since TBD Escape output.
  * @since 1.0
  *
  * @param int      $form_id  ID of the form price to show
@@ -891,13 +892,13 @@ function give_price( $form_id = 0, $echo = true, $price_id = false ) {
 	}
 
 	$price           = apply_filters( 'give_form_price', give_maybe_sanitize_amount( $price ), $form_id );
-	$formatted_price = '<span class="give_price" id="give_price_' . $form_id . '">' . $price . '</span>';
+	$formatted_price = '<span class="give_price" id="give_price_' . (int) $form_id . '">' . esc_html( $price ) . '</span>';
 	$formatted_price = apply_filters( 'give_form_price_after_html', $formatted_price, $form_id, $price );
 
 	if ( $echo ) {
-		echo $formatted_price;
+		echo wp_kses_post( $formatted_price );
 	} else {
-		return $formatted_price;
+		return wp_kses_post( $formatted_price );
 	}
 }
 
@@ -983,6 +984,7 @@ function give_get_form_goal_format( $form_id = 0 ) {
 /**
  * Display/Return a formatted goal for a donation form
  *
+ * @since TBD Escape output.
  * @since 1.0
  *
  * @param int  $form_id ID of the form price to show
@@ -1007,15 +1009,15 @@ function give_goal( $form_id = 0, $echo = true ) {
 
 	$formatted_goal = sprintf(
 		'<span class="give_price" id="give_price_%1$s">%2$s</span>',
-		$form_id,
-		$goal
+		(int) $form_id,
+		esc_html( $goal )
 	);
 	$formatted_goal = apply_filters( 'give_form_price_after_html', $formatted_goal, $form_id, $goal );
 
 	if ( $echo ) {
-		echo $formatted_goal;
+		echo wp_kses_post( $formatted_goal );
 	} else {
-		return $formatted_goal;
+		return wp_kses_post( $formatted_goal );
 	}
 }
 

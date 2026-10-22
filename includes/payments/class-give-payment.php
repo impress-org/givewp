@@ -640,6 +640,7 @@ final class Give_Payment {
     /**
      * Create the base of a payment.
      *
+     * @since TBD Use gmdate() instead of date().
      * @since 4.16.7.2       Sanitize first, last, and title name values before storing donor meta.
      * @since  1.5
      * @access private
@@ -662,7 +663,7 @@ final class Give_Payment {
 		if ( empty( $this->key ) ) {
 
 			$auth_key             = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
-			$this->key            = strtolower( md5( $this->email . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );  // Unique key.
+			$this->key            = strtolower( md5( $this->email . gmdate( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );  // Unique key.
 			$this->pending['key'] = $this->key;
 		}
 
@@ -809,6 +810,7 @@ final class Give_Payment {
      *
      * Once items have been set, an update is needed to save them to the database.
      *
+     * @since TBD Use gmdate() instead of date().
      * @since 4.16.7.2 Sanitize first and last name values when saving billing meta.
      * @access public
      *
@@ -977,7 +979,7 @@ final class Give_Payment {
 					case 'date':
 						$args = [
 							'ID'            => $this->ID,
-							'post_date'     => date( 'Y-m-d H:i:s', strtotime( $this->date ) ),
+							'post_date'     => gmdate( 'Y-m-d H:i:s', strtotime( $this->date ) ),
 							'post_date_gmt' => get_gmt_from_date( $this->date ),
 							'edit_date'     => true,
 						];

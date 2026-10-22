@@ -1,0 +1,13 @@
+# CodeRabbit reviews every pull request that is ready for review, whatever branch it targets.
+#
+# By default CodeRabbit only reviews pull requests that target the default branch. Epic work
+# here targets an epic base branch, and stacked pull requests target the branch below them,
+# so those were skipped until someone commented "@coderabbitai review".
+#
+# Reference: https://docs.coderabbit.ai/reference/configuration
+
+reviews:
+  auto_review:
+    enabled: true
+    base_branches:
+      - ".*"

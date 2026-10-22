@@ -205,6 +205,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Show success notice
          *
+         * @since TBD Escape output.
          * @since 4.11.0
          */
         public function import_success()
@@ -230,21 +231,21 @@ if (!class_exists('Give_Import_Subscriptions')) {
                         <?php
                         if ($success) {
                             if ($dry_run) {
-                                printf(
+                                echo wp_kses_post(sprintf(
                                     _n('Dry run import complete! %s row processed', 'Dry run import complete! %s rows processed', $total, 'give'),
-                                    "<strong>{$total}</strong>"
-                                );
+                                    '<strong>' . esc_html($total) . '</strong>'
+                                ));
                             } else {
-                                printf(
+                                echo wp_kses_post(sprintf(
                                     _n('Import complete! %s row processed', 'Import complete! %s rows processed', $total, 'give'),
-                                    "<strong>{$total}</strong>"
-                                );
+                                    '<strong>' . esc_html($total) . '</strong>'
+                                ));
                             }
                         } else {
-                            printf(
+                            echo wp_kses_post(sprintf(
                                 _n('Failed to import %s row', 'Failed to import %s rows', $total, 'give'),
-                                "<strong>{$total}</strong>"
-                            );
+                                '<strong>' . esc_html($total) . '</strong>'
+                            ));
                         }
                         ?>
                     </h2>
@@ -276,13 +277,13 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
                     if (!empty($report)) {
                         if (isset($report['create_subscription'])) {
-                            echo '<p>' . sprintf(_n('%s subscription created', '%s subscriptions created', (int)$report['create_subscription'], 'give'), (int)$report['create_subscription']) . '</p>';
+                            echo '<p>' . esc_html(sprintf(_n('%s subscription created', '%s subscriptions created', (int)$report['create_subscription'], 'give'), (int)$report['create_subscription'])) . '</p>';
                         }
                         if (isset($report['failed_subscription'])) {
-                            echo '<p>' . sprintf(_n('%s subscription failed', '%s subscriptions failed', (int)$report['failed_subscription'], 'give'), (int)$report['failed_subscription']) . '</p>';
+                            echo '<p>' . esc_html(sprintf(_n('%s subscription failed', '%s subscriptions failed', (int)$report['failed_subscription'], 'give'), (int)$report['failed_subscription'])) . '</p>';
                         }
                         if (!empty($report['failed_subscription_initial_donation'])) {
-                            echo '<p>' . sprintf(_n('%s initial donation failed', '%s initial donations failed', (int)$report['failed_subscription_initial_donation'], 'give'), (int)$report['failed_subscription_initial_donation']) . '</p>';
+                            echo '<p>' . esc_html(sprintf(_n('%s initial donation failed', '%s initial donations failed', (int)$report['failed_subscription_initial_donation'], 'give'), (int)$report['failed_subscription_initial_donation'])) . '</p>';
                         }
                         if (!empty($report['errors']) && is_array($report['errors'])) {
                             echo '<div class="notice notice-error" style="margin-top:10px;">';
@@ -308,6 +309,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Start Import
+         * @since TBD Escape translated output.
          * @since 4.11.0
          */
         public function start_import()
@@ -332,8 +334,8 @@ if (!class_exists('Give_Import_Subscriptions')) {
             ?>
             <tr valign="top" class="give-import-dropdown">
                 <th colspan="2">
-                    <h2 id="give-import-title"><?php _e('Importing', 'give'); ?></h2>
-                    <p class="give-field-description"><?php _e('Your subscriptions are now being imported...', 'give'); ?></p>
+                    <h2 id="give-import-title"><?php esc_html_e('Importing', 'give'); ?></h2>
+                    <p class="give-field-description"><?php esc_html_e('Your subscriptions are now being imported...', 'give'); ?></p>
                 </th>
             </tr>
 
@@ -404,6 +406,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Print the Dropdown option for CSV.
+         * @since TBD Escape translated output.
          * @since 4.11.0
          */
         public function render_dropdown()
@@ -428,40 +431,40 @@ if (!class_exists('Give_Import_Subscriptions')) {
                 ?>
                 <tr valign="top" class="give-import-dropdown">
                     <th colspan="2">
-                        <h2 id="give-import-title"><?php _e('Map CSV fields to subscriptions', 'give'); ?></h2>
+                        <h2 id="give-import-title"><?php esc_html_e('Map CSV fields to subscriptions', 'give'); ?></h2>
 
-                        <p class="give-import-donation-required-fields-title"><?php _e('Required Fields', 'give'); ?></p>
+                        <p class="give-import-donation-required-fields-title"><?php esc_html_e('Required Fields', 'give'); ?></p>
 
-                        <p class="give-field-description"><?php _e('These fields are required for the import to be submitted', 'give'); ?></p>
+                        <p class="give-field-description"><?php esc_html_e('These fields are required for the import to be submitted', 'give'); ?></p>
 
                         <ul class="give-import-subscription-required-fields">
                             <li class="give-import-subscription-required-donorId" title="Please configure all required fields to start the import process.">
-                                <span class="give-import-donation-required-text"><?php _e('Form ID', 'give'); ?></span>
+                                <span class="give-import-donation-required-text"><?php esc_html_e('Form ID', 'give'); ?></span>
                             </li>
                             <li class="give-import-subscription-required-donationFormId" title="Please configure all required fields to start the import process.">
-                                <span class="give-import-donation-required-text"><?php _e('Donor ID or Donor Email', 'give'); ?></span>
+                                <span class="give-import-donation-required-text"><?php esc_html_e('Donor ID or Donor Email', 'give'); ?></span>
                             </li>
                             <li class="give-import-subscription-required-period" title="Please configure all required fields to start the import process.">
-                                <span class="give-import-donation-required-text"><?php _e('Period', 'give'); ?> (day, week, month, year)</span>
+                                <span class="give-import-donation-required-text"><?php esc_html_e('Period', 'give'); ?> (day, week, month, year)</span>
                             </li>
                             <li class="give-import-subscription-required-frequency" title="Please configure all required fields to start the import process.">
-                                <span class="give-import-donation-required-text"><?php _e('Frequency', 'give'); ?></span>
+                                <span class="give-import-donation-required-text"><?php esc_html_e('Frequency', 'give'); ?></span>
                             </li>
                             <li class="give-import-subscription-required-amount" title="Please configure all required fields to start the import process.">
-                                <span class="give-import-donation-required-text"><?php _e('Amount (donor facing amount)', 'give'); ?></span>
+                                <span class="give-import-donation-required-text"><?php esc_html_e('Amount (donor facing amount)', 'give'); ?></span>
                             </li>
                             <li class="give-import-subscription-required-status" title="Please configure all required fields to start the import process.">
-                                <span class="give-import-donation-required-text"><?php _e('Status', 'give'); ?> (active, expired, cancelled, suspended, paused, pending)</span>
+                                <span class="give-import-donation-required-text"><?php esc_html_e('Status', 'give'); ?> (active, expired, cancelled, suspended, paused, pending)</span>
                             </li>
                         </ul>
 
-                        <p class="give-field-description"><?php _e('Select fields from your CSV file to map against subscription fields or to ignore during import.', 'give'); ?></p>
+                        <p class="give-field-description"><?php esc_html_e('Select fields from your CSV file to map against subscription fields or to ignore during import.', 'give'); ?></p>
                     </th>
                 </tr>
 
                 <tr valign="top" class="give-import-dropdown">
-                    <th><b><?php _e('Column name', 'give'); ?></b></th>
-                    <th><b><?php _e('Map to field', 'give'); ?></b></th>
+                    <th><b><?php esc_html_e('Column name', 'give'); ?></b></th>
+                    <th><b><?php esc_html_e('Map to field', 'give'); ?></b></th>
                 </tr>
 
                 <?php
@@ -500,6 +503,8 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Print the columns from the CSV.
+         *
+         * @since TBD Escape translated output.
          */
         private function get_columns($index, $value = false, $mapto = [], &$selectedOptions = [])
         {
@@ -509,7 +514,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
             <select name="mapto[<?php echo esc_attr($index); ?>]">
                 <?php $this->get_dropdown_option_html($default, $current_mapto, $value, $selectedOptions); ?>
 
-                <optgroup label="<?php _e('Subscriptions', 'give'); ?>">
+                <optgroup label="<?php esc_attr_e('Subscriptions', 'give'); ?>">
                     <?php $this->get_dropdown_option_html($this->get_subscription_options(), $current_mapto, $value, $selectedOptions); ?>
                 </optgroup>
             </select>
@@ -651,6 +656,8 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Render progress steps
+         *
+         * @since TBD Escape translated output.
          */
         public function render_progress()
         {
@@ -658,16 +665,16 @@ if (!class_exists('Give_Import_Subscriptions')) {
             ?>
             <ol class="give-progress-steps">
                 <li class="<?php echo esc_attr(1 === $step ? 'active' : ''); ?>">
-                    <?php _e('Upload CSV file', 'give'); ?>
+                    <?php esc_html_e('Upload CSV file', 'give'); ?>
                 </li>
                 <li class="<?php echo esc_attr(2 === $step ? 'active' : ''); ?>">
-                    <?php _e('Column mapping', 'give'); ?>
+                    <?php esc_html_e('Column mapping', 'give'); ?>
                 </li>
                 <li class="<?php echo esc_attr(3 === $step ? 'active' : ''); ?>">
-                    <?php _e('Import', 'give'); ?>
+                    <?php esc_html_e('Import', 'give'); ?>
                 </li>
                 <li class="<?php echo esc_attr(4 === $step ? 'active' : ''); ?>">
-                    <?php _e('Done!', 'give'); ?>
+                    <?php esc_html_e('Done!', 'give'); ?>
                 </li>
             </ol>
             <?php
@@ -704,6 +711,8 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Dry Run checkbox and helper
+         *
+         * @since TBD Escape translated output.
          */
         public function give_import_subscription_submit_button_render_media_csv()
         {
@@ -714,10 +723,10 @@ if (!class_exists('Give_Import_Subscriptions')) {
                     <input type="hidden" name="dry_run" value="0" />
                     <input type="checkbox" name="dry_run" id="dry_run" class="dry_run"
                            value="1" <?php checked(1, $dry_run); ?>>
-                    <strong><?php _e('Dry Run', 'give'); ?></strong>
+                    <strong><?php esc_html_e('Dry Run', 'give'); ?></strong>
                 </label>
                 <p class="give-field-description">
-                    <?php _e('Preview what the import would look like without making any changes.', 'give'); ?>
+                    <?php esc_html_e('Preview what the import would look like without making any changes.', 'give'); ?>
                 </p>
             </div>
             <?php
@@ -733,6 +742,8 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Add CSV upload HTMl
+         *
+         * @since TBD Escape translated output.
          */
         public function render_media_csv()
         {
@@ -747,8 +758,8 @@ if (!class_exists('Give_Import_Subscriptions')) {
             ?>
             <tr valign="top">
                 <th colspan="2">
-                    <h2 id="give-import-title"><?php _e('Import subscriptions from a CSV file', 'give'); ?></h2>
-                    <p class="give-field-description"><?php _e('This tool allows you to import subscription data via a CSV file.', 'give'); ?></p>
+                    <h2 id="give-import-title"><?php esc_html_e('Import subscriptions from a CSV file', 'give'); ?></h2>
+                    <p class="give-field-description"><?php esc_html_e('This tool allows you to import subscription data via a CSV file.', 'give'); ?></p>
                 </th>
             </tr>
             <?php

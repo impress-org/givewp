@@ -12,7 +12,7 @@
 // Exit if accessed directly.
 use Give\Donations\Models\Donation;
 use Give\Helpers\Form\Utils;
-use Give\ValueObjects\Money;
+use Give\Framework\Support\ValueObjects\Money;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -1489,6 +1489,7 @@ function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
  * @param object|int $note       The comment object or ID.
  * @param int        $payment_id The payment ID the note is connected to.
  *
+ * @since TBD Escape the note author, content and delete-link text.
  * @since 1.0
  *
  * @return string
@@ -1523,11 +1524,11 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 		'give_delete_payment_note_' . $note->comment_ID
 	);
 
-	$note_html  = '<div class="give-payment-note" id="give-payment-note-' . $note->comment_ID . '">';
+	$note_html  = '<div class="give-payment-note" id="give-payment-note-' . absint( $note->comment_ID ) . '">';
 	$note_html .= '<p>';
-	$note_html .= '<strong>' . $user . '</strong>&nbsp;&ndash;&nbsp;<span style="color:#aaa;font-style:italic;">' . date_i18n( $date_format, strtotime( $note->comment_date ) ) . '</span><br/>';
-	$note_html .= nl2br( $note->comment_content );
-	$note_html .= '&nbsp;&ndash;&nbsp;<a href="' . esc_url( $delete_note_url ) . '" class="give-delete-payment-note" data-note-id="' . absint( $note->comment_ID ) . '" data-payment-id="' . absint( $payment_id ) . '" aria-label="' . __( 'Delete this donation note.', 'give' ) . '">' . __( 'Delete', 'give' ) . '</a>';
+	$note_html .= '<strong>' . esc_html( $user ) . '</strong>&nbsp;&ndash;&nbsp;<span style="color:#aaa;font-style:italic;">' . esc_html( date_i18n( $date_format, strtotime( $note->comment_date ) ) ) . '</span><br/>';
+	$note_html .= nl2br( esc_html( $note->comment_content ) );
+	$note_html .= '&nbsp;&ndash;&nbsp;<a href="' . esc_url( $delete_note_url ) . '" class="give-delete-payment-note" data-note-id="' . absint( $note->comment_ID ) . '" data-payment-id="' . absint( $payment_id ) . '" aria-label="' . esc_attr__( 'Delete this donation note.', 'give' ) . '">' . esc_html__( 'Delete', 'give' ) . '</a>';
 	$note_html .= '</p>';
 	$note_html .= '</div>';
 
@@ -1542,13 +1543,14 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
  * @param string $where Where clause.
  *
  * @access public
+ * @since TBD Use gmdate() instead of date().
  * @since  1.0
  *
  * @return string $where Modified where clause.
  */
 function give_filter_where_older_than_week( $where = '' ) {
 	// Payments older than one week.
-	$start  = date( 'Y-m-d', strtotime( '-7 days' ) );
+	$start  = gmdate( 'Y-m-d', strtotime( '-7 days' ) );
 	$where .= " AND post_date <= '{$start}'";
 
 	return $where;
@@ -1565,6 +1567,8 @@ function give_filter_where_older_than_week( $where = '' ) {
  *                                   enabled. b. separator  = The separator between the Form Title and the Donation
  *                                   Level.
  *
+ * @since 4.19.0 match levels by intended amount (fee excluded), never for custom amounts; use the framework Money;
+ *            skip levels without text and donations that cannot be loaded
  * @since 4.16.5 lookup option values by level ID (price_id) first before falling back to amount-based matching
  * @since 4.14.5 add currency compatibility to determine whether the level is same as donation amount
  * @since 3.18.0 check if donation form is V3 form
@@ -1600,37 +1604,44 @@ function give_get_donation_form_title( $donation_id, $args = [] ) {
         $donation = Donation::find($donation_id);
         $price_id = give_get_meta( $donation_id, '_give_payment_price_id', true );
 
-        if ( $price_id !== '' && $price_id !== 'custom' && ! is_null( $price_id ) ) {
-            foreach ( $options as $option ) {
-                if ( isset( $option['_give_id']['level_id'] ) && (string) $option['_give_id']['level_id'] === (string) $price_id ) {
-                    $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
-                    return apply_filters('give_get_donation_form_title', $form_title, $donation_id);
+        if ($donation && $options) {
+            if ( $price_id !== '' && $price_id !== 'custom' && ! is_null( $price_id ) ) {
+                foreach ( $options as $option ) {
+                    if ( isset( $option['_give_id']['level_id'] ) && ! empty( $option['_give_text'] ) && (string) $option['_give_id']['level_id'] === (string) $price_id ) {
+                        $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
+                        return apply_filters('give_get_donation_form_title', $form_title, $donation_id);
+                    }
                 }
             }
-        }
 
-        // Different currencies - use exchange rate from currency switcher
-        $exchange_rate = give_get_meta($donation_id, '_give_cs_exchange_rate', true);
+            // A custom amount that happens to equal a level was still not that level's donation.
+            if ($price_id !== 'custom') {
+                // Different currencies - use exchange rate from currency switcher
+                $exchange_rate = give_get_meta($donation_id, '_give_cs_exchange_rate', true);
+                $intended_amount = $donation->intendedAmount()->formatToMinorAmount();
 
-        foreach ( $options as $option ) {
-            if (!isset($option['_give_amount'], $option['_give_text'])) {
-                continue;
-            }
+                foreach ( $options as $option ) {
+                    if (!isset($option['_give_amount']) || empty($option['_give_text'])) {
+                        continue;
+                    }
 
-            $matched = false;
+                    $matched = false;
 
-            if ($default_currency === $payment_currency) {
-                $matched = Money::of($option['_give_amount'], $default_currency)->getMinorAmount() == $donation->amount->getAmount();
-            } elseif (!empty($exchange_rate) && is_numeric($exchange_rate)) {
-                $option_amount_converted = $option['_give_amount'] * $exchange_rate;
-                $option_money = Money::of($option_amount_converted, $payment_currency);
-                $diff = abs($option_money->getMinorAmount() - $donation->amount->getAmount());
-                $matched = ($diff < 2);
-            }
+                    if ($default_currency === $payment_currency) {
+                        $matched = Money::fromDecimal($option['_give_amount'], $default_currency)->formatToMinorAmount() == $intended_amount;
+                    } elseif ($exchange_rate && is_numeric($exchange_rate)) {
+                        // fromDecimal() truncates extra digits, so round the converted amount first.
+                        $option_amount_converted = round($option['_give_amount'] * $exchange_rate, give_get_price_decimals($payment_currency));
+                        $option_money = Money::fromDecimal($option_amount_converted, $payment_currency);
+                        $diff = abs($option_money->formatToMinorAmount() - $intended_amount);
+                        $matched = ($diff < 2);
+                    }
 
-            if ($matched) {
-                $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
-                return apply_filters('give_get_donation_form_title', $form_title, $donation_id);
+                    if ($matched) {
+                        $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
+                        return apply_filters('give_get_donation_form_title', $form_title, $donation_id);
+                    }
+                }
             }
         }
     }
@@ -1754,6 +1765,7 @@ function give_get_price_id( $form_id, $price ) {
  * @param array $args Arguments for form dropdown.
  * @param bool  $echo This parameter decides if print form dropdown html output or not.
  *
+ * @since TBD Escape output.
  * @since 1.6
  *
  * @return string
@@ -1765,6 +1777,7 @@ function give_get_form_dropdown( $args = [], $echo = false ) {
 		return $form_dropdown_html;
 	}
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- forms_dropdown() renders a <select> control; wp_kses_post() would strip it.
 	echo $form_dropdown_html;
 }
 
@@ -1774,6 +1787,7 @@ function give_get_form_dropdown( $args = [], $echo = false ) {
  * @param array $args Arguments for form dropdown.
  * @param bool  $echo This parameter decide if print form dropdown html output or not.
  *
+ * @since TBD Escape output.
  * @since 1.6
  * @since 2.12.0 Show "Custom" choice in select field if donation created with cusotm amount
  *
@@ -1825,6 +1839,7 @@ function give_get_form_variable_price_dropdown( $args = [], $echo = false ) {
 		return $form_dropdown_html;
 	}
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- forms_dropdown() renders a <select> control; wp_kses_post() would strip it.
 	echo $form_dropdown_html;
 }
 

@@ -3,6 +3,10 @@
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 
+/**
+ * @since TBD Escape output.
+ */
+
 if (!isset($attributes['campaignId'])) {
     return;
 }
@@ -38,7 +42,7 @@ if ($attributes['align'] !== 'full' && $attributes['align'] !== 'wide') {
         <img
             src="<?php echo esc_url($campaign->image); ?>"
             alt="<?php echo esc_attr($altText); ?>"
-            style="<?php echo trim(esc_attr($widthStyle) . esc_attr($heightStyle) . esc_attr($borderRadius)); ?>"
+            style="<?php echo esc_attr(trim(esc_attr($widthStyle) . esc_attr($heightStyle) . esc_attr($borderRadius))); ?>"
         />
     </figure>
 </div>
