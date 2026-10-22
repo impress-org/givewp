@@ -798,7 +798,7 @@ if ( ! class_exists('Give_License') ) :
 		 * @param $plugin
 		 *
 		 * @return string
-		 * @since TBD escape output.
+		 * @since TBD Escape output.
 		 * @since 4.19.0 show add-ons covered by a Liquid Web license as licensed
 		 * @since 2.5.0
 		 */

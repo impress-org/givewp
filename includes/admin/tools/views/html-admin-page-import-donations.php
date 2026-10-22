@@ -26,7 +26,7 @@ do_action( 'give_tools_import_donations_main_before' );
 				<?php
 				esc_html_e( 'Import Donations', 'give' );
 
-				if ( ! empty( $_POST['mapto'] ) && ! empty( $_GET['dry_run'] ) ) {
+				if ( ! empty( $_POST['mapto'] ) && ! empty( $_GET['dry_run'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended -- read-only import step param; it only changes what is shown and saves nothing.
 					printf(
 						'<strong> %s</strong>',
 						esc_html__( '(Dry Run)', 'give' )

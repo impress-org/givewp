@@ -253,7 +253,7 @@ class Give_Donor {
 
 		$addresses = ! empty( $addresses )
 			? $addresses
-			: $wpdb->get_results(
+			: $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP donor meta custom table; WordPress has no cache layer for it.
 				$wpdb->prepare(
 					"
 				SELECT meta_key, meta_value FROM %i
@@ -1396,7 +1396,7 @@ class Give_Donor {
 		if ( $is_multi_address ) {
 			if ( is_null( $multi_address_id ) ) {
 				// Get latest address key to set multi address id.
-				$multi_address_id = $wpdb->get_var(
+				$multi_address_id = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP donor meta custom table; WordPress has no cache layer for it.
 					$wpdb->prepare(
 						"
 						SELECT meta_key FROM %i
@@ -1467,7 +1467,7 @@ class Give_Donor {
 		$meta_type = Give()->donor_meta->meta_type;
 
 		// Process query.
-		$row_affected = $wpdb->query(
+		$row_affected = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- GiveWP donor meta custom table; WordPress has no cache layer for it.
 			$wpdb->prepare(
 				"
 				DELETE FROM %i
@@ -1524,7 +1524,7 @@ class Give_Donor {
 		$meta_type = Give()->donor_meta->meta_type;
 
 		// Process query.
-		$row_affected = $wpdb->get_results(
+		$row_affected = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP donor meta custom table; WordPress has no cache layer for it.
 			$wpdb->prepare(
 				"
 				SELECT meta_key FROM %i
@@ -1744,25 +1744,33 @@ class Give_Donor {
 	/**
 	 * Retrieves a donor's initials (first name and last name).
 	 *
+	 * @since TBD Filter with `give_get_donor_initials`. The old `get_donor_initals` filter still runs, as deprecated.
 	 * @since   2.1
 	 *
 	 * @return string The donor's two initials (no middle).
 	 */
 	public function get_donor_initals() {
+		$initials = give_get_name_initial(
+			[
+				'firstname' => $this->get_first_name(),
+				'lastname'  => $this->get_last_name(),
+			]
+		);
+
 		/**
-		 * Filter the donor name initials
+		 * Filter the donor name initials. Deprecated: use `give_get_donor_initials`.
 		 *
+		 * @since TBD Deprecated in favor of `give_get_donor_initials`.
 		 * @since 2.1.0
 		 */
-		return apply_filters(
-			'get_donor_initals',
-			give_get_name_initial(
-				[
-					'firstname' => $this->get_first_name(),
-					'lastname'  => $this->get_last_name(),
-				]
-			)
-		);
+		$initials = apply_filters_deprecated( 'get_donor_initals', [ $initials ], 'TBD', 'give_get_donor_initials' );
+
+		/**
+		 * Filter the donor name initials.
+		 *
+		 * @since TBD Replaces `get_donor_initals`.
+		 */
+		return apply_filters( 'give_get_donor_initials', $initials );
 
 	}
 

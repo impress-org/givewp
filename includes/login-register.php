@@ -130,6 +130,7 @@ function give_process_login_form( $data ) {
 
 		if ( ! $errors ) {
 			$redirect = apply_filters( 'give_login_redirect', $data['give_login_redirect'], $user_id );
+			// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- the redirect URL comes from the shortcode or block settings and may point to another host (SSO, a subdomain); wp_safe_redirect() would send those users to the home page instead.
 			wp_redirect( $redirect );
 			give_die();
 		}
@@ -171,6 +172,7 @@ function give_process_user_logout( $data ) {
 		 */
 		do_action( 'give_after_user_logout' );
 
+		// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- the redirect URL comes from the shortcode or block settings and may point to another host (SSO, a subdomain); wp_safe_redirect() would send those users to the home page instead.
 		wp_redirect( $data['give_logout_redirect'] );
 		give_die();
 	}
@@ -309,6 +311,7 @@ function give_process_register_form( $data ) {
 			)
 		);
 
+		// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- the redirect URL comes from the shortcode or block settings and may point to another host (SSO, a subdomain); wp_safe_redirect() would send those users to the home page instead.
 		wp_redirect( $redirect );
 		give_die();
 	}
@@ -320,6 +323,7 @@ add_action( 'give_user_register', 'give_process_register_form' );
 /**
  * Email access login form.
  *
+ * @since TBD Unslash and sanitize the request input.
  * @since 1.8.17
  *
  * @return bool
@@ -327,12 +331,12 @@ add_action( 'give_user_register', 'give_process_register_form' );
 function give_email_access_login() {
 
 	// Verify nonce.
-	if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
+	if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'give' ) ) {
 		return false;
 	}
 
 	// Need email to proceed.
-	$email = isset( $_POST['give_email'] ) ? give_clean( $_POST['give_email'] ) : '';
+	$email = isset( $_POST['give_email'] ) ? give_clean( $_POST['give_email'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 	if ( empty( $email ) ) {
 		give_set_error( 'give_empty_email', __( 'Please enter the email address you used for your donation.', 'give' ) );
 	}
@@ -346,8 +350,8 @@ function give_email_access_login() {
 
 		$args = array(
 			'secret'   => $recaptcha_secret,
-			'response' => $_POST['g-recaptcha-response'],
-			'remoteip' => $_POST['give_ip'],
+			'response' => isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '',
+			'remoteip' => isset( $_POST['give_ip'] ) ? sanitize_text_field( wp_unslash( $_POST['give_ip'] ) ) : '',
 		);
 
 		if ( ! empty( $args['response'] ) ) {

@@ -12,6 +12,8 @@
  * @subpackage  Admin/Upgrades
  */
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- one-time upgrade routines that rewrite GiveWP tables and post meta in bulk; they run once and must not be cached.
+
 // Exit if accessed directly.
 use Give\Helpers\Gateways\Stripe;
 
@@ -491,6 +493,7 @@ add_action( 'give_register_updates', 'give_show_upgrade_notices' );
  *
  * This function is usually triggered via AJAX
  *
+ * @since TBD Verify the nonce.
  * @since 1.0
  * @return void
  */
@@ -505,6 +508,8 @@ function give_trigger_upgrades() {
 			]
 		);
 	}
+
+	check_ajax_referer( 'give_trigger_upgrades' );
 
 	$give_version = get_option( 'give_version' );
 
@@ -1918,7 +1923,7 @@ function give_v20_upgrades_payment_metadata_callback() {
 			$payment_meta = give_get_meta( $post->ID, '_give_payment_meta', true );
 
 			if ( ! empty( $payment_meta ) ) {
-				_give_20_bc_split_and_save_give_payment_meta( $post->ID, $payment_meta );
+				give_20_bc_split_and_save_give_payment_meta( $post->ID, $payment_meta );
 			}
 
 			$deprecated_meta_keys = [
@@ -1937,8 +1942,8 @@ function give_v20_upgrades_payment_metadata_callback() {
 					$wpdb->postmeta,
 					[
 						'post_id'    => $post->ID,
-						'meta_key'   => $new_meta_key,
-						'meta_value' => give_get_meta( $post->ID, $old_meta_key, true ),
+						'meta_key'   => $new_meta_key, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in a postmeta insert made by this upgrade, not a query filter.
+						'meta_value' => give_get_meta( $post->ID, $old_meta_key, true ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in a postmeta insert made by this upgrade, not a query filter.
 					]
 				);
 			}
@@ -2277,7 +2282,7 @@ function give_v201_upgrades_payment_metadata_callback() {
 			$payment_meta = give_get_meta( $post->ID, '_give_payment_meta', true );
 
 			if ( ! empty( $payment_meta ) ) {
-				_give_20_bc_split_and_save_give_payment_meta( $post->ID, $payment_meta );
+				give_20_bc_split_and_save_give_payment_meta( $post->ID, $payment_meta );
 			}
 
 			$deprecated_meta_keys = [
@@ -2296,8 +2301,8 @@ function give_v201_upgrades_payment_metadata_callback() {
 					$wpdb->postmeta,
 					[
 						'post_id'    => $post->ID,
-						'meta_key'   => $new_meta_key,
-						'meta_value' => give_get_meta( $post->ID, $old_meta_key, true ),
+						'meta_key'   => $new_meta_key, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in a postmeta insert made by this upgrade, not a query filter.
+						'meta_value' => give_get_meta( $post->ID, $old_meta_key, true ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in a postmeta insert made by this upgrade, not a query filter.
 					]
 				);
 			}

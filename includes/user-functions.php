@@ -516,8 +516,8 @@ function give_new_user_notification( $donation_id = 0, $donation_data = [] ) {
 	if (
 		empty( $donation_id )
 		|| empty( $donation_data )
-		|| ! isset( $_POST['give_create_account'] )
-		|| 'on' !== give_clean( $_POST['give_create_account'] )
+		|| ! isset( $_POST['give_create_account'] ) // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the nonce is only guaranteed for form donations (give_process_donation() checks it); this hook also runs on give_insert_user and for other callers of give_insert_payment(), and the value only decides whether to send an email.
+		|| 'on' !== give_clean( $_POST['give_create_account'] ) // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data. The nonce is only guaranteed for form donations (give_process_donation() checks it); this hook also runs on give_insert_user and for other callers of give_insert_payment(), and the value only decides whether to send an email.
 	) {
 		return;
 	}
@@ -623,7 +623,7 @@ function give_is_additional_email( $email ) {
 
 	$meta_type = Give()->donor_meta->meta_type;
 	// Use the table name of GiveWP's own donor meta. Other plugins, such as Charitable, can overwrite $wpdb->donormeta.
-	$donor_id  = $wpdb->get_var( $wpdb->prepare( "SELECT %i FROM %i WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $meta_type . '_id', Give()->donor_meta->table_name, $email ) );
+	$donor_id  = $wpdb->get_var( $wpdb->prepare( "SELECT %i FROM %i WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $meta_type . '_id', Give()->donor_meta->table_name, $email ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 
 	if ( empty( $donor_id ) ) {
 		return false;

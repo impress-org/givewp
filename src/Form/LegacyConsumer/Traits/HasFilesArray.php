@@ -17,7 +17,7 @@ trait HasFilesArray
      */
     public function getFiles()
     {
-        $_files = $_FILES[$this->field->getName()];
+        $_files = $_FILES[$this->field->getName()]; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- runs during donation validation and saving, after the request was verified. file upload array; it is only handed to the upload code, which uses wp_handle_upload() to check it.
         $files = [];
 
         if (empty($_files)) {

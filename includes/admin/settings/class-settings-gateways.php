@@ -431,7 +431,7 @@ if (! class_exists('Give_Settings_Gateways')) :
                 echo '<div class="give-settings-section-group-menu">';
                 echo '<ul>';
                 foreach ($groups as $slug => $group) {
-                    $current_group = ! empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup;
+                    $current_group = ! empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only group param; it only selects which panel to show and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
                     $active_class = ($slug === $current_group) ? 'active' : '';
 
                     if ($group['helper']) {
@@ -470,7 +470,7 @@ if (! class_exists('Give_Settings_Gateways')) :
 
             echo '<div class="give-settings-section-group-content">';
             foreach ($groups as $slug => $group) :
-                $current_group = !empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup;
+                $current_group = !empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only group param; it only selects which panel to show and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
                 $hide_class = $slug !== $current_group ? 'give-hidden' : '';
                 $suffix = $slug === 'v3' ? '_v3' : '';
 

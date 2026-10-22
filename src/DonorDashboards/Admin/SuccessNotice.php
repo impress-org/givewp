@@ -28,7 +28,7 @@ class SuccessNotice
      */
     protected function shouldRenderOutput()
     {
-        return isset($_GET['give-generated-donor-dashboard-page']);
+        return isset($_GET['give-generated-donor-dashboard-page']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only flag; it only decides whether to show a notice and saves nothing.
     }
 
     /**

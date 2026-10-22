@@ -4,13 +4,14 @@
  * Uninstall Give
  *
  * @package     Give
- * @since       TBD Delete only the options that start with a GiveWP prefix.
- * @since       TBD Prepare SQL with placeholders and skip DROP TABLE when there are no tables.
+ * @since       TBD Delete only the options that start with a GiveWP prefix, prepare SQL with placeholders, and skip DROP TABLE when there are no tables.
  * @since       1.0
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @subpackage  Uninstall
  */
+
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- uninstall script; it drops GiveWP tables and deletes its data once, so there is nothing to cache.
 
 use Give\Uninstall\Actions\DeleteGiveOptions;
 

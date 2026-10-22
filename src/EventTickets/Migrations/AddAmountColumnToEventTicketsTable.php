@@ -6,6 +6,8 @@ use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- migration; it copies data between GiveWP tables once and must not be cached.
+
 /**
  * @since 3.20.0
  */

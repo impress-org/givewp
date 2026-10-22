@@ -126,6 +126,7 @@ class Router
      * that drop query strings from their key; a query argument is the primary way to pass data
      * to a script route.
      *
+     * @since TBD Sanitize the route query var.
      * @since 4.17.0
      */
     public function scriptRequest(WP $wp, string $uri): ?array
@@ -136,7 +137,8 @@ class Router
 
         $candidates = [
             '#^' . preg_quote($this->scriptBase, '#') . '/' . $pattern . '$#' => (string)$wp->request,
-            '#^' . $pattern . '$#' => isset($_GET['givewp-route']) ? (string)$_GET['givewp-route'] : '',
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public script route; the query var only picks which script is served and a WordPress nonce cannot be sent to cached embeds.
+            '#^' . $pattern . '$#' => isset($_GET['givewp-route']) ? sanitize_text_field(wp_unslash($_GET['givewp-route'])) : '',
         ];
 
         foreach ($candidates as $regex => $subject) {
@@ -162,7 +164,7 @@ class Router
      */
     protected function isRouteValid(string $route): bool
     {
-        return isset($_GET['givewp-route']) && $_GET['givewp-route'] === $route;
+        return isset($_GET['givewp-route']) && $_GET['givewp-route'] === $route; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public route match; it only picks which route runs and a WordPress nonce cannot be sent to public routes.
     }
 
     /**
@@ -178,6 +180,7 @@ class Router
     }
 
     /**
+     * @since TBD Sanitize the content type header.
      * @since 3.0.0
      */
     protected function getDataFromPostRequest(): array
@@ -188,15 +191,17 @@ class Router
             return $requestData;
         }
 
-        if (str_contains($_SERVER['CONTENT_TYPE'], "application/json")) {
+        if (str_contains(sanitize_text_field(wp_unslash($_SERVER['CONTENT_TYPE'])), "application/json")) {
             $requestData = file_get_contents('php://input');
             $requestData = json_decode($requestData, true);
             $requestData = give_clean($requestData);
         } else {
+            // phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- public route request; the route handler checks the request itself and a WordPress nonce cannot be sent to cached public routes.
             $requestData = array_merge(
                 give_clean($_REQUEST),
                 give_clean($_FILES)
             );
+            // phpcs:enable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
         }
 
         return $requestData;
@@ -207,7 +212,7 @@ class Router
      */
     protected function getDataFromGetRequest(): array
     {
-        return give_clean($_GET);
+        return give_clean($_GET); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public route request; the route handler checks the request itself and a WordPress nonce cannot be sent to cached public routes.
     }
 
     /**

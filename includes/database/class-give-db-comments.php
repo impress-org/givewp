@@ -171,7 +171,7 @@ class Give_DB_Comments extends Give_DB {
 
 		switch ( $by ) {
 			case 'id':
-				$comment = $wpdb->get_row(
+				$comment = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 					$wpdb->prepare(
 						"SELECT * FROM {$wpdb->give_comments} WHERE comment_ID = %s LIMIT 1",
 						$comment_id
@@ -203,7 +203,7 @@ class Give_DB_Comments extends Give_DB {
 		$sql_query = $this->get_sql( $args );
 
 		// Get comment.
-		$comments = $wpdb->get_results( $sql_query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() returns a prepared query.
+		$comments = $wpdb->get_results( $sql_query ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() returns a prepared query. GiveWP custom table; WordPress has no cache layer for it.
 
 		return $comments;
 	}
@@ -229,7 +229,7 @@ class Give_DB_Comments extends Give_DB {
 
 		$sql_query = $this->get_sql( $args );
 
-		$count = $wpdb->get_var( $sql_query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() returns a prepared query.
+		$count = $wpdb->get_var( $sql_query ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() returns a prepared query. GiveWP custom table; WordPress has no cache layer for it.
 
 		return absint( $count );
 	}

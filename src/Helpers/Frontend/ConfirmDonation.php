@@ -23,18 +23,18 @@ class ConfirmDonation
      */
     public static function storePostedDataInDonationSession()
     {
-        $isShowingDonationReceipt = ! empty($_REQUEST['giveDonationAction']) && 'showReceipt' === give_clean(
-                $_REQUEST['giveDonationAction']
+        $isShowingDonationReceipt = ! empty($_REQUEST['giveDonationAction']) && 'showReceipt' === give_clean( // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- donation confirmation page that an off-site gateway sends the donor back to; a WordPress nonce cannot be sent here.
+                $_REQUEST['giveDonationAction'] // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- donation confirmation page that an off-site gateway sends the donor back to; a WordPress nonce cannot be sent here. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
             );
 
-        if ( ! $isShowingDonationReceipt || ! isset($_GET['payment-confirmation'])) {
+        if ( ! $isShowingDonationReceipt || ! isset($_GET['payment-confirmation'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- donation confirmation page that an off-site gateway sends the donor back to; a WordPress nonce cannot be sent here.
             return false;
         }
 
-        $paymentGatewayId = ucfirst(give_clean($_GET['payment-confirmation']));
+        $paymentGatewayId = ucfirst(give_clean($_GET['payment-confirmation'])); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- donation confirmation page that an off-site gateway sends the donor back to; a WordPress nonce cannot be sent here. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
         $session = new DonationAccessor();
-        $session->store("postDataFor{$paymentGatewayId}", array_map('give_clean', $_POST));
+        $session->store("postDataFor{$paymentGatewayId}", array_map('give_clean', $_POST)); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- donation confirmation page that an off-site gateway sends the donor back to; a WordPress nonce cannot be sent here. The posted data is sanitized with give_clean() and only kept in the donation session.
 
         return true;
     }
@@ -48,7 +48,7 @@ class ConfirmDonation
      */
     public static function removePostedDataFromDonationSession()
     {
-        $paymentGatewayId = ucfirst(give_clean($_GET['payment-confirmation']));
+        $paymentGatewayId = ucfirst(give_clean($_GET['payment-confirmation'])); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- donation confirmation page that an off-site gateway sends the donor back to; a WordPress nonce cannot be sent here. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
         $session = new DonationAccessor();
         $session->delete("postDataFor{$paymentGatewayId}");
@@ -62,6 +62,6 @@ class ConfirmDonation
      */
     public static function isConfirming()
     {
-        return FormUtils::isViewingFormReceipt() && isset($_GET['payment-confirmation']);
+        return FormUtils::isViewingFormReceipt() && isset($_GET['payment-confirmation']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- donation confirmation page that an off-site gateway sends the donor back to; a WordPress nonce cannot be sent here.
     }
 }

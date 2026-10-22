@@ -304,7 +304,7 @@ class EventTicketRepository
 
         $prefixedTableName = $wpdb->prefix . $tableName;
 
-        return (bool) $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($prefixedTableName)));
+        return (bool) $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($prefixedTableName))); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Checks whether a table exists with SHOW TABLES; WordPress has no function for it.
     }
 
     /**

@@ -13,6 +13,8 @@ class EnqueueStripeFormBuilderScripts
     /**
      * Enqueues the Stripe scripts and styles for the Form Builder.
      *
+     * @since TBD Set an explicit version on the script and style.
+     *
      * @return void
      */
     public function __invoke()
@@ -30,7 +32,7 @@ class EnqueueStripeFormBuilderScripts
             'givewp-stripe-payment-element-form-builder',
             GIVE_PLUGIN_URL . 'build/stripePaymentElementFormBuilder.js',
             $scriptAsset['dependencies'],
-            false,
+            $scriptAsset['version'],
             true
         );
 
@@ -48,7 +50,9 @@ class EnqueueStripeFormBuilderScripts
 
         wp_enqueue_style(
             'givewp-stripe-payment-element-form-builder',
-            GIVE_PLUGIN_URL . 'build/stripePaymentElementFormBuilder.css'
+            GIVE_PLUGIN_URL . 'build/stripePaymentElementFormBuilder.css',
+            [],
+            $scriptAsset['version']
         );
     }
 }

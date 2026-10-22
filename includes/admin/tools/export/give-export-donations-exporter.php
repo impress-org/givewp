@@ -89,8 +89,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	public function set_properties( $request ) {
 
 		// Set data from form submission
-		if ( isset( $_POST['form'] ) ) {
-			$this->data = give_clean( wp_parse_args( $_POST['form'] ) );
+		if ( isset( $_POST['form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by give_do_ajax_export() before set_properties() runs.
+			$this->data = give_clean( wp_parse_args( $_POST['form'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified by give_do_ajax_export() before set_properties() runs. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		}
 
 		$this->form       = $this->data['forms'];
@@ -472,7 +472,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 						array(
 							'comment_parent' => $payment->ID,
 							'comment_type'   => 'donation',
-							'meta_query'     => array(
+							'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Reads donation notes by their note type, which is stored as comment meta; admin export.
 								'relation' => 'OR',
 								array(
 									'key'     => 'note_type',
@@ -507,7 +507,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 						array(
 							'comment_parent' => $payment->ID,
 							'comment_type'   => 'donation',
-							'meta_query'     => array(
+							'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Reads donation notes by their note type, which is stored as comment meta; admin export.
 								array(
 									'key'   => 'note_type',
 									'value' => 'donor',

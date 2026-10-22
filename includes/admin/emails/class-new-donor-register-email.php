@@ -127,7 +127,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		/**
 		 * email preview header.
 		 *
-		 * @since TBD Escape output, and return '' instead of null, so later give_email_preview_header callbacks get a string.
+		 * @since TBD Escape output, unslash and sanitize the request values, and return '' instead of null, so later give_email_preview_header callbacks get a string.
 		 * @since  2.0
 		 * @access public
 		 *
@@ -143,7 +143,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			}
 
 			// Payment receipt switcher
-			$user_id = give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' );
+			$user_id = give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only preview param; it only picks which donor to preview and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 			// Get payments.
 			$donors  = new Give_API();
@@ -165,7 +165,8 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				}
 			}
 
-			$request_url_data = wp_parse_url( $_SERVER['REQUEST_URI'] );
+			$request_uri      = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+			$request_url_data = wp_parse_url( $request_uri );
 			$query            = $request_url_data['query'];
 
 			// Remove user id query param if set from request url.

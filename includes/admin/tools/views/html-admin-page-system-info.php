@@ -2,7 +2,7 @@
 /**
  * Admin View: System Info
  *
- * @since TBD Escape output, including translated strings, and use wpdb::db_server_info() to read the database server version. Print the TLS rating without a translation call and add translators comments.
+ * @since TBD Escape output, including translated strings, and use wpdb::db_server_info() to read the database server version. Print the TLS rating without a translation call and add translators comments. Unslash and sanitize the server software value.
  */
 
 use Give\Framework\Migrations\MigrationsRunner;
@@ -12,6 +12,8 @@ use Give\License\PremiumAddonsListManager;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 /**
  * The following code is a derivative work of the code from the WooCommerce
@@ -228,7 +230,7 @@ $give_updates = Give_Updates::get_instance();
 	<tr>
 		<td data-export-label="Server Info"><?php esc_html_e( 'Server Info', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Information about the web server that is currently hosting your site.', 'give' ) ); ?></td>
-		<td><?php echo esc_html( $_SERVER['SERVER_SOFTWARE'] ); ?></td>
+		<td><?php echo esc_html( isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '' ); ?></td>
 	</tr>
 	<tr>
 		<td data-export-label="PHP Version"><?php esc_html_e( 'PHP Version', 'give' ); ?>:</td>

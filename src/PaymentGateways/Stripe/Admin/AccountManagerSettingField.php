@@ -244,7 +244,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Escape output.
+     * @since TBD Escape output. Add nonces to the set default and statement descriptor requests.
      * @since 2.13.0
      *
      * @param array $stripeAccount
@@ -275,7 +275,7 @@ class AccountManagerSettingField
                 'action' => 'edit_stripe_account_statement_descriptor',
                 'account-slug' => $stripeAccountSlug,
             ],
-            admin_url('admin-ajax.php')
+            wp_nonce_url(admin_url('admin-ajax.php'), 'give_edit_stripe_statement_descriptor_' . $stripeAccountSlug)
         ));
 
         $classes = $stripeAccountSlug === $this->defaultStripeAccountSlug ? ' give-stripe-boxshadow-option-wrap__selected' : '';
@@ -450,6 +450,8 @@ class AccountManagerSettingField
                     <a
                         data-account="<?php
                         echo esc_attr($stripeAccountSlug); ?>"
+                        data-nonce="<?php
+                        echo esc_attr(wp_create_nonce('give_stripe_set_account_default')); ?>"
                         class="give-stripe-account-set-default"
                         href="#"
                     ><?php
@@ -493,7 +495,7 @@ class AccountManagerSettingField
             'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.',
             'give'
         );
-        $can_display = ! empty($_GET['stripe_account']) ? '0' : '1';
+        $can_display = ! empty($_GET['stripe_account']) ? '0' : '1'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only display flag set by the Stripe Connect return redirect; it changes no data.
         ?>
         <div
             id="give-stripe-connected"

@@ -76,8 +76,8 @@ class DonorNotesRepository
                 DB::table('give_commentmeta')
                     ->insert([
                         'give_comment_id' => $commentId,
-                        'meta_key' => DonorNoteMetaKeys::TYPE,
-                        'meta_value' => DonorNoteType::DONOR,
+                        'meta_key' => DonorNoteMetaKeys::TYPE, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the comment meta table, not a query filter.
+                        'meta_value' => DonorNoteType::DONOR, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
                     ]);
             }
         } catch (Exception $exception) {
@@ -238,15 +238,15 @@ class DonorNotesRepository
         if ( ! $query) {
             $table->insert([
                 'give_comment_id' => $donorNote->id,
-                'meta_key' => DonorNoteMetaKeys::TYPE,
-                'meta_value' => $donorNote->type->getValue(),
+                'meta_key' => DonorNoteMetaKeys::TYPE, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the comment meta table, not a query filter.
+                'meta_value' => $donorNote->type->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
             ]);
         } else {
             $table
                 ->where('give_comment_id', $donorNote->id)
                 ->where('meta_key', DonorNoteMetaKeys::TYPE)
                 ->update([
-                    'meta_value' => $donorNote->type->getValue(),
+                    'meta_value' => $donorNote->type->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
                 ]);
         }
     }

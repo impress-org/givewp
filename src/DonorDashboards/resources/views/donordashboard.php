@@ -12,6 +12,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 $pageId     = give_get_option('donor_dashboard_page');
 $iframeView = new IframeContentView();
 

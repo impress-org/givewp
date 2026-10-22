@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Note: only for internal use
  *
- * @since TBD Add translators comments.
+ * @since TBD Add translators comments. Check that the upload error is set and sanitize the file name.
  * @since 4.16.6 Use Plugin_Upgrader to install/update the add-on, replacing unreliable
  *            filename-based pre-existing checks and post-install detection.
  * @since 2.5.0
@@ -31,7 +31,7 @@ function give_upload_addon_handler() {
 		wp_send_json_error( [ 'errorMsg' => __( 'No file was uploaded.', 'give' ) ] );
 	}
 
-	if ( UPLOAD_ERR_OK !== $_FILES['file']['error'] ) {
+	if ( ! isset( $_FILES['file']['error'] ) || UPLOAD_ERR_OK !== $_FILES['file']['error'] ) {
 		wp_send_json_error( [ 'errorMsg' => __( 'The file upload failed. Please try again.', 'give' ) ] );
 	}
 
@@ -55,7 +55,7 @@ function give_upload_addon_handler() {
 		);
 	}
 
-	$file_type = wp_check_filetype( $_FILES['file']['name'], [ 'zip' => 'application/zip' ] );
+	$file_type = wp_check_filetype( sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ), [ 'zip' => 'application/zip' ] );
 
 	if ( empty( $file_type['ext'] ) ) {
 		wp_send_json_error( [ 'errorMsg' => __( 'Uploaded add-ons must be (zipped) ZIP files. Upload a valid add-on ZIP.', 'give' ) ] );
@@ -65,7 +65,7 @@ function give_upload_addon_handler() {
 	$pre_addons_list = give_get_plugins( [ 'only_add_on' => true ] );
 
 	// Detect the plugin folder name from the ZIP to check for an existing installation.
-	$zip_folder = give_get_zip_plugin_folder( $_FILES['file']['tmp_name'] );
+	$zip_folder = give_get_zip_plugin_folder( $_FILES['file']['tmp_name'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- tmp_name is the server path PHP gave the upload; it is not user text, and the upload was checked above with isset() and UPLOAD_ERR_OK.
 
 	if ( ! empty( $zip_folder ) && ! empty( $pre_addons_list ) ) {
 		foreach ( $pre_addons_list as $addon_path => $addon_data ) {
@@ -92,7 +92,7 @@ function give_upload_addon_handler() {
 
 	$buffer_level = ob_get_level();
 
-	$result = $upgrader->install( $_FILES['file']['tmp_name'] );
+	$result = $upgrader->install( $_FILES['file']['tmp_name'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- tmp_name is the server path PHP gave the upload; it is not user text, and the upload was checked above with isset() and UPLOAD_ERR_OK.
 
 	while ( ob_get_level() > $buffer_level ) {
 		// A non-removable buffer, such as zlib, would loop until the request times out.
@@ -206,7 +206,7 @@ add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
  *
  * Note: only for internal use
  *
- * @since TBD Add translators comments.
+ * @since TBD Add translators comments. Check that the add-on is set before reading it.
  * @since 4.16.7 Redirect unified license keys (LWSW-) to the Unified License Manager, when it is available.
  * @since 2.5.0
  */
@@ -218,10 +218,12 @@ function give_get_license_info_handler() {
 		give_die();
 	}
 
+	// phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 	$license_key                  = ! empty( $_POST['license'] ) ? give_clean( $_POST['license'] ) : '';
 	$is_activating_single_license = ! empty( $_POST['single'] ) ? absint( $_POST['single'] ) : '';
 	$is_reactivating_license      = ! empty( $_POST['reactivate'] ) ? absint( $_POST['reactivate'] ) : '';
-	$plugin_slug                  = $is_activating_single_license ? give_clean( $_POST['addon'] ) : '';
+	$plugin_slug                  = $is_activating_single_license && isset( $_POST['addon'] ) ? give_clean( $_POST['addon'] ) : '';
+	// phpcs:enable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	$licenses                     = get_option( 'give_licenses', [] );
 
 	if ( ! $license_key ) {
@@ -401,12 +403,13 @@ add_action( 'wp_ajax_give_get_license_info', 'give_get_license_info_handler' );
  *
  * Note: only for internal use
  *
+ * @since TBD Check that the plugin is set before reading it.
  * @since 4.16.6 Guard against empty or invalid plugin paths that previously bypassed
  *            the nonce and capability checks.
  * @since 2.5.0
  */
 function give_activate_addon_handler() {
-	$plugin_path = give_clean( $_POST['plugin'] );
+	$plugin_path = isset( $_POST['plugin'] ) ? give_clean( $_POST['plugin'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- the nonce action includes this plugin path, so check_admin_referer() runs on the next line. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 	check_admin_referer( "give_activate-{$plugin_path}" );
 
@@ -475,12 +478,15 @@ add_action( 'wp_ajax_give_activate_addon', 'give_activate_addon_handler' );
  *
  * Note: only for internal use
  *
+ * @since TBD Check that the license fields are set before reading them.
  * @since 2.5.0
  */
 function give_deactivate_license_handler() {
-	$license        = give_clean( $_POST['license'] );
-	$item_name      = give_clean( $_POST['item_name'] );
-	$plugin_dirname = give_clean( $_POST['plugin_dirname'] );
+	// phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- the nonce action includes the item name, so check_admin_referer() runs below, once these are read. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+	$license        = isset( $_POST['license'] ) ? give_clean( $_POST['license'] ) : '';
+	$item_name      = isset( $_POST['item_name'] ) ? give_clean( $_POST['item_name'] ) : '';
+	$plugin_dirname = isset( $_POST['plugin_dirname'] ) ? give_clean( $_POST['plugin_dirname'] ) : '';
+	// phpcs:enable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 	if ( ! $license || ! $item_name ) {
 		wp_send_json_error();
@@ -818,7 +824,7 @@ add_action( 'after_plugin_row', 'give_show_update_notification_on_single_site', 
  * @since 2.5.11
  */
 function give_refresh_license_on_force_check() {
-	if ( isset( $_GET['force-check'] ) ) {
+	if ( isset( $_GET['force-check'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- WordPress core sends this param from its own Check Again link on the Updates screen; it only re-checks license status.
 		give_refresh_licenses();
 	}
 }

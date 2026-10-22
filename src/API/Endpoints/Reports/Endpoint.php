@@ -401,7 +401,7 @@ abstract class Endpoint implements RestRoute
             'start_date' => strtotime($startStr),
             'end_date' => strtotime($endStr),
             'gateway' => $gateway,
-            'meta_query' => [
+            'meta_query' => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Limits the report donations to one currency, which is stored as meta.
                 [
                     'key' => '_give_payment_currency',
                     'value' => $this->currency,
