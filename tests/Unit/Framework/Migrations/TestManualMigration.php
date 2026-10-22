@@ -5,6 +5,8 @@ namespace Give\Tests\Unit\Framework\Migrations;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Controllers\ManualMigration;
 use Give\Framework\Migrations\MigrationsRegister;
+use Give\MigrationLog\MigrationLogRepository;
+use Give\MigrationLog\MigrationLogStatus;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -53,6 +55,23 @@ class TestManualMigration extends TestCase
         $this->makeController()->__invoke();
 
         $this->assertSame(0, ManualRunMigration::$runs);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testRunsMigrationWithValidNonceAndLogsIt()
+    {
+        $_GET['give-run-migration'] = ManualRunMigration::id();
+        $_GET['_wpnonce'] = wp_create_nonce('give_manual_migration');
+
+        $this->makeController()->__invoke();
+
+        $this->assertSame(1, ManualRunMigration::$runs);
+        $this->assertSame(
+            MigrationLogStatus::SUCCESS,
+            give(MigrationLogRepository::class)->getMigration(ManualRunMigration::id())->getStatus()
+        );
     }
 
     /**
