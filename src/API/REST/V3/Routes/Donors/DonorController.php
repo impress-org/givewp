@@ -109,6 +109,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Get list of donors.
      *
+     * @since 4.19.0.1 Exclude anonymous donors when the with-donations filter is disabled.
      * @since 4.14.0 Use Headers::addPagination() helper for pagination headers
      * @since 4.8.0 Add support for search parameter
      * @since 4.0.0
@@ -138,6 +139,8 @@ class DonorController extends WP_REST_Controller
             $mode = $request->get_param('mode');
             $campaignId = $request->get_param('campaignId');
             $query->whereDonorsHaveDonations($mode, $campaignId, $donorAnonymousMode->isExcluded());
+        } elseif ($donorAnonymousMode->isExcluded()) {
+            $query->whereDonorsAreNotAnonymous();
         }
 
         $totalQuery = $query->clone();
@@ -189,6 +192,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Update a single donor.
      *
+     * @since 4.19.0.1 Return an error when a non-admin caller sets a primary email that is not on the donor record.
      * @since 4.17.0 Non-admin callers may no longer add unverified email addresses.
      * @since 4.16.6 Skip readonly schema properties when applying PATCH updates.
      * @since 4.8.0 Update donor name when firstName or lastName is updated
@@ -220,6 +224,14 @@ class DonorController extends WP_REST_Controller
                 )
             )
         );
+
+        if (!DonorPermissions::canEdit() && $request->has_param('email') && !$donor->hasEmail((string)$request->get_param('email'))) {
+            return new WP_Error(
+                'donor_email_not_allowed',
+                __('The email must already belong to this donor.', 'give'),
+                ['status' => 403]
+            );
+        }
 
         if (!DonorPermissions::canEdit() && $request->has_param('additionalEmails')) {
             $allowed = array_merge($donor->additionalEmails ?? [], [$donor->email]);
