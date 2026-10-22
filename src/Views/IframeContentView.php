@@ -118,6 +118,7 @@ class IframeContentView
      * Note: if you want to overwrite this function then do not forget to add action hook in footer and header.
      * We use these hooks to manipulated donation form related actions.
      *
+     * @since TBD Escape output.
      * @since 2.7.0
      */
     public function render()
@@ -131,7 +132,7 @@ class IframeContentView
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title><?php
-                echo apply_filters('the_title', $this->title, $this->postId); ?></title>
+                echo esc_html(apply_filters('the_title', $this->title, $this->postId)); ?></title>
             <?php
             /**
              * Fire the action hook in header
@@ -140,8 +141,9 @@ class IframeContentView
             ?>
         </head>
         <body class="<?php
-        echo implode(' ', $this->bodyClasses); ?>">
+        echo esc_attr(implode(' ', $this->bodyClasses)); ?>">
         <?php
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- outputs the complete iframe document body built from escaped parts by the caller.
         echo $this->body;
 
         /**

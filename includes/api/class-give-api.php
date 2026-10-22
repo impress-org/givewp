@@ -1818,6 +1818,7 @@ class Give_API {
 	 * Output Query in either JSON/XML.
 	 * The query data is outputted as JSON by default.
 	 *
+	 * @since TBD Escape output.
 	 * @since 1.1
 	 * @global WP_Query $wp_query
 	 *
@@ -1845,6 +1846,7 @@ class Give_API {
 			case 'xml':
 				require_once GIVE_PLUGIN_DIR . 'includes/libraries/array2xml.php';
 				$xml = Array2XML::createXML( 'give', $this->data );
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- writes the API response body, not HTML.
 				echo $xml->saveXML();
 
 				break;
@@ -1948,6 +1950,7 @@ class Give_API {
 	 * Process an API key generation/revocation
 	 *
 	 * @access public
+	 * @since  TBD Escape output.
 	 * @since  1.1
 	 *
 	 * @param array $args
@@ -1958,8 +1961,8 @@ class Give_API {
 
 		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'give-api-nonce' ) ) {
 			wp_die(
-				__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ),
-				__( 'Error', 'give' ),
+				esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ),
+				esc_html__( 'Error', 'give' ),
 				array(
 					'response' => 403,
 				)
@@ -1968,8 +1971,8 @@ class Give_API {
 
 		if ( empty( $args['user_id'] ) ) {
 			wp_die(
-				__( 'User ID Required.', 'give' ),
-				__( 'Error', 'give' ),
+				esc_html__( 'User ID Required.', 'give' ),
+				esc_html__( 'Error', 'give' ),
 				array(
 					'response' => 401,
 				)
@@ -1986,22 +1989,22 @@ class Give_API {
 
 		if ( $user_id == get_current_user_id() && ! give_get_option( 'allow_user_api_keys' ) && ! current_user_can( 'manage_give_settings' ) ) {
 			wp_die(
-				sprintf( /* translators: %s: process */
+				esc_html( sprintf( /* translators: %s: process */
 					__( 'You do not have permission to %s API keys for this user.', 'give' ),
 					$process
-				),
-				__( 'Error', 'give' ),
+				) ),
+				esc_html__( 'Error', 'give' ),
 				array(
 					'response' => 403,
 				)
 			);
 		} elseif ( ! current_user_can( 'manage_give_settings' ) ) {
 			wp_die(
-				sprintf( /* translators: %s: process */
+				esc_html( sprintf( /* translators: %s: process */
 					__( 'You do not have permission to %s API keys for this user.', 'give' ),
 					$process
-				),
-				__( 'Error', 'give' ),
+				) ),
+				esc_html__( 'Error', 'give' ),
 				array(
 					'response' => 403,
 				)

@@ -4,6 +4,8 @@ use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 
 /**
+ * @since TBD Escape output.
+ *
  * @var array    $attributes
  * @var Campaign $campaign
  */
@@ -23,6 +25,6 @@ $blockInlineStyles = sprintf(
 
 ?>
 
-<div <?= get_block_wrapper_attributes(['style' => $blockInlineStyles]) ?>>
-    <div data-givewp-campaign-goal data-id="<?= $campaign->id ?>"></div>
+<div <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_block_wrapper_attributes() escapes its output. ?><?= get_block_wrapper_attributes(['style' => $blockInlineStyles]) ?>>
+    <div data-givewp-campaign-goal data-id="<?= (int) $campaign->id ?>"></div>
 </div>

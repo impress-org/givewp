@@ -1,4 +1,7 @@
 <?php
+/**
+ * @since TBD Escape output.
+ */
 /* @var Give_Updates $give_updates */
 $plugins = $give_updates->get_updates( 'plugin' );
 if ( empty( $plugins ) ) {
@@ -38,26 +41,26 @@ foreach ( $plugins as $plugin_data ) {
 			echo true === $plugin_data['License']
 				? sprintf(
 					'<span class="dashicons dashicons-yes"></span>%s',
-					__( 'Licensed', 'give' )
+					esc_html__( 'Licensed', 'give' )
 				)
 				: sprintf(
 					'<span data-tooltip="%s"><span class="dashicons dashicons-no-alt"></span>%s</span>',
-					__( 'Unlicensed add-ons cannot be updated. Please purchase or renew a valid license.', 'give' ),
-					__( 'Unlicensed', 'give' )
+					esc_attr__( 'Unlicensed add-ons cannot be updated. Please purchase or renew a valid license.', 'give' ),
+					esc_html__( 'Unlicensed', 'give' )
 				);
 
 			echo sprintf(
 				' &ndash; %s &ndash; %s',
-				sprintf( _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) ),
-				sprintf( __( '(Latest Version: %s)', 'give' ), $plugin_data['update']->new_version )
+				sprintf( esc_html( _x( 'by %s', 'by author', 'give' ) ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) ),
+				sprintf( esc_html( __( '(Latest Version: %s)', 'give' ) ), esc_html( $plugin_data['update']->new_version ) )
 			);
 			?>
 		</td>
 	</tr>
 	<?php
 }
-echo sprintf(
+echo wp_kses_post( sprintf(
 	'<table><tbody>%s</tbody></table>',
 	ob_get_clean()
-);
+) );
 ?>

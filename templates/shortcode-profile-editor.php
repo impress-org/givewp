@@ -4,6 +4,7 @@
  *
  * This template is used to display the profile editor with [give_profile_editor]
  *
+ * @since TBD Escape output.
  * @copyright    Copyright (c) 2016, GiveWP
  * @license      https://opensource.org/licenses/gpl-license GNU Public License
  */
@@ -40,7 +41,7 @@ if ( is_user_logged_in() ) :
 	do_action( 'give_profile_editor_before' );
 	?>
 
-	<form id="give_profile_editor_form" class="give-form" action="<?php echo give_get_current_page_url(); ?>" method="post">
+	<form id="give_profile_editor_form" class="give-form" action="<?php echo esc_url( give_get_current_page_url() ); ?>" method="post">
 		<fieldset>
 			<legend id="give_profile_name_label"><?php _e( 'Profile', 'give' ); ?></legend>
 
@@ -185,7 +186,7 @@ if ( is_user_logged_in() ) :
 
 			<p id="give_profile_submit_wrap">
 				<input type="hidden" name="give_profile_editor_nonce"
-					   value="<?php echo wp_create_nonce( 'give-profile-editor-nonce' ); ?>"/>
+					   value="<?php echo esc_attr( wp_create_nonce( 'give-profile-editor-nonce' ) ); ?>"/>
 				<input type="hidden" name="give_action" value="edit_user_profile"/>
 				<input type="hidden" name="give_redirect"
 					   value="<?php echo esc_url( give_get_current_page_url() ); ?>"/>
@@ -220,12 +221,14 @@ else :
 				case '2':
 					printf( '<p class="give_success"><strong>%1$s</strong> %2$s</p>', esc_html__( 'Success:', 'give' ), esc_html__( 'Your profile and password has been updated.', 'give' ) );
 					_e( 'Log in with your new credentials.', 'give' );
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_login_form() renders a full login form with input/button elements; wp_kses_post() would strip them, and its own values are escaped internally.
 					echo give_login_form();
 					break;
 
 				case '3':
 					printf( '<p class="give_success"><strong>%1$s</strong> %2$s</p>', esc_html__( 'Success:', 'give' ), esc_html__( 'Your password has been updated.', 'give' ) );
 					_e( 'Log in with your new credentials.', 'give' );
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_login_form() renders a full login form with input/button elements; wp_kses_post() would strip them, and its own values are escaped internally.
 					echo give_login_form();
 					break;
 
@@ -235,6 +238,7 @@ else :
 		}
 	} else {
 		_e( 'You need to log in to edit your profile.', 'give' );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_login_form() renders a full login form with input/button elements; wp_kses_post() would strip them, and its own values are escaped internally.
 		echo give_login_form();
 	}
 endif;

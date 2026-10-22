@@ -205,6 +205,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Show success notice
          *
+         * @since TBD Escape output.
          * @since 4.11.0
          */
         public function import_success()
@@ -230,21 +231,21 @@ if (!class_exists('Give_Import_Subscriptions')) {
                         <?php
                         if ($success) {
                             if ($dry_run) {
-                                printf(
+                                echo wp_kses_post(sprintf(
                                     _n('Dry run import complete! %s row processed', 'Dry run import complete! %s rows processed', $total, 'give'),
-                                    "<strong>{$total}</strong>"
-                                );
+                                    '<strong>' . esc_html($total) . '</strong>'
+                                ));
                             } else {
-                                printf(
+                                echo wp_kses_post(sprintf(
                                     _n('Import complete! %s row processed', 'Import complete! %s rows processed', $total, 'give'),
-                                    "<strong>{$total}</strong>"
-                                );
+                                    '<strong>' . esc_html($total) . '</strong>'
+                                ));
                             }
                         } else {
-                            printf(
+                            echo wp_kses_post(sprintf(
                                 _n('Failed to import %s row', 'Failed to import %s rows', $total, 'give'),
-                                "<strong>{$total}</strong>"
-                            );
+                                '<strong>' . esc_html($total) . '</strong>'
+                            ));
                         }
                         ?>
                     </h2>
@@ -276,13 +277,13 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
                     if (!empty($report)) {
                         if (isset($report['create_subscription'])) {
-                            echo '<p>' . sprintf(_n('%s subscription created', '%s subscriptions created', (int)$report['create_subscription'], 'give'), (int)$report['create_subscription']) . '</p>';
+                            echo '<p>' . esc_html(sprintf(_n('%s subscription created', '%s subscriptions created', (int)$report['create_subscription'], 'give'), (int)$report['create_subscription'])) . '</p>';
                         }
                         if (isset($report['failed_subscription'])) {
-                            echo '<p>' . sprintf(_n('%s subscription failed', '%s subscriptions failed', (int)$report['failed_subscription'], 'give'), (int)$report['failed_subscription']) . '</p>';
+                            echo '<p>' . esc_html(sprintf(_n('%s subscription failed', '%s subscriptions failed', (int)$report['failed_subscription'], 'give'), (int)$report['failed_subscription'])) . '</p>';
                         }
                         if (!empty($report['failed_subscription_initial_donation'])) {
-                            echo '<p>' . sprintf(_n('%s initial donation failed', '%s initial donations failed', (int)$report['failed_subscription_initial_donation'], 'give'), (int)$report['failed_subscription_initial_donation']) . '</p>';
+                            echo '<p>' . esc_html(sprintf(_n('%s initial donation failed', '%s initial donations failed', (int)$report['failed_subscription_initial_donation'], 'give'), (int)$report['failed_subscription_initial_donation'])) . '</p>';
                         }
                         if (!empty($report['errors']) && is_array($report['errors'])) {
                             echo '<div class="notice notice-error" style="margin-top:10px;">';
