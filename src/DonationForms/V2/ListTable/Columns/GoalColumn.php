@@ -36,7 +36,7 @@ class GoalColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Show "Achieved" as a pill next to the amount, only when the goal is met (or the givewp_list_table_goal_progress_achieved_opacity filter returns a truthy value).
+     * @since TBD Show "Achieved" as a pill next to the amount, hidden (also from screen readers) unless the goal is met or the givewp_list_table_goal_progress_achieved_opacity filter returns a truthy value.
      * @since 4.3.0 use DonationFormDataRepository
      * @since 4.2.0 convert goal data to v3 form format
      * @since 3.16.0 Remove "give_get_form_earnings_stats" filter logic and add filters to change the cell value content
@@ -72,18 +72,20 @@ class GoalColumn extends ModelColumn
 
 
         $template = '
-            <div
-                role="progressbar"
-                aria-labelledby="giveDonationFormsProgressBar-%1$d"
-                aria-valuenow="%2$s"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                class="goalProgress"
-            >
-                <span style="width: %2$s%%"></span>
-            </div>
-            <div id="giveDonationFormsProgressBar-%1$d" class="goalProgress__amount">
-                <span><span class="goal">%3$s</span>%4$s</span>%5$s
+            <div class="goalProgress__container">
+                <div
+                    role="progressbar"
+                    aria-labelledby="giveDonationFormsProgressBar-%1$d"
+                    aria-valuenow="%2$s"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    class="goalProgress"
+                >
+                    <span style="width: %2$s%%"></span>
+                </div>
+                <div id="giveDonationFormsProgressBar-%1$d" class="goalProgress__amount">
+                    <span><span class="goal">%3$s</span>%4$s</span>%5$s
+                </div>
             </div>
         ';
 
@@ -97,13 +99,14 @@ class GoalColumn extends ModelColumn
                 __('of', 'give'),
                 $stats['goal']
             ),
-            apply_filters('givewp_list_table_goal_progress_achieved_opacity', $stats['progress'] >= 100 ? 1 : 0)
-                ? sprintf(
-                    '<span class="goalProgress--achieved"><img src="%s" alt="" />%s</span>',
-                    GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/star-icon.svg',
-                    __('Achieved', 'give')
-                )
-                : ''
+            sprintf(
+                '<span class="goalProgress--achieved"%s><img src="%s" alt="" />%s</span>',
+                apply_filters('givewp_list_table_goal_progress_achieved_opacity', $stats['progress'] >= 100 ? 1 : 0)
+                    ? ''
+                    : ' aria-hidden="true"',
+                GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/star-icon.svg',
+                __('Achieved', 'give')
+            )
         );
     }
 }
