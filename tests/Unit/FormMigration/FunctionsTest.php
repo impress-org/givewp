@@ -73,11 +73,12 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * The old name must keep updating by-reference arguments and log one deprecation notice.
+     * The old names must keep working. _give_is_form_migrated() logs no notice, because Peer-to-Peer
+     * still calls it; the other two log one each.
      *
      * @since TBD
      */
-    public function testDeprecatedRedirectNameKeepsReferencesAndLogsOneNotice()
+    public function testOldFunctionNamesKeepWorkingAndOnlyDeprecatedOnesLogANotice()
     {
         $donationFormV2 = $this->createSimpleDonationForm();
         $donationFormV3 = DonationForm::factory()->create();
@@ -108,6 +109,7 @@ class FunctionsTest extends TestCase
         $this->assertEquals($donationFormV3->id, $atts['id']);
         $this->assertTrue($migrated);
         $this->assertTrue($transferred);
-        $this->assertCount(3, $notices);
+        $this->assertCount(2, $notices);
+        $this->assertStringNotContainsString('_give_is_form_migrated', implode(' ', $notices));
     }
 }

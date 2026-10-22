@@ -83,11 +83,12 @@ function give_is_form_migrated($formId) {
 }
 
 /**
- * @deprecated TBD Use give_is_form_migrated() instead.
+ * Old name of give_is_form_migrated(). Kept without a deprecation notice because Peer-to-Peer still
+ * calls it; deprecate once add-ons move to give_is_form_migrated().
+ *
+ * @since TBD Kept as an alias of give_is_form_migrated().
  */
-function _give_is_form_migrated($formId) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_is_form_migrated().
-    _give_deprecated_function( __FUNCTION__, 'TBD', 'give_is_form_migrated()' );
-
+function _give_is_form_migrated($formId) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- kept for add-ons that still call it; use give_is_form_migrated().
     return give_is_form_migrated($formId);
 }
 
