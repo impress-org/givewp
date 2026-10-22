@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @since TBD Add translators comments.
+ */
+
 use Give\Form\Template\Options;
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
@@ -67,6 +71,7 @@ return [
         ],
     ],
     'introduction' => [
+        /* translators: 1: Opening strong tag, 2: Closing strong tag */
         'name' => sprintf(__('%1$s Step 1: %2$s Introduction', 'give'), '<strong>', '</strong>'),
         'desc' => __('Step description goes here.', 'give'),
         'fields' => [
@@ -132,6 +137,7 @@ return [
         ],
     ],
     'payment_amount' => [
+        /* translators: 1: Opening strong tag, 2: Closing strong tag */
         'name' => sprintf(__('%1$s Step 2: %2$s Payment Amount', 'give'), '<strong>', '</strong>'),
         'desc' => __('Step description goes here.', 'give'),
         'fields' => [
@@ -158,6 +164,7 @@ return [
                 'type' => 'textarea',
                 'attributes' => [
                     'placeholder' =>  sprintf(
+                        /* translators: %s: Site name */
                         __(
                             'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause. Thank you for your generosity!',
                             'give'
@@ -166,6 +173,7 @@ return [
                     ),
                 ],
                 'default' =>  sprintf(
+                    /* translators: %s: Site name */
                     __(
                         'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause. Thank you for your generosity!',
                         'give'
@@ -186,6 +194,7 @@ return [
         ],
     ],
     'payment_information' => [
+        /* translators: 1: Opening strong tag, 2: Closing strong tag */
         'name' => sprintf(__('%1$s Step 3: %2$s Payment Information', 'give'), '<strong>', '</strong>'),
         'desc' => __('Step description goes here.', 'give'),
         'fields' => [
@@ -264,6 +273,7 @@ return [
         ],
     ],
     'thank-you' => [
+        /* translators: 1: Opening strong tag, 2: Closing strong tag */
         'name' => sprintf(__('%1$s Step 4: %2$s Thank You', 'give'), '<strong>', '</strong>'),
         'desc' => __('Step description goes here.', 'give'),
         'fields' => [

@@ -2,7 +2,7 @@
 /**
  * Admin View: Exports
  *
- * @since TBD Escape output, use gmdate() instead of date(), and replace short echo tags.
+ * @since TBD Escape output, use gmdate() instead of date(), and replace short echo tags, and add translators comments.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -98,7 +98,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     $firstDonationDate ? ($currentYear - $firstDonationDate->format('Y')) : 0
                                 );
                                 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- year_dropdown()/month_dropdown() render <select> controls; wp_kses_post() would strip them.
-                                printf( esc_html__('%1$s to %2$s', 'give'), $start_year_dropdown . ' ' . Give()->html->month_dropdown('start_month'), $end_year_dropdown . ' ' . Give()->html->month_dropdown('end_month') );
+                                printf( /* translators: 1: Start year and month fields, 2: End year and month fields */ esc_html__('%1$s to %2$s', 'give'), $start_year_dropdown . ' ' . Give()->html->month_dropdown('start_month'), $end_year_dropdown . ' ' . Give()->html->month_dropdown('end_month') );
                                 ?>
 								<input type="hidden" name="give-action" value="earnings_export"/>
 								<input type="hidden" name="give-nonce" value="<?php echo esc_attr( wp_create_nonce('give_earnings_export') ); ?>"/>

@@ -8,6 +8,7 @@
  * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  *
+ * @since TBD Add translators comments for the currency symbol.
  * @since 4.13.1 added XCG (Caribbean Guilder)
  * @since 4.10.0 Updated to match current ISO 4217 standard as of 2024. Total: 169 currencies.
  *
@@ -39,6 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 return array(
 	'USD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'US Dollars (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -49,6 +51,7 @@ return array(
 		),
 	),
 	'EUR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Euros (%1$s)', 'give' ), '&euro;' ),
 		'symbol'      => '&euro;',
 		'setting'     => array(
@@ -59,6 +62,7 @@ return array(
 		),
 	),
 	'GBP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Pounds Sterling (%1$s)', 'give' ), '&pound;' ),
 		'symbol'      => '&pound;',
 		'setting'     => array(
@@ -69,6 +73,7 @@ return array(
 		),
 	),
 	'AUD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Australian Dollars (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -79,6 +84,7 @@ return array(
 		),
 	),
 	'BRL' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Brazilian Real (%1$s)', 'give' ), '&#82;&#36;' ),
 		'symbol'      => '&#82;&#36;',
 		'setting'     => array(
@@ -89,6 +95,7 @@ return array(
 		),
 	),
 	'CAD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Canadian Dollars (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -99,6 +106,7 @@ return array(
 		),
 	),
 	'CZK' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Czech Koruna (%1$s)', 'give' ), '&#75;&#269;' ),
 		'symbol'      => '&#75;&#269;',
 		'setting'     => array(
@@ -109,6 +117,7 @@ return array(
 		),
 	),
 	'DKK' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Danish Krone (%1$s)', 'give' ), '&nbsp;kr.&nbsp;' ),
 		'symbol'      => '&nbsp;kr.&nbsp;',
 		'setting'     => array(
@@ -119,6 +128,7 @@ return array(
 		),
 	),
 	'HKD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Hong Kong Dollar (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -129,6 +139,7 @@ return array(
 		),
 	),
 	'HUF' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Hungarian Forint (%1$s)', 'give' ), '&#70;&#116;' ),
 		'symbol'      => '&#70;&#116;',
 		'setting'     => array(
@@ -139,6 +150,7 @@ return array(
 		),
 	),
 	'ILS' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Israeli Shekel (%1$s)', 'give' ), '&#8362;' ),
 		'symbol'      => '&#8362;',
 		'setting'     => array(
@@ -149,6 +161,7 @@ return array(
 		),
 	),
 	'JPY' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Japanese Yen (%1$s)', 'give' ), '&yen;' ),
 		'symbol'      => '&yen;',
 		'setting'     => array(
@@ -159,6 +172,7 @@ return array(
 		),
 	),
 	'MYR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Malaysian Ringgits (%1$s)', 'give' ), '&#82;&#77;' ),
 		'symbol'      => '&#82;&#77;',
 		'setting'     => array(
@@ -169,6 +183,7 @@ return array(
 		),
 	),
 	'MXN' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Mexican Peso (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -179,6 +194,7 @@ return array(
 		),
 	),
 	'MAD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Moroccan Dirham (%1$s)', 'give' ), '&#x2e;&#x62f;&#x2e;&#x645;' ),
 		'symbol'      => '&#x2e;&#x62f;&#x2e;&#x645;',
 		'setting'     => array(
@@ -189,6 +205,7 @@ return array(
 		),
 	),
 	'NZD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'New Zealand Dollar (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -199,6 +216,7 @@ return array(
 		),
 	),
 	'NOK' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Norwegian Krone (%1$s)', 'give' ), '&#107;&#114;.' ),
 		'symbol'      => '&#107;&#114;.',
 		'setting'     => array(
@@ -209,6 +227,7 @@ return array(
 		),
 	),
 	'PHP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Philippine Pesos (%1$s)', 'give' ), '&#8369;' ),
 		'symbol'      => '&#8369;',
 		'setting'     => array(
@@ -219,6 +238,7 @@ return array(
 		),
 	),
 	'PLN' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Polish Zloty (%1$s)', 'give' ), '&#122;&#322;' ),
 		'symbol'      => '&#122;&#322;',
 		'setting'     => array(
@@ -229,6 +249,7 @@ return array(
 		),
 	),
 	'SGD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Singapore Dollar (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -239,6 +260,7 @@ return array(
 		),
 	),
 	'KRW' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'South Korean Won (%1$s)', 'give' ), '&#8361;' ),
 		'symbol'      => '&#8361;',
 		'setting'     => array(
@@ -249,6 +271,7 @@ return array(
 		),
 	),
 	'ZAR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'South African Rand (%1$s)', 'give' ), '&#82;' ),
 		'symbol'      => '&#82;',
 		'setting'     => array(
@@ -259,6 +282,7 @@ return array(
 		),
 	),
 	'SEK' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Swedish Krona (%1$s)', 'give' ), '&nbsp;kr.&nbsp;' ),
 		'symbol'      => '&nbsp;kr.&nbsp;',
 		'setting'     => array(
@@ -269,6 +293,7 @@ return array(
 		),
 	),
 	'CHF' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Swiss Franc (%1$s)', 'give' ), '&#67;&#72;&#70;' ),
 		'symbol'      => '&#67;&#72;&#70;',
 		'setting'     => array(
@@ -279,6 +304,7 @@ return array(
 		),
 	),
 	'TWD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Taiwan New Dollars (%1$s)', 'give' ), '&#78;&#84;&#36;' ),
 		'symbol'      => '&#78;&#84;&#36;',
 		'setting'     => array(
@@ -289,6 +315,7 @@ return array(
 		),
 	),
 	'THB' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Thai Baht (%1$s)', 'give' ), '&#3647;' ),
 		'symbol'      => '&#3647;',
 		'setting'     => array(
@@ -299,6 +326,7 @@ return array(
 		),
 	),
 	'INR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Indian Rupee (%1$s)', 'give' ), '&#8377;' ),
 		'symbol'      => '&#8377;',
 		'setting'     => array(
@@ -309,6 +337,7 @@ return array(
 		),
 	),
 	'TRY' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Turkish Lira (%1$s)', 'give' ), '&#8378;' ),
 		'symbol'      => '&#8378;',
 		'setting'     => array(
@@ -319,6 +348,7 @@ return array(
 		),
 	),
 	'IRR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Iranian Rial (%1$s)', 'give' ), '&#xfdfc;' ),
 		'symbol'      => '&#xfdfc;',
 		'setting'     => array(
@@ -329,6 +359,7 @@ return array(
 		),
 	),
 	'RUB' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Russian Rubles (%1$s)', 'give' ), '&#8381;' ),
 		'symbol'      => '&#8381;',
 		'setting'     => array(
@@ -339,6 +370,7 @@ return array(
 		),
 	),
 	'AED' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'United Arab Emirates dirham (%1$s)', 'give' ), '&#x62f;.&#x625;' ),
 		'symbol'      => '&#x62f;.&#x625;',
 		'setting'     => array(
@@ -349,6 +381,7 @@ return array(
 		),
 	),
 	'AMD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Armenian dram (%1$s)', 'give' ), 'AMD' ),
 		'symbol'      => 'AMD', // Add backward compatibility. Using AMD in place of &#1423;
 		'setting'     => array(
@@ -359,6 +392,7 @@ return array(
 		),
 	),
 	'ANG' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Netherlands Antillean guilder (%1$s)', 'give' ), '&#402;' ),
 		'symbol'      => '&#402;',
 		'setting'     => array(
@@ -369,6 +403,7 @@ return array(
 		),
 	),
 	'ARS' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Argentine peso (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -379,6 +414,7 @@ return array(
 		),
 	),
 	'AWG' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Aruban florin (%1$s)', 'give' ), '&#402;' ),
 		'symbol'      => '&#402;',
 		'setting'     => array(
@@ -389,6 +425,7 @@ return array(
 		),
 	),
 	'BAM' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Bosnia and Herzegovina convertible mark (%1$s)', 'give' ), '&#75;&#77;' ),
 		'symbol'      => '&#75;&#77;',
 		'setting'     => array(
@@ -399,6 +436,7 @@ return array(
 		),
 	),
 	'BDT' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Bangladeshi taka (%1$s)', 'give' ), '&#2547;' ),
 		'symbol'      => '&#2547;',
 		'setting'     => array(
@@ -409,6 +447,7 @@ return array(
 		),
 	),
 	'BHD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Bahraini dinar (%1$s)', 'give' ), '.&#x62f;.&#x628;' ),
 		'symbol'      => '.&#x62f;.&#x628;',
 		'setting'     => array(
@@ -419,6 +458,7 @@ return array(
 		),
 	),
 	'BMD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Bermudian dollar (%1$s)', 'give' ), '&#66;&#68;&#36;' ),
 		'symbol'      => '&#66;&#68;&#36;',
 		'setting'     => array(
@@ -429,6 +469,7 @@ return array(
 		),
 	),
 	'BND' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Brunei dollar (%1$s)', 'give' ), '&#66;&#36;' ),
 		'symbol'      => '&#66;&#36;',
 		'setting'     => array(
@@ -439,6 +480,7 @@ return array(
 		),
 	),
 	'BOB' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Bolivian boliviano (%1$s)', 'give' ), '&#66;&#115;&#46;' ),
 		'symbol'      => '&#66;&#115;&#46;',
 		'setting'     => array(
@@ -449,6 +491,7 @@ return array(
 		),
 	),
 	'BSD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Bahamian dollar (%1$s)', 'give' ), '&#66;&#36;' ),
 		'symbol'      => '&#66;&#36;',
 		'setting'     => array(
@@ -459,6 +502,7 @@ return array(
 		),
 	),
 	'BWP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Botswana pula (%1$s)', 'give' ), '&#80;' ),
 		'symbol'      => '&#80;',
 		'setting'     => array(
@@ -469,6 +513,7 @@ return array(
 		),
 	),
 	'BZD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Belizean dollar (%1$s)', 'give' ), '&#66;&#90;&#36;' ),
 		'symbol'      => '&#66;&#90;&#36;',
 		'setting'     => array(
@@ -479,6 +524,7 @@ return array(
 		),
 	),
 	'CLP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Chilean peso (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -489,6 +535,7 @@ return array(
 		),
 	),
 	'CNY' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Chinese yuan (%1$s)', 'give' ), '&yen;' ),
 		'symbol'      => '&yen;',
 		'setting'     => array(
@@ -499,6 +546,7 @@ return array(
 		),
 	),
 	'COP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Colombian peso (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -509,6 +557,7 @@ return array(
 		),
 	),
 	'CRC' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Costa Rican colón (%1$s)', 'give' ), '&#8353;' ),
 		'symbol'      => '&#8353;',
 		'setting'     => array(
@@ -519,6 +568,7 @@ return array(
 		),
 	),
 	'CUC' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Cuban convertible peso (%1$s)', 'give' ), '&#8369;' ),
 		'symbol'      => '&#8369;',
 		'setting'     => array(
@@ -529,6 +579,7 @@ return array(
 		),
 	),
 	'CUP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Cuban convertible peso (%1$s)', 'give' ), '&#8369;' ),
 		'symbol'      => '&#8369;',
 		'setting'     => array(
@@ -539,6 +590,7 @@ return array(
 		),
 	),
 	'DOP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Dominican peso (%1$s)', 'give' ), '&#82;&#68;&#36;' ),
 		'symbol'      => '&#82;&#68;&#36;',
 		'setting'     => array(
@@ -549,6 +601,7 @@ return array(
 		),
 	),
 	'EGP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Egyptian pound (%1$s)', 'give' ), '&#69;&pound;' ),
 		'symbol'      => '&#69;&pound;',
 		'setting'     => array(
@@ -559,6 +612,7 @@ return array(
 		),
 	),
 	'GIP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Gibraltar pound (%1$s)', 'give' ), '&pound;' ),
 		'symbol'      => '&pound;',
 		'setting'     => array(
@@ -569,6 +623,7 @@ return array(
 		),
 	),
 	'GTQ' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Guatemalan quetzal (%1$s)', 'give' ), '&#81;' ),
 		'symbol'      => '&#81;',
 		'setting'     => array(
@@ -579,6 +634,7 @@ return array(
 		),
 	),
 	'HNL' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Honduran lempira (%1$s)', 'give' ), '&#76;' ),
 		'symbol'      => '&#76;',
 		'setting'     => array(
@@ -589,6 +645,7 @@ return array(
 		),
 	),
 	'HRK' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Croatian kuna (%1$s)', 'give' ), '&#107;&#110;' ),
 		'symbol'      => '&#107;&#110;',
 		'setting'     => array(
@@ -599,6 +656,7 @@ return array(
 		),
 	),
 	'IDR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Indonesian rupiah (%1$s)', 'give' ), '&#82;&#112;' ),
 		'symbol'      => '&#82;&#112;',
 		'setting'     => array(
@@ -609,6 +667,7 @@ return array(
 		),
 	),
 	'ISK' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Icelandic króna (%1$s)', 'give' ), '&#107;&#114;' ),
 		'symbol'      => '&#107;&#114;',
 		'setting'     => array(
@@ -619,6 +678,7 @@ return array(
 		),
 	),
 	'JMD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Jamaican dollar (%1$s)', 'give' ), '&#106;&#36;' ),
 		'symbol'      => '&#106;&#36;',
 		'setting'     => array(
@@ -629,6 +689,7 @@ return array(
 		),
 	),
 	'JOD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Jordanian dinar (%1$s)', 'give' ), '&#x62f;.&#x627;' ),
 		'symbol'      => '&#x62f;.&#x627;',
 		'setting'     => array(
@@ -639,6 +700,7 @@ return array(
 		),
 	),
 	'KES' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Kenyan shilling (%1$s)', 'give' ), '&#75;&#83;&#104;' ),
 		'symbol'      => '&#75;&#83;&#104;',
 		'setting'     => array(
@@ -649,6 +711,7 @@ return array(
 		),
 	),
 	'KWD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Kuwaiti dinar (%1$s)', 'give' ), '&#x62f;.&#x643;' ),
 		'symbol'      => '&#x62f;.&#x643;',
 		'setting'     => array(
@@ -659,6 +722,7 @@ return array(
 		),
 	),
 	'KYD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Cayman Islands dollar (%1$s)', 'give' ), '&#75;&#89;&#36;' ),
 		'symbol'      => '&#75;&#89;&#36;',
 		'setting'     => array(
@@ -669,6 +733,7 @@ return array(
 		),
 	),
 	'MKD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Macedonian denar (%1$s)', 'give' ), '&#x434;&#x435;&#x43d;' ),
 		'symbol'      => '&#x434;&#x435;&#x43d;',
 		'setting'     => array(
@@ -679,6 +744,7 @@ return array(
 		),
 	),
 	'NPR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Nepalese rupee (%1$s)', 'give' ), '&#8360;' ),
 		'symbol'      => '&#8360;',
 		'setting'     => array(
@@ -689,6 +755,7 @@ return array(
 		),
 	),
 	'OMR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Omani rial (%1$s)', 'give' ), '&#x631;.&#x639;&#46;' ),
 		'symbol'      => '&#x631;.&#x639;&#46;',
 		'setting'     => array(
@@ -699,6 +766,7 @@ return array(
 		),
 	),
 	'PEN' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Peruvian nuevo sol (%1$s)', 'give' ), 'S/.' ),
 		'symbol'      => 'S/.',
 		'setting'     => array(
@@ -709,6 +777,7 @@ return array(
 		),
 	),
 	'PKR' => array(
+        /* translators: %1$s: Currency symbol */
         'admin_label' => sprintf(__('Pakistani rupee (%1$s)', 'give'), '&#8360;'),
         'symbol' => '&#8360;',
         'setting' => array(
@@ -719,6 +788,7 @@ return array(
         ),
     ),
     'RON' => array(
+        /* translators: %1$s: Currency symbol */
         'admin_label' => sprintf(__('Romanian New Leu (%1$s)', 'give'), 'RON'),
         'symbol' => 'RON',
         'setting' => array(
@@ -729,6 +799,7 @@ return array(
         ),
     ),
     'SAR' => array(
+        /* translators: %1$s: Currency symbol */
         'admin_label' => sprintf(__('Saudi riyal (%1$s)', 'give'), '&#x631;.&#x633;'),
         'symbol' => '&#x631;.&#x633;',
         'setting' => array(
@@ -739,6 +810,7 @@ return array(
         ),
     ),
 	'SZL' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Swazi lilangeni (%1$s)', 'give' ), '&#69;' ),
 		'symbol'      => '&#69;',
 		'setting'     => array(
@@ -749,6 +821,7 @@ return array(
 		),
 	),
 	'TOP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Tongan paʻanga (%1$s)', 'give' ), '&#84;&#36;' ),
 		'symbol'      => '&#84;&#36;',
 		'setting'     => array(
@@ -759,6 +832,7 @@ return array(
 		),
 	),
 	'TZS' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Tanzanian shilling (%1$s)', 'give' ), '&#84;&#83;&#104;' ),
 		'symbol'      => '&#84;&#83;&#104;',
 		'setting'     => array(
@@ -769,6 +843,7 @@ return array(
 		),
 	),
 	'TVD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Tuvaluan dollar (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -779,6 +854,7 @@ return array(
 		),
 	),
 	'UAH' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Ukrainian hryvnia (%1$s)', 'give' ), '&#8372;' ),
 		'symbol'      => '&#8372;',
 		'setting'     => array(
@@ -789,6 +865,7 @@ return array(
 		),
 	),
 	'UYU' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Uruguayan peso (%1$s)', 'give' ), '&#36;&#85;' ),
 		'symbol'      => '&#36;&#85;',
 		'setting'     => array(
@@ -799,6 +876,7 @@ return array(
 		),
 	),
 	'VEF' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Venezuelan bolívar (old) (%1$s)', 'give' ), '&#66;&#115;' ),
 		'symbol'      => '&#66;&#115;',
 		'setting'     => array(
@@ -809,6 +887,7 @@ return array(
 		),
 	),
 	'VES' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Venezuelan bolívar soberano (%1$s)', 'give' ), '&#66;&#115;' ),
 		'symbol'      => '&#66;&#115;',
 		'setting'     => array(
@@ -819,6 +898,7 @@ return array(
 		),
 	),
 	'VED' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Venezuelan bolívar digital (%1$s)', 'give' ), '&#66;&#115;' ),
 		'symbol'      => '&#66;&#115;',
 		'setting'     => array(
@@ -829,6 +909,7 @@ return array(
 		),
 	),
 	'XCD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'East Caribbean dollar (%1$s)', 'give' ), '&#69;&#67;&#36;' ),
 		'symbol'      => '&#69;&#67;&#36;',
 		'setting'     => array(
@@ -839,6 +920,7 @@ return array(
 		),
 	),
     'XCG' => array(
+        /* translators: %1$s: Currency symbol */
         'admin_label' => sprintf(__('Caribbean Guilder (%1$s)', 'give'), 'Cg'),
         'symbol'      => 'Cg',
         'setting'     => array(
@@ -849,6 +931,7 @@ return array(
         ),
     ),
 	'XDR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Special Drawing Rights (%1$s)', 'give' ), 'XDR' ),
 		'symbol'      => 'XDR',
 		'setting'     => array(
@@ -859,6 +942,7 @@ return array(
 		),
 	),
 	'AFN' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Afghan afghani (%1$s)', 'give' ), '&#x60b;' ),
 		'symbol'      => '&#x60b;',
 		'setting'     => array(
@@ -869,6 +953,7 @@ return array(
 		),
 	),
 	'ALL' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Albanian lek (%1$s)', 'give' ), 'L' ),
 		'symbol'      => 'L',
 		'setting'     => array(
@@ -879,6 +964,7 @@ return array(
 		),
 	),
 	'AOA' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Angolan kwanza (%1$s)', 'give' ), 'Kz' ),
 		'symbol'      => 'Kz',
 		'setting'     => array(
@@ -889,6 +975,7 @@ return array(
 		),
 	),
 	'AZN' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Azerbaijani manat (%1$s)', 'give' ), 'AZN' ),
 		'symbol'      => 'AZN',
 		'setting'     => array(
@@ -899,6 +986,7 @@ return array(
 		),
 	),
 	'BBD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Barbadian dollar (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -909,6 +997,7 @@ return array(
 		),
 	),
 	'BGN' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Bulgarian lev (%1$s)', 'give' ), '&#1083;&#1074;.' ),
 		'symbol'      => '&#1083;&#1074;.',
 		'setting'     => array(
@@ -919,6 +1008,7 @@ return array(
 		),
 	),
 	'BIF' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Burundian franc (%1$s)', 'give' ), 'Fr' ),
 		'symbol'      => 'Fr',
 		'setting'     => array(
@@ -929,6 +1019,7 @@ return array(
 		),
 	),
 	'XBT' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Bitcoin (%1$s)', 'give' ), '&#3647;' ),
 		'symbol'      => '&#3647;',
 		'setting'     => array(
@@ -939,6 +1030,7 @@ return array(
 		),
 	),
 	'BTN' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Bhutanese ngultrum (%1$s)', 'give' ), 'Nu.' ),
 		'symbol'      => 'Nu.',
 		'setting'     => array(
@@ -949,6 +1041,7 @@ return array(
 		),
 	),
 	'BYR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Belarusian ruble (old) (%1$s)', 'give' ), 'Br' ),
 		'symbol'      => 'Br',
 		'setting'     => array(
@@ -959,6 +1052,7 @@ return array(
 		),
 	),
 	'BYN' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Belarusian ruble (%1$s)', 'give' ), 'Br' ),
 		'symbol'      => 'Br',
 		'setting'     => array(
@@ -969,6 +1063,7 @@ return array(
 		),
 	),
 	'CDF' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Congolese franc (%1$s)', 'give' ), 'Fr' ),
 		'symbol'      => 'Fr',
 		'setting'     => array(
@@ -979,6 +1074,7 @@ return array(
 		),
 	),
 	'CVE' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Cape Verdean escudo (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -989,6 +1085,7 @@ return array(
 		),
 	),
 	'DJF' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Djiboutian franc (%1$s)', 'give' ), 'Fr' ),
 		'symbol'      => 'Fr',
 		'setting'     => array(
@@ -999,6 +1096,7 @@ return array(
 		),
 	),
 	'DZD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Algerian dinar (%1$s)', 'give' ), '&#x62f;.&#x62c;' ),
 		'symbol'      => '&#x62f;.&#x62c;',
 		'setting'     => array(
@@ -1009,6 +1107,7 @@ return array(
 		),
 	),
 	'ERN' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Eritrean nakfa (%1$s)', 'give' ), 'Nfk' ),
 		'symbol'      => 'Nfk',
 		'setting'     => array(
@@ -1019,6 +1118,7 @@ return array(
 		),
 	),
 	'ETB' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Ethiopian birr (%1$s)', 'give' ), 'Br' ),
 		'symbol'      => 'Br',
 		'setting'     => array(
@@ -1029,6 +1129,7 @@ return array(
 		),
 	),
 	'FJD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Fijian dollar (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -1039,6 +1140,7 @@ return array(
 		),
 	),
 	'FKP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Falkland Islands pound (%1$s)', 'give' ), '&pound;' ),
 		'symbol'      => '&pound;',
 		'setting'     => array(
@@ -1049,6 +1151,7 @@ return array(
 		),
 	),
 	'GEL' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Georgian lari (%1$s)', 'give' ), '&#x20be;' ),
 		'symbol'      => '&#x20be;',
 		'setting'     => array(
@@ -1059,6 +1162,7 @@ return array(
 		),
 	),
 	'GGP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Guernsey pound (%1$s)', 'give' ), '&pound;' ),
 		'symbol'      => '&pound;',
 		'setting'     => array(
@@ -1069,6 +1173,7 @@ return array(
 		),
 	),
 	'GHS' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Ghana cedi (%1$s)', 'give' ), '&#x20b5;' ),
 		'symbol'      => '&#x20b5;',
 		'setting'     => array(
@@ -1079,6 +1184,7 @@ return array(
 		),
 	),
 	'GMD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Gambian dalasi (%1$s)', 'give' ), 'D' ),
 		'symbol'      => 'D',
 		'setting'     => array(
@@ -1089,6 +1195,7 @@ return array(
 		),
 	),
 	'GNF' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Guinean franc (%1$s)', 'give' ), 'Fr' ),
 		'symbol'      => 'Fr',
 		'setting'     => array(
@@ -1099,6 +1206,7 @@ return array(
 		),
 	),
 	'GYD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Guyanese dollar (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -1109,6 +1217,7 @@ return array(
 		),
 	),
 	'HTG' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Haitian gourde (%1$s)', 'give' ), 'G' ),
 		'symbol'      => 'G',
 		'setting'     => array(
@@ -1119,6 +1228,7 @@ return array(
 		),
 	),
 	'IMP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Manx pound (%1$s)', 'give' ), '&pound;' ),
 		'symbol'      => '&pound;',
 		'setting'     => array(
@@ -1129,6 +1239,7 @@ return array(
 		),
 	),
 	'IQD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Iraqi dinar (%1$s)', 'give' ), '&#x639;.&#x62f;' ),
 		'symbol'      => '&#x639;.&#x62f;',
 		'setting'     => array(
@@ -1139,6 +1250,7 @@ return array(
 		),
 	),
 	'IRT' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Iranian toman (%1$s)', 'give' ), '&#x062A;&#x0648;&#x0645;&#x0627;&#x0646;' ),
 		'symbol'      => '&#x062A;&#x0648;&#x0645;&#x0627;&#x0646;',
 		'setting'     => array(
@@ -1149,6 +1261,7 @@ return array(
 		),
 	),
 	'JEP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Jersey pound (%1$s)', 'give' ), '&pound;' ),
 		'symbol'      => '&pound;',
 		'setting'     => array(
@@ -1159,6 +1272,7 @@ return array(
 		),
 	),
 	'KGS' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Kyrgyzstani som (%1$s)', 'give' ), '&#x441;&#x43e;&#x43c;' ),
 		'symbol'      => '&#x441;&#x43e;&#x43c;',
 		'setting'     => array(
@@ -1169,6 +1283,7 @@ return array(
 		),
 	),
 	'KHR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Cambodian riel (%1$s)', 'give' ), '&#x17db;' ),
 		'symbol'      => '&#x17db;',
 		'setting'     => array(
@@ -1179,6 +1294,7 @@ return array(
 		),
 	),
 	'KMF' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Comorian franc (%1$s)', 'give' ), 'Fr' ),
 		'symbol'      => 'Fr',
 		'setting'     => array(
@@ -1189,6 +1305,7 @@ return array(
 		),
 	),
 	'KPW' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'North Korean won (%1$s)', 'give' ), '&#x20a9;' ),
 		'symbol'      => '&#x20a9;',
 		'setting'     => array(
@@ -1199,6 +1316,7 @@ return array(
 		),
 	),
 	'KZT' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Kazakhstani tenge (%1$s)', 'give' ), 'KZT' ),
 		'symbol'      => 'KZT',
 		'setting'     => array(
@@ -1209,6 +1327,7 @@ return array(
 		),
 	),
 	'LAK' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Lao kip (%1$s)', 'give' ), '&#8365;' ),
 		'symbol'      => '&#8365;',
 		'setting'     => array(
@@ -1219,6 +1338,7 @@ return array(
 		),
 	),
 	'LBP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Lebanese pound (%1$s)', 'give' ), '&#x644;.&#x644;' ),
 		'symbol'      => '&#x644;.&#x644;',
 		'setting'     => array(
@@ -1229,6 +1349,7 @@ return array(
 		),
 	),
 	'LKR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Sri Lankan rupee (%1$s)', 'give' ), '&#xdbb;&#xdd4;' ),
 		'symbol'      => 'Rs',
 		'setting'     => array(
@@ -1239,6 +1360,7 @@ return array(
 		),
 	),
 	'LRD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Liberian dollar (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -1249,6 +1371,7 @@ return array(
 		),
 	),
 	'LSL' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Lesotho loti (%1$s)', 'give' ), 'L' ),
 		'symbol'      => 'L',
 		'setting'     => array(
@@ -1259,6 +1382,7 @@ return array(
 		),
 	),
 	'LYD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Libyan dinar (%1$s)', 'give' ), '&#x644;.&#x62f;' ),
 		'symbol'      => '&#x644;.&#x62f;',
 		'setting'     => array(
@@ -1269,6 +1393,7 @@ return array(
 		),
 	),
 	'MDL' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Moldovan leu (%1$s)', 'give' ), 'MDL' ),
 		'symbol'      => 'MDL',
 		'setting'     => array(
@@ -1279,6 +1404,7 @@ return array(
 		),
 	),
 	'MGA' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Malagasy ariary (%1$s)', 'give' ), 'Ar' ),
 		'symbol'      => 'Ar',
 		'setting'     => array(
@@ -1289,6 +1415,7 @@ return array(
 		),
 	),
 	'MMK' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Burmese kyat (%1$s)', 'give' ), 'Ks' ),
 		'symbol'      => 'Ks',
 		'setting'     => array(
@@ -1299,6 +1426,7 @@ return array(
 		),
 	),
 	'MNT' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Mongolian tögrög (%1$s)', 'give' ), '&#x20ae;' ),
 		'symbol'      => '&#x20ae;',
 		'setting'     => array(
@@ -1309,6 +1437,7 @@ return array(
 		),
 	),
 	'MOP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Macanese pataca (%1$s)', 'give' ), 'P' ),
 		'symbol'      => 'P',
 		'setting'     => array(
@@ -1319,6 +1448,7 @@ return array(
 		),
 	),
 	'MRO' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Mauritanian ouguiya (old) (%1$s)', 'give' ), 'UM' ),
 		'symbol'      => 'UM',
 		'setting'     => array(
@@ -1329,6 +1459,7 @@ return array(
 		),
 	),
 	'MRU' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Mauritanian ouguiya (%1$s)', 'give' ), 'UM' ),
 		'symbol'      => 'UM',
 		'setting'     => array(
@@ -1339,6 +1470,7 @@ return array(
 		),
 	),
 	'MUR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Mauritian rupee (%1$s)', 'give' ), '&#x20a8;' ),
 		'symbol'      => '&#x20a8;',
 		'setting'     => array(
@@ -1349,6 +1481,7 @@ return array(
 		),
 	),
 	'MVR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Maldivian rufiyaa (%1$s)', 'give' ), '.&#x783;' ),
 		'symbol'      => '.&#x783;',
 		'setting'     => array(
@@ -1359,6 +1492,7 @@ return array(
 		),
 	),
 	'MWK' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Malawian kwacha (%1$s)', 'give' ), 'MK' ),
 		'symbol'      => 'MK',
 		'setting'     => array(
@@ -1369,6 +1503,7 @@ return array(
 		),
 	),
 	'MZN' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Mozambican metical (%1$s)', 'give' ), 'MT' ),
 		'symbol'      => 'MT',
 		'setting'     => array(
@@ -1379,6 +1514,7 @@ return array(
 		),
 	),
 	'NAD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Namibian dollar (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -1389,6 +1525,7 @@ return array(
 		),
 	),
 	'NGN' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Nigerian naira (%1$s)', 'give' ), '&#8358;' ),
 		'symbol'      => '&#8358;',
 		'setting'     => array(
@@ -1399,6 +1536,7 @@ return array(
 		),
 	),
 	'NIO' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Nicaraguan córdoba (%1$s)', 'give' ), 'C&#36;' ),
 		'symbol'      => 'C&#36;',
 		'setting'     => array(
@@ -1409,6 +1547,7 @@ return array(
 		),
 	),
 	'PAB' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Panamanian balboa (%1$s)', 'give' ), 'B/.' ),
 		'symbol'      => 'B/.',
 		'setting'     => array(
@@ -1419,6 +1558,7 @@ return array(
 		),
 	),
 	'PGK' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Papua New Guinean kina (%1$s)', 'give' ), 'K' ),
 		'symbol'      => 'K',
 		'setting'     => array(
@@ -1429,6 +1569,7 @@ return array(
 		),
 	),
 	'PRB' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Transnistrian ruble (%1$s)', 'give' ), '&#x440;.' ),
 		'symbol'      => '&#x440;.',
 		'setting'     => array(
@@ -1439,6 +1580,7 @@ return array(
 		),
 	),
 	'PYG' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Paraguayan guaraní (%1$s)', 'give' ), '&#8370;' ),
 		'symbol'      => '&#8370;',
 		'setting'     => array(
@@ -1449,6 +1591,7 @@ return array(
 		),
 	),
 	'QAR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Qatari riyal (%1$s)', 'give' ), '&#x631;.&#x642;' ),
 		'symbol'      => '&#x631;.&#x642;',
 		'setting'     => array(
@@ -1459,6 +1602,7 @@ return array(
 		),
 	),
 	'RSD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Serbian dinar (%1$s)', 'give' ), '&#x434;&#x438;&#x43d;.' ),
 		'symbol'      => '&#x434;&#x438;&#x43d;.',
 		'setting'     => array(
@@ -1469,6 +1613,7 @@ return array(
 		),
 	),
 	'RWF' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Rwandan franc (%1$s)', 'give' ), 'Fr' ),
 		'symbol'      => 'Fr',
 		'setting'     => array(
@@ -1479,6 +1624,7 @@ return array(
 		),
 	),
 	'SBD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Solomon Islands dollar (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -1489,6 +1635,7 @@ return array(
 		),
 	),
 	'SCR' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Seychellois rupee (%1$s)', 'give' ), '&#x20a8;' ),
 		'symbol'      => '&#x20a8;',
 		'setting'     => array(
@@ -1499,6 +1646,7 @@ return array(
 		),
 	),
 	'SDG' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Sudanese pound (%1$s)', 'give' ), '&#x62c;.&#x633;.' ),
 		'symbol'      => '&#x62c;.&#x633;.',
 		'setting'     => array(
@@ -1509,6 +1657,7 @@ return array(
 		),
 	),
 	'SHP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Saint Helena pound (%1$s)', 'give' ), '&pound;' ),
 		'symbol'      => '&pound;',
 		'setting'     => array(
@@ -1519,6 +1668,7 @@ return array(
 		),
 	),
 	'SLL' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Sierra Leonean leone (old) (%1$s)', 'give' ), 'Le' ),
 		'symbol'      => 'Le',
 		'setting'     => array(
@@ -1529,6 +1679,7 @@ return array(
 		),
 	),
 	'SLE' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Sierra Leonean leone (%1$s)', 'give' ), 'Le' ),
 		'symbol'      => 'Le',
 		'setting'     => array(
@@ -1539,6 +1690,7 @@ return array(
 		),
 	),
 	'SOS' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Somali shilling (%1$s)', 'give' ), 'Sh' ),
 		'symbol'      => 'Sh',
 		'setting'     => array(
@@ -1549,6 +1701,7 @@ return array(
 		),
 	),
 	'SRD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Surinamese dollar (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -1559,6 +1712,7 @@ return array(
 		),
 	),
 	'SSP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'South Sudanese pound (%1$s)', 'give' ), '&pound;' ),
 		'symbol'      => '&pound;',
 		'setting'     => array(
@@ -1569,6 +1723,7 @@ return array(
 		),
 	),
 	'STD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'São Tomé and Príncipe dobra (old) (%1$s)', 'give' ), 'Db' ),
 		'symbol'      => 'Db',
 		'setting'     => array(
@@ -1579,6 +1734,7 @@ return array(
 		),
 	),
 	'STN' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'São Tomé and Príncipe dobra (%1$s)', 'give' ), 'Db' ),
 		'symbol'      => 'Db',
 		'setting'     => array(
@@ -1589,6 +1745,7 @@ return array(
 		),
 	),
 	'SVC' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Salvadoran colón (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -1599,6 +1756,7 @@ return array(
 		),
 	),
 	'SYP' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Syrian pound (%1$s)', 'give' ), '&#x644;.&#x633;' ),
 		'symbol'      => '&#x644;.&#x633;',
 		'setting'     => array(
@@ -1609,6 +1767,7 @@ return array(
 		),
 	),
 	'TJS' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Tajikistani somoni (%1$s)', 'give' ), '&#x405;&#x41c;' ),
 		'symbol'      => '&#x405;&#x41c;',
 		'setting'     => array(
@@ -1619,6 +1778,7 @@ return array(
 		),
 	),
 	'TMT' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Turkmenistan manat (%1$s)', 'give' ), 'm' ),
 		'symbol'      => 'm',
 		'setting'     => array(
@@ -1629,6 +1789,7 @@ return array(
 		),
 	),
 	'TND' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Tunisian Dinar (%1$s)', 'give' ), '&#x62f;.&#x62a;' ),
 		'symbol'      => '&#x62f;.&#x62a;',
 		'setting'     => array(
@@ -1639,6 +1800,7 @@ return array(
 		),
 	),
 	'TTD' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Trinidad and Tobago dollar (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(
@@ -1649,6 +1811,7 @@ return array(
 		),
 	),
 	'UGX' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Ugandan shilling (%1$s)', 'give' ), 'UGX' ),
 		'symbol'      => 'UGX',
 		'setting'     => array(
@@ -1659,6 +1822,7 @@ return array(
 		),
 	),
 	'UZS' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Uzbekistani som (%1$s)', 'give' ), 'UZS' ),
 		'symbol'      => 'UZS',
 		'setting'     => array(
@@ -1669,6 +1833,7 @@ return array(
 		),
 	),
 	'VND' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Vietnamese đồng (%1$s)', 'give' ), '&#8363;' ),
 		'symbol'      => '&#8363;',
 		'setting'     => array(
@@ -1679,6 +1844,7 @@ return array(
 		),
 	),
 	'VUV' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Vanuatu vatu (%1$s)', 'give' ), 'Vt' ),
 		'symbol'      => 'Vt',
 		'setting'     => array(
@@ -1689,6 +1855,7 @@ return array(
 		),
 	),
 	'WST' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Samoan tālā (%1$s)', 'give' ), 'T' ),
 		'symbol'      => 'T',
 		'setting'     => array(
@@ -1699,6 +1866,7 @@ return array(
 		),
 	),
 	'XAF' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Central African CFA franc (%1$s)', 'give' ), 'CFA' ),
 		'symbol'      => 'CFA',
 		'setting'     => array(
@@ -1709,6 +1877,7 @@ return array(
 		),
 	),
 	'XOF' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'West African CFA franc (%1$s)', 'give' ), 'CFA' ),
 		'symbol'      => 'CFA',
 		'setting'     => array(
@@ -1719,6 +1888,7 @@ return array(
 		),
 	),
 	'XPF' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'CFP franc (%1$s)', 'give' ), 'Fr' ),
 		'symbol'      => 'Fr',
 		'setting'     => array(
@@ -1729,6 +1899,7 @@ return array(
 		),
 	),
 	'YER' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Yemeni rial (%1$s)', 'give' ), '&#xfdfc;' ),
 		'symbol'      => '&#xfdfc;',
 		'setting'     => array(
@@ -1739,6 +1910,7 @@ return array(
 		),
 	),
 	'ZMW' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Zambian kwacha (%1$s)', 'give' ), 'ZK' ),
 		'symbol'      => 'ZK',
 		'setting'     => array(
@@ -1749,6 +1921,7 @@ return array(
 		),
 	),
 	'ZWL' => array(
+		/* translators: %1$s: Currency symbol */
 		'admin_label' => sprintf( __( 'Zimbabwean dollar (%1$s)', 'give' ), '&#36;' ),
 		'symbol'      => '&#36;',
 		'setting'     => array(

@@ -8,7 +8,7 @@
  * @subpackage  Admin/Upgrades
  * @copyright   Copyright (c) 2017, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since TBD Escape output, including translated strings.
+ * @since TBD Escape output, including translated strings. Add translators comments.
  * @since       1.8.12
  */
 
@@ -23,7 +23,7 @@ $give_updates = Give_Updates::get_instance();
 
 	<div class="give-settings-header">
 		<h1 id="give-updates-h1"
-			class="wp-heading-inline"><?php echo sprintf( esc_html__( 'GiveWP %s Updates', 'give' ), '<span class="give-settings-heading-sep dashicons dashicons-arrow-right-alt2"></span>' ); ?></h1>
+			class="wp-heading-inline"><?php echo sprintf( /* translators: %s: Arrow icon markup */ esc_html__( 'GiveWP %s Updates', 'give' ), '<span class="give-settings-heading-sep dashicons dashicons-arrow-right-alt2"></span>' ); ?></h1>
 	</div>
 
 	<?php $db_updates = $give_updates->get_pending_db_update_count(); ?>
@@ -45,7 +45,7 @@ $give_updates = Give_Updates::get_instance();
 			$width            = ! empty( $resume_updates ) ? $resume_updates['percentage'] : 0;
 			?>
 			<div class="give-update-panel-content">
-				<p><?php echo wp_kses_post( sprintf( __( 'GiveWP regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of GiveWP core and its add-ons.  <strong>If you do not have a backup already, please create a full backup before updating.</strong> To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), esc_url( admin_url( '' ) ) ) ); ?></p>
+				<p><?php echo wp_kses_post( sprintf( /* translators: %1$s: URL of the admin dashboard */ __( 'GiveWP regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of GiveWP core and its add-ons.  <strong>If you do not have a backup already, please create a full backup before updating.</strong> To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), esc_url( admin_url( '' ) ) ) ); ?></p>
 			</div>
 
 			<div id="give-db-updates" data-resume-update="<?php echo absint( $give_updates->is_doing_updates() ); ?>">
@@ -67,6 +67,7 @@ $give_updates = Give_Updates::get_instance();
 										class="give-doing-update-text-p" <?php echo Give_Updates::$background_updater->is_paused_process() ? 'style="display:none;"' : ''; ?>>
 										<?php
 										echo wp_kses_post( sprintf(
+											/* translators: 1: Update status message, 2: URL of the update page, 3: CSS class, 4: Update now label */
 											__( '%1$s <a href="%2$s" class="give-update-now %3$s">%4$s</a>', 'give' ),
 											$is_doing_updates
 												? sprintf(
@@ -116,6 +117,7 @@ $give_updates = Give_Updates::get_instance();
 									<strong>
 										<?php
 										echo sprintf(
+											/* translators: 1: Number of the running update, 2: Total number of updates */
 											esc_html__( 'Update %1$s of %2$s', 'give' ),
 											esc_html( $give_updates->get_running_db_update() ),
 											esc_html( $give_updates->get_total_new_db_update_count() )
@@ -167,6 +169,7 @@ $give_updates = Give_Updates::get_instance();
 								<p>
 									<?php
 									echo wp_kses_post( sprintf(
+										/* translators: 1: Number of add-ons, 2: URL of the plugins page */
 										_n(
 											'There is %1$d GiveWP addon that needs to be updated. <a href="%2$s">Update now</a>',
 											'There are %1$d GiveWP addons that need to be updated. <a href="%2$s">Update now</a>',

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @since TBD Add translators comments.
+ */
 
 /**
  * @since TBD Escape output.
@@ -50,6 +53,7 @@ $setupUrl = add_query_arg(
             <div class="give-donor-dashboard-upgrade-notice__pill">
                 <?php
                 echo wp_kses_post( sprintf(
+                    /* translators: %s: URL of the Donor Dashboard documentation */
                     __(
                         'Want to know more? Learn more about the <a href="%s" target="_blank">new Donor Dashboard <i class="fas fa-external-link-alt"></i></a>',
                         'give'

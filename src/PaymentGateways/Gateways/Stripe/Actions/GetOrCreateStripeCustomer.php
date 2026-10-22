@@ -34,6 +34,7 @@ class GetOrCreateStripeCustomer
     }
 
     /**
+      * @since TBD Add translators comments.
      * @since 2.21.0 Update function first argument type to Donation model
      * @since 2.19.0
      * @throws Exception
@@ -44,6 +45,7 @@ class GetOrCreateStripeCustomer
 
         DonationNote::create([
             'donationId' => $donation->id,
+            /* translators: %s: Stripe customer ID */
             'content' => sprintf(__('Stripe Customer ID: %s', 'give'), $stripeCustomerId)
         ]);
 

@@ -1867,7 +1867,7 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select', 10, 2 );
  * @param int $form_id The form ID.
  *
  * @return bool
- * @since TBD Escape output.
+ * @since TBD Escape output. Add translators comments.
  * @since  1.0
  */
 function give_terms_agreement( $form_id ) {
@@ -1894,6 +1894,7 @@ function give_terms_agreement( $form_id ) {
 	// Bailout: Check if term and conditions text is empty or not.
 	if ( empty( $terms ) ) {
 		if ( is_user_logged_in() && current_user_can( 'edit_give_forms' ) ) {
+			/* translators: %s: URL of the form settings page */
 			echo wp_kses_post( sprintf( __( 'Please enter valid terms and conditions in <a href="%s">this form\'s settings</a>.', 'give' ), esc_url( $edit_term_url ) ) );
 		}
 

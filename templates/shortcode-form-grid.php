@@ -2,7 +2,7 @@
 /**
  * This template is used to display the donation grid with [donation_grid]
  *
- * @since TBD Escape output.
+ * @since TBD Escape output. Add translators comments.
  */
 
 use Give\Helpers\Form\Template;
@@ -297,7 +297,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                     $style = "width:$progress_bar_value%;";
                     $style .= "background: linear-gradient(180deg, {$color} 0%, {$color} 100%); background-blend-mode: multiply;";
                     echo '<div class="give-form-grid-progress-bar">
-                        <div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . esc_attr( $progress_bar_value ) . '" aria-label="' . esc_attr( sprintf( __( 'Form progress: %s%% toward goal', 'give' ), $progress_bar_value ) ) . '">
+                        <div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . esc_attr( $progress_bar_value ) . '" aria-label="' . esc_attr( sprintf( /* translators: %s: Percent of the goal reached */ __( 'Form progress: %s%% toward goal', 'give' ), $progress_bar_value ) ) . '">
                             <span style="' . esc_attr($style) . '"></span>
                         </div>
                     </div>';
@@ -439,6 +439,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                 <span class="goal">
                                     <?php
                                     echo esc_html( sprintf(
+                                        /* translators: %s: Goal number of donations */
                                         _n('of %s donation', 'of %s donations', $goal, 'give'),
                                         give_format_amount($goal, ['decimal' => false])
                                     ) ); ?>
@@ -452,6 +453,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                 <span class="goal">
                                     <?php
                                     echo esc_html( sprintf(
+                                        /* translators: %s: Goal number of donors */
                                         _n('of %s donor', 'of %s donors', $goal, 'give'),
                                         give_format_amount($goal, ['decimal' => false])
                                     ) ); ?>

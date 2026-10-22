@@ -98,6 +98,7 @@ add_action( 'init', 'give_post_actions' );
  * @param  int   $user_id   User ID.
  * @param  array $user_data User Data.
  *
+ * @since TBD Add translators comments.
  * @since 4.16.6 Only auto-link when registered via the donation-checkout flow.
  * @since  1.7
  *
@@ -116,6 +117,7 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ) {
 
 		// Update donor user_id.
 		if ( $donor->update( [ 'user_id' => $user_id ] ) ) {
+			/* translators: 1: WordPress user ID, 2: Donor ID */
 			$donor_note = sprintf( esc_html__( 'WordPress user #%1$d is connected to #%2$d', 'give' ), $user_id, $donor->id );
 			$donor->add_note( $donor_note );
 
@@ -218,6 +220,7 @@ add_action( 'give_complete_donation', '_give_save_donor_billing_address', 9999 )
 /**
  * Verify addon dependency before addon update
  *
+ * @since TBD Add translators comments.
  * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 4.1.0 add bailout for GiveWP to protect it from licensing issues
  * @since 2.1.4
@@ -267,6 +270,7 @@ function give_verify_addon_dependency_before_update( $error, $hook_extra ) {
 		return new WP_Error(
 			'Give_Addon_Update_Error',
 			sprintf(
+				/* translators: %s: Minimum GiveWP version number */
 				__( 'GiveWP version %s is required to update this add-on.', 'give' ),
 				$give_min_version
 			)

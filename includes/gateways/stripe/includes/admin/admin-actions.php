@@ -85,7 +85,7 @@ add_action( 'give_view_donation_details_totals_after', 'give_stripe_opt_refund',
 /**
  * Process refund in Stripe.
  *
- * @since  TBD Escape output.
+ * @since  TBD Escape output. Add translators comments.
  * @since  2.5.0
  * @access public
  *
@@ -163,7 +163,9 @@ function give_stripe_process_refund( $donation_id, $new_status, $old_status ) {
 	} catch ( \Stripe\Error\Base $e ) {
 		// Refund issue occurred.
 		$log_message  = __( 'The Stripe payment gateway returned an error while refunding a donation.', 'give' ) . '<br><br>';
+		/* translators: %s: Error message */
 		$log_message .= sprintf( esc_html__( 'Message: %s', 'give' ), $e->getMessage() ) . '<br><br>';
+		/* translators: %s: Error code */
 		$log_message .= sprintf( esc_html__( 'Code: %s', 'give' ), $e->getCode() );
 
 		// Log it with DB.
@@ -297,6 +299,7 @@ add_action( 'admin_notices', 'give_stripe_show_connect_banner' );
 /**
  * Register Currency related admin notices.
  *
+ * @since TBD Add translators comments.
  * @since 2.6.1
  *
  * @return void
@@ -321,6 +324,7 @@ function give_stripe_show_currency_notice() {
 				'type'        => 'error',
 				'dismissible' => false,
 				'description' => sprintf(
+					/* translators: %s: URL of the currency settings page */
 					__( 'The currency must be set as "Euro (&euro;)" within Give\'s <a href="%s">Currency Settings</a> in order to collect donations through the Stripe - SEPA Direct Debit Payment Gateway.', 'give' ),
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=general&section=currency-settings' )
 				),
@@ -342,6 +346,7 @@ function give_stripe_show_currency_notice() {
 				'type'        => 'error',
 				'dismissible' => false,
 				'description' => sprintf(
+					/* translators: %s: URL of the currency settings page */
 					__( 'The currency must be set as "AUD (&dollar;)" within Give\'s <a href="%s">Currency Settings</a> in order to collect donations through the Stripe - BECS Direct Debit Payment Gateway.', 'give' ),
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=general&section=currency-settings' )
 				),

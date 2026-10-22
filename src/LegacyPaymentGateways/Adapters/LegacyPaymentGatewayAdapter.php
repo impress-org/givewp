@@ -369,6 +369,7 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
+     * @since TBD Add translators comments.
      * @since 2.29.0
      */
     public function addOptRefundCheckbox(int $donationId, PaymentGatewayInterface $registeredGateway)
@@ -382,6 +383,7 @@ class LegacyPaymentGatewayAdapter
               <input type="checkbox" id="give-gateway-opt-refund" name="give_gateway_opt_refund" value="1" />
               <label for="give-gateway-opt-refund">
                   <?php
+                    /* translators: %s: Payment gateway name */
                     echo sprintf(esc_html__('Refund the donation at %s?', 'give'), esc_html($registeredGateway->getName()));
                     ?>
               </label>

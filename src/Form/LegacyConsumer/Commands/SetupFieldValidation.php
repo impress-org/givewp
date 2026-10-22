@@ -54,6 +54,7 @@ class SetupFieldValidation implements HookCommandInterface
     /**
      * Validate the given field.
      *
+     * @since TBD Add translators comments.
      * @since 2.28.0 add shim for CheckboxGroup, only necessary for legacy FFM fields.
      * @since 2.14.0 Add max length validation for input and textarea field
      *
@@ -94,6 +95,7 @@ class SetupFieldValidation implements HookCommandInterface
                 give_set_error(
                     "give-{$field->getName()}-required-field-missing",
                     sprintf(
+                        /* translators: %1$s: Field name */
                         esc_html__('%1$s field value exceed allowed character limit.', 'give'),
                         $field->getName()
                     )

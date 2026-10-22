@@ -219,6 +219,8 @@ class Give_Subscription {
 	/**
 	 * Magic __get function to dispatch a call to retrieve a private property.
 	 *
+	 * @since TBD Add translators comments.
+	 *
 	 * @param $key
 	 *
 	 * @return mixed|WP_Error
@@ -231,6 +233,7 @@ class Give_Subscription {
 
 		} else {
 
+			/* translators: %s: Name of the missing property */
 			return new WP_Error( 'give-subscription-invalid-property', sprintf( __( 'Can\'t get property %s', 'give' ), $key ) );
 
 		}
@@ -323,6 +326,8 @@ class Give_Subscription {
 	 *
 	 * Updates a subscription.
 	 *
+	 * @since TBD Number the placeholders and add translators comments.
+	 *
 	 * @param array $args Array of fields to update
 	 *
 	 * @return bool
@@ -332,7 +337,8 @@ class Give_Subscription {
         $old_status = '';
 		if ( isset( $args['status'] ) && strtolower( $this->status ) !== strtolower( $args['status'] ) ) {
             $old_status = $this->status;
-			$this->add_note( sprintf( __( 'Status changed from %s to %s', 'give' ), $this->status, $args['status'] ) );
+			/* translators: 1: Previous subscription status, 2: New subscription status */
+			$this->add_note( sprintf( __( 'Status changed from %1$s to %2$s', 'give' ), $this->status, $args['status'] ) );
 		}
 
         do_action( 'give_recurring_pre_update_subscription', $this->id, $args, $this );
@@ -799,6 +805,8 @@ class Give_Subscription {
 	 *
 	 * Marks a subscription as cancelled.
 	 *
+	 * @since TBD Add translators comments.
+	 *
 	 * @return void
 	 */
 	public function cancel() {
@@ -825,6 +833,7 @@ class Give_Subscription {
 
 			}
 
+			/* translators: 1: Subscription ID, 2: Name of the user who cancelled it */
 			$note = sprintf( __( 'Subscription #%1$d cancelled by %2$s', 'give' ), $this->id, $user );
 			$this->donor->add_note( $note );
 			$this->status = 'cancelled';

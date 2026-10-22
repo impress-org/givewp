@@ -149,6 +149,7 @@ class Give_Cache {
 	/**
 	 * Notices function.
 	 *
+     * @since TBD Add translators comments.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.5
 	 * @access public
@@ -166,7 +167,7 @@ class Give_Cache {
 		if ( $enabled && ! in_array( 'give', $settings, true ) ) {
 			?>
 			<div class="error">
-				<p><?php echo wp_kses_post( sprintf( __( 'In order for <strong>database caching</strong> to work with GiveWP you must add %1$s to the "Ignored query stems" option in <a href="%2$s">W3 Total Cache settings</a>.', 'give' ), '<code>give</code>', esc_url( admin_url( 'admin.php?page=w3tc_dbcache#dbcache_reject_sql' ) ) ) ); ?></p>
+				<p><?php echo wp_kses_post( sprintf( /* translators: 1: Query stem to add, 2: URL of the W3 Total Cache settings page */ __( 'In order for <strong>database caching</strong> to work with GiveWP you must add %1$s to the "Ignored query stems" option in <a href="%2$s">W3 Total Cache settings</a>.', 'give' ), '<code>give</code>', esc_url( admin_url( 'admin.php?page=w3tc_dbcache#dbcache_reject_sql' ) ) ) ); ?></p>
 			</div>
 			<?php
 		}

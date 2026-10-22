@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Note: only for internal use
  *
+ * @since TBD Add translators comments.
  * @since 4.16.6 Use Plugin_Upgrader to install/update the add-on, replacing unreliable
  *            filename-based pre-existing checks and post-install detection.
  * @since 2.5.0
@@ -46,6 +47,7 @@ function give_upload_addon_handler() {
 		wp_send_json_error(
 			[
 				'errorMsg' => sprintf(
+					/* translators: %1$s: URL of the plugin upload page */
 					__( 'In order to upload add-ons here, GiveWP needs direct access to the file system. Please <a href="%1$s" target="_blank">visit the main plugin page</a> to manually upload the add-on.', 'give' ),
 					esc_url( admin_url( 'plugin-install.php?tab=upload' ) )
 				),
@@ -204,6 +206,7 @@ add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
  *
  * Note: only for internal use
  *
+ * @since TBD Add translators comments.
  * @since 4.16.7 Redirect unified license keys (LWSW-) to the Unified License Manager, when it is available.
  * @since 2.5.0
  */
@@ -291,6 +294,7 @@ function give_get_license_info_handler() {
 		wp_send_json_error(
 			[
 				'errorMsg' => sprintf(
+					/* translators: 1: URL of the account page, 2: License status */
 					__( 'The license failed to activate, due to a status of <code>%2$s</code>. Check the logs at Donations > Tools > Logs for more detail, and <a href="%1$s" target="_blank">reach out to the Customer Success team.</a>', 'give' ),
 					Give_License::get_account_url(),
 					$check_license_res['license']
@@ -307,6 +311,7 @@ function give_get_license_info_handler() {
 		wp_send_json_error(
 			[
 				'errorMsg' => sprintf(
+					/* translators: %1$s: URL of the account page */
 					__( 'This license key does not belong to this add-on. <a href="%1$s" target="_blank">Reach out to the Customer Success team</a> if you continue to have issues.', 'give' ),
 					Give_License::get_account_url()
 				),
@@ -336,6 +341,7 @@ function give_get_license_info_handler() {
 	if ( ! $is_reactivating_license && ! $activate_license_res['success'] ) {
 
 		$response['errorMsg'] = sprintf(
+			/* translators: 1: URL of the account page, 2: License status */
 			__( 'The license failed to activate, due to a status of <code>%2$s</code>. Check the logs at Donations > Tools > Logs for more detail, and <a href="%1$s" target="_blank">reach out to the Customer Success team.</a>', 'give' ),
 			Give_License::get_account_url(),
 			$check_license_res['license']
@@ -372,6 +378,7 @@ function give_get_license_info_handler() {
 	if ( $is_reactivating_license && ! $activate_license_res['success'] ) {
 
 		$response['errorMsg'] = sprintf(
+			/* translators: 1: URL of the account page, 2: License status */
 			__( 'The license failed to activate, due to a status of <code>%2$s</code>. Check the logs at Donations > Tools > Logs for more detail, and <a href="%1$s" target="_blank">reach out to the Customer Success team.</a>', 'give' ),
 			Give_License::get_account_url(),
 			$check_license_res['license']
@@ -542,7 +549,7 @@ add_action( 'wp_ajax_give_deactivate_license', 'give_deactivate_license_handler'
  *
  * Note: only for internal use
  *
- * @since TBD Use gmdate() instead of date().
+ * @since TBD Use gmdate() instead of date(), and add translators comments.
  * @since 2.5.0
  */
 function give_refresh_all_licenses_handler() {
@@ -582,6 +589,7 @@ function give_refresh_all_licenses_handler() {
 			'refreshButton' => 5 <= $data['count'],
 			'refreshStatus' => $data,
 			'lastUpdateMsg' => sprintf(
+				/* translators: 1: Date, 2: Time */
 				__( 'Last refreshed on %1$s at %2$s', 'give' ),
 				gmdate( give_date_format(), $local_date ),
 				gmdate( 'g:i a', $local_date )
@@ -657,7 +665,7 @@ add_filter( 'pre_set_site_transient_update_plugins', 'give_check_addon_updates',
  * @param string $file
  * @param array  $plugin
  *
- * @since TBD Escape output.
+ * @since TBD Escape output, and add translators comments.
  * @since 2.5.0
  */
 function give_show_update_notification_on_multisite( $file, $plugin ) {
@@ -710,6 +718,7 @@ function give_show_update_notification_on_multisite( $file, $plugin ) {
 
 		if ( empty( $plugin['download_link'] ) ) {
 			printf(
+				/* translators: 1: Add-on name, 2: Opening link tag, 3: New version number, 4: Closing link tag */
 				esc_html( __( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s.', 'give' ) ),
 				esc_html( $plugin_data['Name'] ),
 				'<a target="_blank" class="thickbox open-plugin-details-modal" href="' . esc_url( $changelog_link ) . '">',
@@ -718,6 +727,7 @@ function give_show_update_notification_on_multisite( $file, $plugin ) {
 			);
 		} else {
 			printf(
+				/* translators: 1: Add-on name, 2: Opening link tag, 3: New version number, 4: Closing link tag, 5: Opening link tag, 6: Closing link tag */
 				esc_html( __( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s.', 'give' ) ),
 				esc_html( $plugin_data['Name'] ),
 				'<a target="_blank" class="thickbox open-plugin-details-modal" href="' . esc_url( $changelog_link ) . '">',
@@ -742,7 +752,7 @@ add_action( 'after_plugin_row', 'give_show_update_notification_on_multisite', 10
  * @param $file
  * @param $plugin
  *
- * @since TBD Escape output.
+ * @since TBD Escape output, and add translators comments.
  * @since 2.5.0
  * @since 2.10.2 update condition to verify givewp addons
  */
@@ -785,6 +795,7 @@ function give_show_update_notification_on_single_site( $file, $plugin ) {
 	echo sprintf(
 		$update_notice_wrap, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $update_notice_wrap is a hardcoded trusted markup template defined above; escaping it would encode its own tags.
 		sprintf(
+			/* translators: 1: Add-on name, 2: Opening link tag, 3: New version number, 4: Closing link tag */
 			esc_html( __( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s.', 'give' ) ),
 			esc_html( $plugin_data['Name'] ),
 			'<a target="_blank" class="thickbox open-plugin-details-modal" href="' . esc_url( $changelog_link ) . '">',

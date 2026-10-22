@@ -943,7 +943,7 @@ if ( ! class_exists('Give_License') ) :
 		 * @param array $plugin
 		 *
 		 * @return string
-		 * @since TBD Escape output and use gmdate() instead of date().
+		 * @since TBD Escape output and use gmdate() instead of date(), and add translators comments.
 		 * @since 2.5.0
 		 */
 		private static function html_license_row( $license, $plugin = [] ) {
@@ -1006,6 +1006,7 @@ if ( ! class_exists('Give_License') ) :
 										esc_html__( 'License is inactive.', 'give' ),
 										$license_is_inactive
 											? wp_kses_post( sprintf(
+												/* translators: %1$s: URL of the account page */
 												__( 'Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details and activate this license to receive updates and support.', 'give' ),
 												esc_url( self::get_account_url() )
 											) )

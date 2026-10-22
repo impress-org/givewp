@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *  1. User can only set absolute integer value as number of decimals.
  *  2. number_decimals setting will be zero if no decimal separator defined
  *
+ * @since TBD Add translators comments.
  * @since 4.9.0 rename function - PHP 8 compatibility
  * @since   1.8
  * @used-by Give_Plugin_Settings::give_settings()
@@ -57,6 +58,7 @@ function give_sanitize_number_decimals_setting_field( $value ) {
 		Give_Admin_Settings::add_error(
 			'give-number-decimal',
 			sprintf(
+				/* translators: %s: Number of decimals the option was set to */
 				__( 'The \'Number of Decimals\' option has been automatically set to %s because you entered a number higher than the maximum allowed.', 'give' ),
 				$value
 			)

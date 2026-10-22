@@ -273,6 +273,7 @@ class SubscriptionController extends WP_REST_Controller
     /**
      * Create a subscription.
      *
+     * @since TBD Add translators comments.
      * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
@@ -299,6 +300,7 @@ class SubscriptionController extends WP_REST_Controller
             ], $e->getStatusCode());
         } catch (Exception $e) {
             return new WP_REST_Response([
+                /* translators: %s: Error message */
                 'message' => sprintf(__('Failed to create subscription: %s', 'give'), $e->getMessage()),
                 'error' => 'internal_server_error'
             ], 500);
@@ -543,6 +545,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
+     * @since TBD Add translators comments.
      * @since 4.13.0 added anonymousDonors and includeSensitiveData to embeddable links
      * @since 4.10.0 added embeddable links for campaign and form
      * @since 4.8.0
@@ -630,6 +633,7 @@ class SubscriptionController extends WP_REST_Controller
             return new WP_Error(
                 'prepare_item_for_response_error',
                 sprintf(
+                    /* translators: %s: Error message */
                     __('Error while preparing subscription for response: %s', 'give'),
                     $e->getMessage()
                 ),

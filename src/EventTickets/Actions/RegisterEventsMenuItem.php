@@ -26,7 +26,7 @@ class RegisterEventsMenuItem
     /**
      * Render admin page container
      *
-     * @since TBD Escape output.
+     * @since TBD Escape output. Use the give text domain in the event not found message.
      * @since 3.6.0
      */
     public function render()
@@ -35,7 +35,7 @@ class RegisterEventsMenuItem
             $event = Event::find(absint($_GET['id']));
 
             if (!$event) {
-                wp_die(esc_html__('Event not found', 'give-event-tickets'), 404);
+                wp_die(esc_html__('Event not found', 'give'), 404);
             }
 
             give(EnqueueEventDetailsScripts::class)($event);

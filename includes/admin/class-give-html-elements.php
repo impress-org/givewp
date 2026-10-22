@@ -133,6 +133,7 @@ class Give_HTML_Elements {
 	 *
 	 * Renders an HTML Dropdown of all the Give Forms.
 	 *
+	 * @since TBD Add translators comments.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -203,6 +204,7 @@ class Give_HTML_Elements {
 			$options[0] = $args['placeholder'];
 			foreach ( $forms as $form ) {
 				$form_title = empty( $form->post_title )
+					/* translators: %s: Donation form ID */
 					? sprintf( __( 'Untitled (#%s)', 'give' ), $form->ID )
 					: $form->post_title;
 
@@ -230,6 +232,7 @@ class Give_HTML_Elements {
 	}
 
     /**
+     * @since TBD Add translators comments.
      * @since 4.1.0
      */
     public function campaigns_dropdown($args = [])
@@ -296,6 +299,7 @@ class Give_HTML_Elements {
 
             if ($selectedCampaign) {
                 $selected_title = empty($selectedCampaign->title)
+                    /* translators: %s: Campaign ID */
                     ? sprintf(__('Untitled (#%s)', 'give'), $selectedCampaign->id)
                     : $selectedCampaign->title;
                 $options[$args['selected']] = esc_html($selected_title);
@@ -307,6 +311,7 @@ class Give_HTML_Elements {
             $options[0] = $args['placeholder'];
             foreach ($campaigns as $campaign) {
                 $campaign_title = empty($campaign->title)
+                    /* translators: %s: Campaign ID */
                     ? sprintf(__('Untitled (#%s)', 'give'), $campaign->id)
                     : $campaign->title;
 
