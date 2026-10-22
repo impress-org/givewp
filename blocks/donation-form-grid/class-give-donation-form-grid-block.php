@@ -73,6 +73,8 @@ class Give_Donation_Form_Grid_Block {
 	/**
 	 * Register block
 	 *
+	 * @since TBD Changed the 'Donate' button text color default to #2B642C and the progress bar color default to #438D45 to meet color contrast requirements.
+	 *
 	 * @access public
 	 */
 	public function register_block() {
@@ -169,7 +171,7 @@ class Give_Donation_Form_Grid_Block {
                     ),
                     'donateButtonTextColor' => array(
                         'type'    => 'string',
-                        'default' => '#69b86b',
+                        'default' => '#2B642C',
                     ),
 					'displayType'       => array(
 						'type'    => 'string',
@@ -189,7 +191,7 @@ class Give_Donation_Form_Grid_Block {
                     ),
                     'progressBarColor'  => array(
                         'type' => 'string',
-                        'default' => '#69b86b'
+                        'default' => '#438D45'
                     )
 				),
 			)

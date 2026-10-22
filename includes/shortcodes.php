@@ -850,6 +850,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
 /**
  * Displays donation forms in a grid layout.
  *
+ * @since TBD Changed the progress_bar_color default to #438D45 to meet non-text color contrast requirements (WCAG 1.4.11).
  * @since 3.7.0 Sanitize attributes
  * @since  2.1.0
  *
@@ -916,7 +917,7 @@ function give_form_grid_shortcode( $atts ) {
 			'image_height'        => 'auto',
 			'excerpt_length'      => 16,
 			'display_style'       => 'modal_reveal',
-            'progress_bar_color' => '#69b868',
+            'progress_bar_color' => '#438D45',
 			'status'              => '', // open or closed.
 		],
 		$atts

@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Prevented a fatal error on the Donor Register email preview when Give
+  Peer-to-Peer is active, so the preview loads with the donor switcher again.
+timestamp: 2026-10-14T22:42:59.245Z
