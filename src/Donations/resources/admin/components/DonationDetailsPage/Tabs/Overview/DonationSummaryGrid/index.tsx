@@ -22,7 +22,7 @@ export type DonationSummaryGridProps = {
 };
 
 /**
- * @since TBD Say "No campaign" when there is no campaign.
+ * @since 4.19.0 Say "No campaign" when there is no campaign.
  * @since 4.13.0 updated to accept Campaign type
  * @since 4.8.0 export function for SubscriptionSummaryGrid & add GridCard component
  * @since 4.6.0

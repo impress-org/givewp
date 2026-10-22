@@ -32,7 +32,7 @@ final class AddonUploadActivateTest extends TestCase
     private $testPluginSlugs = [];
 
     /**
-     * @since TBD Stop installs from checking WordPress.org for updates.
+     * @since 4.19.0 Stop installs from checking WordPress.org for updates.
      * @since 4.17.0 Hold the upgrader directory lock while the test runs.
      * @since 4.16.6
      */

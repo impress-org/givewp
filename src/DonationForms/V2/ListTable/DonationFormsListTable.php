@@ -28,7 +28,7 @@ class DonationFormsListTable extends ListTable
     }
 
     /**
-     * @since TBD Add the Campaign column.
+     * @since 4.19.0 Add the Campaign column.
      * @since 2.24.0
      *
      * @inheritDoc
@@ -48,7 +48,7 @@ class DonationFormsListTable extends ListTable
     }
 
     /**
-     * @since TBD Add the Campaign column.
+     * @since 4.19.0 Add the Campaign column.
      * @since 2.24.0
      *
      * @inheritDoc

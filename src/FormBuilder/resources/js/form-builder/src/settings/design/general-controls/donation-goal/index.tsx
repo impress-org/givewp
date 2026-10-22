@@ -87,7 +87,7 @@ const DonationGoal = ({dispatch}) => {
     /**
      * A form whose campaign was removed can still carry goalSource "campaign". Fall back to its own goal.
      *
-     * @since TBD
+     * @since 4.19.0
      */
     useEffect(() => {
         if (!selectedGoalSource) {

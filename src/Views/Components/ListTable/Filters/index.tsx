@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 /**
  * Filter type configurations
  *
- * @since TBD Add formselect
+ * @since 4.19.0 Add formselect
  * @since 4.10.0
  */
 const filterConfigs = {
@@ -42,8 +42,8 @@ const filterConfigs = {
 };
 
 /**
- * @since TBD Pass ariaLabel through to the select
- * @since TBD Render formselect as an async select
+ * @since 4.19.0 Pass ariaLabel through to the select
+ * @since 4.19.0 Render formselect as an async select
  * @since 4.10.0
  */
 export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
