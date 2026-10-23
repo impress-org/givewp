@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
 import ListTableApi from '@givewp/components/ListTable/api';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
-import {CampaignsRowActions} from './CampaignsRowActions';
+import {campaignsRowActions} from './CampaignsRowActions';
 import styles from './CampaignsListTable.module.scss';
 import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
@@ -73,11 +73,16 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Merge', 'give'),
         value: 'merge',
         type: 'custom',
-        confirm: (selected, names, isOpen, setOpen) => {
+        minSelected: 2,
+        confirm: (selected, names, isOpen, setOpen, list) => {
             return (
                 <MergeCampaignModal
                     isOpen={isOpen}
                     setOpen={setOpen}
+                    onMerged={() => {
+                        list?.clearSelection();
+                        list?.refresh();
+                    }}
                     campaigns={{
                         selected: selected,
                         names: names,
@@ -88,6 +93,10 @@ const bulkActions: Array<BulkActionsConfig> = [
     },
 ];
 
+/**
+ * @since TBD Pass the row actions as data; Merge needs two selected campaigns and reloads the list.
+ * @since 4.0.0
+ */
 export default function CampaignsListTable() {
     const [isCreateCampaignModalOpen, setCreateCampaignModalOpen] = useState<boolean>(autoOpenCreateCampaignModal());
     const [isExistingUserIntroModalOpen, setExistingUserIntroModalOpen] = useState<boolean>(
@@ -132,7 +141,7 @@ export default function CampaignsListTable() {
                 apiSettings={getGiveCampaignsListTableWindowData()}
                 filterSettings={filters}
                 bulkActions={bulkActions}
-                rowActions={CampaignsRowActions}
+                rowActions={campaignsRowActions}
                 listTableBlankSlate={ListTableBlankSlate()}
             >
                 <CreateCampaignModal isOpen={isCreateCampaignModalOpen} setOpen={setCreateCampaignModalOpen} />

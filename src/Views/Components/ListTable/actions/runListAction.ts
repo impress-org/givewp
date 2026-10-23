@@ -35,7 +35,7 @@ export async function runListAction(
     onDone?.();
     report(outcome, label);
 
-    if (outcome.failed === 0) {
+    if (outcome.failed === 0 && !outcome.notice) {
         clearSelection();
     }
 

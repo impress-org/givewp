@@ -86,6 +86,16 @@ export interface ColumnFilterConfig {
     filter: (item: ListTableItem, column: Column, data: ListTableResponse | undefined) => ReactNode;
 }
 
+/**
+ * What a custom bulk action's own dialog can ask of the list, after it has changed records.
+ *
+ * @since TBD
+ */
+export type BulkActionDialogContext = {
+    refresh: () => Promise<unknown>;
+    clearSelection: () => void;
+};
+
 interface BulkActionsConfigBase {
     //required
     label: string;
@@ -94,13 +104,20 @@ interface BulkActionsConfigBase {
         selected: Array<string | number>,
         names?: Array<string>,
         isOpen?: boolean,
-        setOpen?: (isOpen?: boolean) => void
+        setOpen?: (isOpen?: boolean) => void,
+        context?: BulkActionDialogContext
     ) => JSX.Element | JSX.Element[] | string;
 
     //optional
     isVisible?: (data: ListTableResponse | undefined, parameters: ListTableParameters) => boolean;
     isIdSelectable?: (id: string, data: ListTableResponse | undefined) => boolean;
     type?: 'normal' | 'warning' | 'danger' | 'custom';
+    /**
+     * A `custom` action that needs at least this many rows (Campaigns "Merge" needs two). With fewer,
+     * an error notice explains it instead of opening the dialog. The action stays offered: DataViews
+     * ignores `disabled` in the selection bar, and an action left out removes the row checkboxes.
+     */
+    minSelected?: number;
 }
 
 // Makes the "action" property required for the standard types
@@ -134,6 +151,8 @@ export type ActionOutcome = {
     changed: number;
     failed: number;
     message?: string;
+    /** An error to show although no record failed, for example an action that could not start. */
+    notice?: string;
 };
 
 /**
@@ -155,9 +174,12 @@ export type ListActionContext = {
 };
 
 /**
- * A row action declared as data, so the list engine can show "Edit" inline and the rest in the row menu.
+ * An action declared as data, so the list engine can show "Edit" inline and the rest in the row menu.
+ * With `supportsBulk` the same action also runs on a selection, as in WordPress core: DataViews lists
+ * every bulk action in each row's menu, so a separate bulk action would show twice there.
  *
- * Exactly one of `href`, `run` or `RenderModal`.
+ * Exactly one of `href`, `run` or `RenderModal`. `run` and `confirm.body` get one item from a row's
+ * menu and the eligible selected items from the selection bar.
  *
  * @since TBD
  */
@@ -166,15 +188,16 @@ export interface ListTableRowAction<Item extends ListTableItem = ListTableItem> 
     label: string;
     /** Only "Edit", or "Restore" on trashed rows. */
     isPrimary?: boolean;
+    supportsBulk?: boolean;
     isEligible?: (item: Item) => boolean;
     isDestructive?: boolean;
     href?: (item: Item) => string;
     confirm?: {
         title: string;
-        body: (item: Item) => ReactNode;
+        body: (items: Item[]) => ReactNode;
         confirmLabel: string;
     };
-    run?: (item: Item) => Promise<unknown>;
+    run?: (items: Item[]) => Promise<unknown>;
     RenderModal?: (props: RenderModalProps<Item>) => ReactElement;
 }
 

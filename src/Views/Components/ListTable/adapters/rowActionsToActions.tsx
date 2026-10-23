@@ -4,6 +4,7 @@ import type {ListActionContext, ListTableItem, ListTableRowAction} from '../List
 import {runListAction} from '../actions/runListAction';
 import useListActionSubmit from '../hooks/useListActionSubmit';
 import {getItemName} from './getItemName';
+import {onlyEligible} from './onlyEligible';
 
 /**
  * What a row action needs from the page it runs on.
@@ -12,24 +13,23 @@ import {getItemName} from './getItemName';
  */
 export type RowActionContext = ListActionContext;
 
-
 type RowActionModalProps = {
     rowAction: ListTableRowAction;
-    item: ListTableItem;
+    items: ListTableItem[];
     closeModal?: () => void;
     context: RowActionContext;
 };
 
-function RowActionModal({rowAction, item, closeModal, context}: RowActionModalProps) {
+function RowActionModal({rowAction, items, closeModal, context}: RowActionModalProps) {
     const {isBusy, submit} = useListActionSubmit(context);
 
     const onConfirm = () =>
-        submit({run: () => rowAction.run(item), ids: [item.id], label: rowAction.label, onDone: closeModal});
+        submit({run: () => rowAction.run(items), ids: items.map((item) => item.id), label: rowAction.label, onDone: closeModal});
 
     return (
         <BulkActionConfirm
-            message={rowAction.confirm.body(item)}
-            items={[{id: item.id, name: getItemName(item)}]}
+            message={rowAction.confirm.body(items)}
+            items={items.map((item) => ({id: item.id, name: getItemName(item)}))}
             confirmLabel={rowAction.confirm.confirmLabel}
             variant={rowAction.isDestructive ? 'danger' : 'normal'}
             isBusy={isBusy}
@@ -40,7 +40,7 @@ function RowActionModal({rowAction, item, closeModal, context}: RowActionModalPr
 }
 
 /**
- * Maps typed row actions to DataViews actions. A row action never runs on a selection.
+ * Maps typed actions to DataViews actions. Only an action with `supportsBulk` runs on a selection.
  *
  * - `href`: navigates to the address.
  * - `run` with `confirm`: asks first in a modal.
@@ -59,6 +59,7 @@ export function rowActionsToActions(
             label: rowAction.label,
             isPrimary: rowAction.isPrimary ?? false,
             isDestructive: rowAction.isDestructive ?? false,
+            ...(rowAction.supportsBulk && {supportsBulk: true}),
             ...(rowAction.isEligible && {isEligible: rowAction.isEligible}),
         };
 
@@ -74,16 +75,22 @@ export function rowActionsToActions(
             return {
                 ...base,
                 modalHeader: rowAction.confirm.title,
-                RenderModal: ({items: [item], closeModal}) => (
-                    <RowActionModal rowAction={rowAction} item={item} closeModal={closeModal} context={context} />
+                RenderModal: ({items, closeModal}) => (
+                    <RowActionModal rowAction={rowAction} items={items} closeModal={closeModal} context={context} />
                 ),
             };
         }
 
         return {
             ...base,
-            callback: ([item]) =>
-                runListAction({run: () => rowAction.run(item), ids: [item.id], label: rowAction.label}, context),
+            callback: (selected) => {
+                const items = onlyEligible(selected, rowAction.isEligible);
+
+                return runListAction(
+                    {run: () => rowAction.run(items), ids: items.map((item) => item.id), label: rowAction.label},
+                    context
+                );
+            },
         };
     });
 }

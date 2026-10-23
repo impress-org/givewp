@@ -1,10 +1,10 @@
 import {createContext, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState} from 'react';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import type {Field} from '@wordpress/dataviews';
 import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notifications';
 import ListTableApi from '../api';
 import DataViewsListTable from '../DataViewsListTable';
-import ListTableErrorState from '../ListTableErrorState';
+import ListTableEmptyState from '../EmptyStates';
 import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
 import useLegacyRowActionsField from '../LegacyRowActions/useLegacyRowActionsField';
 import {columnsToFields, titleFieldId, visibleFieldIds} from '../adapters/columnsToFields';
@@ -105,7 +105,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const [testMode, setTestMode] = useState(paymentMode);
         const [legacyConfirm, setLegacyConfirm] = useState<LegacyConfirmRequest | null>(null);
 
-        const {view, onChangeView} = useListTableView(() => {
+        const {view, onChangeView, hasActiveFilters, clearFilters} = useListTableView(() => {
             const titleField = titleFieldId(columns);
             const fields = [...visibleFieldIds(columns, titleField), ...(legacyRowActions ? [LEGACY_ROW_ACTIONS_FIELD] : [])];
 
@@ -161,11 +161,13 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             [columns, columnFilters, data, legacyRowActionsField, filters]
         );
 
-        const {actions, customAction, closeCustomAction} = useListTableActions({
+        const {actions, customAction, setCustomActionOpen} = useListTableActions({
             rowActions: typedRowActions,
             bulkActions,
             data,
             parameters,
+            selection,
+            pluralName,
             report,
             refresh,
             clearSelection,
@@ -215,7 +217,32 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                             isLoading={isLoading}
                             selection={selection}
                             onChangeSelection={onChangeSelection}
-                            empty={error ? <ListTableErrorState pluralName={pluralName} onRetry={refresh} /> : listTableBlankSlate}
+                            empty={
+                                error ? (
+                                    <ListTableEmptyState
+                                        isError
+                                        message={sprintf(
+                                            /* translators: %s: record type, plural (for example "donations") */
+                                            __('There was a problem retrieving the %s.', 'give'),
+                                            pluralName
+                                        )}
+                                        actionLabel={__('Try again', 'give')}
+                                        onAction={refresh}
+                                    />
+                                ) : hasActiveFilters ? (
+                                    <ListTableEmptyState
+                                        message={sprintf(
+                                            /* translators: %s: record type, plural (for example "donations") */
+                                            __('No %s match your search or filters.', 'give'),
+                                            pluralName
+                                        )}
+                                        actionLabel={__('Clear filters', 'give')}
+                                        onAction={clearFilters}
+                                    />
+                                ) : (
+                                    listTableBlankSlate
+                                )
+                            }
                             perPageSizes={PER_PAGE_SIZES}
                             search={filters.searchParam !== null}
                             searchLabel={
@@ -238,12 +265,14 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                     />
                 )}
 
+                {/* A closed custom dialog stays mounted, as with the old table: its buttons close it mid-click. */}
                 {customAction &&
                     customAction.config.confirm(
                         customAction.items.map((item) => String(item.id)),
                         customAction.items.map(getItemName),
-                        true,
-                        (isOpen) => !isOpen && closeCustomAction()
+                        customAction.isOpen,
+                        (isOpen = false) => setCustomActionOpen(isOpen),
+                        {refresh, clearSelection}
                     )}
             </ShowConfirmModalContext.Provider>
         );
