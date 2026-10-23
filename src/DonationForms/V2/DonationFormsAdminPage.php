@@ -8,6 +8,7 @@ use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormMigration\Actions\GetMigratedFormId;
+use Give\Framework\ListTable\Actions\RegisterListTableAssets;
 use Give\Helpers\EnqueueScript;
 use Give\Helpers\Language;
 use Give\Framework\Permissions\Facades\UserPermissions;
@@ -112,6 +113,7 @@ class DonationFormsAdminPage
         ];
 
         EnqueueScript::make('give-admin-donation-forms', 'build/assets/dist/js/give-admin-donation-forms.js')
+            ->dependencies([RegisterListTableAssets::HANDLE])
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveDonationForms', $data)->enqueue();

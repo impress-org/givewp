@@ -5,6 +5,7 @@ namespace Give\Donations\Actions;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
+use Give\Framework\ListTable\Actions\RegisterListTableAssets;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 use Give\Helpers\Utils;
@@ -26,7 +27,7 @@ class LoadDonationsListTableAssets
         wp_register_script(
             $handleName,
             GIVE_PLUGIN_URL . 'build/assets/dist/js/give-admin-donations.js',
-            $asset['dependencies'],
+            array_merge([RegisterListTableAssets::HANDLE], $asset['dependencies']),
             $asset['version'],
             true
         );

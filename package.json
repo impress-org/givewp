@@ -17,6 +17,7 @@
         "test:e2e": "playwright test --project=chromium",
         "test:e2e:ui": "playwright test --project=chromium --ui",
         "test:e2e:headed": "playwright test --project=headed",
+        "test:unit:js": "wp-scripts test-unit-js",
         "packages-update": "wp-scripts packages-update",
         "plugin-zip": "wp-scripts plugin-zip"
     },
@@ -71,9 +72,9 @@
         "@stellarwp/changelogger": "^0.10.0",
         "@types/lodash": "^4.14.199",
         "@types/node": "^20.19.43",
-        "@types/react": "^18.0.38",
+        "@types/react": "18.0.38",
         "@types/react-datepicker": "^4.15.0",
-        "@types/react-dom": "^18.0.11",
+        "@types/react-dom": "18.0.11",
         "@types/wordpress__blocks": "^12.5.0",
         "@types/wordpress__components": "^23.0.1",
         "@wordpress/e2e-test-utils-playwright": "^1.53.0",
@@ -119,6 +120,7 @@
         "@wordpress/compose": "6.2.0",
         "@wordpress/core-data": "^6.2.0",
         "@wordpress/data": "^8.2.0",
+        "@wordpress/dataviews": "10.1.7",
         "@wordpress/hooks": "^3.25.0",
         "@wordpress/html-entities": "^3.25.0",
         "@wordpress/i18n": "^4.25.0",
@@ -201,7 +203,9 @@
         "mini-create-react-context": {
             "react": "^18.2.0",
             "react-dom": "^18.2.0"
-        }
+        },
+        "@types/react": "18.0.38",
+        "@types/react-dom": "18.0.11"
     },
     "volta": {
         "node": "22.23.2"

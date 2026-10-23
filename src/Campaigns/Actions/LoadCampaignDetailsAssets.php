@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Actions;
 
+use Give\Framework\ListTable\Actions\RegisterListTableAssets;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 
@@ -24,7 +25,7 @@ class LoadCampaignDetailsAssets
         wp_register_script(
             $handleName,
             GIVE_PLUGIN_URL . 'build/campaignDetails.js',
-            $scriptAsset['dependencies'],
+            array_merge([RegisterListTableAssets::HANDLE], $scriptAsset['dependencies']),
             $scriptAsset['version'],
             true
         );
