@@ -1,4 +1,5 @@
 import type {ReactNode} from 'react';
+import {__experimentalHStack as HStack} from '@wordpress/components';
 import {DataViews} from '@wordpress/dataviews';
 import type {Action, Field, View} from '@wordpress/dataviews';
 import type {ListTableItem} from '../ListTablePage/types';
@@ -24,6 +25,47 @@ export interface DataViewsListTableProps {
 }
 
 const getItemId = (item: ListTableItem) => String(item.id);
+
+/**
+ * The stock DataViews layout, with one change: while rows are selected, the bulk actions also take
+ * the place of the search row above the table, so they show where the selection starts. The stock
+ * footer keeps its own copy next to the pagination.
+ *
+ * @since TBD
+ */
+function ListTableLayout({
+    hasSelection,
+    search,
+    searchLabel,
+}: {
+    hasSelection: boolean;
+    search: boolean;
+    searchLabel?: string;
+}) {
+    return (
+        <>
+            {hasSelection ? (
+                <HStack justify="start" className="dataviews__view-actions givewp-list-table__bulk-actions">
+                    <DataViews.BulkActionToolbar />
+                </HStack>
+            ) : (
+                <HStack alignment="top" justify="space-between" className="dataviews__view-actions" spacing={1}>
+                    <HStack justify="start" expanded={false} className="dataviews__search">
+                        {search && <DataViews.Search label={searchLabel} />}
+                        <DataViews.FiltersToggle />
+                    </HStack>
+                    <HStack spacing={1} expanded={false} style={{flexShrink: 0}}>
+                        <DataViews.LayoutSwitcher />
+                        <DataViews.ViewConfig />
+                    </HStack>
+                </HStack>
+            )}
+            <DataViews.FiltersToggled className="dataviews-filters__container" />
+            <DataViews.Layout />
+            <DataViews.Footer />
+        </>
+    );
+}
 
 /**
  * Renders the stock DataViews table for an admin list screen. No data fetching and no
@@ -64,7 +106,13 @@ export default function DataViewsListTable({
                 search={search}
                 searchLabel={searchLabel}
                 defaultLayouts={{table: {}}}
-            />
+            >
+                <ListTableLayout
+                    hasSelection={selection.length > 0}
+                    search={search}
+                    searchLabel={searchLabel}
+                />
+            </DataViews>
         </div>
     );
 }

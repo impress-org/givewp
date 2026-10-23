@@ -3,6 +3,12 @@
 .givewp-list-table {
     background-color: var(--givewp-shades-white);
     border-radius: var(--givewp-rounded-8);
+
+    // The bulk actions sit in the search row while rows are selected. Keep the row as tall as the
+    // search field, so the table does not jump when the selection starts or ends.
+    &__bulk-actions {
+        min-height: calc(2 * var(--givewp-spacing-8));
+    }
 }
 
 // Row checkboxes are always visible, as in the DataViews that WordPress 7.x ships. The pinned

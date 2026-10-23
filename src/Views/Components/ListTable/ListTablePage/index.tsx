@@ -59,11 +59,6 @@ export const ShowConfirmModalContext = createContext(
 );
 
 /**
- * @deprecated TBD The list engine owns selection. Only the old table code, removed with it, reads this.
- */
-export const CheckboxContext = createContext(null);
-
-/**
  * The page shell every admin list screen renders through: the Give page header and stats, and the
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
@@ -108,9 +103,16 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
 
         const {view, onChangeView, hasActiveFilters, clearFilters} = useListTableView(() => {
             const titleField = titleFieldId(columns);
-            const fields = [...visibleFieldIds(columns, titleField), ...(legacyRowActions ? [LEGACY_ROW_ACTIONS_FIELD] : [])];
+            const fields = [
+                ...visibleFieldIds(columns, titleField),
+                ...(legacyRowActions ? [LEGACY_ROW_ACTIONS_FIELD] : []),
+            ];
 
-            const initialView = viewFromInitialState(filterSettings, {perPage, fields, titleField, contentMode}, urlSearch);
+            const initialView = viewFromInitialState(
+                filterSettings,
+                {perPage, fields, titleField, contentMode},
+                urlSearch
+            );
 
             return testModeFilter && paymentMode ? withToggleFilter(initialView, TEST_MODE_FILTER, true) : initialView;
         });
@@ -126,7 +128,12 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             [view, filterSettings, scope, locale, testMode]
         );
 
-        const {data, error, isLoading, refresh: refreshList} = useListTableQuery<ListTableResponse>(apiRoot, parameters);
+        const {
+            data,
+            error,
+            isLoading,
+            refresh: refreshList,
+        } = useListTableQuery<ListTableResponse>(apiRoot, parameters);
         const {data: stats, refresh: refreshStats} = useListTableQuery<Record<string, number>>(
             statsConfig ? `${apiRoot}/stats` : null,
             {testMode}

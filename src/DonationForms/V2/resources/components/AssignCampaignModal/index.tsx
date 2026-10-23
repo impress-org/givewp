@@ -9,10 +9,10 @@ import {
     AsyncSelectEntity,
     asyncSelectEntities,
     useCampaignAsyncSelect,
-} from '@givewp/components/ListTable/CustomFilter/useAsyncCampaigns';
-import {CampaignOption} from '@givewp/components/ListTable/CustomFilter/utils';
+} from '@givewp/components/ListTable/AsyncEntitySelect/useAsyncCampaigns';
+import {CampaignOption} from '@givewp/components/ListTable/AsyncEntitySelect/utils';
 import {Interweave} from 'interweave';
-import selectStyles from '@givewp/components/ListTable/CustomFilter/styles.module.scss';
+import selectStyles from '@givewp/components/ListTable/AsyncEntitySelect/styles.module.scss';
 import styles from './AssignCampaignModal.module.scss';
 
 type AssignCampaignProps = {

@@ -3,7 +3,14 @@ import {scopeFromFilterSettings, viewFromInitialState} from './viewFromInitialSt
 import {filterFieldId} from './viewToParameters';
 
 const filters: FilterConfig[] = [
-    {name: 'status', type: 'select', options: [{value: 'any', text: 'All'}, {value: 'trash', text: 'Trash'}]},
+    {
+        name: 'status',
+        type: 'select',
+        options: [
+            {value: 'any', text: 'All'},
+            {value: 'trash', text: 'Trash'},
+        ],
+    },
     {name: 'search', type: 'search'},
     {name: 'campaignId', type: 'campaignselect'},
     {name: 'donor', type: 'hidden'},
@@ -64,9 +71,9 @@ describe('viewFromInitialState', () => {
     it('does not apply a select filter set to its default first option', () => {
         const view = viewFromInitialState(filters, defaults, new URLSearchParams('status=any'));
 
-        expect(view.filters.some((filter) => filter.field === filterFieldId('status') && filter.operator === 'is')).toBe(
-            false
-        );
+        expect(
+            view.filters.some((filter) => filter.field === filterFieldId('status') && filter.operator === 'is')
+        ).toBe(false);
     });
 
     it('leaves hidden filters out of the view in content mode', () => {

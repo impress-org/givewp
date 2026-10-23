@@ -22,7 +22,10 @@ export const campaignsRowActions: ListTableRowAction[] = [
             body: ([item]) => (
                 <p>
                     {/* translators: %s: campaign title */}
-                    {sprintf(__('Are you sure you want to duplicate the following campaign: %s?', 'give'), item.titleRaw)}
+                    {sprintf(
+                        __('Are you sure you want to duplicate the following campaign: %s?', 'give'),
+                        item.titleRaw
+                    )}
                 </p>
             ),
             confirmLabel: __('Duplicate', 'give'),

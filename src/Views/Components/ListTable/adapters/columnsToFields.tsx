@@ -56,7 +56,11 @@ export function columnsToFields(
             render: ({item}) => (
                 // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                 <div onClick={keepInteractiveClicksInCell}>
-                    {columnFilter ? columnFilter.filter(item, column, data) : <InterweaveSSR column={column} item={item} />}
+                    {columnFilter ? (
+                        columnFilter.filter(item, column, data)
+                    ) : (
+                        <InterweaveSSR column={column} item={item} />
+                    )}
                 </div>
             ),
         };
@@ -70,9 +74,7 @@ export function columnsToFields(
  * @since TBD
  */
 export function visibleFieldIds(columns: Column[], titleField?: string): string[] {
-    return columns
-        .filter((column) => column.visible !== false && column.id !== titleField)
-        .map((column) => column.id);
+    return columns.filter((column) => column.visible !== false && column.id !== titleField).map((column) => column.id);
 }
 
 /**

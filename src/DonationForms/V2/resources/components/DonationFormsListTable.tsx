@@ -5,6 +5,7 @@ import {useDonationFormsRowActions} from './DonationFormsRowActions';
 import UpgradedFormTooltip from './UpgradedFormTooltip';
 import Onboarding, {OnboardingContext, OnboardingStateProps} from './Onboarding';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
+import formStyles from './DonationFormsListTable.module.scss';
 import {ColumnFilterConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import {Interweave} from 'interweave';
@@ -123,21 +124,21 @@ const columnFilters: Array<ColumnFilterConfig> = [
         column: 'title',
         filter: (item) => {
             const CubeTooltip = () => (
-                <div className={styles.tooltipContainer}>
+                <div className={formStyles.tooltipContainer}>
                     <CubeIcon />
-                    <div className={styles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
+                    <div className={formStyles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
                 </div>
             );
 
             return (
                 <>
-                    <div className={styles.titleContainer}>
-                        <div className={styles.migratedForm}>
+                    <div className={formStyles.titleContainer}>
+                        <div className={formStyles.migratedForm}>
                             {item?.v3form && window?.GiveDonationForms?.isOptionBasedFormEditorEnabled && <CubeTooltip />}
                             <Interweave attributes={{className: 'interweave'}} content={String(item?.title ?? '')} />
                         </div>
                         {item?.isDefaultCampaignForm && (
-                            <div className={`${styles.defaultFormPill} givewp-default-form-pill`}>{__('Default', 'give')}</div>
+                            <div className={`${formStyles.defaultFormPill} givewp-default-form-pill`}>{__('Default', 'give')}</div>
                         )}
                     </div>
                 </>
@@ -149,7 +150,7 @@ const columnFilters: Array<ColumnFilterConfig> = [
         filter: (item, column) => {
             if (window.GiveDonationForms.showUpgradedTooltip && item?.status_raw === 'upgraded') {
                 return (
-                    <div className={styles.upgradedForm}>
+                    <div className={formStyles.upgradedForm}>
                         <UpgradedFormTooltip
                             onDismiss={() => fetch(window.GiveDonationForms.tooltipActionUrl, {method: 'POST'})}
                         />

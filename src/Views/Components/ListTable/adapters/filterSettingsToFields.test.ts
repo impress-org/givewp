@@ -4,7 +4,15 @@ import {filterSettingsToFields} from './filterSettingsToFields';
 import {filterFieldId} from './viewToParameters';
 
 const filters: FilterConfig[] = [
-    {name: 'status', type: 'select', text: 'Status', options: [{value: 'any', text: 'All'}, {value: 'trash', text: 'Trash'}]},
+    {
+        name: 'status',
+        type: 'select',
+        text: 'Status',
+        options: [
+            {value: 'any', text: 'All'},
+            {value: 'trash', text: 'Trash'},
+        ],
+    },
     {name: 'search', type: 'search', text: 'Search donations'},
     {name: 'campaignId', type: 'campaignselect', options: [{value: 'none', text: 'No campaign'}]},
     {name: 'formId', type: 'formselect'},
@@ -14,7 +22,13 @@ const filters: FilterConfig[] = [
         name: 'filterBy',
         type: 'filterby',
         groupedOptions: [
-            {id: 'showTrashed', apiParam: 'status', name: 'Status', type: 'toggle', options: [{text: 'Show trashed', value: 'trash'}]},
+            {
+                id: 'showTrashed',
+                apiParam: 'status',
+                name: 'Status',
+                type: 'toggle',
+                options: [{text: 'Show trashed', value: 'trash'}],
+            },
             {
                 id: 'statuses',
                 apiParam: 'status',
@@ -23,13 +37,19 @@ const filters: FilterConfig[] = [
                 isVisible: (values) => !values?.status?.includes('trash'),
                 options: [{text: 'Completed', value: 'publish'}],
             },
-            {id: 'period', apiParam: 'start', name: 'Period', type: 'radio', options: [{text: 'Last 7 days', value: 'x'}]},
+            {
+                id: 'period',
+                apiParam: 'start',
+                name: 'Period',
+                type: 'radio',
+                options: [{text: 'Last 7 days', value: 'x'}],
+            },
         ],
     },
 ];
 
 const view = (filtersApplied: View['filters'] = []): View =>
-    ({type: 'table', page: 1, perPage: 30, search: '', filters: filtersApplied}) as View;
+    ({type: 'table', page: 1, perPage: 30, search: '', filters: filtersApplied} as View);
 
 const options = {contentMode: false, loadEntityElements: jest.fn(async () => [{value: 3, label: 'Spring'}])};
 
@@ -90,8 +110,11 @@ describe('filterSettingsToFields', () => {
         expect(fieldById(filterSettingsToFields(filters, view(), options).fields, 'donor')).toBeUndefined();
 
         const donor = fieldById(
-            filterSettingsToFields(filters, view([{field: filterFieldId('donor'), operator: 'is', value: '12'}]), options)
-                .fields,
+            filterSettingsToFields(
+                filters,
+                view([{field: filterFieldId('donor'), operator: 'is', value: '12'}]),
+                options
+            ).fields,
             'donor'
         );
 

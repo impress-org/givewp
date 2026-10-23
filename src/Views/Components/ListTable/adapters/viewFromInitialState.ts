@@ -42,7 +42,8 @@ export function viewFromInitialState(
 
     filterSettings.forEach((filter) => {
         const value = urlValue(search, filter.name);
-        const is = (applied: unknown) => filters.push({field: filterFieldId(filter.name), operator: 'is', value: applied});
+        const is = (applied: unknown) =>
+            filters.push({field: filterFieldId(filter.name), operator: 'is', value: applied});
 
         switch (filter.type) {
             case 'search':

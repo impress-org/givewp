@@ -23,7 +23,10 @@ describe('rowActionsToActions', () => {
         expect(action).toMatchObject({id: 'edit', label: 'Edit', isPrimary: true, isEligible});
         expect(action.supportsBulk).toBeUndefined();
 
-        const [bulk] = rowActionsToActions([{id: 'delete', label: 'Delete', supportsBulk: true, run: jest.fn()}], context());
+        const [bulk] = rowActionsToActions(
+            [{id: 'delete', label: 'Delete', supportsBulk: true, run: jest.fn()}],
+            context()
+        );
 
         expect(bulk.supportsBulk).toBe(true);
     });
@@ -35,7 +38,10 @@ describe('rowActionsToActions', () => {
         // jsdom does not navigate; watch the call instead.
         Object.defineProperty(window, 'location', {value: {...location, assign}, configurable: true});
 
-        const [action] = rowActionsToActions([{id: 'edit', label: 'Edit', href: (item) => `edit?id=${item.id}`}], context());
+        const [action] = rowActionsToActions(
+            [{id: 'edit', label: 'Edit', href: (item) => `edit?id=${item.id}`}],
+            context()
+        );
         'callback' in action && action.callback([{id: 9}], {registry: null});
 
         expect(assign).toHaveBeenCalledWith('edit?id=9');
@@ -74,7 +80,11 @@ describe('rowActionsToActions', () => {
             id: 'trash',
             label: 'Trash',
             isDestructive: true,
-            confirm: {title: 'Trash donation', body: ([item]) => <p>Trash #{item.id}?</p>, confirmLabel: 'Move to trash'},
+            confirm: {
+                title: 'Trash donation',
+                body: ([item]) => <p>Trash #{item.id}?</p>,
+                confirmLabel: 'Move to trash',
+            },
             run,
         };
         const [action] = rowActionsToActions([rowAction], pageContext);
@@ -83,7 +93,9 @@ describe('rowActionsToActions', () => {
 
         expect('modalHeader' in action && action.modalHeader).toBe('Trash donation');
 
-        act(() => createRoot(container).render(<RenderModal items={[{id: 9, donor: 'Jane'}]} closeModal={jest.fn()} />));
+        act(() =>
+            createRoot(container).render(<RenderModal items={[{id: 9, donor: 'Jane'}]} closeModal={jest.fn()} />)
+        );
 
         expect(container.textContent).toContain('Trash #9?');
         expect(run).not.toHaveBeenCalled();
@@ -143,6 +155,9 @@ describe('rowActionsToActions', () => {
 
         await ('callback' in action && action.callback([{id: 7}], {registry: null}));
 
-        expect(pageContext.report).toHaveBeenCalledWith({changed: 1, failed: 0, successMessage: 'Copied #7'}, 'Copy #7');
+        expect(pageContext.report).toHaveBeenCalledWith(
+            {changed: 1, failed: 0, successMessage: 'Copied #7'},
+            'Copy #7'
+        );
     });
 });

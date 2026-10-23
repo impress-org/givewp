@@ -1,6 +1,5 @@
 import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
-import ListTableApi from '@givewp/components/ListTable/api';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import {campaignsRowActions} from './CampaignsRowActions';
 import styles from './CampaignsListTable.module.scss';
@@ -34,8 +33,6 @@ const shouldShowExistingUserIntroModal = getCampaignOptionsWindowData().admin.sh
 export function getGiveCampaignsListTableWindowData() {
     return window.GiveCampaignsListTable;
 }
-
-const API = new ListTableApi(getGiveCampaignsListTableWindowData());
 
 const campaignStatus = [
     {
