@@ -299,12 +299,17 @@ the same text. The full results are in the `plugin-check-report` artifact (the r
 **Where the baseline comes from.** No baseline is committed. Every run uploads a `baseline.json`
 made from its own results, and later runs download it with `.github/plugin-check/fetch-baseline.sh`:
 
-- A **pull request** compares with the branch it goes into: the run for its base commit, or the
-  latest run on that branch. For a stacked pull request this is the run of the pull request below
-  it. The comment calls this column "Target branch" and links to that run.
+- A **pull request** compares with the branch it goes into: the run for its base commit, waited for
+  (up to 20 minutes) when it is still going. For a stacked pull request this is the run of the pull
+  request below it. The comment calls this column "Target branch" and links to that run. When the
+  base commit's run has no baseline (a newer push cancelled it, say), the latest run on that branch
+  is used. It is older than the target, so more errors than it are only reported as a warning
+  ("Target branch, older run"), never a failure.
 - A **push** to `develop` or `master` compares with the run before it on the same branch ("Previous
   run"). Two pull requests can each pass on their own and still add errors together once both are
   merged; this is where that shows up, as a failed check on the branch.
+- If looking up the earlier run fails (a GitHub API or download error), the check fails, so an
+  outage never passes as "no baseline". Re-run it.
 - With **no earlier run** to take it from (a new branch, or artifacts past their 90 days), nothing is
   compared and the check passes with a warning. Run the workflow on the target branch (Actions →
   Plugin Check → Run workflow) to make a baseline.

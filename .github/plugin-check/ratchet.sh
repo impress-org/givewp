@@ -21,6 +21,9 @@
 #                          fetch-baseline.sh puts it)
 #   BASELINE_LABEL         what the baseline is, for the comment's column (default: "Baseline")
 #   BASELINE_URL           link to the run the baseline came from
+#   PLUGIN_CHECK_ADVISORY  "true" when the baseline is from an older commit than the one the pull
+#                          request targets. Rules with more errors are then reported as warnings
+#                          and do not fail the check: the target may have changed since.
 #   COMMENT_BADGE          image URL shown under the status line
 #   RUN_URL                link to the workflow run
 #   ARTIFACT_URL           link to the uploaded results and fresh baseline
@@ -144,9 +147,13 @@ while IFS=$'\t' read -r kind code allowed found; do
             up_list+="${up_list:+, }\`$code\`$label (+$((found - allowed)))"
         fi
         if [ "$kind" = errors ]; then
-            failed=true
             errors_up=$((errors_up + 1))
-            echo "::error title=Plugin Check::$code has $found errors, the baseline has $allowed. The full list is in the plugin-check-results artifact."
+            if [ "${PLUGIN_CHECK_ADVISORY:-}" = true ]; then
+                echo "::warning title=Plugin Check::$code has $found errors, an older run of the target branch has $allowed. Not enforced, because the target may have changed since."
+            else
+                failed=true
+                echo "::error title=Plugin Check::$code has $found errors, the baseline has $allowed. The full list is in the plugin-check-results artifact."
+            fi
         else
             echo "::notice title=Plugin Check::$code has $found warnings, the baseline has $allowed. Warnings do not fail the check."
         fi
@@ -165,6 +172,8 @@ change() {
 # The totals can go down while a rule goes up, so the status names the rules, not the totals.
 if [ "$no_baseline" = true ]; then
     status="⚠️ Plugin Check ran, but there was no baseline to compare with"
+elif [ "$errors_up" -gt 0 ] && [ "${PLUGIN_CHECK_ADVISORY:-}" = true ]; then
+    status="⚠️ Plugin Check passed, not enforced: $errors_up rule(s) have more errors than an older run of the target branch"
 elif [ "$failed" = true ]; then
     if [ "$errors_up" -eq 1 ]; then
         status="❌ Plugin Check failed: 1 rule has more errors than the baseline allows"

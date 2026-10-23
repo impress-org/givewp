@@ -232,7 +232,8 @@ jobs:
         # "start" is skipped for forks and non-pull-request runs, which would skip this job too.
         if: ${{ !cancelled() }}
         runs-on: ubuntu-latest
-        timeout-minutes: 10
+        # Up to 20 minutes of it can be waiting for the target branch's run (see "Get the baseline").
+        timeout-minutes: 30
 
         # Writes one sticky comment on the pull request, and reads an earlier run's artifact as the
         # baseline.
@@ -294,30 +295,47 @@ jobs:
                     echo "url=https://img.shields.io/badge/Check%20Finished-${stamp}-darkgreen" >> "$GITHUB_OUTPUT"
 
             # The baseline: what the branch the code goes into looks like now, from the artifact
-            # of an earlier run on it. A pull request takes the run for its base commit (or the
-            # latest on its base branch); for a stacked pull request that is the run of the pull
-            # request below it. A push takes the run before it on the same branch, so a merge
-            # that adds errors to develop fails there, where the whole team sees it. With no run
-            # to take it from, ratchet.sh compares nothing and passes with a warning.
+            # of an earlier run on it. A pull request takes the run for its base commit; for a
+            # stacked pull request that is the run of the pull request below it. When that run is
+            # still going, it is waited for. When it has no baseline (it was cancelled by a newer
+            # push, say), the latest run on the base branch is used instead, and more errors than
+            # it are only reported, not failed: that run is older than the target. A push takes
+            # the run before it on the same branch, so a merge that adds errors to develop fails
+            # there, where the whole team sees it.
+            # With no run to take it from, ratchet.sh compares nothing and passes with a warning.
+            # A failed lookup (GitHub API or download error) fails the job instead, so an outage
+            # never passes as "no baseline".
             -   name: Get the baseline
                 id: baseline
-                continue-on-error: true
                 env:
                     GH_TOKEN: ${{ github.token }}
                     EVENT: ${{ github.event_name }}
                     BASE_REF: ${{ github.event.pull_request.base.ref }}
                     BASE_SHA: ${{ github.event.pull_request.base.sha }}
                 run: |
+                    status=0
                     if [ "$EVENT" = pull_request ]; then
                         label="Target branch"
-                        found=$(.github/plugin-check/fetch-baseline.sh --sha "$BASE_SHA" "$BASE_REF" "$PLUGIN_CHECK_BASELINE")
+                        found=$(.github/plugin-check/fetch-baseline.sh --sha "$BASE_SHA" --wait 1200 "$BASE_REF" "$PLUGIN_CHECK_BASELINE") || status=$?
                     else
                         label="Previous run"
-                        found=$(.github/plugin-check/fetch-baseline.sh --skip-run "$GITHUB_RUN_ID" "$GITHUB_REF_NAME" "$PLUGIN_CHECK_BASELINE")
+                        found=$(.github/plugin-check/fetch-baseline.sh --skip-run "$GITHUB_RUN_ID" "$GITHUB_REF_NAME" "$PLUGIN_CHECK_BASELINE") || status=$?
                     fi
-                    echo "label=$label" >> "$GITHUB_OUTPUT"
-                    echo "url=${found#* }" >> "$GITHUB_OUTPUT"
-                    echo "Baseline from ${found#* }"
+                    case "$status" in
+                        0) ;;
+                        1) echo "No earlier run has a baseline."; exit 0 ;;
+                        *) exit "$status" ;;
+                    esac
+                    read -r _ url match <<< "$found"
+                    if [ "$match" = older ]; then
+                        label="Target branch, older run"
+                        echo "PLUGIN_CHECK_ADVISORY=true" >> "$GITHUB_ENV"
+                    fi
+                    {
+                        echo "label=$label"
+                        echo "url=$url"
+                    } >> "$GITHUB_OUTPUT"
+                    echo "Baseline from $url ($match)"
 
             # Fails the job when a rule has more errors than the baseline. Also writes the short
             # comment body and the same text to the job summary.
