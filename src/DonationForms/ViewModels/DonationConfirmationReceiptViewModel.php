@@ -82,6 +82,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
+     * @since TBD Escape output and replace short echo tags with escaped echo.
      * @since 4.1.0 add campaign colors
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
@@ -123,7 +124,8 @@ class DonationConfirmationReceiptViewModel
 
         <?php
         if ($customCss): ?>
-            <style><?php echo wp_strip_all_tags($customCss); ?></style>
+            <style><?php echo wp_strip_all_tags($customCss); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_strip_all_tags() already prevents breaking out of the <style> element; esc_html() would entity-encode valid CSS characters (e.g. '>') that browsers never decode inside <style>.
+            ?></style>
         <?php
         endif; ?>
 
@@ -131,20 +133,22 @@ class DonationConfirmationReceiptViewModel
              data-iframe-height
              class="givewp-donation-confirmation-receipt"
              style="
-                     --givewp-primary-color:<?= $primaryColor ?>;
-                     --givewp-secondary-color:<?= $secondaryColor ?>;
+                     --givewp-primary-color:<?php echo esc_attr($primaryColor); ?>;
+                     --givewp-secondary-color:<?php echo esc_attr($secondaryColor); ?>;
                      "
         ></div>
 
         <?php
         wp_print_footer_scripts();
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- outputs the buffered page built from wp_print_styles()/wp_print_head_scripts()/wp_print_footer_scripts() and the already-escaped markup above.
         echo ob_get_clean();
 
         exit();
     }
 
     /**
+     * @since TBD Set explicit versions on the enqueued assets.
      * @since 3.0.0
      */
     public function enqueueGlobalStyles(string $primaryColor, string $secondaryColor)
@@ -154,7 +158,9 @@ class DonationConfirmationReceiptViewModel
 
         wp_register_style(
             'givewp-base-form-styles',
-            GIVE_PLUGIN_URL . 'build/baseFormDesignCss.css'
+            GIVE_PLUGIN_URL . 'build/baseFormDesignCss.css',
+            [],
+            GIVE_VERSION
         );
 
         wp_add_inline_style(
@@ -171,6 +177,7 @@ class DonationConfirmationReceiptViewModel
     /**
      * Loads scripts in order: [Registrars, Designs, App]
      *
+     * @since TBD Set explicit versions on the design script and the receipt styles.
      * @since 3.0.0
      *
      * @return void
@@ -209,7 +216,7 @@ class DonationConfirmationReceiptViewModel
             $design = $formDesignRegistrar->getDesign($formDesignId);
 
             if ($design->css()) {
-                wp_enqueue_style('givewp-form-design-' . $design::id(), $design->css());
+                wp_enqueue_style('givewp-form-design-' . $design::id(), $design->css(), [], GIVE_VERSION);
             }
 
             if ($design->js()) {
@@ -220,7 +227,7 @@ class DonationConfirmationReceiptViewModel
                         ['givewp-donation-form-registrars'],
                         $design->dependencies()
                     ),
-                    false,
+                    GIVE_VERSION,
                     true
                 );
             }

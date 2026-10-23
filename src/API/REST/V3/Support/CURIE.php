@@ -44,12 +44,14 @@ class CURIE
      *
      * @see https://developer.wordpress.org/rest-api/extending-the-rest-api/modifying-responses/#adding-links-to-the-api-response
      *
+     * @since TBD Escape exception message.
+     *
      * @throws Exception
      */
     public static function relationUrl(string $rel): string
     {
         if (wp_http_validate_url($rel)) {
-            throw new Exception(__('The $rel value should be a unique identifier, not a full URL.', 'give'));
+            throw new Exception(esc_html__('The $rel value should be a unique identifier, not a full URL.', 'give'));
         }
 
         return trailingslashit(self::$baseUrl) . $rel;

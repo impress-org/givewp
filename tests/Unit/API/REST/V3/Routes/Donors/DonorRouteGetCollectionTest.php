@@ -454,6 +454,86 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
+     * @since 4.19.0.1
+     *
+     * @throws Exception
+     */
+    public function testGetDonorsShouldNotIncludeAnonymousDonorsWhenOnlyWithDonationsIsFalse()
+    {
+        Donation::query()->delete();
+
+        /** @var Campaign $campaign */
+        $campaign = Campaign::factory()->create();
+
+        $donor1 = $this->createDonor1WithDonation($campaign->id);
+        $this->createDonor2WithDonation($campaign->id, true);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'onlyWithDonations' => false,
+                'direction' => 'ASC',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(1, count($data));
+        $this->assertEquals($donor1->id, $data[0]['id']);
+    }
+
+    /**
+     * @since 4.19.0.1
+     *
+     * @throws Exception
+     */
+    public function testGetDonorsShouldIncludeAnonymousDonorsWhenOnlyWithDonationsIsFalse()
+    {
+        $newAdminUser = $this->factory()->user->create(
+            [
+                'role' => 'administrator',
+                'user_login' => 'testIncludeAnonDonorsNoWithDonations',
+                'user_pass' => 'testIncludeAnonDonorsNoWithDonations',
+                'user_email' => 'testIncludeAnonDonorsNoWithDonations@test.com',
+            ]
+        );
+        wp_set_current_user($newAdminUser);
+
+        Donation::query()->delete();
+
+        /** @var Campaign $campaign */
+        $campaign = Campaign::factory()->create();
+
+        $donor1 = $this->createDonor1WithDonation($campaign->id);
+        $donor2 = $this->createDonor2WithDonation($campaign->id, true);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'onlyWithDonations' => false,
+                'anonymousDonors' => 'include',
+                'direction' => 'ASC',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(2, count($data));
+        $this->assertEquals($donor1->id, $data[0]['id']);
+        $this->assertEquals($donor2->id, $data[1]['id']);
+    }
+
+    /**
      * @since 4.0.0
      *
      * @throws Exception

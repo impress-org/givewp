@@ -1,3 +1,4 @@
+<?php if (!defined('ABSPATH')) { exit; } ?>
 <!-- wp:columns {"verticalAlignment":null,"style":{"spacing":{"padding":{"top":"0","bottom":"0"}}}} -->
 <div class="wp-block-columns" style="padding-top:0;padding-bottom:0">
     <!-- wp:column {"verticalAlignment":"stretch","width":"60%"} -->

@@ -3,6 +3,10 @@
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Facades\Factory;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * @param string $type
  * @param string $name

@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Removed the debug backtrace dumps from deprecation notices
+timestamp: 2026-10-08T23:30:00.000Z

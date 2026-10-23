@@ -18,6 +18,7 @@ trait HasMode
     /**
      * Sets the mode for the repository for handling operations
      *
+     * @since TBD Escape exception message.
      * @since 2.9.0
      *
      * @param $mode
@@ -27,7 +28,7 @@ trait HasMode
     public function setMode($mode)
     {
         if (! in_array($mode, ['live', 'sandbox'], true)) {
-            throw new InvalidArgumentException("Must be either 'live' or 'sandbox', received: $mode");
+            throw new InvalidArgumentException(sprintf("Must be either 'live' or 'sandbox', received: %s", esc_html($mode)));
         }
 
         $this->mode = $mode;

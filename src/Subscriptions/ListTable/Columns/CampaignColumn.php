@@ -37,7 +37,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Drop the aria-label so the link is named by its visible text.
+     * @since TBD Add translators comments, and drop the aria-label so the link is named by its visible text.
      * @since 4.12.0
      *
      * @inheritDoc
@@ -49,6 +49,7 @@ class CampaignColumn extends ModelColumn
         $campaign = give()->campaigns->getById($model->campaignId);
 
         if ( ! $campaign) {
+            /* translators: %d: Campaign ID */
             return sprintf( __( 'Campaign #%d', 'give' ), $model->campaignId );
         }
 

@@ -101,6 +101,29 @@ class DonorsQuery
     }
 
     /**
+     * @since 4.19.0.1
+     */
+    public function whereDonorsAreNotAnonymous(): self
+    {
+        $this->query->whereNotExists(function (QueryBuilder $builder) {
+            $builder
+                ->select('1')
+                ->from('give_donationmeta', 'dm1')
+                ->join(function (JoinQueryBuilder $joinBuilder) {
+                    $joinBuilder
+                        ->innerJoin('give_donationmeta', 'dm2')
+                        ->on('dm2.donation_id', 'dm1.donation_id')
+                        ->andOn('dm2.meta_key', DonationMetaKeys::ANONYMOUS, true)
+                        ->andOn('dm2.meta_value', '1', true);
+                })
+                ->where('dm1.meta_key', DonationMetaKeys::DONOR_ID)
+                ->whereRaw(sprintf('AND dm1.meta_value = CONCAT(%s)', $this->query->prefixTable('give_donors.id')));
+        });
+
+        return $this;
+    }
+
+    /**
      * @since 4.4.0
      */
     public function limit(int $limit): self

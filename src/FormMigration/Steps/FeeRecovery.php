@@ -34,6 +34,7 @@ class FeeRecovery extends FormMigrationStep
     }
 
     /**
+     * @since TBD Use the give text domain.
      * @since 3.0.0
      */
     private function getGlobalSettings(): array
@@ -54,12 +55,12 @@ class FeeRecovery extends FormMigrationStep
                 'give_fee_checkbox_label',
                 __(
                     'I\'d like to help cover the transaction fees of {fee_amount} for my donation.',
-                    'give-fee-recovery'
+                    'give'
                 )
             ),
             'feeMessage' => give_get_option(
                 'give_fee_explanation',
-                __('Plus an additional {fee_amount} to cover gateway fees.', 'give-fee-recovery')
+                __('Plus an additional {fee_amount} to cover gateway fees.', 'give')
             ),
         ];
     }

@@ -39,6 +39,7 @@ class SpamContext
     }
 
     /**
+     * @since TBD Write the request and response as JSON.
      * @since 3.15.0
      */
     public function formatMessage(): string
@@ -46,9 +47,9 @@ class SpamContext
         return sprintf(
             '<p><strong>%1$s</strong><pre>%2$s</pre></p><strong>%3$s</strong><pre>%4$s</pre><p>',
             __( 'Request', 'give' ),
-            print_r( $this->args, true ),
+            wp_json_encode( $this->args, JSON_PRETTY_PRINT ),
             __( 'Response', 'give' ),
-            print_r( $this->response, true )
+            wp_json_encode( $this->response, JSON_PRETTY_PRINT )
         );
     }
 }

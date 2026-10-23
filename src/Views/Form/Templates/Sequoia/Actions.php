@@ -245,6 +245,7 @@ class Actions
     /**
      * Add wrapper and introduction text to payment information section
      *
+     * @since TBD Escape output.
      * @since 4.16.4 Escaped the headline output.
      * @since 2.7.0
      *
@@ -264,7 +265,7 @@ class Actions
         printf(
             '<div class="give-section payment"><div class="heading">%1$s</div><div class="subheading">%2$s</div>',
             esc_html($headline),
-            $description
+            esc_html($description)
         );
     }
 
@@ -281,12 +282,14 @@ class Actions
     /**
      * Start choose amount section
      *
+     * @since TBD Escape output. Add translators comments.
      * @since 4.16.4 Escaped the donate button label output.
      * @since 2.7.0
      */
     public function getStartWrapperHTMLForAmountSection()
     {
         $content = isset($this->templateOptions['payment_amount']['content']) && ! empty($this->templateOptions['payment_amount']['content']) ? $this->templateOptions['payment_amount']['content'] : sprintf(
+            /* translators: %s: Site name */
             __(
                 'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause. Thank you for your generosity!',
                 'give'
@@ -301,13 +304,13 @@ class Actions
         printf(
             '<button class="give-btn advance-btn">%1$s<i class="fas fa-chevron-%2$s"></i></button></div>',
             esc_html($label),
-            $arrow
+            esc_html($arrow)
         );
 
         if ( ! empty($content)) {
             printf(
                 '<div class="give-section choose-amount"><p class="content">%1$s</p>',
-                $content
+                esc_html($content)
             );
         } else {
             echo "<div class='give-section choose-amount'>";
@@ -317,6 +320,7 @@ class Actions
     /**
      * Close choose amount section
      *
+     * @since TBD Escape output.
      * @since 4.16.4 Escaped the continue button label output.
      * @since 2.7.0
      */
@@ -331,7 +335,7 @@ class Actions
         printf(
             '<button class="give-btn advance-btn">%1$s<i class="fas fa-chevron-%2$s"></i></button></div>',
             esc_html($label),
-            $arrow
+            esc_html($arrow)
         );
     }
 
@@ -339,6 +343,8 @@ class Actions
      * Append gateway labels with "Donate with "
      *
      * Modify gateways array returned give_get_enabled_payment_gateways, before printing
+     *
+     * @since TBD Add translators comments.
      *
      * @param array $gateways Array of enabled gateways
      *
@@ -348,6 +354,7 @@ class Actions
     {
         foreach ($gateways as $key => $value) {
             $gateways[$key]['checkout_label'] = sprintf(
+                /* translators: %1$s: Gateway checkout label */
                 __('Donate with %1$s', 'give'),
                 $value['checkout_label']
             );

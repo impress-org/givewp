@@ -3,6 +3,12 @@
 use Give\Campaigns\Actions\RenderDonateButton;
 use Give\Campaigns\Models\Campaign;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 /**
  * @var Campaign $campaign
  * @var array $attributes

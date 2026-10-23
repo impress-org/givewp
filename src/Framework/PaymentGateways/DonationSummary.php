@@ -67,6 +67,7 @@ class DonationSummary
     }
 
     /**
+     * @since TBD Add translators comments.
      * @since 2.19.0
      *
      * @return string
@@ -75,6 +76,7 @@ class DonationSummary
     {
         $formId = give_get_payment_form_id($this->donation->id);
         $formTitle = get_the_title($formId);
+        /* translators: %d: Donation form ID */
         return $formTitle ?: sprintf(__('Donation Form ID: %d', 'give'), $formId);
     }
 

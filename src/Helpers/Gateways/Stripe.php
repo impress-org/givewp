@@ -78,6 +78,7 @@ class Stripe
     /**
      * Show Stripe Credit Card Fields.
      *
+     * @since  TBD Escape output.
      * @since  2.8.0
      * @access public
      *
@@ -94,7 +95,7 @@ class Stripe
             // Display the stripe container which can be occupied by Stripe for CC fields.
             echo sprintf(
                 '<div id="%1$s" class="give-stripe-single-cc-field-wrap"></div>',
-                "give-stripe-single-cc-fields-{$idPrefix}"
+                esc_attr("give-stripe-single-cc-fields-{$idPrefix}")
             );
         } elseif ('multi' === $ccFieldFormat) {
             ?>

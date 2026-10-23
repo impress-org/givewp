@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Sanitized request input in the legacy reports
+timestamp: 2026-10-08T16:20:00.000Z
