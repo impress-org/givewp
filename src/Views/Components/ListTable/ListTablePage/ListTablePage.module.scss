@@ -412,7 +412,12 @@ ul[role='document'] + .flexRow {
     }
 
     .link {
+        background: none;
+        border: 0;
+        color: inherit;
         cursor: pointer;
+        font: inherit;
+        padding: 0;
         margin-top: 2rem;
         margin-bottom: -0.4rem;
         font-weight: bold;

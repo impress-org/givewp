@@ -50,7 +50,6 @@ const filters: Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',
-        inlineSize: '14rem',
         text: __('Name, Email, or Donation ID', 'give'),
         ariaLabel: __('search donations', 'give'),
     },
@@ -193,7 +192,7 @@ const statsConfig: Record<string, StatConfig> = {
 };
 
 /**
- * @since TBD Pass the actions as data.
+ * @since TBD Pass the actions as data, and the add-ons' bulk actions (the shared list page no longer reads them).
  * @since 4.10.0 Update button class names and add aria attributes.
  * @since 2.24.0
  */
@@ -204,6 +203,8 @@ export default function DonationsListTable() {
             singleName={__('donation', 'give')}
             pluralName={__('donations', 'give')}
             rowActions={rowActions}
+            // Add-ons add their bulk actions to `addonsBulkActions` before the screen mounts.
+            bulkActions={window.GiveDonations.addonsBulkActions ?? []}
             apiSettings={window.GiveDonations}
             filterSettings={filters}
             paymentMode={!!window.GiveDonations.paymentMode}
