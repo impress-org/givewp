@@ -1,34 +1,27 @@
 import {createContext, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
 import type {Field} from '@wordpress/dataviews';
-import cx from 'classnames';
-import {GiveIcon} from '@givewp/components';
 import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notifications';
-import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 import ListTableApi from '../api';
-import ListTableStats from '../ListTableStats/ListTableStats';
 import DataViewsListTable from '../DataViewsListTable';
-import ListTableErrorState from '../ListTableErrorState';
-import FilteredEmptyState from '../EmptyStates/FilteredEmptyState';
-import LegacyRowActions, {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
+import ListTableEmptyState from '../EmptyStates';
+import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
+import useLegacyRowActionsField from '../LegacyRowActions/useLegacyRowActionsField';
 import {columnsToFields, titleFieldId, visibleFieldIds} from '../adapters/columnsToFields';
 import {filterSettingsToFields, TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
 import {loadEntityElements} from '../adapters/loadEntityElements';
 import {scopeFromFilterSettings, viewFromInitialState} from '../adapters/viewFromInitialState';
-import {filterFieldId, PER_PAGE_SIZES, viewFilterValue, viewToParameters} from '../adapters/viewToParameters';
-import {bulkActionsToActions} from '../adapters/bulkActionsToActions';
-import {rowActionsToActions} from '../adapters/rowActionsToActions';
-import {normalizeActionResult} from '../adapters/normalizeActionResult';
+import {PER_PAGE_SIZES, viewFilterValue, viewToParameters, withToggleFilter} from '../adapters/viewToParameters';
 import {getItemName} from '../adapters/getItemName';
 import useListTableView from '../hooks/useListTableView';
 import useListTableSelection from '../hooks/useListTableSelection';
 import useListTableQuery from '../hooks/useListTableQuery';
 import useListTableActionNotices from '../hooks/useListTableActionNotices';
+import useListTableActions from '../hooks/useListTableActions';
+import ListTablePageHeader from './ListTablePageHeader';
 import LegacyConfirmModal, {LegacyConfirmRequest} from './LegacyConfirmModal';
 import type {
-    BulkActionsConfig,
     Column,
-    LegacyRowActionArgs,
     LegacyRowActions as LegacyRowActionsRender,
     ListTableItem,
     ListTablePageProps,
@@ -66,12 +59,6 @@ export const ShowConfirmModalContext = createContext(
 );
 
 /**
- * The record id a legacy row action button carries in `data-actionid`.
- */
-const actionIdOf = (event: {target: EventTarget}) =>
-    (event.target as HTMLElement).closest<HTMLElement>('[data-actionid]')?.dataset.actionid;
-
-/**
  * The page shell every admin list screen renders through: the Give page header and stats, and the
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
@@ -106,7 +93,6 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const typedRowActions = Array.isArray(rowActions) ? (rowActions as ListTableRowAction[]) : null;
         const testModeFilter = filterSettings.find((filter) => filter.name === 'toggle');
         const locale = navigator.language || navigator.languages[0];
-        const testModeField = filterFieldId(TEST_MODE_FILTER);
 
         // Read once: some screens' header modals rewrite `apiSettings.apiRoot` while they render.
         const [apiRoot] = useState(apiSettings.apiRoot);
@@ -114,15 +100,6 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const [urlSearch] = useState(() => new URLSearchParams(window.location.search));
         const [scope] = useState(() => scopeFromFilterSettings(filterSettings, contentMode, urlSearch));
         const [legacyConfirm, setLegacyConfirm] = useState<LegacyConfirmRequest | null>(null);
-        const [actionDialog, setActionDialog] = useState<{
-            rowAction: ListTableRowAction;
-            items: ListTableItem[];
-        } | null>(null);
-        const [customAction, setCustomAction] = useState<{
-            config: BulkActionsConfig;
-            items: ListTableItem[];
-            isOpen: boolean;
-        } | null>(null);
 
         const {view, onChangeView, hasActiveFilters, clearFilters} = useListTableView(() => {
             const titleField = titleFieldId(columns);
@@ -137,24 +114,13 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                 urlSearch
             );
 
-            return testModeFilter && paymentMode
-                ? {
-                      ...initialView,
-                      filters: [...initialView.filters, {field: testModeField, operator: 'is', value: true}],
-                  }
-                : initialView;
+            return testModeFilter && paymentMode ? withToggleFilter(initialView, TEST_MODE_FILTER, true) : initialView;
         });
         // A screen with the test-mode toggle keeps test mode in the view, so it shows as a chip.
         const testMode = testModeFilter ? viewFilterValue(view, TEST_MODE_FILTER) === true : paymentMode;
-        const setTestMode = (isOn: boolean) => {
-            const otherFilters = (view.filters ?? []).filter((filter) => filter.field !== testModeField);
-
-            onChangeView({
-                ...view,
-                filters: isOn ? [...otherFilters, {field: testModeField, operator: 'is', value: true}] : otherFilters,
-            });
-        };
+        const setTestMode = (isOn: boolean) => onChangeView(withToggleFilter(view, TEST_MODE_FILTER, isOn));
         const {selection, onChangeSelection} = useListTableSelection(view);
+        const clearSelection = useCallback(() => onChangeSelection([]), [onChangeSelection]);
         const report = useListTableActionNotices(singleName, pluralName);
 
         const parameters = useMemo(
@@ -186,27 +152,13 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             }
         }, [data]);
 
-        const legacyRowActionArgs = useCallback(
-            (item: ListTableItem): LegacyRowActionArgs => ({
-                data,
-                item,
-                parameters,
-                listTableApi,
-                removeRow: (callback) => async (event) => {
-                    await callback(actionIdOf(event));
-                    await refresh();
-                },
-                addRow: (callback) => async (event) => {
-                    await callback(actionIdOf(event));
-                    await refresh();
-                },
-                setUpdateErrors: (response) => {
-                    report(normalizeActionResult(response, []));
-                    refresh();
-                },
-            }),
-            [data, parameters, listTableApi, refresh, report]
-        );
+        const legacyRowActionsField = useLegacyRowActionsField(legacyRowActions, {
+            data,
+            parameters,
+            listTableApi,
+            report,
+            refresh,
+        });
 
         const filters = useMemo(
             () => filterSettingsToFields(filterSettings, view, {contentMode, loadEntityElements}),
@@ -216,73 +168,23 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const fields = useMemo<Field<ListTableItem>[]>(
             () => [
                 ...columnsToFields(columns, columnFilters, data),
-                ...(legacyRowActions
-                    ? [
-                          {
-                              id: LEGACY_ROW_ACTIONS_FIELD,
-                              label: __('Actions', 'give'),
-                              enableHiding: false,
-                              enableSorting: false,
-                              render: ({item}) => (
-                                  <LegacyRowActions render={legacyRowActions} args={legacyRowActionArgs(item)} />
-                              ),
-                          },
-                      ]
-                    : []),
+                ...(legacyRowActionsField ? [legacyRowActionsField] : []),
                 ...filters.fields,
             ],
-            [columns, columnFilters, data, legacyRowActions, legacyRowActionArgs, filters]
+            [columns, columnFilters, data, legacyRowActionsField, filters]
         );
 
-        const actions = useMemo(() => {
-            // Add-ons add Donations bulk actions here before the screen mounts.
-            const addonBulkActions = window.GiveDonations?.addonsBulkActions ?? [];
-
-            return [
-                ...(typedRowActions
-                    ? rowActionsToActions(
-                          typedRowActions.filter(
-                              (rowAction) => !rowAction.isVisible || rowAction.isVisible(data, parameters)
-                          ),
-                          {
-                              report,
-                              refresh,
-                              clearSelection: () => onChangeSelection([]),
-                              openDialog: (rowAction, items) => setActionDialog({rowAction, items}),
-                          }
-                      )
-                    : []),
-                ...bulkActionsToActions([...(bulkActions ?? []), ...addonBulkActions], {
-                    data,
-                    parameters,
-                    report,
-                    refresh,
-                    clearSelection: () => onChangeSelection([]),
-                    openCustomAction: (config, items) => {
-                        const minSelected = config.minSelected ?? 1;
-                        // From a row's menu the action gets that row alone; an action that needs several rows uses the selection.
-                        const selectedItems = (data?.items ?? []).filter((item) => selection.includes(String(item.id)));
-                        const actionItems = items.length < minSelected ? selectedItems : items;
-
-                        if (actionItems.length < minSelected) {
-                            report({
-                                changed: 0,
-                                failed: 0,
-                                notice: sprintf(
-                                    /* translators: 1: number of records, 2: record type, plural */
-                                    __('Select at least %1$d %2$s to use this action.', 'give'),
-                                    minSelected,
-                                    pluralName
-                                ),
-                            });
-                            return;
-                        }
-
-                        setCustomAction({config, items: actionItems, isOpen: true});
-                    },
-                }),
-            ];
-        }, [typedRowActions, bulkActions, data, parameters, report, refresh, selection, onChangeSelection, pluralName]);
+        const {actions, actionDialog, closeActionDialog, customAction, setCustomActionOpen} = useListTableActions({
+            rowActions: typedRowActions,
+            bulkActions,
+            data,
+            parameters,
+            selection,
+            pluralName,
+            report,
+            refresh,
+            clearSelection,
+        });
 
         const showConfirmModal = useCallback(
             (label, confirm, action, type = null, confirmButtonText = __('Confirm', 'give')) =>
@@ -294,32 +196,17 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             <ShowConfirmModalContext.Provider value={showConfirmModal}>
                 <article className={styles.page}>
                     {!contentMode && (
-                        <>
-                            <header className={styles.pageHeader}>
-                                <div className={styles.flexRow}>
-                                    <GiveIcon size={'2.25rem'} />
-                                    <h1 className={styles.pageTitle}>{title}</h1>
-                                    {testModeFilter && testMode && (
-                                        <span className={styles.testModeBadge}>{testModeFilter.text}</span>
-                                    )}
-                                </div>
-                                {children && <div className={styles.flexRow}>{children}</div>}
-                            </header>
-
-                            <div className={cx('wp-header-end', 'hidden')} />
-
-                            {banner && <section role="banner">{banner()}</section>}
-                            {testModeFilter && (
-                                <div className={styles.filtersRow}>
-                                    <ToggleSwitch
-                                        ariaLabel={testModeFilter.ariaLabel}
-                                        onChange={setTestMode}
-                                        checked={testMode}
-                                    />
-                                </div>
-                            )}
-                            {statsConfig && stats && <ListTableStats config={statsConfig} values={stats} />}
-                        </>
+                        <ListTablePageHeader
+                            title={title}
+                            banner={banner}
+                            testModeFilter={testModeFilter}
+                            testMode={testMode}
+                            onChangeTestMode={setTestMode}
+                            statsConfig={statsConfig}
+                            stats={stats}
+                        >
+                            {children}
+                        </ListTablePageHeader>
                     )}
 
                     <div className={styles.pageContent}>
@@ -345,9 +232,26 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                             onChangeSelection={onChangeSelection}
                             empty={
                                 error ? (
-                                    <ListTableErrorState pluralName={pluralName} onRetry={refresh} />
+                                    <ListTableEmptyState
+                                        isError
+                                        message={sprintf(
+                                            /* translators: %s: record type, plural (for example "donations") */
+                                            __('There was a problem retrieving the %s.', 'give'),
+                                            pluralName
+                                        )}
+                                        actionLabel={__('Try again', 'give')}
+                                        onAction={refresh}
+                                    />
                                 ) : hasActiveFilters ? (
-                                    <FilteredEmptyState pluralName={pluralName} onClearFilters={clearFilters} />
+                                    <ListTableEmptyState
+                                        message={sprintf(
+                                            /* translators: %s: record type, plural (for example "donations") */
+                                            __('No %s match your search or filters.', 'give'),
+                                            pluralName
+                                        )}
+                                        actionLabel={__('Clear filters', 'give')}
+                                        onAction={clearFilters}
+                                    />
                                 ) : (
                                     listTableBlankSlate
                                 )
@@ -377,10 +281,10 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                 {actionDialog && (
                     <actionDialog.rowAction.Dialog
                         items={actionDialog.items}
-                        onClose={() => setActionDialog(null)}
+                        onClose={closeActionDialog}
                         refresh={refresh}
                         report={report}
-                        clearSelection={() => onChangeSelection([])}
+                        clearSelection={clearSelection}
                     />
                 )}
 
@@ -390,8 +294,8 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                         customAction.items.map((item) => String(item.id)),
                         customAction.items.map(getItemName),
                         customAction.isOpen,
-                        (isOpen = false) => setCustomAction((current) => current && {...current, isOpen}),
-                        {refresh, clearSelection: () => onChangeSelection([])}
+                        (isOpen = false) => setCustomActionOpen(isOpen),
+                        {refresh, clearSelection}
                     )}
             </ShowConfirmModalContext.Provider>
         );

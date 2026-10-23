@@ -1,6 +1,7 @@
 import type {MouseEvent} from 'react';
 import type {Field} from '@wordpress/dataviews';
 import InterweaveSSR from '../InterweaveSSR';
+import {NAME_COLUMN_IDS} from './getItemName';
 import type {Column, ColumnFilterConfig, ListTableItem, ListTableResponse} from '../ListTablePage/types';
 
 /**
@@ -83,5 +84,5 @@ export function visibleFieldIds(columns: Column[], titleField?: string): string[
  * @since TBD
  */
 export function titleFieldId(columns: Column[]): string | undefined {
-    return ['donor', 'title', 'donorInformation'].find((id) => columns.some((column) => column.id === id));
+    return NAME_COLUMN_IDS.find((id) => columns.some((column) => column.id === id));
 }

@@ -35,7 +35,7 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `paymentMode` | `boolean`, initial test mode | No | — |
 | `contentMode` | `boolean`, no header or stats: the list sits in a details page tab | No | `false` |
 | `perPage` | `number`, 1–100 | No | `30` |
-| `banner`, `productRecommendation`, `children`, `align` | as before | No | — |
+| `banner`, `productRecommendation`, `children` | as before | No | — |
 
 The `ref` exposes `refresh()`, which reloads the rows and the stat tiles.
 

@@ -4,7 +4,7 @@ import {CheckboxControl, Modal} from '@wordpress/components';
 import ListTableApi from '@givewp/components/ListTable/api';
 import BulkActionConfirm from '@givewp/components/ListTable/BulkActionConfirm';
 import {getItemName} from '@givewp/components/ListTable/adapters/getItemName';
-import {normalizeActionResult} from '@givewp/components/ListTable/adapters/normalizeActionResult';
+import useListActionSubmit from '@givewp/components/ListTable/hooks/useListActionSubmit';
 import type {ListTableActionDialogProps, ListTableRowAction} from '@givewp/components/ListTable/ListTablePage';
 import './style.scss';
 
@@ -13,38 +13,24 @@ const donorsApi = new ListTableApi(window.GiveDonors);
 const deleteLabel = __('Delete', 'give');
 
 /**
+ * @since TBD
+ */
+type DeleteDonorsDialogProps = ListTableActionDialogProps & {
+    onDelete: (ids: string[], deleteDonationsAndRecords: boolean) => Promise<unknown>;
+};
+
+/**
  * Deletes the chosen donors, and their donations and records unless the admin unticks that.
  *
  * @since TBD Controlled checkbox in place of reading the old confirm dialog's markup.
  */
-function DeleteDonorsDialog({items, onClose, refresh, report, clearSelection}: ListTableActionDialogProps) {
+function DeleteDonorsDialog({items, onClose, onDelete, ...context}: DeleteDonorsDialogProps) {
     const [deleteDonationsAndRecords, setDeleteDonationsAndRecords] = useState(true);
-    const [isBusy, setIsBusy] = useState(false);
+    const {isBusy, submit} = useListActionSubmit(context);
     const ids = items.map((item) => String(item.id));
 
-    const onConfirm = async () => {
-        setIsBusy(true);
-
-        let outcome;
-
-        try {
-            outcome = normalizeActionResult(
-                await donorsApi.fetchWithArgs('/delete', {ids: ids.join(','), deleteDonationsAndRecords}, 'DELETE'),
-                ids
-            );
-        } catch (error) {
-            outcome = normalizeActionResult(error, ids);
-        }
-
-        onClose();
-        report(outcome, deleteLabel);
-
-        if (outcome.failed === 0) {
-            clearSelection();
-        }
-
-        await refresh();
-    };
+    const onConfirm = () =>
+        submit({run: () => onDelete(ids, deleteDonationsAndRecords), ids, label: deleteLabel, onDone: onClose});
 
     return (
         <Modal title={__('Delete donors', 'give')} onRequestClose={onClose}>
@@ -88,6 +74,13 @@ export const donorsRowActions: ListTableRowAction[] = [
         label: deleteLabel,
         isDestructive: true,
         supportsBulk: true,
-        Dialog: DeleteDonorsDialog,
+        Dialog: (props) => (
+            <DeleteDonorsDialog
+                {...props}
+                onDelete={(ids, deleteDonationsAndRecords) =>
+                    donorsApi.fetchWithArgs('/delete', {ids: ids.join(','), deleteDonationsAndRecords}, 'DELETE')
+                }
+            />
+        ),
     },
 ];

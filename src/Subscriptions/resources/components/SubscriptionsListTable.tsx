@@ -1,8 +1,8 @@
 import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
 import ListTableApi from '@givewp/components/ListTable/api';
-import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {FilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import {subscriptionsRowActions} from './SubscriptionsRowActions';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
@@ -38,7 +38,6 @@ const filters: Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',
-        inlineSize: '14rem',
         text: __('Name, Email, or Subscription ID', 'give'),
         ariaLabel: __('search subscriptions', 'give'),
     },
@@ -108,14 +107,8 @@ export default function SubscriptionsListTable() {
             paymentMode={!!window.GiveSubscriptions.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
         >
-            <button className={`button button-tertiary ${tableStyles.secondaryActionButton}`} onClick={showLegacyDonations}>
-                {__('Switch to Legacy View', 'give')}
-            </button>
+            <SwitchToLegacyViewButton api={API} />
         </ListTablePage>
     );
 }
 
-const showLegacyDonations = async (event) => {
-    await API.fetchWithArgs('/view', {isLegacy: 1});
-    window.location.reload();
-};

@@ -1,14 +1,13 @@
 import {__} from '@wordpress/i18n';
 import type ListTableApi from '@givewp/components/ListTable/api';
-import type {ListTableItem, ListTableParameters, ListTableRowAction} from '@givewp/components/ListTable/ListTablePage';
-
-const idsOf = (items: ListTableItem[]) => items.map((item) => item.id).join(',');
+import {hasStatus} from '@givewp/components/ListTable/adapters/hasStatus';
+import {trashRowActions} from '@givewp/components/ListTable/rowActions/trashRowActions';
+import type {ListTableParameters, ListTableRowAction} from '@givewp/components/ListTable/ListTablePage';
 
 /**
  * @since TBD
  */
-export const isDonationsTrashView = (parameters: ListTableParameters) =>
-    [].concat(parameters?.status ?? []).includes('trash');
+export const isDonationsTrashView = (parameters: ListTableParameters) => hasStatus(parameters, 'trash');
 
 /**
  * The donation actions shared by the Donations screen and the subscription details "Donations" tab:
@@ -20,51 +19,17 @@ export const isDonationsTrashView = (parameters: ListTableParameters) =>
  * @since 4.6.0 Soft delete donations with Donation v3 API.
  */
 export function donationRowActions(api: ListTableApi, adminUrl: string): ListTableRowAction[] {
-    return [
-        {
-            id: 'edit',
-            label: __('Edit', 'give'),
-            isPrimary: true,
-            isVisible: (data, parameters) => !isDonationsTrashView(parameters),
-            href: (item) => `${adminUrl}edit.php?post_type=give_forms&page=give-payment-history&id=${item.id}`,
+    return trashRowActions({
+        api,
+        isTrashView: isDonationsTrashView,
+        editHref: (item) => `${adminUrl}edit.php?post_type=give_forms&page=give-payment-history&id=${item.id}`,
+        text: {
+            restoreTitle: __('Restore donations', 'give'),
+            restoreBody: __('Are you sure you want remove from trash the following donations?', 'give'),
+            trashTitle: __('Trash donations', 'give'),
+            trashBody: __('Are you sure you want add to trash the following donations?', 'give'),
+            deleteTitle: __('Delete donations', 'give'),
+            deleteBody: __('Really delete the following donations?', 'give'),
         },
-        {
-            id: 'restore',
-            label: __('Restore', 'give'),
-            isPrimary: true,
-            supportsBulk: true,
-            isVisible: (data, parameters) => isDonationsTrashView(parameters),
-            confirm: {
-                title: __('Restore donations', 'give'),
-                body: () => <p>{__('Are you sure you want remove from trash the following donations?', 'give')}</p>,
-                confirmLabel: __('Restore', 'give'),
-            },
-            run: (items) => api.fetchWithArgs('/untrash', {ids: idsOf(items)}, 'POST'),
-        },
-        {
-            id: 'trash',
-            label: __('Trash', 'give'),
-            supportsBulk: true,
-            isVisible: (data, parameters) => !isDonationsTrashView(parameters),
-            confirm: {
-                title: __('Trash donations', 'give'),
-                body: () => <p>{__('Are you sure you want add to trash the following donations?', 'give')}</p>,
-                confirmLabel: __('Move to trash', 'give'),
-            },
-            run: (items) => api.fetchWithArgs('/trash', {ids: idsOf(items)}, 'DELETE'),
-        },
-        {
-            id: 'delete',
-            label: __('Delete permanently', 'give'),
-            isDestructive: true,
-            supportsBulk: true,
-            isVisible: (data, parameters) => isDonationsTrashView(parameters),
-            confirm: {
-                title: __('Delete donations', 'give'),
-                body: () => <p>{__('Really delete the following donations?', 'give')}</p>,
-                confirmLabel: __('Delete', 'give'),
-            },
-            run: (items) => api.fetchWithArgs('/delete', {ids: idsOf(items)}, 'DELETE'),
-        },
-    ];
+    });
 }

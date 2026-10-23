@@ -2,9 +2,11 @@ import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
 import {useDonationFormsRowActions} from './DonationFormsRowActions';
+import UpgradedFormTooltip from './UpgradedFormTooltip';
 import Onboarding, {OnboardingContext, OnboardingStateProps} from './Onboarding';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {ColumnFilterConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import {Interweave} from 'interweave';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
@@ -132,10 +134,10 @@ const columnFilters: Array<ColumnFilterConfig> = [
                     <div className={styles.titleContainer}>
                         <div className={styles.migratedForm}>
                             {item?.v3form && window?.GiveDonationForms?.isOptionBasedFormEditorEnabled && <CubeTooltip />}
-                            <Interweave attributes={{className: 'interweave'}} content={item?.title} />
+                            <Interweave attributes={{className: 'interweave'}} content={String(item?.title ?? '')} />
                         </div>
                         {item?.isDefaultCampaignForm && (
-                            <div className={`${styles.defaultFormPill} givewp-default-form-pill`}>{__('Default')}</div>
+                            <div className={`${styles.defaultFormPill} givewp-default-form-pill`}>{__('Default', 'give')}</div>
                         )}
                     </div>
                 </>
@@ -148,24 +150,9 @@ const columnFilters: Array<ColumnFilterConfig> = [
             if (window.GiveDonationForms.showUpgradedTooltip && item?.status_raw === 'upgraded') {
                 return (
                     <div className={styles.upgradedForm}>
-                        <div className={styles.tooltipContainer}>
-                            <div className={styles.tooltip}>
-                                {__(
-                                    'The name of this form is already associated with an upgraded form. You can safely delete this form',
-                                    'give'
-                                )}
-                                .
-                                <div
-                                    className={styles.link}
-                                    onClick={(e) => {
-                                        e.currentTarget.parentElement.remove();
-                                        fetch(window.GiveDonationForms.tooltipActionUrl, {method: 'POST'});
-                                    }}
-                                >
-                                    {__('Got it', 'give')}
-                                </div>
-                            </div>
-                        </div>
+                        <UpgradedFormTooltip
+                            onDismiss={() => fetch(window.GiveDonationForms.tooltipActionUrl, {method: 'POST'})}
+                        />
                         <InterweaveSSR column={column} item={item} />
                     </div>
                 );
@@ -262,12 +249,11 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
                             {__('Add form', 'give')}
                         </a>
                         {window.GiveDonationForms.isOptionBasedFormEditorEnabled && (
-                            <button
+                            <SwitchToLegacyViewButton
+                                api={API}
                                 className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
-                                onClick={showLegacyDonationForms}
-                            >
-                                {__('Switch to Legacy View', 'give')}
-                            </button>
+                                onSwitched={() => (window.location.href = '/wp-admin/edit.php?post_type=give_forms')}
+                            />
                         )}
                     </>
                 )}
@@ -279,7 +265,3 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
     );
 }
 
-const showLegacyDonationForms = async (event) => {
-    await API.fetchWithArgs('/view', {isLegacy: 1});
-    window.location.href = '/wp-admin/edit.php?post_type=give_forms';
-};

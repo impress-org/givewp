@@ -3,6 +3,8 @@ import {__, sprintf} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
 import {Interweave} from 'interweave';
 import ListTableApi from '@givewp/components/ListTable/api';
+import {hasStatus} from '@givewp/components/ListTable/adapters/hasStatus';
+import {idsOf} from '@givewp/components/ListTable/adapters/idsOf';
 import type {ListTableItem, ListTableParameters, ListTableRowAction} from '@givewp/components/ListTable/ListTablePage';
 import type {CampaignEntity} from '@givewp/campaigns/admin/components/types';
 import {UpgradeModalContent} from './Migration';
@@ -11,9 +13,7 @@ import BulkEditDonationFormsDialog from './BulkEditDonationFormsDialog';
 
 const API = new ListTableApi(window.GiveDonationForms);
 
-const idsOf = (items: ListTableItem[]) => items.map((item) => item.id).join(',');
-
-const isTrashView = (parameters: ListTableParameters) => parameters.status === 'trash';
+const isTrashView = (parameters: ListTableParameters) => hasStatus(parameters, 'trash');
 
 const outsideTrash = (data, parameters: ListTableParameters) => !isTrashView(parameters);
 
@@ -177,7 +177,15 @@ export function useDonationFormsRowActions(
                 label: __('Edit author or status', 'give'),
                 supportsBulk: true,
                 isVisible: outsideTrash,
-                Dialog: BulkEditDonationFormsDialog,
+                Dialog: (props) => (
+                    <BulkEditDonationFormsDialog
+                        {...props}
+                        authors={window.GiveDonationForms.authors}
+                        onSave={(ids, {author, status}) =>
+                            API.fetchWithArgs('/edit', {ids: ids.join(','), author, status}, 'UPDATE')
+                        }
+                    />
+                ),
             },
         ],
         [entity, isCampaignDetailsPage]

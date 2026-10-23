@@ -24,22 +24,17 @@ const MAX_PAGES = 50;
 export async function loadEntityElements(entityName: 'campaign' | 'form'): Promise<Option[]> {
     const entity = asyncSelectEntities[entityName];
 
-    const canEdit = entity.editorListQuery
-        ? // @ts-ignore
-          await resolveSelect(coreStore)
-              .canUser('create', entity.name)
-              .catch(() => false)
-        : false;
+    const store = resolveSelect(coreStore);
+    const canEdit = entity.editorListQuery ? await store.canUser('create', entity.name).catch(() => false) : false;
 
     const options: Option[] = [];
 
     for (let page = 1; page <= MAX_PAGES; page++) {
-        let records: any[];
+        let records: Array<{id: number}>;
 
         try {
-            // @ts-ignore
             records =
-                (await resolveSelect(coreStore).getEntityRecords(entity.kind, entity.name, {
+                (await store.getEntityRecords(entity.kind, entity.name, {
                     ...entity.listQuery,
                     ...(canEdit && entity.editorListQuery),
                     per_page: OPTIONS_PER_PAGE,

@@ -37,6 +37,18 @@ export function viewFilterValue(view: View, id: string): unknown {
 }
 
 /**
+ * The view with a yes/no filter turned on or off. Test mode is one: on, it shows as a chip.
+ *
+ * @since TBD
+ */
+export function withToggleFilter(view: View, id: string, isOn: boolean): View {
+    const field = filterFieldId(id);
+    const otherFilters = (view.filters ?? []).filter((filter) => filter.field !== field);
+
+    return {...view, filters: isOn ? [...otherFilters, {field, operator: 'is', value: true}] : otherFilters};
+}
+
+/**
  * @since TBD
  */
 export function filterByGroups(filterSettings: FilterConfig[]): FilterByGroupedOptions[] {

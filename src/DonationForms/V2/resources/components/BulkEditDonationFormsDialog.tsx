@@ -1,14 +1,21 @@
 import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {Modal, SelectControl} from '@wordpress/components';
-import ListTableApi from '@givewp/components/ListTable/api';
 import BulkActionConfirm from '@givewp/components/ListTable/BulkActionConfirm';
-import {normalizeActionResult} from '@givewp/components/ListTable/adapters/normalizeActionResult';
+import {getItemName} from '@givewp/components/ListTable/adapters/getItemName';
+import useListActionSubmit from '@givewp/components/ListTable/hooks/useListActionSubmit';
 import type {ListTableActionDialogProps} from '@givewp/components/ListTable/ListTablePage';
 
-const API = new ListTableApi(window.GiveDonationForms);
-
 const label = __('Edit author or status', 'give');
+
+/**
+ * @since TBD
+ */
+export type BulkEditDonationFormsDialogProps = ListTableActionDialogProps & {
+    authors: Array<{id: number | string; name: string}>;
+    /** Saves the new author and status; an empty value keeps the current one. */
+    onSave: (ids: string[], changes: {author: string; status: string}) => Promise<unknown>;
+};
 
 /**
  * Changes the author or the status of the selected donation forms. Empty choices keep the current
@@ -19,42 +26,22 @@ const label = __('Edit author or status', 'give');
 export default function BulkEditDonationFormsDialog({
     items,
     onClose,
-    refresh,
-    report,
-    clearSelection,
-}: ListTableActionDialogProps) {
+    authors,
+    onSave,
+    ...context
+}: BulkEditDonationFormsDialogProps) {
     const [author, setAuthor] = useState('');
     const [status, setStatus] = useState('');
-    const [isBusy, setIsBusy] = useState(false);
+    const {isBusy, submit} = useListActionSubmit(context);
     const ids = items.map((item) => String(item.id));
 
-    const onConfirm = async () => {
+    const onConfirm = () => {
         if (!author && !status) {
             onClose();
             return;
         }
 
-        setIsBusy(true);
-
-        let outcome;
-
-        try {
-            outcome = normalizeActionResult(
-                await API.fetchWithArgs('/edit', {ids: ids.join(','), author, status}, 'UPDATE'),
-                ids
-            );
-        } catch (error) {
-            outcome = normalizeActionResult(error, ids);
-        }
-
-        onClose();
-        report(outcome, label);
-
-        if (outcome.failed === 0) {
-            clearSelection();
-        }
-
-        await refresh();
+        return submit({run: () => onSave(ids, {author, status}), ids, label, onDone: onClose});
     };
 
     return (
@@ -69,7 +56,7 @@ export default function BulkEditDonationFormsDialog({
                             onChange={setAuthor}
                             options={[
                                 {value: '', label: __('Keep current author', 'give')},
-                                ...window.GiveDonationForms.authors.map((user) => ({
+                                ...authors.map((user) => ({
                                     value: String(user.id),
                                     label: user.name,
                                 })),
@@ -89,7 +76,7 @@ export default function BulkEditDonationFormsDialog({
                         />
                     </>
                 }
-                items={items.map((item) => ({id: item.id, name: String(item.title ?? item.id)}))}
+                items={items.map((item) => ({id: item.id, name: getItemName(item)}))}
                 confirmLabel={__('Save', 'give')}
                 isBusy={isBusy}
                 onConfirm={onConfirm}

@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
 import {donorsRowActions} from './DonorsRowActions';
 import {FilterConfig} from '@givewp/components/ListTable/ListTablePage';
-import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
+import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import './style.scss';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
@@ -37,7 +37,6 @@ const donorsFilters: Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',
-        inlineSize: '14rem',
         text: __('Name, Email, or Donor ID', 'give'),
         ariaLabel: __('Search donors', 'give'),
     },
@@ -125,14 +124,8 @@ export default function DonorsListTable() {
             productRecommendation={recommendation}
             statsConfig={statsConfig}
         >
-            <button className={`button button-tertiary ${styles.secondaryActionButton}`} onClick={showLegacyDonors}>
-                {__('Switch to Legacy View', 'give')}
-            </button>
+            <SwitchToLegacyViewButton api={API} />
         </ListTablePage>
     );
 }
 
-const showLegacyDonors = async (event) => {
-    await API.fetchWithArgs('/view', {isLegacy: 1});
-    window.location.reload();
-};
