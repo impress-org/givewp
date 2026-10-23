@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Added a nonce to the core settings import undo link and sanitized request
+  input in the donation, subscription and settings importers
+timestamp: 2026-10-08T15:29:16.286Z

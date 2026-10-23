@@ -81,6 +81,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	/**
 	 * Set the properties specific to the export.
 	 *
+	 * @since TBD Use gmdate() instead of date().
 	 * @since 2.1
 	 *
 	 * @param array $request The Form Data passed into the batch processing.
@@ -88,8 +89,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	public function set_properties( $request ) {
 
 		// Set data from form submission
-		if ( isset( $_POST['form'] ) ) {
-			$this->data = give_clean( wp_parse_args( $_POST['form'] ) );
+		if ( isset( $_POST['form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by give_do_ajax_export() before set_properties() runs.
+			$this->data = give_clean( wp_parse_args( $_POST['form'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified by give_do_ajax_export() before set_properties() runs. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		}
 
 		$this->form       = $this->data['forms'];
@@ -97,8 +98,8 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 		$this->tags       = ! empty( $request['give_forms_tags'] ) ? (array) $request['give_forms_tags'] : array();
 		$this->form_id    = $this->get_form_ids( $request );
 		$this->price_id   = isset( $request['give_price_option'] ) && ! in_array( $this->price_id, array( 'all', '' ) ) ? absint( $request['give_price_option'] ) : null;
-		$this->start      = ! empty( $request['start'] ) ? date( 'Y-m-d', strtotime( $request['start'] ) ) : '';
-		$this->end        = ! empty( $request['end'] ) ? date( 'Y-m-d', strtotime( $request['end'] ) ) : '';
+		$this->start      = ! empty( $request['start'] ) ? gmdate( 'Y-m-d', strtotime( $request['start'] ) ) : '';
+		$this->end        = ! empty( $request['end'] ) ? gmdate( 'Y-m-d', strtotime( $request['end'] ) ) : '';
 		$this->status     = isset( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'complete';
 
 		/**
@@ -318,6 +319,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 *
 	 * @access public
 	 *
+	 * @since TBD Use gmdate() instead of date().
      * @since 3.12.1 add donor phone.
 	 * @since  2.1
 	 *
@@ -445,12 +447,12 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 				if ( ! empty( $columns['donation_date'] ) ) {
 					$payment_date                = strtotime( $payment->date );
-					$data[ $i ]['donation_date'] = date( give_date_format(), $payment_date );
+					$data[ $i ]['donation_date'] = gmdate( give_date_format(), $payment_date );
 				}
 
 				if ( ! empty( $columns['donation_time'] ) ) {
 					$payment_date                = strtotime( $payment->date );
-					$data[ $i ]['donation_time'] = date_i18n( 'H', $payment_date ) . ':' . date( 'i', $payment_date );
+					$data[ $i ]['donation_time'] = date_i18n( 'H', $payment_date ) . ':' . gmdate( 'i', $payment_date );
 				}
 
 				if ( ! empty( $columns['userid'] ) ) {
@@ -470,7 +472,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 						array(
 							'comment_parent' => $payment->ID,
 							'comment_type'   => 'donation',
-							'meta_query'     => array(
+							'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Reads donation notes by their note type, which is stored as comment meta; admin export.
 								'relation' => 'OR',
 								array(
 									'key'     => 'note_type',
@@ -491,7 +493,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 						foreach ( $comments as $comment ) {
 							$comment_html[] = sprintf(
 								'%s - %s',
-								date( 'Y-m-d', strtotime( $comment->comment_date ) ),
+								gmdate( 'Y-m-d', strtotime( $comment->comment_date ) ),
 								$comment->comment_content
 							);
 						}
@@ -505,7 +507,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 						array(
 							'comment_parent' => $payment->ID,
 							'comment_type'   => 'donation',
-							'meta_query'     => array(
+							'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Reads donation notes by their note type, which is stored as comment meta; admin export.
 								array(
 									'key'   => 'note_type',
 									'value' => 'donor',
@@ -520,7 +522,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 						foreach ( $comments as $comment ) {
 							$comment_html[] = sprintf(
 								'%s - %s',
-								date( 'Y-m-d', strtotime( $comment->comment_date ) ),
+								gmdate( 'Y-m-d', strtotime( $comment->comment_date ) ),
 								$comment->comment_content
 							);
 						}

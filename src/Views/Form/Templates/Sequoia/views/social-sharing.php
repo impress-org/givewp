@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 if (isset($options['thank-you']['sharing']) && $options['thank-you']['sharing'] === 'enabled') : ?>
     <div class="social-sharing">
         <p class="instruction">

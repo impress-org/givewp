@@ -37,6 +37,7 @@ class SalesCountColumn extends ModelColumn
     /**
      * @inheritDoc
      *
+     * @since TBD Add translators comments.
      * @since 3.6.0
      *
      * @param Event $model
@@ -49,6 +50,7 @@ class SalesCountColumn extends ModelColumn
         }, 0);
 
         return sprintf(
+            /* translators: 1: Number of tickets sold, 2: Total ticket capacity */
             __('%1$d out of %2$d', 'give'),
             $soldTicketsCount,
             $capacity

@@ -82,7 +82,7 @@ class EventTicketTypeRepository
 
             Log::error('Failed creating an event ticket type', compact('eventTicketType'));
 
-            throw new Exception('Failed creating an event ticket type', 0, $exception);
+            throw new Exception('Failed creating an event ticket type', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         $eventTicketType->id = $eventTicketTypeId;
@@ -127,7 +127,7 @@ class EventTicketTypeRepository
 
             Log::error('Failed updating an event ticket type', compact('eventTicketType'));
 
-            throw new Exception('Failed updating an event ticket type', 0, $exception);
+            throw new Exception('Failed updating an event ticket type', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         $eventTicketType->updatedAt = $updatedDateTime;
@@ -158,7 +158,7 @@ class EventTicketTypeRepository
 
             Log::error('Failed deleting an event ticket type', compact('eventTicketType'));
 
-            throw new Exception('Failed deleting an event ticket type', 0, $exception);
+            throw new Exception('Failed deleting an event ticket type', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -169,13 +169,14 @@ class EventTicketTypeRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.6.0
      */
     private function validate(EventTicketType $eventTicketType): void
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($eventTicketType->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
     }

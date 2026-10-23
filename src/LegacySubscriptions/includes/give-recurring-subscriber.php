@@ -258,6 +258,8 @@ class Give_Recurring_Subscriber extends Give_Donor {
 	 *
 	 * Calculate a new expiration date
 	 *
+	 * @since TBD Use gmdate() instead of date().
+	 *
 	 * @param int    $form_id Donation Form ID.
 	 * @param null   $price_id Price ID.
 	 * @param int    $frequency Frequency/Interval Count.
@@ -269,8 +271,9 @@ class Give_Recurring_Subscriber extends Give_Donor {
 
 		// If $period is empty, then try fetching it with possible scenarios.
 		if ( empty( $period ) ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- for form donations give_process_donation() verifies the donation form nonce first; other callers have no form nonce, so the value is only used as the period after sanitizing.
 			if ( isset( $_POST['give-recurring-period-donors-choice'] ) ) {
-				$period = give_clean( $_POST['give-recurring-period-donors-choice'] );
+				$period = give_clean( $_POST['give-recurring-period-donors-choice'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 			} else if ( give_has_variable_prices( $form_id ) ) {
 				$period = Give_Recurring::get_period( $form_id, $price_id );
 			} else {
@@ -284,7 +287,7 @@ class Give_Recurring_Subscriber extends Give_Donor {
 			$period    = 'month';
 		}
 
-		return date( 'Y-m-d H:i:s', strtotime( '+ ' . $frequency . $period . ' 23:59:59' ) );
+		return gmdate( 'Y-m-d H:i:s', strtotime( '+ ' . $frequency . $period . ' 23:59:59' ) );
 	}
 
 	/**

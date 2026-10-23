@@ -204,6 +204,56 @@ class TestCurrencyRule extends TestCase
     }
 
     /**
+     * @since 4.19.0.1
+     */
+    public function testCurrencyRulePassesForAnyAllowedCurrency(): void
+    {
+        $rule = new CurrencyRule(['USD', 'EUR']);
+
+        self::assertValidationRulePassed($rule, 'USD');
+        self::assertValidationRulePassed($rule, 'EUR');
+    }
+
+    /**
+     * @since 4.19.0.1
+     */
+    public function testCurrencyRuleFailsForCurrencyOutsideAllowedSet(): void
+    {
+        $rule = new CurrencyRule(['USD', 'EUR']);
+
+        self::assertValidationRuleFailed($rule, 'GBP');
+    }
+
+    /**
+     * @since 4.19.0.1
+     */
+    public function testCurrencyRuleAllowsAnySupportedCurrencyWhenNoAllowedSetIsProvided(): void
+    {
+        $rule = new CurrencyRule();
+
+        self::assertValidationRulePassed($rule, 'USD');
+        self::assertValidationRuleFailed($rule, 'XYZ');
+    }
+
+    /**
+     * @since 4.19.0.1
+     */
+    public function testCurrencyRuleAllowedSetErrorMessage(): void
+    {
+        $rule = new CurrencyRule(['USD', 'EUR']);
+
+        $error = null;
+        $fail = function ($message) use (&$error) {
+            $error = $message;
+        };
+
+        $rule('GBP', $fail, 'test_field', []);
+
+        $this->assertIsString($error);
+        $this->assertStringContainsString('must be a currency supported by this donation form', $error);
+    }
+
+    /**
      * @since 4.10.0
      */
     public function testCurrencyRuleId(): void

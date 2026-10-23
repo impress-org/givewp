@@ -20,6 +20,7 @@ class DisconnectStripeAccountController
     {
         $this->validateRequest();
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- the account slug is needed to build the nonce action, and securityCheck() verifies the nonce with check_admin_referer() right after.
         $requestedData = DisconnectStripeAccountDto::fromArray(give_clean($_GET));
 
         $this->securityCheck($requestedData->accountSlug);

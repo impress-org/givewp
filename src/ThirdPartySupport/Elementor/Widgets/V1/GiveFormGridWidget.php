@@ -422,6 +422,7 @@ class GiveFormGridWidget extends Widget_Base
      *
      * Written in PHP and used to generate the final HTML.
      *
+     * @since TBD Escape output.
      * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access protected
      */
@@ -477,6 +478,7 @@ class GiveFormGridWidget extends Widget_Base
 
         echo '<div class="givewp-elementor-widget give-form-grid-shortcode-wrap">';
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $html is do_shortcode() output of our own shortcode; the shortcode template escapes its values.
         echo $html;
 
         echo '</div>';

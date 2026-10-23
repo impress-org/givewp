@@ -97,7 +97,9 @@ class RegisterCampaignBlocks
         wp_enqueue_style('givewp-design-system-foundation');
         wp_enqueue_style(
             'givewp-campaign-blocks-fonts',
-            'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
+            'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
+            [],
+            null // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- external Google Fonts stylesheet, not versioned by GiveWP.
         );
     }
 

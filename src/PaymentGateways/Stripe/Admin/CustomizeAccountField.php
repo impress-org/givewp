@@ -53,6 +53,7 @@ class CustomizeAccountField
     }
 
     /**
+     * @since TBD Escape output.
      * @since 2.13.0
      */
     private function getRadioButtons()
@@ -82,11 +83,11 @@ class CustomizeAccountField
                         esc_html_e('Default Account', 'give'); ?></span>
                     <span class="give-stripe-per-form-description">
 						<?php
-                        echo sprintf(
+                        echo wp_kses_post(sprintf(
                             '%1$s <a href="%2$s" target="_blank">Global Settings</a>.',
                             esc_html__('All donations are processed through the default account set in the', 'give'),
-                            give_stripe_get_admin_settings_page_url()
-                        );
+                            esc_url(give_stripe_get_admin_settings_page_url())
+                        ));
                         ?>
 					</span>
                     <span class="give-stripe-per-form-global-setting">
@@ -97,11 +98,11 @@ class CustomizeAccountField
                                 // Output Globally set account
                                 $globalAccount = give_stripe_get_default_account();
 
-                                echo ! empty($globalAccount['account_name']) ? $globalAccount['account_name'] : esc_html__(
+                                echo ! empty($globalAccount['account_name']) ? esc_html($globalAccount['account_name']) : esc_html__(
                                     'None set',
                                     'give'
                                 );
-                                echo ! empty($globalAccount['account_slug']) ? ' (' . $globalAccount['account_slug'] . ')' : '';
+                                echo ! empty($globalAccount['account_slug']) ? ' (' . esc_html($globalAccount['account_slug']) . ')' : '';
                                 ?>
 						</span>
 

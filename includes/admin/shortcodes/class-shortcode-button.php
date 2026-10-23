@@ -90,6 +90,7 @@ final class Give_Shortcode_Button {
 	 * @since 1.0
 	 */
 	public function admin_enqueue_assets() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only text direction param; it only picks the stylesheet suffix and saves nothing.
 		$direction = ( is_rtl() || isset( $_GET['d'] ) && 'rtl' === $_GET['d'] ) ? '.rtl' : '';
 
 		wp_enqueue_script(
@@ -136,6 +137,7 @@ final class Give_Shortcode_Button {
 	 *
 	 * @return string|bool
 	 *
+	 * @since TBD Escape output.
 	 * @since 1.0
 	 */
 	public function shortcode_button() {
@@ -153,9 +155,9 @@ final class Give_Shortcode_Button {
 
 				$shortcodes[ $shortcode ] = sprintf(
 					'<div class="sc-shortcode mce-menu-item give-shortcode-item-%1$s" data-shortcode="%2$s">%3$s</div>',
-					$shortcode,
-					$shortcode,
-					$values['label']
+					esc_attr( $shortcode ),
+					esc_attr( $shortcode ),
+					esc_html( $values['label'] )
 				);
 			}
 		}
@@ -175,12 +177,12 @@ final class Give_Shortcode_Button {
 
 				printf(
 					'<button type="button" class="button sc-shortcode" data-shortcode="%s">%s</button>',
-					$shortcode,
+					esc_attr( $shortcode ),
 					sprintf(
 						'%s %s %s',
-						$img,
-						__( 'Insert', 'give' ),
-						self::$shortcodes[ $shortcode ]['label']
+						$img, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $img is built from a static developer-authored icon lookup (give_svg_icons()) or a hardcoded asset URL, not user input; wp_kses_post() would mangle its base64 background-image data URL.
+						esc_html__( 'Insert', 'give' ),
+						esc_html( self::$shortcodes[ $shortcode ]['label'] )
 					)
 				);
 			} else {
@@ -189,8 +191,9 @@ final class Give_Shortcode_Button {
 					'<button class="button sc-button" type="button">%s %s</button>' .
 					'<div class="sc-menu mce-menu">%s</div>' .
 					'</div>',
-					$img,
-					__( 'GiveWP Shortcodes', 'give' ),
+					$img, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $img is built from a static developer-authored icon lookup (give_svg_icons()) or a hardcoded asset URL, not user input; wp_kses_post() would mangle its base64 background-image data URL.
+					esc_html__( 'GiveWP Shortcodes', 'give' ),
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- each menu item is built by shortcode_button() with esc_attr()/esc_html() on its own values.
 					implode( '', array_values( $shortcodes ) )
 				);
 			}
@@ -204,6 +207,7 @@ final class Give_Shortcode_Button {
 	 *
 	 * @return void
 	 *
+	 * @since TBD Stop writing a debug line to the PHP error log.
 	 * @since 1.0
 	 */
 	public function shortcode_ajax() {
@@ -211,7 +215,8 @@ final class Give_Shortcode_Button {
 			wp_die();
 		}
 
-		$shortcode = isset( $_POST['shortcode'] ) ? $_POST['shortcode'] : false;
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only admin lookup; it returns the button settings for a known shortcode name, is limited to users who can edit forms, and saves nothing.
+		$shortcode = isset( $_POST['shortcode'] ) ? sanitize_text_field( wp_unslash( $_POST['shortcode'] ) ) : false;
 		$response  = false;
 
 		if ( $shortcode && array_key_exists( $shortcode, self::$shortcodes ) ) {
@@ -229,8 +234,6 @@ final class Give_Shortcode_Button {
 				'shortcode' => $shortcode,
 				'title'     => $data['title'],
 			);
-		} else {
-			error_log( print_r( 'AJAX error!', 1 ) );
 		}
 
 		wp_send_json( $response );

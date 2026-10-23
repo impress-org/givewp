@@ -71,7 +71,7 @@ class StoreCustomFields
      */
     protected function handleFileUpload(File $field): ?array
     {
-        if (!isset($_FILES[$field->getName()])) {
+        if (!isset($_FILES[$field->getName()])) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- v3 donation request; the signed route (DonateRouteData::validateSignature()) protects it.
             return null;
         }
 

@@ -37,6 +37,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 		/**
 		 * Get settings array.
 		 *
+		 * @since TBD Add translators comments.
 		 * @since  1.8
 		 * @return array
 		 */
@@ -155,6 +156,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'name'    => __( 'Form Archives', 'give' ),
 							'desc'    => sprintf(
 								wp_kses(
+									/* translators: %s: URL of the permalinks settings page */
 									__( 'Archive pages list all the donation forms you have created. This option will disable only the form\'s archive page(s). The form\'s single view will still be displayed. Note: you will need to <a href="%s">refresh your permalinks</a> after this option has been enabled.', 'give' ),
 									[
 										'a' => [

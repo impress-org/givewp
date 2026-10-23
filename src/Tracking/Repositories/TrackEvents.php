@@ -96,6 +96,7 @@ class TrackEvents
     /**
      * Get request time.
      *
+     * @since TBD Use gmdate() instead of date().
      * @since 2.10.0
      *
      * @return false|string
@@ -104,7 +105,7 @@ class TrackEvents
     {
         $today = strtotime('today', current_time('timestamp'));
 
-        return date('Y-m-d H:i:s', get_option(self::TELEMETRY_REQUEST_TIME_OPTION_KEY, $today));
+        return gmdate('Y-m-d H:i:s', get_option(self::TELEMETRY_REQUEST_TIME_OPTION_KEY, $today));
     }
 
     /**
