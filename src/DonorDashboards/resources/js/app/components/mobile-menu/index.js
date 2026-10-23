@@ -50,11 +50,14 @@ const MobileMenu = ({children}) => {
                     <FontAwesomeIcon icon="bars" />
                 </div>
             </div>
-            {isOpen && (
-                <div className="give-donor-dashboard-mobile-menu__content">
-                    {children}
-                </div>
-            )}
+            {/*
+              * Hide with `hidden`; never render the children conditionally. The logout modal state lives in
+              * the tab menu inside these children, and clicking Logout also fires the outside-click handler above,
+              * which closes the menu. Unmounting the children there would discard the modal before it appears.
+              */}
+            <div className="give-donor-dashboard-mobile-menu__content" hidden={!isOpen}>
+                {children}
+            </div>
         </div>
     );
 };

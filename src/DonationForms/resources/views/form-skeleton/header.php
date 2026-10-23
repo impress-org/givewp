@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * The form header: title, two lines of description, and the two parts with real height when the
  * form has them.

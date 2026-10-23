@@ -37,14 +37,15 @@ class SubscriptionQuery extends QueryBuilder
     }
 
     /**
+     * @since TBD Use gmdate() instead of date().
      * @since 3.12.0
      */
     public function between($startDate, $endDate)
     {
         $this->whereBetween(
             'created',
-            date('Y-m-d H:i:s', strtotime($startDate)),
-            date('Y-m-d H:i:s', strtotime($endDate))
+            gmdate('Y-m-d H:i:s', strtotime($startDate)),
+            gmdate('Y-m-d H:i:s', strtotime($endDate))
         );
         return $this;
     }

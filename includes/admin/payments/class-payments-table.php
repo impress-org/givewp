@@ -152,56 +152,61 @@ class Give_Payment_History_Table extends WP_List_Table {
 	/**
 	 * Add donation search filter.
 	 *
+	 * @since TBD Escape output, including translated strings, and use gmdate() instead of date().
+	 *
 	 * @return void
 	 */
 	public function advanced_filters() {
-		$start_date = isset( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : '';
-		$end_date   = isset( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : '';
-		$status     = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : '';
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only list filters from the URL; they only narrow what is shown and save nothing.
+		$start_date = isset( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		$end_date   = isset( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		$status     = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		$donor      = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : '';
-		$search     = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : '';
+		$search     = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		?>
 		<div id="give-payment-filters" class="give-filters">
 			<?php $this->search_box( __( 'Search', 'give' ), 'give-payments' ); ?>
 			<div id="give-payment-date-filters">
 				<div class="give-filter give-filter-half">
 					<label for="start-date"
-						   class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
+						   class="give-start-date-label"><?php esc_html_e( 'Start Date', 'give' ); ?></label>
 					<input type="text"
 						   id="start-date"
 						   name="start-date"
 						   class="give_datepicker"
 						   autocomplete="off"
-						   value="<?php echo $start_date ? date_i18n( give_date_format(), $start_date ) : ''; ?>"
-						   data-standard-date="<?php echo $start_date ? date( 'Y-m-d', $start_date ) : $start_date; ?>"
-						   placeholder="<?php _e( 'Start Date', 'give' ); ?>"
+						   value="<?php echo $start_date ? esc_attr( date_i18n( give_date_format(), $start_date ) ) : ''; ?>"
+						   data-standard-date="<?php echo $start_date ? esc_attr( gmdate( 'Y-m-d', $start_date ) ) : esc_attr( $start_date ); ?>"
+						   placeholder="<?php esc_attr_e( 'Start Date', 'give' ); ?>"
 					/>
 				</div>
 				<div class="give-filter give-filter-half">
-					<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
+					<label for="end-date" class="give-end-date-label"><?php esc_html_e( 'End Date', 'give' ); ?></label>
 					<input type="text"
 						   id="end-date"
 						   name="end-date"
 						   class="give_datepicker"
 						   autocomplete="off"
-						   value="<?php echo $end_date ? date_i18n( give_date_format(), $end_date ) : ''; ?>"
-						   data-standard-date="<?php echo $end_date ? date( 'Y-m-d', $end_date ) : $end_date; ?>"
-						   placeholder="<?php _e( 'End Date', 'give' ); ?>"
+						   value="<?php echo $end_date ? esc_attr( date_i18n( give_date_format(), $end_date ) ) : ''; ?>"
+						   data-standard-date="<?php echo $end_date ? esc_attr( gmdate( 'Y-m-d', $end_date ) ) : esc_attr( $end_date ); ?>"
+						   placeholder="<?php esc_attr_e( 'End Date', 'give' ); ?>"
 					/>
 				</div>
 			</div>
 			<div id="give-payment-form-filter" class="give-filter">
 				<label for="give-donation-forms-filter"
-					   class="give-donation-forms-filter-label"><?php _e( 'Form', 'give' ); ?></label>
+					   class="give-donation-forms-filter-label"><?php esc_html_e( 'Form', 'give' ); ?></label>
 				<?php
 				// Filter Donations by Donation Forms.
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- forms_dropdown() renders a <select> control; wp_kses_post() would strip it.
 				echo Give()->html->forms_dropdown(
 					[
 						'name'     => 'form_id',
 						'id'       => 'give-donation-forms-filter',
 						'class'    => 'give-donation-forms-filter',
-						'selected' => $form_id, // Make sure to have $form_id set to 0, if there is no selection.
+						'selected' => (int) $form_id, // Make sure to have $form_id set to 0, if there is no selection.
 						'chosen'   => true,
 						'number'   => 30,
 					]
@@ -232,8 +237,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 				// Clear active filters button.
 				if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $donor ) || ! empty( $search ) || ! empty( $status ) || ! empty( $form_id ) ) :
 					?>
-					<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>"
-					   class="button give-clear-filters-button"><?php _e( 'Clear Filters', 'give' ); ?></a>
+					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ) ); ?>"
+					   class="button give-clear-filters-button"><?php esc_html_e( 'Clear Filters', 'give' ); ?></a>
 				<?php endif; ?>
 			</div>
 		</div>
@@ -247,6 +252,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @param string $text     Label for the search box.
 	 * @param string $input_id ID of the search box.
 	 *
+	 * @since  TBD Escape output, including translated strings.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -255,12 +261,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 	public function search_box( $text, $input_id ) {
 		$input_id = $input_id . '-search-input';
 
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only sort params; they only change the order of the list and save nothing.
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
-			echo '<input type="hidden" name="orderby" value="' . esc_attr( $_REQUEST['orderby'] ) . '" />';
+			echo '<input type="hidden" name="orderby" value="' . esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) ) . '" />';
 		}
 		if ( ! empty( $_REQUEST['order'] ) ) {
-			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
+			echo '<input type="hidden" name="order" value="' . esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ) ) . '" />';
 		}
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		?>
 		<div class="give-filter give-filter-search" role="search">
 			<?php
@@ -273,10 +281,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 */
 			do_action( 'give_payment_history_search' );
 			?>
-			<label class="screen-reader-text" for="<?php echo $input_id; ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id; ?>" name="s"
+			<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $text ); ?>:</label>
+			<input type="search" id="<?php echo esc_attr( $input_id ); ?>" name="s"
 				   value="<?php _admin_search_query(); ?>"
-				   placeholder="<?php _e( 'Name, Email, or Donation ID', 'give' ); ?>" />
+				   placeholder="<?php esc_attr_e( 'Name, Email, or Donation ID', 'give' ); ?>" />
 			<?php
 			submit_button(
 				$text,
@@ -303,7 +311,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function get_views() {
 
-		$current = isset( $_GET['status'] ) ? $_GET['status'] : '';
+		$current = isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only status filter param; it only picks the highlighted view and saves nothing.
 		$views   = [];
 		$tabs    = [
 			'all'         => [
@@ -465,6 +473,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @param string       $column_name The name of the column.
 	 *
 	 * @access public
+	 * @since TBD Add translators comments.
 	 * @since  4.19.0 Say No campaign when the donation has no campaign.
 	 * @since  1.0
      * @since 4.3.0 show campaign name instead of the form name
@@ -483,6 +492,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				if ( current_user_can( 'view_give_payments' ) ) {
 					$value = Give()->tooltips->render_link(
 						[
+							/* translators: %s: Donation number */
 							'label'       => sprintf( __( 'View Donation %s', 'give' ), $serial_code ),
 							'tag_content' => $serial_code,
 							'link'        => $single_donation_url,
@@ -534,6 +544,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				if ( current_user_can( 'view_give_payments' ) ) {
 					$value = Give()->tooltips->render_link(
 						[
+							/* translators: %s: Donation ID */
 							'label'       => sprintf( __( 'View Donation #%s', 'give' ), $payment->ID ),
 							'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
 							'link'        => $single_donation_url,
@@ -590,6 +601,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 *
 	 * @param object $payment Payment Data.
 	 *
+	 * @since TBD Add translators comments.
 	 * @since 1.6
 	 *
 	 * @return array $actions
@@ -600,7 +612,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$email   = give_get_payment_user_email( $payment->ID );
 
 		// Add search term string back to base URL.
-		$search_terms = ( isset( $_GET['s'] ) ? trim( $_GET['s'] ) : '' );
+		$search_terms = ( isset( $_GET['s'] ) ? trim( sanitize_text_field( wp_unslash( $_GET['s'] ) ) ) : '' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only search param; it only keeps the search term in the row action links and saves nothing.
 		if ( ! empty( $search_terms ) ) {
 			$this->base_url = add_query_arg( 's', $search_terms, $this->base_url );
 		}
@@ -621,6 +633,7 @@ class Give_Payment_History_Table extends WP_List_Table {
                         'give_payment_nonce'
                     )
                 ),
+				/* translators: %s: Donation ID */
 				sprintf( __( 'Resend Donation %s Receipt', 'give' ), $payment->ID ),
 				__( 'Resend Receipt', 'give' )
 			);
@@ -642,6 +655,7 @@ class Give_Payment_History_Table extends WP_List_Table {
                         'give_donation_nonce'
                     )
                 ),
+				/* translators: %s: Donation ID */
 				sprintf( __( 'Delete Donation %s', 'give' ), $payment->ID ),
 				__( 'Delete', 'give' )
 			);
@@ -801,12 +815,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function process_bulk_action()
     {
-        $ids = isset($_GET['payment']) ? $_GET['payment'] : false;
         $action = $this->current_action();
-
-        if ( ! is_array($ids)) {
-            $ids = [$ids];
-        }
 
         if (
             empty($action) ||
@@ -815,7 +824,15 @@ class Give_Payment_History_Table extends WP_List_Table {
             return;
         }
 
-        give_validate_nonce($_GET['_wpnonce'] ?? '', 'bulk-forms');
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- the nonce is checked by give_validate_nonce() on the next line; the sniff cannot see it.
+        give_validate_nonce(isset($_GET['_wpnonce']) ? sanitize_text_field(wp_unslash($_GET['_wpnonce'])) : '', 'bulk-forms');
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified by give_validate_nonce() above.
+        $ids = isset($_GET['payment']) ? array_map('absint', (array) wp_unslash($_GET['payment'])) : false;
+
+        if ( ! is_array($ids)) {
+            $ids = [$ids];
+        }
 
         foreach ($ids as $id) {
 			// Detect when a bulk action is being triggered.
@@ -899,30 +916,33 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		$args = [];
 
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only list filters from the URL; they only narrow the counts that are shown and save nothing.
 		if ( isset( $_GET['user'] ) ) {
-			$args['user'] = urldecode( $_GET['user'] );
+			$args['user'] = urldecode( sanitize_text_field( wp_unslash( $_GET['user'] ) ) );
 		} elseif ( isset( $_GET['donor'] ) ) {
 			$args['donor'] = absint( $_GET['donor'] );
 		} elseif ( isset( $_GET['s'] ) ) {
-			$is_user = strpos( $_GET['s'], strtolower( 'user:' ) ) !== false;
+			$search_term = sanitize_text_field( wp_unslash( $_GET['s'] ) );
+			$is_user     = strpos( $search_term, strtolower( 'user:' ) ) !== false;
 			if ( $is_user ) {
-				$args['user'] = absint( trim( str_replace( 'user:', '', strtolower( $_GET['s'] ) ) ) );
+				$args['user'] = absint( trim( str_replace( 'user:', '', strtolower( $search_term ) ) ) );
 				unset( $args['s'] );
 			} else {
-				$args['s'] = sanitize_text_field( $_GET['s'] );
+				$args['s'] = $search_term;
 			}
 		}
 
 		if ( ! empty( $_GET['start-date'] ) ) {
-			$args['start-date'] = urldecode( $_GET['start-date'] );
+			$args['start-date'] = urldecode( sanitize_text_field( wp_unslash( $_GET['start-date'] ) ) );
 		}
 
 		if ( ! empty( $_GET['end-date'] ) ) {
-			$args['end-date'] = urldecode( $_GET['end-date'] );
+			$args['end-date'] = urldecode( sanitize_text_field( wp_unslash( $_GET['end-date'] ) ) );
 		}
 
 		$args['form_id'] = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
-		$args['gateway'] = ! empty( $_GET['gateway'] ) ? give_clean( $_GET['gateway'] ) : null;
+		$args['gateway'] = ! empty( $_GET['gateway'] ) ? give_clean( $_GET['gateway'] ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		$payment_count           = give_count_payments( $args );
 		$this->complete_count    = $payment_count->publish;
@@ -946,41 +966,45 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Retrieve all the data for all the payments.
 	 *
 	 * @access public
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 *
 	 * @return array  objects in array containing all the data for the payments
 	 */
 	public function payments_data() {
 		$per_page   = $this->per_page;
-		$orderby    = isset( $_GET['orderby'] ) ? urldecode( $_GET['orderby'] ) : 'ID';
-		$order      = isset( $_GET['order'] ) ? give_clean( $_GET['order'] ) : 'DESC';
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only list filters, sort and paging params from the URL; they only change what is shown and save nothing.
+		$orderby    = isset( $_GET['orderby'] ) ? urldecode( sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) ) : 'ID';
+		$order      = isset( $_GET['order'] ) ? give_clean( $_GET['order'] ) : 'DESC'; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		$user       = isset( $_GET['user'] ) ? absint( $_GET['user'] ) : null;
 		$donor      = isset( $_GET['donor'] ) ? absint( $_GET['donor'] ) : null;
-		$status     = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : give_get_payment_status_keys();
-		$meta_key   = isset( $_GET['meta_key'] ) ? give_clean( $_GET['meta_key'] ) : null;
-		$year       = isset( $_GET['year'] ) ? give_clean( $_GET['year'] ) : null;
-		$month      = isset( $_GET['m'] ) ? give_clean( $_GET['m'] ) : null;
-		$day        = isset( $_GET['day'] ) ? give_clean( $_GET['day'] ) : null;
-		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : null;
+		$status     = isset( $_GET['status'] ) ? give_clean( $_GET['status'] ) : give_get_payment_status_keys(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		$meta_key   = isset( $_GET['meta_key'] ) ? give_clean( $_GET['meta_key'] ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		$year       = isset( $_GET['year'] ) ? give_clean( $_GET['year'] ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		$month      = isset( $_GET['m'] ) ? give_clean( $_GET['m'] ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		$day        = isset( $_GET['day'] ) ? give_clean( $_GET['day'] ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		$search     = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : null;
 		$start_date = ! empty( $_GET['start-date'] )
-			? give_clean( $_GET['start-date'] )
-			: date( 'Y-m-d', 0 );
+			? give_clean( $_GET['start-date'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+			: gmdate( 'Y-m-d', 0 );
 		$end_date   = ! empty( $_GET['end-date'] )
-			? give_clean( $_GET['end-date'] )
-			: date( 'Y-m-d', current_time( 'timestamp' ) );
+			? give_clean( $_GET['end-date'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+			: gmdate( 'Y-m-d', current_time( 'timestamp' ) );
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
-		$gateway    = ! empty( $_GET['gateway'] ) ? give_clean( $_GET['gateway'] ) : null;
+		$gateway    = ! empty( $_GET['gateway'] ) ? give_clean( $_GET['gateway'] ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+		$page       = isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : null;
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		$args = [
 			'output'     => 'payments',
 			'number'     => $per_page,
-			'page'       => isset( $_GET['paged'] ) ? $_GET['paged'] : null,
+			'page'       => $page,
 			'orderby'    => $orderby,
 			'order'      => $order,
 			'user'       => $user,
 			'donor'      => $donor,
 			'status'     => $status,
-			'meta_key'   => $meta_key,
+			'meta_key'   => $meta_key, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Passes the meta key chosen for sorting the donations list; sorting by meta needs it.
 			'year'       => $year,
 			'month'      => $month,
 			'day'        => $day,
@@ -1030,7 +1054,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$hidden   = []; // No hidden columns.
 		$sortable = $this->get_sortable_columns();
 		$data     = $this->payments_data();
-		$status   = isset( $_GET['status'] ) ? $_GET['status'] : 'any';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only status filter param; it only picks which total to show and saves nothing.
+		$status   = isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : 'any';
 
 		$this->_column_headers = [ $columns, $hidden, $sortable ];
 

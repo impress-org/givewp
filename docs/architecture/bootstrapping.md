@@ -9,13 +9,19 @@ any of the three subtly wrong produces code that loads without error and simply 
 1. `give.php` ends with `give()->boot()`, executed when WordPress includes the plugin file.
 2. `Give::boot()` defines constants and registers `add_action('plugins_loaded', [$this, 'init'], 0)`
    — **priority 0**, so GiveWP initializes before most other plugins' `plugins_loaded` handlers.
-3. `Give::init()` fires `before_give_init`, binds a couple of core classes, installs the uncaught
+3. `Give::init()` fires `before_give_init` (kept for add-ons, not deprecated) and then `give_before_init`, binds a couple of core classes, installs the uncaught
    exception handler, then calls `loadServiceProviders()`, loads form templates and routes, and
    fires `give_init`.
 4. `loadServiceProviders()` walks `$serviceProviders` and runs the two-phase cycle below.
 
 `loadServiceProviders()` is also called from `Give::install()` on plugin activation, and is guarded
 by a `$providersLoaded` flag so it runs once per request.
+
+`give.php` also requires two function files, `src/Framework/Http/Response/functions.php` and
+`src/FormMigration/functions.php`, right after `vendor/autoload.php`. They are not in composer
+`autoload.files`. They used to be there, and composer ran them as soon as `vendor/autoload.php`
+loaded. In tests and tools that happens before WordPress. These two files exit when `ABSPATH` is
+not defined, so composer would have stopped PHPUnit and PHPCS before they started.
 
 ## Service providers
 

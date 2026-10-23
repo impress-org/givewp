@@ -302,6 +302,7 @@ class Give_Batch_Export extends Give_Export {
 	/**
 	 * Perform the export.
 	 *
+	 * @since  TBD Escape output.
 	 * @access public
 	 * @since  1.5
 	 * @return void
@@ -315,6 +316,7 @@ class Give_Batch_Export extends Give_Export {
 
 		@unlink( $this->file );
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- writes the exported file's raw content to the download stream, not to HTML.
 		echo $file;
 
 		/**
@@ -322,7 +324,7 @@ class Give_Batch_Export extends Give_Export {
 		 *
 		 * @since 1.8
 		 */
-		do_action( 'give_file_export_complete', $_REQUEST );
+		do_action( 'give_file_export_complete', $_REQUEST ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified by give_process_batch_export_form() before the download starts; the request is only passed to the hook.
 
 		give_die();
 	}

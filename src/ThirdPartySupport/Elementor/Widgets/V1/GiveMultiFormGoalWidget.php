@@ -212,6 +212,7 @@ class GiveMultiFormGoalWidget extends Widget_Base
      *
      * Written in PHP and used to generate the final HTML.
      *
+     * @since TBD Escape output.
      * @access protected
      */
     protected function render()
@@ -232,6 +233,7 @@ class GiveMultiFormGoalWidget extends Widget_Base
 
         $shortcode = new Shortcode();
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $shortcode->renderCallback() renders our own shortcode; its output is escaped internally.
         printf('<div class="givewp-elementor-widget give-multi-form-goal-wrap">%s</div>', $shortcode->renderCallback($attributes));
     }
 }

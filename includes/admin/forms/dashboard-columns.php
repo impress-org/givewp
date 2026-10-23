@@ -59,6 +59,7 @@ add_filter( 'manage_edit-give_forms_columns', 'give_form_columns' );
 /**
  * Render Give Form Columns
  *
+ * @since TBD Escape output, including translated strings.
  * @since 3.16.0 Add new filters for the "donations count" and "revenue" columns
  * @since 1.0
  *
@@ -79,9 +80,9 @@ function give_render_form_columns( $column_name, $post_id ) {
 				break;
 			case 'price':
 				if ( give_has_variable_prices( $post_id ) ) {
-					echo give_price_range( $post_id );
+					echo wp_kses_post( give_price_range( $post_id ) );
 				} else {
-					echo give_price( $post_id, false );
+					echo give_price( $post_id, false ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_price() already wp_kses_post()s its own return value; esc_html() here double-processed it and stripped the surviving <span> tags.
 					printf( '<input type="hidden" class="formprice-%1$s" value="%2$s" />', esc_attr( $post_id ), esc_attr( give_get_form_price( $post_id ) ) );
 				}
 				break;
@@ -89,16 +90,16 @@ function give_render_form_columns( $column_name, $post_id ) {
 				if ( give_is_setting_enabled( give_get_meta( $post_id, '_give_goal_option', true ) ) ) {
                     do_action('give_admin_form_list_view_donations_goal_column_before', $post_id);
 
-					echo give_admin_form_goal_stats( $post_id );
+					echo wp_kses_post( give_admin_form_goal_stats( $post_id ) );
 
 				} else {
-					_e( 'No Goal Set', 'give' );
+					esc_html_e( 'No Goal Set', 'give' );
 				}
 
 				printf(
 					'<input type="hidden" class="formgoal-%1$s" value="%2$s" />',
 					esc_attr( $post_id ),
-					give_get_form_goal( $post_id )
+					esc_attr( give_get_form_goal( $post_id ) )
 				);
 
 				break;
@@ -107,7 +108,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&form_id=' . $post_id ) ),
-                        apply_filters('give_admin_form_list_view_donations_count_column_value', give_get_form_sales_stats( $post_id ), $post_id)
+                        esc_html( apply_filters('give_admin_form_list_view_donations_count_column_value', give_get_form_sales_stats( $post_id ), $post_id) )
 					);
 				} else {
 					echo '-';
@@ -118,7 +119,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $post_id ) ),
-                        apply_filters('give_admin_form_list_view_revenue_column_value', give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), [ 'sanitize' => false ] ) ), $post_id)
+                        esc_html( apply_filters('give_admin_form_list_view_revenue_column_value', give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), [ 'sanitize' => false ] ) ), $post_id) )
 					);
 				} else {
 					echo '-';
@@ -190,7 +191,7 @@ function give_sort_forms( $vars ) {
 			$vars = array_merge(
 				$vars,
 				[
-					'meta_key' => '_give_form_sales',
+					'meta_key' => '_give_form_sales', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the forms list by the stored sales total; WP_Query sorts by meta only.
 					'orderby'  => 'meta_value_num',
 				]
 			);
@@ -201,7 +202,7 @@ function give_sort_forms( $vars ) {
 			$vars = array_merge(
 				$vars,
 				[
-					'meta_key' => '_give_form_earnings',
+					'meta_key' => '_give_form_earnings', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the forms list by the stored earnings total; WP_Query sorts by meta only.
 					'orderby'  => 'meta_value_num',
 				]
 			);
@@ -212,7 +213,7 @@ function give_sort_forms( $vars ) {
 			$multi_level_meta_key = ( 'asc' === $vars['order'] ) ? '_give_levels_minimum_amount' : '_give_levels_maximum_amount';
 
 			$vars['orderby']    = 'meta_value_num';
-			$vars['meta_query'] = [
+			$vars['meta_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Sorts the forms list by price level meta; the meta query is the sort.
 				'relation' => 'OR',
 				[
 					'key'  => $multi_level_meta_key,
@@ -235,7 +236,7 @@ function give_sort_forms( $vars ) {
 			$vars = array_merge(
 				$vars,
 				[
-					'meta_key' => $meta_key,
+					'meta_key' => $meta_key, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the forms list by the goal meta; WP_Query sorts by meta only.
 					'orderby'  => 'meta_value_num',
 				]
 			);
@@ -246,7 +247,7 @@ function give_sort_forms( $vars ) {
 			$vars = array_merge(
 				$vars,
 				[
-					'meta_key' => '_give_form_sales',
+					'meta_key' => '_give_form_sales', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the forms list by the stored sales total; WP_Query sorts by meta only.
 					'orderby'  => 'meta_value_num',
 				]
 			);
@@ -259,6 +260,7 @@ function give_sort_forms( $vars ) {
 /**
  * Sets restrictions on author of Forms List Table
  *
+ * @since TBD Unslash and sanitize the author ID.
  * @since  1.0
  *
  * @param  array $vars Array of all sort variables.
@@ -269,9 +271,11 @@ function give_filter_forms( $vars ) {
 	if ( isset( $vars['post_type'] ) && 'give_forms' == $vars['post_type'] ) {
 
 		// If an author ID was passed, use it
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only author param; it can only narrow the list, and anyone without view_give_reports is refused unless it is their own ID.
 		if ( isset( $_REQUEST['author'] ) && ! current_user_can( 'view_give_reports' ) ) {
 
-			$author_id = $_REQUEST['author'];
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only author param; it can only narrow the list, and anyone without view_give_reports is refused unless it is their own ID.
+			$author_id = absint( $_REQUEST['author'] );
 			if ( (int) $author_id !== get_current_user_id() ) {
 				wp_die(
 					esc_html__( 'You do not have permission to view this data.', 'give' ),
@@ -336,6 +340,7 @@ add_filter( 'months_dropdown_results', 'give_remove_month_filter', 99 );
 /**
  * Updates price when saving post
  *
+ * @since TBD Unslash and sanitize the request values.
  * @since 1.0
  * @since 2.1.4 If the donation amount is less than the Minimum amount then set the donation amount as Donation minimum amount.
  *
@@ -344,6 +349,7 @@ add_filter( 'months_dropdown_results', 'give_remove_month_filter', 99 );
  * @return int|null
  */
 function give_price_save_quick_edit( $post_id ) {
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- WordPress core verifies the nonce before it fires save_post; this only checks the post type.
 	if ( ! isset( $_POST['post_type'] ) || 'give_forms' !== $_POST['post_type'] ) {
 		return;
 	}
@@ -354,19 +360,25 @@ function give_price_save_quick_edit( $post_id ) {
 		return $post_id;
 	}
 
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- WordPress core verifies the nonce before it fires save_post.
 	if ( isset( $_REQUEST['_give_regprice'] ) ) {
-		give_update_meta( $post_id, '_give_set_price', give_sanitize_amount_for_db( strip_tags( stripslashes( $_REQUEST['_give_regprice'] ) ) ) );
+		give_update_meta( $post_id, '_give_set_price', give_sanitize_amount_for_db( sanitize_text_field( wp_unslash( $_REQUEST['_give_regprice'] ) ) ) );
 	}
 
 	// Override the Donation minimum amount.
 	if (
-		isset( $_REQUEST['_give_custom_amount'], $_REQUEST['_give_set_price'], $_REQUEST['_give_price_option'], $_REQUEST['_give_custom_amount_range'] )
+		isset( $_REQUEST['_give_custom_amount'], $_REQUEST['_give_set_price'], $_REQUEST['_give_price_option'], $_REQUEST['_give_custom_amount_range']['minimum'] )
 		&& 'set' === $_REQUEST['_give_price_option']
-		&& give_is_setting_enabled( $_REQUEST['_give_custom_amount'] )
-		&& give_maybe_sanitize_amount( $_REQUEST['_give_set_price'] ) < give_maybe_sanitize_amount( $_REQUEST['_give_custom_amount_range']['minimum'] )
+		&& give_is_setting_enabled( sanitize_text_field( wp_unslash( $_REQUEST['_give_custom_amount'] ) ) )
 	) {
-		give_update_meta( $post_id, '_give_custom_amount_range_minimum', give_sanitize_amount_for_db( $_REQUEST['_give_set_price'] ) );
+		$set_price = sanitize_text_field( wp_unslash( $_REQUEST['_give_set_price'] ) );
+		$minimum   = sanitize_text_field( wp_unslash( $_REQUEST['_give_custom_amount_range']['minimum'] ) );
+
+		if ( give_maybe_sanitize_amount( $set_price ) < give_maybe_sanitize_amount( $minimum ) ) {
+			give_update_meta( $post_id, '_give_custom_amount_range_minimum', give_sanitize_amount_for_db( $set_price ) );
+		}
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 }
 
 add_action( 'save_post', 'give_price_save_quick_edit' );
@@ -374,12 +386,13 @@ add_action( 'save_post', 'give_price_save_quick_edit' );
 /**
  * Function is used to filter the query for search result.
  *
+ * @since TBD Use gmdate() instead of date(), and sanitize the goal filter value.
  * @since 2.4.0
  *
  * @param $wp WP WordPress environment instance (passed by reference).
  */
 function give_form_search_query_filter( $wp ) {
-
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only list filters from the URL; they only narrow what is shown and save nothing.
 	if (
 		isset( $wp->query_vars['post_type'] )
 		 && 'give_forms' == $wp->query_vars['post_type']
@@ -388,13 +401,13 @@ function give_form_search_query_filter( $wp ) {
 
 		$wp->query_vars['date_query'] =
 			[
-				'after'     => ! empty( $_GET['start-date'] ) ? date( 'Y-m-d', strtotime( give_clean( $_GET['start-date'] ) ) ) : false,
-				'before'    => ! empty( $_GET['end-date'] ) ? date( 'Y-m-d 23:59:59 ', strtotime( give_clean( $_GET['end-date'] ) ) ) : false,
+				'after'     => ! empty( $_GET['start-date'] ) ? gmdate( 'Y-m-d', strtotime( give_clean( $_GET['start-date'] ) ) ) : false, // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+				'before'    => ! empty( $_GET['end-date'] ) ? gmdate( 'Y-m-d 23:59:59 ', strtotime( give_clean( $_GET['end-date'] ) ) ) : false, // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 				'inclusive' => true,
 			];
-		switch ( $_GET['give-forms-goal-filter'] ) {
+		switch ( sanitize_text_field( wp_unslash( $_GET['give-forms-goal-filter'] ) ) ) {
 			case 'goal_in_progress':
-				$wp->query_vars['meta_query'] =
+				$wp->query_vars['meta_query'] = // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Goal filter on the forms list; the goal is stored as meta, so the filter is a meta query.
 					[
 						'relation' => 'AND',
 						[
@@ -407,7 +420,7 @@ function give_form_search_query_filter( $wp ) {
 
 				break;
 			case 'goal_achieved':
-				$wp->query_vars['meta_query'] =
+				$wp->query_vars['meta_query'] = // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Goal filter on the forms list; the goal is stored as meta, so the filter is a meta query.
 					[
 						'relation' => 'AND',
 						[
@@ -419,7 +432,7 @@ function give_form_search_query_filter( $wp ) {
 					];
 				break;
 			case 'goal_not_set':
-				$wp->query_vars['meta_query'] =
+				$wp->query_vars['meta_query'] = // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Goal filter on the forms list; the goal is stored as meta, so the filter is a meta query.
 					[
 						'relation' => 'OR',
 						[
@@ -435,6 +448,7 @@ function give_form_search_query_filter( $wp ) {
 				break;
 		}
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 }
 
 add_action( 'parse_request', 'give_form_search_query_filter' );
@@ -471,6 +485,7 @@ add_filter( 'pre_get_posts', 'give_search_form_by_id' );
 /**
  * Outputs advanced filter html in Give forms list admin screen.
  *
+ * @since TBD Escape output, including translated strings, use gmdate() instead of date(), and sanitize the goal filter value.
  * @sicne 2.4.0
  *
  * @param $which
@@ -488,14 +503,16 @@ function give_forms_advanced_filter( $which ) {
 		return;
 	}
 
-	$start_date             = isset( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : '';
-	$end_date               = isset( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : '';
-	$search                 = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : '';
-	$give_forms_goal_filter = isset( $_GET['give-forms-goal-filter'] ) ? $_GET['give-forms-goal-filter'] : '';
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only list filters from the URL; they only narrow what is shown and save nothing.
+	$start_date             = isset( $_GET['start-date'] ) ? strtotime( give_clean( $_GET['start-date'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+	$end_date               = isset( $_GET['end-date'] ) ? strtotime( give_clean( $_GET['end-date'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+	$search                 = isset( $_GET['s'] ) ? give_clean( $_GET['s'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+	$give_forms_goal_filter = isset( $_GET['give-forms-goal-filter'] ) ? sanitize_text_field( wp_unslash( $_GET['give-forms-goal-filter'] ) ) : '';
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 	?>
 	<div id="give-forms-advanced-filter" class="give-filters">
 		<div class="give-filter give-filter-search">
-			<input type="text" id="give-forms-search-input" placeholder="<?php _e( 'Form Name or ID', 'give' ); ?>" name="s" value="<?php echo esc_attr( $search ); ?>">
+			<input type="text" id="give-forms-search-input" placeholder="<?php esc_attr_e( 'Form Name or ID', 'give' ); ?>" name="s" value="<?php echo esc_attr( $search ); ?>">
 			<?php
 			submit_button(
 				__( 'Search', 'give' ),
@@ -511,33 +528,33 @@ function give_forms_advanced_filter( $which ) {
 		<div id="give-payment-date-filters">
 			<div class="give-filter give-filter-half">
 				<label for="start-date"
-					   class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
+					   class="give-start-date-label"><?php esc_html_e( 'Start Date', 'give' ); ?></label>
 				<input type="text"
 					   id="start-date"
 					   name="start-date"
 					   class="give_datepicker"
 					   autocomplete="off"
-					   value="<?php echo $start_date ? date_i18n( give_date_format(), $start_date ) : ''; ?>"
-					   data-standard-date="<?php echo $start_date ? date( 'Y-m-d', $start_date ) : $start_date; ?>"
-					   placeholder="<?php _e( 'Start Date', 'give' ); ?>"
+					   value="<?php echo $start_date ? esc_attr( date_i18n( give_date_format(), $start_date ) ) : ''; ?>"
+					   data-standard-date="<?php echo esc_attr( $start_date ? gmdate( 'Y-m-d', $start_date ) : $start_date ); ?>"
+					   placeholder="<?php esc_attr_e( 'Start Date', 'give' ); ?>"
 				/>
 			</div>
 			<div class="give-filter give-filter-half">
-				<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
+				<label for="end-date" class="give-end-date-label"><?php esc_html_e( 'End Date', 'give' ); ?></label>
 				<input type="text"
 					   id="end-date"
 					   name="end-date"
 					   class="give_datepicker"
 					   autocomplete="off"
-					   value="<?php echo $end_date ? date_i18n( give_date_format(), $end_date ) : ''; ?>"
-					   data-standard-date="<?php echo $end_date ? date( 'Y-m-d', $end_date ) : $end_date; ?>"
-					   placeholder="<?php _e( 'End Date', 'give' ); ?>"
+					   value="<?php echo $end_date ? esc_attr( date_i18n( give_date_format(), $end_date ) ) : ''; ?>"
+					   data-standard-date="<?php echo esc_attr( $end_date ? gmdate( 'Y-m-d', $end_date ) : $end_date ); ?>"
+					   placeholder="<?php esc_attr_e( 'End Date', 'give' ); ?>"
 				/>
 			</div>
 		</div>
 		<div id="give-payment-form-filter" class="give-filter">
 			<label for="give-donation-forms-filter"
-				   class="give-donation-forms-filter-label"><?php _e( 'Goal', 'give' ); ?></label>
+				   class="give-donation-forms-filter-label"><?php esc_html_e( 'Goal', 'give' ); ?></label>
 			<select id="give-forms-goal-filter" name="give-forms-goal-filter" class="give-forms-goal-filter">
 				<option value="any_goal_status"
 				<?php
@@ -545,28 +562,28 @@ function give_forms_advanced_filter( $which ) {
 					echo 'selected';
 				}
 				?>
-				><?php _e( 'Any Goal Status', 'give' ); ?></option>
+				><?php esc_html_e( 'Any Goal Status', 'give' ); ?></option>
 				<option value="goal_achieved"
 				<?php
 				if ( 'goal_achieved' === $give_forms_goal_filter ) {
 					echo 'selected';
 				}
 				?>
-				><?php _e( 'Goal Achieved', 'give' ); ?></option>
+				><?php esc_html_e( 'Goal Achieved', 'give' ); ?></option>
 				<option value="goal_in_progress"
 				<?php
 				if ( 'goal_in_progress' === $give_forms_goal_filter ) {
 					echo 'selected';
 				}
 				?>
-				><?php _e( 'Goal In Progress', 'give' ); ?></option>
+				><?php esc_html_e( 'Goal In Progress', 'give' ); ?></option>
 				<option value="goal_not_set"
 				<?php
 				if ( 'goal_not_set' === $give_forms_goal_filter ) {
 					echo 'selected';
 				}
 				?>
-				><?php _e( 'Goal Not Set', 'give' ); ?></option>
+				><?php esc_html_e( 'Goal Not Set', 'give' ); ?></option>
 			</select>
 		</div>
 		<div class="give-filter">
@@ -575,8 +592,8 @@ function give_forms_advanced_filter( $which ) {
 			// Clear active filters button.
 			if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $search ) || ! empty( $give_forms_goal_filter ) ) :
 				?>
-				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms' ); ?>"
-				   class="button give-clear-filters-button"><?php _e( 'Clear Filters', 'give' ); ?></a>
+				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms' ) ); ?>"
+				   class="button give-clear-filters-button"><?php esc_html_e( 'Clear Filters', 'give' ); ?></a>
 			<?php endif; ?>
 		</div>
 	</div>

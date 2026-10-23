@@ -62,6 +62,7 @@ class AdminActionHandler
     /**
      * Handle opt_out_into_tracking give action.
      *
+     * @since TBD Verify the nonce.
      * @since 2.10.0
      */
     public function optOutFromUsageTracking()
@@ -70,20 +71,24 @@ class AdminActionHandler
             return;
         }
 
+        check_admin_referer('give_usage_tracking_action');
+
         $timestamp = '0'; // zero value disable notice permanently.
-        if ('hide_opt_in_notice_shortly' === $_GET['give_action']) {
+        $action = isset($_GET['give_action']) ? sanitize_key(wp_unslash($_GET['give_action'])) : '';
+        if ('hide_opt_in_notice_shortly' === $action) {
             $timestamp = DAY_IN_SECONDS * 2 + time();
         }
 
         $this->usageTrackingOnBoarding->disableNotice($timestamp);
 
-        wp_safe_redirect(esc_url_raw(remove_query_arg('give_action')));
+        wp_safe_redirect(esc_url_raw(remove_query_arg(['give_action', '_wpnonce'])));
         exit();
     }
 
     /**
      * Handle opt_in_into_tracking give action.
      *
+     * @since TBD Verify the nonce.
      * @since 2.10.0
      */
     public function optInToUsageTracking()
@@ -91,6 +96,8 @@ class AdminActionHandler
         if ( ! current_user_can('manage_give_settings')) {
             return;
         }
+
+        check_admin_referer('give_usage_tracking_action');
 
         $this->settings->saveUsageTrackingOptionValue('enabled');
         $this->usageTrackingOnBoarding->disableNotice(0);
@@ -101,7 +108,7 @@ class AdminActionHandler
             $this->settings->saveUsageTrackingOptionValue('disabled');
         }
 
-        wp_safe_redirect(esc_url_raw(remove_query_arg('give_action')));
+        wp_safe_redirect(esc_url_raw(remove_query_arg(['give_action', '_wpnonce'])));
         exit();
     }
 
@@ -123,7 +130,7 @@ class AdminActionHandler
             '__return_true'
         );
 
-        $section = isset($_GET['section']) ? 'advanced-options' : '';
+        $section = isset($_GET['section']) ? 'advanced-options' : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only settings tab check; the settings page verifies its own nonce on save.
         if ( ! Give_Admin_Settings::is_setting_page('advanced', $section)) {
             return false;
         }

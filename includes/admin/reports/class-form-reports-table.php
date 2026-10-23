@@ -76,6 +76,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @param string $column_name The name of the column
 	 *
 	 * @access public
+	 * @since TBD Add translators comments.
 	 * @since  1.0
 	 *
 	 * @return string Column Name
@@ -83,6 +84,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
 			case 'title':
+				/* translators: %s: Form ID */
 				$title = empty( $item['title'] ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $item['ID'] ) : $item['title'];
 
 				return sprintf(
@@ -155,7 +157,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @return int Current page number
 	 */
 	public function get_paged() {
-		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
+		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only paging param; it only picks which page of the table is shown and saves nothing.
 	}
 
 	/**
@@ -167,7 +169,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @return int Category ID
 	 */
 	public function get_category() {
-		return isset( $_GET['category'] ) ? absint( $_GET['category'] ) : 0;
+		return isset( $_GET['category'] ) ? absint( $_GET['category'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only category filter; it only narrows what is shown and saves nothing.
 	}
 
 	/**
@@ -188,6 +190,8 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @since  1.0
 	 * @access protected
 	 *
+	 * @since TBD Escape translated output.
+	 *
 	 * @param string $which
 	 */
 	protected function display_tablenav( $which ) {
@@ -200,7 +204,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 
 			<?php if ( 'top' === $which ) { ?>
 				<h2 class="alignleft reports-earnings-title screen-reader-text">
-					<?php _e( 'Donation Forms Report', 'give' ); ?>
+					<?php esc_html_e( 'Donation Forms Report', 'give' ); ?>
 				</h2>
 			<?php } ?>
 
@@ -224,6 +228,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Attaches the category filter to the log views
 	 *
 	 * @access public
+	 * @since  TBD Escape output.
 	 * @since  1.0
 	 *
 	 * @return void
@@ -232,6 +237,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 
 		$categories = get_terms( 'form_category' );
 		if ( $categories && ! is_wp_error( $categories ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- category_dropdown() renders a <select> control; wp_kses_post() would strip it, and its own values are escaped internally.
 			echo Give()->html->category_dropdown( 'category', $this->get_category() );
 		}
 	}
@@ -240,14 +246,17 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Performs the donation forms query
 	 *
 	 * @access public
+	 * @since  TBD Unslash and sanitize the sort request values.
 	 * @since  1.0
 	 *
 	 * @return void
 	 */
 	public function query() {
 
-		$orderby  = isset( $_GET['orderby'] ) ? $_GET['orderby'] : 'title';
-		$order    = isset( $_GET['order'] ) ? $_GET['order'] : 'DESC';
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only sort params; they only change the order of the table and save nothing.
+		$orderby  = isset( $_GET['orderby'] ) ? sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) : 'title';
+		$order    = isset( $_GET['order'] ) ? sanitize_text_field( wp_unslash( $_GET['order'] ) ) : 'DESC';
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		$category = $this->get_category();
 
 		$args = [
@@ -257,11 +266,11 @@ class Give_Form_Reports_Table extends WP_List_Table {
 			'fields'           => 'ids',
 			'posts_per_page'   => $this->per_page,
 			'paged'            => $this->get_paged(),
-			'suppress_filters' => true,
+			'suppress_filters' => true, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters -- intended: the report counts forms in every language, so WPML and other query filters must not apply.
 		];
 
 		if ( ! empty( $category ) ) {
-			$args['tax_query'] = [
+			$args['tax_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Filters the forms report by category; the taxonomy filter is the feature.
 				[
 					'taxonomy' => 'form_category',
 					'terms'    => $category,
@@ -276,12 +285,12 @@ class Give_Form_Reports_Table extends WP_List_Table {
 
 			case 'sales':
 				$args['orderby']  = 'meta_value_num';
-				$args['meta_key'] = '_give_form_sales';
+				$args['meta_key'] = '_give_form_sales'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the forms report by the stored sales or earnings total; WP_Query sorts by meta only.
 				break;
 
 			case 'earnings':
 				$args['orderby']  = 'meta_value_num';
-				$args['meta_key'] = '_give_form_earnings';
+				$args['meta_key'] = '_give_form_earnings'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the forms report by the stored sales or earnings total; WP_Query sorts by meta only.
 				break;
 		endswitch;
 

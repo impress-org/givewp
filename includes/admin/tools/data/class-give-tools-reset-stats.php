@@ -67,6 +67,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
+	 * @since TBD Document why the reset queries are safe, and clear the cache of the deleted options only.
 	 * @since 4.10.0 Added deletion logic for campaigns, campaign pages, subscriptions, events, logs, revenue, usermeta, etc.
 	 * @since  1.5
 	 * @global object $wpdb Used to query the database using the WordPress
@@ -86,6 +87,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 		$step_items = array_slice( $items, $offset, $this->per_step );
 
 		if ( $step_items ) {
+			$deleted_options = [];
 
 			$step_ids = [
 				'customers' => [],
@@ -192,7 +194,9 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						// Create SQL placeholder string for the essential options list
 						$essential_options_placeholder = implode( "','", $essential_options );
 						// Delete all GiveWP options except the essential ones to prevent deactivation issues
-						$sql[] = "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%give%' AND option_name NOT IN ('{$essential_options_placeholder}')";
+						$options_where   = "option_name LIKE '%give%' AND option_name NOT IN ('{$essential_options_placeholder}')";
+						$deleted_options = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE {$options_where}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- reads the names the next query deletes, so their cache entries can be cleared; the essential option names are fixed strings above.
+						$sql[]           = "DELETE FROM {$wpdb->options} WHERE {$options_where}";
 
 						// Clear Action Scheduler data related to GiveWP
 						$sql[] = "DELETE FROM {$wpdb->prefix}actionscheduler_actions WHERE hook LIKE '%give%'";
@@ -234,8 +238,11 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 			if ( is_array( $sql ) && count( $sql ) > 0 ) {
 				foreach ( $sql as $query ) {
-					$wpdb->query( $query );
+					$wpdb->query( $query ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- one-off bulk reset of GiveWP tables, posts and options; no WordPress API or object cache covers it. Table and column names come from give_v20_bc_table_details() and Give()->donor_meta; ids are (int) post or donor ids or values added by the give_reset_items filter; the give_reset_add_queries_{$type} filter lets add-ons append raw SQL that runs as-is.
 				}
+
+				// The raw delete above skips the options cache. Clear it so the batch tools do not read removed options.
+				$this->clear_options_cache( $deleted_options );
 			}
 
 			return true;
@@ -399,6 +406,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Given a key, get the information from the Database Directly.
 	 *
+	 * @since TBD Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name
@@ -406,8 +414,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * @return mixed       Returns the data from the database.
 	 */
 	private function get_stored_data( $key ) {
-		global $wpdb;
-		$value = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = %s", $key ) );
+		$value = get_option( $key, null );
 
 		if ( empty( $value ) ) {
 			return false;
@@ -424,6 +431,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Give a key, store the value.
 	 *
+	 * @since TBD Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key   The option_name.
@@ -432,28 +440,37 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * @return void
 	 */
 	private function store_data( $key, $value ) {
-		global $wpdb;
-
 		$value = is_array( $value ) ? wp_json_encode( $value ) : esc_attr( $value );
 
-		$data = [
-			'option_name'  => $key,
-			'option_value' => $value,
-			'autoload'     => 'no',
-		];
+		update_option( $key, $value, false );
+	}
 
-		$formats = [
-			'%s',
-			'%s',
-			'%s',
-		];
+	/**
+	 * Remove the given options from the object cache, without flushing the rest of the cache.
+	 *
+	 * @since TBD
+	 *
+	 * @param string[] $option_names Names of options deleted with a raw query.
+	 *
+	 * @return void
+	 */
+	private function clear_options_cache( $option_names ) {
+		if ( empty( $option_names ) ) {
+			return;
+		}
 
-		$wpdb->replace( $wpdb->options, $data, $formats );
+		foreach ( $option_names as $option_name ) {
+			wp_cache_delete( $option_name, 'options' );
+		}
+
+		wp_cache_delete( 'alloptions', 'options' );
+		wp_cache_delete( 'notoptions', 'options' );
 	}
 
 	/**
 	 * Delete an option
 	 *
+	 * @since TBD Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name to delete
@@ -461,13 +478,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * @return void
 	 */
 	private function delete_data( $key ) {
-		global $wpdb;
-		$wpdb->delete(
-			$wpdb->options,
-			[
-				'option_name' => $key,
-			]
-		);
+		delete_option( $key );
 	}
 
 	/**

@@ -82,6 +82,7 @@ class Sequoia extends Template implements Hookable, Scriptable
     /**
      * @inheritDoc
      *
+     * @since 4.19.0.1 Validate the primary colour before building the inline stylesheet.
      * @since 4.1.0 Added custom form styles
      * @since 2.16.0 Load google fonts if "enabled".
      */
@@ -138,7 +139,8 @@ class Sequoia extends Template implements Hookable, Scriptable
             GIVE_VERSION
         );
 
-        $primaryColor = $templateOptions['visual_appearance']['primary_color'];
+        // Validate as a hex colour before building the inline stylesheet below.
+        $primaryColor = sanitize_hex_color($templateOptions['visual_appearance']['primary_color']) ?? '';
         $dynamicCss = sprintf(
             '
 			.seperator {

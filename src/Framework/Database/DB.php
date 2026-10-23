@@ -8,6 +8,8 @@ use Give\Framework\QueryBuilder\Clauses\RawSQL;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- facade that forwards the caller's SQL (and transaction statements) to $wpdb; each caller decides about caching.
+
 /**
  * Class DB
  *
@@ -53,6 +55,7 @@ class DB
     /**
      * A convenience method for the $wpdb->prepare method
      *
+     * @since TBD Document why the query is safe.
      * @since 2.9.6
      *
      * @param string $query
@@ -66,7 +69,7 @@ class DB
     {
         global $wpdb;
 
-        return $wpdb->prepare($query, ...$args);
+        return $wpdb->prepare($query, ...$args); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- thin wrapper over wpdb::prepare(); callers pass the query and its arguments.
     }
 
     /**
@@ -225,6 +228,8 @@ class DB
      * @param Callable $queryCaller
      *
      * @return mixed
+     *
+     * @since TBD Escape exception message.
      * @throws DatabaseQueryException
      */
     private static function runQueryWithErrorChecking($queryCaller)
@@ -244,7 +249,7 @@ class DB
         $wpError = self::getQueryErrors($errorCount);
 
         if ( ! empty($wpError->errors)) {
-            throw new DatabaseQueryException($wpdb->last_query, $wpError->errors);
+            throw new DatabaseQueryException($wpdb->last_query, $wpError->errors); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- SQL query and wpdb error array; stored in the log and shown as text, not HTML.
         }
 
         return $output;

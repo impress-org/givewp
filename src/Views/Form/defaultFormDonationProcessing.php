@@ -2,8 +2,13 @@
 /**
  * Payment confirmation view.
  *
+ * @since TBD Escape output, including translated strings.
  * @since 2.7.0
  */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
 
 ?>
 <!DOCTYPE html>
@@ -12,12 +17,12 @@ language_attributes(); ?>>
 <head>
     <meta charset="utf-8">
     <title><?php
-        _e('Redirecting...', 'give'); ?></title>
+        esc_html_e('Redirecting...', 'give'); ?></title>
 </head>
 <body>
 <script type="text/javascript">
     setTimeout(function() {
-        window.location = '<?php echo give_get_success_page_uri(); ?>';
+        window.location = <?php echo wp_json_encode(esc_url_raw(give_get_success_page_uri()), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
     }, 5000);
 </script>
 </body>

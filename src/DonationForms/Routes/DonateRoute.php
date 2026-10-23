@@ -39,6 +39,7 @@ class DonateRoute
     }
 
     /**
+     * @since TBD Escape output.
      * @since 4.17.0 Sign the donor in from the auth token when the login cookie is unavailable.
      * @since 3.0.0
      *
@@ -47,7 +48,7 @@ class DonateRoute
     public function __invoke(array $request)
     {
         // create DTO from GET request
-        $routeData = DonateRouteData::fromRequest(give_clean($_GET));
+        $routeData = DonateRouteData::fromRequest(give_clean($_GET)); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public v3 donation route; DonateRouteData::validateSignature() checks the signed URL right after this, so a WordPress nonce cannot be sent here.
 
         // validate signature
         $routeData->validateSignature();
@@ -80,7 +81,7 @@ class DonateRoute
             $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
         } catch (DonationFormForbidden $exception) {
-            wp_die($exception->getMessage(), 403);
+            wp_die(esc_html($exception->getMessage()), 403);
         } catch (Exception $exception) {
             $type = DonationFormErrorTypes::UNKNOWN;
             $this->logError($type, $exception->getMessage(), $formData);

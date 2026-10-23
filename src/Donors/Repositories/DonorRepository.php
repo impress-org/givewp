@@ -111,7 +111,6 @@ class DonorRepository
     }
 
     /**
-     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.20.0 store meta using native WP functions
      * @since 3.7.0 Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
@@ -175,7 +174,7 @@ class DonorRepository
 
             Log::error('Failed creating a donor', compact('donor'));
 
-            throw new Exception('Failed creating a donor', 0, $exception);
+            throw new Exception('Failed creating a donor', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -187,6 +186,7 @@ class DonorRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 4.4.0 Add support for addresses
      * @since 3.7.0 Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
@@ -242,7 +242,7 @@ class DonorRepository
 
             Log::error('Failed updating a donor', compact('donor'));
 
-            throw new FailedDonorUpdateException($donor, 0, $exception);
+            throw new FailedDonorUpdateException($donor, 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- donor model object and $previous Throwable, not output.
         }
 
         DB::query('COMMIT');
@@ -251,7 +251,7 @@ class DonorRepository
     }
 
     /**
-     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
+     * @since TBD Escape exception message.
      * @since 2.19.6
      *
      * @throws Exception
@@ -262,7 +262,7 @@ class DonorRepository
 
         foreach (Donor::propertyKeys() as $key) {
             if (array_key_exists($key, $columns)) {
-                throw new InvalidArgumentException("'$key' is not a legacy column.");
+                throw new InvalidArgumentException(sprintf("'%s' is not a legacy column.", esc_html($key)));
             }
         }
 
@@ -275,7 +275,7 @@ class DonorRepository
 
             Log::error('Failed updating a donor', compact('donorId', 'columns'));
 
-            throw new Exception('Failed updating a donor', 0, $exception);
+            throw new $exception('Failed updating a donor');
         }
 
         DB::query('COMMIT');
@@ -285,7 +285,6 @@ class DonorRepository
 
     /**
      *
-     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 2.21.0 add actions givewp_donor_deleting and givewp_donor_deleted
      * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6
@@ -311,7 +310,7 @@ class DonorRepository
 
             Log::error('Failed deleting a donor', compact('donor'));
 
-            throw new Exception('Failed deleting a donor', 0, $exception);
+            throw new $exception('Failed deleting a donor');
         }
 
         DB::query('COMMIT');
@@ -337,6 +336,7 @@ class DonorRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.19.6
      *
      * @return void
@@ -345,7 +345,7 @@ class DonorRepository
     {
         foreach ($this->requiredDonorProperties as $key) {
             if (!isset($donor->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
     }

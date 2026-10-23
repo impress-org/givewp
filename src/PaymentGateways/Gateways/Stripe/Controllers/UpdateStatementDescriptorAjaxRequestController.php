@@ -15,6 +15,7 @@ class UpdateStatementDescriptorAjaxRequestController
     use HasStripeStatementDescriptorText;
 
     /**
+     * @since TBD Verify the nonce and sanitize the request.
      * @since 2.19.0
      */
     public function __invoke()
@@ -24,8 +25,13 @@ class UpdateStatementDescriptorAjaxRequestController
             wp_die('Forbidden', 403);
         }
 
-        $stripeAccountId = give_clean($_GET['account-slug']);
-        $stripeStatementDescriptorText = urldecode(trim($_GET['statement-descriptor']));
+        $stripeAccountId = isset($_GET['account-slug']) ? sanitize_text_field(wp_unslash($_GET['account-slug'])) : '';
+
+        check_ajax_referer('give_edit_stripe_statement_descriptor_' . $stripeAccountId);
+
+        $stripeStatementDescriptorText = isset($_GET['statement-descriptor'])
+            ? urldecode(trim(wp_unslash($_GET['statement-descriptor']))) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- validated and cleaned with give_clean() below.
+            : '';
 
         // Valid data?
         if (!$stripeAccountId || !$stripeStatementDescriptorText) {

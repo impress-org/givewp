@@ -4,6 +4,8 @@ namespace Give\TestData\Repositories;
 
 use Give\TestData\Factories\RevenueFactory as RevenueFactory;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery -- WP-CLI test data code; it writes and reads fake data directly for speed, runs only from the command line, and is not cached.
+
 /**
  * Class RevenueRepository
  * @package GiveTestData\TestData\Repositories

@@ -155,7 +155,7 @@ class MigrationLogRepository
         } catch (\Exception $exception) {
             // This exception should happen only once, during the migration system storage update.
             // But, we will log this error just in case to see if this is a repeating problem.
-            error_log($exception->getMessage());
+            error_log($exception->getMessage()); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- the log table may not exist yet, so the GiveWP logger cannot be used here.
 
             // Fallback to legacy migration storage system
             return get_option('give_database_migrations', []);
