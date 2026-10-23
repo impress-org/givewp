@@ -196,7 +196,8 @@ class Give_Logging {
 		// Extract data from parameters
 		$data = $this->getLogData( $log_data, $log_meta );
 
-		$backtrace = debug_backtrace();
+		// The caller file and line are stored as log context, so the backtrace is needed here.
+		$backtrace = debug_backtrace(); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace -- records the caller as log context; nothing is printed.
 
 		// Add more context
 		if (
@@ -215,7 +216,8 @@ class Give_Logging {
 
 			return $log->getId();
 		} catch ( Exception $exception ) {
-			error_log( $exception->getMessage() );
+			// The logger itself failed, so the PHP error log is the only place left to report it.
+			error_log( $exception->getMessage() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- fallback when the GiveWP logger cannot save.
 		}
 	}
 

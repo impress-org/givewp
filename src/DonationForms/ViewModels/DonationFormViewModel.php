@@ -131,6 +131,7 @@ class DonationFormViewModel
     }
 
     /**
+     * @since TBD Set explicit versions on the enqueued assets.
      * @since 4.1.0 Added custom form styles
      * @since 3.0.0
      */
@@ -141,7 +142,9 @@ class DonationFormViewModel
 
         wp_register_style(
             'givewp-base-form-styles',
-            GIVE_PLUGIN_URL . 'build/baseFormDesignCss.css'
+            GIVE_PLUGIN_URL . 'build/baseFormDesignCss.css',
+            [],
+            GIVE_VERSION
         );
 
         wp_add_inline_style(
@@ -161,7 +164,7 @@ class DonationFormViewModel
 
         // The skeleton prints in the body before the app bundles load, so its styles go in the head with the rest.
         if ($this->skeleton) {
-            wp_register_style('givewp-form-skeleton-styles', false);
+            wp_register_style('givewp-form-skeleton-styles', false, [], GIVE_VERSION);
             wp_add_inline_style('givewp-form-skeleton-styles', (new RenderFormSkeleton())->css());
             wp_enqueue_style('givewp-form-skeleton-styles');
         }
@@ -312,6 +315,7 @@ class DonationFormViewModel
      *
      * @since 4.16.7 Isolate the printed assets from anything enqueued after the form has been prepared
      * @since 4.14.3 Escape HTML attributes for classNames property
+     * @since TBD Escape output and replace short echo tags with escaped echo.
      * @since 3.20.0 Adds class for form design
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
@@ -337,7 +341,8 @@ class DonationFormViewModel
         <?php
         if ($this->previewMode || $this->formSettings->customCss): ?>
             <style id="root-givewp-donation-form-style"><?php
-                echo wp_strip_all_tags($this->formSettings->customCss); ?></style>
+                echo wp_strip_all_tags($this->formSettings->customCss); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_strip_all_tags() already prevents breaking out of the <style> element; esc_html() would entity-encode valid CSS characters (e.g. '>') that browsers never decode inside <style>.
+                ?></style>
         <?php
         endif; ?>
 
@@ -351,7 +356,7 @@ class DonationFormViewModel
 
         <div data-theme="light" id="root-givewp-donation-form"
              data-iframe-height
-             class="<?= esc_attr(implode(' ', $classNames)) ?>"><?= $this->skeleton ?></div>
+             class="<?php echo esc_attr(implode(' ', $classNames)); ?>"><?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $this->skeleton is RenderFormSkeleton's output, which escapes internally (see form-skeleton.php). ?><?php echo $this->skeleton; ?></div>
 
         <?php if ($this->skeleton): ?>
             <script>parent.postMessage({type: 'givewp-embed-shell', height: document.documentElement.scrollHeight}, '*');</script>
@@ -360,6 +365,7 @@ class DonationFormViewModel
         <?php
         wp_print_footer_scripts();
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- outputs the buffered page built from wp_print_styles()/wp_print_head_scripts()/wp_print_footer_scripts() and the already-escaped markup above.
         echo ob_get_clean();
 
         exit();
@@ -464,6 +470,7 @@ class DonationFormViewModel
     }
 
     /**
+     * @since TBD Set explicit versions on the enqueued assets.
      * @since 3.0.0 Set script translations
      * @since 3.0.0
      */
@@ -474,7 +481,7 @@ class DonationFormViewModel
         // silently fail if design is missing for some reason
         if ($design) {
             if ($design->css()) {
-                wp_enqueue_style('givewp-form-design-' . $design::id(), $design->css());
+                wp_enqueue_style('givewp-form-design-' . $design::id(), $design->css(), [], GIVE_VERSION);
             }
 
             if ($design->js()) {
@@ -486,6 +493,7 @@ class DonationFormViewModel
                         $design->dependencies(),
                         ['givewp-donation-form-registrars']
                     ),
+                    GIVE_VERSION,
                     true
                 );
 

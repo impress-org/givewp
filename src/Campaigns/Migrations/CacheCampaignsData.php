@@ -53,6 +53,7 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
     /**
      * @inheritDoc
      *
+     * @since TBD Escape exception message.
      * @since 4.18.0 Merge donors into the donors list and subscriptions into the subscriptions option; always compute live stats, the cache holds live stats only.
      * @since 4.12.0 add early return if no campaigns found
      * @since 4.8.0
@@ -122,7 +123,11 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
                 ]);
             }
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while caching campaign data", 0, $exception);
+            throw new DatabaseMigrationException(
+                "An error occurred while caching campaign data",
+                0,
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         } finally {
             remove_filter('give_is_test_mode', '__return_false', PHP_INT_MAX);
         }

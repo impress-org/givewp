@@ -37,11 +37,13 @@ class DonationProcessingReceipt extends Give_Email_Notification
     }
 
     /**
+     * @since TBD Add translators comments.
      * @since 2.24.0
      */
     public function getDefaultEmailMessage(): string
     {
         $defaultEmailMessage = sprintf(
+            /* translators: %s: Donor first name */
             esc_html__('Dear %s!', 'give') . "\n\n" .
             esc_html__('Thank you for your donation. Your payment is currently being processed and you will receive a final email receipt once it has completed. Your generosity is appreciated!',
                 'give') . "\n\n" .

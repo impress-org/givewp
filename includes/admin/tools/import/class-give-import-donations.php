@@ -66,7 +66,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @access private
 		 */
 		private function __construct() {
-			self::$per_page = ! empty( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : self::$per_page;
+			self::$per_page = ! empty( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : self::$per_page; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only import step param; it only changes what is shown and saves nothing.
 		}
 
 		/**
@@ -137,7 +137,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @return mixed
 		 */
 		public function update_notices( $messages ) {
-			if ( ! empty( $_GET['tab'] ) && 'import' === give_clean( $_GET['tab'] ) ) {
+			if ( ! empty( $_GET['tab'] ) && 'import' === give_clean( $_GET['tab'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
 				unset( $messages['give-setting-updated'] );
 			}
 
@@ -232,6 +232,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Show success notice
 		 *
+		 * @since TBD Escape output. Add translators comments. Check that the total and success values are set.
          * @since 2.25.3 Add nonce check.
 		 * @since 1.8.14
 		 */
@@ -248,39 +249,49 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 			$report_html = array(
 				'duplicate_donor'    => array(
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s duplicate %2$s detected', 'give' ),
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s duplicate %2$s detected', 'give' ),
 					__( 'donor', 'give' ),
 					__( 'donors', 'give' ),
 				),
 				'create_donor'       => array(
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s %2$s created', 'give' ),
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s %2$s will be created', 'give' ),
 					__( 'donor', 'give' ),
 					__( 'donors', 'give' ),
 				),
 				'create_form'        => array(
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s donation %2$s created', 'give' ),
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s donation %2$s will be created', 'give' ),
 					__( 'form', 'give' ),
 					__( 'forms', 'give' ),
 				),
 				'duplicate_donation' => array(
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s duplicate %2$s detected', 'give' ),
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s duplicate %2$s detected', 'give' ),
 					__( 'donation', 'give' ),
 					__( 'donations', 'give' ),
 				),
 				'create_donation'    => array(
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s %2$s imported', 'give' ),
+					/* translators: 1: Number of items, 2: Name of the item type, for example donor or donors */
 					__( '%1$s %2$s will be imported', 'give' ),
 					__( 'donation', 'give' ),
 					__( 'donations', 'give' ),
 				),
 			);
-			$total       = (int) $_GET['total'];
+			$total       = isset( $_GET['total'] ) ? (int) $_GET['total'] : 0;
 			-- $total;
-			$success = (bool) $_GET['success'];
+			$success = isset( $_GET['success'] ) && (bool) $_GET['success'];
 			$dry_run = empty( $_GET['dry_run'] ) ? 0 : absint( $_GET['dry_run'] );
 			?>
 			<tr valign="top" class="give-import-dropdown">
@@ -289,21 +300,24 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						<?php
 						if ( $success ) {
 							if ( $dry_run ) {
-								printf(
+								echo wp_kses_post( sprintf(
+									/* translators: %s: Number of donations, wrapped in bold tags */
 									_n( 'Dry run import complete! %s donation processed', 'Dry run import complete! %s donations processed', $total, 'give' ),
-									"<strong>{$total}</strong>"
-								);
+									'<strong>' . esc_html( $total ) . '</strong>'
+								) );
 							} else {
-								printf(
+								echo wp_kses_post( sprintf(
+									/* translators: %s: Number of donations, wrapped in bold tags */
 									_n( 'Import complete! %s donation processed', 'Import complete! %s donations processed', $total, 'give' ),
-									"<strong>{$total}</strong>"
-								);
+									'<strong>' . esc_html( $total ) . '</strong>'
+								) );
 							}
 						} else {
-							printf(
+							echo wp_kses_post( sprintf(
+								/* translators: %s: Number of donations, wrapped in bold tags */
 								_n( 'Failed to import %s donation', 'Failed to import %s donations', $total, 'give' ),
-								"<strong>{$total}</strong>"
-							);
+								'<strong>' . esc_html( $total ) . '</strong>'
+							) );
 						}
 						?>
 					</h2>
@@ -343,7 +357,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 							}
 							?>
 							<p>
-								<?php printf( $report_html[ $key ][ $dry_run ], $value, $key_name ); ?>
+								<?php echo esc_html( sprintf( $report_html[ $key ][ $dry_run ], $value, $key_name ) ); ?>
 							</p>
 							<?php
 						}
@@ -352,7 +366,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 					<p>
 						<a class="button button-large button-secondary"
-						   href="<?php echo esc_url( add_query_arg( $query_arg, admin_url( 'edit.php' ) ) ); ?>"><?php echo $text; ?></a>
+						   href="<?php echo esc_url( add_query_arg( $query_arg, admin_url( 'edit.php' ) ) ); ?>"><?php echo esc_html( $text ); ?></a>
 					</p>
 				</th>
 			</tr>
@@ -362,14 +376,22 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Will start Import
 		 *
+		 * @since TBD Escape translated output. Unslash and sanitize the request input.
 		 * @since 1.8.14
 		 */
 		public function start_import() {
 			// Reset the donation form report.
 			give_import_donation_report_reset();
 
-			$csv         = absint( $_REQUEST['csv'] );
-			$delimiter   = ( ! empty( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv' );
+			// phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- read-only import step params; they are printed back into the form and save nothing.
+			$csv         = isset( $_REQUEST['csv'] ) ? absint( $_REQUEST['csv'] ) : 0;
+			$mapto       = isset( $_REQUEST['mapto'] ) ? map_deep( wp_unslash( $_REQUEST['mapto'] ), 'sanitize_text_field' ) : '';
+			$mode        = isset( $_REQUEST['mode'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['mode'] ) ) : '';
+			$create_user = isset( $_REQUEST['create_user'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['create_user'] ) ) : '';
+			$delete_csv  = isset( $_REQUEST['delete_csv'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['delete_csv'] ) ) : '';
+			$dry_run     = isset( $_REQUEST['dry_run'] ) ? absint( $_REQUEST['dry_run'] ) : 0;
+			$delimiter   = ( ! empty( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field().
+			// phpcs:enable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
 			$index_start = 1;
 			$next        = true;
 			$total       = self::get_csv_total( $csv );
@@ -386,8 +408,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			?>
 			<tr valign="top" class="give-import-dropdown">
 				<th colspan="2">
-					<h2 id="give-import-title"><?php _e( 'Importing', 'give' ); ?></h2>
-					<p class="give-field-description"><?php _e( 'Your donations are now being imported...', 'give' ); ?></p>
+					<h2 id="give-import-title"><?php esc_html_e( 'Importing', 'give' ); ?></h2>
+					<p class="give-field-description"><?php esc_html_e( 'Your donations are now being imported...', 'give' ); ?></p>
 				</th>
 			</tr>
 
@@ -406,13 +428,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						<div style="width: <?php echo esc_attr((float) $current_percentage); ?>%"></div>
 					</div>
 					<input type="hidden" value="3" name="step">
-					<input type="hidden" value='<?php echo esc_attr( maybe_serialize( $_REQUEST['mapto'] ) ); ?>' name="mapto" class="mapto">
+					<input type="hidden" value='<?php echo esc_attr( maybe_serialize( $mapto ) ); ?>' name="mapto" class="mapto">
 					<input type="hidden" value="<?php echo esc_attr($csv); ?>" name="csv" class="csv">
-					<input type="hidden" value="<?php echo esc_attr( $_REQUEST['mode'] ); ?>" name="mode" class="mode">
-					<input type="hidden" value="<?php echo esc_attr( $_REQUEST['create_user'] ); ?>" name="create_user" class="create_user">
-					<input type="hidden" value="<?php echo esc_attr( $_REQUEST['delete_csv'] ); ?>" name="delete_csv" class="delete_csv">
+					<input type="hidden" value="<?php echo esc_attr( $mode ); ?>" name="mode" class="mode">
+					<input type="hidden" value="<?php echo esc_attr( $create_user ); ?>" name="create_user" class="create_user">
+					<input type="hidden" value="<?php echo esc_attr( $delete_csv ); ?>" name="delete_csv" class="delete_csv">
 					<input type="hidden" value="<?php echo esc_attr( $delimiter ); ?>" name="delimiter">
-					<input type="hidden" value="<?php echo esc_attr(absint( $_REQUEST['dry_run']) ); ?>" name="dry_run">
+					<input type="hidden" value="<?php echo esc_attr( $dry_run ); ?>" name="dry_run">
 					<input type="hidden" value='<?php echo esc_attr( maybe_serialize( self::get_importer( $csv, 0, $delimiter ) ) ); ?>' name="main_key" class="main_key">
 				</th>
 			</tr>
@@ -422,12 +444,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Will return true if importing can be started or not else false.
 		 *
+		 * @since TBD Unslash and sanitize the mapped fields.
 		 * @since 1.8.14
 		 */
 		public function check_for_dropdown_or_import() {
 			$return = true;
-			if ( isset( $_REQUEST['mapto'] ) ) {
-				$mapto = (array) $_REQUEST['mapto'];
+			if ( isset( $_REQUEST['mapto'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only import step param; it only changes what is shown and saves nothing.
+				$mapto = (array) map_deep( wp_unslash( $_REQUEST['mapto'] ), 'sanitize_text_field' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only import step param; it is only checked for required fields and saves nothing.
 				if ( false === in_array( 'form_title', $mapto ) && false === in_array( 'form_id', $mapto ) ) {
 					Give_Admin_Settings::add_error( 'give-import-csv-form', __( 'In order to import donations, a column must be mapped to either the "Donation Form Title" or "Donation Form ID" field. Please map a column to one of those fields.', 'give' ) );
 					$return = false;
@@ -452,6 +475,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Print the Dropdown option for CSV.
 		 *
+		 * @since TBD Escape translated output. Unslash and sanitize the request input.
 		 * @since 1.8.14
 		 */
 		public function render_dropdown() {
@@ -463,8 +487,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
                 wp_die();
             }
 
-			$csv       = (int) $_GET['csv'];
-			$delimiter = ( ! empty( $_GET['delimiter'] ) ? give_clean( $_GET['delimiter'] ) : 'csv' );
+			$csv       = isset( $_GET['csv'] ) ? (int) $_GET['csv'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified by $this->is_nonce_valid() at the top of this method.
+			$delimiter = ( ! empty( $_GET['delimiter'] ) ? give_clean( $_GET['delimiter'] ) : 'csv' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- nonce verified by $this->is_nonce_valid() at the top of this method. give_clean() unslashes and sanitizes with sanitize_text_field().
 
 			// TO check if the CSV files that is being add is valid or not if not then redirect to first step again
 			if ( ! $this->is_valid_csv( $csv ) ) {
@@ -476,11 +500,11 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				?>
 				<tr valign="top" class="give-import-dropdown">
 					<th colspan="2">
-						<h2 id="give-import-title"><?php _e( 'Map CSV fields to donations', 'give' ); ?></h2>
+						<h2 id="give-import-title"><?php esc_html_e( 'Map CSV fields to donations', 'give' ); ?></h2>
 
-						<p class="give-import-donation-required-fields-title"><?php _e( 'Required Fields', 'give' ); ?></p>
+						<p class="give-import-donation-required-fields-title"><?php esc_html_e( 'Required Fields', 'give' ); ?></p>
 
-						<p class="give-field-description"><?php _e( 'These fields are required for the import to submitted', 'give' ); ?></p>
+						<p class="give-field-description"><?php esc_html_e( 'These fields are required for the import to submitted', 'give' ); ?></p>
 
 						<ul class="give-import-donation-required-fields">
 							<li class="give-import-donation-required-email"
@@ -488,7 +512,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
 								<span class="give-import-donation-required-text">
 									<?php
-									_e( 'Email Address', 'give' );
+									esc_html_e( 'Email Address', 'give' );
 									?>
 								</span>
 							</li>
@@ -498,7 +522,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
 								<span class="give-import-donation-required-text">
 									<?php
-									_e( 'First Name', 'give' );
+									esc_html_e( 'First Name', 'give' );
 									?>
 								</span>
 							</li>
@@ -508,7 +532,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
 								<span class="give-import-donation-required-text">
 									<?php
-									_e( 'Donation Amount', 'give' );
+									esc_html_e( 'Donation Amount', 'give' );
 									?>
 								</span>
 							</li>
@@ -518,19 +542,19 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
 								<span class="give-import-donation-required-text">
 									<?php
-									_e( 'Form Title or ID', 'give' );
+									esc_html_e( 'Form Title or ID', 'give' );
 									?>
 								</span>
 							</li>
 						</ul>
 
-						<p class="give-field-description"><?php _e( 'Select fields from your CSV file to map against donations fields or to ignore during import.', 'give' ); ?></p>
+						<p class="give-field-description"><?php esc_html_e( 'Select fields from your CSV file to map against donations fields or to ignore during import.', 'give' ); ?></p>
 					</th>
 				</tr>
 
 				<tr valign="top" class="give-import-dropdown">
-					<th><b><?php _e( 'Column name', 'give' ); ?></b></th>
-					<th><b><?php _e( 'Map to field', 'give' ); ?></b></th>
+					<th><b><?php esc_html_e( 'Column name', 'give' ); ?></b></th>
+					<th><b><?php esc_html_e( 'Map to field', 'give' ); ?></b></th>
 				</tr>
 
 				<?php
@@ -538,7 +562,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
                 $selectedOptions = []; // Initialize the tracking array for selected options
 
                 $raw_key = $this->get_importer( $csv, 0, $delimiter );
-				$mapto   = (array) ( isset( $_REQUEST['mapto'] ) ? $_REQUEST['mapto'] : array() );
+				$mapto   = isset( $_REQUEST['mapto'] ) ? (array) map_deep( wp_unslash( $_REQUEST['mapto'] ), 'sanitize_text_field' ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified by $this->is_nonce_valid() at the top of this method.
 
 				foreach ( $raw_key as $index => $value ) {
 					?>
@@ -578,6 +602,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Print the columns from the CSV.
 		 *
+		 * @since  TBD Escape translated output.
 		 * @since  1.8.14
 		 * @access private
 		 *
@@ -595,19 +620,19 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			<select name="mapto[<?php echo esc_attr($index); ?>]">
 				<?php $this->get_dropdown_option_html( $default, $current_mapto, $value, $selectedOptions ); ?>
 
-				<optgroup label="<?php _e( 'Donations', 'give' ); ?>">
+				<optgroup label="<?php esc_attr_e( 'Donations', 'give' ); ?>">
 					<?php
 					$this->get_dropdown_option_html( give_import_donations_options(), $current_mapto, $value, $selectedOptions );
 					?>
 				</optgroup>
 
-				<optgroup label="<?php _e( 'Donors', 'give' ); ?>">
+				<optgroup label="<?php esc_attr_e( 'Donors', 'give' ); ?>">
 					<?php
 					$this->get_dropdown_option_html( give_import_donor_options(), $current_mapto, $value, $selectedOptions );
 					?>
 				</optgroup>
 
-				<optgroup label="<?php _e( 'Forms', 'give' ); ?>">
+				<optgroup label="<?php esc_attr_e( 'Forms', 'give' ); ?>">
 					<?php
 					$this->get_dropdown_option_html( give_import_donation_form_options(), $current_mapto, $value, $selectedOptions );
 					?>
@@ -773,6 +798,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Is used to show the process when user upload the donor form.
 		 *
+		 * @since TBD Escape translated output.
 		 * @since 1.8.14
 		 */
 		public function render_progress() {
@@ -780,16 +806,16 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			?>
 			<ol class="give-progress-steps">
 				<li class="<?php echo esc_attr( 1 === $step ? 'active' : '' ); ?>">
-					<?php _e( 'Upload CSV file', 'give' ); ?>
+					<?php esc_html_e( 'Upload CSV file', 'give' ); ?>
 				</li>
 				<li class="<?php echo esc_attr( 2 === $step ? 'active' : '' ); ?>">
-					<?php _e( 'Column mapping', 'give' ); ?>
+					<?php esc_html_e( 'Column mapping', 'give' ); ?>
 				</li>
 				<li class="<?php echo esc_attr( 3 === $step ? 'active' : '' ); ?>">
-					<?php _e( 'Import', 'give' ); ?>
+					<?php esc_html_e( 'Import', 'give' ); ?>
 				</li>
 				<li class="<?php echo esc_attr( 4 === $step ? 'active' : '' ); ?>">
-					<?php _e( 'Done!', 'give' ); ?>
+					<?php esc_html_e( 'Done!', 'give' ); ?>
 				</li>
 			</ol>
 			<?php
@@ -803,7 +829,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @return int $step on which step doest the import is on.
 		 */
 		public function get_step() {
-			$step    = (int) ( isset( $_REQUEST['step'] ) ? give_clean( $_REQUEST['step'] ) : 0 );
+			$step    = (int) ( isset( $_REQUEST['step'] ) ? give_clean( $_REQUEST['step'] ) : 0 ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
 			$on_step = 1;
 
 			if ( empty( $step ) || 1 === $step ) {
@@ -831,21 +857,22 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Print Dry Run HTML on donation import page
 		 *
+		 * @since TBD Escape translated output.
 		 * @since 2.1
 		 */
 		public function give_import_donation_submit_button_render_media_csv() {
-			$dry_run = isset( $_POST['dry_run'] ) ? absint( $_POST['dry_run'] ) : 1;
+			$dry_run = isset( $_POST['dry_run'] ) ? absint( $_POST['dry_run'] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only import step param; it only changes what is shown and saves nothing.
 			?>
 			<div>
 				<label for="dry_run">
 					<input type="hidden" name="dry_run" value="0"/>
 					<input type="checkbox" name="dry_run" id="dry_run" class="dry_run"
 						   value="1" <?php checked( 1, $dry_run ); ?> >
-					<strong><?php _e( 'Dry Run', 'give' ); ?></strong>
+					<strong><?php esc_html_e( 'Dry Run', 'give' ); ?></strong>
 				</label>
 				<p class="give-field-description">
 					<?php
-					_e( 'Preview what the import would look like without making any default changes to your site or your database.', 'give' );
+					esc_html_e( 'Preview what the import would look like without making any default changes to your site or your database.', 'give' );
 					?>
 				</p>
 			</div>
@@ -870,6 +897,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 *
 		 * Print the html of the file upload from which CSV will be uploaded.
 		 *
+		 * @since TBD Escape translated output.
 		 * @since 1.8.14
 		 * @return void
 		 */
@@ -891,29 +919,29 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			?>
 			<tr valign="top">
 				<th colspan="2">
-					<h2 id="give-import-title"><?php _e( 'Import donations from a CSV file', 'give' ); ?></h2>
-					<p class="give-field-description"><?php _e( 'This tool allows you to import or add donation data to your give form(s) via a CSV file.', 'give' ); ?></p>
+					<h2 id="give-import-title"><?php esc_html_e( 'Import donations from a CSV file', 'give' ); ?></h2>
+					<p class="give-field-description"><?php esc_html_e( 'This tool allows you to import or add donation data to your give form(s) via a CSV file.', 'give' ); ?></p>
 				</th>
 			</tr>
 			<?php
-			$csv         = ( isset( $_POST['csv'] ) ? give_clean( $_POST['csv'] ) : '' );
-			$csv_id      = ( isset( $_POST['csv_id'] ) ? give_clean( $_POST['csv_id'] ) : '' );
-			$delimiter   = ( isset( $_POST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : 'csv' );
-			$mode        = empty( $_POST['mode'] ) ?
+			$csv         = ( isset( $_POST['csv'] ) ? give_clean( $_POST['csv'] ) : '' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
+			$csv_id      = ( isset( $_POST['csv_id'] ) ? give_clean( $_POST['csv_id'] ) : '' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
+			$delimiter   = ( isset( $_POST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : 'csv' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
+			$mode        = empty( $_POST['mode'] ) ? // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only import step param; it only changes what is shown and saves nothing.
 				'disabled' :
-				( give_is_setting_enabled( give_clean( $_POST['mode'] ) ) ? 'enabled' : 'disabled' );
-			$create_user = empty( $_POST['create_user'] ) ?
+				( give_is_setting_enabled( give_clean( $_POST['mode'] ) ) ? 'enabled' : 'disabled' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
+			$create_user = empty( $_POST['create_user'] ) ? // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only import step param; it only changes what is shown and saves nothing.
 				'disabled' :
-				( give_is_setting_enabled( give_clean( $_POST['create_user'] ) ) ? 'enabled' : 'disabled' );
-			$delete_csv  = empty( $_POST['delete_csv'] ) ?
+				( give_is_setting_enabled( give_clean( $_POST['create_user'] ) ) ? 'enabled' : 'disabled' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
+			$delete_csv  = empty( $_POST['delete_csv'] ) ? // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only import step param; it only changes what is shown and saves nothing.
 				'enabled' :
-				( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? 'enabled' : 'disabled' );
+				( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? 'enabled' : 'disabled' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
 
 			// Reset csv and csv_id if csv
 			if ( empty( $csv_id ) || ! $this->is_valid_csv( $csv_id, $csv ) ) {
 				$csv_id = $csv = '';
 			}
-			$per_page = isset( $_POST['per_page'] ) ? absint( $_POST['per_page'] ) : self::$per_page;
+			$per_page = isset( $_POST['per_page'] ) ? absint( $_POST['per_page'] ) : self::$per_page; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only import step param; it only changes what is shown and saves nothing.
 
 			$sample_file_text = sprintf(
 				'%s <a href="%s">%s</a>.',
@@ -1015,6 +1043,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Run when user click on the submit button.
 		 *
+		 * @since TBD Unslash and sanitize the request input.
 		 * @since 1.8.14
 		 */
 		public function save() {
@@ -1026,9 +1055,9 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 			// Validation for first step.
 			if ( 1 === $step ) {
-				$csv_id = absint( $_POST['csv_id'] );
+				$csv_id = isset( $_POST['csv_id'] ) ? absint( $_POST['csv_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by $this->is_nonce_valid() at the top of this method.
 
-				if ( $this->is_valid_csv( $csv_id, esc_url( $_POST['csv'] ) ) ) {
+				if ( $this->is_valid_csv( $csv_id, isset( $_POST['csv'] ) ? esc_url_raw( wp_unslash( $_POST['csv'] ) ) : '' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by $this->is_nonce_valid() at the top of this method.
 
 					$url = give_import_page_url(
 						(array) apply_filters(
@@ -1037,18 +1066,18 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 								'step'          => '2',
 								'importer-type' => $this->importer_type,
 								'csv'           => $csv_id,
-								'delimiter'     => isset( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv',
-								'mode'          => empty( $_POST['mode'] ) ?
+								'delimiter'     => isset( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv', // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- nonce verified by $this->is_nonce_valid() at the top of this method. give_clean() unslashes and sanitizes with sanitize_text_field().
+								'mode'          => empty( $_POST['mode'] ) ? // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by $this->is_nonce_valid() at the top of this method.
 									'0' :
-									( give_is_setting_enabled( give_clean( $_POST['mode'] ) ) ? '1' : '0' ),
-								'create_user'   => empty( $_POST['create_user'] ) ?
+									( give_is_setting_enabled( give_clean( $_POST['mode'] ) ) ? '1' : '0' ), // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- nonce verified by $this->is_nonce_valid() at the top of this method. give_clean() unslashes and sanitizes with sanitize_text_field().
+								'create_user'   => empty( $_POST['create_user'] ) ? // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by $this->is_nonce_valid() at the top of this method.
 									'0' :
-									( give_is_setting_enabled( give_clean( $_POST['create_user'] ) ) ? '1' : '0' ),
-								'delete_csv'    => empty( $_POST['delete_csv'] ) ?
+									( give_is_setting_enabled( give_clean( $_POST['create_user'] ) ) ? '1' : '0' ), // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- nonce verified by $this->is_nonce_valid() at the top of this method. give_clean() unslashes and sanitizes with sanitize_text_field().
+								'delete_csv'    => empty( $_POST['delete_csv'] ) ? // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by $this->is_nonce_valid() at the top of this method.
 									'1' :
-									( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? '1' : '0' ),
-								'per_page'      => isset( $_POST['per_page'] ) ? absint( $_POST['per_page'] ) : self::$per_page,
-								'dry_run'       => isset( $_POST['dry_run'] ) ? absint( $_POST['dry_run'] ) : 0,
+									( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? '1' : '0' ), // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- nonce verified by $this->is_nonce_valid() at the top of this method. give_clean() unslashes and sanitizes with sanitize_text_field().
+								'per_page'      => isset( $_POST['per_page'] ) ? absint( $_POST['per_page'] ) : self::$per_page, // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by $this->is_nonce_valid() at the top of this method.
+								'dry_run'       => isset( $_POST['dry_run'] ) ? absint( $_POST['dry_run'] ) : 0, // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by $this->is_nonce_valid() at the top of this method.
 							)
 						)
 					);
@@ -1075,7 +1104,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			if ( $csv ) {
 				$csv_url = wp_get_attachment_url( $csv );
 
-				$delimiter = ( ! empty( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv' );
+				$delimiter = ( ! empty( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
 
 				if (
 					! $csv_url ||
@@ -1115,16 +1144,17 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 */
 		private function is_donations_import_page() {
 			return 'import' === give_get_current_setting_tab() &&
-				   isset( $_GET['importer-type'] ) &&
-				   $this->importer_type === give_clean( $_GET['importer-type'] );
+				   isset( $_GET['importer-type'] ) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only import step param; it only changes what is shown and saves nothing.
+				   $this->importer_type === give_clean( $_GET['importer-type'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only import step param; it only changes what is shown and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field().
 		}
 
          /**
+         * @since TBD Unslash and sanitize the nonce before checking it.
          * @since 2.25.2
          */
         private function is_nonce_valid()
         {
-            return !empty($_REQUEST['_give-save-settings']) && wp_verify_nonce($_REQUEST['_give-save-settings'], 'give-save-settings');
+            return !empty($_REQUEST['_give-save-settings']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_REQUEST['_give-save-settings'])), 'give-save-settings');
         }
 	}
 

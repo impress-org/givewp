@@ -138,7 +138,7 @@ class ServiceProvider implements ServiceProviderInterface
     protected function registerCommands()
     {
         if (defined('WP_CLI') && WP_CLI) {
-            error_reporting(E_ALL & ~E_DEPRECATED);
+            error_reporting(E_ALL & ~E_DEPRECATED); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.prevent_path_disclosure_error_reporting,PluginCheck.CodeAnalysis.PHPErrorReporting.DirectErrorReportingCall -- WP-CLI only; hides deprecation noise from the migration command output.
             WP_CLI::add_command('givewp form:migrate', MigrationCommand::class);
             WP_CLI::add_command('givewp form:transfer', TransferCommand::class);
         }

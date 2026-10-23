@@ -35,6 +35,7 @@ class Give_Core_Settings_Export extends Give_Export {
 	 * Set the export headers
 	 *
 	 * @access public
+	 * @since TBD Use gmdate() and wp_date() instead of date().
 	 * @since  1.8.17
 	 * @return void
 	 */
@@ -43,18 +44,32 @@ class Give_Core_Settings_Export extends Give_Export {
 
 		nocache_headers();
 		header( 'Content-Type: application/json; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename=' . apply_filters( 'give_core_settings_export_filename', 'give-export-' . $this->export_type . '-' . date( 'n' ) . '-' . date( 'Y' ) ) . '.json' );
+		header( 'Content-Disposition: attachment; filename=' . apply_filters( 'give_core_settings_export_filename', 'give-export-' . $this->export_type . '-' . wp_date( 'n', null, new DateTimeZone( 'UTC' ) ) . '-' . wp_date( 'Y', null, new DateTimeZone( 'UTC' ) ) ) . '.json' );
 		header( 'Expires: 0' );
+	}
+
+	/**
+	 * Include a nonce check when authenticating
+	 *
+	 * @since TBD
+	 *
+	 * @return bool
+	 */
+	public function can_export() {
+		$nonce = isset( $_POST['give-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['give-nonce'] ) ) : '';
+
+		return parent::can_export() && wp_verify_nonce( $nonce, 'give_core_settings_export' );
 	}
 
 	/**
 	 * Prints Give's core settings in JSON format
 	 *
 	 * @access public
+	 * @since TBD Sanitize the excluded settings; export() verifies the nonce before this runs.
 	 * @since 1.8.17
 	 */
 	public function json_core_settings_export() {
-		$settings_excludes = isset( $_POST['settings_export_excludes'] ) ? give_clean( $_POST['settings_export_excludes'] ) : array();
+		$settings_excludes = isset( $_POST['settings_export_excludes'] ) ? give_clean( $_POST['settings_export_excludes'] ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified by Give_Core_Settings_Export::can_export() in export() before this runs. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		$give_settings     = Give_Cache_Setting::get_settings();
 
 		if ( is_array( $settings_excludes ) && ! empty( $settings_excludes ) ) {

@@ -7,6 +7,7 @@ use Exception;
 use Give\DonationForms\Factories\DonationFormFactory;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
+use Give\DonationForms\Rules\CurrencyRule;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
@@ -16,16 +17,19 @@ use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\FieldsAPI\DonationForm as Form;
 use Give\Framework\FieldsAPI\Hidden;
+use Give\Framework\FieldsAPI\Properties\DonationForm\CurrencySwitcherSetting;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
+use Give\Tests\Unit\DonationForms\TestTraits\HasValidationRules;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 final class TestDonationFormRepository extends TestCase
 {
     use RefreshDatabase;
+    use HasValidationRules;
 
     /**
      * @var DonationFormFactory
@@ -408,5 +412,46 @@ final class TestDonationFormRepository extends TestCase
         $donationFormFromDatabase = $this->repository->getById($donationForm->id);
 
         $this->assertNull($donationFormFromDatabase);
+    }
+
+    /**
+     * @since 4.19.0.1
+     */
+    public function testGetFormSchemaFromBlocksAllowsCurrencySwitcherCurrencies(): void
+    {
+        $form = DonationForm::factory()->create();
+
+        add_filter('givewp_donation_forms_honeypot_enabled', '__return_false');
+
+        add_action('givewp_donation_form_schema', static function (Form $schema) {
+            $schema->currencySwitcherSettings(
+                new CurrencySwitcherSetting('USD', 1, [], 2),
+                new CurrencySwitcherSetting('EUR', 2, [], 2)
+            );
+
+            $schema->getNodeByName('currency')->defaultValue('EUR');
+        });
+
+        $schema = $form->schema();
+        $rule = $schema->getNodeByName('currency')->getValidationRules()->getRule(CurrencyRule::id());
+
+        self::assertValidationRulePassed($rule, 'EUR');
+        self::assertValidationRuleFailed($rule, 'GBP');
+    }
+
+    /**
+     * @since 4.19.0.1
+     */
+    public function testGetFormSchemaFromBlocksRejectsCurrencyNotOfferedByTheForm(): void
+    {
+        $form = DonationForm::factory()->create();
+
+        add_filter('givewp_donation_forms_honeypot_enabled', '__return_false');
+
+        $schema = $form->schema();
+        $rule = $schema->getNodeByName('currency')->getValidationRules()->getRule(CurrencyRule::id());
+
+        self::assertValidationRulePassed($rule, 'USD');
+        self::assertValidationRuleFailed($rule, 'EUR');
     }
 }

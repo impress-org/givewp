@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Loaded the phone field and reCAPTCHA assets through the WordPress script loader
+timestamp: 2026-10-09T00:10:00.000Z

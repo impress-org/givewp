@@ -22,19 +22,21 @@ class MetaRepository
         $this->relationshipColumnName = $relationshipColumnName;
     }
 
+    /**
+     * @since TBD Prepare each row with placeholders.
+     */
     public function persist($relationshipID, $metaData)
     {
         $values = array_map(
             function ($metaKey, $metaValue) use ($relationshipID) {
-                return sprintf("( %s, '%s', '%s' )", $relationshipID, esc_sql($metaKey), esc_sql($metaValue));
+                return $this->wpdb->prepare('( %d, %s, %s )', $relationshipID, $metaKey, $metaValue);
             },
             array_keys($metaData),
             $metaData
         );
 
-        $this->wpdb->query(
-            $this->getSql($values)
-        );
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- rows are prepared above; getSql() adds the literal table and column names.
+        $this->wpdb->query($this->getSql($values));
     }
 
     protected function getSql($values)

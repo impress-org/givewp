@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Documented and sanitized request input in the payment gateway handlers
+timestamp: 2026-10-08T21:00:00.000Z

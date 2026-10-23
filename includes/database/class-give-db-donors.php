@@ -71,6 +71,7 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Get default column values
 	 *
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -84,7 +85,7 @@ class Give_DB_Donors extends Give_DB {
 			'payment_ids'     => '',
 			'purchase_value'  => 0.00,
 			'purchase_count'  => 0,
-			'date_created'    => date( 'Y-m-d H:i:s' ),
+			'date_created'    => gmdate( 'Y-m-d H:i:s' ),
 			'token'           => '',
 			'verify_key'      => '',
 			'verify_throttle' => '',
@@ -228,7 +229,7 @@ class Give_DB_Donors extends Give_DB {
 
 			// Cache already deleted in delete_all_meta fn.
 
-			return $wpdb->delete( $this->table_name, array( 'id' => $donor->id ), array( '%d' ) );
+			return $wpdb->delete( $this->table_name, array( 'id' => $donor->id ), array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 
 		} else {
 			return false;
@@ -268,7 +269,7 @@ class Give_DB_Donors extends Give_DB {
 
 		// Cache is already deleted in delete_all_meta fn.
 
-		return $wpdb->delete( $this->table_name, array( 'user_id' => $user_id ), array( '%d' ) );
+		return $wpdb->delete( $this->table_name, array( 'user_id' => $user_id ), array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 	}
 
 	/**
@@ -470,7 +471,7 @@ class Give_DB_Donors extends Give_DB {
 		if ( ! $donor = $donor->get_donors() ) {
 			// Look for donor from an additional email.
 			$args = array(
-				'meta_query' => array(
+				'meta_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Finds a donor by an additional email, which is stored as donor meta.
 					array(
 						'key'   => 'additional_email',
 						'value' => $value,
@@ -512,7 +513,7 @@ class Give_DB_Donors extends Give_DB {
 		}
 
 		global $wpdb;
-		$row = $wpdb->get_row(
+		$row = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 			$wpdb->prepare( "SELECT * FROM {$wpdb->donors} WHERE verify_key = %s LIMIT 1", $id )
 		);
 		return $row;
@@ -613,7 +614,7 @@ class Give_DB_Donors extends Give_DB {
 
 		if (
 			! give_has_upgrade_completed( 'v20_rename_donor_tables' ) &&
-			$wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', "{$wpdb->prefix}give_customers" ) )
+			$wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', "{$wpdb->prefix}give_customers" ) ) // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Checks whether a table exists with SHOW TABLES; WordPress has no function for it.
 		) {
 			$wpdb->donors = $this->table_name = "{$wpdb->prefix}give_customers";
 		}
@@ -622,6 +623,7 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Add backward compatibility for deprecated param
 	 *
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  1.8.14
 	 * @access private
 	 *
@@ -650,17 +652,17 @@ class Give_DB_Donors extends Give_DB {
 			if ( is_array( $args['date'] ) ) {
 
 				if ( ! empty( $args['date']['start'] ) ) {
-					$args['date_query']['after'] = date( 'Y-m-d H:i:s', strtotime( $args['date']['start'] ) );
+					$args['date_query']['after'] = gmdate( 'Y-m-d H:i:s', strtotime( $args['date']['start'] ) );
 				}
 
 				if ( ! empty( $args['date']['end'] ) ) {
-					$args['date_query']['before'] = date( 'Y-m-d H:i:s', strtotime( $args['date']['end'] ) );
+					$args['date_query']['before'] = gmdate( 'Y-m-d H:i:s', strtotime( $args['date']['end'] ) );
 				}
 			} else {
 
-				$args['date_query']['year']  = date( 'Y', strtotime( $args['date'] ) );
-				$args['date_query']['month'] = date( 'm', strtotime( $args['date'] ) );
-				$args['date_query']['day']   = date( 'd', strtotime( $args['date'] ) );
+				$args['date_query']['year']  = gmdate( 'Y', strtotime( $args['date'] ) );
+				$args['date_query']['month'] = gmdate( 'm', strtotime( $args['date'] ) );
+				$args['date_query']['day']   = gmdate( 'd', strtotime( $args['date'] ) );
 			}
 		}
 	}

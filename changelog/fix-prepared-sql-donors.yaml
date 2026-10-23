@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Prepared the SQL queries for donor addresses, the donor wall, donor stats, the additional email check and the admin donor search
+timestamp: 2026-10-06T01:13:21.000Z

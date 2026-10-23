@@ -73,6 +73,7 @@ class InvoicePaymentFailed
     }
 
     /**
+     * @since TBD Write the invoice to the log as JSON.
      * @since 4.8.0 Add support for Stripe API version 2025-03-31.basil and later versions
      * @since 3.0.0
      */
@@ -88,7 +89,7 @@ class InvoicePaymentFailed
         // Log the invoice object for debugging purpose.
         give_stripe_record_log(
             esc_html__('Subscription - Renewal Payment Failed', 'give'),
-            print_r($invoice, true)
+            wp_json_encode($invoice, JSON_PRETTY_PRINT)
         );
     }
 }

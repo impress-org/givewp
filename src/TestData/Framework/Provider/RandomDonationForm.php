@@ -2,6 +2,8 @@
 
 namespace Give\TestData\Framework\Provider;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- WP-CLI test data code; it writes and reads fake data directly for speed, runs only from the command line, and is not cached.
+
 /**
  * Returns a random Donor ID from the donors table.
  */

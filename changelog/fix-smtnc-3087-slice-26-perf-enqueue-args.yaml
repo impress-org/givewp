@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Added versions and loading flags to enqueued scripts and styles
+timestamp: 2026-10-09T00:20:00.000Z

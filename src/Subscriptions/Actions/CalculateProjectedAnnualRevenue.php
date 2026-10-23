@@ -25,13 +25,15 @@ class CalculateProjectedAnnualRevenue
     /**
      * Calculate the projected annual revenue for a subscription.
      *
+     * @since TBD Use gmdate() instead of date().
+     *
      * @param Subscription $subscription
      * @return Money
      */
     public function __invoke(Subscription $subscription): Money
     {
         try {
-            $currentYear = (int) date('Y');
+            $currentYear = (int) gmdate('Y');
             $yearStart = new DateTime("January 1st, {$currentYear}");
             $yearEnd = new DateTime("December 31st, {$currentYear} 23:59:59");
 

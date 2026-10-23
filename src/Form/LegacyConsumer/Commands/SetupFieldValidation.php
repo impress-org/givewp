@@ -54,6 +54,7 @@ class SetupFieldValidation implements HookCommandInterface
     /**
      * Validate the given field.
      *
+     * @since TBD Add translators comments.
      * @since 2.28.0 add shim for CheckboxGroup, only necessary for legacy FFM fields.
      * @since 2.14.0 Add max length validation for input and textarea field
      *
@@ -69,7 +70,7 @@ class SetupFieldValidation implements HookCommandInterface
 
         if ($field->getType() === Types::FILE) {
             // Are we processing donation form validation on ajax?
-            if (isset($_POST['give_ajax'])) {
+            if (isset($_POST['give_ajax'])) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- runs on give_checkout_error_checks, after give_process_donation() or the signed v3 route verified the request.
                 return;
             }
 
@@ -77,7 +78,7 @@ class SetupFieldValidation implements HookCommandInterface
             $validator();
         } elseif (in_array($field->getType(), Types::all(), true) || $field->getType() === CheckboxGroup::TYPE) {
             if ( $field->isRequired() ) {
-                if( ! isset($_POST[$field->getName()]) || empty($_POST[$field->getName()]) ) {
+                if( ! isset($_POST[$field->getName()]) || empty($_POST[$field->getName()]) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- runs on give_checkout_error_checks, after give_process_donation() or the signed v3 route verified the request.
                     give_set_error(
                         "give-{$field->getName()}-required-field-missing",
                         $field->getRequiredError()['error_message']
@@ -88,12 +89,13 @@ class SetupFieldValidation implements HookCommandInterface
             if (
                 in_array($field->getType(), [Types::TEXT, Types::TEXTAREA]) &&
                 $field->getMaxLength() &&
-                isset($_POST[$field->getName()]) &&
-                strlen($_POST[$field->getName()]) > $field->getMaxLength()
+                isset($_POST[$field->getName()]) && // phpcs:ignore WordPress.Security.NonceVerification.Missing -- runs on give_checkout_error_checks, after give_process_donation() or the signed v3 route verified the request.
+                strlen($_POST[$field->getName()]) > $field->getMaxLength() // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- runs on give_checkout_error_checks, after give_process_donation() or the signed v3 route verified the request. read only to measure its length with strlen(); it is not saved or output here.
             ) {
                 give_set_error(
                     "give-{$field->getName()}-required-field-missing",
                     sprintf(
+                        /* translators: %1$s: Field name */
                         esc_html__('%1$s field value exceed allowed character limit.', 'give'),
                         $field->getName()
                     )
@@ -118,7 +120,7 @@ class SetupFieldValidation implements HookCommandInterface
      */
     protected function isFieldVisible(Field $field)
     {
-        $determineVisibilityAction = new DetermineVisibilityForRequest( $field, $_POST );
+        $determineVisibilityAction = new DetermineVisibilityForRequest( $field, $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- runs on give_checkout_error_checks, after give_process_donation() or the signed v3 route verified the request.
         return $determineVisibilityAction->__invoke();
     }
 }
