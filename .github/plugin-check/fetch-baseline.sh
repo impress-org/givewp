@@ -6,13 +6,16 @@
 # can never leave a stale baseline behind. See docs/testing.md#plugin-check.
 #
 # Usage:
-#   fetch-baseline.sh [--sha <commit>] [--wait <seconds>] [--skip-run <run-id>] <branch> [<output-file>]
+#   fetch-baseline.sh [--sha <commit>] [--wait <seconds>] [--before-run <run-id>] <branch> [<output-file>]
 #
 # Runs are tried in this order, and the first one with the artifact wins:
 #   1. runs for --sha (a pull request's base commit), when given. With --wait, a run for that
-#      commit that is still going is waited for, up to that many seconds;
+#      commit that is still going is waited for, up to that many seconds. A run that does not
+#      show up at all is waited for only a short time (GRACE seconds), since the commit may never
+#      have had one;
 #   2. the latest runs on <branch>, newest first.
-# --skip-run leaves out one run, so a run never compares with itself.
+# --before-run keeps only runs started before that one (run ids only grow), so a run never
+# compares with itself, and a re-run of an older push never compares with a newer one.
 #
 # <output-file> defaults to baseline.json next to this script, which ratchet.sh reads by default
 # and git ignores.
@@ -31,17 +34,19 @@ set -euo pipefail
 
 sha=""
 wait_for=0
-skip_run=""
+before_run=""
+# How long to wait for a run for --sha to show up at all.
+GRACE=120
 while [ $# -gt 0 ]; do
     case "$1" in
         --sha) sha=${2:?"--sha needs a commit"}; shift 2 ;;
         --wait) wait_for=${2:?"--wait needs seconds"}; shift 2 ;;
-        --skip-run) skip_run=${2:?"--skip-run needs a run id"}; shift 2 ;;
+        --before-run) before_run=${2:?"--before-run needs a run id"}; shift 2 ;;
         *) break ;;
     esac
 done
 
-branch=${1:?"Usage: $0 [--sha <commit>] [--wait <seconds>] [--skip-run <run-id>] <branch> [<output-file>]"}
+branch=${1:?"Usage: $0 [--sha <commit>] [--wait <seconds>] [--before-run <run-id>] <branch> [<output-file>]"}
 output=${2:-"$(cd "$(dirname "$0")" && pwd)/baseline.json"}
 
 lookup_failed() {
@@ -56,12 +61,20 @@ runs="repos/$repo/actions/workflows/plugin-check.yml/runs"
 # at the same time as the push run on the target branch. Waiting for it beats comparing with an
 # older run.
 if [ -n "$sha" ] && [ "$wait_for" -gt 0 ]; then
-    deadline=$(($(date +%s) + wait_for))
+    started=$(date +%s)
+    deadline=$((started + wait_for))
     while :; do
-        going=$(gh api "$runs?head_sha=$sha&per_page=20" \
-            --jq "[.workflow_runs[] | select(.status != \"completed\" and (.id | tostring) != \"$skip_run\")] | length") \
+        # "<all runs> <runs still going>" for the commit.
+        counts=$(gh api "$runs?head_sha=$sha&per_page=20" \
+            --jq '"\(.workflow_runs | length) \([.workflow_runs[] | select(.status != "completed")] | length)"') \
             || lookup_failed "runs for $sha"
-        [ "$going" -gt 0 ] || break
+        read -r total going <<< "$counts"
+        # A run can take a moment to show up after its push. After GRACE seconds with none, the
+        # commit never had one.
+        if [ "$total" -eq 0 ] && [ "$(date +%s)" -ge $((started + GRACE)) ]; then
+            break
+        fi
+        [ "$total" -eq 0 ] || [ "$going" -gt 0 ] || break
         if [ "$(date +%s)" -ge "$deadline" ]; then
             echo "The run for $sha is still going after $wait_for seconds; trying older runs." >&2
             break
@@ -87,7 +100,9 @@ trap 'rm -rf "$tmp"' EXIT
 
 while read -r id url head; do
     [ -n "$id" ] || continue
-    [ "$id" != "$skip_run" ] || continue
+    if [ -n "$before_run" ] && [ "$id" -ge "$before_run" ]; then
+        continue
+    fi
     case "$tried" in *" $id "*) continue ;; esac
     tried+="$id "
 

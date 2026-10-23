@@ -319,7 +319,7 @@ jobs:
                         found=$(.github/plugin-check/fetch-baseline.sh --sha "$BASE_SHA" --wait 1200 "$BASE_REF" "$PLUGIN_CHECK_BASELINE") || status=$?
                     else
                         label="Previous run"
-                        found=$(.github/plugin-check/fetch-baseline.sh --skip-run "$GITHUB_RUN_ID" "$GITHUB_REF_NAME" "$PLUGIN_CHECK_BASELINE") || status=$?
+                        found=$(.github/plugin-check/fetch-baseline.sh --before-run "$GITHUB_RUN_ID" "$GITHUB_REF_NAME" "$PLUGIN_CHECK_BASELINE") || status=$?
                     fi
                     case "$status" in
                         0) ;;
