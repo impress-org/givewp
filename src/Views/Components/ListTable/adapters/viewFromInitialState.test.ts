@@ -62,6 +62,12 @@ describe('viewFromInitialState', () => {
         );
     });
 
+    it('keeps a URL value that cannot be decoded as it is', () => {
+        const view = viewFromInitialState(filters, defaults, new URLSearchParams('search=100%25'));
+
+        expect(view.search).toBe('100%');
+    });
+
     it('does not apply a select filter set to its default first option', () => {
         const view = viewFromInitialState(filters, defaults, new URLSearchParams('status=any'));
 

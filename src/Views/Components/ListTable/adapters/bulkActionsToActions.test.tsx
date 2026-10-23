@@ -51,6 +51,21 @@ describe('bulkActionsToActions', () => {
         expect(pageContext.openCustomAction).toHaveBeenCalledWith(merge, [{id: 1}, {id: 2}]);
     });
 
+    it('opens a custom action with the eligible rows only', () => {
+        const merge: BulkActionsConfig = {
+            label: 'Merge',
+            value: 'merge',
+            type: 'custom',
+            confirm: () => null,
+            isIdSelectable: (id) => id !== '2',
+        };
+        const pageContext = context();
+        const [action] = bulkActionsToActions([merge], pageContext);
+
+        'callback' in action && action.callback([{id: 1}, {id: 2}, {id: 3}], {registry: null});
+        expect(pageContext.openCustomAction).toHaveBeenCalledWith(merge, [{id: 1}, {id: 3}]);
+    });
+
     it('accepts add-on actions in the Give Recurring shape and a null core list', () => {
         const addon = {
             label: 'Cancel',
