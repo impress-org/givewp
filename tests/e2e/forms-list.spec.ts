@@ -2,7 +2,7 @@ import {expect, Locator, Page, test} from '@wordpress/e2e-test-utils-playwright'
 import {chooseOption, openOptions} from './utils/async-select';
 import {createCampaignWithForm} from './utils/campaign';
 import {createStandaloneForm} from './utils/standalone-form';
-import {rowWithText, runRowAction} from './utils/list-table';
+import {expectListMounts, rowWithText, runRowAction} from './utils/list-table';
 
 /**
  * Moving a form between campaigns, from the Forms list and from a campaign's Forms tab.
@@ -16,6 +16,10 @@ import {rowWithText, runRowAction} from './utils/list-table';
 const FORMS_LIST = 'post_type=give_forms&page=give-forms';
 
 test.describe('Forms list', () => {
+    test('renders through the list engine without errors', async ({page, admin}) => {
+        await expectListMounts(page, admin, FORMS_LIST, 'Donation Forms');
+    });
+
     test('assigns a form with no campaign to a campaign, then moves it to another', async ({
         page,
         admin,

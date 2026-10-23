@@ -1,4 +1,4 @@
-import {expect, Locator, Page} from '@wordpress/e2e-test-utils-playwright';
+import {Admin, expect, Locator, Page} from '@wordpress/e2e-test-utils-playwright';
 
 /**
  * Helpers for the admin list screens, which render through `@wordpress/dataviews`.
@@ -92,4 +92,21 @@ export async function applyFilter(
  */
 export function selectionBar(page: Page): Locator {
     return listTable(page).locator('.givewp-list-table__bulk-actions .dataviews-bulk-actions-footer__container');
+}
+
+/**
+ * Opens a list screen and checks it renders through DataViews, a table or its empty state, with no
+ * script errors on the page.
+ */
+export async function expectListMounts(page: Page, admin: Admin, query: string, heading: string): Promise<void> {
+    const pageErrors: string[] = [];
+    page.on('pageerror', (error) => pageErrors.push(error.message));
+
+    await admin.visitAdminPage('edit.php', query);
+
+    await expect(page.getByRole('heading', {level: 1, name: heading})).toBeVisible({timeout: 15_000});
+    await expect(listTable(page).locator('.dataviews-view-table, .dataviews-no-results').first()).toBeVisible({
+        timeout: 15_000,
+    });
+    expect(pageErrors).toEqual([]);
 }

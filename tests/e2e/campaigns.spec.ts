@@ -1,5 +1,6 @@
 import {expect, test} from '@wordpress/e2e-test-utils-playwright';
 import {donationForm, expectReceipt, fillDonorDetails, payWithTestGateway, waitForForm} from './utils/donation-form';
+import {expectListMounts} from './utils/list-table';
 
 /**
  * Creating a campaign, through the wizard a fundraiser actually uses.
@@ -10,6 +11,10 @@ import {donationForm, expectReceipt, fillDonorDetails, payWithTestGateway, waitF
  * that route with what the fundraiser typed, and whether the form it produces can take money.
  */
 test.describe('Campaigns', () => {
+    test('the list renders through the list engine without errors', async ({page, admin}) => {
+        await expectListMounts(page, admin, 'post_type=give_forms&page=give-campaigns', 'Campaigns');
+    });
+
     test('the wizard creates a campaign and opens its overview', async ({page, admin}) => {
         const title = `Wizard campaign ${Date.now()}`;
 
