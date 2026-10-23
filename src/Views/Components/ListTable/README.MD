@@ -11,7 +11,6 @@
 | pluralName | String                                      | No       | __('items', 'give') |
 | error      | Object/Bool                                 | No       | false               |
 | isLoading  | Bool                                        | No       | false               |
-| align | String - `'start'`, `'center'`, or `'end'`  | No       | 'start'             |
 | rowActions | JSX function component                      | No       | null                |
 | bulkActions | Array\<BulkActionsConfig\>                  | No | null                |
 | apiSettings    | Object: {apiRoot: string, apiNonce: string} | Yes      | -       |
@@ -82,7 +81,6 @@ Each object in the array should contain the following properties:
 | name     | String             | Yes                              | The property from `data.items` to associate the column with.                                                      |
 | type     | String             | Yes                              | What kind of filter to display.  <br/> Available types: `select`, `formselect`, `search`                          |
 | ariaLabel | String             | Yes                              | A description of the filter for screen readers.                                                                   |
-| inlineSize | String<br/>(CSS Length) | No                               | The inline size of the filter. Corresponds to the width in left-to-right languages. Accepts any valid CSS length. |
 | options  | Array              | For type `select` or `formselect` | What options to include for the `select`. An array of objects that look like `{value: 1, text: 'option 1'}`       |
 | text | String             | No | Used as a placeholder value for `select` or `search` filters                                                      |
 

@@ -3,6 +3,7 @@ import {ListTablePage} from '@givewp/components';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import {hasStatus} from '@givewp/components/ListTable/adapters/hasStatus';
 import {SubscriptionsRowActions} from './SubscriptionsRowActions';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {Interweave} from 'interweave';
@@ -40,7 +41,6 @@ const filters: Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',
-        inlineSize: '14rem',
         text: __('Name, Email, or Subscription ID', 'give'),
         ariaLabel: __('search subscriptions', 'give'),
     },
@@ -62,7 +62,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Delete', 'give'),
         value: 'delete',
         type: 'danger',
-        isVisible: (data, parameters) => parameters?.status?.includes('trashed'),
+        isVisible: (data, parameters) => hasStatus(parameters, 'trashed'),
         action: async (selected) => {
             const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
             return response;
@@ -87,7 +87,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Trash', 'give'),
         value: 'trash',
         type: 'warning',
-        isVisible: (data, parameters) => !parameters?.status?.includes('trashed'),
+        isVisible: (data, parameters) => !hasStatus(parameters, 'trashed'),
         action: async (selected) => {
             const response = await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE');
             return response;
@@ -112,7 +112,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Restore', 'give'),
         value: 'restore',
         type: 'normal',
-        isVisible: (data, parameters) => parameters?.status?.includes('trashed'),
+        isVisible: (data, parameters) => hasStatus(parameters, 'trashed'),
         action: async (selected) => {
             const response = await API.fetchWithArgs('/untrash', {ids: selected.join(',')}, 'POST');
             return response;
@@ -149,7 +149,7 @@ const bulkActions: Array<BulkActionsConfig> = [
             return {
                 label,
                 value,
-                isVisible: (data, parameters) => !parameters?.status?.includes('trashed'),
+                isVisible: (data, parameters) => !hasStatus(parameters, 'trashed'),
                 action: async (selected) =>
                     await API.fetchWithArgs(
                         '/setStatus',

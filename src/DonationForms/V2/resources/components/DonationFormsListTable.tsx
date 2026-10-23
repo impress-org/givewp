@@ -5,6 +5,7 @@ import {DonationFormsRowActions} from './DonationFormsRowActions';
 import Onboarding, {OnboardingContext, OnboardingStateProps} from './Onboarding';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {BulkActionsConfig, ColumnFilterConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import {hasStatus} from '@givewp/components/ListTable/adapters/hasStatus';
 import Select from '@givewp/components/ListTable/Select';
 import {Interweave} from 'interweave';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
@@ -133,7 +134,7 @@ const columnFilters: Array<ColumnFilterConfig> = [
                     <div className={styles.titleContainer}>
                         <div className={styles.migratedForm}>
                             {item?.v3form && window?.GiveDonationForms?.isOptionBasedFormEditorEnabled && <CubeTooltip />}
-                            <Interweave attributes={{className: 'interweave'}} content={item?.title} />
+                            <Interweave attributes={{className: 'interweave'}} content={String(item?.title ?? '')} />
                         </div>
                         {item?.isDefaultCampaignForm && (
                             <div className={`${styles.defaultFormPill} givewp-default-form-pill`}>{__('Default')}</div>
@@ -234,7 +235,7 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
         label: __('Delete', 'give'),
         value: 'delete',
         type: 'danger',
-        isVisible: (data, parameters) => parameters.status === 'trash' || !data?.trash,
+        isVisible: (data, parameters) => hasStatus(parameters, 'trash') || !data?.trash,
         action: async (selected) => {
             try {
                 return await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
@@ -260,7 +261,7 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
         label: __('Trash', 'give'),
         value: 'trash',
         type: 'danger',
-        isVisible: (data, parameters) => parameters.status !== 'trash' && data?.trash,
+        isVisible: (data, parameters) => !hasStatus(parameters, 'trash') && Boolean(data?.trash),
         isIdSelectable: (id, data) => !(typeof data?.defaultForm === 'number') || data.defaultForm !== Number(id),
         action: async (selected) => {
             try {
