@@ -58,6 +58,7 @@ trait StripePaymentElementRepository
     /**
      * Get or create Stripe Customer from Donation
      *
+     * @since TBD Add translators comments.
      * @since 3.0.0
      * @throws Exception
      * @throws ApiErrorException
@@ -96,6 +97,7 @@ trait StripePaymentElementRepository
 
         DonationNote::create([
             'donationId' => $donation->id,
+            /* translators: %s: Stripe customer ID */
             'content' => sprintf(__('Stripe Customer ID: %s', 'give'), $customer->id)
         ]);
 
@@ -148,6 +150,7 @@ trait StripePaymentElementRepository
     }
 
     /**
+     * @since TBD Add translators comments.
      * @since 3.0.0
      *
      * @return void
@@ -163,11 +166,13 @@ trait StripePaymentElementRepository
 
         DonationNote::create([
             'donationId' => $donation->id,
+            /* translators: %s: Stripe payment intent ID */
             'content' => sprintf(__('Stripe Charge/Payment Intent ID: %s', 'give'), $intent->id)
         ]);
 
         DonationNote::create([
             'donationId' => $donation->id,
+            /* translators: %s: Stripe payment intent client secret */
             'content' => sprintf(__('Stripe Payment Intent Client Secret: %s', 'give'), $intent->client_secret)
         ]);
     }

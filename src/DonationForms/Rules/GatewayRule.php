@@ -27,6 +27,7 @@ class GatewayRule implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
+     * @since TBD Number the placeholders and add translators comments.
      * @since 3.0.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
@@ -39,7 +40,8 @@ class GatewayRule implements ValidationRule, ValidatesOnFrontEnd
         if (!in_array($value, $gatewayIds, true)) {
             $fail(
                 sprintf(
-                    __('%s must be a valid gateway.  Valid gateways are: %s', 'give'),
+                    /* translators: 1: Field label, 2: Comma-separated list of valid gateway IDs */
+                    __('%1$s must be a valid gateway.  Valid gateways are: %2$s', 'give'),
                     '{field}',
                     implode(
                         ', ',

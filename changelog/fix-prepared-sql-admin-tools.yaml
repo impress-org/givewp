@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Prepared the SQL queries in the admin tools, the donation export custom fields, the system info page, the form duplicator and the CLI cache command
+timestamp: 2026-10-06T02:02:30.000Z

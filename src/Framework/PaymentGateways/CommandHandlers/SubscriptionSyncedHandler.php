@@ -15,6 +15,7 @@ use function Give\Framework\Http\Response\response;
 class SubscriptionSyncedHandler
 {
     /**
+     * @since TBD Use gmdate() instead of date().
      * @since 2.33.0
      *
      * @throws Exception
@@ -28,9 +29,9 @@ class SubscriptionSyncedHandler
             'gatewayStatus' => $subscriptionSynced->subscription->status,
             'currentPeriod' => $subscriptionSynced->subscription->getOriginal('period'),
             'gatewayPeriod' => $subscriptionSynced->subscription->period,
-            'currentCreatedAt' => date($dateTimeFormat,
+            'currentCreatedAt' => gmdate($dateTimeFormat,
                 $subscriptionSynced->subscription->getOriginal('createdAt')->getTimestamp()),
-            'gatewayCreatedAt' => date($dateTimeFormat, $subscriptionSynced->subscription->createdAt->getTimestamp()),
+            'gatewayCreatedAt' => gmdate($dateTimeFormat, $subscriptionSynced->subscription->createdAt->getTimestamp()),
         ];
         $subscriptionSynced->subscription->save();
 
@@ -53,6 +54,7 @@ class SubscriptionSyncedHandler
     }
 
     /**
+     * @since TBD Use gmdate() instead of date().
      * @since 2.33.0
      */
     private function getTransactionData(Donation $donation): array
@@ -63,7 +65,7 @@ class SubscriptionSyncedHandler
             'id' => $donation->id,
             'gatewayTransactionId' => $donation->gatewayTransactionId,
             'amount' => $donation->amount->getCurrency()->getCode() . ' ' . $donation->amount->formatToDecimal(),
-            'createdAt' => date($dateTimeFormat, $donation->createdAt->getTimestamp()),
+            'createdAt' => gmdate($dateTimeFormat, $donation->createdAt->getTimestamp()),
             'status' => $donation->status->getValue(),
             'type' => $donation->type->getValue(),
         ];

@@ -24,6 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles the donation form process.
  *
  * @access private
+ * @since TBD Use gmdate() instead of date().
  * @since 4.16.7.2     Reject serialized data in name fields before storing donation data.
  * @since 4.16.6  Bail early when the form ID is not a give_forms post or is a Visual Form Builder (v3) form.
  * @since 3.16.1  Use give_maybe_safe_unserialize() on $user_info data
@@ -36,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_process_donation_form() {
 
 	// Sanitize Posted Data.
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, CSRF ok.
+	$post_data = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- give_verify_donation_form_nonce() verifies the nonce right below, before the donation is processed.
 
 	// Check whether the form submitted via AJAX or not.
 	$is_ajax = isset( $post_data['give_ajax'] );
@@ -185,7 +186,7 @@ function give_process_donation_form() {
 	$price        = isset( $post_data['give-amount'] ) ?
 		(float) apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $post_data['give-amount'], [ 'currency' => give_get_currency( $form_id ) ] ) ) :
 		'0.00';
-	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
+	$purchase_key = strtolower( md5( $user['user_email'] . gmdate( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
 
 	/**
 	 * Update donation Purchase key.
@@ -216,7 +217,7 @@ function give_process_donation_form() {
 		'price'        => $price,
 		'purchase_key' => $purchase_key,
 		'user_email'   => $user['user_email'],
-		'date'         => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
+		'date'         => gmdate( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
 		'user_info'    => $user_info,
 		'post_data'    => $post_data,
 		'gateway'      => $valid_data['gateway'],
@@ -338,6 +339,7 @@ function give_check_logged_in_user_for_existing_email( &$valid_data ) {
  * Process the checkout login form
  *
  * @access private
+ * @since  TBD Unslash and sanitize the login nonce, and read the AJAX flag after the nonce check.
  * @since  4.16.7 Require a valid nonce before processing the login form.
  * @since  1.0
  *
@@ -345,7 +347,6 @@ function give_check_logged_in_user_for_existing_email( &$valid_data ) {
  */
 function give_process_form_login() {
 
-	$is_ajax  = ! empty( $_POST['give_ajax'] ) ? give_clean( $_POST['give_ajax'] ) : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
 	$referrer = wp_get_referer();
 
 	// Default to no user until the login form is validated.
@@ -354,11 +355,13 @@ function give_process_form_login() {
 	];
 
 	// Require a valid nonce before processing the login form.
-	if ( empty( $_POST['give_login_nonce'] ) || ! wp_verify_nonce( $_POST['give_login_nonce'], 'give-login-nonce' ) ) {
+	if ( empty( $_POST['give_login_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['give_login_nonce'] ) ), 'give-login-nonce' ) ) {
 		give_set_error( 'invalid_nonce', __( 'Your session has expired. Please reload the page and try again.', 'give' ) );
 	} else {
 		$user_data = give_donation_form_validate_user_login();
 	}
+
+	$is_ajax = ! empty( $_POST['give_ajax'] ) ? give_clean( $_POST['give_ajax'] ) : 0; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 	if ( give_get_errors() || $user_data['user_id'] < 1 ) {
 		if ( $is_ajax ) {
@@ -412,7 +415,7 @@ add_action( 'wp_ajax_nopriv_give_process_donation_login', 'give_process_form_log
  */
 function give_donation_form_validate_fields() {
 
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs; the v3 ValidateDonationFormRequest calls it from its own signed route.
 	give_donation_form_validate_name_fields($post_data);
 
 	// Validate Honeypot First.
@@ -512,6 +515,7 @@ function give_donation_form_has_serialized_fields(array $post_data): bool
 /**
  * Detect spam donation.
  *
+ * @since TBD Unslash and sanitize the user agent.
  * @since 1.8.14
  *
  * @return bool|mixed
@@ -519,7 +523,7 @@ function give_donation_form_has_serialized_fields(array $post_data): bool
 function give_is_spam_donation() {
 	$spam = false;
 
-	$user_agent = (string) isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+	$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
 
 	if ( strlen( $user_agent ) < 2 ) {
 		$spam = true;
@@ -541,7 +545,7 @@ function give_is_spam_donation() {
  */
 function give_donation_form_validate_gateway() {
 
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
 	$amount    = ! empty( $post_data['give-amount'] ) ? give_maybe_sanitize_amount( $post_data['give-amount'] ) : 0;
 	$gateway   = ! empty( $post_data['give-gateway'] ) ? $post_data['give-gateway'] : 0;
@@ -613,7 +617,7 @@ function give_donation_form_validate_gateway() {
  */
 function give_verify_minimum_price( $amount_range = 'minimum' ) {
 
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
 	$amount    = ! empty( $post_data['give-amount'] ) ? give_maybe_sanitize_amount( $post_data['give-amount'], [ 'currency' => give_get_currency( $form_id ) ] ) : 0;
 	$price_id  = isset( $post_data['give-price-id'] ) ? absint( $post_data['give-price-id'] ) : '';
@@ -664,7 +668,7 @@ function give_verify_minimum_price( $amount_range = 'minimum' ) {
  */
 function give_donation_form_validate_agree_to_terms() {
 
-	$agree_to_terms = ! empty( $_POST['give_agree_to_terms'] ) ? give_clean( $_POST['give_agree_to_terms'] ) : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
+	$agree_to_terms = ! empty( $_POST['give_agree_to_terms'] ) ? give_clean( $_POST['give_agree_to_terms'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data; the nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 
 	// Proceed only, if donor agreed to terms.
 	if ( ! $agree_to_terms ) {
@@ -793,7 +797,7 @@ function give_get_required_fields( $form_id ) {
 			'error_message' => __( 'Please enter billing state / province / County.', 'give' ),
 		];
 
-		$country = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
+		$country = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data; the nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 
 		// Check if billing country already exists.
 		if ( $country ) {
@@ -873,7 +877,7 @@ function give_get_required_fields( $form_id ) {
 function give_require_billing_address( $payment_mode ) {
 
 	$return          = false;
-	$billing_country = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
+	$billing_country = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data; the nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 
 	if ( $billing_country || did_action( "give_{$payment_mode}_cc_form" ) || did_action( 'give_cc_form' ) ) {
 		$return = true;
@@ -895,7 +899,7 @@ function give_require_billing_address( $payment_mode ) {
  */
 function give_donation_form_validate_logged_in_user() {
 
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 	$user_id   = get_current_user_id();
 	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
 
@@ -974,7 +978,7 @@ function give_donation_form_validate_new_user() {
 	];
 
 	// Get data.
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 	$user_data = wp_parse_args( $post_data, $default_user_data );
 
 	$form_id = absint( $user_data['give-form-id'] );
@@ -1033,7 +1037,7 @@ function give_donation_form_validate_new_user() {
  */
 function give_donation_form_validate_user_login() {
 
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified before this runs: by give_verify_donation_form_nonce() in give_process_donation_form(), or by the give-login-nonce check in give_process_form_login().
 
 	// Start an array to collect valid user data.
 	$valid_user_data = [
@@ -1111,7 +1115,7 @@ function give_donation_form_validate_user_login() {
  */
 function give_donation_form_validate_guest_user() {
 
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 	$form_id   = ! empty( $post_data['give-form-id'] ) ? $post_data['give-form-id'] : 0;
 
 	// Start an array to collect valid user data.
@@ -1174,6 +1178,7 @@ function give_donation_form_validate_guest_user() {
  * @param array $user_data User Data.
  *
  * @access  private
+ * @since TBD Use gmdate() instead of date().
  * @since   1.0
  *
  * @return  integer
@@ -1196,7 +1201,7 @@ function give_register_and_login_new_user( $user_data = [] ) {
 			'user_email'      => isset( $user_data['user_email'] ) ? $user_data['user_email'] : '',
 			'first_name'      => isset( $user_data['user_first'] ) ? $user_data['user_first'] : '',
 			'last_name'       => isset( $user_data['user_last'] ) ? $user_data['user_last'] : '',
-			'user_registered' => date( 'Y-m-d H:i:s' ),
+			'user_registered' => gmdate( 'Y-m-d H:i:s' ),
 			'role'            => give_get_option( 'donor_default_user_role', 'give_donor' ),
 		],
 		$user_data
@@ -1242,6 +1247,7 @@ function give_register_and_login_new_user( $user_data = [] ) {
 /**
  * Get Donation Form User
  *
+ * @since   TBD Read the AJAX flag from the sanitized post data.
  * @since   1.0
  * @since 2.17.1 Do not run validation check for ajax request expect donation validation ajax request.
  *
@@ -1253,8 +1259,8 @@ function give_register_and_login_new_user( $user_data = [] ) {
 function give_get_donation_form_user( $valid_data = [] ) {
     // Initialize user.
     $user                                = false;
-    $post_data                           = give_clean($_POST); // WPCS: input var ok, sanitization ok, CSRF ok.
-    $is_validating_donation_form_on_ajax = ! empty($_POST['give_ajax']) ? $post_data['give_ajax'] : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
+    $post_data                           = give_clean($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
+    $is_validating_donation_form_on_ajax = ! empty($post_data['give_ajax']) ? $post_data['give_ajax'] : 0;
 
     if ( $is_validating_donation_form_on_ajax ) {
         // Do not create or login the user during the ajax submission (check for errors only).
@@ -1369,7 +1375,7 @@ function give_donation_form_validate_cc() {
 function give_get_donation_cc_info() {
 
 	// Sanitize the values submitted with donation form.
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 
 	$cc_info                   = [];
 	$cc_info['card_name']      = ! empty( $post_data['card_name'] ) ? $post_data['card_name'] : '';
@@ -1583,7 +1589,7 @@ function give_donation_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
  */
 function give_validate_donation_amount( $valid_data ) {
 
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 
 	/* @var Give_Donate_Form $form */
 	$form = new Give_Donate_Form( $post_data['give-form-id'] );
@@ -1673,7 +1679,7 @@ add_action( 'give_checkout_error_checks', 'give_validate_donation_amount', 10, 1
  */
 function give_validate_required_form_fields( $form_id ) {
 	// Sanitize values submitted with donation form.
-	$post_data          = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data          = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 	$requiredFormFields = give_get_required_fields( $form_id );
 
 	// Loop through required fields and show error messages.

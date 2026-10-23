@@ -83,8 +83,8 @@ class DonationNotesRepository
                 DB::table('give_commentmeta')
                     ->insert([
                         'give_comment_id' => $commentId,
-                        'meta_key' => DonationNoteMetaKeys::TYPE,
-                        'meta_value' => DonationNoteType::DONOR,
+                        'meta_key' => DonationNoteMetaKeys::TYPE, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the comment meta table, not a query filter.
+                        'meta_value' => DonationNoteType::DONOR, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
                     ]);
             }
         } catch (Exception $exception) {
@@ -92,7 +92,7 @@ class DonationNotesRepository
 
             Log::error('Failed creating a donation note', compact('donationNote'));
 
-            throw new Exception('Failed creating a donation note', 0, $exception);
+            throw new Exception('Failed creating a donation note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -136,7 +136,7 @@ class DonationNotesRepository
 
             Log::error('Failed updating a donation note', compact('donationNote'));
 
-            throw new Exception('Failed updating a donation note', 0, $exception);
+            throw new Exception('Failed updating a donation note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -172,7 +172,7 @@ class DonationNotesRepository
 
             Log::error('Failed deleting a donation note', compact('donationNote'));
 
-            throw new Exception('Failed deleting a donation note', 0, $exception);
+            throw new Exception('Failed deleting a donation note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -197,6 +197,7 @@ class DonationNotesRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.21.0
      *
      * @param DonationNote $donationNote
@@ -207,7 +208,7 @@ class DonationNotesRepository
     {
         foreach ($this->requiredDonationProperties as $key) {
             if (!isset($donationNote->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
 
@@ -254,15 +255,15 @@ class DonationNotesRepository
         if (!$query) {
             $table->insert([
                 'give_comment_id' => $donationNote->id,
-                'meta_key' => DonationNoteMetaKeys::TYPE,
-                'meta_value' => $donationNote->type->getValue(),
+                'meta_key' => DonationNoteMetaKeys::TYPE, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the comment meta table, not a query filter.
+                'meta_value' => $donationNote->type->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
             ]);
         } else {
             $table
                 ->where('give_comment_id', $donationNote->id)
                 ->where('meta_key', DonationNoteMetaKeys::TYPE)
                 ->update([
-                    'meta_value' => $donationNote->type->getValue(),
+                    'meta_value' => $donationNote->type->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
                 ]);
         }
     }

@@ -17,7 +17,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function register()
     {
         give()->bind(Actions\EnqueueFormBuilderAssets::class, function() {
-            $formId = absint($_GET['donationFormID'] ?? 0);
+            $formId = absint($_GET['donationFormID'] ?? 0); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only id param; it only selects which record to show and saves nothing.
             return new Actions\EnqueueFormBuilderAssets(
                 new ViewModels\FormTaxonomyViewModel($formId, give_get_settings())
             );

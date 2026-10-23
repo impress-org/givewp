@@ -601,7 +601,7 @@ class Give_DB_Meta extends Give_DB {
 	 */
 	public function delete_all_meta( $id = 0 ) {
 		global $wpdb;
-		$status = $wpdb->delete( $this->table_name, [ "{$this->meta_type}_id" => $id ], [ '%d' ] );
+		$status = $wpdb->delete( $this->table_name, [ "{$this->meta_type}_id" => $id ], [ '%d' ] ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 
 		if ( $status ) {
 			$this->delete_cache( $id, $this->meta_type );

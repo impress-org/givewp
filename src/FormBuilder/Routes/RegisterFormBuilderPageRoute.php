@@ -22,6 +22,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Use add_submenu_page to register page within WP admin
      *
+     * @since TBD Set explicit versions on the enqueued assets.
      * @since 4.14.0 update permission capability to use facade
      * @since 4.3.2 update capability to edit_give_forms
      * @since 4.0.0 set parent slug to empty string
@@ -49,12 +50,16 @@ class RegisterFormBuilderPageRoute
 
                 wp_enqueue_style(
                     '@givewp/form-builder/style-app',
-                    GIVE_PLUGIN_URL . 'build/formBuilderApp.css'
+                    GIVE_PLUGIN_URL . 'build/formBuilderApp.css',
+                    [],
+                    GIVE_VERSION
                 );
 
                 wp_enqueue_style(
                     'givewp-form-builder-admin-styles',
-                    GIVE_PLUGIN_URL . 'src/FormBuilder/resources/css/admin-form-builder.css'
+                    GIVE_PLUGIN_URL . 'src/FormBuilder/resources/css/admin-form-builder.css',
+                    [],
+                    GIVE_VERSION
                 );
             }
         });
@@ -65,6 +70,7 @@ class RegisterFormBuilderPageRoute
      *
      * @since 4.16.8 Read the query args without assuming they are set.
      * @since 3.22.0 Add locale support
+     * @since TBD Escape output, add a nonce to the dismiss notice URLs and set an explicit version on the registrars style.
      * @since 3.1.0 set translations for scripts
      * @since 3.0.0
      *
@@ -79,21 +85,23 @@ class RegisterFormBuilderPageRoute
          * without checking its shape first. `absint()` is what the redirect guarding this route
          * already uses, and anything it cannot make a number of falls to the check below.
          */
-        $donationFormIdParam = $_GET['donationFormID'] ?? null;
+        $donationFormIdParam = $_GET['donationFormID'] ?? null; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- read-only form id; it only picks the form to open and the is_scalar() check and absint() below turn it into an integer.
         $donationFormId = is_scalar($donationFormIdParam) ? absint($donationFormIdParam) : 0;
 
         // validate form exists before proceeding
         // TODO: improve on this validation
         if (!get_post($donationFormId)) {
-            wp_die(__('Donation form does not exist.', 'give'));
+            wp_die(esc_html__('Donation form does not exist.', 'give'));
         }
 
-        $locale = give_clean($_GET['locale'] ?? '');
+        $locale = give_clean($_GET['locale'] ?? ''); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only locale; give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
         Language::switchToLocale($locale);
 
         wp_enqueue_style(
             '@givewp/form-builder/registrars',
-            GIVE_PLUGIN_URL . 'build/formBuilderRegistrars.css'
+            GIVE_PLUGIN_URL . 'build/formBuilderRegistrars.css',
+            [],
+            GIVE_VERSION
         );
 
         $registrarsScriptHandle = '@givewp/form-builder/registrars';
@@ -139,7 +147,7 @@ class RegisterFormBuilderPageRoute
         );
 
         wp_localize_script('@givewp/form-builder/script', 'onboardingTourData', [
-            'actionUrl' => admin_url('admin-ajax.php?action=givewp_tour_completed'),
+            'actionUrl' => $this->ajaxUrl('givewp_tour_completed'),
             'autoStartDesignTour' => !get_user_meta(get_current_user_id(), 'givewp-form-builder-design-tour-completed', true),
             'autoStartSchemaTour' => !get_user_meta(get_current_user_id(), 'givewp-form-builder-schema-tour-completed', true),
         ]);
@@ -147,13 +155,14 @@ class RegisterFormBuilderPageRoute
         $migratedFormId = give_get_meta($donationFormId, 'migratedFormId', true);
         $transferredFormId = give_get_meta($donationFormId, 'transferredFormId', true);
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only flag; it only decides whether the transfer dialog opens and saves nothing.
         $showTransferModal = isset($_GET['showTransfer']) && (bool)$migratedFormId && !(bool)$transferredFormId;
 
         wp_localize_script('@givewp/form-builder/script', 'migrationOnboardingData', [
             'pluginUrl' => GIVE_PLUGIN_URL,
             'formId' => $donationFormId,
-            'migrationActionUrl' => admin_url('admin-ajax.php?action=givewp_migration_hide_notice'),
-            'transferActionUrl' => admin_url('admin-ajax.php?action=givewp_transfer_hide_notice'),
+            'migrationActionUrl' => $this->ajaxUrl('givewp_migration_hide_notice'),
+            'transferActionUrl' => $this->ajaxUrl('givewp_transfer_hide_notice'),
             'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
             'apiNonce' => wp_create_nonce('wp_rest'),
             'isMigratedForm' => $migratedFormId,
@@ -172,7 +181,7 @@ class RegisterFormBuilderPageRoute
         ]);
 
         wp_localize_script('@givewp/form-builder/script', 'goalNotificationData', [
-            'actionUrl' => admin_url('admin-ajax.php?action=givewp_goal_hide_notice'),
+            'actionUrl' => $this->ajaxUrl('givewp_goal_hide_notice'),
             'isDismissed' => get_user_meta(get_current_user_id(), 'givewp-goal-notice-dismissed', true),
         ]);
 
@@ -180,7 +189,7 @@ class RegisterFormBuilderPageRoute
          * @since 3.16.2
          */
         wp_localize_script('@givewp/form-builder/script', 'additionalPaymentGatewaysNotificationData', [
-            'actionUrl' => admin_url('admin-ajax.php?action=givewp_additional_payment_gateways_hide_notice'),
+            'actionUrl' => $this->ajaxUrl('givewp_additional_payment_gateways_hide_notice'),
             'isDismissed' => get_user_meta(get_current_user_id(), 'givewp-additional-payment-gateways-notice-dismissed', true),
         ]);
 
@@ -213,6 +222,18 @@ class RegisterFormBuilderPageRoute
 
 
         View::render('FormBuilder.admin-form-builder');
+    }
+
+    /**
+     * @since TBD
+     */
+    private function ajaxUrl(string $action): string
+    {
+        return add_query_arg(
+            '_wpnonce',
+            wp_create_nonce(FormBuilderRouteBuilder::AJAX_NONCE_ACTION),
+            admin_url('admin-ajax.php?action=' . $action)
+        );
     }
 
     /**

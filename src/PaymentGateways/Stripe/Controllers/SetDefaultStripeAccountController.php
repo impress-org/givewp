@@ -27,13 +27,14 @@ class SetDefaultStripeAccountController
     }
 
     /**
+     * @since TBD Verify the nonce.
      * @since 2.13.0
      */
     public function __invoke()
     {
         $this->validateRequest();
 
-        $requestData = SetDefaultStripeAccountDto::fromArray(give_clean($_POST));
+        $requestData = SetDefaultStripeAccountDto::fromArray(give_clean($_POST)); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the nonce is verified by validateRequest() above.
 
         try {
             if ($requestData->formId) {
@@ -64,6 +65,7 @@ class SetDefaultStripeAccountController
     }
 
     /**
+     * @since TBD Verify the nonce.
      * @since 2.13.0
      */
     private function validateRequest()
@@ -71,5 +73,7 @@ class SetDefaultStripeAccountController
         if ( ! current_user_can('manage_give_settings')) {
             die();
         }
+
+        check_ajax_referer('give_stripe_set_account_default');
     }
 }

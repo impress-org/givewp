@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Sanitized and unslashed request input when rendering legacy donation forms
+timestamp: 2026-10-08T19:00:00.000Z

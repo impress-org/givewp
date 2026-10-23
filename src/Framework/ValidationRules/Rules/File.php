@@ -72,6 +72,7 @@ class File implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
+     * @since TBD Number the placeholders and add translators comments.
      * @since 2.32.0
      **/
     public function __invoke($value, Closure $fail, string $key, array $values)
@@ -80,23 +81,27 @@ class File implements ValidationRule, ValidatesOnFrontEnd
             $file = UploadedFile::fromArray($value);
 
             if (!$file->isUploadedFile()) {
+                /* translators: %s: Field label */
                 $fail(sprintf(__('%s must be a valid file.', 'give'), '{field}'));
             }
 
             // check against both the allowed mime types defined by the file rule and the server
             if (!in_array($file->getMimeType(), $this->getAllowedMimeTypes(), true) ||
                 !in_array($file->getMimeType(), get_allowed_mime_types(), true)) {
+                /* translators: %s: Field label */
                 $fail(sprintf(__('%s must be a valid file type.', 'give'), '{field}'));
             }
 
             // check against both the max upload size defined by the file rule and the server
             if ($file->getSize() > $this->getMaxSize() || $file->getSize() > wp_max_upload_size()) {
                 $fail(
-                    sprintf(__('%s must be less than or equal to %d bytes.', 'give'), '{field}', $this->getMaxSize())
+                    /* translators: 1: Field label, 2: Maximum file size in bytes */
+                    sprintf(__('%1$s must be less than or equal to %2$d bytes.', 'give'), '{field}', $this->getMaxSize())
                 );
             }
 
             if ($file->getError() !== UPLOAD_ERR_OK) {
+                /* translators: %s: Field label */
                 $fail(sprintf(__('%s must be a valid file.', 'give'), '{field}'));
             }
         } catch (\Throwable $e) {

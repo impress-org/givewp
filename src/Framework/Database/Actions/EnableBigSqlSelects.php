@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Give\Framework\Database\Actions;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- sets a MySQL session variable; there is no result to cache.
+
 class EnableBigSqlSelects
 {
     /**

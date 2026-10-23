@@ -27,6 +27,8 @@ class View
      * This will try to load src/DomainName/resources/view/templateName.php file
      *
      * @return string|void
+     *
+     * @since TBD Escape exception message and output.
      * @throws InvalidArgumentException if template file not exist
      *
      */
@@ -37,7 +39,7 @@ class View
         $template = GIVE_PLUGIN_DIR . "src/{$domain}/resources/views/{$file}.php";
 
         if ( ! file_exists($template)) {
-            throw new InvalidArgumentException("View template file {$template} does not exist");
+            throw new InvalidArgumentException(esc_html("View template file {$template} does not exist"));
         }
 
         ob_start();
@@ -49,6 +51,7 @@ class View
             return $content;
         }
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- outputs the buffered content of the included template, which is responsible for escaping its own output.
         echo $content;
     }
 

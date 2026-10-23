@@ -129,6 +129,7 @@ class BatchMigrationRunner
     /**
      * Register batch migration action
      *
+     * @since TBD Escape exception message.
      * @since 4.0.0
      *
      * @throws Exception
@@ -144,7 +145,7 @@ class BatchMigrationRunner
                 DB::commit();
             } catch (Exception $e) {
                 DB::rollback();
-                throw new Exception($e->getMessage(), 0, $e);
+                throw new Exception($e->getMessage(), 0, $e); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- re-thrown inside an Action Scheduler action; the message is stored as text in its log, and $previous is a Throwable.
             }
         }, 10, 2);
     }
