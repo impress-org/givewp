@@ -54,6 +54,10 @@ lookup_failed() {
     exit 2
 }
 
+# Any other command that fails (mktemp, mkdir, cp, ...) is a failure too, never "no baseline":
+# exit 1 is kept for the one place below that means it.
+trap 'echo "fetch-baseline.sh failed at line $LINENO." >&2; exit 2' ERR
+
 repo=${GITHUB_REPOSITORY:-$(gh repo view --json nameWithOwner --jq .nameWithOwner)} || lookup_failed "no repository"
 runs="repos/$repo/actions/workflows/plugin-check.yml/runs"
 
