@@ -1,14 +1,13 @@
 import {__} from '@wordpress/i18n';
 import type ListTableApi from '@givewp/components/ListTable/api';
-import type {ListTableItem, ListTableParameters, ListTableRowAction} from '@givewp/components/ListTable/ListTablePage';
-
-const idsOf = (items: ListTableItem[]) => items.map((item) => item.id).join(',');
+import {hasStatus} from '@givewp/components/ListTable/adapters/hasStatus';
+import {idsOf} from '@givewp/components/ListTable/adapters/idsOf';
+import type {ListTableParameters, ListTableRowAction} from '@givewp/components/ListTable/ListTablePage';
 
 /**
  * @since TBD
  */
-export const isDonationsTrashView = (parameters: ListTableParameters) =>
-    [].concat(parameters?.status ?? []).includes('trash');
+export const isDonationsTrashView = (parameters: ListTableParameters) => hasStatus(parameters, 'trash');
 
 /**
  * The donation actions shared by the Donations screen and the subscription details "Donations" tab:

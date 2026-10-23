@@ -2,6 +2,7 @@ import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
 import {donationRowActions, isDonationsTrashView} from './DonationRowActions';
 import SetStatusDialog from '@givewp/components/ListTable/SetStatusDialog';
+import {idsOf} from '@givewp/components/ListTable/adapters/idsOf';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import styles from './ListTable.module.scss';
@@ -50,7 +51,6 @@ const filters: Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',
-        inlineSize: '14rem',
         text: __('Name, Email, or Donation ID', 'give'),
         ariaLabel: __('search donations', 'give'),
     },
@@ -93,12 +93,12 @@ const rowActions: Array<ListTableRowAction> = [
         Dialog: (props) => (
             <SetStatusDialog
                 {...props}
-                api={API}
                 message={<p>{__('Set status for the following donations?', 'give')}</p>}
                 statuses={DONATION_STATUSES.map((value) => ({
                     value,
                     label: window.GiveDonations.donationStatuses?.[value] ?? value,
                 }))}
+                onSetStatus={(ids, status) => API.fetchWithArgs('/setStatus', {ids: ids.join(','), status}, 'POST')}
             />
         ),
     },
@@ -112,7 +112,7 @@ const rowActions: Array<ListTableRowAction> = [
             body: () => <p>{__('Resend Email Receipts for following donations?', 'give')}</p>,
             confirmLabel: __('Resend', 'give'),
         },
-        run: (items) => API.fetchWithArgs('/resendEmailReceipt', {ids: items.map((item) => item.id).join(',')}, 'POST'),
+        run: (items) => API.fetchWithArgs('/resendEmailReceipt', {ids: idsOf(items)}, 'POST'),
     },
 ];
 
@@ -206,7 +206,7 @@ const statsConfig: Record<string, StatConfig> = {
 };
 
 /**
- * @since TBD Pass the actions as data.
+ * @since TBD Pass the actions as data, and the add-ons' bulk actions (the shared list page no longer reads them).
  * @since 4.10.0 Update button class names and add aria attributes.
  * @since 2.24.0
  */
@@ -217,6 +217,8 @@ export default function DonationsListTable() {
             singleName={__('donation', 'give')}
             pluralName={__('donations', 'give')}
             rowActions={rowActions}
+            // Add-ons add their bulk actions to `addonsBulkActions` before the screen mounts.
+            bulkActions={window.GiveDonations.addonsBulkActions ?? []}
             apiSettings={window.GiveDonations}
             filterSettings={filters}
             paymentMode={!!window.GiveDonations.paymentMode}

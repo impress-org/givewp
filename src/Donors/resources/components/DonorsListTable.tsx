@@ -37,7 +37,6 @@ const donorsFilters: Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',
-        inlineSize: '14rem',
         text: __('Name, Email, or Donor ID', 'give'),
         ariaLabel: __('Search donors', 'give'),
     },

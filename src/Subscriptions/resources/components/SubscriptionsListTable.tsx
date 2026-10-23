@@ -38,7 +38,6 @@ const filters: Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',
-        inlineSize: '14rem',
         text: __('Name, Email, or Subscription ID', 'give'),
         ariaLabel: __('search subscriptions', 'give'),
     },

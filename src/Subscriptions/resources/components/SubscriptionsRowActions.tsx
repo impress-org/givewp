@@ -70,7 +70,9 @@ export const subscriptionsRowActions: ListTableRowAction[] = [
         Dialog: (props) => (
             <SetStatusDialog
                 {...props}
-                api={subscriptionsApi}
+                onSetStatus={(ids, status) =>
+                    subscriptionsApi.fetchWithArgs('/setStatus', {ids: ids.join(','), status}, 'POST')
+                }
                 message={<p>{__('Set status for the following subscriptions?', 'give')}</p>}
                 statuses={SUBSCRIPTION_STATUSES}
             />
