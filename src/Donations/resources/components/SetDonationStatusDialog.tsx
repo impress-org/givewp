@@ -1,10 +1,9 @@
 import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {Modal, SelectControl} from '@wordpress/components';
-import type ListTableApi from '@givewp/components/ListTable/api';
 import BulkActionConfirm from '@givewp/components/ListTable/BulkActionConfirm';
 import {getItemName} from '@givewp/components/ListTable/adapters/getItemName';
-import {normalizeActionResult} from '@givewp/components/ListTable/adapters/normalizeActionResult';
+import useListActionSubmit from '@givewp/components/ListTable/hooks/useListActionSubmit';
 import type {ListTableActionDialogProps} from '@givewp/components/ListTable/ListTablePage';
 
 /**
@@ -28,8 +27,8 @@ const label = __('Set status', 'give');
  * @since TBD
  */
 export type SetDonationStatusDialogProps = ListTableActionDialogProps & {
-    api: ListTableApi;
     statuses: Record<string, string>;
+    onSetStatus: (ids: string[], status: string) => Promise<unknown>;
 };
 
 /**
@@ -41,36 +40,15 @@ export type SetDonationStatusDialogProps = ListTableActionDialogProps & {
 export default function SetDonationStatusDialog({
     items,
     onClose,
-    refresh,
-    report,
-    clearSelection,
-    api,
     statuses,
+    onSetStatus,
+    ...context
 }: SetDonationStatusDialogProps) {
     const [status, setStatus] = useState('');
-    const [isBusy, setIsBusy] = useState(false);
+    const {isBusy, submit} = useListActionSubmit(context);
     const ids = items.map((item) => String(item.id));
 
-    const onConfirm = async () => {
-        setIsBusy(true);
-
-        let outcome;
-
-        try {
-            outcome = normalizeActionResult(await api.fetchWithArgs('/setStatus', {ids: ids.join(','), status}, 'POST'), ids);
-        } catch (error) {
-            outcome = normalizeActionResult(error, ids);
-        }
-
-        onClose();
-        report(outcome, label);
-
-        if (outcome.failed === 0) {
-            clearSelection();
-        }
-
-        await refresh();
-    };
+    const onConfirm = () => submit({run: () => onSetStatus(ids, status), ids, label, onDone: onClose});
 
     return (
         <Modal title={label} onRequestClose={onClose}>

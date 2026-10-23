@@ -2,6 +2,7 @@ import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
 import {donationRowActions, isDonationsTrashView} from './DonationRowActions';
 import SetDonationStatusDialog from './SetDonationStatusDialog';
+import {idsOf} from '@givewp/components/ListTable/adapters/idsOf';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import styles from './ListTable.module.scss';
@@ -85,7 +86,11 @@ const rowActions: Array<ListTableRowAction> = [
         supportsBulk: true,
         isVisible: (data, parameters) => !isDonationsTrashView(parameters),
         Dialog: (props) => (
-            <SetDonationStatusDialog {...props} api={API} statuses={window.GiveDonations.donationStatuses ?? {}} />
+            <SetDonationStatusDialog
+                {...props}
+                statuses={window.GiveDonations.donationStatuses ?? {}}
+                onSetStatus={(ids, status) => API.fetchWithArgs('/setStatus', {ids: ids.join(','), status}, 'POST')}
+            />
         ),
     },
     {
@@ -98,7 +103,7 @@ const rowActions: Array<ListTableRowAction> = [
             body: () => <p>{__('Resend Email Receipts for following donations?', 'give')}</p>,
             confirmLabel: __('Resend', 'give'),
         },
-        run: (items) => API.fetchWithArgs('/resendEmailReceipt', {ids: items.map((item) => item.id).join(',')}, 'POST'),
+        run: (items) => API.fetchWithArgs('/resendEmailReceipt', {ids: idsOf(items)}, 'POST'),
     },
 ];
 
