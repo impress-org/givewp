@@ -137,7 +137,8 @@
                 top: -75px;
             }
 
-            &--failed, &--exceeded {
+            &--failed,
+            &--exceeded {
                 border: 1px solid #e5301b;
             }
 
@@ -199,7 +200,7 @@
         min-width: 0;
 
         &__email {
-            color: #757575;
+            color: var(--givewp-grey-500);
             font-weight: 400;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -256,13 +257,13 @@
         &--achieved {
             align-items: center;
             background-color: var(--givewp-green-100);
-            border-radius: 0.75rem;
+            border-radius: var(--givewp-rounded-12);
             color: var(--givewp-green-900);
             display: inline-flex;
-            font-size: 0.6875rem;
+            font-size: var(--givewp-font-size-paragraph-md);
             font-weight: 600;
-            gap: 0.1875rem;
-            line-height: 1.125rem;
+            gap: var(--givewp-spacing-1);
+            line-height: 1.5;
             padding: 0 var(--givewp-spacing-2);
 
             // Keeps its space so the bar length matches the other rows. aria-hidden keeps it from

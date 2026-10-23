@@ -1,7 +1,7 @@
 import {resolveSelect} from '@wordpress/data';
 import {store as coreStore} from '@wordpress/core-data';
 import type {Option} from '@wordpress/dataviews';
-import {asyncSelectEntities} from '../CustomFilter/useAsyncCampaigns';
+import {asyncSelectEntities} from '../AsyncEntitySelect/useAsyncCampaigns';
 
 /**
  * The REST API's largest page.

@@ -16,14 +16,13 @@ export default class ListTableApi {
         };
     }
 
-    fetchWithArgs = (endpoint, args, method = 'GET', signal = null) => {
+    fetchWithArgs = (endpoint: string, args: Record<string, unknown>, method = 'GET') => {
         const url = new URL(this.apiRoot + endpoint);
         for (const [param, value] of Object.entries(args)) {
-            value !== '' && url.searchParams.set(param, value as string);
+            value !== '' && url.searchParams.set(param, String(value));
         }
         return fetch(url.href, {
             method: method,
-            signal: signal,
             headers: this.headers,
         }).then((res) => {
             if (!res.ok) {

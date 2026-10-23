@@ -7,6 +7,7 @@ namespace Give\DonationForms\V2\ListTable\Columns;
 use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Framework\ListTable\Views\GoalProgress;
 
 /**
  * @since 2.24.0
@@ -70,43 +71,6 @@ class GoalColumn extends ModelColumn
             'form_id' => $model->id,
         ]);
 
-
-        $template = '
-            <div class="goalProgress__container">
-                <div
-                    role="progressbar"
-                    aria-labelledby="giveDonationFormsProgressBar-%1$d"
-                    aria-valuenow="%2$s"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    class="goalProgress"
-                >
-                    <span style="width: %2$s%%"></span>
-                </div>
-                <div id="giveDonationFormsProgressBar-%1$d" class="goalProgress__amount">
-                    <span><span class="goal">%3$s</span>%4$s</span>%5$s
-                </div>
-            </div>
-        ';
-
-        return sprintf(
-            $template,
-            $model->id,
-            $stats['progress'],
-            $stats['actual'],
-            sprintf(
-                ' %s %s',
-                __('of', 'give'),
-                $stats['goal']
-            ),
-            sprintf(
-                '<span class="goalProgress--achieved"%s><img src="%s" alt="" />%s</span>',
-                apply_filters('givewp_list_table_goal_progress_achieved_opacity', $stats['progress'] >= 100 ? 1 : 0)
-                    ? ''
-                    : ' aria-hidden="true"',
-                GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/star-icon.svg',
-                __('Achieved', 'give')
-            )
-        );
+        return GoalProgress::render($model->id, $stats['progress'], $stats['actual'], $stats['goal']);
     }
 }

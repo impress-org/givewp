@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {__} from '@wordpress/i18n';
-import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
+import styles from './DonationFormsListTable.module.scss';
 
 /**
  * @since TBD

@@ -9,14 +9,17 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 
 | Path | What it is |
 |:--|:--|
-| `ListTablePage/` | The page shell: header, test-mode switch, stat tiles, notices, and the list. `types.ts` holds the public types. |
+| `ListTablePage/` | The page shell: `ListTablePageHeader` (title, test-mode switch, stat tiles), notices, and the list. `SwitchToLegacyViewButton` for the screens with a legacy view. `types.ts` holds the public types. |
 | `DataViewsListTable/` | Stock `<DataViews>` with Give's tokens. No data fetching. |
 | `adapters/` | Pure functions from the screens' settings to DataViews fields, view and actions, and from the view to the request parameters. Jest tests sit next to them. |
-| `hooks/` | `useListTableView`, `useListTableSelection`, `useListTableQuery` (SWR + `apiFetch`), `useListTableActionNotices`. |
+| `hooks/` | `useListTableView`, `useListTableSelection`, `useListTableQuery` (SWR + `apiFetch`), `useListTableActions` (the DataViews actions and the dialogs they open), `useListTableActionNotices`, and `useListActionSubmit` for a confirm modal or dialog. |
+| `actions/` | `runListAction`: runs an action, reports it, clears the selection when everything succeeded, reloads. Every action and dialog goes through it. |
+| `rowActions/` | Ready-made actions: `trashRowActions` (Edit, Restore, Trash, Delete permanently) and `setStatusRowAction`. |
 | `BulkActionConfirm/` | Body of a confirm modal: message, affected records, Cancel / Confirm. |
 | `SetStatusDialog/` | One "Set status" action for screens whose endpoint has `/setStatus`. |
-| `EmptyStates/`, `ListTableErrorState/` | "No … match your search or filters" with Clear filters, and the failed-request state. |
-| `LegacyRowActions/` | Renders an old row-actions function in its own column. |
+| `EmptyStates/` | One component for "No … match your search or filters" with Clear filters, and for the failed request with Try again. |
+| `AsyncEntitySelect/` | The campaign and form entities that filter options and the campaign picker load from. |
+| `LegacyRowActions/` | Renders an old row-actions function in its own column (`useLegacyRowActionsField`). |
 | `api.ts` | `ListTableApi.fetchWithArgs`, for a list endpoint's actions. |
 
 ## `<ListTablePage />` props
@@ -48,9 +51,9 @@ const rowActions: ListTableRowAction[] = [
         id: 'trash',
         label: __('Trash', 'give'),
         supportsBulk: true,
-        isVisible: (data, parameters) => !parameters.status?.includes('trash'),
+        isVisible: (data, parameters) => !hasStatus(parameters, 'trash'),
         confirm: {title: __('Trash donations', 'give'), body: () => <p>…</p>, confirmLabel: __('Move to trash', 'give')},
-        run: (items) => api.fetchWithArgs('/trash', {ids: items.map((item) => item.id).join(',')}, 'DELETE'),
+        run: (items) => api.fetchWithArgs('/trash', {ids: idsOf(items)}, 'DELETE'),
     },
 ];
 ```
@@ -61,3 +64,6 @@ const rowActions: ListTableRowAction[] = [
 - `run` gets one item from a row's menu and the selected items from the selection bar. Its reply goes
   through `normalizeActionResult` and shows as a snackbar or an error notice.
 - `isEligible(item)` leaves a row out of the action; `isVisible(data, parameters)` hides the action.
+- A list with a trash view gets these four actions from `trashRowActions`, and "Set status" from
+  `setStatusRowAction`. A `Dialog` that changes records submits with `useListActionSubmit`, and gets
+  the request as a prop, so it never calls the API itself.

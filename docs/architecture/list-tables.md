@@ -251,11 +251,15 @@ only place that knows those names). Sorting, filtering, searching and paging sta
 - **Actions are data.** Screens pass `ListTableRowAction[]`: "Edit" (or "Restore" in a trash view) is
   the inline action, the rest are in the row menu, and `supportsBulk` makes one action serve rows and
   selections. DataViews lists every bulk action in each row's menu, so a separate bulk action for the
-  same job would show twice. An action with its own modal uses `Dialog`. Results go to the shared
-  notifications store: a snackbar for what changed, an error notice for what failed. Old-style
-  `bulkActions` configs and a row-actions render function still work through the adapters.
+  same job would show twice. An action with its own modal uses `Dialog`; the dialog gets the request
+  as a prop and never calls the API itself. Every action and dialog runs through `runListAction`, so
+  results, selection clearing and reloading behave the same everywhere: a snackbar for what changed,
+  an error notice for what failed. Lists with a trash view build their actions with
+  `trashRowActions` and `setStatusRowAction`. Old-style `bulkActions` configs and a row-actions
+  render function still work through the adapters.
 - **Add-on bulk actions.** `window.GiveDonations.addonsBulkActions` (localized as `[]` and filled by
-  add-ons) is read on every list screen and appended to the screen's actions.
+  add-ons) is read by the Donations screen and passed as its `bulkActions`. The shared page reads no
+  screen's globals.
 - **No preloaded rows.** The list fetches its own first page; do not localize rows into the page (see
   [pii.md](pii.md)).
 
@@ -276,4 +280,5 @@ only place that knows those names). Sorting, filtering, searching and paging sta
   `ListTableData` concerns
 - `src/Views/Components/ListTable/` — the React side ([README](../../src/Views/Components/ListTable/README.MD))
 - `src/Framework/ListTable/Actions/RegisterListTableAssets.php` — the shared `givewp-list-table` script handle
+- `src/Framework/ListTable/Views/GoalProgress.php` — the goal cell the Campaigns and Donation Forms lists share
 - `src/Framework/QueryBuilder/` — what the endpoints build queries with ([README](../../src/Framework/QueryBuilder/README.md))
