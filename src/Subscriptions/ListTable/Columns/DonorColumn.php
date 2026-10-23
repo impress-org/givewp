@@ -38,7 +38,7 @@ class DonorColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Drop the aria-label so the link is named by its visible text.
+     * @since TBD Name the link by its visible text, with a fallback for a donor with no name.
      * @since 2.24.0
      *
      * @inheritDoc
@@ -52,10 +52,12 @@ class DonorColumn extends ModelColumn
             $model->donor->lastName,
         ]);
 
+        $donorName = trim(implode(' ', $name));
+
         return sprintf(
             '<a href="%s">%s</a>',
             admin_url("edit.php?post_type=give_forms&page=give-donors&view=overview&id=$model->donorId"),
-            trim(implode(' ', $name))
+            $donorName !== '' ? $donorName : __('View donor information', 'give')
         );
     }
 }
