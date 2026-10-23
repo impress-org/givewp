@@ -13,23 +13,28 @@ export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose
     const {supportedAddons, supportedGateways, migrationApiRoot, apiNonce} = window.GiveDonationForms;
     const [error, setError] = useState('');
     const handleUpgrade = async () => {
+        const failed = __('The form could not be upgraded. Please try again.', 'give');
         setError('');
 
-        // @ts-ignore
-        const response = await fetch(migrationApiRoot + '/' + window.give_vars.post_id, {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-WP-Nonce': apiNonce,
-            },
-        });
+        try {
+            // @ts-ignore
+            const response = await fetch(migrationApiRoot + '/' + window.give_vars.post_id, {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-WP-Nonce': apiNonce,
+                },
+            });
 
-        const data = await response.json();
+            const data = await response.json();
 
-        if (response.ok) {
-            window.location = data.redirect;
-        } else {
-            setError(__('The form could not be upgraded. Please try again.', 'give'));
+            if (response.ok) {
+                window.location = data.redirect;
+            } else {
+                setError(failed);
+            }
+        } catch {
+            setError(failed);
         }
     };
 

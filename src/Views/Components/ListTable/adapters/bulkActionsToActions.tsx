@@ -10,6 +10,7 @@ import type {
 } from '../ListTablePage/types';
 import useListActionSubmit from '../hooks/useListActionSubmit';
 import {getItemName} from './getItemName';
+import {onlyEligible} from './onlyEligible';
 
 /**
  * What a bulk action needs from the page it runs on.
@@ -69,18 +70,22 @@ export function bulkActionsToActions(
     return bulkActions
         .filter((config) => !config.isVisible || config.isVisible(context.data, context.parameters))
         .map((config): Action<ListTableItem> => {
+            const isEligible = config.isIdSelectable
+                ? (item: ListTableItem) => config.isIdSelectable(String(item.id), context.data)
+                : undefined;
             const base = {
                 id: `bulk-${config.value}`,
                 label: config.label,
                 supportsBulk: true,
                 isDestructive: config.type === 'danger',
-                ...(config.isIdSelectable && {
-                    isEligible: (item: ListTableItem) => config.isIdSelectable(String(item.id), context.data),
-                }),
+                ...(isEligible && {isEligible}),
             };
 
             if (config.type === 'custom') {
-                return {...base, callback: (items) => context.openCustomAction(config, items)};
+                return {
+                    ...base,
+                    callback: (items) => context.openCustomAction(config, onlyEligible(items, isEligible)),
+                };
             }
 
             return {
