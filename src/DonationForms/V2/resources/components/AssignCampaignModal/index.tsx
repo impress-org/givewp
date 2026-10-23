@@ -3,7 +3,6 @@ import {__, sprintf} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
-import RowAction from '@givewp/components/ListTable/RowAction';
 import {CheckCircle} from '@givewp/components/AdminUI/Icons';
 import {AsyncPaginate} from 'react-select-async-paginate';
 import {
@@ -28,7 +27,7 @@ type AssignCampaignProps = {
     onChanged: () => Promise<void>;
 };
 
-type AssignCampaignModalProps = AssignCampaignProps & {
+export type AssignCampaignModalProps = AssignCampaignProps & {
     isOpen: boolean;
     handleClose: () => void;
 };
@@ -42,37 +41,15 @@ const assignableCampaigns: AsyncSelectEntity = {
 };
 
 /**
- * Row action that owns the modal state. It is a real component so the parent row-actions
- * function stays hook-free and the row count can change without breaking React's hook order.
- * A standalone form gets "Assign campaign"; a form that already has one gets "Change campaign".
- *
- * @since 4.19.0
- */
-export default function AssignCampaignRowAction(props: AssignCampaignProps) {
-    const [isOpen, setOpen] = useState(false);
-
-    return (
-        <>
-            <RowAction
-                onClick={() => setOpen(true)}
-                actionId={props.formId}
-                displayText={props.campaignId ? __('Change campaign', 'give') : __('Assign campaign', 'give')}
-                hiddenText={props.formTitle}
-            />
-            {isOpen && <AssignCampaignModal {...props} isOpen={isOpen} handleClose={() => setOpen(false)} />}
-        </>
-    );
-}
-
-/**
  * One modal for everything about a form's campaign: assign a standalone form, move a linked form
  * to another campaign, or remove it from its campaign. The picker only offers campaigns that are
  * not archived and never the current one. The server refuses to move or remove a campaign's
  * default form and explains why.
  *
+ * @since TBD Export it: the list engine opens it from the row menu.
  * @since 4.19.0
  */
-function AssignCampaignModal({
+export default function AssignCampaignModal({
     isOpen,
     handleClose,
     formId,

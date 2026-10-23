@@ -1,7 +1,7 @@
 import type {Action} from '@wordpress/dataviews';
 import BulkActionConfirm from '../BulkActionConfirm';
 import type {ListActionContext, ListTableItem, ListTableRowAction} from '../ListTablePage/types';
-import {runListAction} from '../actions/runListAction';
+import {runListAction, RunListActionArgs} from '../actions/runListAction';
 import useListActionSubmit from '../hooks/useListActionSubmit';
 import {getItemName} from './getItemName';
 import {onlyEligible} from './onlyEligible';
@@ -11,7 +11,21 @@ import {onlyEligible} from './onlyEligible';
  *
  * @since TBD
  */
-export type RowActionContext = ListActionContext;
+export type RowActionContext = ListActionContext & {
+    openDialog: (rowAction: ListTableRowAction, items: ListTableItem[]) => void;
+};
+
+/**
+ * What `runListAction` needs to run a typed action on these items.
+ */
+function runArgs(rowAction: ListTableRowAction, items: ListTableItem[]): RunListActionArgs {
+    return {
+        run: () => rowAction.run(items),
+        ids: items.map((item) => item.id),
+        label: typeof rowAction.label === 'function' ? rowAction.label(items) : rowAction.label,
+        successMessage: rowAction.successMessage?.(items),
+    };
+}
 
 type RowActionModalProps = {
     rowAction: ListTableRowAction;
@@ -23,8 +37,7 @@ type RowActionModalProps = {
 function RowActionModal({rowAction, items, closeModal, context}: RowActionModalProps) {
     const {isBusy, submit} = useListActionSubmit(context);
 
-    const onConfirm = () =>
-        submit({run: () => rowAction.run(items), ids: items.map((item) => item.id), label: rowAction.label, onDone: closeModal});
+    const onConfirm = () => submit({...runArgs(rowAction, items), onDone: closeModal});
 
     return (
         <BulkActionConfirm
@@ -45,7 +58,8 @@ function RowActionModal({rowAction, items, closeModal, context}: RowActionModalP
  * - `href`: navigates to the address.
  * - `run` with `confirm`: asks first in a modal.
  * - `run` alone: runs at once.
- * - `RenderModal`: the screen's own modal.
+ * - `RenderModal`: a modal body DataViews shows in its own modal.
+ * - `Dialog`: a screen dialog with its own modal, opened by the page outside DataViews.
  *
  * @since TBD
  */
@@ -67,6 +81,13 @@ export function rowActionsToActions(
             return {...base, callback: ([item]) => window.location.assign(rowAction.href(item))};
         }
 
+        if (rowAction.Dialog) {
+            return {
+                ...base,
+                callback: (items) => context.openDialog(rowAction, onlyEligible(items, rowAction.isEligible)),
+            };
+        }
+
         if (rowAction.RenderModal) {
             return {...base, RenderModal: rowAction.RenderModal};
         }
@@ -83,14 +104,7 @@ export function rowActionsToActions(
 
         return {
             ...base,
-            callback: (selected) => {
-                const items = onlyEligible(selected, rowAction.isEligible);
-
-                return runListAction(
-                    {run: () => rowAction.run(items), ids: items.map((item) => item.id), label: rowAction.label},
-                    context
-                );
-            },
+            callback: (items) => runListAction(runArgs(rowAction, onlyEligible(items, rowAction.isEligible)), context),
         };
     });
 }

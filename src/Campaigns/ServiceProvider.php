@@ -31,7 +31,6 @@ use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
-use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\Donations\Models\Donation;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
@@ -194,14 +193,11 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since TBD The "Forms" tab data is localized by LoadCampaignDetailsAssets.
      * @since 4.0.0
      */
     private function setupCampaignForms()
     {
-        if (CampaignsAdminPage::isShowingDetailsPage()) {
-            Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
-        }
-
         Hooks::addAction('save_post_give_forms', AddCampaignFormFromRequest::class, 'optionBasedFormEditor', 10, 3);
         Hooks::addAction('givewp_donation_form_created', AddCampaignFormFromRequest::class, 'visualFormBuilder');
         Hooks::addAction('givewp_campaign_created', CreateDefaultCampaignForm::class);

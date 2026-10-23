@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Actions;
 
+use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\Framework\ListTable\Actions\RegisterListTableAssets;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
@@ -12,6 +13,7 @@ use Give\Helpers\Language;
 class LoadCampaignDetailsAssets
 {
     /**
+     * @since TBD Localize the "Forms" tab data on this script instead of loading the forms list script.
      * @since 4.3.0 set script translations
      * @since 4.0.0
      */
@@ -29,6 +31,8 @@ class LoadCampaignDetailsAssets
             $scriptAsset['version'],
             true
         );
+
+        give(DonationFormsAdminPage::class)->localizeScriptData($handleName);
 
         wp_enqueue_script($handleName);
 

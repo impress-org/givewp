@@ -41,8 +41,10 @@ export type {
     FilterConfig,
     LegacyRowActionArgs,
     LegacyRowActions,
+    ListTableActionDialogProps,
     ListTableItem,
     ListTablePageProps,
+    ListTableParameters,
     ListTablePageRef,
     ListTableRowAction,
 } from './types';
@@ -161,7 +163,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             [columns, columnFilters, data, legacyRowActionsField, filters]
         );
 
-        const {actions, customAction, setCustomActionOpen} = useListTableActions({
+        const {actions, actionDialog, closeActionDialog, customAction, setCustomActionOpen} = useListTableActions({
             rowActions: typedRowActions,
             bulkActions,
             data,
@@ -262,6 +264,16 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                         onClose={() => setLegacyConfirm(null)}
                         report={report}
                         refresh={refresh}
+                    />
+                )}
+
+                {actionDialog && (
+                    <actionDialog.rowAction.Dialog
+                        items={actionDialog.items}
+                        onClose={closeActionDialog}
+                        refresh={refresh}
+                        report={report}
+                        clearSelection={clearSelection}
                     />
                 )}
 

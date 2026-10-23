@@ -17,6 +17,11 @@ import {rowActionsToActions} from '../adapters/rowActionsToActions';
  */
 export type CustomActionRequest = {config: BulkActionsConfig; items: ListTableItem[]; isOpen: boolean};
 
+/**
+ * @since TBD
+ */
+export type ActionDialogRequest = {rowAction: ListTableRowAction; items: ListTableItem[]};
+
 type UseListTableActionsArgs = ListActionContext & {
     rowActions: ListTableRowAction[] | null;
     bulkActions: BulkActionsConfig[] | null;
@@ -29,9 +34,12 @@ type UseListTableActionsArgs = ListActionContext & {
 };
 
 /**
- * The DataViews actions of a list screen, from its typed row actions and its bulk actions. A
- * `custom` bulk action opens its own dialog: `customAction` holds the last one opened. A closed
- * dialog stays mounted, as with the old table: its buttons close it mid-click.
+ * The DataViews actions of a list screen, from its typed row actions and its bulk actions. Hidden
+ * actions (`isVisible`) are left out on every render.
+ *
+ * Two kinds of action open a dialog outside DataViews: a typed action with `Dialog`
+ * (`actionDialog`), and a `custom` bulk action (`customAction`, the last one opened; a closed
+ * dialog stays mounted, as with the old table: its buttons close it mid-click).
  *
  * @since TBD
  */
@@ -46,13 +54,19 @@ export default function useListTableActions({
     refresh,
     clearSelection,
 }: UseListTableActionsArgs) {
+    const [actionDialog, setActionDialog] = useState<ActionDialogRequest | null>(null);
     const [customAction, setCustomAction] = useState<CustomActionRequest | null>(null);
 
     const actions = useMemo<Action<ListTableItem>[]>(() => {
         const context = {report, refresh, clearSelection};
 
         return [
-            ...(rowActions ? rowActionsToActions(rowActions, context) : []),
+            ...(rowActions
+                ? rowActionsToActions(
+                      rowActions.filter((rowAction) => !rowAction.isVisible || rowAction.isVisible(data, parameters)),
+                      {...context, openDialog: (rowAction, items) => setActionDialog({rowAction, items})}
+                  )
+                : []),
             ...bulkActionsToActions(bulkActions ?? [], {
                 ...context,
                 data,
@@ -90,5 +104,11 @@ export default function useListTableActions({
 
     const setCustomActionOpen = (isOpen: boolean) => setCustomAction((current) => current && {...current, isOpen});
 
-    return {actions, customAction, setCustomActionOpen};
+    return {
+        actions,
+        actionDialog,
+        closeActionDialog: () => setActionDialog(null),
+        customAction,
+        setCustomActionOpen,
+    };
 }
