@@ -27,6 +27,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * Create a class instance.
 		 *
 		 * @access public
+		 * @since TBD Add translators comments.
 		 * @since  2.0
 		 */
 		public function init() {
@@ -40,6 +41,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 					'notification_status_editable' => false,
 					'email_tag_context'            => 'donor',
 					'recipient_group_name'         => __( 'Donor', 'give' ),
+					/* translators: %s: Site URL */
 					'default_email_subject'        => sprintf( __( 'Please confirm your email for %s', 'give' ), get_bloginfo( 'url' ) ),
 					'default_email_message'        => $this->get_default_email_message(),
 					'default_email_header'         => __( 'Confirm Email', 'give' ),

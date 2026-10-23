@@ -45,6 +45,7 @@ class Give_Export {
 	 * Set the export headers
 	 *
 	 * @access public
+	 * @since TBD Use gmdate() and wp_date() instead of date().
 	 * @since  1.0
 	 * @return void
 	 */
@@ -61,7 +62,7 @@ class Give_Export {
 		 *
 		 * @return $file_name string file name
 		 */
-		$file_name = apply_filters( 'give_export_filename', 'give-export-' . $this->export_type . '-' . date( 'm-d-Y' ), $this->export_type );
+		$file_name = apply_filters( 'give_export_filename', 'give-export-' . $this->export_type . '-' . wp_date( 'm-d-Y', null, new DateTimeZone( 'UTC' ) ), $this->export_type );
 
 		nocache_headers();
 		header( 'Content-Type: text/csv; charset=utf-8' );
@@ -101,6 +102,7 @@ class Give_Export {
 	/**
 	 * Output the CSV columns
 	 *
+	 * @since  TBD Escape output.
 	 * @access public
 	 * @since  1.0
 	 * @uses   Give_Export::get_csv_cols()
@@ -110,6 +112,7 @@ class Give_Export {
 		$cols = $this->get_csv_cols();
 		$i    = 1;
 		foreach ( $cols as $col_id => $column ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- writes to the CSV export stream, not to HTML.
 			echo '"' . addslashes( $column ) . '"';
 			echo $i == count( $cols ) ? '' : ',';
 			$i ++;
@@ -121,6 +124,7 @@ class Give_Export {
 	 * Get the data being exported
 	 *
 	 * @access public
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 * @return array $data Data for Export
 	 */
@@ -129,11 +133,11 @@ class Give_Export {
 		$data = array(
 			0 => array(
 				'id'   => '',
-				'data' => date( 'F j, Y' ),
+				'data' => gmdate( 'F j, Y' ),
 			),
 			1 => array(
 				'id'   => '',
-				'data' => date( 'F j, Y' ),
+				'data' => gmdate( 'F j, Y' ),
 			),
 		);
 
@@ -146,6 +150,7 @@ class Give_Export {
 	/**
 	 * Output the CSV rows
 	 *
+	 * @since  TBD Escape output.
 	 * @access public
 	 * @since  1.0
 	 * @return void
@@ -161,6 +166,7 @@ class Give_Export {
 			foreach ( $row as $col_id => $column ) {
 				// Make sure the column is valid
 				if ( array_key_exists( $col_id, $cols ) ) {
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- writes to the CSV export stream, not to HTML.
 					echo '"' . addslashes( $column ) . '"';
 					echo $i == count( $cols ) ? '' : ',';
 					$i ++;
@@ -173,6 +179,7 @@ class Give_Export {
 	/**
 	 * Perform the export
 	 *
+	 * @since  TBD Escape output.
 	 * @access public
 	 * @since  1.0
 	 * @uses   Give_Export::can_export()
@@ -183,7 +190,7 @@ class Give_Export {
 	 */
 	public function export() {
 		if ( ! $this->can_export() ) {
-			wp_die( __( 'You do not have permission to export data.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to export data.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		// Set headers

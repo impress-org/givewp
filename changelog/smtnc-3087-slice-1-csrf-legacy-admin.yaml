@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Added nonce and capability checks to the outdated PHP notice, upgrade
+  trigger and setup page dismiss requests
+timestamp: 2026-10-07T22:03:04.268Z

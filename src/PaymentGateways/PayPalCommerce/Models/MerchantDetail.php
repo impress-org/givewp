@@ -162,6 +162,7 @@ final class MerchantDetail
     /**
      * Validate merchant details.
      *
+     * @since TBD Escape exception message.
      * @since 2.9.0
      *
      * @param array $merchantDetails
@@ -184,7 +185,7 @@ final class MerchantDetail
                 esc_html__(
                     'To create a MerchantDetail object, please provide the following: ',
                     'give'
-                ) . implode(', ', $required)
+                ) . esc_html(implode(', ', $required))
             );
         }
     }

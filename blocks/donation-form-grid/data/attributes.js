@@ -85,7 +85,7 @@ const blockAttributes = {
     },
     donateButtonTextColor: {
 		type: 'string',
-		default: '#69b86b',
+		default: '#2B642C',
 	},
 	displayType: {
 		type: 'string',
@@ -101,7 +101,7 @@ const blockAttributes = {
     },
     progressBarColor: {
         type: 'string',
-        default: '#69b86b'
+        default: '#438D45'
     }
 };
 

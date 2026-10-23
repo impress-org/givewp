@@ -14,6 +14,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class UpdateSubscriptionStatus
 {
     /**
+     * @since TBD Number the placeholders and add translators comments.
      * @since 4.16.0 Add note to subscription
      * @since 3.6.0
      *
@@ -34,7 +35,8 @@ class UpdateSubscriptionStatus
         SubscriptionNote::create([
             'subscriptionId' => $subscription->id,
             'content' => $message . ' ' . sprintf(
-                    __('%s subscription ID: %s', 'give'),
+                    /* translators: 1: Payment gateway name, 2: Subscription ID from the gateway */
+                    __('%1$s subscription ID: %2$s', 'give'),
                     $subscription->initialDonation()->gateway()->getName(),
                     $subscription->gatewaySubscriptionId
                 ),

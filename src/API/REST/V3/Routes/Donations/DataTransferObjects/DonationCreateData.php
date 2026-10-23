@@ -70,6 +70,7 @@ class DonationCreateData
     /**
      * Validate data for creating a single donation
      *
+     * @since TBD Escape exception message. Add translators comments.
      * @since 4.8.0
      *
      * @throws DonationValidationException
@@ -78,7 +79,7 @@ class DonationCreateData
     {
         if ($this->isRenewal) {
             throw new DonationValidationException(
-                __('Cannot create single donation for renewal type', 'give'),
+                esc_html__('Cannot create single donation for renewal type', 'give'),
                 'invalid_donation_type',
                 400
             );
@@ -89,7 +90,8 @@ class DonationCreateData
         foreach ($requiredFields as $field) {
             if (!isset($this->attributes[$field])) {
                 throw new DonationValidationException(
-                    sprintf(__('Missing required field: %s', 'give'), $field),
+                    /* translators: %s: Name of the missing field */
+                    sprintf(esc_html__('Missing required field: %s', 'give'), esc_html($field)),
                     'missing_required_field',
                     400
                 );
@@ -100,6 +102,7 @@ class DonationCreateData
     /**
      * Validate data for creating a renewal donation
      *
+     * @since TBD Escape exception message. Add translators comments.
      * @since 4.8.0
      *
      * @throws DonationValidationException
@@ -108,7 +111,7 @@ class DonationCreateData
     {
         if (!$this->isRenewal) {
             throw new DonationValidationException(
-                __('Cannot create renewal donation for non-renewal type', 'give'),
+                esc_html__('Cannot create renewal donation for non-renewal type', 'give'),
                 'invalid_donation_type',
                 400
             );
@@ -119,7 +122,8 @@ class DonationCreateData
         foreach ($requiredFields as $field) {
             if (!isset($this->attributes[$field])) {
                 throw new DonationValidationException(
-                    sprintf(__('Missing required field: %s', 'give'), $field),
+                    /* translators: %s: Name of the missing field */
+                    sprintf(esc_html__('Missing required field: %s', 'give'), esc_html($field)),
                     'missing_required_field',
                     400
                 );
@@ -130,7 +134,7 @@ class DonationCreateData
         $subscription = Subscription::find($this->subscriptionId);
         if (!$subscription) {
             throw new DonationValidationException(
-                __('Subscription not found', 'give'),
+                esc_html__('Subscription not found', 'give'),
                 'subscription_not_found',
                 404
             );
@@ -139,7 +143,7 @@ class DonationCreateData
         // Ensure total donations don't exceed subscription installments
         if ($subscription->installments > 0 && $subscription->totalDonations() >= $subscription->installments) {
             throw new DonationValidationException(
-                __('Cannot create donation: subscription installments limit reached', 'give'),
+                esc_html__('Cannot create donation: subscription installments limit reached', 'give'),
                 'subscription_installments_exceeded',
                 400
             );
@@ -149,6 +153,7 @@ class DonationCreateData
     /**
      * Validate subscription-related rules
      *
+     * @since TBD Escape exception message.
      * @since 4.8.0
      *
      * @throws DonationValidationException
@@ -159,7 +164,7 @@ class DonationCreateData
         if ($this->subscriptionId > 0) {
             if (!$this->type || !in_array($this->type->getValue(), ['subscription', 'renewal'], true)) {
                 throw new DonationValidationException(
-                    __('When subscriptionId is provided, type must be "subscription" or "renewal"', 'give'),
+                    __('When subscriptionId is provided, type must be "subscription" or "renewal"', 'give'), // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- constant string returned as a JSON message; esc_html__() would encode its quotes.
                     'invalid_donation_type_for_subscription',
                     400
                 );
@@ -169,7 +174,7 @@ class DonationCreateData
             $subscription = Subscription::find($this->subscriptionId);
             if (!$subscription) {
                 throw new DonationValidationException(
-                    __('Subscription not found', 'give'),
+                    esc_html__('Subscription not found', 'give'),
                     'subscription_not_found',
                     404
                 );
@@ -179,7 +184,7 @@ class DonationCreateData
             // if a donation of that type already exists for this subscription
             if ($this->type->getValue() === 'subscription' && $subscription->totalDonations() > 0) {
                 throw new DonationValidationException(
-                    __('A subscription donation already exists for this subscription', 'give'),
+                    esc_html__('A subscription donation already exists for this subscription', 'give'),
                     'subscription_donation_already_exists',
                     400
                 );
@@ -190,7 +195,7 @@ class DonationCreateData
                 $donationGatewayId = $this->attributes['gatewayId'] ?? null;
                 if ($donationGatewayId && $subscription->gatewayId && $donationGatewayId !== $subscription->gatewayId) {
                     throw new DonationValidationException(
-                        __('Gateway ID must match the subscription gateway for subscription and renewal donations', 'give'),
+                        esc_html__('Gateway ID must match the subscription gateway for subscription and renewal donations', 'give'),
                         'gateway_mismatch_for_subscription_donation',
                         400
                     );
@@ -200,7 +205,7 @@ class DonationCreateData
             // When subscriptionId is zero, type can only be "single" (if provided)
             if ($this->type && $this->type->getValue() !== 'single') {
                 throw new DonationValidationException(
-                    __('When subscriptionId is zero, type can only be "single"', 'give'),
+                    __('When subscriptionId is zero, type can only be "single"', 'give'), // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- constant string returned as a JSON message; esc_html__() would encode its quotes.
                     'invalid_donation_type_for_single',
                     400
                 );

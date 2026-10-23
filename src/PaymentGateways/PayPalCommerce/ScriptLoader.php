@@ -89,6 +89,7 @@ class ScriptLoader
     /**
      * Load admin scripts
      *
+     * @since TBD Add translators comments. Send nonces with the PayPal onboarding requests.
      * @since 3.13.0 Add new "keepWebhooksAfterDisconnect" string
      * @since 2.9.0
      */
@@ -102,7 +103,7 @@ class ScriptLoader
             'give-paypal-partner-js',
             $this->getPartnerJsUrl(),
             [],
-            null,
+            null, // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- external PayPal SDK script, not versioned by GiveWP.
             true
         );
 
@@ -119,6 +120,8 @@ class ScriptLoader
             [
                 'countriesAvailableForAdvanceConnection' => $this->countriesAvailableForAdvanceConnection,
                 'accountTypes' => self::$accountTypes,
+                'onBoardedNonce' => wp_create_nonce('give_paypal_commerce_user_on_boarded'),
+                'partnerUrlNonce' => wp_create_nonce('give_paypal_commerce_get_partner_url'),
                 'translations' => [
                     'confirmPaypalAccountDisconnection' => esc_html__('Disconnect PayPal Account', 'give'),
                     'disconnectPayPalAccount' => esc_html__(
@@ -131,6 +134,7 @@ class ScriptLoader
                             'give') . ' &raquo;',
                     'connectSuccessTitle' => esc_html__('You’re connected to PayPal! Here’s what’s next...', 'give'),
                     'pciWarning' => sprintf(
+                        /* translators: %1$s: URL of the GiveWP documentation about PCI compliance */
                         __(
                             'PayPal allows you to accept credit or debit cards directly on your website. Because of
                             this, your site needs to maintain <a href="%1$s" target="_blank">PCI-DDS compliance</a>.
@@ -166,7 +170,8 @@ class ScriptLoader
                 }
 
                 function givePayPalOnBoardedCallback(mode, authCode, sharedId) {
-                    const query = '&mode=' + mode + '&authCode=' + authCode + '&sharedId=' + sharedId;
+                    const query = '&mode=' + mode + '&authCode=' + authCode + '&sharedId=' + sharedId
+                        + '&_wpnonce=' + encodeURIComponent(window.givePayPalCommerce.onBoardedNonce);
 
                     fetch( ajaxurl + '?action=give_paypal_commerce_user_on_boarded' + query )
                         .then(function(res){ return res.json() })
@@ -193,6 +198,7 @@ EOT;
     /**
      * Load public assets.
      *
+     * @since TBD Add translators comments.
      * @since 3.2.0 Get form id from post content if form id is not available.
      * @since 3.2.0 Use EnqueueScript to register and enqueue script.
      * @since 2.32.0 Handle exception if client token is not generated.
@@ -225,6 +231,7 @@ EOT;
             give_set_error(
                 'give-paypal-commerce-client-token-error',
                 sprintf(
+                    /* translators: %1$s: Error message */
                     esc_html__(
                         'Unable to load PayPal Commerce client token. Please try again later. Error: %1$s',
                         'give'

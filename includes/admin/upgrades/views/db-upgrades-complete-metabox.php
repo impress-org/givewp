@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <div id="give-db-updates" data-resume-update="0">
 	<div class="postbox-container">
 		<div class="postbox">

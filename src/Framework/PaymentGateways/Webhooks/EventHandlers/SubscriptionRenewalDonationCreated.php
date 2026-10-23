@@ -12,6 +12,7 @@ use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 class SubscriptionRenewalDonationCreated
 {
     /**
+     * @since TBD Number the placeholders and add translators comments.
      * @since 4.18.0 Bail when the subscription has no initial donation instead of fataling on it.
      * @since 4.0.0 updated to create the renewal from subscription model
      * @since 3.16.0 Add log messages and a defensive approach to prevent duplicated renewals
@@ -96,7 +97,8 @@ class SubscriptionRenewalDonationCreated
 
             DonationNote::create([
                 'donationId' => $donation->id,
-                'content' => $message . ' ' . sprintf(__('%s transaction ID: %s', 'give'),
+                /* translators: 1: Payment gateway name, 2: Transaction ID from the gateway */
+                'content' => $message . ' ' . sprintf(__('%1$s transaction ID: %2$s', 'give'),
                         $donation->gateway()->getName(),
                         $donation->gatewayTransactionId
                     ),

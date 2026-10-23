@@ -28,6 +28,7 @@ class Query
     }
 
     /**
+     * @since TBD Return a prepared query.
      * @since 4.14.0 Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
      * @since 3.14.0 Consider the donation mode (test or live) instead of querying both modes together
      * @return string
@@ -36,7 +37,7 @@ class Query
     {
         global $wpdb;
         $mode = give_is_test_mode() ? 'test' : 'live';
-        $sql = "
+        $sql = $this->wpdb->prepare("
             SELECT
                 sum( revenue.amount ) as total,
                 count( payment.ID ) as count
@@ -50,14 +51,17 @@ class Query
                 AND
                 payment.post_status IN ( 'publish', 'give_subscription' )
                 AND
-                paymentMode.meta_value = '{$mode}'
-        ";
+                paymentMode.meta_value = %s
+        ", $mode);
 
         if (!empty($this->formIDs)) {
-            $sql .= '
+            $sql .= $this->wpdb->prepare(
+                '
                 AND
-                revenue.form_id IN ( ' . $this->getFormsString() . ' )
-            ';
+                revenue.form_id IN ( ' . implode(',', array_fill(0, count($this->formIDs), '%d')) . ' )
+            ',
+                $this->formIDs
+            );
         }
 
         return $sql;
@@ -72,12 +76,15 @@ class Query
     }
 
     /**
+     * @since TBD Document why the query is safe.
+     *
      * @return stdClass
      */
     public function getResults()
     {
         $sql = $this->getSQL();
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- getSQL() returns a prepared query.
         return $this->wpdb->get_row($sql);
     }
 }

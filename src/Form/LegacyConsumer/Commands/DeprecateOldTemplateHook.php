@@ -10,6 +10,7 @@ use Give\Form\LegacyConsumer\FilterCallbackCollection;
 class DeprecateOldTemplateHook implements HookCommandInterface
 {
     /**
+     * @since TBD Add translators comments.
      * @since 2.10.2
      *
      * @param string $hook
@@ -29,6 +30,7 @@ class DeprecateOldTemplateHook implements HookCommandInterface
 
             if ($callbacks->count() > 1) {
                 _give_deprecated_function(
+                    /* translators: %s: Name of the deprecated action */
                     sprintf(__('The %s action', 'give'), "give_$hook"),
                     '2.10',
                     "give_fields_$hook"
