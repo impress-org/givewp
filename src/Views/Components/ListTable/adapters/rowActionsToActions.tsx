@@ -4,6 +4,7 @@ import type {ListActionContext, ListTableItem, ListTableRowAction} from '../List
 import {runListAction, RunListActionArgs} from '../actions/runListAction';
 import useListActionSubmit from '../hooks/useListActionSubmit';
 import {getItemName} from './getItemName';
+import {onlyEligible} from './onlyEligible';
 
 /**
  * What a row action needs from the page it runs on.
@@ -81,7 +82,10 @@ export function rowActionsToActions(
         }
 
         if (rowAction.Dialog) {
-            return {...base, callback: (items) => context.openDialog(rowAction, items)};
+            return {
+                ...base,
+                callback: (items) => context.openDialog(rowAction, onlyEligible(items, rowAction.isEligible)),
+            };
         }
 
         if (rowAction.RenderModal) {
@@ -98,6 +102,9 @@ export function rowActionsToActions(
             };
         }
 
-        return {...base, callback: (items) => runListAction(runArgs(rowAction, items), context)};
+        return {
+            ...base,
+            callback: (items) => runListAction(runArgs(rowAction, onlyEligible(items, rowAction.isEligible)), context),
+        };
     });
 }

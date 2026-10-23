@@ -9,13 +9,20 @@ const toId = (value: string): string | number => (/^\d+$/.test(value) ? Number(v
 
 /**
  * Reads a filter value from the URL the way the old client did. A missing parameter is undefined.
+ * A value that cannot be decoded (a stray `%`, as in `?search=100%`) is used as it is.
  */
 function urlValue(search: URLSearchParams, name: string): string | undefined {
     if (!search.has(name)) {
         return undefined;
     }
 
-    return decodeURI(search.get(name) ?? '');
+    const value = search.get(name) ?? '';
+
+    try {
+        return decodeURI(value);
+    } catch {
+        return value;
+    }
 }
 
 /**

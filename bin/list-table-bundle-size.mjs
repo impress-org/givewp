@@ -92,5 +92,12 @@ if (args.save) {
     console.log(`Saved to ${args.save}`);
 }
 
-const failed = rows.some((row) => row.pass === false || row.bundlesDataViewsItself);
+// Every screen entry must be built. The shared chunk may be missing: `develop` has none.
+const missing = rows.filter((row) => row.own === null).map((row) => SCREENS[row.screen]);
+
+if (missing.length) {
+    console.error(`Missing bundles (run \`npm run build\` first): ${missing.join(', ')}`);
+}
+
+const failed = missing.length > 0 || rows.some((row) => row.pass === false || row.bundlesDataViewsItself);
 process.exitCode = failed ? 1 : 0;
