@@ -1,42 +1,16 @@
-import {useState} from 'react';
 import type {Action} from '@wordpress/dataviews';
 import BulkActionConfirm from '../BulkActionConfirm';
-import type {ListTableItem, ListTableRowAction, ReportOutcome} from '../ListTablePage/types';
+import type {ListActionContext, ListTableItem, ListTableRowAction} from '../ListTablePage/types';
+import {runListAction} from '../actions/runListAction';
+import useListActionSubmit from '../hooks/useListActionSubmit';
 import {getItemName} from './getItemName';
-import {normalizeActionResult} from './normalizeActionResult';
 
 /**
  * What a row action needs from the page it runs on.
  *
  * @since TBD
  */
-export type RowActionContext = {
-    report: ReportOutcome;
-    refresh: () => Promise<unknown>;
-    clearSelection: () => void;
-};
-
-/**
- * Runs an action, reports what it did and reloads the list. A selection that fully succeeded clears.
- */
-async function runRowAction(rowAction: ListTableRowAction, items: ListTableItem[], context: RowActionContext) {
-    const ids = items.map((item) => item.id);
-    let outcome;
-
-    try {
-        outcome = normalizeActionResult(await rowAction.run(items), ids);
-    } catch (error) {
-        outcome = normalizeActionResult(error, ids);
-    }
-
-    context.report(outcome, rowAction.label);
-
-    if (outcome.failed === 0 && !outcome.notice) {
-        context.clearSelection();
-    }
-
-    await context.refresh();
-}
+export type RowActionContext = ListActionContext;
 
 type RowActionModalProps = {
     rowAction: ListTableRowAction;
@@ -46,13 +20,10 @@ type RowActionModalProps = {
 };
 
 function RowActionModal({rowAction, items, closeModal, context}: RowActionModalProps) {
-    const [isBusy, setIsBusy] = useState(false);
+    const {isBusy, submit} = useListActionSubmit(context);
 
-    const onConfirm = async () => {
-        setIsBusy(true);
-        closeModal?.();
-        await runRowAction(rowAction, items, context);
-    };
+    const onConfirm = () =>
+        submit({run: () => rowAction.run(items), ids: items.map((item) => item.id), label: rowAction.label, onDone: closeModal});
 
     return (
         <BulkActionConfirm
@@ -109,6 +80,13 @@ export function rowActionsToActions(
             };
         }
 
-        return {...base, callback: (items) => runRowAction(rowAction, items, context)};
+        return {
+            ...base,
+            callback: (items) =>
+                runListAction(
+                    {run: () => rowAction.run(items), ids: items.map((item) => item.id), label: rowAction.label},
+                    context
+                ),
+        };
     });
 }

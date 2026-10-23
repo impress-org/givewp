@@ -1,28 +1,24 @@
-import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import type {Action} from '@wordpress/dataviews';
 import BulkActionConfirm from '../BulkActionConfirm';
 import type {
     BulkActionsConfig,
+    ListActionContext,
     ListTableItem,
     ListTableParameters,
     ListTableResponse,
-    ReportOutcome,
 } from '../ListTablePage/types';
+import useListActionSubmit from '../hooks/useListActionSubmit';
 import {getItemName} from './getItemName';
-import {normalizeActionResult} from './normalizeActionResult';
 
 /**
  * What a bulk action needs from the page it runs on.
  *
  * @since TBD
  */
-export type BulkActionContext = {
+export type BulkActionContext = ListActionContext & {
     data: ListTableResponse | undefined;
     parameters: ListTableParameters;
-    report: ReportOutcome;
-    refresh: () => Promise<unknown>;
-    clearSelection: () => void;
     openCustomAction: (config: BulkActionsConfig, items: ListTableItem[]) => void;
 };
 
@@ -40,29 +36,10 @@ type BulkActionModalProps = {
  * Confirm. The action runs while the modal is still open, so a body with form fields can be read.
  */
 function BulkActionModal({config, items, closeModal, context}: BulkActionModalProps) {
-    const [isBusy, setIsBusy] = useState(false);
+    const {isBusy, submit} = useListActionSubmit(context);
     const ids = items.map((item) => String(item.id));
 
-    const onConfirm = async () => {
-        setIsBusy(true);
-
-        let outcome;
-
-        try {
-            outcome = normalizeActionResult(await config.action(ids), ids);
-        } catch (error) {
-            outcome = normalizeActionResult(error, ids);
-        }
-
-        closeModal?.();
-        context.report(outcome, config.label);
-
-        if (outcome.failed === 0) {
-            context.clearSelection();
-        }
-
-        await context.refresh();
-    };
+    const onConfirm = () => submit({run: () => config.action(ids), ids, label: config.label, onDone: closeModal});
 
     return (
         <BulkActionConfirm

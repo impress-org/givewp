@@ -54,7 +54,6 @@ interface FilterConfigBase {
 
     // optional
     ariaLabel?: string;
-    inlineSize?: string;
     text?: string;
 }
 
@@ -83,7 +82,8 @@ export type FilterConfig = FilterConfigWithSimpleOptions | FilterConfigWithGroup
 
 export interface ColumnFilterConfig {
     column: string;
-    filter: Function;
+    /** Renders the cell in place of the server HTML. */
+    filter: (item: ListTableItem, column: Column, data: ListTableResponse | undefined) => ReactNode;
 }
 
 /**
@@ -109,8 +109,8 @@ interface BulkActionsConfigBase {
     ) => JSX.Element | JSX.Element[] | string;
 
     //optional
-    isVisible?: (data: any, parameters: any) => boolean;
-    isIdSelectable?: (id: string, data: any) => boolean;
+    isVisible?: (data: ListTableResponse | undefined, parameters: ListTableParameters) => boolean;
+    isIdSelectable?: (id: string, data: ListTableResponse | undefined) => boolean;
     type?: 'normal' | 'warning' | 'danger' | 'custom';
     /**
      * A `custom` action that needs at least this many rows (Campaigns "Merge" needs two). With fewer,
@@ -161,6 +161,17 @@ export type ActionOutcome = {
  * @since TBD
  */
 export type ReportOutcome = (outcome: ActionOutcome, actionLabel?: string) => void;
+
+/**
+ * What running an action needs from the page: show the result, clear the selection, reload.
+ *
+ * @since TBD
+ */
+export type ListActionContext = {
+    report: ReportOutcome;
+    refresh: () => Promise<unknown>;
+    clearSelection: () => void;
+};
 
 /**
  * An action declared as data, so the list engine can show "Edit" inline and the rest in the row menu.
@@ -215,7 +226,7 @@ export type LegacyRowActions = (args: LegacyRowActionArgs) => ReactNode;
 export interface ListTablePageProps {
     //required
     title: string;
-    apiSettings: {apiRoot: string; apiNonce: string; table: {id?: string; columns: Array<object>}; [key: string]: any};
+    apiSettings: {apiRoot: string; apiNonce: string; table: {id?: string; columns: Array<object>}};
 
     //optional
     bulkActions?: Array<BulkActionsConfig> | null;
@@ -224,7 +235,6 @@ export interface ListTablePageProps {
     children?: ReactNode;
     rowActions?: LegacyRowActions | Function | ListTableRowAction[] | null;
     filterSettings?: FilterConfig[];
-    align?: 'start' | 'center' | 'end';
     paymentMode?: boolean;
     listTableBlankSlate: ReactNode;
     productRecommendation?: ReactNode;
@@ -236,5 +246,5 @@ export interface ListTablePageProps {
 }
 
 export interface ListTablePageRef {
-    refresh: () => Promise<any>;
+    refresh: () => Promise<unknown>;
 }
