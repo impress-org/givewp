@@ -1,11 +1,10 @@
 import {createContext, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState} from 'react';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import type {Field} from '@wordpress/dataviews';
 import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notifications';
 import ListTableApi from '../api';
 import DataViewsListTable from '../DataViewsListTable';
-import ListTableErrorState from '../ListTableErrorState';
-import FilteredEmptyState from '../EmptyStates/FilteredEmptyState';
+import ListTableEmptyState from '../EmptyStates';
 import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
 import useLegacyRowActionsField from '../LegacyRowActions/useLegacyRowActionsField';
 import {columnsToFields, titleFieldId, visibleFieldIds} from '../adapters/columnsToFields';
@@ -220,9 +219,26 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                             onChangeSelection={onChangeSelection}
                             empty={
                                 error ? (
-                                    <ListTableErrorState pluralName={pluralName} onRetry={refresh} />
+                                    <ListTableEmptyState
+                                        isError
+                                        message={sprintf(
+                                            /* translators: %s: record type, plural (for example "donations") */
+                                            __('There was a problem retrieving the %s.', 'give'),
+                                            pluralName
+                                        )}
+                                        actionLabel={__('Try again', 'give')}
+                                        onAction={refresh}
+                                    />
                                 ) : hasActiveFilters ? (
-                                    <FilteredEmptyState pluralName={pluralName} onClearFilters={clearFilters} />
+                                    <ListTableEmptyState
+                                        message={sprintf(
+                                            /* translators: %s: record type, plural (for example "donations") */
+                                            __('No %s match your search or filters.', 'give'),
+                                            pluralName
+                                        )}
+                                        actionLabel={__('Clear filters', 'give')}
+                                        onAction={clearFilters}
+                                    />
                                 ) : (
                                     listTableBlankSlate
                                 )
