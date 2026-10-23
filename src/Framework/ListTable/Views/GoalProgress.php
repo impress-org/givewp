@@ -15,7 +15,7 @@ class GoalProgress
      * @since TBD
      *
      * @param int|string $id Record id, used to label the progress bar.
-     * @param int|float $percentage How much of the goal is reached, 0–100 or more.
+     * @param int|float $percentage How much of the goal is reached; the bar shows 0–100.
      * @param string $actual The raised amount, formatted.
      * @param string $goal The goal, formatted.
      */
@@ -39,10 +39,13 @@ class GoalProgress
             </div>
         ';
 
+        // The bar stops at 100%; the "Achieved" pill shows a goal passed.
+        $barPercentage = max(0, min(100, $percentage));
+
         return sprintf(
             $template,
             $id,
-            $percentage,
+            $barPercentage,
             $actual,
             sprintf(' %s %s', __('of', 'give'), $goal),
             self::achievedPill($percentage)
