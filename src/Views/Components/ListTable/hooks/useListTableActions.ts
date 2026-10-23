@@ -73,8 +73,13 @@ export default function useListTableActions({
                 parameters,
                 openCustomAction: (config, items) => {
                     const minSelected = config.minSelected ?? 1;
-                    // From a row's menu the action gets that row alone; an action that needs several rows uses the selection.
-                    const selectedItems = (data?.items ?? []).filter((item) => selection.includes(String(item.id)));
+                    // From a row's menu the action gets that row alone; an action that needs several rows uses the
+                    // selection, without the rows the action leaves out.
+                    const selectedItems = (data?.items ?? []).filter(
+                        (item) =>
+                            selection.includes(String(item.id)) &&
+                            (!config.isIdSelectable || config.isIdSelectable(String(item.id), data))
+                    );
                     const actionItems = items.length < minSelected ? selectedItems : items;
 
                     if (actionItems.length < minSelected) {
