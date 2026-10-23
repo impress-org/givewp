@@ -94,8 +94,10 @@ if [ -n "$sha" ]; then
     candidates=$(gh api "$runs?status=completed&head_sha=$sha&per_page=10" \
         --jq '.workflow_runs[] | "\(.id) \(.html_url) \(.head_sha)"') || lookup_failed "runs for $sha"
 fi
-on_branch=$(gh api "$runs?status=completed&branch=$branch&per_page=20" \
-    --jq '.workflow_runs[] | "\(.id) \(.html_url) \(.head_sha)"') || lookup_failed "runs on $branch"
+# Newest first by run id (ids only grow), not by the order the API happens to return. The 50
+# newest runs are plenty: if none of them has a baseline, an older one would be stale anyway.
+on_branch=$(gh api "$runs?status=completed&branch=$branch&per_page=50" \
+    --jq '.workflow_runs[] | "\(.id) \(.html_url) \(.head_sha)"' | sort -k1,1nr) || lookup_failed "runs on $branch"
 candidates+=${candidates:+$'\n'}$on_branch
 
 tried=" "
