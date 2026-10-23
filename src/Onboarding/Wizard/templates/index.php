@@ -1,5 +1,11 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 // same as default WP from wp-admin/admin-header.php.
 $wp_version_class = 'branch-' . str_replace(['.', ','], '-', floatval(get_bloginfo('version')));
 

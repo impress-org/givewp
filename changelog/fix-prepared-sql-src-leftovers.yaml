@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Prepared the SQL queries in the multi-form goal progress bar, the event tickets amount migration, the donation meta backfill migration, the test data generator and the table helpers
+timestamp: 2026-10-06T02:26:20.000Z

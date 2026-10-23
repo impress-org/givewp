@@ -176,6 +176,7 @@
                 '.give-recurring-period',
                 '.give-recurring-donors-choice-period',
                 '.give_fee_mode_checkbox',
+                '.choose-amount input[tabindex="-1"], .choose-amount select[tabindex="-1"], .choose-amount textarea[tabindex="-1"], .choose-amount button[tabindex="-1"], .choose-amount a[tabindex="-1"]',
                 '.choose-amount .advance-btn',
                 '.step-tracker',
                 '.back-btn',

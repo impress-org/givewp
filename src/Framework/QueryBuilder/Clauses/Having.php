@@ -53,6 +53,8 @@ class Having
     }
 
     /**
+     * @since TBD Escape exception message.
+     *
      * @param  string  $logicalOperator
      *
      * @return string
@@ -70,8 +72,8 @@ class Having
             throw new InvalidArgumentException(
                 sprintf(
                     'Unsupported logical operator %s. Please use one of the supported operators (%s)',
-                    $logicalOperator,
-                    implode(',', $operators)
+                    esc_html($logicalOperator),
+                    esc_html(implode(',', $operators))
                 )
             );
         }
@@ -80,6 +82,8 @@ class Having
     }
 
     /**
+     * @since TBD Escape exception message.
+     *
      * @param  string  $comparisonOperator
      *
      * @return string
@@ -100,8 +104,8 @@ class Having
             throw new InvalidArgumentException(
                 sprintf(
                     'Unsupported comparison operator %s. Please use one of the supported operators (%s)',
-                    $comparisonOperator,
-                    implode(',', $operators)
+                    esc_html($comparisonOperator),
+                    esc_html(implode(',', $operators))
                 )
             );
         }

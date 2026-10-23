@@ -27,6 +27,7 @@ class SubscriptionPeriod extends Enum {
     const YEAR = 'year';
 
     /**
+     * @since TBD Add translators comments.
      * @since 2.24.0
      *
      * @return array
@@ -34,11 +35,11 @@ class SubscriptionPeriod extends Enum {
     public static function labels(): array
     {
         return [
-            self::DAY => [__( 'Daily', 'give' ), __( 'Every %d days', 'give' )],
-            self::WEEK => [__( 'Weekly', 'give' ), __( 'Every %d weeks', 'give' )],
-            self::QUARTER => [__( 'Quarterly', 'give' ), __( 'Every %d quarters', 'give' )],
-            self::MONTH => [__( 'Monthly', 'give' ), __( 'Every %d months', 'give' )],
-            self::YEAR => [__( 'Yearly', 'give' ), __( 'Every %d years', 'give' )],
+            self::DAY => [__( 'Daily', 'give' ), /* translators: %d: Number of days */ __( 'Every %d days', 'give' )],
+            self::WEEK => [__( 'Weekly', 'give' ), /* translators: %d: Number of weeks */ __( 'Every %d weeks', 'give' )],
+            self::QUARTER => [__( 'Quarterly', 'give' ), /* translators: %d: Number of quarters */ __( 'Every %d quarters', 'give' )],
+            self::MONTH => [__( 'Monthly', 'give' ), /* translators: %d: Number of months */ __( 'Every %d months', 'give' )],
+            self::YEAR => [__( 'Yearly', 'give' ), /* translators: %d: Number of years */ __( 'Every %d years', 'give' )],
         ];
     }
 

@@ -22,6 +22,8 @@ abstract class Enum implements EnumInterface
     /**
      * ValueObject constructor.
      *
+     * @since TBD Escape exception message.
+     *
      * @param mixed $value
      */
     final public function __construct($value)
@@ -32,7 +34,7 @@ abstract class Enum implements EnumInterface
 
         if ( ! self::isValid($value)) {
             throw new InvalidArgumentException(
-                sprintf('Invalid %s enumeration value provided %s', static::class, $value)
+                sprintf('Invalid %s enumeration value provided %s', static::class, esc_html($value))
             );
         }
 
@@ -98,6 +100,8 @@ abstract class Enum implements EnumInterface
     }
 
     /**
+     * @since TBD Escape exception message.
+     *
      * @param string $name
      * @param array  $args
      *
@@ -109,6 +113,6 @@ abstract class Enum implements EnumInterface
             return new static($name);
         }
 
-        throw new InvalidArgumentException("Invalid argument, does not match constant {$name}");
+        throw new InvalidArgumentException(esc_html("Invalid argument, does not match constant {$name}"));
     }
 }

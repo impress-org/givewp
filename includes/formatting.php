@@ -523,6 +523,7 @@ function give_format_amount($amount, $args = [])
  *
  * Note: This function only support large number formatting from million to trillion
  *
+ * @since TBD Add translators comments.
  * @since 1.6
  *
  * @use   give_get_price_thousand_separator Get thousand separator.
@@ -569,12 +570,15 @@ function give_human_format_large_amount($amount, $args = [])
             // Calculate large number formatted amount.
             if (4 < $amount_count_parts) {
                 $human_format_amount = sprintf(
+                    /* translators: %s: Amount, for example 2.5 */
                     esc_html__('%s arab', 'give'),
                     round(($sanitize_amount / 1000000000), 2)
                 );
             } elseif (3 < $amount_count_parts) {
+                /* translators: %s: Amount, for example 2.5 */
                 $human_format_amount = sprintf(esc_html__('%s crore', 'give'), round(($sanitize_amount / 10000000), 2));
             } elseif (2 < $amount_count_parts) {
+                /* translators: %s: Amount, for example 2.5 */
                 $human_format_amount = sprintf(esc_html__('%s lakh', 'give'), round(($sanitize_amount / 100000), 2));
             }
             break;
@@ -582,16 +586,19 @@ function give_human_format_large_amount($amount, $args = [])
             // Calculate large number formatted amount.
             if (4 < $amount_count_parts) {
                 $human_format_amount = sprintf(
+                    /* translators: %s: Amount, for example 2.5 */
                     esc_html__('%s trillion', 'give'),
                     round(($sanitize_amount / 1000000000000), 2)
                 );
             } elseif (3 < $amount_count_parts) {
                 $human_format_amount = sprintf(
+                    /* translators: %s: Amount, for example 2.5 */
                     esc_html__('%s billion', 'give'),
                     round(($sanitize_amount / 1000000000), 2)
                 );
             } elseif (2 < $amount_count_parts) {
                 $human_format_amount = sprintf(
+                    /* translators: %s: Amount, for example 2.5 */
                     esc_html__('%s million', 'give'),
                     round(($sanitize_amount / 1000000), 2)
                 );
@@ -826,6 +833,7 @@ function give_let_to_num($size)
 /**
  * Verify nonce.
  *
+ * @since TBD Escape output.
  * @since 1.8
  *
  * @param string $nonce       Nonce Hash.
@@ -860,8 +868,9 @@ function give_validate_nonce($nonce, $action = -1, $wp_die_args = [])
         );
 
         wp_die(
-            $wp_die_args['message'],
-            $wp_die_args['title'],
+            wp_kses_post( $wp_die_args['message'] ),
+            esc_html( $wp_die_args['title'] ),
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $wp_die_args['args'] is wp_die()'s response-code/back-link config array, not text output.
             $wp_die_args['args']
         );
     }

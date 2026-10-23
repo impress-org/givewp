@@ -14,6 +14,9 @@ class CreateSubscriptionTables extends Migration
         return 'create_subscription_tables';
     }
 
+    /**
+     * @since TBD Escape exception message.
+     */
     public function run()
     {
         global $wpdb;
@@ -65,7 +68,11 @@ class CreateSubscriptionTables extends Migration
             "
             );
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException('An error occurred creating the subscription tables', 0, $exception);
+            throw new DatabaseMigrationException(
+                'An error occurred creating the subscription tables',
+                0,
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
     }
 

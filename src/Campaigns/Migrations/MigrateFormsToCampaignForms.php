@@ -42,6 +42,7 @@ class MigrateFormsToCampaignForms extends Migration implements ReversibleMigrati
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 4.0.0
      * @inheritDoc
      * @throws \Exception
@@ -54,7 +55,11 @@ class MigrateFormsToCampaignForms extends Migration implements ReversibleMigrati
                 array_map([$this, 'addUpgradedV2FormToCampaign'], $this->getUpgradedV2FormsData());
             } catch (DatabaseQueryException $exception) {
                 DB::rollback();
-                throw new DatabaseMigrationException('An error occurred while creating initial campaigns', 0, $exception);
+                throw new DatabaseMigrationException(
+                    'An error occurred while creating initial campaigns',
+                    0,
+                    $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+                );
             }
         });
     }

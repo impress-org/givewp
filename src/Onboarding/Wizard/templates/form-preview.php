@@ -1,5 +1,16 @@
 <?php
 
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
+/**
+ * @since TBD Escape output.
+ */
+
 // same as default WP from wp-admin/admin-header.php.
 $wp_version_class = 'branch-' . str_replace(['.', ','], '-', floatval(get_bloginfo('version')));
 
@@ -31,6 +42,7 @@ language_attributes(); ?>>
 <body class="<?php
 echo esc_attr($wp_version_class); ?>">
 <?php
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_form_shortcode() renders the whole donation form; its own output is escaped internally (see includes/forms/template.php).
 echo give_form_shortcode(
     [
         'id' => $this->get_preview_form_id(),

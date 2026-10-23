@@ -37,6 +37,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Add translators comments.
      * @since 4.12.0
      *
      * @inheritDoc
@@ -48,6 +49,7 @@ class CampaignColumn extends ModelColumn
         $campaign = give()->campaigns->getById($model->campaignId);
 
         if ( ! $campaign) {
+            /* translators: %d: Campaign ID */
             return sprintf( __( 'Campaign #%d', 'give' ), $model->campaignId );
         }
 

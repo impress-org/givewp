@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Added translator comments to the currency names, so translators know the
+  placeholder is the currency symbol
+timestamp: 2026-10-06T23:44:47.863Z

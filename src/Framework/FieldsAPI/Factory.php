@@ -12,6 +12,7 @@ class Factory
 {
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.12.0
      *
      * @param string $type
@@ -24,7 +25,7 @@ class Factory
     {
         $class = 'Give\\Framework\\FieldsAPI\\' . ucfirst($type);
         if ( ! class_exists($class)) {
-            throw new TypeNotSupported($type);
+            throw new TypeNotSupported(esc_html($type));
         }
 
         return new $class(...$args);

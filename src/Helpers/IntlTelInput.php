@@ -10,6 +10,11 @@ namespace Give\Helpers;
 class IntlTelInput
 {
     /**
+     * @since TBD
+     */
+    private const VERSION = '21.2.4';
+
+    /**
      * @since 3.9.0
      */
     public static function getCssUrl(): string
@@ -126,6 +131,7 @@ class IntlTelInput
     }
 
     /**
+     * @since TBD Escape output. Load the script and style with the WordPress loader.
      * @since 4.16.4 Escaped the value attribute output.
      * @since 3.9.0
      */
@@ -135,24 +141,19 @@ class IntlTelInput
             $name = $id;
         }
 
+        self::enqueueAssets($id);
+
         ob_start();
 
         ?>
-        <script src="<?php
-        echo self::getScriptUrl(); ?>">
-        </script>
-
-        <link rel="stylesheet" href="<?php
-        echo self::getCssUrl(); ?>">
-
         <input id="<?php
-        echo $id . '--intl_tel_input'; ?>" class="<?php
-        echo $class; ?>" name="<?php
-        echo $name; ?>" value="<?php
+        echo esc_attr($id . '--intl_tel_input'); ?>" class="<?php
+        echo esc_attr($class); ?>" name="<?php
+        echo esc_attr($name); ?>" value="<?php
         echo esc_attr($value); ?>" type='text'>
 
         <span id="<?php
-        echo $id . '--error-msg'; ?>" class="give-intl-tel-input-hide" style="color:red;"></span>
+        echo esc_attr($id . '--error-msg'); ?>" class="give-intl-tel-input-hide" style="color:red;"></span>
 
         <style>
             .give-intl-tel-input-hide {
@@ -163,57 +164,84 @@ class IntlTelInput
                 border: 1px solid red !important;
             }
         </style>
-        <script>
-            if (document.readyState !== 'loading') {
-                readyHandler();
-            } else {
-                document.addEventListener('DOMContentLoaded', readyHandler);
-            }
+        <?php
 
-            function readyHandler() {
-                const input = document.querySelector("#<?php echo $id . '--intl_tel_input'; ?>");
-                const intl = window.intlTelInput(input, {
-                    utilsScript: "<?php echo self::getUtilsScriptUrl(); ?>",
-                    hiddenInput: function (telInputName) {
-                        return {
-                            phone: "<?php echo $id ?>",
-                        };
-                    },
-                    initialCountry: "<?php echo self::getInitialCountry(); ?>",
-                    showSelectedDialCode: Boolean(<?php echo self::getShowSelectedDialCode(); ?>),
-                    useFullscreenPopup: Boolean(<?php echo self::getUseFullscreenPopup(); ?>),
-                    strictMode: Boolean(<?php echo self::getStrictMode(); ?>),
-                    i18n: <?php echo json_encode(self::getI18n()); ?>,
-                });
+        return ob_get_clean();
+    }
 
-                const errorMsg = document.querySelector("#<?php echo $id . '--error-msg'; ?>");
-                const errorMap = <?php echo json_encode(self::getErrorMap()); ?>;
+    /**
+     * Enqueues the library and adds the script that sets up the input.
+     *
+     * @since TBD
+     */
+    private static function enqueueAssets(string $id): void
+    {
+        $handle = 'givewp-intl-tel-input';
 
-                const resetErrorMessage = () => {
-                    input.classList.remove("give-intl-tel-input-error");
-                    errorMsg.innerHTML = "";
-                    errorMsg.classList.add("give-intl-tel-input-hide");
-                };
+        wp_enqueue_style($handle, self::getCssUrl(), [], self::VERSION);
+        wp_enqueue_script($handle, self::getScriptUrl(), [], self::VERSION, true);
+        wp_add_inline_script($handle, self::getInitScript($id));
+    }
 
-                const showErrorMessage = (msg) => {
-                    input.classList.add("give-intl-tel-input-error");
-                    errorMsg.innerHTML = msg;
-                    errorMsg.classList.remove("give-intl-tel-input-hide");
-                };
+    /**
+     * @since TBD
+     */
+    private static function getInitScript(string $id): string
+    {
+        ob_start();
 
-                input.addEventListener('change', resetErrorMessage);
-                input.addEventListener('keyup', resetErrorMessage);
-                input.form.addEventListener("submit", function (e) {
-                    if (input.value.trim() && !intl.isValidNumber()) {
-                        e.preventDefault();
-                        const errorCode = intl.getValidationError();
-                        const msg = errorMap[errorCode] || errorMap[0];
-                        showErrorMessage(msg);
-                        return false;
-                    }
-                });
-            }
-        </script>
+        ?>
+        (function () {
+        if (document.readyState !== 'loading') {
+            readyHandler();
+        } else {
+            document.addEventListener('DOMContentLoaded', readyHandler);
+        }
+
+        function readyHandler() {
+            const input = document.querySelector("#<?php echo esc_js($id . '--intl_tel_input'); ?>");
+            const intl = window.intlTelInput(input, {
+                utilsScript: "<?php echo esc_url(self::getUtilsScriptUrl()); ?>",
+                hiddenInput: function (telInputName) {
+                    return {
+                        phone: <?php echo wp_json_encode($id, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>,
+                    };
+                },
+                initialCountry: "<?php echo esc_js(self::getInitialCountry()); ?>",
+                showSelectedDialCode: Boolean(<?php echo (int) self::getShowSelectedDialCode(); ?>),
+                useFullscreenPopup: Boolean(<?php echo (int) self::getUseFullscreenPopup(); ?>),
+                strictMode: Boolean(<?php echo (int) self::getStrictMode(); ?>),
+                i18n: <?php echo json_encode(self::getI18n()); ?>,
+            });
+
+            const errorMsg = document.querySelector("#<?php echo esc_js($id . '--error-msg'); ?>");
+            const errorMap = <?php echo json_encode(self::getErrorMap()); ?>;
+
+            const resetErrorMessage = () => {
+                input.classList.remove("give-intl-tel-input-error");
+                errorMsg.innerHTML = "";
+                errorMsg.classList.add("give-intl-tel-input-hide");
+            };
+
+            const showErrorMessage = (msg) => {
+                input.classList.add("give-intl-tel-input-error");
+                errorMsg.innerHTML = msg;
+                errorMsg.classList.remove("give-intl-tel-input-hide");
+            };
+
+            input.addEventListener('change', resetErrorMessage);
+            input.addEventListener('keyup', resetErrorMessage);
+            input.form.addEventListener("submit", function (e) {
+                if (input.value.trim() && !intl.isValidNumber()) {
+                    e.preventDefault();
+                    const errorCode = intl.getValidationError();
+                    const msg = errorMap[errorCode] || errorMap[0];
+                    showErrorMessage(msg);
+                    return false;
+                }
+            });
+        }
+        })();
         <?php
 
         return ob_get_clean();

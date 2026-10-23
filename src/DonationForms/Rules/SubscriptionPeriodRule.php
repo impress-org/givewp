@@ -29,6 +29,7 @@ class SubscriptionPeriodRule implements ValidationRule, ValidatesOnFrontEnd, San
     }
 
     /**
+     * @since TBD Number the placeholders and add translators comments.
      * @since 3.0.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
@@ -39,7 +40,8 @@ class SubscriptionPeriodRule implements ValidationRule, ValidatesOnFrontEnd, San
         if ($donationType->isSubscription() && !in_array($value, $periods, true)) {
             $fail(
                 sprintf(
-                    __('%s must be a valid subscription period.  Valid periods are: %s', 'give'),
+                    /* translators: 1: Submitted value, 2: Comma-separated list of valid subscription periods */
+                    __('%1$s must be a valid subscription period.  Valid periods are: %2$s', 'give'),
                     '{value}',
                     implode(
                         ', ',

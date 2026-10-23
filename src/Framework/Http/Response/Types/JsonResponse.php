@@ -64,6 +64,7 @@ class JsonResponse extends BaseJsonResponse
     /**
      * Sets the data to be sent as JSON.
      *
+     * @since TBD Escape exception message.
      * @since 2.18.0
      *
      * @param  mixed  $data
@@ -87,7 +88,7 @@ class JsonResponse extends BaseJsonResponse
         }
 
         if (!$this->hasValidJson(json_last_error())) {
-            throw new InvalidArgumentException(json_last_error_msg());
+            throw new InvalidArgumentException(esc_html(json_last_error_msg()));
         }
 
         return $this->update();
