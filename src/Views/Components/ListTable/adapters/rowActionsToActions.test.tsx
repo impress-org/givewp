@@ -5,7 +5,7 @@ import {rowActionsToActions} from './rowActionsToActions';
 
 (globalThis as {IS_REACT_ACT_ENVIRONMENT?: boolean}).IS_REACT_ACT_ENVIRONMENT = true;
 
-const context = () => ({report: jest.fn(), refresh: jest.fn(async () => undefined)});
+const context = () => ({report: jest.fn(), refresh: jest.fn(async () => undefined), clearSelection: jest.fn()});
 
 describe('rowActionsToActions', () => {
     it('keeps the primary flag and eligibility, and never makes a bulk action', () => {

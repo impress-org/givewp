@@ -33,7 +33,7 @@ const fetchUrl = <Response>(url: string) => apiFetch<Response>({url});
 export default function useListTableQuery<Response>(endpoint: string | null, parameters: ListTableParameters) {
     const url = endpoint ? addQueryArgs(endpoint, toQueryArgs(parameters)) : null;
 
-    const {data, error, isLoading, isValidating, mutate} = useSWR<Response, Error>(url, fetchUrl, {
+    const {data, error, isLoading, mutate} = useSWR<Response, Error>(url, fetchUrl, {
         keepPreviousData: true,
         revalidateOnFocus: false,
         shouldRetryOnError: false,
@@ -41,11 +41,5 @@ export default function useListTableQuery<Response>(endpoint: string | null, par
 
     const refresh = useCallback(() => mutate(), [mutate]);
 
-    return {
-        data,
-        error,
-        isLoading,
-        isRefreshing: isValidating && !isLoading,
-        refresh,
-    };
+    return {data, error, isLoading, refresh};
 }

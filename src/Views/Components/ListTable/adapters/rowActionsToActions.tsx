@@ -1,36 +1,17 @@
-import {useState} from 'react';
 import type {Action} from '@wordpress/dataviews';
 import BulkActionConfirm from '../BulkActionConfirm';
-import type {ListTableItem, ListTableRowAction, ReportOutcome} from '../ListTablePage/types';
+import type {ListActionContext, ListTableItem, ListTableRowAction} from '../ListTablePage/types';
+import {runListAction} from '../actions/runListAction';
+import useListActionSubmit from '../hooks/useListActionSubmit';
 import {getItemName} from './getItemName';
-import {normalizeActionResult} from './normalizeActionResult';
 
 /**
  * What a row action needs from the page it runs on.
  *
  * @since TBD
  */
-export type RowActionContext = {
-    report: ReportOutcome;
-    refresh: () => Promise<unknown>;
-};
+export type RowActionContext = ListActionContext;
 
-/**
- * Runs a row action, reports what it did and reloads the list.
- */
-async function runRowAction(rowAction: ListTableRowAction, item: ListTableItem, context: RowActionContext) {
-    const ids = [item.id];
-    let outcome;
-
-    try {
-        outcome = normalizeActionResult(await rowAction.run(item), ids);
-    } catch (error) {
-        outcome = normalizeActionResult(error, ids);
-    }
-
-    context.report(outcome, rowAction.label);
-    await context.refresh();
-}
 
 type RowActionModalProps = {
     rowAction: ListTableRowAction;
@@ -40,13 +21,10 @@ type RowActionModalProps = {
 };
 
 function RowActionModal({rowAction, item, closeModal, context}: RowActionModalProps) {
-    const [isBusy, setIsBusy] = useState(false);
+    const {isBusy, submit} = useListActionSubmit(context);
 
-    const onConfirm = async () => {
-        setIsBusy(true);
-        closeModal?.();
-        await runRowAction(rowAction, item, context);
-    };
+    const onConfirm = () =>
+        submit({run: () => rowAction.run(item), ids: [item.id], label: rowAction.label, onDone: closeModal});
 
     return (
         <BulkActionConfirm
@@ -102,6 +80,10 @@ export function rowActionsToActions(
             };
         }
 
-        return {...base, callback: ([item]) => runRowAction(rowAction, item, context)};
+        return {
+            ...base,
+            callback: ([item]) =>
+                runListAction({run: () => rowAction.run(item), ids: [item.id], label: rowAction.label}, context),
+        };
     });
 }

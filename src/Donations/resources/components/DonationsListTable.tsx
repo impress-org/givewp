@@ -6,6 +6,7 @@ import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePag
 import styles from './ListTable.module.scss';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import {hasStatus} from '@givewp/components/ListTable/adapters/hasStatus';
 import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
@@ -51,7 +52,6 @@ const filters: Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',
-        inlineSize: '14rem',
         text: __('Name, Email, or Donation ID', 'give'),
         ariaLabel: __('search donations', 'give'),
     },
@@ -77,7 +77,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Delete', 'give'),
         value: 'delete',
         type: 'danger',
-        isVisible: (data, parameters) => parameters?.status?.includes('trash'),
+        isVisible: (data, parameters) => hasStatus(parameters, 'trash'),
         action: async (selected) => {
             const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
             return response;
@@ -102,7 +102,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Trash', 'give'),
         value: 'trash',
         type: 'warning',
-        isVisible: (data, parameters) => !parameters?.status?.includes('trash'),
+        isVisible: (data, parameters) => !hasStatus(parameters, 'trash'),
         action: async (selected) => {
             const response = await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE');
             return response;
@@ -127,7 +127,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Restore', 'give'),
         value: 'restore',
         type: 'normal',
-        isVisible: (data, parameters) => parameters?.status?.includes('trash'),
+        isVisible: (data, parameters) => hasStatus(parameters, 'trash'),
         action: async (selected) => {
             const response = await API.fetchWithArgs('/untrash', {ids: selected.join(',')}, 'POST');
             return response;
@@ -165,7 +165,7 @@ const bulkActions: Array<BulkActionsConfig> = [
             return {
                 label,
                 value,
-                isVisible: (data, parameters) => !parameters?.status?.includes('trash'),
+                isVisible: (data, parameters) => !hasStatus(parameters, 'trash'),
                 action: async (selected) =>
                     await API.fetchWithArgs(
                         '/setStatus',
@@ -301,6 +301,7 @@ const statsConfig: Record<string, StatConfig> = {
 };
 
 /**
+ * @since TBD Add the add-ons' bulk actions here; the shared list page no longer reads them.
  * @since 4.10.0 Update button class names and add aria attributes.
  * @since 2.24.0
  */
@@ -311,7 +312,8 @@ export default function DonationsListTable() {
             singleName={__('donation', 'give')}
             pluralName={__('donations', 'give')}
             rowActions={DonationRowActions}
-            bulkActions={bulkActions}
+            // Add-ons add their bulk actions to `addonsBulkActions` before the screen mounts.
+            bulkActions={[...bulkActions, ...(window.GiveDonations.addonsBulkActions ?? [])]}
             apiSettings={window.GiveDonations}
             filterSettings={filters}
             paymentMode={!!window.GiveDonations.paymentMode}

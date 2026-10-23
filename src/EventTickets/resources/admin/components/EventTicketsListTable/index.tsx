@@ -22,7 +22,6 @@ const filters: Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',
-        inlineSize: '14rem',
         text: __('Search by keyword', 'give'),
         ariaLabel: __('search events', 'give'),
     },
