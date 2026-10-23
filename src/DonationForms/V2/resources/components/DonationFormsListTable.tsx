@@ -6,6 +6,7 @@ import UpgradedFormTooltip from './UpgradedFormTooltip';
 import Onboarding, {OnboardingContext, OnboardingStateProps} from './Onboarding';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {ColumnFilterConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import {Interweave} from 'interweave';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
@@ -248,12 +249,11 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
                             {__('Add form', 'give')}
                         </a>
                         {window.GiveDonationForms.isOptionBasedFormEditorEnabled && (
-                            <button
+                            <SwitchToLegacyViewButton
+                                api={API}
                                 className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
-                                onClick={showLegacyDonationForms}
-                            >
-                                {__('Switch to Legacy View', 'give')}
-                            </button>
+                                onSwitched={() => (window.location.href = '/wp-admin/edit.php?post_type=give_forms')}
+                            />
                         )}
                     </>
                 )}
@@ -265,7 +265,3 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
     );
 }
 
-const showLegacyDonationForms = async (event) => {
-    await API.fetchWithArgs('/view', {isLegacy: 1});
-    window.location.href = '/wp-admin/edit.php?post_type=give_forms';
-};

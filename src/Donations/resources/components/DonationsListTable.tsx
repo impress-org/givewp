@@ -1,12 +1,13 @@
 import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
 import {donationRowActions, isDonationsTrashView} from './DonationRowActions';
-import SetStatusDialog from '@givewp/components/ListTable/SetStatusDialog';
+import {setStatusRowAction} from '@givewp/components/ListTable/rowActions/setStatusRowAction';
 import {idsOf} from '@givewp/components/ListTable/adapters/idsOf';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import styles from './ListTable.module.scss';
 import {BulkActionsConfig, FilterConfig, ListTableRowAction} from '@givewp/components/ListTable/ListTablePage';
+import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
 import {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
@@ -85,23 +86,15 @@ const DONATION_STATUSES = ['publish', 'pending', 'processing', 'refunded', 'revo
  */
 const rowActions: Array<ListTableRowAction> = [
     ...donationRowActions(API, window.GiveDonations.adminUrl),
-    {
-        id: 'set-status',
-        label: __('Set status', 'give'),
-        supportsBulk: true,
-        isVisible: (data, parameters) => !isDonationsTrashView(parameters),
-        Dialog: (props) => (
-            <SetStatusDialog
-                {...props}
-                message={<p>{__('Set status for the following donations?', 'give')}</p>}
-                statuses={DONATION_STATUSES.map((value) => ({
-                    value,
-                    label: window.GiveDonations.donationStatuses?.[value] ?? value,
-                }))}
-                onSetStatus={(ids, status) => API.fetchWithArgs('/setStatus', {ids: ids.join(','), status}, 'POST')}
-            />
-        ),
-    },
+    setStatusRowAction({
+        api: API,
+        message: <p>{__('Set status for the following donations?', 'give')}</p>,
+        statuses: DONATION_STATUSES.map((value) => ({
+            value,
+            label: window.GiveDonations.donationStatuses?.[value] ?? value,
+        })),
+        isVisible: (parameters) => !isDonationsTrashView(parameters),
+    }),
     {
         id: 'resend-email-receipts',
         label: __('Resend Email Receipts', 'give'),
@@ -226,13 +219,10 @@ export default function DonationsListTable() {
             productRecommendation={rotatingRecommendation}
             statsConfig={statsConfig}
         >
-            <button
-                className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
-                onClick={showLegacyDonations}
-                aria-label={__('Switch to the legacy donations table view', 'give')}
-            >
-                {__('Switch to Legacy View', 'give')}
-            </button>
+            <SwitchToLegacyViewButton
+                api={API}
+                ariaLabel={__('Switch to the legacy donations table view', 'give')}
+            />
             {window.GiveDonations.manualDonations ? (
                 <a
                     className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
@@ -274,7 +264,3 @@ export default function DonationsListTable() {
     );
 }
 
-const showLegacyDonations = async (event) => {
-    await API.fetchWithArgs('/view', {isLegacy: 1});
-    window.location.reload();
-};
