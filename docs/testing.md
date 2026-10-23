@@ -285,29 +285,41 @@ The workflow has three jobs:
 
 GiveWP still has known problems, fixed ticket by ticket, and the action fails on any error. So the
 last job counts instead: `.github/plugin-check/ratchet.sh` counts errors and warnings per rule code
-and compares them with `.github/plugin-check/baseline.json`:
+and compares them with a baseline:
 
 - a rule with more errors than the baseline fails the check;
 - a rule with more warnings only gets a notice;
-- a rule with fewer errors or warnings passes, with a notice to lower the baseline.
+- a rule with fewer errors or warnings passes.
 
 On pull requests from this repository the comment is short: totals, the top rules that went up, and
 links. Pull requests from forks get no comment (their token is read-only), but the job summary shows
 the same text. The full results are in the `plugin-check-report` artifact (the raw results and a new
 `baseline.json`).
 
-The comment shows the change against the **target branch**: the `baseline.json` of the branch the
-pull request goes into. A pull request that fixes errors and lowers its own `baseline.json` therefore
-still shows what it fixed. Pass or fail still comes from the `baseline.json` in the pull request, and
-the comment notes any rule whose baseline was raised above the target branch.
+**Where the baseline comes from.** No baseline is committed. Every run uploads a `baseline.json`
+made from its own results, and later runs download it with `.github/plugin-check/fetch-baseline.sh`:
 
-**Lowering the baseline.** After fixing problems, download the `plugin-check-report` artifact from
-your pull request's run and copy its `baseline.json` over `.github/plugin-check/baseline.json`.
-Commit it in the same pull request as the fix.
+- A **pull request** compares with the branch it goes into: the run for its base commit, or the
+  latest run on that branch. For a stacked pull request this is the run of the pull request below
+  it. The comment calls this column "Target branch" and links to that run.
+- A **push** to `develop` or `master` compares with the run before it on the same branch ("Previous
+  run"). Two pull requests can each pass on their own and still add errors together once both are
+  merged; this is where that shows up, as a failed check on the branch.
+- With **no earlier run** to take it from (a new branch, or artifacts past their 90 days), nothing is
+  compared and the check passes with a warning. Run the workflow on the target branch (Actions →
+  Plugin Check → Run workflow) to make a baseline.
+
+Fixing problems therefore needs no baseline change: the next run on the branch has the lower
+counts, and every pull request into it is held to them. Two branches worked on at the same time
+cannot leave a wrong baseline behind, because there is no file to merge.
+
+There is no switch to accept new errors. Fix them, or, when a finding is a false positive, add a
+`phpcs:ignore` comment for that rule with the reason, as the existing code does.
 
 **Plugin Check version.** The action always installs the latest Plugin Check, so a new release can
-add rules and raise counts on pull requests with no code change. If that happens, commit the new
-baseline in a separate pull request.
+add rules and raise counts with no code change. A pull request whose target's last run used the
+older release then fails on the new rules. Run the workflow on the target branch to give it a
+baseline from the new release, then re-run the pull request's check.
 
 Once every error count is zero, remove the first and last jobs and `continue-on-error` from the run
 job. The action then fails on any error and posts its own comment.

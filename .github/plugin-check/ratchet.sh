@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 #
-# Plugin Check ratchet. Counts ERROR and WARNING results per rule code and compares them with
-# baseline.json. Only a rule with more ERRORS than the baseline fails. More warnings only add a
-# notice. Fewer of either passes, with a notice to lower the baseline. See
+# Plugin Check ratchet. Counts ERROR and WARNING results per rule code and compares them with a
+# baseline: the counts of an earlier run, fetched with fetch-baseline.sh. Only a rule with more
+# ERRORS than the baseline fails. More warnings only add a notice. Fewer of either passes. With no
+# baseline at all, nothing is compared and the check passes with a warning. See
 # docs/testing.md#plugin-check.
 #
 # Usage:
@@ -16,13 +17,13 @@
 # goes to the job summary when GITHUB_STEP_SUMMARY is set.
 #
 # Environment (all optional):
-#   PLUGIN_CHECK_BASELINE  baseline path (default: baseline.json next to this script)
+#   PLUGIN_CHECK_BASELINE  baseline path (default: baseline.json next to this script, where
+#                          fetch-baseline.sh puts it)
+#   BASELINE_LABEL         what the baseline is, for the comment's column (default: "Baseline")
+#   BASELINE_URL           link to the run the baseline came from
 #   COMMENT_BADGE          image URL shown under the status line
 #   RUN_URL                link to the workflow run
 #   ARTIFACT_URL           link to the uploaded results and fresh baseline
-#   TARGET_BASELINE        baseline.json of the pull request's target branch. The comment then shows
-#                          the change against it, and notes a baseline raised above it. Pass or fail
-#                          still comes from the baseline.json that is in the pull request.
 
 set -euo pipefail
 
@@ -84,9 +85,15 @@ if [ "$update" = true ]; then
     exit 0
 fi
 
+# No earlier run to compare with: report the counts and pass. Failing here would block every pull
+# request whenever the target branch has no finished run (its first run, or expired artifacts).
 if [ ! -f "$baseline" ]; then
-    echo "::error title=Plugin Check::Baseline not found: $baseline"
-    exit 1
+    echo "::warning title=Plugin Check::No baseline to compare with ($baseline), so nothing was compared. Run the workflow on the target branch to make one."
+    baseline=$(mktemp)
+    jq -n '{errors: {}, warnings: {}}' > "$baseline"
+    no_baseline=true
+else
+    no_baseline=false
 fi
 
 # One tab-separated row per kind and rule code found in either file:
@@ -128,6 +135,9 @@ while IFS=$'\t' read -r kind code allowed found; do
         label=" warning"
     fi
 
+    # With no baseline, only the totals mean anything.
+    [ "$no_baseline" = false ] || continue
+
     if [ "$found" -gt "$allowed" ]; then
         went_up=$((went_up + 1))
         if [ "$went_up" -le "$MAX_RULES_LISTED" ]; then
@@ -136,13 +146,13 @@ while IFS=$'\t' read -r kind code allowed found; do
         if [ "$kind" = errors ]; then
             failed=true
             errors_up=$((errors_up + 1))
-            echo "::error title=Plugin Check::$code has $found errors, the baseline allows $allowed. The full list is in the plugin-check-results artifact."
+            echo "::error title=Plugin Check::$code has $found errors, the baseline has $allowed. The full list is in the plugin-check-results artifact."
         else
             echo "::notice title=Plugin Check::$code has $found warnings, the baseline has $allowed. Warnings do not fail the check."
         fi
     elif [ "$found" -lt "$allowed" ]; then
         went_down=$((went_down + 1))
-        echo "::notice title=Plugin Check::$code ($kind) went down from $allowed to $found. Lower it in .github/plugin-check/baseline.json."
+        echo "::notice title=Plugin Check::$code ($kind) went down from $allowed to $found."
     fi
 done <<< "$rows"
 
@@ -153,7 +163,9 @@ change() {
 }
 
 # The totals can go down while a rule goes up, so the status names the rules, not the totals.
-if [ "$failed" = true ]; then
+if [ "$no_baseline" = true ]; then
+    status="⚠️ Plugin Check ran, but there was no baseline to compare with"
+elif [ "$failed" = true ]; then
     if [ "$errors_up" -eq 1 ]; then
         status="❌ Plugin Check failed: 1 rule has more errors than the baseline allows"
     else
@@ -180,41 +192,33 @@ body="$COMMENT_MARKER"$'\n'"$status"$'\n\n'
 if [ -n "${COMMENT_BADGE:-}" ]; then
     body+="![Plugin Check finished](${COMMENT_BADGE})"$'\n\n'
 fi
-# The change is shown against the target branch when its baseline is known, so a pull request that
-# lowers baseline.json still shows what it fixed. Without it, it is shown against the baseline in
-# the pull request, which is what decides pass or fail.
-column="Baseline"
-errors_ref=$errors_base
-warnings_ref=$warnings_base
-baseline_raised=0
-if [ -n "${TARGET_BASELINE:-}" ] && [ -f "$TARGET_BASELINE" ]; then
-    column="Target branch"
-    errors_ref=$(jq '.errors | add // 0' "$TARGET_BASELINE")
-    warnings_ref=$(jq '.warnings | add // 0' "$TARGET_BASELINE")
-    # Rules whose baseline in this pull request is higher than on the target branch.
-    baseline_raised=$(jq -n --slurpfile target "$TARGET_BASELINE" --slurpfile mine "$baseline" '
-        [ ("errors", "warnings") as $kind
-          | ($mine[0][$kind] // {}) | to_entries[]
-          | select(.value > (($target[0][$kind] // {})[.key] // 0)) ] | length')
+# The column is named after where the baseline came from ("Target branch", "Previous run"), and
+# links to that run when known.
+column=${BASELINE_LABEL:-Baseline}
+if [ -n "${BASELINE_URL:-}" ]; then
+    column="[$column](${BASELINE_URL})"
 fi
-body+="|          | Now | $column | Change |"$'\n'
-body+="|:--|--:|--:|:--|"$'\n'
-body+="| Errors   | $errors_now | $errors_ref | $(change "$errors_now" "$errors_ref") |"$'\n'
-body+="| Warnings | $warnings_now | $warnings_ref | $(change "$warnings_now" "$warnings_ref") |"$'\n\n'
+if [ "$no_baseline" = true ]; then
+    body+="|          | Now |"$'\n'
+    body+="|:--|--:|"$'\n'
+    body+="| Errors   | $errors_now |"$'\n'
+    body+="| Warnings | $warnings_now |"$'\n\n'
+else
+    body+="|          | Now | $column | Change |"$'\n'
+    body+="|:--|--:|--:|:--|"$'\n'
+    body+="| Errors   | $errors_now | $errors_base | $(change "$errors_now" "$errors_base") |"$'\n'
+    body+="| Warnings | $warnings_now | $warnings_base | $(change "$warnings_now" "$warnings_base") |"$'\n\n'
+fi
 if [ "$went_up" -gt "$MAX_RULES_LISTED" ]; then
     body+="Went up (top $MAX_RULES_LISTED of $went_up): $up_list"$'\n'
 elif [ "$went_up" -gt 0 ]; then
     body+="Went up: $up_list"$'\n'
 fi
 if [ "$went_down" -gt 0 ]; then
-    body+="Rules that went down: $went_down. Lower the baseline with the new \`baseline.json\` from the artifact."$'\n'
-fi
-if [ "$baseline_raised" -gt 0 ]; then
-    body+="⚠️ Rules with a baseline above the target branch: $baseline_raised."$'\n'
-    echo "::warning title=Plugin Check::baseline.json allows more than the target branch for $baseline_raised rule(s)."
+    body+="Rules that went down: $went_down."$'\n'
 fi
 # A blank line separates the notes above from the links, when there are notes.
-if [ "$went_up" -gt 0 ] || [ "$went_down" -gt 0 ] || [ "$baseline_raised" -gt 0 ]; then
+if [ "$went_up" -gt 0 ] || [ "$went_down" -gt 0 ]; then
     body+=$'\n'
 fi
 body+="$links"
@@ -234,4 +238,8 @@ if [ "$failed" = true ]; then
     exit 1
 fi
 
-echo "Plugin Check error counts are within the baseline."
+if [ "$no_baseline" = true ]; then
+    echo "Plugin Check ran with no baseline, so nothing was compared."
+else
+    echo "Plugin Check error counts are within the baseline."
+fi

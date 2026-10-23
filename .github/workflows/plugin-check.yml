@@ -5,9 +5,11 @@ name: Plugin Check
 #
 # GiveWP still has known Plugin Check problems, fixed one ticket at a time. Until they are all gone
 # the job does not fail on every error. The "check" job runs wordpress/plugin-check-action. The
-# "report" job counts errors and warnings per rule and compares them with
-# .github/plugin-check/baseline.json: a rule with more errors than the baseline fails the check.
-# More warnings, or fewer of either, only add a notice. See docs/testing.md#plugin-check.
+# "report" job counts errors and warnings per rule and compares them with a baseline: the counts
+# of an earlier run of this workflow, never a committed file. A pull request compares with the
+# branch it targets; a push to develop or master compares with the run before it on that branch.
+# A rule with more errors than the baseline fails the check. More warnings, or fewer of either,
+# only add a notice. See docs/testing.md#plugin-check.
 #
 # Three jobs, so the third-party action never holds a token that can write:
 #   start   posts "in progress" on the pull request.
@@ -232,14 +234,16 @@ jobs:
         runs-on: ubuntu-latest
         timeout-minutes: 10
 
-        # Writes one sticky comment on the pull request.
+        # Writes one sticky comment on the pull request, and reads an earlier run's artifact as the
+        # baseline.
         permissions:
+            actions: read
             contents: read
             issues: write
             pull-requests: write
 
         steps:
-            # Only the ratchet script and the baseline are needed.
+            # Only the ratchet and fetch scripts are needed.
             -   uses: actions/checkout@v7
                 with:
                     sparse-checkout: .github/plugin-check
@@ -251,6 +255,7 @@ jobs:
                         echo "RESULTS=$RUNNER_TEMP/results/plugin-check-results.txt"
                         echo "COMMENT_BODY=$RUNNER_TEMP/plugin-check-comment.md"
                         echo "NEW_BASELINE=$RUNNER_TEMP/report/baseline.json"
+                        echo "PLUGIN_CHECK_BASELINE=$RUNNER_TEMP/baseline/baseline.json"
                     } >> "$GITHUB_ENV"
 
             # The action uploaded its results under this name. Missing when the build or the check
@@ -262,8 +267,8 @@ jobs:
                     name: plugin-check-results
                     path: ${{ runner.temp }}/results
 
-            # A baseline made from this run, uploaded even when the compare below fails. To lower
-            # the committed baseline after a fix, copy this file over .github/plugin-check/.
+            # A baseline made from this run, uploaded even when the compare below fails. Later runs
+            # download it as their baseline: pull requests into this branch, and the next push.
             -   name: Write a new baseline
                 run: |
                     mkdir -p "$RUNNER_TEMP/report"
@@ -288,25 +293,38 @@ jobs:
                     stamp=${stamp//\//%2F}
                     echo "url=https://img.shields.io/badge/Check%20Finished-${stamp}-darkgreen" >> "$GITHUB_OUTPUT"
 
-            # The baseline of the branch the pull request targets. The comment shows the change
-            # against it, so a pull request that fixes errors and lowers baseline.json still shows
-            # what it fixed. Missing on other events, or when the target has no baseline yet: the
-            # script then falls back to the baseline in the pull request.
-            -   name: Get the target branch baseline
-                if: ${{ github.event_name == 'pull_request' }}
+            # The baseline: what the branch the code goes into looks like now, from the artifact
+            # of an earlier run on it. A pull request takes the run for its base commit (or the
+            # latest on its base branch); for a stacked pull request that is the run of the pull
+            # request below it. A push takes the run before it on the same branch, so a merge
+            # that adds errors to develop fails there, where the whole team sees it. With no run
+            # to take it from, ratchet.sh compares nothing and passes with a warning.
+            -   name: Get the baseline
+                id: baseline
                 continue-on-error: true
-                uses: actions/checkout@v7
-                with:
-                    ref: ${{ github.event.pull_request.base.sha }}
-                    path: target
-                    sparse-checkout: .github/plugin-check/baseline.json
-                    persist-credentials: false
+                env:
+                    GH_TOKEN: ${{ github.token }}
+                    EVENT: ${{ github.event_name }}
+                    BASE_REF: ${{ github.event.pull_request.base.ref }}
+                    BASE_SHA: ${{ github.event.pull_request.base.sha }}
+                run: |
+                    if [ "$EVENT" = pull_request ]; then
+                        label="Target branch"
+                        found=$(.github/plugin-check/fetch-baseline.sh --sha "$BASE_SHA" "$BASE_REF" "$PLUGIN_CHECK_BASELINE")
+                    else
+                        label="Previous run"
+                        found=$(.github/plugin-check/fetch-baseline.sh --skip-run "$GITHUB_RUN_ID" "$GITHUB_REF_NAME" "$PLUGIN_CHECK_BASELINE")
+                    fi
+                    echo "label=$label" >> "$GITHUB_OUTPUT"
+                    echo "url=${found#* }" >> "$GITHUB_OUTPUT"
+                    echo "Baseline from ${found#* }"
 
             # Fails the job when a rule has more errors than the baseline. Also writes the short
             # comment body and the same text to the job summary.
             -   name: Compare with the baseline
                 env:
-                    TARGET_BASELINE: ${{ github.workspace }}/target/.github/plugin-check/baseline.json
+                    BASELINE_LABEL: ${{ steps.baseline.outputs.label }}
+                    BASELINE_URL: ${{ steps.baseline.outputs.url }}
                     COMMENT_BADGE: ${{ steps.finish_badge.outputs.url }}
                     ARTIFACT_URL: ${{ steps.artifact.outputs.artifact-url }}
                     RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
