@@ -53,15 +53,21 @@ class GoalProgress
     }
 
     /**
+     * The filter sets the pill's opacity, as before. A pill at 0 is hidden from screen readers too.
+     *
      * @since TBD
      */
     private static function achievedPill($percentage): string
     {
-        $isVisible = apply_filters('givewp_list_table_goal_progress_achieved_opacity', $percentage >= 100 ? 1 : 0);
+        $opacity = (float)apply_filters(
+            'givewp_list_table_goal_progress_achieved_opacity',
+            $percentage >= 100 ? 1 : 0
+        );
 
         return sprintf(
-            '<span class="goalProgress--achieved"%s><img src="%s" alt="" />%s</span>',
-            $isVisible ? '' : ' aria-hidden="true"',
+            '<span class="goalProgress--achieved" style="opacity:%s"%s><img src="%s" alt="" />%s</span>',
+            esc_attr($opacity),
+            $opacity > 0 ? '' : ' aria-hidden="true"',
             GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/star-icon.svg',
             __('Achieved', 'give')
         );

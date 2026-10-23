@@ -33,4 +33,22 @@ class GoalProgressTest extends TestCase
         $this->assertStringContainsString('width: 0%', $html);
         $this->assertStringContainsString('aria-hidden="true"', $html);
     }
+
+    /**
+     * @since TBD
+     */
+    public function testAppliesTheFilteredOpacityToTheAchievedPill(): void
+    {
+        $filter = function () {
+            return 0.5;
+        };
+        add_filter('givewp_list_table_goal_progress_achieved_opacity', $filter);
+
+        $html = GoalProgress::render(7, 40, '$40', '$100');
+
+        remove_filter('givewp_list_table_goal_progress_achieved_opacity', $filter);
+
+        $this->assertStringContainsString('style="opacity:0.5"', $html);
+        $this->assertStringNotContainsString('aria-hidden="true"', $html);
+    }
 }
