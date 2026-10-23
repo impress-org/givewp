@@ -38,6 +38,23 @@ Normal releases follow a [gitflow](https://nvie.com/posts/a-successful-git-branc
 8. Build a release candidate ZIP for QA by running the [Generate Plugin Zip](.github/workflows/generate-zip.yml) GitHub Action against the release branch. Attach the ZIP to the release ticket and wait for QA approval.
 9. Open a PR for the release branch against `master` and get it reviewed.
 
+## Preparing a release with the Release Prep workflow
+
+Step 3 above can also run in CI, through the [Release Prep](.github/workflows/release-prep.yml) GitHub Action. It runs the same three steps as `composer run release:prep`, with the same `.puprc`, changelog entries and `bin/lib/changelog-strategy.js`, through the shared [release-prep action](https://github.com/stellarwp/plugin-toolbox/tree/2b6a48cdf8dffd44b2fe6c847f11033ffdc83fb6/.github/actions/release-prep) in stellarwp/plugin-toolbox. It then pushes the result to the release branch as one commit, `Prepare release/x.y.z (x.y.z)`. Nothing needs to be installed locally.
+
+The NX1 release dashboard uses this workflow for a release's prepare step. To run it by hand once the release branch exists:
+
+```bash
+gh workflow run release-prep.yml -f ref=release/4.16.0 -f version=4.16.0
+```
+
+* `-f date=YYYY-MM-DD` sets the changelog date; it defaults to today, in UTC.
+* The version must be three or four numbers (`4.16.0`, `4.16.0.1`). A pre-release such as `4.16.0-beta.1` is refused before anything changes.
+* Running it again for the same version changes nothing and pushes nothing.
+* `ref` is the release branch to prepare. It has to exist already (step 2 above).
+
+After it runs, continue from step 4 above. It works the same for a `hotfix/x.y.z` branch.
+
 ## Publishing
 
 1. Merge the release branch into `master`.
