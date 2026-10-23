@@ -3,7 +3,9 @@
 namespace Give\ThirdPartySupport\Elementor\Traits;
 
 use Exception;
+use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Log\Log;
 
 /**
@@ -16,15 +18,12 @@ trait HasFormOptions
     /**
      * Get form options with campaigns
      *
+     * @since TBD List published forms without a campaign in a "No campaign" group.
      * @since 4.7.0
      */
     public function getFormOptionsWithCampaigns(): array
     {
         $campaignsWithForms = $this->getCampaignsWithForms();
-
-        if (empty($campaignsWithForms)) {
-            return [];
-        }
 
 		$campaignOptions = [];
 		$formOptionsGroup = [];
@@ -75,6 +74,16 @@ trait HasFormOptions
 		}
 
 		$formOptionsGroup = array_values($campaignGroups);
+
+        // Standalone forms go last, since the Donation Form widget defaults to the first group's first form
+        $standaloneForms = $this->getStandaloneForms();
+
+        if (!empty($standaloneForms)) {
+            $formOptionsGroup[] = [
+                'label' => __('No campaign', 'give'),
+                'options' => array_column($standaloneForms, 'title', 'id'),
+            ];
+        }
 
         return $formOptionsGroup;
     }
@@ -152,5 +161,35 @@ trait HasFormOptions
             ->getAll();
 
         return $forms;
+    }
+
+    /**
+     * Get published forms that don't belong to a campaign
+     *
+     * @since TBD
+     */
+    public function getStandaloneForms(): array
+    {
+        return DB::table('posts')
+            ->select(
+                ['ID', 'id'],
+                ['post_title', 'title']
+            )
+            ->where('post_type', 'give_forms')
+            ->where('post_status', 'publish')
+            ->whereNotIn('ID', function (QueryBuilder $builder) {
+                $builder
+                    ->from('give_campaign_forms')
+                    ->select('form_id');
+            })
+            // Peer-to-Peer campaigns link their form through the campaign's own form_id
+            ->whereNotIn('ID', function (QueryBuilder $builder) {
+                $builder
+                    ->from('give_campaigns')
+                    ->select('form_id')
+                    ->where('campaign_type', CampaignType::CORE, '!=');
+            })
+            ->orderBy('post_title')
+            ->getAll();
     }
 }
