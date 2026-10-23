@@ -96,7 +96,8 @@ export function selectionBar(page: Page): Locator {
 
 /**
  * Opens a list screen and checks it renders through DataViews, a table or its empty state, with no
- * script errors on the page.
+ * script errors on the page. A failed list request shows in the empty state too, as an alert, so
+ * the check fails on that alert.
  */
 export async function expectListMounts(page: Page, admin: Admin, query: string, heading: string): Promise<void> {
     const pageErrors: string[] = [];
@@ -108,5 +109,6 @@ export async function expectListMounts(page: Page, admin: Admin, query: string, 
     await expect(listTable(page).locator('.dataviews-view-table, .dataviews-no-results').first()).toBeVisible({
         timeout: 15_000,
     });
+    await expect(listTable(page).getByRole('alert')).toHaveCount(0);
     expect(pageErrors).toEqual([]);
 }
