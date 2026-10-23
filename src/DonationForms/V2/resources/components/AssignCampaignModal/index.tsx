@@ -70,6 +70,7 @@ export default function AssignCampaignRowAction(props: AssignCampaignProps) {
  * not archived and never the current one. The server refuses to move or remove a campaign's
  * default form and explains why.
  *
+ * @since TBD Load the next page of campaigns when the picker's menu is scrolled to the end.
  * @since 4.19.0
  */
 function AssignCampaignModal({
@@ -104,11 +105,12 @@ function AssignCampaignModal({
         }
     };
 
-    const loadOtherCampaigns = async (search: string) => {
-        const result = await loadOptions(search);
-
-        return {...result, options: result.options.filter((option) => option.value !== currentCampaignId)};
-    };
+    /*
+     * The current campaign comes out of the menu rather than out of the loaded options, because the
+     * hook counts the loaded options to work out which page to ask for next.
+     */
+    const mapOtherCampaignsForMenu = (options: CampaignOption[]) =>
+        mapOptionsForMenu(options).filter((option) => option.value !== currentCampaignId);
 
     const request = async (path: string, data: object, nextStep: Step) => {
         setSaving(true);
@@ -218,8 +220,8 @@ function AssignCampaignModal({
                     <AsyncPaginate
                         inputId={`givewp-assign-campaign-${formId}`}
                         placeholder={__('Search for a campaign…', 'give')}
-                        loadOptions={loadOtherCampaigns}
-                        mapOptionsForMenu={mapOptionsForMenu}
+                        loadOptions={loadOptions}
+                        mapOptionsForMenu={mapOtherCampaignsForMenu}
                         onChange={(option: CampaignOption | null) => setSelected(option)}
                         value={selected}
                         isSearchable
