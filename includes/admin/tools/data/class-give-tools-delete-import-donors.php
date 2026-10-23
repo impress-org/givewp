@@ -214,7 +214,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 				'post_status'    => 'any',
 				'posts_per_page' => $this->per_step,
 				'paged'          => $paged,
-				'meta_key'       => '_give_payment_import',
+				'meta_key'       => '_give_payment_import', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Selects donations flagged as imported, which exists only as meta; admin tool.
 				'meta_value_num' => 1,
 				'meta_compare'   => '=',
 			)
@@ -448,7 +448,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 					 *
 					 * @since 1.8.14
 					 */
-					$delete_import_donors = isset( $_REQUEST['delete-import-donors'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['delete-import-donors'] ) ) : '';
+					$delete_import_donors = isset( $_REQUEST['delete-import-donors'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['delete-import-donors'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified by give_do_ajax_export() before this batch step runs.
 
 					if ( 'on' === (string) $delete_import_donors ) {
 						wp_delete_user( $donor_ids[ $page ] );

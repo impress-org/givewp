@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Documented and guarded request input in the modern admin pages
+timestamp: 2026-10-08T21:30:00.000Z

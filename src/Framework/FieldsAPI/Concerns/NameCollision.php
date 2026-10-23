@@ -26,6 +26,7 @@ trait NameCollision
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.32.0 add existing and incoming nodes to exception
      * @since 2.10.2
      *
@@ -34,7 +35,7 @@ trait NameCollision
     public function checkNameCollision(Node $node)
     {
         if ($existingNode = $this->getNodeByName($node->getName())) {
-            throw new NameCollisionException($node->getName(), $existingNode, $node);
+            throw new NameCollisionException($node->getName(), $existingNode, $node); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- field node objects, not output.
         }
     }
 }

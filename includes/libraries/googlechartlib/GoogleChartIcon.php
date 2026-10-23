@@ -10,6 +10,10 @@
  * For the full copyright and license information, please view the LICENSE file.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 require_once 'GoogleChartApi.php';
 
 /**

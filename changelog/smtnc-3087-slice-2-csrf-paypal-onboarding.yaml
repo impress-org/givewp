@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Added nonce checks to the PayPal Donations onboarding requests
+timestamp: 2026-10-08T14:20:35.707Z

@@ -29,6 +29,7 @@ class Table
     /**
      * Check if the given table exists
      *
+     * @since TBD Remove the quotes around the %s placeholder.
      * @since  2.9.0
      * @access public
      *
@@ -40,7 +41,7 @@ class Table
     {
         global $wpdb;
 
-        return (bool)$wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE '%s'", $tableName));
+        return (bool)$wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $tableName)); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Checks whether a table exists with SHOW TABLES; WordPress has no function for it.
     }
 
     /**
@@ -57,7 +58,7 @@ class Table
     {
         global $wpdb;
 
-        return (bool)$wpdb->get_results(
+        return (bool)$wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Checks whether a column exists in INFORMATION_SCHEMA; WordPress has no function for it.
             $wpdb->prepare(
                 'SELECT * FROM INFORMATION_SCHEMA.COLUMNS
 						WHERE TABLE_SCHEMA = %s

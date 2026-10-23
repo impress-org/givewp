@@ -186,7 +186,7 @@ class IframeView
     private function isDonationFormBlockRendererApiRequest()
     {
         return false !== strpos(
-                $_SERVER['REQUEST_URI'],
+                $_SERVER['REQUEST_URI'], // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- only searched with strpos(); it is not saved or output.
                 rest_get_url_prefix() . '/wp/v2/block-renderer/give/donation-form'
             );
     }
@@ -294,7 +294,7 @@ class IframeView
      */
     private function getIframeURL()
     {
-        $query_string = array_map('give_clean', wp_parse_args($_SERVER['QUERY_STRING']));
+        $query_string = array_map('give_clean', wp_parse_args($_SERVER['QUERY_STRING'])); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- the query string is parsed by wp_parse_args() and each value is sanitized by give_clean().
         $donationHistory = give_get_purchase_session();
         $hasAction = !empty($query_string['giveDonationAction']);
         $this->autoScroll = absint($hasAction);
@@ -335,6 +335,8 @@ class IframeView
     }
 
     /**
+     * @since TBD Escape the fallback URL from getIframeURL() after addExtraQueryParams() runs, not before, since add_query_arg() needs the raw, unescaped URL.
+     *
      *  Setup Default config.
      */
     private function loadDefaultConfig()
@@ -346,6 +348,8 @@ class IframeView
         $this->url = $this->url ?: $this->getIframeURL();
 
         $this->addExtraQueryParams();
+
+        $this->url = esc_url($this->url);
     }
 
     /**
@@ -354,6 +358,7 @@ class IframeView
      * Note: if you want to overwrite this function then do not forget to add action hook in footer and header.
      * We use these hooks to manipulated donation form related actions.
      *
+     * @since TBD Escape output.
      * @since 2.7.0
      */
     public function render()
@@ -363,15 +368,12 @@ class IframeView
         $this->loadDefaultConfig();
 
         if ($this->modal) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getButtonHTML() escapes internally.
             echo $this->getButtonHTML();
         }
 
-        printf(
-            '<div class="give-embed-form-wrapper%1$s" id="%2$s">%3$s</div>',
-            $this->modal ? ' is-hide' : '',
-            $this->uniqueId,
-            $this->getIframeHTML()
-        );
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getIframeHTML() escapes internally; $this->uniqueId is a uniqid() value with no user input.
+        printf('<div class="give-embed-form-wrapper%1$s" id="%2$s">%3$s</div>', $this->modal ? ' is-hide' : '', esc_attr($this->uniqueId), $this->getIframeHTML());
 
         return ob_get_clean();
     }

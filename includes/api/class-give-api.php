@@ -399,7 +399,7 @@ class Give_API {
 		$user = Give_Cache::get( md5( 'give_api_user_' . $key ), true );
 
 		if ( false === $user ) {
-			$user = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = %s AND meta_value=%s LIMIT 1", $key, 'give_user_public_key' ) );
+			$user = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = %s AND meta_value=%s LIMIT 1", $key, 'give_user_public_key' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Looks up an API key by usermeta value, which no core function does; the result is cached with Give_Cache::set just below.
 			Give_Cache::set( md5( 'give_api_user_' . $key ), $user, DAY_IN_SECONDS, true );
 		}
 
@@ -430,7 +430,7 @@ class Give_API {
 		$user_public_key = Give_Cache::get( $cache_key, true );
 
 		if ( empty( $user_public_key ) ) {
-			$user_public_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_public_key' AND user_id = %d", $user_id ) );
+			$user_public_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_public_key' AND user_id = %d", $user_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Looks up an API key by usermeta value, which no core function does; the result is cached with Give_Cache::set just below.
 			Give_Cache::set( $cache_key, $user_public_key, HOUR_IN_SECONDS, true );
 		}
 
@@ -455,7 +455,7 @@ class Give_API {
 		$user_secret_key = Give_Cache::get( $cache_key, true );
 
 		if ( empty( $user_secret_key ) ) {
-			$user_secret_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_secret_key' AND user_id = %d", $user_id ) );
+			$user_secret_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_secret_key' AND user_id = %d", $user_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Looks up an API key by usermeta value, which no core function does; the result is cached with Give_Cache::set just below.
 			Give_Cache::set( $cache_key, $user_secret_key, HOUR_IN_SECONDS, true );
 		}
 
@@ -724,6 +724,7 @@ class Give_API {
 	 * Sets up the dates used to retrieve earnings/donations
 	 *
 	 * @access public
+	 * @since  TBD Use gmdate() instead of date().
 	 * @since  1.2
 	 *
 	 * @param array $args Arguments to override defaults
@@ -748,41 +749,41 @@ class Give_API {
 		if ( 'range' === $args['date'] ) {
 			$startdate          = strtotime( $args['startdate'] );
 			$enddate            = strtotime( $args['enddate'] );
-			$dates['day_start'] = date( 'd', $startdate );
-			$dates['day_end']   = date( 'd', $enddate );
-			$dates['m_start']   = date( 'n', $startdate );
-			$dates['m_end']     = date( 'n', $enddate );
-			$dates['year']      = date( 'Y', $startdate );
-			$dates['year_end']  = date( 'Y', $enddate );
+			$dates['day_start'] = gmdate( 'd', $startdate );
+			$dates['day_end']   = gmdate( 'd', $enddate );
+			$dates['m_start']   = gmdate( 'n', $startdate );
+			$dates['m_end']     = gmdate( 'n', $enddate );
+			$dates['year']      = gmdate( 'Y', $startdate );
+			$dates['year_end']  = gmdate( 'Y', $enddate );
 		} else {
 			// Modify dates based on predefined ranges
 			switch ( $args['date'] ) :
 
 				case 'this_month':
 					$dates['day']     = null;
-					$dates['m_start'] = date( 'n', $current_time );
-					$dates['m_end']   = date( 'n', $current_time );
-					$dates['year']    = date( 'Y', $current_time );
+					$dates['m_start'] = gmdate( 'n', $current_time );
+					$dates['m_end']   = gmdate( 'n', $current_time );
+					$dates['year']    = gmdate( 'Y', $current_time );
 					break;
 
 				case 'last_month':
 					$dates['day']     = null;
-					$dates['m_start'] = date( 'n', $current_time ) == 1 ? 12 : date( 'n', $current_time ) - 1;
+					$dates['m_start'] = gmdate( 'n', $current_time ) == 1 ? 12 : gmdate( 'n', $current_time ) - 1;
 					$dates['m_end']   = $dates['m_start'];
-					$dates['year']    = date( 'n', $current_time ) == 1 ? date( 'Y', $current_time ) - 1 : date( 'Y', $current_time );
+					$dates['year']    = gmdate( 'n', $current_time ) == 1 ? gmdate( 'Y', $current_time ) - 1 : gmdate( 'Y', $current_time );
 					break;
 
 				case 'today':
-					$dates['day']     = date( 'd', $current_time );
-					$dates['m_start'] = date( 'n', $current_time );
-					$dates['m_end']   = date( 'n', $current_time );
-					$dates['year']    = date( 'Y', $current_time );
+					$dates['day']     = gmdate( 'd', $current_time );
+					$dates['m_start'] = gmdate( 'n', $current_time );
+					$dates['m_end']   = gmdate( 'n', $current_time );
+					$dates['year']    = gmdate( 'Y', $current_time );
 					break;
 
 				case 'yesterday':
-					$year  = date( 'Y', $current_time );
-					$month = date( 'n', $current_time );
-					$day   = date( 'd', $current_time );
+					$year  = gmdate( 'Y', $current_time );
+					$month = gmdate( 'n', $current_time );
+					$day   = gmdate( 'd', $current_time );
 
 					if ( $month == 1 && $day == 1 ) {
 
@@ -809,7 +810,7 @@ class Give_API {
 					break;
 
 				case 'this_quarter':
-					$month_now = date( 'n', $current_time );
+					$month_now = gmdate( 'n', $current_time );
 
 					$dates['day'] = null;
 
@@ -817,31 +818,31 @@ class Give_API {
 
 						$dates['m_start'] = 1;
 						$dates['m_end']   = 3;
-						$dates['year']    = date( 'Y', $current_time );
+						$dates['year']    = gmdate( 'Y', $current_time );
 
 					} elseif ( $month_now <= 6 ) {
 
 						$dates['m_start'] = 4;
 						$dates['m_end']   = 6;
-						$dates['year']    = date( 'Y', $current_time );
+						$dates['year']    = gmdate( 'Y', $current_time );
 
 					} elseif ( $month_now <= 9 ) {
 
 						$dates['m_start'] = 7;
 						$dates['m_end']   = 9;
-						$dates['year']    = date( 'Y', $current_time );
+						$dates['year']    = gmdate( 'Y', $current_time );
 
 					} else {
 
 						$dates['m_start'] = 10;
 						$dates['m_end']   = 12;
-						$dates['year']    = date( 'Y', $current_time );
+						$dates['year']    = gmdate( 'Y', $current_time );
 
 					}
 					break;
 
 				case 'last_quarter':
-					$month_now = date( 'n', $current_time );
+					$month_now = gmdate( 'n', $current_time );
 
 					$dates['day'] = null;
 
@@ -849,25 +850,25 @@ class Give_API {
 
 						$dates['m_start'] = 10;
 						$dates['m_end']   = 12;
-						$dates['year']    = date( 'Y', $current_time ) - 1; // Previous year
+						$dates['year']    = gmdate( 'Y', $current_time ) - 1; // Previous year
 
 					} elseif ( $month_now <= 6 ) {
 
 						$dates['m_start'] = 1;
 						$dates['m_end']   = 3;
-						$dates['year']    = date( 'Y', $current_time );
+						$dates['year']    = gmdate( 'Y', $current_time );
 
 					} elseif ( $month_now <= 9 ) {
 
 						$dates['m_start'] = 4;
 						$dates['m_end']   = 6;
-						$dates['year']    = date( 'Y', $current_time );
+						$dates['year']    = gmdate( 'Y', $current_time );
 
 					} else {
 
 						$dates['m_start'] = 7;
 						$dates['m_end']   = 9;
-						$dates['year']    = date( 'Y', $current_time );
+						$dates['year']    = gmdate( 'Y', $current_time );
 
 					}
 					break;
@@ -876,14 +877,14 @@ class Give_API {
 					$dates['day']     = null;
 					$dates['m_start'] = null;
 					$dates['m_end']   = null;
-					$dates['year']    = date( 'Y', $current_time );
+					$dates['year']    = gmdate( 'Y', $current_time );
 					break;
 
 				case 'last_year':
 					$dates['day']     = null;
 					$dates['m_start'] = null;
 					$dates['m_end']   = null;
-					$dates['year']    = date( 'Y', $current_time ) - 1;
+					$dates['year']    = gmdate( 'Y', $current_time ) - 1;
 					break;
 
 			endswitch;
@@ -1030,7 +1031,7 @@ class Give_API {
 				array(
 					'post_type'        => 'give_forms',
 					'posts_per_page'   => $this->per_page(),
-					'suppress_filters' => true,
+					'suppress_filters' => true, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters -- intended: the API lists all forms and must not be changed by query filters such as WPML language filtering.
 					'paged'            => $this->get_paged(),
 				)
 			);
@@ -1166,6 +1167,7 @@ class Give_API {
 	/**
 	 * Process Get Stats API Request
 	 *
+	 * @since TBD Use gmdate() instead of date().
 	 * @since 1.1
 	 *
 	 * @global WPDB $wpdb Used to query the database using the WordPress.
@@ -1255,7 +1257,7 @@ class Give_API {
 
 							while ( $d <= $num_of_days ) :
 								$sale_count = give_get_sales_by_date( $d, $i, $y );
-								$date_key   = date( 'Ymd', strtotime( $y . '/' . $i . '/' . $d ) );
+								$date_key   = gmdate( 'Ymd', strtotime( $y . '/' . $i . '/' . $d ) );
 								if ( ! isset( $donations['sales'][ $date_key ] ) ) {
 									$donations['sales'][ $date_key ] = 0;
 								}
@@ -1393,7 +1395,7 @@ class Give_API {
 
 							while ( $d <= $num_of_days ) :
 								$earnings_stat = give_get_earnings_by_date( $d, $i, $y );
-								$date_key      = date( 'Ymd', strtotime( $y . '/' . $i . '/' . $d ) );
+								$date_key      = gmdate( 'Ymd', strtotime( $y . '/' . $i . '/' . $d ) );
 								if ( ! isset( $earnings['earnings'][ $date_key ] ) ) {
 									$earnings['earnings'][ $date_key ] = 0;
 								}
@@ -1519,6 +1521,7 @@ class Give_API {
 	 * Retrieves Recent Donations
 	 *
 	 * @access public
+	 * @since  TBD Use gmdate() instead of date().
 	 * @since  1.1
 	 *
 	 * @param $args array
@@ -1552,8 +1555,8 @@ class Give_API {
 		} elseif ( isset( $wp_query->query_vars['email'] ) ) {
 			$args  = array(
 				'fields'     => 'ids',
-				'meta_key'   => '_give_payment_donor_email',
-				'meta_value' => $wp_query->query_vars['email'],
+				'meta_key'   => '_give_payment_donor_email', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Finds donations by donor email meta for the API; the email is stored as meta.
+				'meta_value' => $wp_query->query_vars['email'], // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Finds donations by donor email meta for the API; the email is stored as meta.
 				'number'     => $this->per_page(),
 				'page'       => $this->get_paged(),
 			);
@@ -1578,13 +1581,13 @@ class Give_API {
 
 				case 'today':
 					// Set and Format Start and End Date to be date of today.
-					$start_date = $end_date = date( 'Y/m/d', $current_time );
+					$start_date = $end_date = gmdate( 'Y/m/d', $current_time );
 
 					break;
 
 				case 'yesterday':
 					// Set and Format Start and End Date to be date of yesterday.
-					$start_date = $end_date = date( 'Y/m', $current_time ) . '/' . ( date( 'd', $current_time ) - 1 );
+					$start_date = $end_date = gmdate( 'Y/m', $current_time ) . '/' . ( gmdate( 'd', $current_time ) - 1 );
 
 					break;
 
@@ -1818,6 +1821,7 @@ class Give_API {
 	 * Output Query in either JSON/XML.
 	 * The query data is outputted as JSON by default.
 	 *
+	 * @since TBD Escape output.
 	 * @since 1.1
 	 * @global WP_Query $wp_query
 	 *
@@ -1845,6 +1849,7 @@ class Give_API {
 			case 'xml':
 				require_once GIVE_PLUGIN_DIR . 'includes/libraries/array2xml.php';
 				$xml = Array2XML::createXML( 'give', $this->data );
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- writes the API response body, not HTML.
 				echo $xml->saveXML();
 
 				break;
@@ -1894,6 +1899,7 @@ class Give_API {
 	 * Modifies the output of profile.php to add key generation/revocation.
 	 *
 	 * @access public
+	 * @since TBD Escape translated output.
 	 * @since  1.1
 	 *
 	 * @param object $user Current user info
@@ -1910,7 +1916,7 @@ class Give_API {
 				<tbody>
 				<tr>
 					<th>
-						<?php _e( 'GiveWP API Keys', 'give' ); ?>
+						<?php esc_html_e( 'GiveWP API Keys', 'give' ); ?>
 					</th>
 					<td>
 						<?php
@@ -1919,22 +1925,22 @@ class Give_API {
 						?>
 						<?php if ( empty( $user->give_user_public_key ) ) { ?>
 							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" />
-							<span class="description"><label for="give_set_api_key"><?php _e( 'Generate API Key', 'give' ); ?></label></span>
+							<span class="description"><label for="give_set_api_key"><?php esc_html_e( 'Generate API Key', 'give' ); ?></label></span>
 						<?php } else { ?>
-							<strong style="display:inline-block; width: 125px;"><?php _e( 'Public key:', 'give' ); ?>
+							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Public key:', 'give' ); ?>
 								&nbsp;</strong>
 							<input type="text" disabled="disabled" class="regular-text" id="publickey" value="<?php echo esc_attr( $public_key ); ?>" />
 							<br />
-							<strong style="display:inline-block; width: 125px;"><?php _e( 'Secret key:', 'give' ); ?>
+							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Secret key:', 'give' ); ?>
 								&nbsp;</strong>
 							<input type="text" disabled="disabled" class="regular-text" id="privatekey" value="<?php echo esc_attr( $secret_key ); ?>" />
 							<br />
-							<strong style="display:inline-block; width: 125px;"><?php _e( 'Token:', 'give' ); ?>
+							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Token:', 'give' ); ?>
 								&nbsp;</strong>
 							<input type="text" disabled="disabled" class="regular-text" id="token" value="<?php echo esc_attr( $this->get_token( $user->ID ) ); ?>" />
 							<br />
 							<input name="give_revoke_api_key" type="checkbox" id="give_revoke_api_key" />
-							<span class="description"><label for="give_revoke_api_key"><?php _e( 'Revoke API Keys', 'give' ); ?></label></span>
+							<span class="description"><label for="give_revoke_api_key"><?php esc_html_e( 'Revoke API Keys', 'give' ); ?></label></span>
 						<?php } ?>
 					</td>
 				</tr>
@@ -1948,6 +1954,7 @@ class Give_API {
 	 * Process an API key generation/revocation
 	 *
 	 * @access public
+	 * @since TBD Escape output. Use safe redirects to the admin Tools page. Unslash and sanitize the nonce.
 	 * @since  1.1
 	 *
 	 * @param array $args
@@ -1956,10 +1963,12 @@ class Give_API {
 	 */
 	public function process_api_key( $args ) {
 
-		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'give-api-nonce' ) ) {
+		$nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+		if ( ! wp_verify_nonce( $nonce, 'give-api-nonce' ) ) {
 			wp_die(
-				__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ),
-				__( 'Error', 'give' ),
+				esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ),
+				esc_html__( 'Error', 'give' ),
 				array(
 					'response' => 403,
 				)
@@ -1968,8 +1977,8 @@ class Give_API {
 
 		if ( empty( $args['user_id'] ) ) {
 			wp_die(
-				__( 'User ID Required.', 'give' ),
-				__( 'Error', 'give' ),
+				esc_html__( 'User ID Required.', 'give' ),
+				esc_html__( 'Error', 'give' ),
 				array(
 					'response' => 401,
 				)
@@ -1986,22 +1995,22 @@ class Give_API {
 
 		if ( $user_id == get_current_user_id() && ! give_get_option( 'allow_user_api_keys' ) && ! current_user_can( 'manage_give_settings' ) ) {
 			wp_die(
-				sprintf( /* translators: %s: process */
+				esc_html( sprintf( /* translators: %s: process */
 					__( 'You do not have permission to %s API keys for this user.', 'give' ),
 					$process
-				),
-				__( 'Error', 'give' ),
+				) ),
+				esc_html__( 'Error', 'give' ),
 				array(
 					'response' => 403,
 				)
 			);
 		} elseif ( ! current_user_can( 'manage_give_settings' ) ) {
 			wp_die(
-				sprintf( /* translators: %s: process */
+				esc_html( sprintf( /* translators: %s: process */
 					__( 'You do not have permission to %s API keys for this user.', 'give' ),
 					$process
-				),
-				__( 'Error', 'give' ),
+				) ),
+				esc_html__( 'Error', 'give' ),
 				array(
 					'response' => 403,
 				)
@@ -2012,23 +2021,23 @@ class Give_API {
 			case 'generate':
 				if ( $this->generate_api_key( $user_id ) ) {
 					Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
-					wp_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-generated', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) );
+					wp_safe_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-generated', admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) ) );
 					exit();
 				} else {
-					wp_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-failed', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) );
+					wp_safe_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-failed', admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) ) );
 					exit();
 				}
 				break;
 			case 'regenerate':
 				$this->generate_api_key( $user_id, true );
 				Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
-				wp_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-regenerated', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) );
+				wp_safe_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-regenerated', admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) ) );
 				exit();
 				break;
 			case 'revoke':
 				$this->revoke_api_key( $user_id );
 				Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
-				wp_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-revoked', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) );
+				wp_safe_redirect( esc_url_raw( add_query_arg( 'give-messages[]', 'api-key-revoked', admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) ) ) );
 				exit();
 				break;
 			default;
@@ -2064,6 +2073,7 @@ class Give_API {
 		$new_public_key = '';
 		$new_secret_key = '';
 
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- WordPress core verifies the nonce before it fires personal_options_update and edit_user_profile_update, and process_api_key() verifies give-api-nonce before the Tools page calls this.
 		if ( ! empty( $_POST['from'] ) && 'profile' === $_POST['from'] ) {
 			// For User Profile Page.
 			if ( ! empty( $_POST['give_set_api_key'] ) ) {
@@ -2076,6 +2086,7 @@ class Give_API {
 			} else {
 				return false;
 			}
+			// phpcs:enable WordPress.Security.NonceVerification.Missing
 		} else {
 			// For Tools > API page.
 			$public_key = $this->get_user_public_key( $user_id );
@@ -2149,6 +2160,7 @@ class Give_API {
 	 * Generate the public key for a user
 	 *
 	 * @access private
+	 * @since  TBD Use gmdate() instead of date().
 	 * @since  1.1
 	 *
 	 * @param string $user_email
@@ -2157,7 +2169,7 @@ class Give_API {
 	 */
 	private function generate_public_key( $user_email = '' ) {
 		$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
-		$public   = hash( 'md5', $user_email . $auth_key . date( 'U' ) );
+		$public   = hash( 'md5', $user_email . $auth_key . gmdate( 'U' ) );
 
 		return $public;
 	}
@@ -2166,6 +2178,7 @@ class Give_API {
 	 * Generate the secret key for a user
 	 *
 	 * @access private
+	 * @since  TBD Use gmdate() instead of date().
 	 * @since  1.1
 	 *
 	 * @param int $user_id
@@ -2174,7 +2187,7 @@ class Give_API {
 	 */
 	private function generate_private_key( $user_id = 0 ) {
 		$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
-		$secret   = hash( 'md5', $user_id . $auth_key . date( 'U' ) );
+		$secret   = hash( 'md5', $user_id . $auth_key . gmdate( 'U' ) );
 
 		return $secret;
 	}

@@ -447,12 +447,14 @@ if ( give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
  * Will add/update when user add click on the checkout page.
  * The status of the donation doest not matter as it get change when user had made the payment successfully.
  *
+ * @since TBD Unslash the page URL and store it with esc_url_raw().
  * @since 1.8.13
  *
  * @param int $payment_id Payment id for which the meta value should be updated.
  */
 function give_payment_save_page_data( $payment_id ) {
-	$page_url = ( ! empty( $_REQUEST['give-current-url'] ) ? esc_url( $_REQUEST['give-current-url'] ) : false );
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- for form donations give_process_donation() checks the form nonce before the donation is created; other callers of give_insert_payment() have no form nonce, so the value is only stored as the page the donor gave from, after esc_url_raw().
+	$page_url = ( ! empty( $_REQUEST['give-current-url'] ) ? esc_url_raw( wp_unslash( $_REQUEST['give-current-url'] ) ) : false );
 
 	// Check $page_url is not empty.
 	if ( $page_url ) {

@@ -2,6 +2,12 @@
 
 use Give\Form\Template\Options;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 $price_placeholder = give_format_decimal('1.00', false, false);
 
 return [

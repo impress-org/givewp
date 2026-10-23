@@ -17,6 +17,9 @@ class MoveDonationCommentToDonationMetaTable extends Migration
 {
     /**
      * @inheritdoc
+     *
+     * @since TBD Escape exception message.
+     *
      * @throws Exception
      */
     public function run()
@@ -84,7 +87,11 @@ class MoveDonationCommentToDonationMetaTable extends Migration
 
             Log::error('Failed running migration: ' . self::title());
 
-            throw new DatabaseMigrationException('Failed running migration: ' . self::title(), 0, $exception);
+            throw new DatabaseMigrationException(
+                'Failed running migration: ' . esc_html(self::title()),
+                0,
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
 
         DB::commit();

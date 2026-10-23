@@ -49,8 +49,8 @@ class Give_Shortcode_Donation_Form_Goal extends Give_Shortcode_Generator {
 				'type'        => 'post',
 				'query_args'  => [
 					'post_type'  => 'give_forms',
-					'meta_key'   => '_give_goal_option',
-					'meta_value' => 'enabled',
+					'meta_key'   => '_give_goal_option', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Lists only forms that have a goal enabled for the shortcode picker; the meta match is the filter.
+					'meta_value' => 'enabled', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Lists only forms that have a goal enabled for the shortcode picker; the meta match is the filter.
 				],
 				'name'        => 'id',
                 'tooltip' => esc_attr__('Select a Campaign Form', 'give'),

@@ -30,15 +30,17 @@ function give_setup_post_types() {
 
 	// Enable/Disable give_forms links if form is saving.
 	if ( Give_Admin_Settings::is_saving_settings() ) {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- nonce verified by Give_Admin_Settings::is_saving_settings() in the condition above.
 		if ( isset( $_POST['forms_singular'] ) ) {
-			$give_forms_singular = give_is_setting_enabled( give_clean( $_POST['forms_singular'] ) );
+			$give_forms_singular = give_is_setting_enabled( give_clean( $_POST['forms_singular'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 			flush_rewrite_rules();
 		}
 
 		if ( isset( $_POST['forms_archives'] ) ) {
-			$give_forms_archives = give_is_setting_enabled( give_clean( $_POST['forms_archives'] ) );
+			$give_forms_archives = give_is_setting_enabled( give_clean( $_POST['forms_archives'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 			flush_rewrite_rules();
 		}
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
 	}
 
 	$give_forms_slug = defined( 'GIVE_SLUG' ) ? GIVE_SLUG : 'donations';
@@ -238,15 +240,17 @@ function give_setup_taxonomies() {
 
 	// Enable/Disable category and tag if form is saving.
 	if ( Give_Admin_Settings::is_saving_settings() ) {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- nonce verified by Give_Admin_Settings::is_saving_settings() in the condition above.
 		if ( isset( $_POST['categories'] ) ) {
-			$enable_category = give_is_setting_enabled( give_clean( $_POST['categories'] ) );
+			$enable_category = give_is_setting_enabled( give_clean( $_POST['categories'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 			flush_rewrite_rules();
 		}
 
 		if ( isset( $_POST['tags'] ) ) {
-			$enable_tag = give_is_setting_enabled( give_clean( $_POST['tags'] ) );
+			$enable_tag = give_is_setting_enabled( give_clean( $_POST['tags'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 			flush_rewrite_rules();
 		}
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
 	}
 
 	if ( $enable_category ) {
@@ -335,6 +339,7 @@ add_filter( 'enter_title_here', 'give_change_default_title' );
  * Registers Custom Post Statuses which are used by the Payments
  *
  * @return void
+ * @since TBD Add translators comments.
  * @since 1.0
  */
 function give_register_post_type_statuses() {
@@ -347,6 +352,7 @@ function give_register_post_type_statuses() {
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
+			/* translators: %s: Number of donations */
 			'label_count'               => _n_noop( 'Refunded <span class="count">(%s)</span>', 'Refunded <span class="count">(%s)</span>', 'give' ),
 		]
 	);
@@ -358,6 +364,7 @@ function give_register_post_type_statuses() {
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
+			/* translators: %s: Number of donations */
 			'label_count'               => _n_noop( 'Failed <span class="count">(%s)</span>', 'Failed <span class="count">(%s)</span>', 'give' ),
 		]
 	);
@@ -369,6 +376,7 @@ function give_register_post_type_statuses() {
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
+			/* translators: %s: Number of donations */
 			'label_count'               => _n_noop( 'Revoked <span class="count">(%s)</span>', 'Revoked <span class="count">(%s)</span>', 'give' ),
 		]
 	);
@@ -380,6 +388,7 @@ function give_register_post_type_statuses() {
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
+			/* translators: %s: Number of donations */
 			'label_count'               => _n_noop( 'Cancelled <span class="count">(%s)</span>', 'Cancelled <span class="count">(%s)</span>', 'give' ),
 		]
 	);
@@ -391,6 +400,7 @@ function give_register_post_type_statuses() {
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
+			/* translators: %s: Number of donations */
 			'label_count'               => _n_noop( 'Abandoned <span class="count">(%s)</span>', 'Abandoned <span class="count">(%s)</span>', 'give' ),
 		]
 	);
@@ -402,6 +412,7 @@ function give_register_post_type_statuses() {
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
+			/* translators: %s: Number of donations */
 			'label_count'               => _n_noop( 'Processing <span class="count">(%s)</span>', 'Processing <span class="count">(%s)</span>', 'give' ),
 		]
 	);
@@ -414,6 +425,7 @@ function give_register_post_type_statuses() {
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
+			/* translators: %s: Number of donations */
 			'label_count'               => _n_noop( 'Preapproval <span class="count">(%s)</span>', 'Preapproval <span class="count">(%s)</span>', 'give' ),
 		]
 	);

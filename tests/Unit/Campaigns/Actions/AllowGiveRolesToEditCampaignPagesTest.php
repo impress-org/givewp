@@ -44,7 +44,9 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * Clear the static cache between tests.
+     * Clear the static caches between tests.
+     *
+     * @since 4.19.0.1 Reset the resolved post ID statics along with the campaign page cache.
      */
     private function clearStaticCache(): void
     {
@@ -52,6 +54,14 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
         $property = $reflection->getProperty('campaignPageCache');
         $property->setAccessible(true);
         $property->setValue(null, []);
+
+        $resolved = $reflection->getProperty('editingPostId');
+        $resolved->setAccessible(true);
+        $resolved->setValue(null, null);
+
+        $resolvedFlag = $reflection->getProperty('editingPostIdResolved');
+        $resolvedFlag->setAccessible(true);
+        $resolvedFlag->setValue(null, false);
     }
 
     /**
@@ -175,6 +185,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
+     * @since 4.19.0.1 Establish the edit context with the global post instead of the query string.
      * @since 4.14.0
      */
     public function testGrantPublishCapabilityGrantsCapsForCampaignPage(): void
@@ -188,7 +199,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
         $user = new WP_User($userId);
 
         // Simulate being in admin context editing the campaign page
-        $_GET['post'] = $page->id;
+        $GLOBALS['post'] = get_post($page->id);
         set_current_screen('edit');
 
         $allcaps = $user->allcaps;
@@ -201,10 +212,11 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
         $this->assertTrue($result['publish_pages']);
 
         // Clean up
-        unset($_GET['post']);
+        unset($GLOBALS['post']);
     }
 
     /**
+     * @since 4.19.0.1 Establish the edit context with the global post instead of the query string.
      * @since 4.14.0
      */
     public function testGrantPublishCapabilityGrantsMultipleCaps(): void
@@ -218,7 +230,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
         $user = new WP_User($userId);
 
         // Simulate being in admin context editing the campaign page
-        $_GET['post'] = $page->id;
+        $GLOBALS['post'] = get_post($page->id);
         set_current_screen('edit');
 
         $allcaps = $user->allcaps;
@@ -232,10 +244,11 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
         $this->assertTrue($result['edit_others_pages']);
 
         // Clean up
-        unset($_GET['post']);
+        unset($GLOBALS['post']);
     }
 
     /**
+     * @since 4.19.0.1 Establish the edit context with the global post instead of the query string.
      * @since 4.14.0
      */
     public function testGrantPublishCapabilityDoesNotGrantCapsForNonCampaignPage(): void
@@ -248,7 +261,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
         $user = new WP_User($userId);
 
         // Simulate being in admin context editing the regular page
-        $_GET['post'] = $pageId;
+        $GLOBALS['post'] = get_post($pageId);
         set_current_screen('edit');
 
         $allcaps = $user->allcaps;
@@ -261,10 +274,11 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
         $this->assertArrayNotHasKey('publish_pages', $result);
 
         // Clean up
-        unset($_GET['post']);
+        unset($GLOBALS['post']);
     }
 
     /**
+     * @since 4.19.0.1 Establish the edit context with the global post instead of the query string.
      * @since 4.14.0
      */
     public function testGrantPublishCapabilityDoesNotGrantCapsWhenUserLacksEditGiveFormsCapability(): void
@@ -278,6 +292,41 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
         $user = new WP_User($userId);
 
         // Simulate being in admin context editing the campaign page
+        $GLOBALS['post'] = get_post($page->id);
+        set_current_screen('edit');
+
+        $allcaps = $user->allcaps;
+        $caps = ['publish_pages'];
+        $args = ['publish_pages', $userId];
+
+        $result = $this->action->grantPublishCapability($allcaps, $caps, $args, $user);
+
+        // Should NOT have publish_pages granted
+        $this->assertArrayNotHasKey('publish_pages', $result);
+
+        // Clean up
+        unset($GLOBALS['post']);
+    }
+
+    /**
+     * The grant must be decided from the page actually being edited (the REST
+     * route or the global $post), never from a post ID in the query string —
+     * otherwise a request could attach the grant to a page it is not editing.
+     *
+     * @since 4.19.0.1
+     */
+    public function testGrantPublishCapabilityDoesNotGrantCapsFromQueryStringPostId(): void
+    {
+        // Create a campaign with a page
+        $campaign = Campaign::factory()->create();
+        $page = $campaign->page();
+
+        // Create a give_worker user and get WP_User object
+        $userId = self::factory()->user->create(['role' => 'give_worker']);
+        $user = new WP_User($userId);
+
+        // Admin context, but only the query string points at a campaign page
+        // while no page is actually being edited in this request.
         $_GET['post'] = $page->id;
         set_current_screen('edit');
 
@@ -292,6 +341,45 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
 
         // Clean up
         unset($_GET['post']);
+    }
+
+    /**
+     * An early capability check that runs before the edit screen sets the
+     * global $post must not lock in a missing resolution for the whole request —
+     * the grant still applies once the edit context appears.
+     *
+     * @since 4.19.0.1
+     */
+    public function testGrantPublishCapabilityResolvesPageIdWhenContextAppearsLater(): void
+    {
+        // Create a campaign with a page
+        $campaign = Campaign::factory()->create();
+        $page = $campaign->page();
+
+        // Create a give_worker user and get WP_User object
+        $userId = self::factory()->user->create(['role' => 'give_worker']);
+        $user = new WP_User($userId);
+
+        set_current_screen('edit');
+
+        $allcaps = $user->allcaps;
+        $caps = ['publish_pages'];
+        $args = ['publish_pages', $userId];
+
+        // First check runs before any page context exists (e.g. during admin_init).
+        $early = $this->action->grantPublishCapability($allcaps, $caps, $args, $user);
+        $this->assertArrayNotHasKey('publish_pages', $early);
+
+        // The edit screen now establishes the page being edited.
+        $GLOBALS['post'] = get_post($page->id);
+
+        $later = $this->action->grantPublishCapability($allcaps, $caps, $args, $user);
+
+        // The grant must apply to the page the screen is actually editing.
+        $this->assertTrue($later['publish_pages']);
+
+        // Clean up
+        unset($GLOBALS['post']);
     }
 
     /**

@@ -54,6 +54,7 @@ class EagerLoader
     protected $foreignAttribute;
 
     /**
+     * @since TBD Escape exception message.
      * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 3.5.0
      *
@@ -66,11 +67,11 @@ class EagerLoader
     public function __construct(string $modelClass, string $eagerLoadedModelClass, string $relationshipKey, string $foreignKey, ?string $foreignAttribute = null)
     {
         if (!is_subclass_of($modelClass, Model::class)) {
-            throw new InvalidArgumentException("$modelClass must be an instance of " . Model::class);
+            throw new InvalidArgumentException(esc_html($modelClass) . ' must be an instance of ' . Model::class);
         }
 
         if (!is_subclass_of($eagerLoadedModelClass, Model::class)) {
-            throw new InvalidArgumentException("$eagerLoadedModelClass must be an instance of " . Model::class);
+            throw new InvalidArgumentException(esc_html($eagerLoadedModelClass) . ' must be an instance of ' . Model::class);
         }
 
         $this->reflection = new ReflectionClass($modelClass);

@@ -147,6 +147,7 @@ class Give_Background_Updater extends WPBackgroundProcess
     /**
      * Is queue empty
      *
+     * @since TBD Use the options table and column names directly in the query.
      * @since 2.4.5
      *
      * @return bool
@@ -155,17 +156,14 @@ class Give_Background_Updater extends WPBackgroundProcess
     {
         global $wpdb;
 
-        $table = $wpdb->options;
-        $column = 'option_name';
-
         $key = $wpdb->esc_like($this->identifier . '_batch_') . '%';
 
-        $count = $wpdb->get_var(
+        $count = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds batch rows in wp_options by name pattern, which get_option() cannot do; the queue must be read live.
             $wpdb->prepare(
                 "
 			SELECT COUNT(*)
-			FROM {$table}
-			WHERE {$column} LIKE %s
+			FROM {$wpdb->options}
+			WHERE option_name LIKE %s
 		",
                 $key
             )
@@ -177,6 +175,7 @@ class Give_Background_Updater extends WPBackgroundProcess
     /**
      * Get batch
      *
+     * @since TBD Use the options table and column names directly in the query.
      * @since 2.4.5
      *
      * @return stdClass Return the first batch from the queue
@@ -185,20 +184,18 @@ class Give_Background_Updater extends WPBackgroundProcess
     {
         global $wpdb;
 
-        $table = $wpdb->options;
         $column = 'option_name';
-        $key_column = 'option_id';
         $value_column = 'option_value';
 
         $key = $wpdb->esc_like($this->identifier . '_batch_') . '%';
 
-        $query = $wpdb->get_row(
+        $query = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds batch rows in wp_options by name pattern, which get_option() cannot do; the queue must be read live.
             $wpdb->prepare(
                 "
 			SELECT *
-			FROM {$table}
-			WHERE {$column} LIKE %s
-			ORDER BY {$key_column} ASC
+			FROM {$wpdb->options}
+			WHERE option_name LIKE %s
+			ORDER BY option_id ASC
 			LIMIT 1
 		",
                 $key
@@ -307,6 +304,8 @@ class Give_Background_Updater extends WPBackgroundProcess
      * in the next pass through. Or, return false to remove the
      * item from the queue.
      *
+     * @since TBD Write the log data as JSON.
+     *
      * @param array $update Update info
      *
      * @return mixed
@@ -380,8 +379,8 @@ class Give_Background_Updater extends WPBackgroundProcess
 
             $log_data = 'Update Task' . "\n";
             $log_data .= "Total update count: {$give_updates->get_total_db_update_count()}\n";
-            $log_data .= 'Update IDs: ' . print_r($give_updates->get_update_ids(), true);
-            $log_data .= 'Update: ' . print_r($resume_update, true);
+            $log_data .= 'Update IDs: ' . wp_json_encode($give_updates->get_update_ids());
+            $log_data .= 'Update: ' . wp_json_encode($resume_update);
 
             Give()->logs->add('Update Error', $log_data, 0, 'update');
 
@@ -407,7 +406,7 @@ class Give_Background_Updater extends WPBackgroundProcess
             }
 
             $log_data = 'Update Task' . "\n";
-            $log_data .= print_r($resume_update, true) . "\n\n";
+            $log_data .= wp_json_encode($resume_update) . "\n\n";
             $log_data .= "Error\n {$e->getMessage()}";
 
             Give()->logs->add('Update Error', $log_data, 0, 'update');

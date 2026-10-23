@@ -46,6 +46,8 @@ class JoinCondition
     }
 
     /**
+     * @since TBD Escape exception message.
+     *
      * @param  string  $operator
      *
      * @return string
@@ -64,8 +66,8 @@ class JoinCondition
             throw new InvalidArgumentException(
                 sprintf(
                     'Unsupported logical operator %s. Please provide one of the supported operators (%s)',
-                    $operator,
-                    implode(',', $supportedOperators)
+                    esc_html($operator),
+                    esc_html(implode(',', $supportedOperators))
                 )
             );
         }

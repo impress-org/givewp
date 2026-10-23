@@ -1,10 +1,20 @@
 <?php
 
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+/**
+ * @since TBD Add translators comments.
+ */
+
 return [
     /**
      * Visual Appearance
      */
     'visual_appearance' => [
+        /* translators: 1: Opening strong tag, 2: Closing strong tag */
         'name'   => sprintf(__('%1$sVisual Appearance%2$s', 'give'), '<strong>', '</strong>'),
         'fields' => [
             [
@@ -132,6 +142,7 @@ return [
      * Section 1: Donation Amount
      */
     'donation_amount' => [
+        /* translators: 1: Opening strong tag, 2: Closing strong tag */
         'name'   => sprintf(__('%1$sSection 1:%2$s Donation Amount', 'give'), '<strong>', '</strong>'),
         'fields' => [
             [
@@ -155,6 +166,7 @@ return [
      * Section 2: Donor Information
      */
     'donor_information' => [
+        /* translators: 1: Opening strong tag, 2: Closing strong tag */
         'name'   => sprintf(__('%1$sSection 2:%2$s Donor Information', 'give'), '<strong>', '</strong>'),
         'fields' => [
             [
@@ -179,6 +191,7 @@ return [
      * Section 3: Payment Method
      */
     'payment_information' => [
+        /* translators: 1: Opening strong tag, 2: Closing strong tag */
         'name'   => sprintf(__('%1$sSection 3:%2$s Payment Method', 'give'), '<strong>', '</strong>'),
         'fields' => [
             [

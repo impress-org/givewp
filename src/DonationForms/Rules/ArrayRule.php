@@ -36,11 +36,13 @@ class ArrayRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
     }
 
     /**
+     * @since TBD Add translators comments.
      * @since 3.0.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
         if (!empty($value) && !is_array($value)) {
+            /* translators: %s: Placeholder that is replaced with the field name */
             $fail(sprintf(__('%s must be an array', 'give'), '{field}'));
         }
     }
