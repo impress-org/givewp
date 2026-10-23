@@ -1,33 +1,27 @@
 import {createContext, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState} from 'react';
 import {__} from '@wordpress/i18n';
 import type {Field} from '@wordpress/dataviews';
-import cx from 'classnames';
-import {GiveIcon} from '@givewp/components';
 import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notifications';
-import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 import ListTableApi from '../api';
-import ListTableStats from '../ListTableStats/ListTableStats';
 import DataViewsListTable from '../DataViewsListTable';
 import ListTableErrorState from '../ListTableErrorState';
-import LegacyRowActions, {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
+import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
+import useLegacyRowActionsField from '../LegacyRowActions/useLegacyRowActionsField';
 import {columnsToFields, titleFieldId, visibleFieldIds} from '../adapters/columnsToFields';
 import {filterSettingsToFields} from '../adapters/filterSettingsToFields';
 import {loadEntityElements} from '../adapters/loadEntityElements';
 import {scopeFromFilterSettings, viewFromInitialState} from '../adapters/viewFromInitialState';
 import {PER_PAGE_SIZES, viewToParameters} from '../adapters/viewToParameters';
-import {bulkActionsToActions} from '../adapters/bulkActionsToActions';
-import {rowActionsToActions} from '../adapters/rowActionsToActions';
-import {normalizeActionResult} from '../adapters/normalizeActionResult';
 import {getItemName} from '../adapters/getItemName';
 import useListTableView from '../hooks/useListTableView';
 import useListTableSelection from '../hooks/useListTableSelection';
 import useListTableQuery from '../hooks/useListTableQuery';
 import useListTableActionNotices from '../hooks/useListTableActionNotices';
+import useListTableActions from '../hooks/useListTableActions';
+import ListTablePageHeader from './ListTablePageHeader';
 import LegacyConfirmModal, {LegacyConfirmRequest} from './LegacyConfirmModal';
 import type {
-    BulkActionsConfig,
     Column,
-    LegacyRowActionArgs,
     LegacyRowActions as LegacyRowActionsRender,
     ListTableItem,
     ListTablePageProps,
@@ -66,12 +60,6 @@ export const ShowConfirmModalContext = createContext(
  * @deprecated TBD The list engine owns selection. Only the old table code, removed with it, reads this.
  */
 export const CheckboxContext = createContext(null);
-
-/**
- * The record id a legacy row action button carries in `data-actionid`.
- */
-const actionIdOf = (event: {target: EventTarget}) =>
-    (event.target as HTMLElement).closest<HTMLElement>('[data-actionid]')?.dataset.actionid;
 
 /**
  * The page shell every admin list screen renders through: the Give page header and stats, and the
@@ -116,9 +104,6 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const [scope] = useState(() => scopeFromFilterSettings(filterSettings, contentMode, urlSearch));
         const [testMode, setTestMode] = useState(paymentMode);
         const [legacyConfirm, setLegacyConfirm] = useState<LegacyConfirmRequest | null>(null);
-        const [customAction, setCustomAction] = useState<{config: BulkActionsConfig; items: ListTableItem[]} | null>(
-            null
-        );
 
         const {view, onChangeView} = useListTableView(() => {
             const titleField = titleFieldId(columns);
@@ -127,6 +112,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             return viewFromInitialState(filterSettings, {perPage, fields, titleField, contentMode}, urlSearch);
         });
         const {selection, onChangeSelection} = useListTableSelection(view);
+        const clearSelection = useCallback(() => onChangeSelection([]), [onChangeSelection]);
         const report = useListTableActionNotices(singleName, pluralName);
 
         const parameters = useMemo(
@@ -153,27 +139,13 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             }
         }, [data]);
 
-        const legacyRowActionArgs = useCallback(
-            (item: ListTableItem): LegacyRowActionArgs => ({
-                data,
-                item,
-                parameters,
-                listTableApi,
-                removeRow: (callback) => async (event) => {
-                    await callback(actionIdOf(event));
-                    await refresh();
-                },
-                addRow: (callback) => async (event) => {
-                    await callback(actionIdOf(event));
-                    await refresh();
-                },
-                setUpdateErrors: (response) => {
-                    report(normalizeActionResult(response, []));
-                    refresh();
-                },
-            }),
-            [data, parameters, listTableApi, refresh, report]
-        );
+        const legacyRowActionsField = useLegacyRowActionsField(legacyRowActions, {
+            data,
+            parameters,
+            listTableApi,
+            report,
+            refresh,
+        });
 
         const filters = useMemo(
             () => filterSettingsToFields(filterSettings, view, {contentMode, loadEntityElements}),
@@ -183,40 +155,21 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const fields = useMemo<Field<ListTableItem>[]>(
             () => [
                 ...columnsToFields(columns, columnFilters, data),
-                ...(legacyRowActions
-                    ? [
-                          {
-                              id: LEGACY_ROW_ACTIONS_FIELD,
-                              label: __('Actions', 'give'),
-                              enableHiding: false,
-                              enableSorting: false,
-                              render: ({item}) => (
-                                  <LegacyRowActions render={legacyRowActions} args={legacyRowActionArgs(item)} />
-                              ),
-                          },
-                      ]
-                    : []),
+                ...(legacyRowActionsField ? [legacyRowActionsField] : []),
                 ...filters.fields,
             ],
-            [columns, columnFilters, data, legacyRowActions, legacyRowActionArgs, filters]
+            [columns, columnFilters, data, legacyRowActionsField, filters]
         );
 
-        const actions = useMemo(() => {
-            // Add-ons add Donations bulk actions here before the screen mounts.
-            const addonBulkActions = bulkActions ? window.GiveDonations?.addonsBulkActions ?? [] : [];
-
-            return [
-                ...(typedRowActions ? rowActionsToActions(typedRowActions, {report, refresh}) : []),
-                ...bulkActionsToActions([...(bulkActions ?? []), ...addonBulkActions], {
-                    data,
-                    parameters,
-                    report,
-                    refresh,
-                    clearSelection: () => onChangeSelection([]),
-                    openCustomAction: (config, items) => setCustomAction({config, items}),
-                }),
-            ];
-        }, [typedRowActions, bulkActions, data, parameters, report, refresh, onChangeSelection]);
+        const {actions, customAction, closeCustomAction} = useListTableActions({
+            rowActions: typedRowActions,
+            bulkActions,
+            data,
+            parameters,
+            report,
+            refresh,
+            clearSelection,
+        });
 
         const showConfirmModal = useCallback(
             (label, confirm, action, type = null, confirmButtonText = __('Confirm', 'give')) =>
@@ -228,32 +181,17 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             <ShowConfirmModalContext.Provider value={showConfirmModal}>
                 <article className={styles.page}>
                     {!contentMode && (
-                        <>
-                            <header className={styles.pageHeader}>
-                                <div className={styles.flexRow}>
-                                    <GiveIcon size={'2.25rem'} />
-                                    <h1 className={styles.pageTitle}>{title}</h1>
-                                    {testModeFilter && testMode && (
-                                        <span className={styles.testModeBadge}>{testModeFilter.text}</span>
-                                    )}
-                                </div>
-                                {children && <div className={styles.flexRow}>{children}</div>}
-                            </header>
-
-                            <div className={cx('wp-header-end', 'hidden')} />
-
-                            {banner && <section role="banner">{banner()}</section>}
-                            {testModeFilter && (
-                                <div className={styles.filtersRow}>
-                                    <ToggleSwitch
-                                        ariaLabel={testModeFilter.ariaLabel}
-                                        onChange={setTestMode}
-                                        checked={testMode}
-                                    />
-                                </div>
-                            )}
-                            {statsConfig && stats && <ListTableStats config={statsConfig} values={stats} />}
-                        </>
+                        <ListTablePageHeader
+                            title={title}
+                            banner={banner}
+                            testModeFilter={testModeFilter}
+                            testMode={testMode}
+                            onChangeTestMode={setTestMode}
+                            statsConfig={statsConfig}
+                            stats={stats}
+                        >
+                            {children}
+                        </ListTablePageHeader>
                     )}
 
                     <div className={styles.pageContent}>
@@ -305,7 +243,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                         customAction.items.map((item) => String(item.id)),
                         customAction.items.map(getItemName),
                         true,
-                        (isOpen) => !isOpen && setCustomAction(null)
+                        (isOpen) => !isOpen && closeCustomAction()
                     )}
             </ShowConfirmModalContext.Provider>
         );
