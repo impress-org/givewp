@@ -4,6 +4,7 @@ import type {ListActionContext, ListTableItem, ListTableRowAction} from '../List
 import {runListAction} from '../actions/runListAction';
 import useListActionSubmit from '../hooks/useListActionSubmit';
 import {getItemName} from './getItemName';
+import {onlyEligible} from './onlyEligible';
 
 /**
  * What a row action needs from the page it runs on.
@@ -82,11 +83,14 @@ export function rowActionsToActions(
 
         return {
             ...base,
-            callback: (items) =>
-                runListAction(
+            callback: (selected) => {
+                const items = onlyEligible(selected, rowAction.isEligible);
+
+                return runListAction(
                     {run: () => rowAction.run(items), ids: items.map((item) => item.id), label: rowAction.label},
                     context
-                ),
+                );
+            },
         };
     });
 }

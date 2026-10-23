@@ -50,6 +50,18 @@ describe('rowActionsToActions', () => {
         expect(pageContext.refresh).toHaveBeenCalled();
     });
 
+    it('runs a bulk action on the eligible rows only', async () => {
+        const run = jest.fn(async () => ({errors: [], successes: [1, 3]}));
+        const [action] = rowActionsToActions(
+            [{id: 'trash', label: 'Trash', supportsBulk: true, isEligible: (item) => item.id !== 2, run}],
+            context()
+        );
+
+        await ('callback' in action && action.callback([{id: 1}, {id: 2}, {id: 3}], {registry: null}));
+
+        expect(run).toHaveBeenCalledWith([{id: 1}, {id: 3}]);
+    });
+
     it('asks first for an action with confirm, and runs it on Confirm', async () => {
         const pageContext = context();
         const run = jest.fn(async () => ({errors: [], successes: [9]}));
