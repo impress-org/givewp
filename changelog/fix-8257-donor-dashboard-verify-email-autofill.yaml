@@ -1,0 +1,4 @@
+significance: patch
+type: fixed
+entry: Fixed an issue where the Donor Dashboard Verify Email button did nothing when the browser autofilled the email field without updating React state, so the verification request was never sent.
+timestamp: 2026-07-18T00:00:00.000Z
