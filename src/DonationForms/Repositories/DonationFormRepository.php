@@ -6,6 +6,7 @@ use Closure;
 use Give\DonationForms\Actions\ConvertDonationFormBlocksToFieldsApi;
 use Give\DonationForms\DonationQuery;
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\Rules\CurrencyRule;
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Blocks\BlockCollection;
@@ -70,6 +71,7 @@ class DonationFormRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.7.0 Add post_excerpt to the list of fields being inserted
      * @since 3.0.0
      *
@@ -116,22 +118,22 @@ class DonationFormRepository
             DB::table('give_formmeta')
                 ->insert([
                     'form_id' => $donationFormId,
-                    'meta_key' => DonationFormMetaKeys::SETTINGS()->getValue(),
-                    'meta_value' => $donationForm->settings->toJson(),
+                    'meta_key' => DonationFormMetaKeys::SETTINGS()->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the form meta table, not a query filter.
+                    'meta_value' => $donationForm->settings->toJson(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the form meta table, not a query filter.
                 ]);
 
             DB::table('give_formmeta')
                 ->insert([
                     'form_id' => $donationFormId,
-                    'meta_key' => DonationFormMetaKeys::FIELDS()->getValue(),
-                    'meta_value' => $donationForm->blocks->toJson(),
+                    'meta_key' => DonationFormMetaKeys::FIELDS()->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the form meta table, not a query filter.
+                    'meta_value' => $donationForm->blocks->toJson(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the form meta table, not a query filter.
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
             Log::error('Failed creating a donation form', compact('donationForm'));
 
-            throw new $exception('Failed creating a donation form');
+            throw new Exception('Failed creating a donation form', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -148,6 +150,7 @@ class DonationFormRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.7.0 Add post_excerpt to the list of fields being updated
      * @since 3.0.0
      *
@@ -191,7 +194,7 @@ class DonationFormRepository
                 ->where('form_id', $donationForm->id)
                 ->where('meta_key', DonationFormMetaKeys::SETTINGS()->getValue())
                 ->update([
-                    'meta_value' => $donationForm->settings->toJson(),
+                    'meta_value' => $donationForm->settings->toJson(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the form meta table, not a query filter.
                 ]);
 
 
@@ -199,14 +202,14 @@ class DonationFormRepository
                 ->where('form_id', $donationForm->id)
                 ->where('meta_key', DonationFormMetaKeys::FIELDS()->getValue())
                 ->update([
-                    'meta_value' => $donationForm->blocks->toJson(),
+                    'meta_value' => $donationForm->blocks->toJson(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the form meta table, not a query filter.
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
             Log::error('Failed updating a donation form', compact('donationForm'));
 
-            throw new $exception('Failed updating a donation form');
+            throw new Exception('Failed updating a donation form', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -215,6 +218,7 @@ class DonationFormRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.0.0
      *
      * @throws Exception
@@ -238,7 +242,7 @@ class DonationFormRepository
 
             Log::error('Failed deleting a donation form', compact('donationForm'));
 
-            throw new $exception('Failed deleting a donation form');
+            throw new Exception('Failed deleting a donation form', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -249,6 +253,7 @@ class DonationFormRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.0.0
      *
      * @param  DonationForm  $donationForm
@@ -259,7 +264,7 @@ class DonationFormRepository
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($donationForm->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
     }
@@ -435,6 +440,7 @@ class DonationFormRepository
     }
 
     /**
+     * @since 4.19.0.1 Build the currency rule from the form's supported currencies.
      * @since 3.0.0
      * @throws NameCollisionException
      */
@@ -471,6 +477,25 @@ class DonationFormRepository
         }
 
         Hooks::doAction('givewp_donation_form_schema', $form, $formId, $blockNodeRelationships);
+
+        /** @var Hidden|null $currencyNode */
+        $currencyNode = $form->getNodeByName('currency');
+
+        if ($currencyNode) {
+            $allowedCurrencies = [
+                give_get_currency($formId),
+                (string)$currencyNode->getDefaultValue(),
+            ];
+
+            foreach ($form->getCurrencySwitcherSettings() as $setting) {
+                $allowedCurrencies[] = $setting->getId();
+            }
+
+            $currencyNode->getValidationRules()->replaceOrAppendRule(
+                CurrencyRule::id(),
+                new CurrencyRule(array_values(array_unique(array_filter($allowedCurrencies))))
+            );
+        }
 
         return $form;
     }

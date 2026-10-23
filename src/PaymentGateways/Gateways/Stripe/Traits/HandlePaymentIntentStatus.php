@@ -14,7 +14,7 @@ use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 trait HandlePaymentIntentStatus
 {
     /**
-     * @since TBD Handle ACH `verify_with_microdeposits` next actions and stop returning an empty redirect.
+     * @since TBD Handle ACH `verify_with_microdeposits` next actions and stop returning an empty redirect. Escape exception message. Add translators comments.
      * @since 2.27.1 Update PaymentIntentException message.
      * @since 2.21.0 Update second argument type to Donation model
      * @since 2.19.7 fix param order and only pass donationId
@@ -54,12 +54,8 @@ trait HandlePaymentIntentStatus
                 return new PaymentProcessing($paymentIntent->id());
             default:
                 throw new PaymentIntentException(
-                    sprintf(
-                        /* translators: %s: Stripe Payment Intent status */
-                        esc_html__('Unhandled payment intent status: %s', 'give'),
-                        esc_html($paymentIntent->status())
-                    )
-                );
+                    /* translators: %s: Payment intent status */
+                    sprintf(esc_html__('Unhandled payment intent status: %s', 'give'), esc_html($paymentIntent->status())));
         }
     }
 }

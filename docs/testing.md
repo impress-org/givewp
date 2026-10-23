@@ -23,6 +23,86 @@ matches the file name, because PHPUnit's single-file loader is strict about it, 
 hardcodes `wptests_` must use `$wpdb->prefix` instead. `composer test:serial` runs plain PHPUnit in
 one process; use it with `--filter`, which paratest does not support in this mode, and when debugging.
 
+The host run uses WordPress trunk from the `wordpress/wordpress` dev dependency, which is
+`wordpress-develop`. `composer.json` declares it as an inline package pointing at the zip of one
+commit, because the alternatives cost more than they give: a `git` repository clones the full
+history, about a gigabyte, in every CI job, and a `vcs` one needs a GitHub token for any
+`composer require` or `composer update`. To move to a newer trunk, change the commit hash in both
+places in that package definition and run `composer update wordpress/wordpress`.
+
+### Running in wp-env
+
+`npm run test:php` and `npm run test:php:serial` run the same two commands inside a wp-env `cli`
+container, on its PHP, its database and its WordPress. The host still needs `composer install` and
+`npm install` to have been run, and Docker, but no database and no WordPress checkout of its own.
+The serial script passes its arguments on to PHPUnit, apart from the few wp-env claims for itself
+(`--debug`, `--config`, `--help`, `--version`):
+
+```bash
+npm run env:test:start
+npm run test:php
+npm run test:php:serial -- --filter TestDonationRepository
+```
+
+The tests get a wp-env instance of their own, described by `.wp-env.test.json` and reached through
+`npm run env:test -- <command>`. wp-env keeps a separate set of containers per config file, so this
+one starts, stops and changes version without touching the development site from `.wp-env.json`.
+It mounts the checkout at `wp-content/plugins/give` and does not activate it: the test bootstrap
+loads GiveWP itself, and the fixed path keeps the scripts independent of what the checkout
+directory is called.
+
+`tests/bootstrap.php` picks the environment by what exists on disk. Inside the container
+`/wordpress-phpunit`, the test library wp-env downloads for the WordPress version it installed, is
+present, so `Give\Tests\Config\WpEnv` wins and loads `tests/wp-tests-config.wp-env.php`. That file
+is committed rather than copied from a template, and it is not the `wp-tests-config.php` wp-env
+writes itself, which has one table prefix for every process where paratest needs one per worker.
+
+The credentials and paths in that file are written out, not read from the container's environment.
+Paratest starts its workers with only the variables it sets itself, so anything read with `getenv()`
+is there in a serial run and gone in a parallel one.
+
+The container fixes what the host leaves to chance. PHP is wp-env's, not whatever the host has
+drifted to, and it is one variable away from the oldest version GiveWP supports:
+
+```bash
+WP_ENV_PHP_VERSION=7.4 npm run env:test:start
+WP_ENV_CORE=https://wordpress.org/wordpress-6.9.zip npm run env:test:start
+```
+
+The test library follows the WordPress version. Start again without the variable to go back.
+`npm run env:test -- start --xdebug` turns on step debugging.
+
+The `afterStart` script in `.wp-env.test.json` sets `innodb_flush_log_at_trx_commit=2`, which stops
+InnoDB syncing its log to disk after every transaction. The database is disposable and the suite
+commits thousands of times; the setting took the parallel run from about 85 seconds to about 75.
+
+Only core is mounted, as in CI, so the tests that need an add-on beside it skip themselves. To run
+them, or an add-on's own suite, mount the whole plugins directory from a gitignored
+`.wp-env.test.override.json`:
+
+```json
+{"mappings": {"wp-content/plugins": "../"}}
+```
+
+`@wordpress/env` is pinned to an exact version. The images it builds are part of the test
+environment, and versions before 11.15.0 can no longer build the PHP 7.4 image now that Debian
+bullseye has left the main mirrors.
+
+The database is whatever wp-env ships, currently `mariadb:lts`, with no option to change it.
+
+### CI
+
+`.github/workflows/wordpress.yml` runs the suite twice over. `test` runs it on the runner against
+MySQL 5.7 and 8.0 service containers. `test-mariadb` runs `npm run test:php` in wp-env, which is
+both the MariaDB coverage and the check that the local command keeps working. Each crosses PHP 7.4
+and 8.4 with two WordPress versions: `latest`, and `minimum`, which both jobs read from the
+"Requires at least" line of `readme.txt`. Raising that line is all it takes to move the floor.
+
+Both jobs build `vendor/` with Composer on PHP 7.4, the release PHP, and cache it. The key is
+`composer.json`, `composer.lock` and `bin/strauss-installar.sh`, so a cache hit skips the PHP 7.4
+setup and the install. `test-mariadb` then rebuilds Composer's class map in the container, because
+the cached one lists the classes of the commit that saved it.
+
 Add-ons run this same suite against core: an add-on's `tests/bootstrap.php` requires GiveWP's
 autoloader from the sibling directory and hands its main plugin file to
 `Give\Tests\Framework\Addons\Bootstrap`, which loads the add-on on `muplugins_loaded` and then
@@ -47,8 +127,9 @@ slow test with a worse failure message.
 ### Layout
 
 **One spec file per screen**, named for the screen, holding everything that screen is covered for:
-`campaigns.spec.ts`, `donation-forms.spec.ts`, `donor-dashboard.spec.ts`, `form-builder.spec.ts`,
-`legacy-donation-forms.spec.ts`, `reports.spec.ts`, `tools-logs.spec.ts`, `tools-migrations.spec.ts`.
+`campaigns.spec.ts`, `donation-details.spec.ts`, `donation-forms.spec.ts`, `donations-list.spec.ts`,
+`donor-dashboard.spec.ts`, `form-builder.spec.ts`, `forms-list.spec.ts`, `legacy-donation-forms.spec.ts`,
+`reports.spec.ts`, `tools-logs.spec.ts`, `tools-migrations.spec.ts`.
 
 A v3 donation form is two screens, not one: the form builder that edits it in wp-admin and the
 form itself on the front end. They share a subject and nothing else - different apps, different
@@ -73,7 +154,11 @@ sets up the variation it needs without driving the builder to get there. `utils/
 holds the embed iframe locator and the steps every donating spec repeats. `utils/rest.ts` records the REST calls a page makes and
 asserts it reached the route it owns with nothing failing. `utils/legacy-form.ts` creates a v2 form
 and enables a gateway for it through `utils/wp-cli.ts`, because neither has a REST route: a v2 form
-is a post with protected meta, and GiveWP's settings are one option. WP-CLI runs in the wp-env this
+is a post with protected meta, and GiveWP's settings are one option. `utils/donation.ts` records a
+completed test donation the same way, because the REST route that creates one wants a donor and no
+route creates a donor; the list and details specs use it so they do not drive the donate flow for each
+donation they need. `utils/async-select.ts` picks an option from the admin's searchable dropdowns,
+whose options carry no `role=option`. WP-CLI runs in the wp-env this
 checkout started, so those fixtures assume `WP_BASE_URL` points at it. Assert on that traffic rather than on
 rendered records: a wrong route, a missing nonce, or a response shape the client no longer unwraps
 all produce a page that builds and mounts cleanly and then shows nothing.
@@ -151,14 +236,109 @@ against whatever their wp-env site accumulated. Assert on structure — a root e
 heading, a form field — not on a row count or an empty state, unless the test seeds that state
 itself through `requestUtils.rest()`.
 
+## Playground previews
+
+Every pull request gets a "WordPress Playground Preview" comment from
+`.github/workflows/playground-preview.yml`. Its links open a throwaway WordPress in the browser,
+running the pull request's build, logged in and opened on the Campaigns screen. The preview is rebuilt
+on every push, and the build takes several minutes.
+
+The zip is the same dev build the packaging bot makes: the shared StellarWP `zip.yml` workflow
+builds it with pup and puts it in the public zip bucket, and the links' blueprint points at that
+file through the same `evnt.is/test-zip` link the bot posts to Slack. Nothing is hosted anywhere
+new, and a branch the bot already packaged is not built twice. Pull requests from forks get no
+preview, because they cannot see the bucket credentials.
+
+While the zip builds, the same comment says "building", so the links of an older push are never left
+on the pull request. If the build fails, it says "failed" with a link to the run. When the build is
+done, the comment is a short list with icons, like the zip comment in Kadence Blocks: a heading with the
+commit, a time badge, and three links: an empty site, a site with sample data, and the zip. The
+sample-data link also installs the
+[Give Data Generator](https://github.com/impress-org/give-data-generator) release and runs
+`wp give-data donations 100 --campaigns=3` before opening, with the site switched to test mode so
+the Donations and Donors screens show what it made. It takes a few minutes longer to open.
+
+`.wordpress-org/blueprints/blueprint.json` is the same blueprint pointed at the WordPress.org
+release. It gives the plugin page its Live Preview button.
+
+Playground runs on SQLite, not MySQL, with no cron, email or outside payment gateways. The core
+flows work there: the Playwright specs for campaigns, donation forms and the admin screens pass
+against it. It is for looking at a change, not for gateway or database work.
+
+## Plugin Check
+
+`.github/workflows/plugin-check.yml` runs WordPress.org's Plugin Check on every pull request with
+[`wordpress/plugin-check-action`](https://github.com/WordPress/plugin-check-action), against the
+plugin as the release ships it: pup builds and packages the zip with `.puprc` and `.distignore`,
+and the action checks the unzipped `give` folder. Every category runs, except the five runtime checks
+(in `performance`). They boot WordPress with a scratch table prefix, GiveWP's custom tables do not
+exist under it, and the whole run dies with `Error: Database Query` (SOFT-4567).
+
+The workflow has three jobs:
+
+- **Plugin Check start** posts the "in progress" comment.
+- **Plugin Check run** builds the zip and runs the action. It has a read-only token, because it runs
+  a third-party action. The action also tries to post its own comment, and with this token that
+  fails (the log shows "Failed to post PR comment"), so the only comment is ours.
+- **Plugin Check** (the check to watch) compares the results with the baseline and replaces the
+  comment with the result.
+
+GiveWP still has known problems, fixed ticket by ticket, and the action fails on any error. So the
+last job counts instead: `.github/plugin-check/ratchet.sh` counts errors and warnings per rule code
+and compares them with a baseline:
+
+- a rule with more errors than the baseline fails the check;
+- a rule with more warnings only gets a notice;
+- a rule with fewer errors or warnings passes.
+
+On pull requests from this repository the comment is short: totals, the top rules that went up, and
+links. Pull requests from forks get no comment (their token is read-only), but the job summary shows
+the same text. The full results are in the `plugin-check-report` artifact (the raw results and a new
+`baseline.json`).
+
+**Where the baseline comes from.** No baseline is committed. Every run uploads a `baseline.json`
+made from its own results, and later runs download it with `.github/plugin-check/fetch-baseline.sh`:
+
+- A **pull request** compares with the branch it goes into: the run for its base commit, waited for
+  (up to 20 minutes) when it is still going. For a stacked pull request this is the run of the pull
+  request below it. The comment calls this column "Target branch" and links to that run. When the
+  base commit's run has no baseline (a newer push cancelled it, say), the latest run on that branch
+  is used. It is older than the target, so more errors than it are only reported as a warning
+  ("Target branch, older run"), never a failure.
+- A **push** to `develop` or `master` compares with the run before it on the same branch ("Previous
+  run"). Two pull requests can each pass on their own and still add errors together once both are
+  merged; this is where that shows up, as a failed check on the branch.
+- If looking up the earlier run fails (a GitHub API or download error), the check fails, so an
+  outage never passes as "no baseline". Re-run it.
+- With **no earlier run** to take it from (a new branch, or artifacts past their 90 days), nothing is
+  compared and the check passes with a warning. Run the workflow on the target branch (Actions →
+  Plugin Check → Run workflow) to make a baseline.
+
+Fixing problems therefore needs no baseline change: the next run on the branch has the lower
+counts, and every pull request into it is held to them. Two branches worked on at the same time
+cannot leave a wrong baseline behind, because there is no file to merge.
+
+There is no switch to accept new errors. Fix them, or, when a finding is a false positive, add a
+`phpcs:ignore` comment for that rule with the reason, as the existing code does.
+
+**Plugin Check version.** The action always installs the latest Plugin Check, so a new release can
+add rules and raise counts with no code change. A pull request whose target's last run used the
+older release then fails on the new rules. Run the workflow on the target branch to give it a
+baseline from the new release, then re-run the pull request's check.
+
+Once every error count is zero, remove the first and last jobs and `continue-on-error` from the run
+job. The action then fails on any error and posts its own comment.
+
 ## Add-on smoke tests in CI
 
 `.github/workflows/tests-e2e.yml` installs the latest GitHub release of each add-on named in its
 `ADDONS` env next to core before starting wp-env, so the whole Playwright suite runs with them
 active. A fatal on activation, a filter typed against the wrong model, an asset that 404s: the core
-specs see all of it. `tests/e2e/addon-peer-to-peer.spec.ts` adds what they cannot: that the add-on
+specs see all of it. Each `tests/e2e/addon-<slug>.spec.ts` adds what they cannot: that the add-on
 really is active, so a failed download cannot pass as a green run, and that its own admin screen
-still mounts.
+still mounts. `addon-recurring.spec.ts` also takes a subscription on a form with no campaign,
+because Recurring reaches core's campaign lookup on that path and a standalone form is where an
+empty lookup would show.
 
 ### Add-ons come from their release zips, not from source
 

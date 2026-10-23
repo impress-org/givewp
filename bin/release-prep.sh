@@ -36,9 +36,11 @@ esac
 
 # Download the pinned pup phar on first use (kept in sync with the `pup` script
 # in composer.json). The phar is gitignored, so this is a no-op once cached.
+# It downloads to a temp file first so a failed download is never cached.
 PUP_VERSION="2.0.0"
 if [ ! -f ./bin/pup.phar ]; then
-  curl -o bin/pup.phar -L -C - "https://github.com/stellarwp/pup/releases/download/${PUP_VERSION}/pup.phar"
+  curl -fsSL -o bin/pup.phar.tmp "https://github.com/stellarwp/pup/releases/download/${PUP_VERSION}/pup.phar"
+  mv bin/pup.phar.tmp bin/pup.phar
 fi
 
 echo "=== 1/3: Updating version strings ==="

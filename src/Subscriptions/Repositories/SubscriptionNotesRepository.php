@@ -47,6 +47,7 @@ class SubscriptionNotesRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.8.0
      *
      * @throws Exception|InvalidArgumentException
@@ -83,8 +84,8 @@ class SubscriptionNotesRepository
                 DB::table('commentmeta')
                     ->insert([
                         'comment_ID' => $commentId,
-                        'meta_key' => SubscriptionNoteMetaKeys::TYPE,
-                        'meta_value' => SubscriptionNoteType::DONOR,
+                        'meta_key' => SubscriptionNoteMetaKeys::TYPE, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the comment meta table, not a query filter.
+                        'meta_value' => SubscriptionNoteType::DONOR, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
                     ]);
             }
         } catch (Exception $exception) {
@@ -92,7 +93,7 @@ class SubscriptionNotesRepository
 
             Log::error('Failed creating a subscription note', compact('subscriptionNote'));
 
-            throw new $exception('Failed creating a subscription note');
+            throw new Exception('Failed creating a subscription note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -104,6 +105,7 @@ class SubscriptionNotesRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.8.0
      *
      * @throws Exception|InvalidArgumentException
@@ -134,7 +136,7 @@ class SubscriptionNotesRepository
 
             Log::error('Failed updating a subscription note', compact('subscriptionNote'));
 
-            throw new $exception('Failed updating a subscription note');
+            throw new Exception('Failed updating a subscription note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -143,6 +145,7 @@ class SubscriptionNotesRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.8.0
      *
      * @throws Exception
@@ -166,7 +169,7 @@ class SubscriptionNotesRepository
 
             Log::error('Failed deleting a subscription note', compact('subscriptionNote'));
 
-            throw new $exception('Failed deleting a subscription note');
+            throw new Exception('Failed deleting a subscription note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -187,13 +190,14 @@ class SubscriptionNotesRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 4.8.0
      */
     private function validateSubscriptionNote(SubscriptionNote $subscriptionNote): void
     {
         foreach ($this->requiredSubscriptionProperties as $key) {
             if (! isset($subscriptionNote->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
 
@@ -242,15 +246,15 @@ class SubscriptionNotesRepository
         if (! $query) {
             $table->insert([
                 'comment_ID' => $subscriptionNote->id,
-                'meta_key' => SubscriptionNoteMetaKeys::TYPE,
-                'meta_value' => $subscriptionNote->type->getValue(),
+                'meta_key' => SubscriptionNoteMetaKeys::TYPE, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the comment meta table, not a query filter.
+                'meta_value' => $subscriptionNote->type->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
             ]);
         } else {
             $table
                 ->where('comment_ID', $subscriptionNote->id)
                 ->where('meta_key', SubscriptionNoteMetaKeys::TYPE)
                 ->update([
-                    'meta_value' => $subscriptionNote->type->getValue(),
+                    'meta_value' => $subscriptionNote->type->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
                 ]);
         }
     }

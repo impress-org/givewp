@@ -1,0 +1,215 @@
+name: Playground Preview
+
+# Adds a "Try in WordPress Playground" comment to every pull request: a throwaway WordPress in the
+# browser with the pull request's build installed. The zip comes from the same shared pup workflow
+# and public bucket the packaging bot uses, so nothing new is hosted anywhere.
+#
+# The preview is built on every push, like the zip comment in Kadence Blocks. Pull requests from
+# forks are skipped, because they cannot see the bucket credentials.
+
+on:
+    pull_request:
+        types: [opened, reopened, synchronize]
+
+# One run per pull request at a time. A push while a preview is still building cancels that build,
+# so an older zip can never overwrite a newer comment.
+concurrency:
+    group: playground-preview-${{ github.event.pull_request.number }}
+    cancel-in-progress: true
+
+jobs:
+    # Replaces the comment from the last push at once, so a build that takes minutes does not leave
+    # links to an older zip on the pull request. It runs next to "zip", and "button" waits for it, so
+    # the finished comment can never be overwritten by this one.
+    pending:
+        if: ${{ !github.event.pull_request.head.repo.fork }}
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        permissions:
+            pull-requests: write
+        steps:
+            # The badge time is Eastern Time: %Z prints EST in winter and EDT in summer. The "/" is
+            # encoded because shields.io reads it as a path.
+            -   name: Make the badge
+                id: badge
+                env:
+                    SHA: ${{ github.event.pull_request.head.sha }}
+                run: |
+                    stamp=$(LC_ALL=C TZ='America/New_York' date '+%m/%d %I:%M %p %Z')
+                    stamp=${stamp// /%20}
+                    stamp=${stamp//\//%2F}
+                    {
+                        echo "url=https://img.shields.io/badge/Build%20Started-${stamp}-blue"
+                        echo "sha=${SHA:0:7}"
+                    } >> "$GITHUB_OUTPUT"
+
+            # A failed API call here must not stop the preview, so both steps may fail quietly.
+            -   name: Find the comment
+                id: find_comment
+                continue-on-error: true
+                uses: peter-evans/find-comment@v4
+                with:
+                    issue-number: ${{ github.event.pull_request.number }}
+                    comment-author: 'github-actions[bot]'
+                    body-includes: '<!-- givewp-playground-preview -->'
+
+            -   name: Post "building"
+                continue-on-error: true
+                uses: peter-evans/create-or-update-comment@v5
+                with:
+                    comment-id: ${{ steps.find_comment.outputs.comment-id }}
+                    issue-number: ${{ github.event.pull_request.number }}
+                    edit-mode: replace
+                    body: |
+                        <!-- givewp-playground-preview -->
+                        🏗️ Playground preview building for commit ${{ steps.badge.outputs.sha }}
+
+                        ![Build timestamp](${{ steps.badge.outputs.url }})
+
+                        This takes a few minutes.
+
+    zip:
+        if: ${{ !github.event.pull_request.head.repo.fork }}
+        uses: stellarwp/github-actions/.github/workflows/zip.yml@main
+        with:
+            ref: ${{ github.event.pull_request.head.sha }}
+            production: 'no'
+            # GiveWP supports PHP 7.4 and up, so the vendor directory has to be built on 7.4.
+            php_version: '7.4'
+            # A preview needs no translations.
+            i18n: 'no'
+        secrets:
+            GH_BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            JENKINS_SECRET: ${{ secrets.SLACK_PACKAGING_SECRET }}
+            S3_BUCKET: ${{ secrets.ZIP_S3_BUCKET }}
+            S3_ACCESS_KEY_ID: ${{ secrets.ZIP_S3_ACCESS_KEY_ID }}
+            S3_SECRET_ACCESS_KEY: ${{ secrets.ZIP_S3_SECRET_ACCESS_KEY }}
+            S3_REGION: ${{ secrets.ZIP_S3_REGION }}
+            S3_ENDPOINT: ${{ secrets.ZIP_S3_ENDPOINT }}
+
+    button:
+        needs: [ pending, zip ]
+        runs-on: blacksmith-4vcpu-ubuntu-2404
+
+        # Writes one comment on the pull request and reads the checkout, nothing else.
+        permissions:
+            pull-requests: write
+            contents: read
+
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    ref: ${{ github.event.pull_request.head.sha }}
+                    persist-credentials: false
+
+            # The runner's own Composer is out of date, so set up PHP for a current one before
+            # Composer downloads pup.
+            -   name: Set Up PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 8.3
+                    coverage: none
+
+            # pup names the zip after the version, the commit time and the commit hash, so the
+            # name is asked of pup rather than rebuilt here.
+            -   name: Find the zip
+                id: zip
+                run: |
+                    composer run -q pup -- --version > /dev/null
+                    version=$(php -d display_errors=0 bin/pup.phar get-version --dev)
+                    name=$(php -d display_errors=0 bin/pup.phar zip-name "$version")
+                    echo "url=https://evnt.is/test-zip?file=${name}.zip" >> "$GITHUB_OUTPUT"
+
+            -   name: Post the comment
+                env:
+                    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    ZIP_URL: ${{ steps.zip.outputs.url }}
+                    PR: ${{ github.event.pull_request.number }}
+                    SHA: ${{ github.event.pull_request.head.sha }}
+                    # The Give Data Generator release used by the "with sample data" preview.
+                    GENERATOR_URL: https://github.com/impress-org/give-data-generator/releases/download/1.1.0/give-data-generator.1.1.0.zip
+                run: |
+                    blueprint() {
+                        jq -c -n --arg url "$ZIP_URL" --arg generator "$GENERATOR_URL" --argjson data "$1" '{
+                            landingPage: "/wp-admin/edit.php?post_type=give_forms&page=give-campaigns",
+                            preferredVersions: { php: "8.3", wp: "latest" },
+                            features: { networking: true },
+                            steps: ([
+                                { step: "defineWpConfigConsts", consts: { WP_DEBUG: true, WP_DEBUG_DISPLAY: true } },
+                                { step: "login", username: "admin" },
+                                { step: "installTheme", themeData: { resource: "wordpress.org/themes", slug: "kadence" }, options: { activate: true } },
+                                { step: "installPlugin", pluginData: { resource: "url", url: $url }, options: { activate: true } }
+                            ] + (if $data then [
+                                { step: "installPlugin", pluginData: { resource: "url", url: $generator }, options: { activate: true } },
+                                { step: "wp-cli", command: "wp eval '"'"'give_update_option(\"test_mode\", \"enabled\");'"'"'" },
+                                { step: "wp-cli", command: "wp give-data donations 100 --campaigns=3" }
+                            ] else [] end))
+                        }' | jq -s -R -r @uri
+                    }
+                    # A short list of links with icons, the same shape as Kadence Blocks' zip comment.
+                    # Playground opens with the blueprint in the URL.
+                    link() {
+                        printf 'https://playground.wordpress.net/?blueprint-url=data:application/json,%s' "$1"
+                    }
+                    plain=$(link "$(blueprint false)")
+                    seeded=$(link "$(blueprint true)")
+                    marker='<!-- givewp-playground-preview -->'
+                    # Same badge as the Plugin Check comment. The time is Eastern Time: %Z prints EST in
+                    # winter and EDT in summer. The "/" is encoded because shields.io reads it as a path.
+                    stamp=$(LC_ALL=C TZ='America/New_York' date '+%m/%d %I:%M %p %Z')
+                    stamp=${stamp// /%20}
+                    stamp=${stamp//\//%2F}
+                    badge="https://img.shields.io/badge/Built-${stamp}-darkgreen"
+                    body=$(printf '%s\n🎉 Playground preview ready for commit %s\n\n![Build timestamp](%s)\n\n- 🛝 [Try in WordPress Playground](%s)\n- 🛝 [Try in WordPress Playground with sample data](%s)\n- 💾 [Download zip](%s)\n\nDebug output is on. Sample data is 3 campaigns and 100 test-mode donations, and opens a few minutes slower.\n' "$marker" "${SHA:0:7}" "$badge" "$plain" "$seeded" "$ZIP_URL")
+                    existing=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --paginate --jq ".[] | select(.body | startswith(\"$marker\")) | .id" | head -n 1)
+                    if [ -n "$existing" ]; then
+                        gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$existing" -f body="$body" > /dev/null
+                    else
+                        gh api -X POST "repos/$GITHUB_REPOSITORY/issues/$PR/comments" -f body="$body" > /dev/null
+                    fi
+
+    # Without this, a failed build would leave "building" on the pull request for good.
+    failed:
+        needs: [ pending, zip, button ]
+        if: ${{ failure() }}
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        permissions:
+            pull-requests: write
+        steps:
+            -   name: Make the badge
+                id: badge
+                env:
+                    SHA: ${{ github.event.pull_request.head.sha }}
+                run: |
+                    stamp=$(LC_ALL=C TZ='America/New_York' date '+%m/%d %I:%M %p %Z')
+                    stamp=${stamp// /%20}
+                    stamp=${stamp//\//%2F}
+                    {
+                        echo "url=https://img.shields.io/badge/Build%20Failed-${stamp}-red"
+                        echo "sha=${SHA:0:7}"
+                    } >> "$GITHUB_OUTPUT"
+
+            -   name: Find the comment
+                id: find_comment
+                continue-on-error: true
+                uses: peter-evans/find-comment@v4
+                with:
+                    issue-number: ${{ github.event.pull_request.number }}
+                    comment-author: 'github-actions[bot]'
+                    body-includes: '<!-- givewp-playground-preview -->'
+
+            -   name: Post "failed"
+                continue-on-error: true
+                uses: peter-evans/create-or-update-comment@v5
+                with:
+                    comment-id: ${{ steps.find_comment.outputs.comment-id }}
+                    issue-number: ${{ github.event.pull_request.number }}
+                    edit-mode: replace
+                    body: |
+                        <!-- givewp-playground-preview -->
+                        ❌ Playground preview build failed for commit ${{ steps.badge.outputs.sha }}
+
+                        ![Build timestamp](${{ steps.badge.outputs.url }})
+
+                        See the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for the error. Push a commit to try again.

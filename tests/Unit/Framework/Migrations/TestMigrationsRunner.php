@@ -12,7 +12,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_Upgrader;
 
 /**
- * @since TBD
+ * @since 4.18.0
  */
 class TestMigrationsRunner extends TestCase
 {
@@ -28,7 +28,7 @@ class TestMigrationsRunner extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testSkipsWhileAnotherRequestHoldsTheLock()
     {

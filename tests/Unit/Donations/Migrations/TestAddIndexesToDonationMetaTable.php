@@ -7,12 +7,12 @@ use Give\Framework\Database\DB;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.18.0
  */
 class TestAddIndexesToDonationMetaTable extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testReplacesSingleColumnIndexesWithCompositeOnes()
     {
@@ -34,7 +34,7 @@ class TestAddIndexesToDonationMetaTable extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testIsIdempotent()
     {

@@ -12,6 +12,8 @@ use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 class SubscriptionRenewalDonationCreated
 {
     /**
+     * @since TBD Number the placeholders and add translators comments.
+     * @since 4.18.0 Bail when the subscription has no initial donation instead of fataling on it.
      * @since 4.0.0 updated to create the renewal from subscription model
      * @since 3.16.0 Add log messages and a defensive approach to prevent duplicated renewals
      * @since 3.6.0
@@ -37,7 +39,24 @@ class SubscriptionRenewalDonationCreated
             return;
         }
 
-        if ($subscription->initialDonation()->gatewayTransactionId === $gatewayTransactionId) {
+        $initialDonation = $subscription->initialDonation();
+
+        if ( ! $initialDonation) {
+            PaymentGatewayLog::error(
+                sprintf('The renewal was not created for the gateway transaction ID %s because the subscription %s has no initial donation to copy the donor details from.',
+                    $gatewayTransactionId, $subscription->id),
+                [
+                    'Gateway Subscription ID' => $gatewaySubscriptionId,
+                    'Gateway Transaction ID' => $gatewayTransactionId,
+                    'Message' => $message,
+                    'Subscription' => $subscription->toArray(),
+                ]
+            );
+
+            return;
+        }
+
+        if ($initialDonation->gatewayTransactionId === $gatewayTransactionId) {
             PaymentGatewayLog::error(
                 sprintf('The renewal was not created for the gateway transaction ID %s because the initial donation of the subscription %s is already using the informed gateway transaction ID %s.',
                     $gatewayTransactionId, $subscription->id, $gatewaySubscriptionId),
@@ -78,7 +97,8 @@ class SubscriptionRenewalDonationCreated
 
             DonationNote::create([
                 'donationId' => $donation->id,
-                'content' => $message . ' ' . sprintf(__('%s transaction ID: %s', 'give'),
+                /* translators: 1: Payment gateway name, 2: Transaction ID from the gateway */
+                'content' => $message . ' ' . sprintf(__('%1$s transaction ID: %2$s', 'give'),
                         $donation->gateway()->getName(),
                         $donation->gatewayTransactionId
                     ),

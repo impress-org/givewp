@@ -14,7 +14,7 @@ if (!$testEnvironment->hasConfig()) {
     die('wp-tests-config.php not found');
 }
 
-// get the current test environment (Local or Workflow)
+// get the current test environment (wp-env, Local or Workflow)
 $currentTestEnvironment = $testEnvironment->current();
 
 // define for use in WP bootstrap file
@@ -40,6 +40,12 @@ TestHooks::addFilter('muplugins_loaded', static function () {
 // install GiveWP
 TestHooks::addFilter('setup_theme', static function () {
     echo 'Installing GiveWP.....' . PHP_EOL;
+
+    // Installing runs the batch migrations, which query Action Scheduler. It does not register
+    // its tables until `init`, which is later than this, so on a fresh database every one of
+    // those queries fails and prints a database error.
+    ActionScheduler::store()->init();
+
     give()->install();
 
     // Give_Roles::add_caps() writes capabilities to the roles array and the database but not to

@@ -104,8 +104,27 @@ class Revenue
     }
 
     /**
+     * @since 4.19.0
+     *
+     * @return false|int
+     */
+    public function updateRevenueFormId(Donation $donation)
+    {
+        global $wpdb;
+
+        return DB::update(
+            $wpdb->give_revenue,
+            ['form_id' => $donation->formId],
+            ['donation_id' => $donation->id],
+            ['%d'],
+            ['%d']
+        );
+    }
+
+    /**
      * Validate new revenue data.
      *
+     * @since TBD Escape exception message.
      * @since 2.9.0
      * @since 2.9.4 Mention donation id in exception message.
      *
@@ -136,8 +155,8 @@ class Revenue
             throw new InvalidArgumentException(
                 sprintf(
                     '%2$sTo insert revenue, please provide valid %1$s.',
-                    implode(', ', $required),
-                    $errorMessage
+                    esc_html(implode(', ', $required)),
+                    esc_html($errorMessage)
                 )
             );
         }

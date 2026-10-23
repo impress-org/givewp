@@ -108,13 +108,15 @@ class LogModel
     /**
      * Set log date
      *
+     * @since TBD Use gmdate() instead of date().
+     *
      * @param string $date
      */
     private function setDate($date)
     {
         $this->date = $this->isValidateDate($date)
             ? $date
-            : date('Y-m-d H:i:s');
+            : gmdate('Y-m-d H:i:s');
     }
 
     /**
@@ -223,13 +225,15 @@ class LogModel
     }
 
     /**
+     * @since TBD Store array and object values as JSON.
+     *
      * @param string $key
      * @param mixed  $value
      */
     private function addContext($key, $value)
     {
         if (is_array($value) || is_object($value)) {
-            $value = print_r($value, true);
+            $value = wp_json_encode($value);
         }
         $this->context[$key] = $value;
     }
@@ -238,12 +242,14 @@ class LogModel
      * Add supplemental information to existing log.
      * Supplemental data will be added as a context with a key prefixed with the current timestamp.
      *
+     * @since TBD Use gmdate() instead of date().
+     *
      * @param string $key
      * @param string $value
      */
     public function addSupplemental($key, $value)
     {
-        $contextName = sprintf('[%s] %s', date('Y-m-d H:i:s'), $key);
+        $contextName = sprintf('[%s] %s', gmdate('Y-m-d H:i:s'), $key);
         $this->addContext($contextName, $value);
     }
 
@@ -271,6 +277,8 @@ class LogModel
 
     /**
      * Save log record
+     *
+     * @since TBD Use gmdate() instead of date().
      */
     public function save()
     {
@@ -280,7 +288,7 @@ class LogModel
         $repository = give(LogRepository::class);
 
         if ($this->getId()) {
-            $this->date = date('Y-m-d H:i:s');
+            $this->date = gmdate('Y-m-d H:i:s');
             $repository->updateLog($this);
         } else {
             $this->id = $repository->insertLog($this);

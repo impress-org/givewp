@@ -1,0 +1,11 @@
+{
+    "core": "https://wordpress.org/latest.zip",
+    "port": 8890,
+    "testsEnvironment": false,
+    "mappings": {
+        "wp-content/plugins/give": "."
+    },
+    "lifecycleScripts": {
+        "afterStart": "wp-env --config .wp-env.test.json run cli wp db query \"SET GLOBAL innodb_flush_log_at_trx_commit=2\""
+    }
+}

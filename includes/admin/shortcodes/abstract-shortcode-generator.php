@@ -324,6 +324,7 @@ abstract class Give_Shortcode_Generator {
 	 *
 	 * @return array|false
 	 *
+	 * @since TBD Add translators comments.
 	 * @since 1.0
 	 */
 	protected function generate_post( $field ) {
@@ -344,6 +345,7 @@ abstract class Give_Shortcode_Generator {
 		if ( ! empty( $posts ) ) {
 			foreach ( $posts as $post ) {
 				$options[ absint( $post->ID ) ] = empty( $post->post_title )
+					/* translators: %s: Donation form ID */
 					? sprintf( __( 'Untitled (#%s)', 'give' ), $post->ID )
 					/** This filter is documented in wp-includes/post-template.php */
 					: apply_filters( 'the_title', $post->post_title, $post->ID );

@@ -13,7 +13,7 @@ Search our [issue tracker](https://github.com/impress-org/givewp/issues) first t
 1. Specify the version number for GiveWP.
 2. Describe the problem in detail. Explain what happened, and what you expected would happen. Include a screenshot if helpful.
 
-__Do not report potential security vulnerabilities here.__ You can report security bugs through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/give). The Patchstack team helps validate, triage, and handle any security vulnerabilities.
+__Do not report potential security vulnerabilities here.__ You can report security bugs through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/wordpress/plugin/give/security-policy). The Patchstack team helps validate, triage, and handle any security vulnerabilities.
 
 ## Development setup
 

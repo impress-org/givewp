@@ -222,11 +222,11 @@ class Give_Email_Access {
 	 */
 	public function get_token() {
 
-		$token = isset( $_GET['give_nl'] ) ? give_clean( $_GET['give_nl'] ) : '';
+		$token = isset( $_GET['give_nl'] ) ? give_clean( $_GET['give_nl'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- public email access link; the emailed token is the credential and is checked against the donors table, and a nonce cannot be added to an emailed link. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 		// Check for cookie.
 		if ( empty( $token ) ) {
-			$token = isset( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : '';
+			$token = isset( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		}
 
 		return is_string( $token ) ? $token : '';
@@ -271,6 +271,7 @@ class Give_Email_Access {
 	/**
 	 * Is this a valid token?
 	 *
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  4.16.7 Only accept non-empty string tokens.
 	 * @since  1.0
 	 * @access public
@@ -289,9 +290,9 @@ class Give_Email_Access {
 		}
 
 		// Make sure token isn't expired.
-		$expires = date( 'Y-m-d H:i:s', time() - $this->token_expiration );
+		$expires = gmdate( 'Y-m-d H:i:s', time() - $this->token_expiration );
 
-		$email = $wpdb->get_var(
+		$email = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 			$wpdb->prepare( "SELECT email FROM {$wpdb->donors} WHERE verify_key = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
 		);
 
@@ -303,8 +304,8 @@ class Give_Email_Access {
 
 		// Set error only if email access form isn't being submitted.
 		if (
-			! isset( $_POST['give_email'] ) &&
-			! isset( $_POST['_wpnonce'] )
+			! isset( $_POST['give_email'] ) && // phpcs:ignore WordPress.Security.NonceVerification.Missing -- presence check only; give_email_access_login() verifies the form nonce before it reads the email.
+			! isset( $_POST['_wpnonce'] ) // phpcs:ignore WordPress.Security.NonceVerification.Missing -- presence check only; give_email_access_login() verifies the form nonce before it reads the email.
 		) {
 			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', __( 'Your access token has expired. Please request a new one.', 'give' ) ) );
 		}
@@ -320,6 +321,7 @@ class Give_Email_Access {
 	 * @param string $email      Donor email.
 	 * @param string $verify_key The verification key.
 	 *
+	 * @since TBD Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -328,21 +330,21 @@ class Give_Email_Access {
 	public function set_verify_key( $donor_id, $email, $verify_key ) {
 		global $wpdb;
 
-		$now = date( 'Y-m-d H:i:s' );
+		$now = gmdate( 'Y-m-d H:i:s' );
 
 		// Insert or update?
-		$row_id = (int) $wpdb->get_var(
+		$row_id = (int) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 			$wpdb->prepare( "SELECT id FROM {$wpdb->donors} WHERE id = %d LIMIT 1", $donor_id )
 		);
 
 		// Update.
 		if ( ! empty( $row_id ) ) {
-			$wpdb->query(
+			$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 				$wpdb->prepare( "UPDATE {$wpdb->donors} SET verify_key = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $verify_key, $now, $row_id )
 			);
 		} // Insert.
 		else {
-			$wpdb->query(
+			$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 				$wpdb->prepare( "INSERT INTO {$wpdb->donors} ( verify_key, verify_throttle) VALUES (%s, %s)", $verify_key, $now )
 			);
 		}
@@ -351,6 +353,8 @@ class Give_Email_Access {
 	/**
 	 * Is this a valid verify key?
 	 *
+	 * @since TBD Use gmdate() instead of date().
+	 * @since  4.18.0 Verify keys expire with the same window as access tokens.
 	 * @since  4.16.7 Only accept non-empty string tokens.
 	 * @since  1.0
 	 * @access public
@@ -368,16 +372,20 @@ class Give_Email_Access {
 			return false;
 		}
 
+		// A verify key expires with the same window as an access token, so a
+		// key generated before that window can no longer be redeemed.
+		$expires = gmdate( 'Y-m-d H:i:s', time() - $this->token_expiration );
+
 		// See if the verify_key exists.
-		$row = $wpdb->get_row(
-			$wpdb->prepare( "SELECT id, email FROM {$wpdb->donors} WHERE verify_key = %s LIMIT 1", $token )
+		$row = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
+			$wpdb->prepare( "SELECT id, email FROM {$wpdb->donors} WHERE verify_key = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
 		);
 
-		$now = date( 'Y-m-d H:i:s' );
+		$now = gmdate( 'Y-m-d H:i:s' );
 
 		// Set token and remove verify key.
 		if ( ! empty( $row ) ) {
-			$wpdb->query(
+			$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 				$wpdb->prepare( "UPDATE {$wpdb->donors} SET verify_key = '', token = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $token, $now, $row->id )
 			);
 
@@ -422,6 +430,6 @@ class Give_Email_Access {
 		global $wpdb;
 
 		// Create columns in donors table.
-		$wpdb->query( "ALTER TABLE {$wpdb->donors} ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`" );
+		$wpdb->query( "ALTER TABLE {$wpdb->donors} ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Adds the email access columns to the GiveWP donors table; a schema change that init() runs only when the token column is missing.
 	}
 }

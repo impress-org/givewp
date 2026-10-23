@@ -46,7 +46,7 @@ class CampaignsDataRepository
      * The cache holds live-mode stats only. The queries filter by the site's payment mode, and the
      * options carry no mode, so test mode reads straight from the database and never writes.
      *
-     * @since TBD Query and cache campaigns that are missing from the cache; read subscriptions from the option they are written to; bypass the cache in test mode.
+     * @since 4.18.0 Query and cache campaigns that are missing from the cache; read subscriptions from the option they are written to; bypass the cache in test mode.
      * @since 4.8.0 added data caching layer
      *
      * @param int[] $ids
@@ -116,7 +116,7 @@ class CampaignsDataRepository
     /**
      * Ids with no row in the given cache.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     private static function missingIds(array $cache, array $ids): array
     {
@@ -131,7 +131,7 @@ class CampaignsDataRepository
      * The aggregate queries return no row for a campaign with no donations. Add a zero row for each
      * such campaign so it counts as cached and is not queried again on every page load.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     private static function withZeroRows($rows, array $ids, string $column): array
     {

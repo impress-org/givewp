@@ -6,6 +6,7 @@ use Give\Campaigns\CampaignsAdminPage;
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
+use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormMigration\Actions\GetMigratedFormId;
 use Give\Helpers\EnqueueScript;
 use Give\Helpers\Language;
@@ -61,6 +62,7 @@ class DonationFormsAdminPage
 
     /**
      * Register menu item
+     * @since 4.19.0 Show the "Forms" submenu again so standalone forms have a home in the admin.
      * @since 4.14.0 update permission capability to use facade
      * @since 4.0.0 set submenu parent to empty string to hide "all forms" from admin menu
      */
@@ -68,42 +70,20 @@ class DonationFormsAdminPage
     {
         remove_submenu_page('edit.php?post_type=give_forms', 'edit.php?post_type=give_forms');
         add_submenu_page(
-            '',
+            'edit.php?post_type=give_forms',
             esc_html__('Donation Forms', 'give'),
-            esc_html__('All Forms', 'give'),
+            esc_html__('Forms', 'give'),
             UserPermissions::donationForms()->viewCap(),
             'give-forms',
             [$this, 'render'],
-            // Do not change the submenu position unless you have a strong reason.
-            // We use this position value to access this menu data in $submenu to add a custom class.
-            // Check DonationFormsAdminPage::highlightAllFormsMenuItem
-            0
+            1
         );
-    }
-
-    /**
-     * @since 2.20.0
-     */
-    public function highlightAllFormsMenuItem()
-    {
-        global $submenu;
-        $pages = [
-            '/wp-admin/admin.php?page=give-forms', // Donation main menu page.
-            '/wp-admin/edit.php?post_type=give_forms', // Legacy donation form listing page.
-        ];
-
-        if (in_array($_SERVER['REQUEST_URI'], $pages)) {
-            // Add class to highlight 'All Forms' submenu.
-            $submenu['edit.php?post_type=give_forms'][0][4] = add_cssclass(
-                'current',
-                isset($submenu['edit.php?post_type=give_forms'][0][4]) ? $submenu['edit.php?post_type=give_forms'][0][4] : ''
-            );
-        }
     }
 
     /**
      * Load scripts
      *
+     * @since 4.19.0 Localize newFormUrl here instead of relying on the form builder to attach it to this script.
      * @since 3.22.0 Add locale support
      */
     public function loadScripts()
@@ -125,6 +105,7 @@ class DonationFormsAdminPage
             'supportedGateways' => $this->getSupportedGateways(),
             'isOptionBasedFormEditorEnabled' => OptionBasedFormEditor::isEnabled(),
             'locale' => Language::getLocale(),
+            'newFormUrl' => FormBuilderRouteBuilder::makeCreateFormRoute()->getUrl(),
             'swrConfig' => [
                 'revalidateOnFocus' => false
             ],
@@ -139,7 +120,7 @@ class DonationFormsAdminPage
             'give-admin-ui-font',
             'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400..700&display=swap',
             [],
-            null
+            null // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- external Google Fonts stylesheet, not versioned by GiveWP.
         );
 
         wp_enqueue_style('givewp-design-system-foundation');
@@ -147,6 +128,7 @@ class DonationFormsAdminPage
 
     /**
      * Load migration onboarding scripts
+     * @since TBD Guard the post param.
      * @since 3.2.0
      *
      * @return void
@@ -167,9 +149,9 @@ class DonationFormsAdminPage
         }
 
         if ($this->isShowingEditV2FormPage()) {
-            $formId = (int)$_GET['post'];
+            $formId = absint($_GET['post'] ?? 0); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only post id; it only selects which form to show and saves nothing.
             $campaign = Campaign::findByFormId($formId);
-            $isMigrated = _give_is_form_migrated($formId);
+            $isMigrated = give_is_form_migrated($formId);
 
             $campaignUrl = $campaign
                 ? admin_url('edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id)
@@ -233,7 +215,7 @@ class DonationFormsAdminPage
         ];
 
         if (CampaignsAdminPage::isShowingDetailsPage()) {
-            $queryParameters['campaignId'] = isset($_GET['id']) ? absint($_GET['id']) : null;
+            $queryParameters['campaignId'] = isset($_GET['id']) ? absint($_GET['id']) : null; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only id param; it only selects which record to show and saves nothing.
         }
 
         $request = WP_REST_Request::from_url(
@@ -291,6 +273,7 @@ class DonationFormsAdminPage
     /**
      * Display a button on the old donation forms table that switches to the React view
      *
+     * @since TBD Escape output, including translated strings.
      * @since 2.20.0
      */
     public function renderReactSwitch()
@@ -306,7 +289,7 @@ class DonationFormsAdminPage
                 fetch('<?php echo esc_url_raw(rest_url('give-api/v2/admin/forms/view?isLegacy=0')) ?>', {
                     method: 'GET',
                     headers: {
-                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                        ['X-WP-Nonce']: '<?php echo esc_js(wp_create_nonce('wp_rest')) ?>'
                     }
                 })
                     .then((res) => {
@@ -316,10 +299,10 @@ class DonationFormsAdminPage
 
             jQuery(function() {
                 jQuery(jQuery('.wrap .wp-heading-inline')).after(
-                    '<button class="page-title-action switch-new-view" onclick="showReactTable()"><?php _e(
+                    '<button class="page-title-action switch-new-view" onclick="showReactTable()"><?php echo esc_js(__(
                         'Switch to New View',
                         'give'
-                    ) ?></button>'
+                    )) ?></button>'
                 );
                 jQuery('.page-title-action:not(.switch-new-view)').remove();
             });
@@ -334,7 +317,7 @@ class DonationFormsAdminPage
      */
     public static function isShowing(): bool
     {
-        return isset($_GET['page']) && ($_GET['page'] === 'give-forms');
+        return isset($_GET['page']) && ($_GET['page'] === 'give-forms'); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**
@@ -347,7 +330,7 @@ class DonationFormsAdminPage
      */
     private function isShowingEditV2FormPage(): bool
     {
-        return isset($_GET['action'], $GLOBALS['post']) && $_GET['action'] === 'edit' && $GLOBALS['post']->post_type === 'give_forms';
+        return isset($_GET['action'], $GLOBALS['post']) && $_GET['action'] === 'edit' && $GLOBALS['post']->post_type === 'give_forms'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**
@@ -359,7 +342,7 @@ class DonationFormsAdminPage
      */
     private function isShowingAddV2FormPage(): bool
     {
-        return !isset($_GET['page']) && isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
+        return !isset($_GET['page']) && isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**
@@ -369,7 +352,7 @@ class DonationFormsAdminPage
      */
     public static function isShowingLegacyPage(): bool
     {
-        return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms' && empty($_GET['page']);
+        return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms' && empty($_GET['page']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**

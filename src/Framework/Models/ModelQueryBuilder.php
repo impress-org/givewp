@@ -5,7 +5,9 @@ namespace Give\Framework\Models;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
+use Give\Framework\QueryBuilder\Clauses\Having;
 use Give\Framework\QueryBuilder\Clauses\RawSQL;
+use Give\Framework\QueryBuilder\Clauses\Select;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
@@ -21,12 +23,14 @@ class ModelQueryBuilder extends QueryBuilder
     protected $model;
 
     /**
+     * @since TBD Escape exception message.
+     *
      * @param class-string<M> $modelClass
      */
     public function __construct($modelClass)
     {
         if (!is_subclass_of($modelClass, Model::class)) {
-            throw new InvalidArgumentException("$modelClass must be an instance of " . Model::class);
+            throw new InvalidArgumentException(esc_html($modelClass) . ' must be an instance of ' . Model::class);
         }
 
         $this->model = $modelClass;
@@ -35,6 +39,9 @@ class ModelQueryBuilder extends QueryBuilder
     /**
      * Returns the number of rows returned by a query
      *
+     * @since 4.18.0 Honor an explicit column in grouped counts by summing the column's non-null values per group.
+     * @since 4.18.0 Preserve SELECT aliases referenced by HAVING when counting a grouped query.
+     * @since 4.18.0 Count the groups of a grouped query rather than the first group's rows.
      * @since 2.24.0
      *
      * @param  null|string  $column
@@ -42,6 +49,14 @@ class ModelQueryBuilder extends QueryBuilder
     public function count($column = null): int
     {
         $column = ( ! $column || $column === '*') ? '1' : trim($column);
+
+        /*
+         * A grouped query returns one row per group and get_row() reads only the first of them,
+         * so the number of groups is what the caller is actually asking for.
+         */
+        if ($this->groupByColumns) {
+            return +DB::get_row($this->getGroupCountSQL($column))->count;
+        }
 
         if ('1' === $column) {
             $this->selects = [];
@@ -113,6 +128,7 @@ class ModelQueryBuilder extends QueryBuilder
     /**
      * Get row as model
      *
+     * @since TBD Escape exception message.
      * @since 2.19.6
      *
      * @param object|null $row
@@ -124,7 +140,7 @@ class ModelQueryBuilder extends QueryBuilder
         $model = $this->model;
 
         if (!method_exists($model, 'fromQueryBuilderObject')) {
-            throw new InvalidArgumentException("fromQueryBuilderObject missing from $model");
+            throw new InvalidArgumentException(esc_html("fromQueryBuilderObject missing from $model"));
         }
 
         return $model::fromQueryBuilderObject($row);
@@ -133,6 +149,7 @@ class ModelQueryBuilder extends QueryBuilder
     /**
      * Get results as models
      *
+     * @since TBD Escape exception message.
      * @since 2.19.6
      *
      * @param object[] $results
@@ -145,11 +162,96 @@ class ModelQueryBuilder extends QueryBuilder
         $model = $this->model;
 
         if (!method_exists($model, 'fromQueryBuilderObject')) {
-            throw new InvalidArgumentException("fromQueryBuilderObject missing from $model");
+            throw new InvalidArgumentException(esc_html("fromQueryBuilderObject missing from $model"));
         }
 
         return array_map(static function ($object) use ($model) {
             return $model::fromQueryBuilderObject($object);
         }, $results);
+    }
+
+    /**
+     * Wraps the grouped query so that its rows, one per group, are what gets counted. A
+     * COUNT(DISTINCT ...) over the grouped columns would drop every group holding a NULL.
+     *
+     * An explicit column counts the column's non-null values, so each group contributes its
+     * non-null count and the wrapper sums them instead of counting groups.
+     *
+     * The grouped columns are aliased because a derived table rejects duplicate column names, and
+     * the ordering and paging are dropped because neither changes the number of groups. SELECT
+     * entries whose aliases a HAVING clause references are kept, since the replaced select list
+     * would otherwise leave HAVING pointing at an alias that no longer exists.
+     *
+     * @since 4.18.0
+     *
+     * @param  string  $column
+     */
+    private function getGroupCountSQL($column = null): string
+    {
+        $innerSelects = [];
+
+        if ($column && '1' !== $column) {
+            $innerSelects[] = DB::prepare('COUNT(%1s) AS nonNullCount', $column);
+        }
+
+        foreach ($this->groupByColumns as $index => $groupByColumn) {
+            $innerSelects[] = "{$groupByColumn} AS groupedColumn{$index}";
+        }
+
+        foreach ($this->getHavingReferencedSelects() as $select) {
+            $innerSelects[] = $select;
+        }
+
+        $this->selects = [new RawSQL('SELECT ' . implode(', ', $innerSelects))];
+        $this->orderBys = [];
+        $this->limit = null;
+        $this->offset = null;
+
+        if ($column && '1' !== $column) {
+            return "SELECT SUM(nonNullCount) AS count FROM ({$this->getSQL()}) AS groupedQuery";
+        }
+
+        return "SELECT COUNT(*) AS count FROM ({$this->getSQL()}) AS groupedQuery";
+    }
+
+    /**
+     * Renders the SELECT entries whose aliases a HAVING clause references, since the grouped
+     * select list that count() builds would otherwise leave HAVING pointing at a missing alias.
+     *
+     * @since 4.18.0
+     *
+     * @return string[]
+     */
+    private function getHavingReferencedSelects(): array
+    {
+        $referencedAliases = [];
+
+        foreach ($this->havings as $having) {
+            if ($having instanceof Having) {
+                $referencedAliases[] = $having->column;
+            }
+        }
+
+        if ( ! $referencedAliases) {
+            return [];
+        }
+
+        $selects = [];
+
+        foreach ($this->selects as $select) {
+            if ($select instanceof Select) {
+                if (in_array($select->alias, $referencedAliases, true)) {
+                    $selects[] = DB::prepare('%1s AS %2s', $select->column, $select->alias);
+                }
+            } elseif ($select instanceof RawSQL) {
+                if (preg_match('/\s+AS\s+([^\s,]+)\s*$/i', $select->sql, $matches) &&
+                    in_array(trim($matches[1], '`\'"'), $referencedAliases, true)
+                ) {
+                    $selects[] = $select->sql;
+                }
+            }
+        }
+
+        return $selects;
     }
 }

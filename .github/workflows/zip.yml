@@ -39,6 +39,9 @@ on:
 
 jobs:
     zip:
+        # The shared workflow only checks out and builds this repo, so the token never needs write access.
+        permissions:
+            contents: read
         uses: stellarwp/github-actions/.github/workflows/zip.yml@main
         with:
             ref: ${{ inputs.ref }}

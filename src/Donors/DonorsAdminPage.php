@@ -33,16 +33,17 @@ class DonorsAdminPage
     /**
      * Render admin page container
      *
+     * @since TBD Escape output. Guard the id param.
      * @since 4.4.0 Add new details page view
      * @since 2.20.0
      */
     public function render()
     {
         if (self::isShowingDetailsPage()) {
-            $donor = Donor::find(absint($_GET['id']));
+            $donor = Donor::find(absint($_GET['id'] ?? 0)); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only id param; it only selects which record to show and saves nothing.
 
             if (! $donor) {
-                wp_die(__('Donor not found', 'give'), 404);
+                wp_die(esc_html__('Donor not found', 'give'), 404);
             }
 
             give(LoadDonorDetailsAssets::class)();
@@ -56,6 +57,7 @@ class DonorsAdminPage
     /**
      * Display a button on the old donation forms table that switches to the React view
      *
+     * @since TBD Escape translated output.
      * @since 2.20.0
      */
     public function renderReactSwitch()
@@ -66,7 +68,7 @@ class DonorsAdminPage
                 fetch('<?php echo esc_url_raw(rest_url('give-api/v2/admin/donors/view?isLegacy=0')) ?>', {
                     method: 'GET',
                     headers: {
-                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>',
+                        ['X-WP-Nonce']: '<?php echo esc_js(wp_create_nonce('wp_rest')) ?>',
                     },
                 })
                     .then((res) => {
@@ -76,7 +78,7 @@ class DonorsAdminPage
 
             jQuery(function () {
                 jQuery(jQuery(".wrap .wp-header-end")).before(
-                    '<button class="page-title-action" onclick="showReactTable()"><?php _e('Switch to New View', 'give') ?></button>',
+                    '<button class="page-title-action" onclick="showReactTable()"><?php echo esc_js(__('Switch to New View', 'give')) ?></button>',
                 );
             });
         </script>
@@ -91,7 +93,7 @@ class DonorsAdminPage
      */
     public static function isShowing()
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-donors' && ! isset($_GET['id']);
+        return isset($_GET['page']) && $_GET['page'] === 'give-donors' && ! isset($_GET['id']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
 
@@ -100,7 +102,7 @@ class DonorsAdminPage
      */
     public static function isShowingDetailsPage(): bool
     {
-        return isset($_GET['id'], $_GET['page']) && 'give-donors' === $_GET['page'];
+        return isset($_GET['id'], $_GET['page']) && 'give-donors' === $_GET['page']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**
@@ -108,7 +110,7 @@ class DonorsAdminPage
      */
     public static function isShowingNewDetailsPage(): bool
     {
-        return self::isShowingDetailsPage() && isset($_GET['view']) && $_GET['view'] === 'overview';
+        return self::isShowingDetailsPage() && isset($_GET['view']) && $_GET['view'] === 'overview'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**

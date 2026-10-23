@@ -17,6 +17,8 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class SubscriptionFirstDonationCompleted
 {
     /**
+     * @since TBD Number the placeholders and add translators comments.
+     * @since 4.18.0 Guard against a null initial donation and a missing subscription instead of fataling on them.
      * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0 Add $setDonationComplete and $gatewaySubscriptionId parameters
      * @since 3.6.0
@@ -47,12 +49,26 @@ class SubscriptionFirstDonationCompleted
 
             if (! $donation && ! empty($gatewaySubscriptionId) && $subscription = give()->subscriptions->getByGatewaySubscriptionId($gatewaySubscriptionId)) {
                 $donation = $subscription->initialDonation();
-                $donation->gatewayTransactionId = $gatewayTransactionId;
-                $donation->save();
+
+                if ($donation) {
+                    $donation->gatewayTransactionId = $gatewayTransactionId;
+                    $donation->save();
+                }
             }
         }
 
-        if ( ! $donation || ! $donation->type->isSubscription() || $donation->id !== $donation->subscription->initialDonation()->id) {
+        if ( ! $donation || ! $donation->subscription || ! $donation->type->isSubscription()) {
+            PaymentGatewayLog::error(
+                sprintf('The first donation was not updated for the gateway transaction ID %s because no valid subscription donation was found to update.',
+                    $gatewayTransactionId),
+                [
+                    'Gateway Subscription ID' => $gatewaySubscriptionId,
+                    'Gateway Transaction ID' => $gatewayTransactionId,
+                    'Donation ID' => $donationId,
+                    'Message' => $message,
+                ]
+            );
+
             return;
         }
 
@@ -70,7 +86,8 @@ class SubscriptionFirstDonationCompleted
 
                 DonationNote::create([
                     'donationId' => $donation->id,
-                    'content' => $message . ' ' . sprintf(__('%s transaction ID: %s', 'give'),
+                    /* translators: 1: Payment gateway name, 2: Transaction ID from the gateway */
+                    'content' => $message . ' ' . sprintf(__('%1$s transaction ID: %2$s', 'give'),
                             $donation->gateway()->getName(),
                             $donation->gatewayTransactionId
                         ),

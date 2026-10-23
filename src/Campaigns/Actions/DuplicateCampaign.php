@@ -13,6 +13,7 @@ class DuplicateCampaign
     /**
      * Duplicate a campaign
      *
+     * @since TBD Add translators comments.
      * @since 4.13.1
      */
     public function __invoke(Campaign $campaign): Campaign
@@ -23,6 +24,7 @@ class DuplicateCampaign
         $campaignRepository = give(CampaignRepository::class);
 
         $campaign->id = null;
+        /* translators: %s: Campaign title */
         $campaign->title = sprintf(__('%s (copy)', 'give'), $campaign->title);
         $campaign->save();
 

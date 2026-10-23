@@ -16,6 +16,8 @@ use Give\Revenue\Migrations\AddPastDonationsToRevenueTable;
  * @subpackage  Functions/Install
  */
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- installer; it lists sites and GiveWP tables once at install time, and WordPress has no function for SHOW TABLES.
+
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
     exit;
@@ -165,7 +167,7 @@ function give_run_install()
     }
 
     // Bail if activating from network, or bulk.
-    if (is_network_admin() || isset($_GET['activate-multi'])) {
+    if (is_network_admin() || isset($_GET['activate-multi'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- WordPress core sets activate-multi on bulk activation; only its presence is checked and nothing is saved.
         return;
     }
 
@@ -210,6 +212,7 @@ add_action('wpmu_new_blog', 'give_on_create_blog', 10, 6);
 /**
  * Drop Give's custom tables when a mu site is deleted.
  *
+ * @since TBD Prepare SQL with placeholders.
  * @since 3.4.0 updated implementation to query all give_* tables
  * @since  1.4.3
  *
@@ -225,7 +228,7 @@ function give_wpmu_drop_tables($tables, $blog_id)
     switch_to_blog($blog_id);
 
     $prefix = $wpdb->prefix . 'give_%';
-    $giveTables = $wpdb->get_col("SHOW TABLES LIKE '{$prefix}'");
+    $giveTables = $wpdb->get_col($wpdb->prepare('SHOW TABLES LIKE %s', $prefix));
 
     foreach ($giveTables as $table) {
         $tables[] = $table;

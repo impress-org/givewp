@@ -40,6 +40,13 @@ const filters: Array<FilterConfig> = [
         type: 'campaignselect',
         text: __('Select Campaign', 'give'),
         ariaLabel: __('filter donations by campaign', 'give'),
+        options: [{value: 'none', text: __('No campaign', 'give')}],
+    },
+    {
+        name: 'formId',
+        type: 'formselect',
+        text: __('Select Form', 'give'),
+        ariaLabel: __('filter donations by form', 'give'),
     },
     {
         name: 'search',

@@ -172,10 +172,16 @@ export default function TransferSuccessDialog() {
 
             <Button
                 size="large"
-                onClick={() => (window.location.href = window.headerContainer.campaignUrl + '&tab=forms')}
+                onClick={() =>
+                    (window.location.href = window.headerContainer?.campaignUrl
+                        ? window.headerContainer.campaignUrl + '&tab=forms'
+                        : 'edit.php?post_type=give_forms&page=give-forms')
+                }
                 style={{width: '100%'}}
             >
-                {__('Go back to campaign forms', 'give')}
+                {window.headerContainer?.campaignUrl
+                    ? __('Go back to campaign forms', 'give')
+                    : __('Go back to forms', 'give')}
             </Button>
         </>
     );

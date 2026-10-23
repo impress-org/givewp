@@ -1,7 +1,13 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Split _give_payment_meta to new Give core meta_keys.
  *
+ * @since TBD Renamed from _give_20_bc_split_and_save_give_payment_meta().
  * @since 2.0
  *
  * @param       $object_id
@@ -9,7 +15,7 @@
  *
  * @return void
  */
-function _give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value ) {
+function give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value ) {
 	// Bailout
 	if ( empty( $meta_value ) ) {
 		return;
@@ -80,8 +86,22 @@ function _give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value )
 }
 
 /**
+ * Split _give_payment_meta to new Give core meta_keys.
+ *
+ * @since TBD Renamed to give_20_bc_split_and_save_give_payment_meta(); this old name is a deprecated alias.
+ * @since 2.0
+ * @deprecated TBD Use give_20_bc_split_and_save_give_payment_meta() instead.
+ */
+function _give_20_bc_split_and_save_give_payment_meta($object_id, $meta_value) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_20_bc_split_and_save_give_payment_meta().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_20_bc_split_and_save_give_payment_meta()' );
+
+	give_20_bc_split_and_save_give_payment_meta($object_id, $meta_value);
+}
+
+/**
  * Add backward compatibility to get meta value of _give_payment_meta meta key.
  *
+ * @since TBD Renamed from _give_20_bc_give_payment_meta_value().
  * @since 2.0
  *
  * @param       $object_id
@@ -89,7 +109,7 @@ function _give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value )
  *
  * @return array
  */
-function _give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
+function give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
 	$cache_key = "_give_payment_meta_{$object_id}";
 	$cache     = Give_Cache::get_db_query( $cache_key );
 
@@ -191,6 +211,19 @@ function _give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
 }
 
 /**
+ * Add backward compatibility to get meta value of _give_payment_meta meta key.
+ *
+ * @since TBD Renamed to give_20_bc_give_payment_meta_value(); this old name is a deprecated alias.
+ * @since 2.0
+ * @deprecated TBD Use give_20_bc_give_payment_meta_value() instead.
+ */
+function _give_20_bc_give_payment_meta_value($object_id, $meta_value) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_20_bc_give_payment_meta_value().
+	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_20_bc_give_payment_meta_value()' );
+
+	return give_20_bc_give_payment_meta_value($object_id, $meta_value);
+}
+
+/**
  * Add backward compatibility old meta while saving.
  *  1. _give_payment_meta (split into multiple single meta keys)
  *  2. _give_payment_user_email (renamed to _give_payment_donor_email)
@@ -231,7 +264,7 @@ function _give_20_bc_saving_old_payment_meta( $check, $object_id, $meta_key, $me
 	}
 
 	if ( '_give_payment_meta' === $meta_key ) {
-		_give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value );
+		give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value );
 	} elseif ( '_give_payment_user_email' === $meta_key ) {
 		give_update_meta( $object_id, '_give_payment_donor_email', $meta_value );
 		$check = true;
@@ -299,7 +332,7 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 				$meta_value = ! empty( $meta_value ) ?
 					current( $meta_value ) :
 					(array) maybe_unserialize(
-						$wpdb->get_var(
+						$wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Runs inside the get_post_metadata filter, so get_post_meta() would call this filter again; the result is cached with Give_Cache::set_db_query.
 							$wpdb->prepare(
 								"
 								SELECT meta_value
@@ -312,7 +345,7 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 							)
 						)
 					);
-				$check      = _give_20_bc_give_payment_meta_value( $object_id, $meta_value );
+				$check      = give_20_bc_give_payment_meta_value( $object_id, $meta_value );
 				// }
 
 				add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
@@ -411,7 +444,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 
 			// Handle new meta keys.
 			case '_give_payment_donor_id':
-				$check = $wpdb->get_var(
+				$check = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Runs inside the get_post_metadata filter, so get_post_meta() would call this filter again; the result is cached with Give_Cache::set_db_query.
 					$wpdb->prepare(
 						"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%d AND meta_key=%s",
 						$object_id,
@@ -421,7 +454,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 				break;
 
 			case '_give_payment_donor_email':
-				$check = $wpdb->get_var(
+				$check = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Runs inside the get_post_metadata filter, so get_post_meta() would call this filter again; the result is cached with Give_Cache::set_db_query.
 					$wpdb->prepare(
 						"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%d AND meta_key=%s",
 						$object_id,
@@ -431,7 +464,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 				break;
 
 			case '_give_payment_donor_ip':
-				$check = $wpdb->get_var(
+				$check = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Runs inside the get_post_metadata filter, so get_post_meta() would call this filter again; the result is cached with Give_Cache::set_db_query.
 					$wpdb->prepare(
 						"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%s AND meta_key=%s",
 						$object_id,
@@ -453,7 +486,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 				$donation_meta = Give_Cache::get_db_query( "_give_payment_meta_{$object_id}" );
 
 				if ( is_null( $donation_meta ) ) {
-					$donation_meta = $wpdb->get_var(
+					$donation_meta = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Runs inside the get_post_metadata filter, so get_post_meta() would call this filter again; the result is cached with Give_Cache::set_db_query.
 						$wpdb->prepare(
 							"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%d AND meta_key=%s",
 							$object_id,

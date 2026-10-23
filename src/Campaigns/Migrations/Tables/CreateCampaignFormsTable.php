@@ -8,6 +8,7 @@ use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
+ * @since 4.19.0 form_id is unique: a form belongs to one campaign. Existing tables get the key from AddUniqueFormIdToCampaignFormsTable.
  * @since 4.0.0
  * Creates give_campaign_forms table
  */
@@ -39,6 +40,9 @@ class CreateCampaignFormsTable extends Migration
 
     /**
      * @inheritDoc
+     *
+     * @since TBD Escape exception message.
+     *
      * @throws DatabaseMigrationException
      */
     public function run(): void
@@ -51,7 +55,7 @@ class CreateCampaignFormsTable extends Migration
         $sql = "CREATE TABLE $table (
             campaign_id INT UNSIGNED NOT NULL,
             form_id INT UNSIGNED NOT NULL,
-            KEY form_id (form_id),
+            UNIQUE KEY form_id (form_id),
             KEY campaign_id (campaign_id),
             PRIMARY KEY (campaign_id, form_id)
         ) $charset";
@@ -59,7 +63,11 @@ class CreateCampaignFormsTable extends Migration
         try {
             DB::delta($sql);
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while creating the $table table", 0, $exception);
+            throw new DatabaseMigrationException(
+                "An error occurred while creating the $table table", // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by MigrationsRunner and shown as React text in the migration log, never as HTML; esc_html() would corrupt a custom $table_prefix containing '&' or '<'.
+                0,
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
     }
 }

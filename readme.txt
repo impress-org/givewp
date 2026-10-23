@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.17.0
+Stable tag: 4.19.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,54 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 4.19.0.1: October 22nd, 2026 =
+* Security: Improved donation currency validation so the submitted currency must be supported by the form, including currencies enabled by the Currency Switcher. Reported by Shirshak.
+* Security: Enhanced security for the donation form view. Reported by vuxvinh.
+* Security: Improved validation of donor profile e-mail changes. Reported by Kaveesha Nirmal.
+* Security: Improved validation of the core settings import. Reported by Karthik Ramakrishnan.
+* Security: Added additional validation to donation form template appearance settings. Reported by Karthik Ramakrishnan.
+* Security: Determine the page being edited from the current request context before granting page capabilities. Reported by Karthik Ramakrishnan.
+* Security: Added additional validation to donor address management. Reported by Hariom Singh.
+* Security: Improved anonymous donor filtering in the donor list. Reported by Vũ Quang Huy.
+* Fix: Resolved an issue with Nexcess licensing not respecting the deactivated grace period
+
+= 4.19.0: October 13th, 2026 =
+* Feature: Added the ability to create and edit donation forms without a campaign, and brought back the Forms list with a Campaign column, a "No campaign" filter, and a link-to-campaign action
+* Feature: Added a campaign action on the Forms screen to assign a form to a campaign, move it to another one, or remove it from its campaign
+* Feature: Added a Form column and a form filter to the Donations screen so you can see and filter donations by the form they came through
+* Fix: Resolved an issue where the form picker on donation and subscription details showed an incomplete list of forms after a form was chosen
+* Fix: Forms that are not linked to a campaign now load their own goal on the form page and in the forms list, and their donations show the form title in the donations list
+* Fix: Resolved an issue where add-on licenses were not recognized correctly on sites using the Unified License Manager
+* Fix: Resolved an issue where a donation moved to a different form still counted toward the old form in the Multi-Form Goal progress bar
+* Fix: Changed PayPal order descriptions, the {donation} email tag and donation exports to name the donor's selected level instead of the first level, including for donations without a stored level or with a recovered fee.
+* Fix: Corrected donation and form queries leaving WordPress post globals populated after their results loop, which caused Multisite Network Admin site links to use a donation ID instead of the site ID.
+* Fix: Resolved an issue where the classic Donations screen showed a broken campaign link for donations to forms without a campaign
+* Tweak: Improved the unified licensing page experience.
+* Tweak: Added a dismissible announcement banner to plugin admin pages.
+
+= 4.18.0.1: October 6th, 2026 =
+* Security: Improved validation of PayPal Standard IPN notifications.
+* Fix: Resolved an issue where PayPal Standard donations and subscription renewals with recovered fees were not recorded after the IPN validation update.
+
+= 4.18.0: October 1st, 2026 =
+* Enhancement: Improved donations list table performance on sites with hundreds of thousands of donations by paging on IDs first, fixing the total count query, and replacing the single-column donation meta indexes with composite ones
+* Enhancement: Improved the Reports screen and legacy earnings stats on large sites by summing and counting donations in the database instead of loading every donation into memory
+* Enhancement: Improved donation processing speed by skipping unnecessary offline donation email checks
+* Fix: Recurring donation stats on the campaigns list now read from the cache correctly instead of showing empty values
+* Fix: Campaign stats now show for campaigns that were added after the stats cache was built
+* Fix: Resolved an issue where campaign stats showed as zero after viewing the Campaigns screen with test mode enabled
+* Fix: Donations list table was running extremely slowly and including trashed donations on large sites.
+* Fix: Resolved an issue where a database error while saving a donation, donor, subscription, campaign, or event caused a critical error and hid the real cause
+* Fix: Resolved an issue where sites running PHP 8.4 or newer logged deprecation notices from GiveWP
+* Fix: Database migrations started a second time in requests that arrive while a slow migration is still running. Now it runs one time and the migrations list now shows the latest run first.
+* Fix: Resolved an issue where a PHP warning could appear on development copies of GiveWP that have not been built
+* Fix: Resolved an issue where subscription webhook events caused a fatal error when the subscription had no initial donation
+* Fix: Updated campaign duplication to create a single copy of each associated form when form metadata contains duplicate keys.
+* Fix: Restored donor names, initials, and totals on the donor wall block and shortcode.
+* Security: Enhanced security in Stripe webhook module
+* Security: Enhanced security on the campaign block. (CVE-2026-97643)
+* Security: Enhanced security for the Donor Dashboard access.
+
 = 4.17.0: September 23rd, 2026 =
 * Feature: Added the ability to embed donation forms on any website with a copy-paste snippet from the form builder
 * Enhancement: Donation form embeds now show a loading state while the form loads

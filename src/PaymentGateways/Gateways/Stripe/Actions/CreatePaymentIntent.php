@@ -27,6 +27,7 @@ class CreatePaymentIntent
     }
 
     /**
+     * @since TBD Add translators comments.
      * @since 3.5.0 remove descriptor as Stripe automatically adds it, per Stripe API changes (https://support.stripe.com/questions/use-of-the-statement-descriptor-parameter-on-paymentintents-for-card-charges)
      * @since 2.33.0 no longer store the payment intent secret
      * @since 2.19.0
@@ -69,11 +70,8 @@ class CreatePaymentIntent
 
         DonationNote::create([
             'donationId' => $donation->id,
-            'content' => sprintf(
-                /* translators: %s: Stripe Payment Intent ID */
-                __('Stripe Charge/Payment Intent ID: %s', 'give'),
-                $intent->id()
-            )
+            /* translators: %s: Stripe payment intent ID */
+            'content' => sprintf(__('Stripe Charge/Payment Intent ID: %s', 'give'), $intent->id())
         ]);
 
         if ('requires_action' === $intent->status()) {

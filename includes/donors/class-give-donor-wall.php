@@ -381,6 +381,9 @@ class Give_Donor_Wall {
     /**
      * Get donation data.
      *
+     * @since TBD Document why the query is safe.
+     * @since 4.18.0     Read meta values as stored instead of unserializing them, and read the donor
+     *                comment from the fetched rows instead of a per-donation meta lookup.
      * @since 4.16.7.2       Restrict unserialize to prevent object instantiation.
      * @since 2.27.0  Change to read comment from donations meta table
      * @since 2.3.0
@@ -410,14 +413,14 @@ class Give_Donor_Wall {
 				ORDER BY FIELD( p1.ID, {$donation_ids} )
 				";
 
-		$results = (array) $wpdb->get_results( $sql );
+		$results = (array) $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $donation_id_col is the donation meta id column name and $donation_ids is the list of donation ids returned by get_donations(). GiveWP custom table; WordPress has no cache layer for it.
 
 		if ( ! empty( $results ) ) {
 			$temp = [];
 
 			/* @var stdClass $result */
 			foreach ( $results as $result ) {
-				$temp[ $result->{$donation_id_col} ][ $result->meta_key ] = unserialize( $result->meta_value, [ 'allowed_classes' => false ] );
+				$temp[ $result->{$donation_id_col} ][ $result->meta_key ] = $result->meta_value;
 
 				// Set donation date.
 				if ( empty( $temp[ $result->{$donation_id_col} ]['donation_date'] ) ) {
@@ -436,14 +439,11 @@ class Give_Donor_Wall {
 						]
 					);
 
-					$temp[$donation_id]['donor_comment'] = give_get_payment_meta(
-                        $donation_id,
-                        DonationMetaKeys::COMMENT
-                    );
+					$temp[ $donation_id ]['donor_comment'] = $donation_data[ DonationMetaKeys::COMMENT ] ?? '';
 				}
-			}
 
-			$results = ! empty( $temp ) ? $temp : [];
+				$results = ! empty( $temp ) ? $temp : [];
+			}
 		}
 
 		return $results;
@@ -452,6 +452,7 @@ class Give_Donor_Wall {
 	/**
 	 * Get donation list for specific query
 	 *
+     * @since TBD Document why the query is safe.
      * @since 3.17.2 fix - filter by only_comments attr
 	 * @since 2.3.0
 	 *
@@ -504,7 +505,7 @@ class Give_Donor_Wall {
             'post_type' => 'give_forms',
             'posts_per_page' => -1,
             'fields' => 'ids',
-            'tax_query' => [],
+            'tax_query' => [], // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Empty tax query that the category and tag filters below fill in; the taxonomy filter is the feature.
         ];
 
         // Categories
@@ -559,12 +560,13 @@ class Give_Donor_Wall {
 
 		$sql .= $where . $order . $limit . $offset;
 
-		return $wpdb->get_col( $sql );
+		return $wpdb->get_col( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $donation_id_col is the donation meta id column name; every other value in $sql comes from absint, an allowlist or a previous query (see get_query_param()). GiveWP custom table; WordPress has no cache layer for it.
 	}
 
 	/**
 	 * Get donor comments
 	 *
+	 * @since TBD Document why the query is safe.
 	 * @since 2.3.0
 	 *
 	 * @param array $donations_data
@@ -603,7 +605,7 @@ class Give_Donor_Wall {
 				continue;
 			}
 
-			$where[] = "(c1.comment_parent={$id} AND cm1.meta_key='_give_donor_id' AND cm1.meta_value={$data['_give_payment_donor_id']})";
+			$where[] = '(c1.comment_parent=' . absint( $id ) . " AND cm1.meta_key='_give_donor_id' AND cm1.meta_value=" . absint( $data['_give_payment_donor_id'] ) . ')';
 		}
 
 		$where  = ' WHERE ' . implode( ' OR ', $where );
@@ -611,7 +613,7 @@ class Give_Donor_Wall {
 
 		$sql = $sql . $where;
 
-		$comments = (array) $wpdb->get_results( $sql );
+		$comments = (array) $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $sql only holds donation ids and donor ids cast with absint, plus fixed table names and literals. GiveWP custom table; WordPress has no cache layer for it.
 
 		if ( ! empty( $comments ) ) {
 			$comments = array_combine(

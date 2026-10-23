@@ -293,6 +293,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		/**
 		 * Resend payment receipt by row action.
 		 *
+		 * @since TBD Use a safe redirect.
 		 * @since  2.0
 		 * @access public
 		 *
@@ -328,7 +329,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 				)
 			);
 
-			wp_redirect(
+			wp_safe_redirect(
                 esc_url_raw(
                     add_query_arg(
                         array(

@@ -11,7 +11,7 @@ trait GroupByStatement
 {
 
     /**
-     * @var string
+     * @var string[]
      */
     protected $groupByColumns = [];
 

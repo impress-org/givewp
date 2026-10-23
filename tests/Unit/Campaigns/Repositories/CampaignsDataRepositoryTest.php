@@ -28,7 +28,7 @@ final class CampaignsDataRepositoryTest extends TestCase
      * setting, because give_update_option() leaves its global stale when the stored value
      * already matches.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     public function setUp(): void
     {
@@ -40,7 +40,7 @@ final class CampaignsDataRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function tearDown(): void
     {
@@ -51,7 +51,7 @@ final class CampaignsDataRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     private function enableTestMode(): void
     {
@@ -123,7 +123,7 @@ final class CampaignsDataRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testWarmCacheStillReturnsStatsForCampaignsMissingFromIt()
     {
@@ -150,7 +150,7 @@ final class CampaignsDataRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testCampaignWithNoDonationsIsCachedAsZero()
     {
@@ -166,7 +166,7 @@ final class CampaignsDataRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testTestModeReadsTestDonationsInsteadOfTheLiveCache()
     {
@@ -197,7 +197,7 @@ final class CampaignsDataRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testTestModeDoesNotWriteTheCache()
     {

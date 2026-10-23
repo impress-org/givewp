@@ -9,6 +9,7 @@
 /.wordpress-org
 /.cursor
 /.claude
+/.cache
 /docs
 
 /bin
@@ -51,6 +52,7 @@
 .lintstagedrc.json
 .distignore
 .stylelintignore
+.coderabbit.yaml
 jsconfig.json
 globals.d.ts
 tsconfig.json
@@ -83,6 +85,7 @@ webpack.mix.js
 docker-compose.yml
 wp-textdomain.js
 .wp-env.json
+.wp-env.test.json
 
 # GH Action files
 DOCKER_ENV

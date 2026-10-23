@@ -3,7 +3,6 @@
 namespace Give\DonationForms;
 
 use Exception;
-use Give\DonationForms\OrphanedForms\Actions\Assets as OrphanedFormsAssets;
 use Give\DonationForms\Actions\AddHoneyPotFieldToDonationForms;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\GenerateExternalEmbedScriptUrl;
@@ -103,11 +102,6 @@ class ServiceProvider implements ServiceProviderInterface
             RemoveDuplicateMeta::class,
             UpdateDonationLevelsSchema::class,
         ]);
-
-        /**
-         * @since 4.2.0
-         */
-        Hooks::addAction('admin_init', OrphanedFormsAssets::class);
 
         /**
          * @since 3.16.0
@@ -237,7 +231,7 @@ class ServiceProvider implements ServiceProviderInterface
          */
         Route::post('donation-form-view-preview', static function () {
             ini_set('display_errors', 0);
-            $requestData = (new SanitizeDonationFormPreviewRequest())($_REQUEST);
+            $requestData = (new SanitizeDonationFormPreviewRequest())($_REQUEST); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- preview request from the form builder; the action only unslashes. The form id is cast to int, settings and blocks are parsed from JSON into typed objects, and the preview renders them without saving anything.
             $routeData = DonationFormPreviewRouteData::fromRequest($requestData);
 
             if ($locale = $requestData['locale'] ?? '') {

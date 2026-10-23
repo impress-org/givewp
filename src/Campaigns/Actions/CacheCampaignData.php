@@ -48,7 +48,7 @@ class CacheCampaignData
     /**
      * Handle campaign cache
      *
-     * @since TBD Read the subscriptions cache from the option it is written to; always compute live stats, keep zero rows when a campaign has no donations.
+     * @since 4.18.0 Read the subscriptions cache from the option it is written to; always compute live stats, keep zero rows when a campaign has no donations.
      * @since 4.8.0
      */
     public function handleCache(int $campaignId): void
@@ -65,7 +65,7 @@ class CacheCampaignData
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     private function refresh(int $campaignId): void
     {
@@ -200,7 +200,7 @@ class CacheCampaignData
      * The aggregate queries return no row for a campaign with no donations. Keep a zero row so the
      * campaign stays cached instead of turning into a null row and a PHP warning.
      *
-     * @since TBD
+     * @since 4.18.0
      */
     private function row($rows, int $campaignId, string $column): array
     {

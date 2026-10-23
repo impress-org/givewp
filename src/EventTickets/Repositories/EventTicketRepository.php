@@ -60,6 +60,7 @@ class EventTicketRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.16.8.1 Enforce the ticket type's remaining capacity atomically with the insert (locking the ticket type row and re-counting under that lock), closing a race that let concurrent purchases jointly oversell it.
      * @since 3.20.0 Add "amount" column to the insert statement
      * @since 3.6.0
@@ -103,7 +104,7 @@ class EventTicketRepository
 
             Log::error('Failed creating an event ticket', compact('eventTicket'));
 
-            throw new $exception('Failed creating an event ticket');
+            throw new Exception('Failed creating an event ticket', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         $eventTicket->id = $eventTicketId;
@@ -149,6 +150,7 @@ class EventTicketRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.20.0 Add "amount" column to the update statement
      * @since 3.6.0
      *
@@ -184,7 +186,7 @@ class EventTicketRepository
 
             Log::error('Failed updating an event ticket', compact('eventTicket'));
 
-            throw new $exception('Failed updating an event ticket');
+            throw new Exception('Failed updating an event ticket', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         $eventTicket->updatedAt = $updatedDateTime;
@@ -195,6 +197,7 @@ class EventTicketRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.6.0
      *
      * @throws Exception
@@ -218,7 +221,7 @@ class EventTicketRepository
 
             Log::error('Failed deleting an event ticket', compact('eventTicket'));
 
-            throw new $exception('Failed deleting an event ticket');
+            throw new Exception('Failed deleting an event ticket', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::query('COMMIT');
@@ -240,13 +243,14 @@ class EventTicketRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.6.0
      */
     private function validate(EventTicket $eventTicket): void
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($eventTicket->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
     }
@@ -291,6 +295,7 @@ class EventTicketRepository
     /**
      * Check if a database table exists
      *
+     * @since TBD Inline the prepared query.
      * @since 4.6.0
      */
     private function tableExists(string $tableName): bool
@@ -298,9 +303,8 @@ class EventTicketRepository
         global $wpdb;
 
         $prefixedTableName = $wpdb->prefix . $tableName;
-        $query = $wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($prefixedTableName));
 
-        return (bool) $wpdb->get_var($query);
+        return (bool) $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($prefixedTableName))); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Checks whether a table exists with SHOW TABLES; WordPress has no function for it.
     }
 
     /**
