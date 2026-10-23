@@ -8,10 +8,10 @@ import ListTableEmptyState from '../EmptyStates';
 import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
 import useLegacyRowActionsField from '../LegacyRowActions/useLegacyRowActionsField';
 import {columnsToFields, titleFieldId, visibleFieldIds} from '../adapters/columnsToFields';
-import {filterSettingsToFields} from '../adapters/filterSettingsToFields';
+import {filterSettingsToFields, TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
 import {loadEntityElements} from '../adapters/loadEntityElements';
 import {scopeFromFilterSettings, viewFromInitialState} from '../adapters/viewFromInitialState';
-import {PER_PAGE_SIZES, viewToParameters} from '../adapters/viewToParameters';
+import {PER_PAGE_SIZES, viewFilterValue, viewToParameters, withToggleFilter} from '../adapters/viewToParameters';
 import {getItemName} from '../adapters/getItemName';
 import useListTableView from '../hooks/useListTableView';
 import useListTableSelection from '../hooks/useListTableSelection';
@@ -104,15 +104,19 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const [listTableApi] = useState(() => new ListTableApi(apiSettings));
         const [urlSearch] = useState(() => new URLSearchParams(window.location.search));
         const [scope] = useState(() => scopeFromFilterSettings(filterSettings, contentMode, urlSearch));
-        const [testMode, setTestMode] = useState(paymentMode);
         const [legacyConfirm, setLegacyConfirm] = useState<LegacyConfirmRequest | null>(null);
 
         const {view, onChangeView, hasActiveFilters, clearFilters} = useListTableView(() => {
             const titleField = titleFieldId(columns);
             const fields = [...visibleFieldIds(columns, titleField), ...(legacyRowActions ? [LEGACY_ROW_ACTIONS_FIELD] : [])];
 
-            return viewFromInitialState(filterSettings, {perPage, fields, titleField, contentMode}, urlSearch);
+            const initialView = viewFromInitialState(filterSettings, {perPage, fields, titleField, contentMode}, urlSearch);
+
+            return testModeFilter && paymentMode ? withToggleFilter(initialView, TEST_MODE_FILTER, true) : initialView;
         });
+        // A screen with the test-mode toggle keeps test mode in the view, so it shows as a chip.
+        const testMode = testModeFilter ? viewFilterValue(view, TEST_MODE_FILTER) === true : paymentMode;
+        const setTestMode = (isOn: boolean) => onChangeView(withToggleFilter(view, TEST_MODE_FILTER, isOn));
         const {selection, onChangeSelection} = useListTableSelection(view);
         const clearSelection = useCallback(() => onChangeSelection([]), [onChangeSelection]);
         const report = useListTableActionNotices(singleName, pluralName);

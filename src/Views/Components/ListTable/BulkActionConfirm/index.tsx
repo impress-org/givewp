@@ -16,6 +16,8 @@ export interface BulkActionConfirmProps {
     items?: Array<{id: string | number; name: string}>;
     variant?: 'normal' | 'warning' | 'danger';
     isBusy?: boolean;
+    /** False while the body still needs a choice (for example a status to set). */
+    canConfirm?: boolean;
 }
 
 /**
@@ -32,6 +34,7 @@ export default function BulkActionConfirm({
     items = [],
     variant = 'normal',
     isBusy = false,
+    canConfirm = true,
 }: BulkActionConfirmProps) {
     return (
         <div className="givewp-bulk-action-confirm">
@@ -54,7 +57,7 @@ export default function BulkActionConfirm({
                     isDestructive={variant === 'danger'}
                     onClick={onConfirm}
                     isBusy={isBusy}
-                    disabled={isBusy}
+                    disabled={isBusy || !canConfirm}
                 >
                     {confirmLabel}
                 </Button>

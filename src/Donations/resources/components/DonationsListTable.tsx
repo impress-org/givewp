@@ -1,13 +1,12 @@
 import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
-import {DonationRowActions} from './DonationRowActions';
+import {donationRowActions, isDonationsTrashView} from './DonationRowActions';
+import SetDonationStatusDialog from './SetDonationStatusDialog';
+import {idsOf} from '@givewp/components/ListTable/adapters/idsOf';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import styles from './ListTable.module.scss';
-import {IdBadge} from '@givewp/components/ListTable/TableCell';
-import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
-import {hasStatus} from '@givewp/components/ListTable/adapters/hasStatus';
-import {Interweave} from 'interweave';
+import {BulkActionsConfig, FilterConfig, ListTableRowAction} from '@givewp/components/ListTable/ListTablePage';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
 import {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
@@ -64,6 +63,7 @@ const filters: Array<FilterConfig> = [
     {
         name: 'donor',
         type: 'hidden',
+        text: __('Donor', 'give'),
     },
     {
         name: 'filterBy',
@@ -72,142 +72,38 @@ const filters: Array<FilterConfig> = [
     },
 ];
 
-const bulkActions: Array<BulkActionsConfig> = [
+/**
+ * The Donations actions: the ones shared with the subscription details tab, plus "Set status" and
+ * "Resend Email Receipts" for rows and selections.
+ *
+ * @since TBD Declare the actions as data; one "Set status" replaces the nine "Set To …" bulk actions.
+ */
+const rowActions: Array<ListTableRowAction> = [
+    ...donationRowActions(API, window.GiveDonations.adminUrl),
     {
-        label: __('Delete', 'give'),
-        value: 'delete',
-        type: 'danger',
-        isVisible: (data, parameters) => hasStatus(parameters, 'trash'),
-        action: async (selected) => {
-            const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
-            return response;
-        },
-        confirm: (selected, names) => (
-            <>
-                <p>{__('Really delete the following donations?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((donationId, index) => (
-                        <li key={donationId}>
-                            <IdBadge id={donationId} />{' '}
-                            <span>
-                                {__('from ', 'give')} <Interweave content={names[index]} />
-                            </span>
-                        </li>
-                    ))}
-                </ul>
-            </>
+        id: 'set-status',
+        label: __('Set status', 'give'),
+        supportsBulk: true,
+        isVisible: (data, parameters) => !isDonationsTrashView(parameters),
+        Dialog: (props) => (
+            <SetDonationStatusDialog
+                {...props}
+                statuses={window.GiveDonations.donationStatuses ?? {}}
+                onSetStatus={(ids, status) => API.fetchWithArgs('/setStatus', {ids: ids.join(','), status}, 'POST')}
+            />
         ),
     },
     {
-        label: __('Trash', 'give'),
-        value: 'trash',
-        type: 'warning',
-        isVisible: (data, parameters) => !hasStatus(parameters, 'trash'),
-        action: async (selected) => {
-            const response = await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE');
-            return response;
-        },
-        confirm: (selected, names) => (
-            <>
-                <p>{__('Are you sure you want add to trash the following donations?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((donationId, index) => (
-                        <li key={donationId}>
-                            <IdBadge id={donationId} />{' '}
-                            <span>
-                                {__('from ', 'give')} <Interweave content={names[index]} />
-                            </span>
-                        </li>
-                    ))}
-                </ul>
-            </>
-        ),
-    },
-    {
-        label: __('Restore', 'give'),
-        value: 'restore',
-        type: 'normal',
-        isVisible: (data, parameters) => hasStatus(parameters, 'trash'),
-        action: async (selected) => {
-            const response = await API.fetchWithArgs('/untrash', {ids: selected.join(',')}, 'POST');
-            return response;
-        },
-        confirm: (selected, names) => (
-            <>
-                <p>{__('Are you sure you want remove from trash the following donations?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((donationId, index) => (
-                        <li key={donationId}>
-                            <IdBadge id={donationId} />{' '}
-                            <span>
-                                {__('from ', 'give')} <Interweave content={names[index]} />
-                            </span>
-                        </li>
-                    ))}
-                </ul>
-            </>
-        ),
-    },
-    ...(() => {
-        const donationStatuses = {
-            publish: __('Set To Completed', 'give'),
-            pending: __('Set To Pending', 'give'),
-            processing: __('Set To Processing', 'give'),
-            refunded: __('Set To Refunded', 'give'),
-            revoked: __('Set To Revoked', 'give'),
-            failed: __('Set To Failed', 'give'),
-            cancelled: __('Set To Cancelled', 'give'),
-            abandoned: __('Set To Abandoned', 'give'),
-            preapproval: __('Set To Preapproval', 'give'),
-        };
-
-        return Object.entries(donationStatuses).map(([value, label]) => {
-            return {
-                label,
-                value,
-                isVisible: (data, parameters) => !hasStatus(parameters, 'trash'),
-                action: async (selected) =>
-                    await API.fetchWithArgs(
-                        '/setStatus',
-                        {
-                            ids: selected.join(','),
-                            status: value,
-                        },
-                        'POST'
-                    ),
-                confirm: (selected, names) => (
-                    <>
-                        <p>{__('Set status for the following donations?', 'give')}</p>
-                        <ul role="document" tabIndex={0}>
-                            {selected.map((donationId, index) => (
-                                <li key={donationId}>
-                                    <IdBadge id={donationId} /> <span>{__('from', 'give')}</span>
-                                    <Interweave content={names[index]} />
-                                </li>
-                            ))}
-                        </ul>
-                    </>
-                ),
-            };
-        });
-    })(),
-    {
+        id: 'resend-email-receipts',
         label: __('Resend Email Receipts', 'give'),
-        value: 'resendEmailReceipt',
-        action: async (selected) => await API.fetchWithArgs('/resendEmailReceipt', {ids: selected.join(',')}, 'POST'),
-        confirm: (selected, names) => (
-            <>
-                <p>{__('Resend Email Receipts for following donations?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((donationId, index) => (
-                        <li key={donationId}>
-                            <IdBadge id={donationId} /> <span>{__('from', 'give')}</span>
-                            <Interweave content={names[index]} />
-                        </li>
-                    ))}
-                </ul>
-            </>
-        ),
+        supportsBulk: true,
+        isVisible: (data, parameters) => !isDonationsTrashView(parameters),
+        confirm: {
+            title: __('Resend Email Receipts', 'give'),
+            body: () => <p>{__('Resend Email Receipts for following donations?', 'give')}</p>,
+            confirmLabel: __('Resend', 'give'),
+        },
+        run: (items) => API.fetchWithArgs('/resendEmailReceipt', {ids: idsOf(items)}, 'POST'),
     },
 ];
 
@@ -301,7 +197,7 @@ const statsConfig: Record<string, StatConfig> = {
 };
 
 /**
- * @since TBD Add the add-ons' bulk actions here; the shared list page no longer reads them.
+ * @since TBD Pass the actions as data, and the add-ons' bulk actions (the shared list page no longer reads them).
  * @since 4.10.0 Update button class names and add aria attributes.
  * @since 2.24.0
  */
@@ -311,9 +207,9 @@ export default function DonationsListTable() {
             title={__('Donations', 'give')}
             singleName={__('donation', 'give')}
             pluralName={__('donations', 'give')}
-            rowActions={DonationRowActions}
+            rowActions={rowActions}
             // Add-ons add their bulk actions to `addonsBulkActions` before the screen mounts.
-            bulkActions={[...bulkActions, ...(window.GiveDonations.addonsBulkActions ?? [])]}
+            bulkActions={window.GiveDonations.addonsBulkActions ?? []}
             apiSettings={window.GiveDonations}
             filterSettings={filters}
             paymentMode={!!window.GiveDonations.paymentMode}

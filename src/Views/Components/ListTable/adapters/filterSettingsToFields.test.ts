@@ -36,12 +36,18 @@ const options = {contentMode: false, loadEntityElements: jest.fn(async () => [{v
 const fieldById = (fields, id: string) => fields.find((field) => field.id === filterFieldId(id));
 
 describe('filterSettingsToFields', () => {
-    it('reports the search parameter and makes no field for search or the test-mode toggle', () => {
+    it('reports the search parameter and makes no field for search', () => {
         const {fields, searchParam} = filterSettingsToFields(filters, view(), options);
 
         expect(searchParam).toBe('search');
         expect(fieldById(fields, 'search')).toBeUndefined();
-        expect(fieldById(fields, 'toggle')).toBeUndefined();
+    });
+
+    it('makes the test-mode toggle a testMode filter with one "On" value', () => {
+        const testMode = fieldById(filterSettingsToFields(filters, view(), options).fields, 'testMode');
+
+        expect(testMode).toMatchObject({label: 'Test mode', elements: [{value: true, label: 'On'}]});
+        expect(fieldById(filterSettingsToFields(filters, view(), options).fields, 'toggle')).toBeUndefined();
     });
 
     it('offers select options except the first, "all" one, with the is operator', () => {

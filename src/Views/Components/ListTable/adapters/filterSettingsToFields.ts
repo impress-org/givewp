@@ -10,6 +10,13 @@ import {filterByGroups, filterByValues, filterFieldId, viewFilterValue} from './
  */
 export type LoadEntityElements = (entity: 'campaign' | 'form') => Promise<Option[]>;
 
+/**
+ * The filter id of test mode, set by the header toggle or its chip.
+ *
+ * @since TBD
+ */
+export const TEST_MODE_FILTER = 'testMode';
+
 const toElements = (options: Array<{text: string; value: string}> = []): Option[] =>
     options.map((option) => ({value: option.value, label: option.text}));
 
@@ -54,7 +61,9 @@ function groupField(group: FilterByGroupedOptions): Field<ListTableItem> {
  * - `filterby`: one field per group; a group hidden by the current values is left out.
  * - `hidden`: a field only while a link into the screen has set it; in content mode it is table
  *   scope and never a field.
- * - `search` is DataViews' own search box; the test-mode `checkbox` stays the header toggle.
+ * - The test-mode `checkbox` (named `toggle`) is a `testMode` field, so test mode shows as a chip; the
+ *   header toggle stays and edits the same filter.
+ * - `search` is DataViews' own search box.
  *
  * @since TBD
  */
@@ -89,6 +98,11 @@ export function filterSettingsToFields(
                 );
                 break;
             }
+            case 'checkbox':
+                if (filter.name === 'toggle') {
+                    fields.push(filterField(TEST_MODE_FILTER, __('Test mode', 'give'), 'is', [{value: true, label: __('On', 'give')}]));
+                }
+                break;
             case 'hidden': {
                 const value = viewFilterValue(view, filter.name);
 
