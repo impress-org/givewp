@@ -132,7 +132,7 @@ const columnFilters: Array<ColumnFilterConfig> = [
                     <div className={styles.titleContainer}>
                         <div className={styles.migratedForm}>
                             {item?.v3form && window?.GiveDonationForms?.isOptionBasedFormEditorEnabled && <CubeTooltip />}
-                            <Interweave attributes={{className: 'interweave'}} content={item?.title} />
+                            <Interweave attributes={{className: 'interweave'}} content={String(item?.title ?? '')} />
                         </div>
                         {item?.isDefaultCampaignForm && (
                             <div className={`${styles.defaultFormPill} givewp-default-form-pill`}>{__('Default')}</div>

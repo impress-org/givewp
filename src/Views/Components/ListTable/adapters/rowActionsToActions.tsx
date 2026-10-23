@@ -1,49 +1,29 @@
-import {useState} from 'react';
 import type {Action} from '@wordpress/dataviews';
 import BulkActionConfirm from '../BulkActionConfirm';
-import type {ListTableItem, ListTableRowAction, ReportOutcome} from '../ListTablePage/types';
+import type {ListActionContext, ListTableItem, ListTableRowAction} from '../ListTablePage/types';
+import {runListAction, RunListActionArgs} from '../actions/runListAction';
+import useListActionSubmit from '../hooks/useListActionSubmit';
 import {getItemName} from './getItemName';
-import {normalizeActionResult} from './normalizeActionResult';
 
 /**
  * What a row action needs from the page it runs on.
  *
  * @since TBD
  */
-export type RowActionContext = {
-    report: ReportOutcome;
-    refresh: () => Promise<unknown>;
-    clearSelection: () => void;
+export type RowActionContext = ListActionContext & {
     openDialog: (rowAction: ListTableRowAction, items: ListTableItem[]) => void;
 };
 
-const labelOf = (rowAction: ListTableRowAction, items: ListTableItem[]) =>
-    typeof rowAction.label === 'function' ? rowAction.label(items) : rowAction.label;
-
 /**
- * Runs an action, reports what it did and reloads the list. A selection that fully succeeded clears.
+ * What `runListAction` needs to run a typed action on these items.
  */
-async function runRowAction(rowAction: ListTableRowAction, items: ListTableItem[], context: RowActionContext) {
-    const ids = items.map((item) => item.id);
-    let outcome;
-
-    try {
-        outcome = normalizeActionResult(await rowAction.run(items), ids);
-    } catch (error) {
-        outcome = normalizeActionResult(error, ids);
-    }
-
-    if (outcome.changed > 0 && rowAction.successMessage) {
-        outcome = {...outcome, successMessage: rowAction.successMessage(items)};
-    }
-
-    context.report(outcome, labelOf(rowAction, items));
-
-    if (outcome.failed === 0 && !outcome.notice) {
-        context.clearSelection();
-    }
-
-    await context.refresh();
+function runArgs(rowAction: ListTableRowAction, items: ListTableItem[]): RunListActionArgs {
+    return {
+        run: () => rowAction.run(items),
+        ids: items.map((item) => item.id),
+        label: typeof rowAction.label === 'function' ? rowAction.label(items) : rowAction.label,
+        successMessage: rowAction.successMessage?.(items),
+    };
 }
 
 type RowActionModalProps = {
@@ -54,13 +34,9 @@ type RowActionModalProps = {
 };
 
 function RowActionModal({rowAction, items, closeModal, context}: RowActionModalProps) {
-    const [isBusy, setIsBusy] = useState(false);
+    const {isBusy, submit} = useListActionSubmit(context);
 
-    const onConfirm = async () => {
-        setIsBusy(true);
-        closeModal?.();
-        await runRowAction(rowAction, items, context);
-    };
+    const onConfirm = () => submit({...runArgs(rowAction, items), onDone: closeModal});
 
     return (
         <BulkActionConfirm
@@ -122,6 +98,6 @@ export function rowActionsToActions(
             };
         }
 
-        return {...base, callback: (items) => runRowAction(rowAction, items, context)};
+        return {...base, callback: (items) => runListAction(runArgs(rowAction, items), context)};
     });
 }

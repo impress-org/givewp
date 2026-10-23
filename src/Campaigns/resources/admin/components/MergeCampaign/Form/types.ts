@@ -10,7 +10,7 @@ export interface MergeCampaignModalProps {
 
 export interface MergeCampaignFormProps {
     isOpen: boolean;
-    handleClose: (response?: any) => void;
+    handleClose: () => void;
     onMerged?: () => void;
     title: string;
     campaigns: {

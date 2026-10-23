@@ -17,17 +17,17 @@ const OPTIONS_PER_PAGE = 100;
 export async function loadEntityElements(entityName: 'campaign' | 'form'): Promise<Option[]> {
     const entity = asyncSelectEntities[entityName];
 
+    const store = resolveSelect(coreStore);
     const canEdit = entity.editorListQuery
-        ? // @ts-ignore
-          await resolveSelect(coreStore).canUser('create', entity.name).catch(() => false)
+        ? await store.canUser('create', entity.name).catch(() => false)
         : false;
 
-    // @ts-ignore
-    const records: any[] = (await resolveSelect(coreStore).getEntityRecords(entity.kind, entity.name, {
-        ...entity.listQuery,
-        ...(canEdit && entity.editorListQuery),
-        per_page: OPTIONS_PER_PAGE,
-    })) ?? [];
+    const records: Array<{id: number}> =
+        (await store.getEntityRecords(entity.kind, entity.name, {
+            ...entity.listQuery,
+            ...(canEdit && entity.editorListQuery),
+            per_page: OPTIONS_PER_PAGE,
+        })) ?? [];
 
     return records.map((record) => ({value: record.id, label: entity.getTitle(record)}));
 }
