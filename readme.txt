@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.19.0.1
+Stable tag: 4.19.0.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 4.19.0.2: October 26th, 2026 =
+* Security: Added additional validation to account registration on donation forms. Reported by Pablo Alaniz
+* Security: Improved donation amount validation so donations always meet the amount set on the form.
+
 = 4.19.0.1: October 22nd, 2026 =
 * Security: Improved donation currency validation so the submitted currency must be supported by the form, including currencies enabled by the Currency Switcher. Reported by Shirshak.
 * Security: Enhanced security for the donation form view. Reported by vuxvinh.
