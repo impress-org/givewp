@@ -90,6 +90,7 @@ class Max implements ValidationRule, ValidatesOnFrontEnd
             $value = $this->parseAmount((string)$value, $this->submittedCurrency($values));
 
             if ($value === null) {
+                /* translators: %s: Field label */
                 $fail(sprintf(__('%s must be a valid amount', 'give'), '{field}'));
 
                 return;
