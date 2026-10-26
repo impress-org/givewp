@@ -55,7 +55,7 @@ class DB
     /**
      * A convenience method for the $wpdb->prepare method
      *
-     * @since TBD Document why the query is safe.
+     * @since 4.19.1 Document why the query is safe.
      * @since 2.9.6
      *
      * @param string $query
@@ -229,7 +229,7 @@ class DB
      *
      * @return mixed
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @throws DatabaseQueryException
      */
     private static function runQueryWithErrorChecking($queryCaller)

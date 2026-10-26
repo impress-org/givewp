@@ -1,7 +1,7 @@
 <?php if (!defined('ABSPATH')) { exit; } ?>
 <?php
 /**
- * @since TBD Escape output and replace short echo tags with escaped echo.
+ * @since 4.19.1 Escape output and replace short echo tags with escaped echo.
  * @var string $content
  */
 ?>

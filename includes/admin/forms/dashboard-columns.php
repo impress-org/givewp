@@ -59,7 +59,7 @@ add_filter( 'manage_edit-give_forms_columns', 'give_form_columns' );
 /**
  * Render Give Form Columns
  *
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings.
  * @since 3.16.0 Add new filters for the "donations count" and "revenue" columns
  * @since 1.0
  *
@@ -260,7 +260,7 @@ function give_sort_forms( $vars ) {
 /**
  * Sets restrictions on author of Forms List Table
  *
- * @since TBD Unslash and sanitize the author ID.
+ * @since 4.19.1 Unslash and sanitize the author ID.
  * @since  1.0
  *
  * @param  array $vars Array of all sort variables.
@@ -340,7 +340,7 @@ add_filter( 'months_dropdown_results', 'give_remove_month_filter', 99 );
 /**
  * Updates price when saving post
  *
- * @since TBD Unslash and sanitize the request values.
+ * @since 4.19.1 Unslash and sanitize the request values.
  * @since 1.0
  * @since 2.1.4 If the donation amount is less than the Minimum amount then set the donation amount as Donation minimum amount.
  *
@@ -386,7 +386,7 @@ add_action( 'save_post', 'give_price_save_quick_edit' );
 /**
  * Function is used to filter the query for search result.
  *
- * @since TBD Use gmdate() instead of date(), and sanitize the goal filter value.
+ * @since 4.19.1 Use gmdate() instead of date(), and sanitize the goal filter value.
  * @since 2.4.0
  *
  * @param $wp WP WordPress environment instance (passed by reference).
@@ -485,7 +485,7 @@ add_filter( 'pre_get_posts', 'give_search_form_by_id' );
 /**
  * Outputs advanced filter html in Give forms list admin screen.
  *
- * @since TBD Escape output, including translated strings, use gmdate() instead of date(), and sanitize the goal filter value.
+ * @since 4.19.1 Escape output, including translated strings, use gmdate() instead of date(), and sanitize the goal filter value.
  * @sicne 2.4.0
  *
  * @param $which

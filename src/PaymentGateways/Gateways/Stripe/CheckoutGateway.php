@@ -105,7 +105,7 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @inheritDoc
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.23.1
      *
      * @return string|void

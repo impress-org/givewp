@@ -1,7 +1,7 @@
 <?php if (!defined('ABSPATH')) { exit; } ?>
 <?php
 /**
- * @since TBD Escape translated output.
+ * @since 4.19.1 Escape translated output.
  */
 ?>
 <div class="form-footer">

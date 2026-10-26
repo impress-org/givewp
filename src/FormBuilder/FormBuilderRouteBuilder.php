@@ -11,12 +11,12 @@ class FormBuilderRouteBuilder
     const SLUG = 'givewp-form-builder';
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     const CREATE_NONCE_ACTION = 'givewp_create_form';
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     const AJAX_NONCE_ACTION = 'givewp_form_builder_ajax';
 
@@ -70,7 +70,7 @@ class FormBuilderRouteBuilder
     }
 
     /**
-     * @since TBD Add the create form nonce to the create route and sanitize the campaign id.
+     * @since 4.19.1 Add the create form nonce to the create route and sanitize the campaign id.
      * @since 4.0.0 add p2p param
      * @since 3.22.0 Add locale support
      * @since 3.0.0
@@ -112,7 +112,7 @@ class FormBuilderRouteBuilder
     }
 
     /**
-     * @since TBD Compare unslashed, sanitized query args.
+     * @since 4.19.1 Compare unslashed, sanitized query args.
      * @since 3.0.0
      */
     public static function isRoute(): bool

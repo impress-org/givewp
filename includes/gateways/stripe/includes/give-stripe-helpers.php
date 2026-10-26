@@ -638,7 +638,7 @@ function give_stripe_get_application_fee_amount( $amount ) {
 /**
  * Get the payment mode of the current donation request, to build the checkout redirect URL.
  *
- * @since TBD
+ * @since 4.19.1
  *
  * @return string
  */
@@ -652,7 +652,7 @@ function give_stripe_get_payment_mode_from_request() {
  *
  * @param int $form_id Form ID.
  *
- * @since TBD Read the payment mode through a sanitizing helper.
+ * @since 4.19.1 Read the payment mode through a sanitizing helper.
  * @since 2.5.0
  *
  * @return void
@@ -862,7 +862,7 @@ function give_stripe_is_source_type( $id, $type = 'src' ) {
 /**
  * This helper function is used to process Stripe payments.
  *
- * @since TBD Read the payment mode through a sanitizing helper.
+ * @since 4.19.1 Read the payment mode through a sanitizing helper.
  * @since 3.5.0 remove descriptor as Stripe automatically adds it, per Stripe API changes (https://support.stripe.com/questions/use-of-the-statement-descriptor-parameter-on-paymentintents-for-card-charges)
  * @since 2.33.0 no longer store the payment intent secret
  * @since 2.5.0
@@ -1171,7 +1171,7 @@ function give_stripe_is_update_payment_method_screen() {
  *
  * @param string $method Type of Direct Debit Method.
  *
- * @since TBD Add translators comments.
+ * @since 4.19.1 Add translators comments.
  * @since 2.6.1
  *
  * @return string

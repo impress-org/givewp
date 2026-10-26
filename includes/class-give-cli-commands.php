@@ -171,7 +171,7 @@ class GIVE_CLI_COMMAND {
 	 * wp give forms --id=103
 	 * wp give forms --number=103
 	 *
-	 * @since TBD Add translators comments.
+	 * @since 4.19.1 Add translators comments.
 	 * @since         1.7
 	 * @access        public
 	 *
@@ -367,7 +367,7 @@ class GIVE_CLI_COMMAND {
 	 * wp give donors --number=1000
 	 * wp give donors --form-id=1024
 	 *
-	 * @since TBD Use gmdate() and wp_date() instead of date(), and add translators comments.
+	 * @since 4.19.1 Use gmdate() and wp_date() instead of date(), and add translators comments.
 	 * @since         1.7
 	 * @access        public
 	 *
@@ -590,7 +590,7 @@ class GIVE_CLI_COMMAND {
 	 * wp give donations
 	 * wp give donations --number=100
 	 *
-	 * @since TBD Add translators comments.
+	 * @since 4.19.1 Add translators comments.
 	 * @since         1.7
 	 * @access        public
 	 *
@@ -776,7 +776,7 @@ class GIVE_CLI_COMMAND {
 	/**
 	 * Delete all form stat transient
 	 *
-	 * @since TBD Remove the quotes around the placeholders.
+	 * @since 4.19.1 Remove the quotes around the placeholders.
 	 * @since     1.7
 	 * @access    private
 	 *
@@ -1134,7 +1134,7 @@ class GIVE_CLI_COMMAND {
 	 * @param array $pos   Array of positional arguments.
 	 * @param array $assoc Array of associative arguments.
 	 *
-	 * @since TBD Add translators comments.
+	 * @since 4.19.1 Add translators comments.
 	 * @since 2.1.3
 	 *
 	 * @subcommand add-on-update

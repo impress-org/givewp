@@ -5,7 +5,7 @@
  * This template is used to display an email form which will when submitted send an update donation receipt and also
  * refresh the users session
  *
- * @since TBD Escape output. Add translators comments. Load the reCAPTCHA script with wp_enqueue_script().
+ * @since 4.19.1 Escape output. Add translators comments. Load the reCAPTCHA script with wp_enqueue_script().
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

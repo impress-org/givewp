@@ -80,7 +80,7 @@ class Give_Tooltips {
 	/**
 	 * Render tooltip
 	 *
-	 * @since  TBD Attribute values, including aria-label, are escaped by give_get_attribute_str().
+	 * @since  4.19.1 Attribute values, including aria-label, are escaped by give_get_attribute_str().
 	 * @since  2.0
 	 * @access public
 	 *
@@ -209,7 +209,7 @@ class Give_Tooltips {
 	 * render_span() and render_link() accept a caller-supplied tag_content that is not escaped,
 	 * so do not add print_render()/print_render_span()/print_render_link() variants.
 	 *
-	 * @since TBD
+	 * @since 4.19.1
 	 *
 	 * @param array|string $args
 	 *

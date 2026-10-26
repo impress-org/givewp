@@ -39,7 +39,7 @@ class AddIndexes extends Migration
     /**
      * @inheritDoc
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.17.0 Only add indexes that do not exist yet, so re-running the migration is safe.
      * @since 4.0.0
      *

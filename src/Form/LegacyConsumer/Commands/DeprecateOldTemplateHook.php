@@ -10,7 +10,7 @@ use Give\Form\LegacyConsumer\FilterCallbackCollection;
 class DeprecateOldTemplateHook implements HookCommandInterface
 {
     /**
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 2.10.2
      *
      * @param string $hook

@@ -39,7 +39,7 @@ class SpamContext
     }
 
     /**
-     * @since TBD Write the request and response as JSON.
+     * @since 4.19.1 Write the request and response as JSON.
      * @since 3.15.0
      */
     public function formatMessage(): string

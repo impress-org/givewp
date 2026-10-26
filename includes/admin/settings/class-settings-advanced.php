@@ -6,7 +6,7 @@
  * @subpackage  Classes/Give_Settings_Advanced
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       TBD Escape output.
+ * @since       4.19.1 Escape output.
  * @since       1.8
  */
 
@@ -59,7 +59,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
         /**
          * Get settings array.
          *
-         * @since TBD Add translators comments.
+         * @since 4.19.1 Add translators comments.
          * @since 4.14.0 update donor default user role to use give_get_donor_safe_user_roles
          * @since 4.1.0 Added Donation Forms section
          * @since  1.8

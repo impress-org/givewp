@@ -8,14 +8,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 class TestFormGridFeaturedImage extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -25,7 +25,7 @@ class TestFormGridFeaturedImage extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      *
      * @dataProvider columnsProvider
      */
@@ -63,7 +63,7 @@ class TestFormGridFeaturedImage extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function columnsProvider(): array
     {

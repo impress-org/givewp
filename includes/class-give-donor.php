@@ -240,7 +240,7 @@ class Give_Donor {
 	/**
 	 * Setup donor address.
 	 *
-	 * @since TBD Prepare SQL with placeholders.
+	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since  2.0
 	 * @access public
 	 */
@@ -1337,7 +1337,7 @@ class Give_Donor {
 	/**
 	 * Add donor address
 	 *
-	 * @since TBD Prepare SQL with placeholders.
+	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since  2.0
 	 * @access public
 	 *
@@ -1438,7 +1438,7 @@ class Give_Donor {
 	/**
 	 * Remove donor address
 	 *
-	 * @since TBD Prepare SQL with placeholders.
+	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since  2.0
 	 * @access public
 	 * @global wpdb  $wpdb
@@ -1494,7 +1494,7 @@ class Give_Donor {
 	/**
 	 * Update donor address
 	 *
-	 * @since TBD Prepare SQL with placeholders.
+	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since  2.0
 	 * @access public
 	 * @global wpdb  $wpdb
@@ -1744,7 +1744,7 @@ class Give_Donor {
 	/**
 	 * Retrieves a donor's initials (first name and last name).
 	 *
-	 * @since TBD Filter with `give_get_donor_initials`. The old `get_donor_initals` filter still runs, as deprecated.
+	 * @since 4.19.1 Filter with `give_get_donor_initials`. The old `get_donor_initals` filter still runs, as deprecated.
 	 * @since   2.1
 	 *
 	 * @return string The donor's two initials (no middle).
@@ -1760,15 +1760,15 @@ class Give_Donor {
 		/**
 		 * Filter the donor name initials. Deprecated: use `give_get_donor_initials`.
 		 *
-		 * @since TBD Deprecated in favor of `give_get_donor_initials`.
+		 * @since 4.19.1 Deprecated in favor of `give_get_donor_initials`.
 		 * @since 2.1.0
 		 */
-		$initials = apply_filters_deprecated( 'get_donor_initals', [ $initials ], 'TBD', 'give_get_donor_initials' );
+		$initials = apply_filters_deprecated( 'get_donor_initals', [ $initials ], '4.19.1', 'give_get_donor_initials' );
 
 		/**
 		 * Filter the donor name initials.
 		 *
-		 * @since TBD Replaces `get_donor_initals`.
+		 * @since 4.19.1 Replaces `get_donor_initals`.
 		 */
 		return apply_filters( 'give_get_donor_initials', $initials );
 

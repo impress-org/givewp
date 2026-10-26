@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * This function will check whether the Stripe account is connected via Connect button or not.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0.0
  * @deprecated 2.5.0
  *
@@ -34,7 +34,7 @@ function give_is_stripe_connected() {
 /**
  * This function is used to get the connect options.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0.0
  * @deprecated 2.5.0
  *
@@ -52,7 +52,7 @@ function get_give_stripe_connect_options() {
  *
  * @param \Stripe\Subscription $subscription Subscription object from Stripe.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0.0
  * @deprecated 2.5.0
  *
@@ -69,7 +69,7 @@ function give_get_stripe_statement_descriptor( $subscription ) {
 /**
  * This function is used to check whether Stripe checkout is enabled or not.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0.0
  * @deprecated 2.5.0
  *
@@ -85,7 +85,7 @@ function give_is_stripe_checkout_enabled() {
 /**
  * This function is used to fetch the connect options for Stripe.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0.0
  * @deprecated 2.5.0
  *
@@ -103,7 +103,7 @@ if ( ! function_exists( 'get_give_stripe_connect_options' ) ) {
 /**
  * This function is used to fetch the connect options for Stripe.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      2.5.0
  * @deprecated 2.7.0
  *
@@ -137,7 +137,7 @@ if ( ! function_exists( 'give_stripe_get_connect_settings' ) ) {
 /**
  * Delete all the Give settings options for Stripe Connect.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since 2.5.0
  * @deprecated 2.7.0
  *
@@ -159,7 +159,7 @@ function give_stripe_connect_delete_options() {
 /**
  * Checks whether Stripe is connected or not.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since 2.5.0
  * @deprecated 2.7.0
  *
@@ -196,7 +196,7 @@ function give_stripe_is_connected() {
 
  /** Is Stripe Checkout Enabled?
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since 2.5.0
  * @deprecated 2.6.4
  *
@@ -213,7 +213,7 @@ function give_stripe_is_checkout_enabled() {
  * Look up the stripe customer id in user meta, and look to recurring if not found yet.
  * Note: We are not changing @since and @deprecated as we moved this fn from Stripe Premium.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since  1.4
  * @deprecated 2.1
  *

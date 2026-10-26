@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Split _give_payment_meta to new Give core meta_keys.
  *
- * @since TBD Renamed from _give_20_bc_split_and_save_give_payment_meta().
+ * @since 4.19.1 Renamed from _give_20_bc_split_and_save_give_payment_meta().
  * @since 2.0
  *
  * @param       $object_id
@@ -88,12 +88,12 @@ function give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value ) 
 /**
  * Split _give_payment_meta to new Give core meta_keys.
  *
- * @since TBD Renamed to give_20_bc_split_and_save_give_payment_meta(); this old name is a deprecated alias.
+ * @since 4.19.1 Renamed to give_20_bc_split_and_save_give_payment_meta(); this old name is a deprecated alias.
  * @since 2.0
- * @deprecated TBD Use give_20_bc_split_and_save_give_payment_meta() instead.
+ * @deprecated 4.19.1 Use give_20_bc_split_and_save_give_payment_meta() instead.
  */
 function _give_20_bc_split_and_save_give_payment_meta($object_id, $meta_value) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_20_bc_split_and_save_give_payment_meta().
-	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_20_bc_split_and_save_give_payment_meta()' );
+	_give_deprecated_function( __FUNCTION__, '4.19.1', 'give_20_bc_split_and_save_give_payment_meta()' );
 
 	give_20_bc_split_and_save_give_payment_meta($object_id, $meta_value);
 }
@@ -101,7 +101,7 @@ function _give_20_bc_split_and_save_give_payment_meta($object_id, $meta_value) {
 /**
  * Add backward compatibility to get meta value of _give_payment_meta meta key.
  *
- * @since TBD Renamed from _give_20_bc_give_payment_meta_value().
+ * @since 4.19.1 Renamed from _give_20_bc_give_payment_meta_value().
  * @since 2.0
  *
  * @param       $object_id
@@ -213,12 +213,12 @@ function give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
 /**
  * Add backward compatibility to get meta value of _give_payment_meta meta key.
  *
- * @since TBD Renamed to give_20_bc_give_payment_meta_value(); this old name is a deprecated alias.
+ * @since 4.19.1 Renamed to give_20_bc_give_payment_meta_value(); this old name is a deprecated alias.
  * @since 2.0
- * @deprecated TBD Use give_20_bc_give_payment_meta_value() instead.
+ * @deprecated 4.19.1 Use give_20_bc_give_payment_meta_value() instead.
  */
 function _give_20_bc_give_payment_meta_value($object_id, $meta_value) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_20_bc_give_payment_meta_value().
-	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_20_bc_give_payment_meta_value()' );
+	_give_deprecated_function( __FUNCTION__, '4.19.1', 'give_20_bc_give_payment_meta_value()' );
 
 	return give_20_bc_give_payment_meta_value($object_id, $meta_value);
 }

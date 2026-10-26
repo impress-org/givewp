@@ -104,7 +104,7 @@ abstract class Give_DB {
 	/**
 	 * Retrieve a row by the primary key
 	 *
-	 * @since TBD Use %i for table and column names.
+	 * @since 4.19.1 Use %i for table and column names.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -127,7 +127,7 @@ abstract class Give_DB {
 	/**
 	 * Retrieve a row by a specific column / value
 	 *
-	 * @since TBD Use %i for table and column names.
+	 * @since 4.19.1 Use %i for table and column names.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -152,7 +152,7 @@ abstract class Give_DB {
 	 * Retrieve all rows by a specific column / value
 	 * Note: currently support string comparision
 	 *
-	 * @since TBD Prepare each condition and allow only AND or OR as the relation.
+	 * @since 4.19.1 Prepare each condition and allow only AND or OR as the relation.
 	 * @since  2.2.4
 	 * @access public
 	 *
@@ -192,7 +192,7 @@ abstract class Give_DB {
 	/**
 	 * Retrieve a specific column's value by the primary key
 	 *
-	 * @since TBD Use %i for table and column names.
+	 * @since 4.19.1 Use %i for table and column names.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -216,7 +216,7 @@ abstract class Give_DB {
 	/**
 	 * Retrieve a specific column's value by the the specified column / value
 	 *
-	 * @since TBD Use %i for table and column names.
+	 * @since 4.19.1 Use %i for table and column names.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -343,7 +343,7 @@ abstract class Give_DB {
 	/**
 	 * Delete a row identified by the primary key
 	 *
-	 * @since TBD Use %i for table and column names.
+	 * @since 4.19.1 Use %i for table and column names.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -372,7 +372,7 @@ abstract class Give_DB {
 	/**
 	 * Check if the given table exists
 	 *
-	 * @since TBD Remove quotes around the %s placeholder.
+	 * @since 4.19.1 Remove quotes around the %s placeholder.
 	 * @since  1.3.2
 	 * @access public
 	 *

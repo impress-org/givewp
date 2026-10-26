@@ -88,7 +88,7 @@ class CampaignPageController extends WP_REST_Controller
     }
 
     /**
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 4.13.1
      */
     public function prepare_item_for_response($item, $request)

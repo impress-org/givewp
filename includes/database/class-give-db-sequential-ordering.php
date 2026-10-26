@@ -76,7 +76,7 @@ class Give_DB_Sequential_Ordering extends Give_DB {
 	/**
 	 * Create the table
 	 *
-	 * @since TBD Prepare the AUTO_INCREMENT query.
+	 * @since 4.19.1 Prepare the AUTO_INCREMENT query.
 	 * @since  2.1.0
 	 * @access public
 	 *

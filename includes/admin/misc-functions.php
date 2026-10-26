@@ -115,7 +115,7 @@ function give_slug_to_title( $string, $filters = [] ) {
 /**
  * Display the API Keys
  *
- * @since       TBD Escape output.
+ * @since       4.19.1 Escape output.
  * @since       1.0
  * @return      void
  */
@@ -208,7 +208,7 @@ function give_get_format_md( $readme ) {
  * @param bool   $echo
  *
  * @return string
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.0
  */
 function give_add_ons_feed( $feed_type = '', $echo = true ) {

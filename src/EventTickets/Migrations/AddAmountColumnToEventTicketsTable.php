@@ -60,7 +60,7 @@ class AddAmountColumnToEventTicketsTable extends Migration
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 3.20.0
      *
      * @throws DatabaseMigrationException
@@ -82,7 +82,7 @@ class AddAmountColumnToEventTicketsTable extends Migration
     }
 
     /**
-     * @since TBD Escape exception message and use %i for the table names.
+     * @since 4.19.1 Escape exception message and use %i for the table names.
      * @since 3.20.0
      *
      * @throws DatabaseMigrationException

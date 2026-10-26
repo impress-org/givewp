@@ -635,7 +635,7 @@ function give_get_payment_status_keys() {
  * @param int $year      Year number. Default is null.
  * @param int $hour      Hour number. Default is null.
  *
- * @since TBD Prepare SQL with placeholders. Unslash and sanitize the refresh nonce.
+ * @since 4.19.1 Prepare SQL with placeholders. Unslash and sanitize the refresh nonce.
  * @since 1.0
  *
  * @since 2.12.0 default value for the $day parameter is removed to prevent PHP8 warnings.
@@ -714,7 +714,7 @@ function give_get_earnings_by_date( $day, $month_num, $year = null, $hour = null
  * @param int $year      Year number. Default is null.
  * @param int $hour      Hour number. Default is null.
  *
- * @since TBD Unslash and sanitize the refresh nonce.
+ * @since 4.19.1 Unslash and sanitize the refresh nonce.
  * @since 1.0
  *
  * @return int $count Sales
@@ -825,7 +825,7 @@ function give_get_total_donations() {
  *
  * @param bool $recalculate Recalculate earnings forcefully.
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 1.0
  *
  * @return float $total Total earnings.
@@ -1045,7 +1045,7 @@ function give_is_guest_payment( $payment_id ) {
  *
  * @param int $payment_id Payment ID.
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 1.3
  *
  * @return int $user_id User ID.
@@ -1381,7 +1381,7 @@ function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' 
  *
  * @param string $key  the key to search for.
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 1.0
  * @global object $wpdb Used to query the database using the WordPress Database API.
  *
@@ -1422,7 +1422,7 @@ function give_get_donation_id_by_key( $key ) {
  *
  * @param string $key  The transaction ID to search for.
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 1.3
  * @global object $wpdb Used to query the database using the WordPress Database API.
  *
@@ -1490,7 +1490,7 @@ function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
  * @param object|int $note       The comment object or ID.
  * @param int        $payment_id The payment ID the note is connected to.
  *
- * @since TBD Escape the note author, content and delete-link text.
+ * @since 4.19.1 Escape the note author, content and delete-link text.
  * @since 1.0
  *
  * @return string
@@ -1544,7 +1544,7 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
  * @param string $where Where clause.
  *
  * @access public
- * @since TBD Use gmdate() instead of date().
+ * @since 4.19.1 Use gmdate() instead of date().
  * @since  1.0
  *
  * @return string $where Modified where clause.
@@ -1766,7 +1766,7 @@ function give_get_price_id( $form_id, $price ) {
  * @param array $args Arguments for form dropdown.
  * @param bool  $echo This parameter decides if print form dropdown html output or not.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.6
  *
  * @return string
@@ -1788,7 +1788,7 @@ function give_get_form_dropdown( $args = [], $echo = false ) {
  * @param array $args Arguments for form dropdown.
  * @param bool  $echo This parameter decide if print form dropdown html output or not.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.6
  * @since 2.12.0 Show "Custom" choice in select field if donation created with cusotm amount
  *

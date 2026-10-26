@@ -242,7 +242,7 @@ abstract class BaseEnum implements \JsonSerializable
     /**
      * Asserts valid enum value
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      *
      * @psalm-pure
      * @psalm-assert T $value
@@ -292,7 +292,7 @@ abstract class BaseEnum implements \JsonSerializable
     /**
      * Returns a value when called statically like so: MyEnum::SOME_VALUE() given SOME_VALUE is a class constant
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      *
      * @param string $name
      * @param array  $arguments

@@ -66,7 +66,7 @@ class Size implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
-     * @since TBD Number the placeholders and add translators comments.
+     * @since 4.19.1 Number the placeholders and add translators comments.
      * @since 4.19.0.2 Compare the amount as parsed into Money in the submitted currency.
      * @since 3.0.0
      */

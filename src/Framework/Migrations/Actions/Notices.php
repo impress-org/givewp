@@ -7,7 +7,7 @@ use Give\MigrationLog\MigrationLogRepository;
 use Give\MigrationLog\MigrationLogStatus;
 
 /**
- * @since TBD Number the placeholders and add translators comments.
+ * @since 4.19.1 Number the placeholders and add translators comments.
  * @since 4.3.0
  *
  * Show reversed migration notice
@@ -15,7 +15,7 @@ use Give\MigrationLog\MigrationLogStatus;
 class Notices
 {
     /**
-     * @since TBD Number the placeholders and add translators comments.
+     * @since 4.19.1 Number the placeholders and add translators comments.
      */
     public function __invoke()
     {

@@ -106,7 +106,7 @@ function give_is_cc_verify_enabled() {
  * Retrieve timezone.
  *
  * @return string $timezone The timezone ID.
- * @since TBD Use gmdate() instead of date().
+ * @since 4.19.1 Use gmdate() instead of date().
  * @since 1.0
  */
 function give_get_timezone_id() {
@@ -148,7 +148,7 @@ function give_get_timezone_id() {
  *
  * Returns the IP address of the current visitor
  *
- * @since TBD Unslash and sanitize the server variables.
+ * @since 4.19.1 Unslash and sanitize the server variables.
  * @since 2.33.5  Add $single param.
  * @since       1.0
  *
@@ -312,7 +312,7 @@ function give_payment_gateway_item_title( $payment_data, $length = null ) {
  * @param int   $length
  *
  * @return string
- * @since TBD Add translators comments.
+ * @since 4.19.1 Add translators comments.
  * @since       1.8.12
  */
 function give_payment_gateway_donation_summary( $donation_data, $name_and_email = true, $length = 255 ) {
@@ -356,7 +356,7 @@ function give_payment_gateway_donation_summary( $donation_data, $name_and_email 
  * Returns the webhost this site is using if possible
  *
  * @return string $host if detected, false otherwise
- * @since TBD Unslash and sanitize the server name.
+ * @since 4.19.1 Unslash and sanitize the server name.
  * @since 1.0
  */
 function give_get_host() {
@@ -418,7 +418,7 @@ function give_get_host() {
  * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
  *       trigger or false to not trigger error.
  *
- * @since TBD Escape output. Add translators comments. Stop dumping the backtrace in the notice.
+ * @since 4.19.1 Escape output. Add translators comments. Stop dumping the backtrace in the notice.
  */
 function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
 
@@ -691,7 +691,7 @@ if ( ! function_exists( 'cal_days_in_month' ) ) {
 	/**
 	 * cal_days_in_month
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 *
 	 * @param int $calendar
 	 * @param int $month
@@ -851,7 +851,7 @@ function give_delete_donation_stats( $date_range = '', $args = [] ) {
  * Check if admin creating new donation form or not.
  *
  * @return bool
- * @since TBD Unslash and sanitize the request URI, and read it safely when it is not set.
+ * @since 4.19.1 Unslash and sanitize the request URI, and read it safely when it is not set.
  * @since 2.0
  */
 function give_is_add_new_form_page() {
@@ -1276,7 +1276,7 @@ function give_list_pluck( $list, $field, $index_key = null ) {
  *                           Default false.
  *
  * @return int|false Meta ID on success, false on failure.
- * @since TBD Renamed from add_donor_meta().
+ * @since 4.19.1 Renamed from add_donor_meta().
  * @since 1.8.13
  */
 function give_add_donor_meta( $donor_id, $meta_key, $meta_value, $unique = false ) {
@@ -1286,12 +1286,12 @@ function give_add_donor_meta( $donor_id, $meta_key, $meta_value, $unique = false
 /**
  * Add meta data field to a donor.
  *
- * @since TBD Renamed to give_add_donor_meta(); this old name is a deprecated alias.
+ * @since 4.19.1 Renamed to give_add_donor_meta(); this old name is a deprecated alias.
  * @since 1.8.13
- * @deprecated TBD Use give_add_donor_meta() instead.
+ * @deprecated 4.19.1 Use give_add_donor_meta() instead.
  */
 function add_donor_meta($donor_id, $meta_key, $meta_value, $unique = false) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_add_donor_meta().
-	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_add_donor_meta()' );
+	_give_deprecated_function( __FUNCTION__, '4.19.1', 'give_add_donor_meta()' );
 
 	return give_add_donor_meta($donor_id, $meta_key, $meta_value, $unique);
 }
@@ -1308,7 +1308,7 @@ function add_donor_meta($donor_id, $meta_key, $meta_value, $unique = false) { //
  * @param mixed  $meta_value Optional. Metadata value.
  *
  * @return bool True on success, false on failure.
- * @since TBD Renamed from delete_donor_meta().
+ * @since 4.19.1 Renamed from delete_donor_meta().
  * @since 1.8.13
  */
 function give_delete_donor_meta( $donor_id, $meta_key, $meta_value = '' ) {
@@ -1318,12 +1318,12 @@ function give_delete_donor_meta( $donor_id, $meta_key, $meta_value = '' ) {
 /**
  * Remove metadata matching criteria from a Donor meta.
  *
- * @since TBD Renamed to give_delete_donor_meta(); this old name is a deprecated alias.
+ * @since 4.19.1 Renamed to give_delete_donor_meta(); this old name is a deprecated alias.
  * @since 1.8.13
- * @deprecated TBD Use give_delete_donor_meta() instead.
+ * @deprecated 4.19.1 Use give_delete_donor_meta() instead.
  */
 function delete_donor_meta($donor_id, $meta_key, $meta_value = '') { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_delete_donor_meta().
-	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_delete_donor_meta()' );
+	_give_deprecated_function( __FUNCTION__, '4.19.1', 'give_delete_donor_meta()' );
 
 	return give_delete_donor_meta($donor_id, $meta_key, $meta_value);
 }
@@ -1337,7 +1337,7 @@ function delete_donor_meta($donor_id, $meta_key, $meta_value = '') { // phpcs:ig
  *
  * @return mixed Will be an array if $single is false. Will be value of meta data field if $single
  *  is true.
- * @since TBD Renamed from get_donor_meta().
+ * @since 4.19.1 Renamed from get_donor_meta().
  * @since 1.8.13
  */
 function give_get_donor_meta( $donor_id, $key = '', $single = false ) {
@@ -1347,12 +1347,12 @@ function give_get_donor_meta( $donor_id, $key = '', $single = false ) {
 /**
  * Retrieve donor meta field for a donor meta table.
  *
- * @since TBD Renamed to give_get_donor_meta(); this old name is a deprecated alias.
+ * @since 4.19.1 Renamed to give_get_donor_meta(); this old name is a deprecated alias.
  * @since 1.8.13
- * @deprecated TBD Use give_get_donor_meta() instead.
+ * @deprecated 4.19.1 Use give_get_donor_meta() instead.
  */
 function get_donor_meta($donor_id, $key = '', $single = false) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_donor_meta().
-	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_get_donor_meta()' );
+	_give_deprecated_function( __FUNCTION__, '4.19.1', 'give_get_donor_meta()' );
 
 	return give_get_donor_meta($donor_id, $key, $single);
 }
@@ -1368,7 +1368,7 @@ function get_donor_meta($donor_id, $key = '', $single = false) { // phpcs:ignore
  * @param mixed  $prev_value Optional. Previous value to check before removing.
  *
  * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
- * @since TBD Renamed from update_donor_meta().
+ * @since 4.19.1 Renamed from update_donor_meta().
  * @since 1.8.13
  */
 function give_update_donor_meta( $donor_id, $meta_key, $meta_value, $prev_value = '' ) {
@@ -1378,12 +1378,12 @@ function give_update_donor_meta( $donor_id, $meta_key, $meta_value, $prev_value 
 /**
  * Update customer meta field based on Donor ID.
  *
- * @since TBD Renamed to give_update_donor_meta(); this old name is a deprecated alias.
+ * @since 4.19.1 Renamed to give_update_donor_meta(); this old name is a deprecated alias.
  * @since 1.8.13
- * @deprecated TBD Use give_update_donor_meta() instead.
+ * @deprecated 4.19.1 Use give_update_donor_meta() instead.
  */
 function update_donor_meta($donor_id, $meta_key, $meta_value, $prev_value = '') { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_update_donor_meta().
-	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_update_donor_meta()' );
+	_give_deprecated_function( __FUNCTION__, '4.19.1', 'give_update_donor_meta()' );
 
 	return give_update_donor_meta($donor_id, $meta_key, $meta_value, $prev_value);
 }
@@ -1460,7 +1460,7 @@ function give_recount_form_income_donation( $form_id = 0 ) {
  * @param array $default_attributes
  *
  * @return string
- * @since TBD Escape every attribute value, not only "value", and skip attribute names that aren't valid HTML attribute names.
+ * @since 4.19.1 Escape every attribute value, not only "value", and skip attribute names that aren't valid HTML attribute names.
  * @since 1.8.17
  */
 function give_get_attribute_str( $attributes, $default_attributes = [] ) {
@@ -1559,7 +1559,7 @@ function give_get_limit_display_donations() {
 /**
  * Add footer to the table when donor is view the donation history page with out login
  *
- * @since TBD Escape output, including translated strings. Add translators comments.
+ * @since 4.19.1 Escape output, including translated strings. Add translators comments.
  * @since 1.8.17
  */
 function give_donation_history_table_end() {
@@ -1598,7 +1598,7 @@ function give_donation_history_table_end() {
  * @param string $version deprecated
  *
  * @return void
- * @since  TBD Escape output. Add translators comments. Stop dumping the backtrace in the notice.
+ * @since  4.19.1 Escape output. Add translators comments. Stop dumping the backtrace in the notice.
  * @since  1.8.18
  * @since  2.5.13 Refactor function
  */
@@ -1646,7 +1646,7 @@ function give_ignore_user_abort() {
  * @param array  $args
  *
  * @return int
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 2.0.2
  */
 function give_get_total_post_type_count( $post_type = '', $args = [] ) {
@@ -1684,7 +1684,7 @@ function give_maybe_define_constant( $name, $value ) {
  * @param int    $timestamp
  *
  * @return string
- * @since TBD Use gmdate() instead of date().
+ * @since 4.19.1 Use gmdate() instead of date().
  * @since 2.1.0
  */
 function give_time_do_tags( $string, $timestamp = 0 ) {
@@ -1888,7 +1888,7 @@ function give_get_active_by_user_meta( $banner_addon_name ) {
 /**
  * Store recently activated Give's addons to wp options.
  *
- * @since TBD Unslash and sanitize the request input.
+ * @since 4.19.1 Unslash and sanitize the request input.
  * @since 4.16.7.1 Moved from includes/admin/plugins.php so the listener is registered on every
  *            request, and fall back to the plugin file passed by the `activated_plugin`
  *            action so add-ons activated outside of plugins.php (REST, WP-CLI,
@@ -2364,7 +2364,7 @@ function give_get_view_receipt_url( $donation_id ) {
  * @param $args
  *
  * @return bool|mixed
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 2.4.1
  */
 function give_display_donation_receipt( $args ) {
@@ -2635,7 +2635,7 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 /**
  * Get platform fee from stored licenses
  *
- * @since TBD Renamed from get_platform_fee_from_licenses().
+ * @since 4.19.1 Renamed from get_platform_fee_from_licenses().
  */
 function give_get_platform_fee_from_licenses(): ?float
 {
@@ -2648,11 +2648,11 @@ function give_get_platform_fee_from_licenses(): ?float
 /**
  * Get platform fee from stored licenses
  *
- * @deprecated TBD Use give_get_platform_fee_from_licenses() instead.
+ * @deprecated 4.19.1 Use give_get_platform_fee_from_licenses() instead.
  */
 function get_platform_fee_from_licenses(): ?float // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_platform_fee_from_licenses().
 {
-    _give_deprecated_function( __FUNCTION__, 'TBD', 'give_get_platform_fee_from_licenses()' );
+    _give_deprecated_function( __FUNCTION__, '4.19.1', 'give_get_platform_fee_from_licenses()' );
 
     return give_get_platform_fee_from_licenses();
 }
@@ -2660,7 +2660,7 @@ function get_platform_fee_from_licenses(): ?float // phpcs:ignore WordPress.Nami
 /**
  * Set Active License Date
  *
- * @since TBD Renamed from get_active_license_date().
+ * @since 4.19.1 Renamed from get_active_license_date().
  * @since 4.8.0
  */
 function give_get_active_license_date(): ?int
@@ -2674,13 +2674,13 @@ function give_get_active_license_date(): ?int
 /**
  * Set Active License Date
  *
- * @since TBD Renamed to give_get_active_license_date(); this old name is a deprecated alias.
+ * @since 4.19.1 Renamed to give_get_active_license_date(); this old name is a deprecated alias.
  * @since 4.8.0
- * @deprecated TBD Use give_get_active_license_date() instead.
+ * @deprecated 4.19.1 Use give_get_active_license_date() instead.
  */
 function get_active_license_date(): ?int // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_active_license_date().
 {
-    _give_deprecated_function( __FUNCTION__, 'TBD', 'give_get_active_license_date()' );
+    _give_deprecated_function( __FUNCTION__, '4.19.1', 'give_get_active_license_date()' );
 
     return give_get_active_license_date();
 }

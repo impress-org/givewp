@@ -266,7 +266,7 @@ class LegacyServiceProvider implements ServiceProvider
      *
      * @return bool
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @throws UnknownRequestTypeException
      */
     private function is_request($type)

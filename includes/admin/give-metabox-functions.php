@@ -224,7 +224,7 @@ function give_render_field( $field ) {
 /**
  * Output a text input box.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  1.8
  *
  * @param  array $field         {
@@ -315,7 +315,7 @@ function give_text_input( $field ) {
  *                                               => '****' )
  * }
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since 2.1
  *
  * @return void
@@ -392,7 +392,7 @@ function give_chosen_input( $field ) {
  * @type string $after_field   Text/HTML to add after input field. Default ''.
  * }
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since 2.7.0
  *
  * @return void
@@ -419,7 +419,7 @@ function give_label_field( $field ) {
  * Give range slider field.
  * Note: only for internal logic
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since 2.1
  *
  * @param  array $field         {
@@ -556,7 +556,7 @@ function give_donation_limit( $field ) {
 /**
  * Output a hidden input box.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  1.8
  *
  * @param  array $field      {
@@ -603,7 +603,7 @@ function give_hidden_input( $field ) {
  * Output a textarea input box.
  *
  * @since  1.8
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  1.8
  *
  * @param  array $field         {
@@ -649,7 +649,7 @@ function give_textarea_input( $field ) {
 /**
  * Output a wysiwyg.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  1.8
  *
  * @param  array $field         {
@@ -715,7 +715,7 @@ function give_wysiwyg( $field ) {
 /**
  * Output a checkbox input box.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  1.8
  *
  * @param  array $field         {
@@ -763,7 +763,7 @@ function give_checkbox( $field ) {
 /**
  * Output multi checkbox input box.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  2.9.0
  *
  * @param  array $field         {
@@ -826,7 +826,7 @@ function give_multicheck( $field ) {
 /**
  * Output a select input box.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  1.8
  *
  * @param  array $field         {
@@ -875,7 +875,7 @@ function give_select( $field ) {
 /**
  * Output a radio input box.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  1.8
  *
  * @param  array $field         {
@@ -928,7 +928,7 @@ function give_radio( $field ) {
 /**
  * Output a multi-line radio input box.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  2.9.0
  *
  * @param  array $field         {
@@ -992,7 +992,7 @@ function give_multiradio( $field ) {
 /**
  * Output a colorpicker.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  1.8
  *
  * @param  array $field         {
@@ -1050,7 +1050,7 @@ function give_file( $field ) {
 /**
  * Output a media upload field.
  *
- * @since  TBD Escape output. Add translators comments.
+ * @since  4.19.1 Escape output. Add translators comments.
  * @since  1.8
  *
  * @param array $field
@@ -1129,7 +1129,7 @@ function give_default_gateway( $field ) {
 /**
  * Output the documentation link.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  1.8
  *
  * @param  array $field      {
@@ -1147,7 +1147,7 @@ function give_default_gateway( $field ) {
  */
 
 /**
- * @since TBD Add translators comments.
+ * @since 4.19.1 Add translators comments.
  */
 function give_docs_link( $field ) {
 	$field['url']   = isset( $field['url'] ) ? $field['url'] : 'https://givewp.com/documentation';
@@ -1164,7 +1164,7 @@ function give_docs_link( $field ) {
 /**
  * Output preview buttons.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since 2.0
  *
  * @param $field
@@ -1418,7 +1418,7 @@ function give_get_field_name( $field ) {
  *
  * @TODO   : Add support for wysiwyg type field.
  *
- * @since TBD Renamed from _give_metabox_form_data_repeater_fields(). Escape output.
+ * @since 4.19.1 Renamed from _give_metabox_form_data_repeater_fields(). Escape output.
  * @since  1.8
  *
  * @param  array $fields
@@ -1609,12 +1609,12 @@ function give_metabox_form_data_repeater_fields( $fields ) {
 /**
  * Output repeater field or multi donation type form on donation from edit screen.
  *
- * @since TBD Renamed to give_metabox_form_data_repeater_fields(); this old name is a deprecated alias.
+ * @since 4.19.1 Renamed to give_metabox_form_data_repeater_fields(); this old name is a deprecated alias.
  * @since 1.8
- * @deprecated TBD Use give_metabox_form_data_repeater_fields() instead.
+ * @deprecated 4.19.1 Use give_metabox_form_data_repeater_fields() instead.
  */
 function _give_metabox_form_data_repeater_fields($fields) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_metabox_form_data_repeater_fields().
-	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_metabox_form_data_repeater_fields()' );
+	_give_deprecated_function( __FUNCTION__, '4.19.1', 'give_metabox_form_data_repeater_fields()' );
 
 	give_metabox_form_data_repeater_fields($fields);
 }
@@ -1714,7 +1714,7 @@ add_filter( 'give_get_field_name', 'give_repeater_field_set_editor_id', 10, 2 );
 /**
  * Output Donation form radio input box.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  2.1.3
  *
  * @param  array $field {

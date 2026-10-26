@@ -7,12 +7,12 @@ use Give\Donors\Actions\LoadDonorAdminOptions;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 final class EnqueueArgumentsTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testPublicEntitiesScriptLoadsInFooterWithDeferStrategy(): void
     {
@@ -27,7 +27,7 @@ final class EnqueueArgumentsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testHandleOnlyOptionsScriptHasExplicitVersionAndStaysInHead(): void
     {

@@ -2,7 +2,7 @@
 /**
  * This template is used to display the donation summary with [give_receipt]
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 
 use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;

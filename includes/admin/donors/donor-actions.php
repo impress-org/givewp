@@ -199,7 +199,7 @@ add_action( 'give_edit-donor', 'give_edit_donor', 10, 1 );
  *
  * @param array $args The $_POST array being passed.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.0
  *
  * @return int The Note ID that was saved, or 0 if nothing was saved.
@@ -291,7 +291,7 @@ add_action( 'give_add-donor-note', 'give_donor_save_note', 10, 1 );
  *
  * @param array $args Array of arguments.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.0
  *
  * @return bool|array If the disconnect was successful.
@@ -400,7 +400,7 @@ add_action( 'give_disconnect-userid', 'give_disconnect_donor_user_id', 10, 1 );
  *
  * @param array $args Array of arguments: nonce, donor id, and email address.
  *
- * @since TBD Escape output. Add translators comments.
+ * @since 4.19.1 Escape output. Add translators comments.
  * @since 1.7
  *
  * @return mixed If DOING_AJAX echos out JSON, otherwise returns array of success (bool) and message (string).
@@ -496,7 +496,7 @@ add_action( 'give_add_donor_email', 'give_add_donor_email', 10, 1 );
 /**
  * Remove an email address to the donor from within the admin and log a donor note and redirect back to the donor interface for feedback.
  *
- * @since  TBD Escape output. Add translators comments. Unslash and sanitize the request values.
+ * @since  4.19.1 Escape output. Add translators comments. Unslash and sanitize the request values.
  * @since  1.7
  *
  * @return bool|null
@@ -550,7 +550,7 @@ add_action( 'give_remove_donor_email', 'give_remove_donor_email', 10 );
  * Set an email address as the primary for a donor from within the admin and log a donor note
  * and redirect back to the donor interface for feedback
  *
- * @since  TBD Escape output. Add translators comments. Unslash and sanitize the request values.
+ * @since  4.19.1 Escape output. Add translators comments. Unslash and sanitize the request values.
  * @since  1.7
  *
  * @return bool|null

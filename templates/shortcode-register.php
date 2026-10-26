@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * This template is used to display the registration form with [give_register]
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 Give()->notices->render_frontend_notices( 0 ); ?>
 

@@ -20,7 +20,7 @@ use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
 /**
  * Processes gateway select on checkout. Only for users without ajax / javascript
  *
- * @since TBD Use a safe redirect, and unslash and sanitize the payment mode.
+ * @since 4.19.1 Use a safe redirect, and unslash and sanitize the payment mode.
  * @since 1.0
  *
  * @param $data

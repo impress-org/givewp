@@ -128,7 +128,7 @@ class DonationFormsAdminPage
 
     /**
      * Load migration onboarding scripts
-     * @since TBD Guard the post param.
+     * @since 4.19.1 Guard the post param.
      * @since 3.2.0
      *
      * @return void
@@ -273,7 +273,7 @@ class DonationFormsAdminPage
     /**
      * Display a button on the old donation forms table that switches to the React view
      *
-     * @since TBD Escape output, including translated strings.
+     * @since 4.19.1 Escape output, including translated strings.
      * @since 2.20.0
      */
     public function renderReactSwitch()

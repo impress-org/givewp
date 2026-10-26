@@ -2,7 +2,7 @@
 /**
  * GiveWP Onboarding Setup Guide template file
  *
- * @since TBD Escape output. Add translators comments. Sanitize the Stripe error message.
+ * @since 4.19.1 Escape output. Add translators comments. Sanitize the Stripe error message.
  * @since 3.15.0 Refactored to make it compatible with v3 forms.
  * @since 2.8.0
  */

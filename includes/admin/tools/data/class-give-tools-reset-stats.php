@@ -67,7 +67,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since TBD Document why the reset queries are safe, and clear the cache of the deleted options only.
+	 * @since 4.19.1 Document why the reset queries are safe, and clear the cache of the deleted options only.
 	 * @since 4.10.0 Added deletion logic for campaigns, campaign pages, subscriptions, events, logs, revenue, usermeta, etc.
 	 * @since  1.5
 	 * @global object $wpdb Used to query the database using the WordPress
@@ -406,7 +406,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Given a key, get the information from the Database Directly.
 	 *
-	 * @since TBD Use the options API.
+	 * @since 4.19.1 Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name
@@ -431,7 +431,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Give a key, store the value.
 	 *
-	 * @since TBD Use the options API.
+	 * @since 4.19.1 Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key   The option_name.
@@ -448,7 +448,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Remove the given options from the object cache, without flushing the rest of the cache.
 	 *
-	 * @since TBD
+	 * @since 4.19.1
 	 *
 	 * @param string[] $option_names Names of options deleted with a raw query.
 	 *
@@ -470,7 +470,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Delete an option
 	 *
-	 * @since TBD Use the options API.
+	 * @since 4.19.1 Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name to delete

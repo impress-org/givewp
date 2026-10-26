@@ -75,7 +75,7 @@ class onBoardingRedirectHandler
     /**
      * This function set mode from request.
      *
-     * @since TBD Sanitize the mode from the request.
+     * @since 4.19.1 Sanitize the mode from the request.
      * @since 2.30.0
      * @return void
      */
@@ -91,7 +91,7 @@ class onBoardingRedirectHandler
     /**
      * Returns the connection mode from the request, or an empty string when it is not 'live' or 'sandbox'.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     private function getModeFromRequest(): string
     {
@@ -144,7 +144,7 @@ class onBoardingRedirectHandler
     /**
      * Save PayPal merchant details
      *
-     * @since TBD Unslash the query string.
+     * @since 4.19.1 Unslash the query string.
      * @since 3.19.1 fix parsing email with special characters
      * @since 2.32.0 Remove second argument from updateSellerAccessToken function.
      * @since 2.25.0 Handle exception.
@@ -232,7 +232,7 @@ class onBoardingRedirectHandler
     /**
      * Redirects the user to the account connected url
      *
-     * @since TBD Use a safe redirect.
+     * @since 4.19.1 Use a safe redirect.
      * @since 4.13.2 Add nonce to redirect URL for CSRF protection.
      * @since 2.9.0
      */
@@ -316,7 +316,7 @@ class onBoardingRedirectHandler
     /**
      * Returns whether or not the current request is for refreshing the account status
      *
-     * @since TBD Unslash and sanitize the nonce.
+     * @since 4.19.1 Unslash and sanitize the nonce.
      * @since 4.13.2 Add nonce verification for CSRF protection.
      * @since 2.9.0
      *
@@ -338,7 +338,7 @@ class onBoardingRedirectHandler
     /**
      * Return whether or not PayPal user redirect to GiveWP setting page after successful onboarding.
      *
-     * @since TBD Unslash and sanitize the mode and the state.
+     * @since 4.19.1 Unslash and sanitize the mode and the state.
      * @since 4.13.2 Add state parameter verification for CSRF protection.
      * @since 2.9.0
      *
@@ -370,7 +370,7 @@ class onBoardingRedirectHandler
     /**
      * Return whether or not PayPal account details saved.
      *
-     * @since TBD Unslash and sanitize the nonce.
+     * @since 4.19.1 Unslash and sanitize the nonce.
      * @since 4.13.2 Add nonce verification for CSRF protection.
      * @since 2.9.0
      *
@@ -530,7 +530,7 @@ class onBoardingRedirectHandler
     /**
      * Redirect admin to setting section with error.
      *
-     * @since TBD Use a safe redirect.
+     * @since 4.19.1 Use a safe redirect.
      * @since 2.9.0
      */
     private function redirectWhenOnBoardingFail()
@@ -555,7 +555,7 @@ class onBoardingRedirectHandler
     /**
      * Displays a notice of the site is not using SSL
      *
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 2.9.0
      */
     private function registerPayPalSSLNotice()

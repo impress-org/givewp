@@ -118,7 +118,7 @@ class IframeContentView
      * Note: if you want to overwrite this function then do not forget to add action hook in footer and header.
      * We use these hooks to manipulated donation form related actions.
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.7.0
      */
     public function render()

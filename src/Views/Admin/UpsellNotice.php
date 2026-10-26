@@ -15,7 +15,7 @@ class UpsellNotice
     /**
      * Upsell notice for recurring addon
      *
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      */
     public static function recurringAddon()
     {

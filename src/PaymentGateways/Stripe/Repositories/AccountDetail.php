@@ -65,7 +65,7 @@ class AccountDetail
     /**
      * Get account detail by Stripe account slug.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.13.3
      *
      * @param string $accountSlug

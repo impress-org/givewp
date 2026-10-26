@@ -13,14 +13,14 @@ use Give_Donor_Stats;
 /**
  * Covers the donation meta query of Give_Donor_Stats.
  *
- * @since TBD
+ * @since 4.19.1
  */
 class LegacyDonorStatsTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function donate(Donor $donor, int $cents, bool $anonymous = false): void
     {
@@ -33,7 +33,7 @@ class LegacyDonorStatsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonatedAddsUpTheDonationsOfOneDonor()
     {
@@ -48,7 +48,7 @@ class LegacyDonorStatsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonatedSkipsAnonymousDonations()
     {
@@ -61,7 +61,7 @@ class LegacyDonorStatsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonatedIsZeroForADonorWithoutDonations()
     {
@@ -71,7 +71,7 @@ class LegacyDonorStatsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonatedIsZeroWithoutADonor()
     {

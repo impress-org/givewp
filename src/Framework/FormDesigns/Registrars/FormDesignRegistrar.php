@@ -26,7 +26,7 @@ class FormDesignRegistrar
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 3.0.0
      *
      * @throws InvalidArgumentException
@@ -78,7 +78,7 @@ class FormDesignRegistrar
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 3.0.0
      *
      * @return void

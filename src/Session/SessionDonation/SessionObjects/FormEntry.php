@@ -193,7 +193,7 @@ class FormEntry implements Objects
     /**
      * Take array and return object.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      *
      * @param $array
      *

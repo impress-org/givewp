@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD Add translators comments.
+ * @since 4.19.1 Add translators comments.
  */
 
 use Give\Form\Template\Options;

@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
  * One step of a multi-step design: the step title bar with its progress line, the step's content,
  * the button, and the secure-donation badge under it.
  *
- * @since TBD Replace short echo tags with escaped echo.
+ * @since 4.19.1 Replace short echo tags with escaped echo.
  * @since 4.17.0
  *
  * @var string $content The rendered header or section shown in this step.

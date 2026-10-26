@@ -5,7 +5,7 @@ namespace Give\Tests\Unit\Helpers;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 class DeprecatedFunctionNoticeTest extends TestCase
 {
@@ -15,7 +15,7 @@ class DeprecatedFunctionNoticeTest extends TestCase
     private $notices = [];
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -34,7 +34,7 @@ class DeprecatedFunctionNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -46,7 +46,7 @@ class DeprecatedFunctionNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDeprecatedFunctionTriggersOneNoticeAndKeepsItsReturnValue(): void
     {
@@ -60,7 +60,7 @@ class DeprecatedFunctionNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDeprecatedFunctionWithReplacementNamesTheReplacement(): void
     {
@@ -71,7 +71,7 @@ class DeprecatedFunctionNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDeprecatedFunctionStillFiresItsHook(): void
     {
@@ -89,7 +89,7 @@ class DeprecatedFunctionNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testAddOnsCanStillPassABacktraceArgument(): void
     {
@@ -100,7 +100,7 @@ class DeprecatedFunctionNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDeprecatedFunctionIsSilentWhenTheFilterTurnsTheNoticeOff(): void
     {
@@ -115,7 +115,7 @@ class DeprecatedFunctionNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDoingItWrongTriggersOneNotice(): void
     {

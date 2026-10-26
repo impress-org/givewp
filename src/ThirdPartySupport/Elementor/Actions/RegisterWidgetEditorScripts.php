@@ -96,7 +96,7 @@ class RegisterWidgetEditorScripts
     }
 
     /**
-     * @since TBD Set explicit versions on the enqueued assets.
+     * @since 4.19.1 Set explicit versions on the enqueued assets.
      * @since 4.7.0
      */
     private function registerDonationFormWidgetScripts()

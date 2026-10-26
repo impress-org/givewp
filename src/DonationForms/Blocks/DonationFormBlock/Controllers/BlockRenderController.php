@@ -161,7 +161,7 @@ class BlockRenderController
      * Load embed givewp script to resize iframe
      * @see        https://github.com/davidjbradshaw/iframe-resizer
      *
-     * @since TBD Set explicit versions on the enqueued assets.
+     * @since 4.19.1 Set explicit versions on the enqueued assets.
      * @since 3.0.0
      */
     protected function loadEmbedScript()

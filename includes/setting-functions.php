@@ -151,7 +151,7 @@ function give_is_setting_enabled( $value, $compare_with = null ) {
 /**
  * Verify admin setting nonce
  *
- * @since TBD Unslash and sanitize the nonce.
+ * @since 4.19.1 Unslash and sanitize the nonce.
  * @since  2.4.0
  * @access public
  *

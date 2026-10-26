@@ -32,7 +32,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 
 		/**
-         * @since TBD Escape output.
+         * @since 4.19.1 Escape output.
          * @since 2.21.0 recover method for legacy give-recurring usage.
          * @since  1.0
          *

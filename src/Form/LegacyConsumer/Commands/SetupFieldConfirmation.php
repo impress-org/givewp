@@ -53,7 +53,7 @@ class SetupFieldConfirmation
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.10.2
      *
      * @param Field $field

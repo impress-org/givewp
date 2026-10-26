@@ -27,12 +27,12 @@ const normalizeAmount = (float, decimals) => Number.parseFloat(float).toFixed(de
  * Statuses that allow the donor to update the amount or payment method.
  * Failing subscriptions are included so donors can replace an expired or declined card.
  *
- * @since TBD
+ * @since 4.19.1
  */
 const UPDATABLE_STATUSES = ['active', 'failing'];
 
 /**
- * @since TBD Allow failing subscriptions to be updated, and show Resume Subscription only when paused.
+ * @since 4.19.1 Allow failing subscriptions to be updated, and show Resume Subscription only when paused.
  * @since 3.19.0 Add support for hiding amount controls via filter
  */
 const SubscriptionManager = ({id, subscription}) => {

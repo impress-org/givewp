@@ -137,7 +137,7 @@ final class Give_Shortcode_Button {
 	 *
 	 * @return string|bool
 	 *
-	 * @since TBD Escape output.
+	 * @since 4.19.1 Escape output.
 	 * @since 1.0
 	 */
 	public function shortcode_button() {
@@ -207,7 +207,7 @@ final class Give_Shortcode_Button {
 	 *
 	 * @return void
 	 *
-	 * @since TBD Stop writing a debug line to the PHP error log.
+	 * @since 4.19.1 Stop writing a debug line to the PHP error log.
 	 * @since 1.0
 	 */
 	public function shortcode_ajax() {

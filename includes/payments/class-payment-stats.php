@@ -83,7 +83,7 @@ class Give_Payment_Stats extends Give_Stats {
 	/**
 	 * Retrieve earning stats
 	 *
-	 * @since TBD Prepare SQL with placeholders.
+	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since 4.18.0 Sum donation totals with one SQL query instead of loading every ID and formatting each amount
 	 * @since  1.0
 	 * @access public
@@ -290,7 +290,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * Returns null when the query args contain something this method does not translate, or when an
 	 * add-on filters `give_donation_amount`, so the caller falls back to the per-donation loop.
 	 *
-	 * @since TBD Document why the query is safe.
+	 * @since 4.19.1 Document why the query is safe.
 	 * @since 4.18.0
 	 *
 	 * @param array $args Give_Payments_Query arguments.
@@ -324,7 +324,7 @@ class Give_Payment_Stats extends Give_Stats {
 	/**
 	 * Count matching donations in one query instead of loading every ID into PHP.
 	 *
-	 * @since TBD Document why the query is safe.
+	 * @since 4.19.1 Document why the query is safe.
 	 * @since 4.18.0
 	 *
 	 * @param array $args Give_Payments_Query arguments.
@@ -374,7 +374,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * Translate the subset of Give_Payments_Query arguments the stats methods build (status, date
 	 * range, form, parent, and simple meta equality) into a WHERE fragment. Anything else returns null.
 	 *
-	 * @since TBD Use gmdate() instead of date(), and prepare SQL with placeholders.
+	 * @since 4.19.1 Use gmdate() instead of date(), and prepare SQL with placeholders.
 	 * @since 4.18.0
 	 *
 	 * @param array $args
@@ -481,7 +481,7 @@ class Give_Payment_Stats extends Give_Stats {
 	/**
 	 * Get the best selling forms
 	 *
-	 * @since TBD Prepare SQL with placeholders.
+	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since  1.0
 	 * @since 2.9.6 Added an explicit ORDER BY on which to apply a DESC order.
      * @since 2.18.0 Updated sales calculation so that the results are ordered as integers.

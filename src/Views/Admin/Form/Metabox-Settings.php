@@ -1,6 +1,6 @@
 <?php
 /**
- * @since TBD Escape output, including translated strings, and replace short echo tags with escaped echo.
+ * @since 4.19.1 Escape output, including translated strings, and replace short echo tags with escaped echo.
  */
 
 if (!defined('ABSPATH')) {

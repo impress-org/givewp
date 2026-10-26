@@ -13,7 +13,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 /**
  * Checks that the gateway request readers still behave as before for valid requests.
  *
- * @since TBD
+ * @since 4.19.1
  */
 final class GatewayRequestInputTest extends TestCase
 {
@@ -22,12 +22,12 @@ final class GatewayRequestInputTest extends TestCase
     /**
      * The $_SERVER values from before the test, so changes made here do not reach later tests.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     private array $serverBackup = [];
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -37,7 +37,7 @@ final class GatewayRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -49,7 +49,7 @@ final class GatewayRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGatewayDataKeepsBackslashesAndQuotesFromTheRequest(): void
     {
@@ -59,7 +59,7 @@ final class GatewayRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testRequestIsJsonReadsTheContentType(): void
     {
@@ -73,7 +73,7 @@ final class GatewayRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testWantsJsonReadsTheAcceptAndContentTypeHeaders(): void
     {
@@ -97,7 +97,7 @@ final class GatewayRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testRefundRedirectsBackToTheSlashedReferer(): void
     {
@@ -113,7 +113,7 @@ final class GatewayRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testRefundRedirectsHomeWithoutAReferer(): void
     {

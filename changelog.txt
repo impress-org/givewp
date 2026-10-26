@@ -1,5 +1,19 @@
 == Changelog ==
 
+= 4.19.1: October 28th, 2026 =
+* Fix: Updated the codebase to be fully compatible with the official WordPress Plugin Check guidelines.
+* Fix: Added nonce and capability checks to dismiss, onboarding, import, export, usage tracking and database updater requests. A manual migration now requires a URL with a valid nonce (wp_nonce_url with the give_manual_migration action) or the Migration log page.
+* Fix: Renamed unprefixed functions and hooks to give_-prefixed names. The old names still work and log a deprecation notice, except _give_is_form_migrated() and before_give_init, which add-ons still use.
+* Fix: The donor search term is now escaped inside Give_Donors_Query, so callers must not escape it themselves.
+* Fix: The uninstall script now deletes only the options that start with a GiveWP prefix. It used to delete every option with "give" in its name, including options of other plugins.
+* Fix: Restored the Logout link in the Donor Dashboard mobile menu.
+* Fix: Restored keyboard Tab access to Form Field Manager and other add-on fields on the amount step of multi-step forms that use the Sequoia template.
+* Fix: Enabled the 'Update Subscription' button in the Donor Dashboard for failing subscriptions, so donors can replace an expired or declined card.
+* Fix: Running a database update by hand with give-run-migration no longer ends in a fatal error.
+* Fix: Reset Stats now clears only the deleted options from the object cache instead of flushing the whole cache.
+* Fix: Prevented a fatal error on the Donor Register email preview when Give Peer-to-Peer is active.
+* Fix: Changed the default 'Donate' button text color in the Donation Form Grid block to meet color contrast accessibility requirements (WCAG AAA).
+
 = 4.19.0.2: October 26th, 2026 =
 * Security: Added additional validation to account registration on donation forms. Reported by Pablo Alaniz
 * Security: Improved donation amount validation so donations always meet the amount set on the form.

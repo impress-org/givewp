@@ -13,12 +13,12 @@ use Give_Cache;
  * code matched any option with "give" anywhere in its name, so it also deleted options of other
  * plugins (for example "givebutter-widget-account").
  *
- * @since TBD
+ * @since 4.19.1
  */
 class DeleteGiveOptions
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      *
      * @return string[] The names of the deleted options.
      */
@@ -38,7 +38,7 @@ class DeleteGiveOptions
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      *
      * @return string[]
      */
@@ -63,7 +63,7 @@ class DeleteGiveOptions
      * `give_*` (includes the cache options), `givewp_*`, widget options, transients, and the
      * database version options of the GiveWP tables (`{prefix}give_*_db_version`).
      *
-     * @since TBD
+     * @since 4.19.1
      *
      * @return string[]
      */

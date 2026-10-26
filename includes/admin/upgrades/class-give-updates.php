@@ -296,7 +296,7 @@ class Give_Updates {
 	/**
 	 * Show update related notices
 	 *
-     * @since TBD Use a safe redirect.
+     * @since 4.19.1 Use a safe redirect.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
@@ -320,7 +320,7 @@ class Give_Updates {
 	/**
 	 * Pause db upgrade
 	 *
-     * @since TBD Verify a nonce and the capability before pausing. Write the log data as JSON.
+     * @since 4.19.1 Verify a nonce and the capability before pausing. Write the log data as JSON.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.1
 	 * @access public
@@ -386,7 +386,7 @@ class Give_Updates {
 	/**
 	 * Restart db upgrade
 	 *
-     * @since TBD Verify a nonce and the capability before restarting. Write the log data as JSON.
+     * @since 4.19.1 Verify a nonce and the capability before restarting. Write the log data as JSON.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.1
 	 * @access public
@@ -431,7 +431,7 @@ class Give_Updates {
 	/**
 	 * Health check for updates.
 	 *
-     * @since TBD Write the log data as JSON.
+     * @since 4.19.1 Write the log data as JSON.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
@@ -596,7 +596,7 @@ class Give_Updates {
 	/**
 	 * Show update related notices
 	 *
-     * @since TBD Escape translated output. Add nonces to the run and restart updater links.
+     * @since 4.19.1 Escape translated output. Add nonces to the run and restart updater links.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
@@ -725,7 +725,7 @@ class Give_Updates {
 	/**
 	 * Whether the request asks for an upgrade action, comes from a user who can manage GiveWP and carries a valid nonce.
 	 *
-	 * @since TBD
+	 * @since 4.19.1
 	 *
 	 * @param string $query_arg    Query arg that asks for the action.
 	 * @param string $nonce_action Nonce action of the link that sends the request.
@@ -799,7 +799,7 @@ class Give_Updates {
 	/**
 	 * Initialize updates
 	 *
-     * @since TBD Verify the nonce the script already sends, before the permission check and the dispatch. Do not dispatch for users without permission.
+     * @since 4.19.1 Verify the nonce the script already sends, before the permission check and the dispatch. Do not dispatch for users without permission.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public

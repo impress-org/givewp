@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *  1. User can only set absolute integer value as number of decimals.
  *  2. number_decimals setting will be zero if no decimal separator defined
  *
- * @since TBD Add translators comments.
+ * @since 4.19.1 Add translators comments.
  * @since 4.9.0 rename function - PHP 8 compatibility
  * @since   1.8
  * @used-by Give_Plugin_Settings::give_settings()

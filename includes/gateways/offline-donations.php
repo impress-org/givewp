@@ -156,7 +156,7 @@ function give_get_default_offline_donation_email_content() {
 /**
  * Get formatted offline instructions
  *
- * @since TBD Renamed from get_formatted_offline_instructions(). Add translators comments.
+ * @since 4.19.1 Renamed from get_formatted_offline_instructions(). Add translators comments.
  * @since 2.15.0
  *
  * @param  string  $instructions
@@ -182,12 +182,12 @@ function give_get_formatted_offline_instructions( $instructions, $form_id, $wpau
 /**
  * Get formatted offline instructions
  *
- * @since TBD Renamed to give_get_formatted_offline_instructions(); this old name is a deprecated alias.
+ * @since 4.19.1 Renamed to give_get_formatted_offline_instructions(); this old name is a deprecated alias.
  * @since 2.15.0
- * @deprecated TBD Use give_get_formatted_offline_instructions() instead.
+ * @deprecated 4.19.1 Use give_get_formatted_offline_instructions() instead.
  */
 function get_formatted_offline_instructions($instructions, $form_id, $wpautop = false) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_formatted_offline_instructions().
-	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_get_formatted_offline_instructions()' );
+	_give_deprecated_function( __FUNCTION__, '4.19.1', 'give_get_formatted_offline_instructions()' );
 
 	return give_get_formatted_offline_instructions($instructions, $form_id, $wpautop);
 }
@@ -244,7 +244,7 @@ function give_get_offline_payment_instruction( $form_id, $wpautop = false ) {
 /**
  * Remove offline gateway from gateway list of offline disable for form.
  *
- * @since  TBD Unslash and sanitize the request URI.
+ * @since  4.19.1 Unslash and sanitize the request URI.
  * @since  1.8
  *
  * @param  array   $gateway_list

@@ -8,7 +8,7 @@
  * @subpackage  Admin/Upgrades
  * @copyright   Copyright (c) 2017, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since TBD Escape output, including translated strings. Add translators comments. Add nonces to the pause and restart upgrade buttons.
+ * @since 4.19.1 Escape output, including translated strings. Add translators comments. Add nonces to the pause and restart upgrade buttons.
  * @since       1.8.12
  */
 

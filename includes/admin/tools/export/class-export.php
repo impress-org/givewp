@@ -45,7 +45,7 @@ class Give_Export {
 	 * Set the export headers
 	 *
 	 * @access public
-	 * @since TBD Use gmdate() and wp_date() instead of date().
+	 * @since 4.19.1 Use gmdate() and wp_date() instead of date().
 	 * @since  1.0
 	 * @return void
 	 */
@@ -102,7 +102,7 @@ class Give_Export {
 	/**
 	 * Output the CSV columns
 	 *
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @access public
 	 * @since  1.0
 	 * @uses   Give_Export::get_csv_cols()
@@ -124,7 +124,7 @@ class Give_Export {
 	 * Get the data being exported
 	 *
 	 * @access public
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since  1.0
 	 * @return array $data Data for Export
 	 */
@@ -150,7 +150,7 @@ class Give_Export {
 	/**
 	 * Output the CSV rows
 	 *
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @access public
 	 * @since  1.0
 	 * @return void
@@ -179,7 +179,7 @@ class Give_Export {
 	/**
 	 * Perform the export
 	 *
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @access public
 	 * @since  1.0
 	 * @uses   Give_Export::can_export()

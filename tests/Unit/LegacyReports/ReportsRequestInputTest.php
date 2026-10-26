@@ -5,12 +5,12 @@ namespace Give\Tests\Unit\LegacyReports;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 final class ReportsRequestInputTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -21,7 +21,7 @@ final class ReportsRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -31,7 +31,7 @@ final class ReportsRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testReportingViewAcceptsAKnownView(): void
     {
@@ -41,7 +41,7 @@ final class ReportsRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testReportingViewFallsBackForAnUnknownView(): void
     {
@@ -51,7 +51,7 @@ final class ReportsRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testReportDatesStripTagsFromTheRequest(): void
     {

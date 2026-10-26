@@ -145,7 +145,7 @@ class Give_Cache_Setting {
 	/**
 	 * Load plugin settings
 	 *
-	 * @since TBD Prepare SQL with placeholders.
+	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since  2.4.0
 	 * @access private
 	 */

@@ -165,7 +165,7 @@ class StripePaymentElementGateway extends PaymentGateway implements PaymentGatew
     }
 
     /**
-     * @since TBD Escape exception message. Add translators comments.
+     * @since 4.19.1 Escape exception message. Add translators comments.
      * @since 4.7.0
      *
      * @throws Exception

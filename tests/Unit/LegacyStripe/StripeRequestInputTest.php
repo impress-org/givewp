@@ -8,12 +8,12 @@ use Give\Tests\TestCase;
  * Checks that reading the payment mode in the legacy Stripe gateway still behaves as
  * give_clean() did for valid requests.
  *
- * @since TBD
+ * @since 4.19.1
  */
 final class StripeRequestInputTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -24,7 +24,7 @@ final class StripeRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testPaymentModeIsReadFromTheUrl(): void
     {
@@ -34,7 +34,7 @@ final class StripeRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testMissingPaymentModeIsAnEmptyString(): void
     {
@@ -44,7 +44,7 @@ final class StripeRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testPaymentModeMatchesGiveCleanForSlashedAndTaggedInput(): void
     {
@@ -54,7 +54,7 @@ final class StripeRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testArrayPaymentModeIsAnEmptyString(): void
     {

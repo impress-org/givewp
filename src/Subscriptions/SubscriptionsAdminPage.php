@@ -19,7 +19,7 @@ class SubscriptionsAdminPage
     /**
      * Render the Subscription Details page.
      *
-     * @since TBD Escape output. Guard the id param.
+     * @since 4.19.1 Escape output. Guard the id param.
      * @since 4.8.0
      */
     public function render()
@@ -44,7 +44,7 @@ class SubscriptionsAdminPage
     /**
      * Display a button on the old subscriptions table that switches to the React view
      *
-     * @since TBD Escape translated output.
+     * @since 4.19.1 Escape translated output.
      * @since 2.24.0
      */
     public function renderReactSwitch()

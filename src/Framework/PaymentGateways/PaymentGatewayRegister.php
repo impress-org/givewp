@@ -42,7 +42,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     /**
      * Get Gateway
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.18.0
      */
     public function getPaymentGateway(string $id): PaymentGateway
@@ -68,7 +68,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     /**
      * Register Gateway
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.18.0
      *
      * @throws OverflowException|InvalidArgumentException|Exception

@@ -6,7 +6,7 @@
  * @subpackage  Classes/Give_Settings_License
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings.
  * @since       1.8
  */
 
@@ -79,7 +79,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 		/**
 		 * Render  license key field
 		 *
-		 * @since TBD Use gmdate() instead of date(), and add translators comments.
+		 * @since 4.19.1 Use gmdate() instead of date(), and add translators comments.
 		 * @since 2.5.0
 		 */
 		public function output() {

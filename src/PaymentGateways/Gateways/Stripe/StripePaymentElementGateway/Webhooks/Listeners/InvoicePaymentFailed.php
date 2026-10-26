@@ -73,7 +73,7 @@ class InvoicePaymentFailed
     }
 
     /**
-     * @since TBD Write the invoice to the log as JSON.
+     * @since 4.19.1 Write the invoice to the log as JSON.
      * @since 4.8.0 Add support for Stripe API version 2025-03-31.basil and later versions
      * @since 3.0.0
      */

@@ -6,7 +6,7 @@
  * @subpackage  Admin/Payments
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since TBD Escape output, including translated strings, and use gmdate() instead of date(), and add translators comments.
+ * @since 4.19.1 Escape output, including translated strings, and use gmdate() instead of date(), and add translators comments.
  * @since       1.0
  */
 

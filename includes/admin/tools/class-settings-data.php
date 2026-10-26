@@ -137,7 +137,7 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
         /**
          * Render Migrations list table app container
          *
-         * @since TBD Escape output.
+         * @since 4.19.1 Escape output.
          * @since 4.2.0 renamed to render_migrations_container
          * @since 2.10.0
          */

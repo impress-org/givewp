@@ -42,7 +42,7 @@ class MigrateFormsToCampaignForms extends Migration implements ReversibleMigrati
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.0.0
      * @inheritDoc
      * @throws \Exception

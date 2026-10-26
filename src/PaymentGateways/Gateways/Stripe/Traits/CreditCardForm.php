@@ -15,7 +15,7 @@ trait CreditCardForm
      * @param int   $form_id Donation Form ID.
      * @param array $args    Donation Form Arguments.
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.19.0 Migrated from the legacy Give_Stripe_Card::addCreditCardForm implementation of the Stripe Gateway.
      *
      * @return string

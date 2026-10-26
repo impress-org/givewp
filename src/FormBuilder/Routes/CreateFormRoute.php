@@ -18,7 +18,7 @@ use Give\Helpers\Language;
 class CreateFormRoute
 {
     /**
-     * @since TBD Use a safe redirect, check the capability and the nonce before creating the form, and sanitize the request input.
+     * @since 4.19.1 Use a safe redirect, check the capability and the nonce before creating the form, and sanitize the request input.
      * @since 4.14.2 update default form title
      * @since 3.22.0 Add locale support
      * @since 3.1.0 updated default form blocks to be generated from block models instead of json

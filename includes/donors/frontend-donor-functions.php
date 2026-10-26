@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * The fallback uses the donor's
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 2.2.0
  *
  * @param  Give_Donor  $donor

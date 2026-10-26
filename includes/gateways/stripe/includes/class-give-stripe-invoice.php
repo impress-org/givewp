@@ -29,7 +29,7 @@ if ( ! class_exists( 'Give_Stripe_Invoice' ) ) {
 		 *
 		 * @param string $id Invoice ID.
 		 *
-		 * @since TBD Read the payment mode through a sanitizing helper.
+		 * @since 4.19.1 Read the payment mode through a sanitizing helper.
 		 *
 		 * @return \Stripe\Invoice
 		 */

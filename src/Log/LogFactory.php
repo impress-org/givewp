@@ -57,7 +57,7 @@ class LogFactory
     /**
      * Get log default fields array
      *
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      *
      * @return array
      */

@@ -126,7 +126,7 @@ class Router
      * that drop query strings from their key; a query argument is the primary way to pass data
      * to a script route.
      *
-     * @since TBD Sanitize the route query var.
+     * @since 4.19.1 Sanitize the route query var.
      * @since 4.17.0
      */
     public function scriptRequest(WP $wp, string $uri): ?array
@@ -180,7 +180,7 @@ class Router
     }
 
     /**
-     * @since TBD Sanitize the content type header.
+     * @since 4.19.1 Sanitize the content type header.
      * @since 3.0.0
      */
     protected function getDataFromPostRequest(): array
@@ -216,7 +216,7 @@ class Router
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 3.22.0 Add locale support
      * @since 3.0.0
      *

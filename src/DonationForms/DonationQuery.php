@@ -67,7 +67,7 @@ class DonationQuery extends QueryBuilder
 
     /**
      * An opinionated whereBetween method for the completed date meta field.
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 3.12.0
      */
     public function between($startDate, $endDate): DonationQuery

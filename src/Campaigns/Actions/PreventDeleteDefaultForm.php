@@ -10,7 +10,7 @@ use Give\Campaigns\Models\Campaign;
 class PreventDeleteDefaultForm
 {
     /**
-     * @since TBD Escape output. Number the placeholders and add translators comments.
+     * @since 4.19.1 Escape output. Number the placeholders and add translators comments.
      * @since 4.1.0
      */
     public function __invoke($postId)
@@ -31,7 +31,7 @@ class PreventDeleteDefaultForm
     }
 
     /**
-     * @since TBD Escape output. Number the placeholders and add translators comments.
+     * @since 4.19.1 Escape output. Number the placeholders and add translators comments.
      * @since 4.1.0
      */
     public function preventTrashStatusChange($newStatus, $oldStatus, $post)

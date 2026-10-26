@@ -238,7 +238,7 @@ abstract class Model implements Arrayable
     /**
      * Validates that the given value is a valid type for the given property.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.19.6
      *
      * @param string $key
@@ -259,7 +259,7 @@ abstract class Model implements Arrayable
     /**
      * Validates that the given property exists
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.23.0
      *
      * @return void
@@ -385,7 +385,7 @@ abstract class Model implements Arrayable
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.20.0 cache the relations after first load
      * @since 2.19.6
      *

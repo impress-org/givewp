@@ -232,7 +232,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Show success notice
 		 *
-		 * @since TBD Escape output. Add translators comments. Check that the total and success values are set.
+		 * @since 4.19.1 Escape output. Add translators comments. Check that the total and success values are set.
          * @since 2.25.3 Add nonce check.
 		 * @since 1.8.14
 		 */
@@ -376,7 +376,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Will start Import
 		 *
-		 * @since TBD Escape translated output. Unslash and sanitize the request input.
+		 * @since 4.19.1 Escape translated output. Unslash and sanitize the request input.
 		 * @since 1.8.14
 		 */
 		public function start_import() {
@@ -444,7 +444,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Will return true if importing can be started or not else false.
 		 *
-		 * @since TBD Unslash and sanitize the mapped fields.
+		 * @since 4.19.1 Unslash and sanitize the mapped fields.
 		 * @since 1.8.14
 		 */
 		public function check_for_dropdown_or_import() {
@@ -475,7 +475,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Print the Dropdown option for CSV.
 		 *
-		 * @since TBD Escape translated output. Unslash and sanitize the request input.
+		 * @since 4.19.1 Escape translated output. Unslash and sanitize the request input.
 		 * @since 1.8.14
 		 */
 		public function render_dropdown() {
@@ -602,7 +602,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Print the columns from the CSV.
 		 *
-		 * @since  TBD Escape translated output.
+		 * @since  4.19.1 Escape translated output.
 		 * @since  1.8.14
 		 * @access private
 		 *
@@ -798,7 +798,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Is used to show the process when user upload the donor form.
 		 *
-		 * @since TBD Escape translated output.
+		 * @since 4.19.1 Escape translated output.
 		 * @since 1.8.14
 		 */
 		public function render_progress() {
@@ -857,7 +857,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Print Dry Run HTML on donation import page
 		 *
-		 * @since TBD Escape translated output.
+		 * @since 4.19.1 Escape translated output.
 		 * @since 2.1
 		 */
 		public function give_import_donation_submit_button_render_media_csv() {
@@ -897,7 +897,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 *
 		 * Print the html of the file upload from which CSV will be uploaded.
 		 *
-		 * @since TBD Escape translated output.
+		 * @since 4.19.1 Escape translated output.
 		 * @since 1.8.14
 		 * @return void
 		 */
@@ -1043,7 +1043,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Run when user click on the submit button.
 		 *
-		 * @since TBD Unslash and sanitize the request input.
+		 * @since 4.19.1 Unslash and sanitize the request input.
 		 * @since 1.8.14
 		 */
 		public function save() {
@@ -1149,7 +1149,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		}
 
          /**
-         * @since TBD Unslash and sanitize the nonce before checking it.
+         * @since 4.19.1 Unslash and sanitize the nonce before checking it.
          * @since 2.25.2
          */
         private function is_nonce_valid()

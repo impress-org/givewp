@@ -193,7 +193,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 	 * @since  1.0
 	 * @access protected
 	 *
-	 * @since TBD Escape translated output.
+	 * @since 4.19.1 Escape translated output.
 	 *
 	 * @param string $which
 	 */
@@ -235,7 +235,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 	 * @param $new_value
 	 *
 	 * @access public
-	 * @since  TBD Unslash and sanitize the sort request values.
+	 * @since  4.19.1 Unslash and sanitize the sort request values.
 	 * @since  1.8.12
 	 *
 	 * @return int

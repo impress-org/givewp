@@ -67,7 +67,7 @@ class Give_Sequential_Donation_Number {
 	 * Set serialize donation number as donation title.
 	 * Note: only for internal use
 	 *
-     * @since TBD Send caught exceptions to the GiveWP log.
+     * @since 4.19.1 Send caught exceptions to the GiveWP log.
      * @since 4.9.0 rename function - PHP 8 compatibility
      * @since 3.0.0 replace wp_update_post with DB::update to avoid affecting the post update date and invalidating the donation model's updatedAt date
 	 * @since  2.1.0
@@ -321,7 +321,7 @@ class Give_Sequential_Donation_Number {
 	/**
 	 * Get maximum donation number
 	 *
-	 * @since TBD Use %i for the table name.
+	 * @since 4.19.1 Use %i for the table name.
 	 * @since  2.1.0
 	 * @access public
 	 *

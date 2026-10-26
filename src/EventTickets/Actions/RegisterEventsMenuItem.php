@@ -26,7 +26,7 @@ class RegisterEventsMenuItem
     /**
      * Render admin page container
      *
-     * @since TBD Escape output. Use the give text domain in the event not found message.
+     * @since 4.19.1 Escape output. Use the give text domain in the event not found message.
      * @since 3.6.0
      */
     public function render()

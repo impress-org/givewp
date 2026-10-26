@@ -11,7 +11,7 @@ class AddPlatformFeeAmountToSystemInfo
 {
     /**
      * Callback for `give_add_system_info_configuration` that adds the platform fee amount to the system info table.
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 4.3.0
      */
     public function __invoke($settings)

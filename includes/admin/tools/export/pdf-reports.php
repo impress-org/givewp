@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param string $data Data.
  *
- * @since  TBD Escape output, use gmdate() instead of date(), and unslash and sanitize the nonce.
+ * @since  4.19.1 Escape output, use gmdate() instead of date(), and unslash and sanitize the nonce.
  * @since  1.0
  *
  * @uses   give_pdf
@@ -228,7 +228,7 @@ add_action( 'give_generate_pdf', 'give_generate_pdf' );
  * @uses   GoogleChartShapeMarker
  * @uses   GoogleChartTextMarker
  * @uses   GoogleChartAxis
- * @since  TBD Use gmdate() instead of date().
+ * @since  4.19.1 Use gmdate() instead of date().
  * @since  1.1.4.0
  */
 function give_draw_chart_image() {

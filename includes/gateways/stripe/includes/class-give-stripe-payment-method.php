@@ -29,7 +29,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 		 *
 		 * @param array $args Payment Method Arguments.
 		 *
-		 * @since TBD Read the payment mode through a sanitizing helper.
+		 * @since 4.19.1 Read the payment mode through a sanitizing helper.
 		 * @since 2.5.0
 		 *
 		 * @return \Stripe\PaymentMethod
@@ -64,7 +64,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 		 *
 		 * @param string $id Payment Intent ID.
 		 *
-		 * @since TBD Read the payment mode through a sanitizing helper.
+		 * @since 4.19.1 Read the payment mode through a sanitizing helper.
 		 *
 		 * @return \Stripe\PaymentMethod
 		 */
@@ -99,7 +99,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 		 * @param string $id   Payment Method ID of Stripe.
 		 * @param array  $args List of arguments to update.
 		 *
-		 * @since TBD Read the payment mode through a sanitizing helper.
+		 * @since 4.19.1 Read the payment mode through a sanitizing helper.
 		 * @since 2.5.10
 		 *
 		 * @return bool|\Stripe\PaymentMethod
@@ -134,7 +134,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Method' ) ) {
 		 * @param string $customer_id Stripe Customer ID.
 		 * @param string $type        Stripe Payment Type.
 		 *
-		 * @since TBD Read the payment mode through a sanitizing helper.
+		 * @since 4.19.1 Read the payment mode through a sanitizing helper.
 		 * @since 2.5.0
 		 *
 		 * @return \Stripe\PaymentMethod

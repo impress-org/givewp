@@ -2,7 +2,7 @@
 /**
  * This template is used to display the donation history of the current user.
  *
- * @since TBD Escape output. Add translators comments. Unslash and sanitize the request URI.
+ * @since 4.19.1 Escape output. Add translators comments. Unslash and sanitize the request URI.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

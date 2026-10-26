@@ -540,7 +540,7 @@ class DonationRepository
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.19.6
      *
      * @return void

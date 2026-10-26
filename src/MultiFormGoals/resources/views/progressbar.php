@@ -3,7 +3,7 @@
  * Multi-Form Goals block/shortcode template
  * Styles for this template are defined in 'blocks/multi-form-goals/common.scss'
  *
- * @since TBD Escape output and replace short echo tags with escaped echo.
+ * @since 4.19.1 Escape output and replace short echo tags with escaped echo.
  * @since 3.19.1 Format the donation count
  *
  * @var Give\MultiFormGoals\ProgressBar\Model $this

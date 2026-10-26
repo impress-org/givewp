@@ -154,7 +154,7 @@ class Give_Donors_Query {
 	 * query is run, or the filter on the arguments (existing mainly for backwards
 	 * compatibility).
 	 *
-	 * @since TBD Document why the query is safe.
+	 * @since 4.19.1 Document why the query is safe.
 	 * @since  1.8.14
 	 * @access public
 	 *
@@ -205,7 +205,7 @@ class Give_Donors_Query {
 	/**
 	 * Get sql query from queried array.
 	 *
-	 * @since TBD Allow only known columns in the fields argument, and remove the placeholder escape hash so the SQL text is the same on every call.
+	 * @since 4.19.1 Allow only known columns in the fields argument, and remove the placeholder escape hash so the SQL text is the same on every call.
 	 * @since  2.0
 	 * @access public
 	 *
@@ -260,7 +260,7 @@ class Give_Donors_Query {
 	/**
 	 * Get the requested fields, but only when every one of them is a column of the donors table.
 	 *
-	 * @since TBD
+	 * @since 4.19.1
 	 *
 	 * @param string|array $fields A column name, a comma separated list of column names or an array of column names.
 	 *
@@ -287,7 +287,7 @@ class Give_Donors_Query {
 	/**
 	 * Get a compare operator that is safe to use in the query.
 	 *
-	 * @since TBD
+	 * @since 4.19.1
 	 *
 	 * @param mixed $compare The requested operator.
 	 *
@@ -337,7 +337,7 @@ class Give_Donors_Query {
 	/**
 	 * Set email where clause.
 	 *
-	 * @since TBD Prepare the IN list with inline placeholders.
+	 * @since 4.19.1 Prepare the IN list with inline placeholders.
 	 * @since  1.8.14
 	 * @access private
 	 *
@@ -426,7 +426,7 @@ class Give_Donors_Query {
 	/**
 	 * Set search where clause.
 	 *
-	 * @since TBD Escape the search term.
+	 * @since 4.19.1 Escape the search term.
 	 * @since  1.8.14
 	 * @access private
 	 *
@@ -561,7 +561,7 @@ class Give_Donors_Query {
 	 *
 	 * @todo: add phpunit test
 	 *
-	 * @since TBD Allow only known compare operators and cast the amount.
+	 * @since 4.19.1 Allow only known compare operators and cast the amount.
 	 * @since  2.2.0
 	 * @access private
 	 *
@@ -592,7 +592,7 @@ class Give_Donors_Query {
 	 *
 	 * @todo: add phpunit test
 	 *
-	 * @since TBD Allow only known compare operators and cast the amount.
+	 * @since 4.19.1 Allow only known compare operators and cast the amount.
 	 * @since  2.1.0
 	 * @access private
 	 *
@@ -624,7 +624,7 @@ class Give_Donors_Query {
 	 *
 	 * @todo   : add phpunit test
 	 *
-	 * @since TBD Match donors of any listed form and prepare the form ids.
+	 * @since 4.19.1 Match donors of any listed form and prepare the form ids.
 	 * @since 4.14.0 Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
 	 * @since  2.1.0
 	 *
@@ -694,7 +694,7 @@ class Give_Donors_Query {
 	 * If querying a specific date, add the proper filters.
 	 * Note: This function currently only accept dates with admin defined core date format
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since  2.4.0
 	 * @access public
 	 *

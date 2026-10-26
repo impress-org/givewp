@@ -104,7 +104,7 @@ class LegacyFormSettingCompatibility
      * Migrate existing legacy form settings.
      * Note: Only for internal use. This function can be removed or change in future
      *
-     * @since TBD Skip the migration when the user cannot edit the form.
+     * @since 4.19.1 Skip the migration when the user cannot edit the form.
      * @since 2.7.0
      */
     public static function migrateExistingFormSettings()

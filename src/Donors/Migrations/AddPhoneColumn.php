@@ -12,7 +12,7 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 class AddPhoneColumn extends Migration
 {
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 3.7.0
      *
      * @throws DatabaseMigrationException

@@ -8,12 +8,12 @@ use Give_Updates;
 use ReflectionMethod;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 class TestExportAndUpgradeNonces extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -26,7 +26,7 @@ class TestExportAndUpgradeNonces extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -36,7 +36,7 @@ class TestExportAndUpgradeNonces extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCoreSettingsExportIsDeniedWithoutNonce()
     {
@@ -44,7 +44,7 @@ class TestExportAndUpgradeNonces extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCoreSettingsExportIsDeniedWithInvalidNonce()
     {
@@ -54,7 +54,7 @@ class TestExportAndUpgradeNonces extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCoreSettingsExportIsAllowedWithValidNonce()
     {
@@ -64,7 +64,7 @@ class TestExportAndUpgradeNonces extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testUpgradeRequestWithoutNonceIsNotVerified()
     {
@@ -74,7 +74,7 @@ class TestExportAndUpgradeNonces extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testUpgradeRequestWithNonceForAnotherActionIsNotVerified()
     {
@@ -85,7 +85,7 @@ class TestExportAndUpgradeNonces extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testUpgradeRequestWithValidNonceIsVerified()
     {
@@ -96,7 +96,7 @@ class TestExportAndUpgradeNonces extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testUpgradeRequestFromUserWithoutCapabilityIsNotVerified()
     {
@@ -108,7 +108,7 @@ class TestExportAndUpgradeNonces extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testPauseLinkWithoutNonceDoesNotPauseTheUpdater()
     {
@@ -119,7 +119,7 @@ class TestExportAndUpgradeNonces extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function isVerifiedUpgradeRequest(string $queryArg, string $nonceAction): bool
     {

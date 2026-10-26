@@ -2,7 +2,7 @@
 /**
  * This template is used to display the login form with [give_login]
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

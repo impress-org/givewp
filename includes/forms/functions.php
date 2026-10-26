@@ -42,7 +42,7 @@ add_filter( 'give_shortcode_button_condition', 'give_shortcode_button_condition'
  *
  * @return int|false
  *
- * @since TBD Renamed from get_form_id_from_args().
+ * @since 4.19.1 Renamed from get_form_id_from_args().
  */
 function give_get_form_id_from_args( $args ) {
 
@@ -57,10 +57,10 @@ function give_get_form_id_from_args( $args ) {
 /**
  * Get the form ID from the form $args
  *
- * @deprecated TBD Use give_get_form_id_from_args() instead.
+ * @deprecated 4.19.1 Use give_get_form_id_from_args() instead.
  */
 function get_form_id_from_args($args) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_form_id_from_args().
-	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_get_form_id_from_args()' );
+	_give_deprecated_function( __FUNCTION__, '4.19.1', 'give_get_form_id_from_args()' );
 
 	return give_get_form_id_from_args($args);
 }
@@ -191,7 +191,7 @@ function give_send_to_success_page( $query_string = null ) {
  * @param array|string $args
  *
  * @access public
- * @since TBD Unslash and sanitize the posted values.
+ * @since 4.19.1 Unslash and sanitize the posted values.
  * @since 2.21.0 Auto set "payment-mode" in redirect url.
  * @since  1.0
  * @return Void
@@ -328,7 +328,7 @@ function give_is_failed_transaction_page() {
 /**
  * Mark payments as Failed when returning to the Failed Donation Page
  *
- * @since TBD Unslash the nonce before it is verified.
+ * @since 4.19.1 Unslash the nonce before it is verified.
  * @since  1.0
  * @since  1.8.16 Add security check
  *
@@ -676,7 +676,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 /**
  * Retrieves a price from from low to high of a variable priced form
  *
- * @since TBD Unslash and sanitize the order param.
+ * @since 4.19.1 Unslash and sanitize the order param.
  * @since 1.0
  *
  * @param int  $form_id   ID of the form
@@ -872,7 +872,7 @@ function give_get_form_maximum_price( $form_id = 0 ) {
 /**
  * Displays a formatted price for a donation form
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.0
  *
  * @param int      $form_id  ID of the form price to show
@@ -1003,7 +1003,7 @@ function give_get_form_goal_format( $form_id = 0 ) {
 /**
  * Display/Return a formatted goal for a donation form
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.0
  *
  * @param int  $form_id ID of the form price to show
@@ -1088,7 +1088,7 @@ function give_show_login_register_option( $form_id ) {
  *
  * Note: this function will extract form field values from give_purchase session data.
  *
- * @since TBD Renamed from _give_get_prefill_form_field_values().
+ * @since 4.19.1 Renamed from _give_get_prefill_form_field_values().
  * @since  1.8
  *
  * @param  int $form_id Form ID.
@@ -1164,12 +1164,12 @@ function give_get_prefill_form_field_values( $form_id ) {
 /**
  * Get pre fill form field values.
  *
- * @since TBD Renamed to give_get_prefill_form_field_values(); this old name is a deprecated alias.
+ * @since 4.19.1 Renamed to give_get_prefill_form_field_values(); this old name is a deprecated alias.
  * @since 1.8
- * @deprecated TBD Use give_get_prefill_form_field_values() instead.
+ * @deprecated 4.19.1 Use give_get_prefill_form_field_values() instead.
  */
 function _give_get_prefill_form_field_values($form_id) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_prefill_form_field_values().
-	_give_deprecated_function( __FUNCTION__, 'TBD', 'give_get_prefill_form_field_values()' );
+	_give_deprecated_function( __FUNCTION__, '4.19.1', 'give_get_prefill_form_field_values()' );
 
 	return give_get_prefill_form_field_values($form_id);
 }
@@ -1177,7 +1177,7 @@ function _give_get_prefill_form_field_values($form_id) { // phpcs:ignore WordPre
 /**
  * Get donor count of form
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 2.1.0
  *
  * @param int   $form_id
@@ -1600,7 +1600,7 @@ function give_is_name_title_prefix_required( $form_id = 0 ) {
 /**
  * Deletes form meta when the form is permanently deleted from the trash.
  *
- * @since TBD Remove the quotes around the %d placeholder.
+ * @since 4.19.1 Remove the quotes around the %d placeholder.
  * @since 2.3.0
  *
  * @param integer $id Donation Form ID which needs to be deleted.

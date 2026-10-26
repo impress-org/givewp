@@ -206,7 +206,7 @@ class GoogleChartApi
 	/**
 	 * Shortcut for getImage().
 	 *
-	 * @since TBD Escape output.
+	 * @since 4.19.1 Escape output.
 	 */
 	public function __toString()
 	{

@@ -25,7 +25,7 @@ class CalculateProjectedAnnualRevenue
     /**
      * Calculate the projected annual revenue for a subscription.
      *
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      *
      * @param Subscription $subscription
      * @return Money
