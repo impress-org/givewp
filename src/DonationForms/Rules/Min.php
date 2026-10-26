@@ -4,6 +4,7 @@ namespace Give\DonationForms\Rules;
 
 use Closure;
 use Give\DonationForms\Rules\Concerns\HasExemptAmounts;
+use Give\DonationForms\Rules\Concerns\ParsesAmountAsMoney;
 use Give\Vendors\StellarWP\Validation\Config;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidatesOnFrontEnd;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
@@ -17,6 +18,7 @@ use function is_numeric;
 class Min implements ValidationRule, ValidatesOnFrontEnd
 {
     use HasExemptAmounts;
+    use ParsesAmountAsMoney;
 
     /**
      * @var numeric
@@ -77,12 +79,21 @@ class Min implements ValidationRule, ValidatesOnFrontEnd
      * @inheritDoc
      *
      * @since TBD Number the placeholders and add translators comments.
+     * @since 4.19.0.2 Compare the amount as parsed into Money in the submitted currency.
      * @since 4.16.8 Skip amounts the admin configured on the form.
      * @since 3.0.0
      **/
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
-        $value = $this->sanitize($value);
+        if (is_numeric($value)) {
+            $value = $this->parseAmount((string)$value, $this->submittedCurrency($values));
+
+            if ($value === null) {
+                $fail(sprintf(__('%s must be a valid amount', 'give'), '{field}'));
+
+                return;
+            }
+        }
 
         if ($this->isExemptAmount($value)) {
             return;
