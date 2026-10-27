@@ -53,7 +53,7 @@ class GoalProgress
         return sprintf(
             $template,
             $id,
-            $ringPercentage,
+            esc_attr($ringPercentage),
             $actual,
             sprintf(' %s %s', __('of', 'give'), $goal),
             self::status($ringPercentage),
