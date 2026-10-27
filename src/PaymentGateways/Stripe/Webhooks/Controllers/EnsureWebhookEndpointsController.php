@@ -6,9 +6,11 @@
 
 namespace Give\PaymentGateways\Stripe\Webhooks\Controllers;
 
+use Give\PaymentGateways\Stripe\Models\AccountDetail;
 use Give\PaymentGateways\Stripe\Webhooks\Actions\EnsureWebhookEndpoint;
 use Give\PaymentGateways\Stripe\Webhooks\Actions\GetStripeAccountsForMode;
 use Give\PaymentGateways\Stripe\Webhooks\ValueObjects\WebhookSetupStatus;
+use Give\PaymentGateways\Stripe\Webhooks\WebhookLogger;
 use Give\PaymentGateways\Stripe\Webhooks\WebhookSetupNotice;
 use Throwable;
 
@@ -71,15 +73,43 @@ final class EnsureWebhookEndpointsController
                 $status = WebhookSetupStatus::fromException($exception);
                 $message = $exception->getMessage();
 
-                give_record_gateway_error(
-                    'Stripe Webhook Setup',
-                    sprintf('Account %s (%s mode): %s', $account->accountSlug, $mode, $message)
-                );
+                $this->logFailure($account, $mode, $status, $exception);
             }
 
             $results[] = ['account' => $account, 'status' => $status, 'message' => $message];
         }
 
         wp_send_json_success($this->notice->build($results, $mode));
+    }
+
+    /**
+     * @since TBD
+     *
+     * @param string $mode "live" or "test"
+     */
+    private function logFailure(
+        AccountDetail $account,
+        string $mode,
+        WebhookSetupStatus $status,
+        Throwable $exception
+    ): void {
+        $context = array_merge(
+            [
+                'account' => $account->accountSlug,
+                'account_type' => $account->type,
+                'mode' => $mode,
+                'status' => $status->getValue(),
+            ],
+            WebhookLogger::failureContext($exception)
+        );
+
+        /* An unclassified failure is the one support has to investigate, so it is the only error level. */
+        if ($status->isUnknown()) {
+            WebhookLogger::error('Stripe webhook setup failed.', $context);
+
+            return;
+        }
+
+        WebhookLogger::warning('Stripe webhook setup did not complete.', $context);
     }
 }

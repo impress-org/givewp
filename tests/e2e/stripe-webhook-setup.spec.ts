@@ -201,6 +201,27 @@ test.describe('Stripe Webhooks settings group', () => {
     });
 });
 
+test.describe('Stripe Webhooks settings group button while the request runs', () => {
+    test('is disabled until the response arrives and enabled again after', async ({page, admin}) => {
+        const setup = await fakeWebhookSetup(page, [CREATED]);
+        const release = setup.hold();
+
+        await admin.visitAdminPage('edit.php', STRIPE_SETTINGS + '&group=webhooks');
+
+        const button = webhooksGroup(page).getByRole('button', {name: 'Set up webhooks'});
+
+        await button.click();
+        await expect(modal(page, 'notice')).toContainText('Setting up your Stripe webhook');
+        await expect(button).toBeDisabled();
+
+        release();
+
+        await expect(modal(page, 'success').locator('.give-modal__title')).toHaveText(CREATED.title);
+        await expect(button).toBeEnabled();
+        expect(setup.requests).toHaveLength(1);
+    });
+});
+
 test.describe('Stripe webhook health email setting', () => {
     /*
      * The option is one key in `give_settings`. Removing it puts the site back on the default, whatever

@@ -27,6 +27,11 @@ final class WebhookEndpointException extends Exception
     private $errorType;
 
     /**
+     * @var string|null
+     */
+    private $requestId;
+
+    /**
      * @since TBD
      */
     public static function fromStripe(ApiErrorException $exception): self
@@ -35,6 +40,7 @@ final class WebhookEndpointException extends Exception
 
         $self->httpStatus = $exception->getHttpStatus();
         $self->errorType = $exception->getError() ? $exception->getError()->type : null;
+        $self->requestId = $exception->getRequestId();
 
         return $self;
     }
@@ -81,5 +87,15 @@ final class WebhookEndpointException extends Exception
     public function getErrorType(): ?string
     {
         return $this->errorType;
+    }
+
+    /**
+     * Id of the Stripe request (`req_...`), which finds the call in the Stripe Dashboard logs.
+     *
+     * @since TBD
+     */
+    public function getRequestId(): ?string
+    {
+        return $this->requestId;
     }
 }

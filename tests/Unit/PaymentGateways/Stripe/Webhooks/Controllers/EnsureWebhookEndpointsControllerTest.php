@@ -2,13 +2,12 @@
 
 namespace Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Controllers;
 
-use Give\Log\LogModel;
-use Give\Log\LogRepository;
 use Give\Log\ValueObjects\LogType;
 use Give\PaymentGateways\Stripe\Models\AccountDetail;
 use Give\PaymentGateways\Stripe\Webhooks\Controllers\EnsureWebhookEndpointsController;
 use Give\PaymentGateways\Stripe\Webhooks\WebhookTarget;
 use Give\Tests\TestCase;
+use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\ReadsGiveLog;
 use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\UsesFakeStripeApi;
 use WPDieException;
 
@@ -17,6 +16,7 @@ use WPDieException;
  */
 final class EnsureWebhookEndpointsControllerTest extends TestCase
 {
+    use ReadsGiveLog;
     use UsesFakeStripeApi;
 
     /**
@@ -163,18 +163,15 @@ final class EnsureWebhookEndpointsControllerTest extends TestCase
         $this->assertSame('warning', $response['data']['level']);
         $this->assertTrue($response['data']['retry']);
 
-        $logged = array_filter(
-            give(LogRepository::class)->getLogsByType(LogType::ERROR),
-            static function (LogModel $log) use ($account) {
-                return false !== strpos((string)($log->getContext()['post_content'] ?? ''), $account->accountSlug);
-            }
-        );
+        $logged = $this->webhookLogs(LogType::WARNING, $account->accountSlug);
 
         $this->assertCount(1, $logged);
-        $this->assertStringContainsString(
-            $error['error']['message'],
-            array_values($logged)[0]->getContext()['post_content']
-        );
+
+        $context = $logged[0]->getContext();
+        $this->assertSame('authorization', $context['status']);
+        $this->assertSame('test', $context['mode']);
+        $this->assertSame(401, $context['stripe_http_status']);
+        $this->assertSame($error['error']['message'], $context['error']);
     }
 
     /**

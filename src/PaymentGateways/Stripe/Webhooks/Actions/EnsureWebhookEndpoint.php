@@ -11,6 +11,7 @@ use Give\PaymentGateways\Stripe\Webhooks\Exceptions\IncompleteWebhookEndpoint;
 use Give\PaymentGateways\Stripe\Webhooks\Exceptions\WebhookEndpointException;
 use Give\PaymentGateways\Stripe\Webhooks\Exceptions\WebhookEndpointLimitReached;
 use Give\PaymentGateways\Stripe\Webhooks\ValueObjects\WebhookSetupStatus;
+use Give\PaymentGateways\Stripe\Webhooks\WebhookLogger;
 use Give\PaymentGateways\Stripe\Webhooks\WebhookTarget;
 
 /**
@@ -84,7 +85,7 @@ final class EnsureWebhookEndpoint
                 throw WebhookEndpointLimitReached::create();
             }
 
-            ($this->createEndpoint)(
+            $created = ($this->createEndpoint)(
                 $account,
                 $mode,
                 $this->target->url(),
@@ -92,6 +93,15 @@ final class EnsureWebhookEndpoint
                 self::API_VERSION,
                 'GiveWP'
             );
+
+            WebhookLogger::info('Stripe webhook endpoint created.', [
+                'account' => $account->accountSlug,
+                'account_type' => $account->type,
+                'mode' => $mode,
+                'endpoint_id' => $created->id,
+                'api_version' => self::API_VERSION,
+                'endpoints_on_account' => count($endpoints) + 1,
+            ]);
 
             return WebhookSetupStatus::CREATED();
         }
@@ -117,6 +127,15 @@ final class EnsureWebhookEndpoint
         } catch (WebhookEndpointException $exception) {
             throw IncompleteWebhookEndpoint::updateFailed($endpoint->id, $exception);
         }
+
+        WebhookLogger::info('Stripe webhook endpoint updated.', [
+            'account' => $account->accountSlug,
+            'account_type' => $account->type,
+            'mode' => $mode,
+            'endpoint_id' => $endpoint->id,
+            'was_status' => $endpoint->status,
+            'events_added' => $missingEvents,
+        ]);
 
         return WebhookSetupStatus::UPDATED();
     }

@@ -26,9 +26,9 @@ final class FakeStripeHttpClient implements ClientInterface
     /**
      * @since TBD
      */
-    public function queue(int $status, array $body): void
+    public function queue(int $status, array $body, array $headers = []): void
     {
-        $this->responses[] = [json_encode($body), $status, []];
+        $this->responses[] = [json_encode($body), $status, $headers];
     }
 
     /**

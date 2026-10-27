@@ -127,4 +127,19 @@ final class ListWebhookEndpointsTest extends TestCase
 
         (new ListWebhookEndpoints())($this->makeAccount(), 'sandbox');
     }
+
+    /**
+     * @since TBD
+     */
+    public function testItExposesTheStripeRequestIdOfAFailure(): void
+    {
+        $this->stripe->queue(500, $this->errorBody('api_error', 'Something went wrong.'), ['Request-Id' => 'req_abc123']);
+
+        try {
+            (new ListWebhookEndpoints())($this->makeAccount(), 'test');
+            $this->fail('Expected WebhookEndpointException.');
+        } catch (WebhookEndpointException $exception) {
+            $this->assertSame('req_abc123', $exception->getRequestId());
+        }
+    }
 }

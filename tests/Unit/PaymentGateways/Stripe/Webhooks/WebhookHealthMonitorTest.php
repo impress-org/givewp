@@ -2,9 +2,11 @@
 
 namespace Give\Tests\Unit\PaymentGateways\Stripe\Webhooks;
 
+use Give\Log\ValueObjects\LogType;
 use Give\PaymentGateways\Stripe\Webhooks\WebhookHealthMonitor;
 use Give\PaymentGateways\Stripe\Webhooks\WebhookTarget;
 use Give\Tests\TestCase;
+use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\ReadsGiveLog;
 use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\UsesFakeStripeApi;
 use Stripe\Exception\ApiConnectionException;
 
@@ -13,6 +15,7 @@ use Stripe\Exception\ApiConnectionException;
  */
 final class WebhookHealthMonitorTest extends TestCase
 {
+    use ReadsGiveLog;
     use UsesFakeStripeApi;
 
     /**
@@ -190,6 +193,24 @@ final class WebhookHealthMonitorTest extends TestCase
         $this->assertFalse($notifiedAfterFailure);
         $this->assertCount(2, $this->emails);
         $this->assertIsString(get_option(self::NOTIFIED_OPTION));
+        $this->assertCount(1, $this->webhookLogs(LogType::ERROR));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testItLogsTheProblemsOnce(): void
+    {
+        $this->stripe->queue(200, $this->listBody([]));
+        $this->stripe->queue(200, $this->listBody([]));
+
+        give(WebhookHealthMonitor::class)();
+        give(WebhookHealthMonitor::class)();
+
+        $problems = $this->webhookLogs(LogType::WARNING);
+        $this->assertCount(1, $problems);
+        $this->assertSame('test', $problems[0]->getContext()['mode']);
+        $this->assertCount(1, $problems[0]->getContext()['problems']);
     }
 
     /**

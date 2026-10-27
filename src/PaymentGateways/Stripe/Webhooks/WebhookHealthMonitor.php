@@ -89,6 +89,10 @@ final class WebhookHealthMonitor
         }
 
         if (!$problems) {
+            if (get_option(self::NOTIFIED_OPTION)) {
+                WebhookLogger::info('Stripe webhook health problems are resolved.', ['mode' => $mode]);
+            }
+
             delete_option(self::NOTIFIED_OPTION);
 
             return;
@@ -100,9 +104,20 @@ final class WebhookHealthMonitor
             return;
         }
 
-        if ($this->sendEmail($problems, $mode)) {
-            update_option(self::NOTIFIED_OPTION, $fingerprint, false);
+        WebhookLogger::warning('Stripe webhook health problems found.', ['mode' => $mode, 'problems' => $problems]);
+
+        if (!$this->sendEmail($problems, $mode)) {
+            /* The fingerprint is not stored, so the next hourly run tries to send the email again. */
+            WebhookLogger::error('The Stripe webhook health email could not be sent.', [
+                'mode' => $mode,
+                'recipient' => $this->recipient(),
+            ]);
+
+            return;
         }
+
+        update_option(self::NOTIFIED_OPTION, $fingerprint, false);
+        WebhookLogger::info('Stripe webhook health email sent.', ['mode' => $mode, 'recipient' => $this->recipient()]);
     }
 
     /**
@@ -120,6 +135,14 @@ final class WebhookHealthMonitor
                 WebhookSetupStatus::CONNECTION(),
                 WebhookSetupStatus::RATE_LIMITED()
             )) {
+                WebhookLogger::debug(
+                    'Stripe webhook health check skipped an account.',
+                    array_merge(
+                        ['account' => $account->accountSlug, 'account_type' => $account->type, 'mode' => $mode],
+                        WebhookLogger::failureContext($exception)
+                    )
+                );
+
                 return '';
             }
 

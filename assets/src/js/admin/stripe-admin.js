@@ -407,6 +407,8 @@ function giveStripeJsonFormattedTextarea( element ) {
 	}
 }
 
+let giveStripeWebhookSetupRunning = false;
+
 /**
  * Asks the server to set up the webhook endpoint of each Stripe account, and shows the result in a modal.
  *
@@ -415,6 +417,14 @@ function giveStripeJsonFormattedTextarea( element ) {
  * @param {string} nonce Nonce for the webhook setup request.
  */
 function giveStripeSetUpWebhooks( nonce ) {
+	/* A second request while one is running could create a second endpoint. */
+	if ( giveStripeWebhookSetupRunning ) {
+		return;
+	}
+
+	giveStripeWebhookSetupRunning = true;
+	giveStripeSetWebhookButtonsDisabled( true );
+
 	new Give.modal.GiveNoticeAlert( {
 		modalContent: {
 			title: __( 'Setting up your Stripe webhook', 'give' ),
@@ -459,6 +469,25 @@ function giveStripeSetUpWebhooks( nonce ) {
 			} else {
 				new Give.modal.GiveErrorAlert( modalConfig ).render();
 			}
+		} )
+		.finally( () => {
+			giveStripeWebhookSetupRunning = false;
+			giveStripeSetWebhookButtonsDisabled( false );
+		} );
+}
+
+/**
+ * Enables or disables the buttons that start the webhook setup.
+ *
+ * @since TBD
+ *
+ * @param {boolean} disabled Whether the buttons are disabled.
+ */
+function giveStripeSetWebhookButtonsDisabled( disabled ) {
+	document
+		.querySelectorAll( '.give-stripe-webhook-setup-button, .give-stripe-webhook-retry-button' )
+		.forEach( ( button ) => {
+			button.disabled = disabled;
 		} );
 }
 
