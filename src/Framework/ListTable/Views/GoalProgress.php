@@ -11,6 +11,14 @@ namespace Give\Framework\ListTable\Views;
 class GoalProgress
 {
     /**
+     * The ring is an image, so it cannot read CSS variables. These match the Event Tickets sales bar.
+     *
+     * @since TBD
+     */
+    private const RING_COLOR = '#2bc253';
+    private const TRACK_COLOR = '#eeeeee';
+
+    /**
      * @since TBD
      *
      * @param int|string $id Record id, used to label the progress ring.
@@ -69,10 +77,12 @@ class GoalProgress
 
         $svg = sprintf(
             "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'>" .
-            "<circle cx='14' cy='14' r='12' fill='none' stroke='#eeeeee' stroke-width='4'/>" .
-            "<circle cx='14' cy='14' r='12' fill='none' stroke='#2bc253' stroke-width='4' stroke-linecap='round'" .
+            "<circle cx='14' cy='14' r='12' fill='none' stroke='%s' stroke-width='4'/>" .
+            "<circle cx='14' cy='14' r='12' fill='none' stroke='%s' stroke-width='4' stroke-linecap='round'" .
             " pathLength='100' stroke-dasharray='%s 100' transform='rotate(-90 14 14)'/>" .
             "</svg>",
+            self::TRACK_COLOR,
+            self::RING_COLOR,
             $arc
         );
 
