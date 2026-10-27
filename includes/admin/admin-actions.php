@@ -995,6 +995,7 @@ add_action( 'wp_ajax_give_subscription_import', 'give_subscription_import_callba
  * Load core settings import ajax callback
  * Fire when importing from JSON start
  *
+ * @since TBD Reject an imported donor default user role that is not a safe donor role.
  * @since 4.19.1 Unslash the request input.
  * @since 4.19.0.1 Require a valid JSON array before replacing the stored settings.
  * @since  1.8.17
@@ -1061,6 +1062,13 @@ function give_core_settings_import_callback() {
 			 * @return array $json_to_array Setting that are being going to get imported
 			 */
 			$json_to_array = (array) apply_filters( 'give_import_core_settings_data', $json_to_array, $type, $host_give_options, $fields );
+
+			if (
+				isset( $json_to_array['donor_default_user_role'] )
+				&& ! give_is_donor_safe_user_role( $json_to_array['donor_default_user_role'] )
+			) {
+				$json_to_array['donor_default_user_role'] = give_get_donor_default_user_role();
+			}
 
 			update_option( 'give_settings', $json_to_array, false );
 
@@ -1199,48 +1207,15 @@ function give_get_user_roles() {
  * to prevent security issues if the default donor role setting is misconfigured.
  * Only basic subscriber-level roles should be available for donor registration.
  *
+ * @since TBD Use give_is_donor_safe_user_role() for the privilege check.
  * @since 4.14.0
  * @return array
  */
 function give_get_donor_safe_user_roles() {
 	$user_roles = [];
 
-	// Capabilities that indicate a privileged role - exclude these
-	$privileged_caps = [
-		// WordPress privileged caps
-		'manage_options',
-		'edit_users',
-		'delete_users',
-		'create_users',
-		'edit_others_posts',
-		'delete_others_posts',
-		'edit_pages',
-		'edit_others_pages',
-		'publish_pages',
-		'delete_pages',
-		'edit_posts',
-		// GiveWP privileged caps - access to sensitive donor/payment data
-		'view_give_reports',
-		'export_give_reports',
-		'manage_give_settings',
-		'view_give_sensitive_data',
-		'edit_give_payments',
-		'edit_give_forms',
-	];
-
 	foreach ( get_editable_roles() as $role_name => $role_info ) {
-		$is_privileged = false;
-
-		// Check if role has any privileged capabilities
-		foreach ( $privileged_caps as $cap ) {
-			if ( ! empty( $role_info['capabilities'][ $cap ] ) ) {
-				$is_privileged = true;
-				break;
-			}
-		}
-
-		// Only include non-privileged roles
-		if ( ! $is_privileged ) {
+		if ( give_is_donor_safe_user_role( $role_name ) ) {
 			$user_roles[ $role_name ] = $role_info['name'];
 		}
 	}

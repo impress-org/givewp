@@ -1177,6 +1177,7 @@ function give_donation_form_validate_guest_user() {
  * @param array $user_data User Data.
  *
  * @access  private
+ * @since TBD Only give new users a safe donor role.
  * @since 4.19.1 Use gmdate() instead of date().
  * @since   1.0
  *
@@ -1201,7 +1202,7 @@ function give_register_and_login_new_user( $user_data = [] ) {
 			'first_name'      => isset( $user_data['user_first'] ) ? $user_data['user_first'] : '',
 			'last_name'       => isset( $user_data['user_last'] ) ? $user_data['user_last'] : '',
 			'user_registered' => gmdate( 'Y-m-d H:i:s' ),
-			'role'            => give_get_option( 'donor_default_user_role', 'give_donor' ),
+			'role'            => give_get_donor_default_user_role(),
 		],
 		$user_data
 	);

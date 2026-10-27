@@ -11,6 +11,7 @@ use Give\Donors\Models\Donor;
 class CreateUserFromDonor
 {
     /**
+     * @since TBD Only give new users a safe donor role.
      * @since 4.19.1 Escape exception message.
      */
     public function __invoke(Donor $donor): Donor
@@ -23,7 +24,7 @@ class CreateUserFromDonor
                 'user_email'      => $donor->email,
                 'first_name'      => $donor->firstName,
                 'last_name'       => $donor->lastName,
-                'role'            => give_get_option( 'donor_default_user_role', 'give_donor' ),
+                'role'            => give_get_donor_default_user_role(),
             ],
             $donor
         ));
