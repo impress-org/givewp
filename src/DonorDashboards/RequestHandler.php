@@ -32,7 +32,7 @@ class RequestHandler
     /**
      * Load donor dashboard markup, if donor dashboard exists in query vars
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      *
      * @param WP_Query $query
      *

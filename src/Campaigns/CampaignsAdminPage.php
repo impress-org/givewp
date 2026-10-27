@@ -30,7 +30,7 @@ class CampaignsAdminPage
     }
 
     /**
-     * @since TBD Escape output. Guard the id param.
+     * @since 4.19.1 Escape output. Guard the id param.
      * @since 4.0.0
      */
     public function renderCampaignsPage()

@@ -49,7 +49,7 @@ class TotalRefunds extends Endpoint
     }
 
     /**
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      */
     public function get_data($start, $end, $intervalStr)
     {

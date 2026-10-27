@@ -27,7 +27,7 @@ class SubscriptionPeriod extends Enum {
     const YEAR = 'year';
 
     /**
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 2.24.0
      *
      * @return array

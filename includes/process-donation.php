@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles the donation form process.
  *
  * @access private
- * @since TBD Use gmdate() instead of date().
+ * @since 4.19.1 Use gmdate() instead of date().
  * @since 4.16.7.2     Reject serialized data in name fields before storing donation data.
  * @since 4.16.6  Bail early when the form ID is not a give_forms post or is a Visual Form Builder (v3) form.
  * @since 3.16.1  Use give_maybe_safe_unserialize() on $user_info data
@@ -339,7 +339,7 @@ function give_check_logged_in_user_for_existing_email( &$valid_data ) {
  * Process the checkout login form
  *
  * @access private
- * @since  TBD Unslash and sanitize the login nonce, and read the AJAX flag after the nonce check.
+ * @since  4.19.1 Unslash and sanitize the login nonce, and read the AJAX flag after the nonce check.
  * @since  4.16.7 Require a valid nonce before processing the login form.
  * @since  1.0
  *
@@ -515,7 +515,7 @@ function give_donation_form_has_serialized_fields(array $post_data): bool
 /**
  * Detect spam donation.
  *
- * @since TBD Unslash and sanitize the user agent.
+ * @since 4.19.1 Unslash and sanitize the user agent.
  * @since 1.8.14
  *
  * @return bool|mixed
@@ -1177,7 +1177,7 @@ function give_donation_form_validate_guest_user() {
  * @param array $user_data User Data.
  *
  * @access  private
- * @since TBD Use gmdate() instead of date().
+ * @since 4.19.1 Use gmdate() instead of date().
  * @since   1.0
  *
  * @return  integer
@@ -1246,7 +1246,7 @@ function give_register_and_login_new_user( $user_data = [] ) {
 /**
  * Get Donation Form User
  *
- * @since   TBD Read the AJAX flag from the sanitized post data.
+ * @since   4.19.1 Read the AJAX flag from the sanitized post data.
  * @since   1.0
  * @since 2.17.1 Do not run validation check for ajax request expect donation validation ajax request.
  *

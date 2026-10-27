@@ -53,7 +53,7 @@ class CustomizeAccountField
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.13.0
      */
     private function getRadioButtons()

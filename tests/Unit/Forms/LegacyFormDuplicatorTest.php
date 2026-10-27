@@ -10,14 +10,14 @@ use Give_Form_Duplicator;
 /**
  * Covers the form meta queries of Give_Form_Duplicator.
  *
- * @since TBD
+ * @since 4.19.1
  */
 final class LegacyFormDuplicatorTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -27,7 +27,7 @@ final class LegacyFormDuplicatorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function metaOf(int $formId): array
     {
@@ -41,7 +41,7 @@ final class LegacyFormDuplicatorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDuplicatedFormHasTheSameMetaAndResetStats()
     {
@@ -79,7 +79,7 @@ final class LegacyFormDuplicatorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testResetStatsFilterChangesWhichMetaKeysAreReset()
     {

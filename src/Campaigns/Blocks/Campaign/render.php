@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * @since TBD Replace short echo tags with escaped echo.
+ * @since 4.19.1 Replace short echo tags with escaped echo.
  *
  * @var array    $attributes
  * @var Campaign $campaign

@@ -71,7 +71,7 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Get default column values
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -623,7 +623,7 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Add backward compatibility for deprecated param
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since  1.8.14
 	 * @access private
 	 *

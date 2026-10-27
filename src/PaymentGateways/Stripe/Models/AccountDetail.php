@@ -94,7 +94,7 @@ class AccountDetail
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.10.2
      *
      * @param string $key
@@ -120,7 +120,7 @@ class AccountDetail
     /**
      * Validate array format.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.10.2
      *
      * @param array $array

@@ -10,7 +10,7 @@ namespace Give\Helpers;
 class IntlTelInput
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private const VERSION = '21.2.4';
 
@@ -131,7 +131,7 @@ class IntlTelInput
     }
 
     /**
-     * @since TBD Escape output. Load the script and style with the WordPress loader.
+     * @since 4.19.1 Escape output. Load the script and style with the WordPress loader.
      * @since 4.16.4 Escaped the value attribute output.
      * @since 3.9.0
      */
@@ -172,7 +172,7 @@ class IntlTelInput
     /**
      * Enqueues the library and adds the script that sets up the input.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     private static function enqueueAssets(string $id): void
     {
@@ -184,7 +184,7 @@ class IntlTelInput
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private static function getInitScript(string $id): string
     {

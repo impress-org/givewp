@@ -12,7 +12,7 @@ use Give\Helpers\Form\Utils;
 class PayPalStandardBillingFields
 {
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.22.2
      *
      * @param int $formId

@@ -1,5 +1,0 @@
-significance: patch
-type: fix
-entry: Changed the default 'Donate' button text color in the Donation Form Grid
-  block to meet color contrast accessibility requirements (WCAG AAA).
-timestamp: 2026-10-15T00:05:17.119Z

@@ -11,7 +11,7 @@ use Give\Helpers\Form\Utils;
 class EditFormRoute
 {
     /**
-     * @since TBD Use a safe redirect and sanitize the request input.
+     * @since 4.19.1 Use a safe redirect and sanitize the request input.
      * @since 3.22.0 Add locale support
      * @since 3.0.3 Use isV3Form() method instead of 'post_content' to check if the form is built with Visual Builder
      * @since 3.0.0

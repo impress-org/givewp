@@ -28,7 +28,7 @@ trait InsertNode
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.8.0 Updated to only fall through if no node was found
      * @since 2.10.2
      *
@@ -80,7 +80,7 @@ trait InsertNode
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.8.0 Updated to only fall through if no node was found
      * @since 2.10.2
      *

@@ -95,7 +95,7 @@ class AjaxRequestHandler
     /**
      * give_paypal_commerce_user_onboarded ajax action handler
      *
-     * @since TBD Verify the nonce and sanitize the request.
+     * @since 4.19.1 Verify the nonce and sanitize the request.
      * @since 2.32.0 Return error response on exception when fetch access token from authorization code.
      * @since 2.9.0
      */
@@ -143,7 +143,7 @@ class AjaxRequestHandler
     /**
      * This function handle ajax request with give_paypal_commerce_get_partner_url action.
      *
-     * @since TBD Verify the nonce and sanitize the request.
+     * @since 4.19.1 Verify the nonce and sanitize the request.
      * @since 3.0.0 Add support for accountType. This param is required to get partner link.
      * @since 2.30.0 Add support for mode param.
      * @since 2.9.0
@@ -202,7 +202,7 @@ class AjaxRequestHandler
     /**
      * give_paypal_commerce_disconnect_account ajax request handler.
      *
-     * @since TBD Validate and sanitize the posted values.
+     * @since 4.19.1 Validate and sanitize the posted values.
      * @since 3.16.0 added security nonce check
      * @since 3.13.0 Add new $keepWebhooks option
      * @since 2.30.0 Add support for mode param.
@@ -433,7 +433,7 @@ class AjaxRequestHandler
     /**
      * Validate frontend ajax request.
      *
-     * @since TBD Validate and sanitize the posted values.
+     * @since 4.19.1 Validate and sanitize the posted values.
      * @since 2.9.0
      */
     private function validateFrontendRequest()

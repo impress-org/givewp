@@ -205,7 +205,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Show success notice
          *
-         * @since TBD Escape output. Add translators comments. Check that the total and success values are set.
+         * @since 4.19.1 Escape output. Add translators comments. Check that the total and success values are set.
          * @since 4.11.0
          */
         public function import_success()
@@ -315,7 +315,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Start Import
-         * @since TBD Escape translated output. Unslash and sanitize the request input.
+         * @since 4.19.1 Escape translated output. Unslash and sanitize the request input.
          * @since 4.11.0
          */
         public function start_import()
@@ -384,7 +384,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
          * Validate required mapped fields
          *
          * 4.14.1 Check if donor_id or email is mapped to the columns
-         * @since TBD Add translators comments and unslash and sanitize the mapped fields.
+         * @since 4.19.1 Add translators comments and unslash and sanitize the mapped fields.
          * @since 4.11.0
          */
         public function check_for_dropdown_or_import()
@@ -421,7 +421,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Print the Dropdown option for CSV.
-         * @since TBD Escape translated output. Unslash and sanitize the request input.
+         * @since 4.19.1 Escape translated output. Unslash and sanitize the request input.
          * @since 4.11.0
          */
         public function render_dropdown()
@@ -519,7 +519,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Print the columns from the CSV.
          *
-         * @since TBD Escape translated output.
+         * @since 4.19.1 Escape translated output.
          */
         private function get_columns($index, $value = false, $mapto = [], &$selectedOptions = [])
         {
@@ -672,7 +672,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Render progress steps
          *
-         * @since TBD Escape translated output.
+         * @since 4.19.1 Escape translated output.
          */
         public function render_progress()
         {
@@ -727,7 +727,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Dry Run checkbox and helper
          *
-         * @since TBD Escape translated output.
+         * @since 4.19.1 Escape translated output.
          */
         public function give_import_subscription_submit_button_render_media_csv()
         {
@@ -758,7 +758,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Add CSV upload HTMl
          *
-         * @since TBD Escape translated output.
+         * @since 4.19.1 Escape translated output.
          */
         public function render_media_csv()
         {
@@ -890,7 +890,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Run when user click on the submit button.
          *
-         * @since TBD Unslash and sanitize the request input.
+         * @since 4.19.1 Unslash and sanitize the request input.
          */
         public function save()
         {
@@ -964,7 +964,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Nonce validation
          *
-         * @since TBD Unslash and sanitize the nonce before checking it.
+         * @since 4.19.1 Unslash and sanitize the nonce before checking it.
          */
         private function is_nonce_valid()
         {
@@ -980,7 +980,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
          * @param array $import_setting
          * @return bool|int|string
          *
-         * @since TBD Add translators comments.
+         * @since 4.19.1 Add translators comments.
          */
         public function import_row($raw_key, $row_data, $main_key = [], $import_setting = [])
         {

@@ -82,7 +82,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
-     * @since TBD Escape exception messages. Add translators comments.
+     * @since 4.19.1 Escape exception messages. Add translators comments.
      * @since 4.16.9 Capture every order here, and validate the captured amount against the donation.
      * @since 4.16.8.1 Reject a completed order whose amount doesn't match the donation, or whose capture is already recorded against a different donation.
      * @since 4.2.1 updated to use updateOrderFromDonation
@@ -147,7 +147,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
-      * @since TBD Add translators comments.
+      * @since 4.19.1 Add translators comments.
      * @since 4.5.0 Add Accept Credit Card (Smart Buttons Only) setting.
      * @since 3.0.0 Conditionally add "Transaction Type" setting.
      * @since 2.33.0 Register new payment field type setting.
@@ -340,7 +340,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
      * is what finally decides how much was taken, so the captured amount is compared to the
      * donation rather than assumed to match.
      *
-     * @since TBD Escape exception messages.
+     * @since 4.19.1 Escape exception messages.
      * @since 4.16.9
      *
      * @throws PaymentGatewayException
@@ -391,7 +391,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
-     * @since TBD Escape exception messages. Add translators comments.
+     * @since 4.19.1 Escape exception messages. Add translators comments.
      * @since 4.16.9 Read the capture defensively, and report a failed or declined capture's processor response.
      *
      * @throws PaymentGatewayException
@@ -457,7 +457,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
-     * @since TBD Escape exception messages. Add translators comments.
+     * @since 4.19.1 Escape exception messages. Add translators comments.
      * @since 4.7.0
      *
      * @throws Exception

@@ -58,7 +58,7 @@ trait StripePaymentElementRepository
     /**
      * Get or create Stripe Customer from Donation
      *
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 3.0.0
      * @throws Exception
      * @throws ApiErrorException
@@ -150,7 +150,7 @@ trait StripePaymentElementRepository
     }
 
     /**
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 3.0.0
      *
      * @return void

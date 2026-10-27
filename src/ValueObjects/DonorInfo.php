@@ -52,7 +52,7 @@ class DonorInfo implements ValueObjects
     /**
      * Take array and return object.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.19.6 - fix update key validation with new variable to prevent removing not required keys like lastName
      *
      * @param $array

@@ -156,7 +156,7 @@ add_action( 'wp_ajax_nopriv_give_checkout_login', 'give_load_checkout_login_fiel
 /**
  * Load Checkout Fields
  *
- * @since TBD Unslash and sanitize the form ID.
+ * @since 4.19.1 Unslash and sanitize the form ID.
  * @since  1.3.6
  *
  * @return void
@@ -192,7 +192,7 @@ add_action( 'wp_ajax_nopriv_give_checkout_register', 'give_load_checkout_fields'
 /**
  * Retrieve a states drop down
  *
- * @since TBD Check that the request values are set, then unslash and sanitize them.
+ * @since 4.19.1 Check that the request values are set, then unslash and sanitize them.
  * @since 2.30.0 add 'state_label' & 'states' to response
  * @since  1.0
  *
@@ -286,7 +286,7 @@ add_action( 'wp_ajax_nopriv_give_get_states', 'give_ajax_get_states_field' );
 /**
  * Retrieve donation forms via AJAX for chosen dropdown search field.
  *
- * @since TBD Check that the search term is set, then unslash and sanitize it.
+ * @since 4.19.1 Check that the search term is set, then unslash and sanitize it.
  * @since  1.0
  *
  * @return void
@@ -355,7 +355,7 @@ add_action( 'wp_ajax_nopriv_give_form_search', 'give_ajax_form_search' );
 /**
  * Search the donors database via Ajax
  *
- * @since TBD Prepare SQL with placeholders. Check that the search term is set, then unslash and sanitize it.
+ * @since 4.19.1 Prepare SQL with placeholders. Check that the search term is set, then unslash and sanitize it.
  * @since  1.0
  *
  * @return void
@@ -391,7 +391,7 @@ add_action( 'wp_ajax_give_donor_search', 'give_ajax_donor_search' );
 /**
  * Searches for users via ajax and returns a list of results
  *
- * @since TBD Check that the search term is set, then unslash and sanitize it.
+ * @since 4.19.1 Check that the search term is set, then unslash and sanitize it.
  * @since  1.0
  *
  * @return void
@@ -471,7 +471,7 @@ add_action( 'wp_ajax_give_pages_search', 'give_ajax_pages_search' );
 /**
  * Retrieve Categories via AJAX for chosen dropdown search field.
  *
- * @since TBD Check that the search term is set, then unslash and sanitize it.
+ * @since 4.19.1 Check that the search term is set, then unslash and sanitize it.
  * @since  2.1
  *
  * @return void
@@ -525,7 +525,7 @@ add_action( 'wp_ajax_give_categories_search', 'give_ajax_categories_search' );
 /**
  * Retrieve Tags via AJAX for chosen dropdown search field.
  *
- * @since TBD Check that the search term is set, then unslash and sanitize it.
+ * @since 4.19.1 Check that the search term is set, then unslash and sanitize it.
  * @since  2.1
  *
  * @return void
@@ -579,7 +579,7 @@ add_action( 'wp_ajax_give_tags_search', 'give_ajax_tags_search' );
 /**
  * Check for Price Variations (Multi-level donation forms)
  *
- * @since  TBD Escape output. Check that the form ID is set, then unslash and sanitize it.
+ * @since  4.19.1 Escape output. Check that the form ID is set, then unslash and sanitize it.
  * @since  1.5
  *
  * @return void
@@ -792,7 +792,7 @@ function give_modal_ajax_url( $args = [] ) {
  * @todo use get_version endpoint to read changelog or cache add-ons infro from update_plugins option
  *
  * @return string
- * @since TBD Escape output. Unslash and sanitize the request input.
+ * @since 4.19.1 Escape output. Unslash and sanitize the request input.
  * @since 2.5.0
  */
 function give_get_content_by_ajax_handler() {

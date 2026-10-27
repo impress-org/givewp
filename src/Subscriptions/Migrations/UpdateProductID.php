@@ -44,7 +44,7 @@ class UpdateProductID extends Migration
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @inheritDoc
      *
      * @throws DatabaseMigrationException

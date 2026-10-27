@@ -66,7 +66,7 @@ class AdminSettingFields
      * Render account country field.
      *
      * @since 2.9.0
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      */
     public function accountCountryField()
     {
@@ -111,7 +111,7 @@ class AdminSettingFields
      *
      * @since 3.0.0 Update PayPal sandbox connection button description.
      * @since 2.9.0
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      */
     public function payPalCommerceAccountManagerField()
     {
@@ -152,7 +152,7 @@ class AdminSettingFields
      * PayPal Commerce introduction section.
      *
      * @since 2.9.0
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      */
     public function introductionSection()
     {
@@ -243,7 +243,7 @@ class AdminSettingFields
     /**
      * Return admin guidance notice to fix PayPal on boarding error.
      *
-      * @since TBD Add translators comments.
+      * @since 4.19.1 Add translators comments.
      * @since 3.10.0 Updated phone number for contact
      * @since 2.9.6
      *
@@ -280,7 +280,7 @@ class AdminSettingFields
      * Print on boarding errors.
      *
      * @since 2.9.6
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      */
     private function printErrors(MerchantDetails $merchantDetailsRepository)
     {
@@ -406,7 +406,7 @@ class AdminSettingFields
     /**
      * This function return html for "PayPal Connection" and "PayPal Sandbox Connection".
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      *
      * @param \stdClass $paypalSetting PayPal setting data.
      */
@@ -502,7 +502,7 @@ class AdminSettingFields
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.33.0
      */
     private function getBanner(): string

@@ -6,7 +6,7 @@
  * @subpackage  Classes/Give_Admin_Settings
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       TBD Escape output.
+ * @since       4.19.1 Escape output.
  * @since       1.8
  */
 
@@ -82,7 +82,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		/**
 		 * Verify admin setting nonce
 		 *
-		 * @since TBD Unslash and sanitize the nonce.
+		 * @since 4.19.1 Unslash and sanitize the nonce.
 		 * @since  1.8.14
 		 * @access public
 		 *
@@ -454,7 +454,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		/**
 		 * This function will help you prepare the admin settings field.
 		 *
-		 * @since TBD Add translators comments.
+		 * @since 4.19.1 Add translators comments.
          * @since 4.1.0 Added support for code editor field.
 		 * @since  2.5.5
 		 *

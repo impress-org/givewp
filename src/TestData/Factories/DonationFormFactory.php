@@ -119,7 +119,7 @@ class DonationFormFactory extends Factory
     /**
      * Donor definition
      *
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 1.0.0
      * @return array
      */

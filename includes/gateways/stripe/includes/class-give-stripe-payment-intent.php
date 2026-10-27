@@ -34,7 +34,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 		/**
          * This function is used to create payment intent in Stripe.
          *
-         * @since TBD Add translators comments. Read the payment mode through a sanitizing helper.
+         * @since 4.19.1 Add translators comments. Read the payment mode through a sanitizing helper.
          * @since 2.27.1 Stripe payment intent error sets a more user friendly Exception message.
          * @since      2.5.0
          * @access     public

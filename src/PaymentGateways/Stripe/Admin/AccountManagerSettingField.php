@@ -87,7 +87,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * Render Stripe account manager setting field.
      *
      * @since 2.13.0
@@ -122,7 +122,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Escape output. Add translators comments.
+     * @since 4.19.1 Escape output. Add translators comments.
      * @since 2.13.0
      */
     private function getIntroductionSectionMarkup()
@@ -193,7 +193,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.13.0
      */
     private function getAddNewStripeAccountSectionMarkup()
@@ -244,7 +244,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Escape output. Add nonces to the set default and statement descriptor requests.
+     * @since 4.19.1 Escape output. Add nonces to the set default and statement descriptor requests.
      * @since 2.13.0
      *
      * @param array $stripeAccount
@@ -464,7 +464,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.13.0
      */
     private function getStripeAccountOnBoardingModalMarkup()
@@ -545,7 +545,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.13.0
      */
     public function getNoStripeAccountMarkup()

@@ -12,7 +12,7 @@ use Give_DB_Donors;
  * The get_results_by() test with a quote in the value was added after the SQL fix.
  * Before the fix, the quote broke the SQL, so it could not run on the old code.
  *
- * @since TBD
+ * @since 4.19.1
  */
 class GiveDBTest extends TestCase
 {
@@ -22,7 +22,7 @@ class GiveDBTest extends TestCase
      * Give_DB_Donors is a Give_DB subclass. Give()->donors is a proxy around it, so a fresh
      * instance is used to make sure the base class methods run.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     private function db(): Give_DB_Donors
     {
@@ -30,7 +30,7 @@ class GiveDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function addDonor(string $name, string $email): int
     {
@@ -49,7 +49,7 @@ class GiveDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetReturnsRowByPrimaryKey()
     {
@@ -62,7 +62,7 @@ class GiveDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetByReturnsRowByColumn()
     {
@@ -74,7 +74,7 @@ class GiveDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetColumnReturnsValueByPrimaryKey()
     {
@@ -84,7 +84,7 @@ class GiveDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetColumnByReturnsValueByColumn()
     {
@@ -94,7 +94,7 @@ class GiveDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetResultsByMatchesAllColumnsWithAnd()
     {
@@ -108,7 +108,7 @@ class GiveDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetResultsByMatchesAnyColumnWithOr()
     {
@@ -125,7 +125,7 @@ class GiveDBTest extends TestCase
     /**
      * Added after the SQL fix. Before the fix, the quote in the value broke the SQL.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetResultsByFindsValueWithQuote()
     {
@@ -143,7 +143,7 @@ class GiveDBTest extends TestCase
     /**
      * Added after the SQL fix. The relation must be AND or OR, so it cannot carry SQL.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetResultsByIgnoresInvalidRelation()
     {
@@ -160,7 +160,7 @@ class GiveDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDeleteRemovesRow()
     {
@@ -176,7 +176,7 @@ class GiveDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testTableExists()
     {

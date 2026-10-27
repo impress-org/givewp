@@ -431,7 +431,7 @@ class Container implements ArrayAccess, ContainerInterface
      *
      * @return void
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @throws LogicException
      */
     public function alias(string $abstract, string $alias)
@@ -539,7 +539,7 @@ class Container implements ArrayAccess, ContainerInterface
      *
      * @return T|mixed Entry.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @throws InvalidArgumentException|BindingResolutionException
      */
     public function get(string $id)
@@ -664,7 +664,7 @@ class Container implements ArrayAccess, ContainerInterface
      *
      * @return mixed
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @throws BindingResolutionException
      * @throws ReflectionException
      */
@@ -854,7 +854,7 @@ class Container implements ArrayAccess, ContainerInterface
      *
      * @return void
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @throws BindingResolutionException
      */
     protected function notInstantiable(string $concrete)
@@ -877,7 +877,7 @@ class Container implements ArrayAccess, ContainerInterface
      *
      * @return void
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @throws BindingResolutionException
      */
     protected function unresolvablePrimitive(ReflectionParameter $parameter)

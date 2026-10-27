@@ -28,7 +28,7 @@ class View
      *
      * @return string|void
      *
-     * @since TBD Escape exception message and output.
+     * @since 4.19.1 Escape exception message and output.
      * @throws InvalidArgumentException if template file not exist
      *
      */

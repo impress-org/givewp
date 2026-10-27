@@ -27,7 +27,7 @@ class SetDefaultStripeAccountController
     }
 
     /**
-     * @since TBD Verify the nonce.
+     * @since 4.19.1 Verify the nonce.
      * @since 2.13.0
      */
     public function __invoke()
@@ -65,7 +65,7 @@ class SetDefaultStripeAccountController
     }
 
     /**
-     * @since TBD Verify the nonce.
+     * @since 4.19.1 Verify the nonce.
      * @since 2.13.0
      */
     private function validateRequest()

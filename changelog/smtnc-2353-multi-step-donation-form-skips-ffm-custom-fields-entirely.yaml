@@ -1,5 +1,0 @@
-significance: patch
-type: fix
-entry: Restored keyboard Tab access to Form Field Manager and other add-on fields on
-  the amount step of multi-step forms that use the Sequoia template.
-timestamp: 2026-10-21T06:45:24.654Z

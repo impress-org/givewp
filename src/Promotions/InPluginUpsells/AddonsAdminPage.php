@@ -57,7 +57,7 @@ class AddonsAdminPage
     /**
      * Render admin page
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      */
     public function render()
     {

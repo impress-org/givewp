@@ -133,7 +133,7 @@ class Tests_Email_Notification_Filters extends Give_Unit_Test_Case {
 	/**
 	 * Data provider for test_donor_register_email_preview_header_filter_returns_string.
 	 *
-	 * @since TBD
+	 * @since 4.19.1
 	 *
 	 * @return array<string, array{0: string}>
 	 */
@@ -149,7 +149,7 @@ class Tests_Email_Notification_Filters extends Give_Unit_Test_Case {
 	 * string, because later `give_email_preview_header` callbacks (Peer-to-Peer) type the
 	 * parameter as string and fatal on null.
 	 *
-	 * @since TBD
+	 * @since 4.19.1
 	 * @cover Give_Donor_Register_Email::email_preview_header
 	 * @cover Give_New_Donor_Register_Email::email_preview_header
 	 *
@@ -178,7 +178,7 @@ class Tests_Email_Notification_Filters extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * @since TBD
+	 * @since 4.19.1
 	 *
 	 * @param string $email_id Email notification ID.
 	 *

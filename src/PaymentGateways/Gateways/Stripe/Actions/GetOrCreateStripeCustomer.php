@@ -12,7 +12,7 @@ class GetOrCreateStripeCustomer
 {
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.20.0 add second param support to function.
      *             This param is optional because we use it only when donor subscribe for recurring donation.
      * @since 2.21.0 Update function first argument type to Donation model
@@ -34,7 +34,7 @@ class GetOrCreateStripeCustomer
     }
 
     /**
-      * @since TBD Add translators comments.
+      * @since 4.19.1 Add translators comments.
      * @since 2.21.0 Update function first argument type to Donation model
      * @since 2.19.0
      * @throws Exception

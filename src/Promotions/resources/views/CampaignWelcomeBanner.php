@@ -1,6 +1,6 @@
 <?php
 /**
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  *
  * @var $elements
  * @var $backgroundUrl

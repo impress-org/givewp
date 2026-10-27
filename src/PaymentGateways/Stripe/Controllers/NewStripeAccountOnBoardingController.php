@@ -30,7 +30,7 @@ class NewStripeAccountOnBoardingController
     }
 
     /**
-     * @since TBD Use a safe redirect, and unslash and sanitize the request URI.
+     * @since 4.19.1 Use a safe redirect, and unslash and sanitize the request URI.
      * @since 3.4.0 Handle Stripe connect account on-boarding redirect on specific pages.
      *
      * @since 2.13.0

@@ -37,7 +37,7 @@ class DonationProcessingReceipt extends Give_Email_Notification
     }
 
     /**
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 2.24.0
      */
     public function getDefaultEmailMessage(): string

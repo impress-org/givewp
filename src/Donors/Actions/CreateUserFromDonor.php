@@ -11,7 +11,7 @@ use Give\Donors\Models\Donor;
 class CreateUserFromDonor
 {
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      */
     public function __invoke(Donor $donor): Donor
     {

@@ -15,7 +15,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
  * Covers the revenue query of the multi-form goal progress bar. The total is in the smallest
  * currency unit, because that is how the revenue table stores amounts.
  *
- * @since TBD
+ * @since 4.19.1
  */
 class ProgressBarQueryTest extends TestCase
 {
@@ -31,7 +31,7 @@ class ProgressBarQueryTest extends TestCase
     private $formC;
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -46,7 +46,7 @@ class ProgressBarQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -56,7 +56,7 @@ class ProgressBarQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testTotalAndCountMatchTheLiveDonationsOfTheGivenForms()
     {
@@ -72,7 +72,7 @@ class ProgressBarQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testSingleFormOnlyCountsThatForm()
     {
@@ -86,7 +86,7 @@ class ProgressBarQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testWithoutFormsEveryFormIsCounted()
     {
@@ -100,7 +100,7 @@ class ProgressBarQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testTestModeCountsOnlyTestDonations()
     {
@@ -118,7 +118,7 @@ class ProgressBarQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function donation(int $formId, int $cents, DonationMode $mode): Donation
     {

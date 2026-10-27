@@ -243,7 +243,7 @@ class EventTicketRepository
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 3.6.0
      */
     private function validate(EventTicket $eventTicket): void
@@ -295,7 +295,7 @@ class EventTicketRepository
     /**
      * Check if a database table exists
      *
-     * @since TBD Inline the prepared query.
+     * @since 4.19.1 Inline the prepared query.
      * @since 4.6.0
      */
     private function tableExists(string $tableName): bool

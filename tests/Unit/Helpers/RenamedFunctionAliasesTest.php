@@ -10,7 +10,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
  * Each renamed function has a give_-prefixed name. The old name must keep working with the same
  * result and log exactly one deprecation notice.
  *
- * @since TBD
+ * @since 4.19.1
  */
 class RenamedFunctionAliasesTest extends TestCase
 {
@@ -27,7 +27,7 @@ class RenamedFunctionAliasesTest extends TestCase
     private $deprecatedCalls = [];
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -47,7 +47,7 @@ class RenamedFunctionAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -62,7 +62,7 @@ class RenamedFunctionAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function recordDeprecatedCall($function, $replacement, $version): void
     {
@@ -72,7 +72,7 @@ class RenamedFunctionAliasesTest extends TestCase
     /**
      * Calls the old name, then asserts exactly one notice that names the new function.
      *
-     * @since TBD
+     * @since 4.19.1
      *
      * @return mixed
      */
@@ -87,7 +87,7 @@ class RenamedFunctionAliasesTest extends TestCase
         $this->assertStringContainsString("$oldName is <strong>deprecated</strong>", $this->notices[0]);
         $this->assertStringContainsString("Use $newName() instead.", $this->notices[0]);
         $this->assertCount(1, $this->deprecatedCalls);
-        $this->assertSame([$oldName, "$newName()", 'TBD'], $this->deprecatedCalls[0]);
+        $this->assertSame([$oldName, "$newName()", '4.19.1'], $this->deprecatedCalls[0]);
 
         return $result;
     }
@@ -95,7 +95,7 @@ class RenamedFunctionAliasesTest extends TestCase
     /**
      * Calls the new name and asserts it logs nothing.
      *
-     * @since TBD
+     * @since 4.19.1
      *
      * @return mixed
      */
@@ -115,7 +115,7 @@ class RenamedFunctionAliasesTest extends TestCase
      * database, so they return the same empty values before and after the rename. The test checks
      * that the old name returns exactly what the new name returns.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonorMetaFunctions(): void
     {
@@ -138,7 +138,7 @@ class RenamedFunctionAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testLicenseFunctions(): void
     {
@@ -153,7 +153,7 @@ class RenamedFunctionAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetFormIdFromArgs(): void
     {
@@ -163,7 +163,7 @@ class RenamedFunctionAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetPrefillFormFieldValues(): void
     {
@@ -177,7 +177,7 @@ class RenamedFunctionAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetFormattedOfflineInstructions(): void
     {
@@ -193,7 +193,7 @@ class RenamedFunctionAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testMetaboxFormDataRepeaterFieldsOutputsTheSameMarkup(): void
     {
@@ -225,7 +225,7 @@ class RenamedFunctionAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testPaymentMetaBackwardCompatibilityFunctions(): void
     {
@@ -244,7 +244,7 @@ class RenamedFunctionAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGroupFieldCallbackUsesNewRepeaterFunctionWithoutNotice(): void
     {

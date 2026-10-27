@@ -7,7 +7,7 @@ use Give\FormBuilder\EmailPreview\Actions\BuildEmailPreview;
 class ShowEmailPreview
 {
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      */
     public function __invoke(\WP_REST_Request $request)
     {

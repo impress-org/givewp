@@ -11,7 +11,7 @@ use Give\Helpers\Language;
 class RegisterPublicEntities
 {
     /**
-     * @since TBD Load the script with the defer strategy.
+     * @since 4.19.1 Load the script with the defer strategy.
      * @since 4.13.1
      */
     public function __invoke()

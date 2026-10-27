@@ -26,7 +26,7 @@ class TopLevelMenuRedirect implements RequestHandler
     /**
      * @inheritdoc
      *
-     * @since TBD Use a safe redirect.
+     * @since 4.19.1 Use a safe redirect.
      * @since 2.8.0
      */
     public function handle()

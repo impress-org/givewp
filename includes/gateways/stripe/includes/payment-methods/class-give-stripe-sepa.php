@@ -64,7 +64,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 		 *
 		 * @access public
 		 * @return string $form
-		 * @since TBD Escape output.
+		 * @since 4.19.1 Escape output.
 		 * @since  2.6.1
 		 */
 		public function add_mandate_form( $form_id, $args, $echo = true ) {
@@ -159,7 +159,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 		/**
          * This function will be used for donation processing.
          *
-         * @since TBD Read the payment mode through a sanitizing helper.
+         * @since 4.19.1 Read the payment mode through a sanitizing helper.
          * @since 2.33.0 no longer store the intent secret in the database
          * @since  2.6.1
          *

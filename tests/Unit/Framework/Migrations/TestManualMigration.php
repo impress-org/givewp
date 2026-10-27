@@ -11,7 +11,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 class TestManualMigration extends TestCase
 {
@@ -33,7 +33,7 @@ class TestManualMigration extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDoesNotRunMigrationWithoutNonce()
     {
@@ -45,7 +45,7 @@ class TestManualMigration extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDoesNotRunMigrationWithInvalidNonce()
     {
@@ -58,7 +58,7 @@ class TestManualMigration extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testRunsMigrationWithValidNonceAndLogsIt()
     {
@@ -75,7 +75,7 @@ class TestManualMigration extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testClearsMigrationWithValidNonce()
     {
@@ -89,7 +89,7 @@ class TestManualMigration extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDoesNotClearMigrationWithoutNonce()
     {
@@ -102,7 +102,7 @@ class TestManualMigration extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function makeController(): ManualMigration
     {

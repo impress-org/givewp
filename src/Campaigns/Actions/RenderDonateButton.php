@@ -11,7 +11,7 @@ use Give\Campaigns\Models\Campaign;
 class RenderDonateButton
 {
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 4.8.0 Replace BlockRenderController::render with give_form_shortcode
      * @since 4.0.0
      */

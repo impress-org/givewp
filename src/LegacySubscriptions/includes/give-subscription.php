@@ -219,7 +219,7 @@ class Give_Subscription {
 	/**
 	 * Magic __get function to dispatch a call to retrieve a private property.
 	 *
-	 * @since TBD Add translators comments.
+	 * @since 4.19.1 Add translators comments.
 	 *
 	 * @param $key
 	 *
@@ -326,7 +326,7 @@ class Give_Subscription {
 	 *
 	 * Updates a subscription.
 	 *
-	 * @since TBD Number the placeholders and add translators comments.
+	 * @since 4.19.1 Number the placeholders and add translators comments.
 	 *
 	 * @param array $args Array of fields to update
 	 *
@@ -669,7 +669,7 @@ class Give_Subscription {
 	 * subscription status as necessary. If the subscription has reached the total number of bill times the
 	 * subscription will be completed.
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since       1.0
 	 * @return bool
 	 */
@@ -805,7 +805,7 @@ class Give_Subscription {
 	 *
 	 * Marks a subscription as cancelled.
 	 *
-	 * @since TBD Add translators comments.
+	 * @since 4.19.1 Add translators comments.
 	 *
 	 * @return void
 	 */
@@ -1084,7 +1084,7 @@ class Give_Subscription {
 	/**
 	 * Get the Subscription Renewal Date.
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 *
 	 * @param bool $localized Flag to return date in localized format or not
 	 *
@@ -1132,7 +1132,7 @@ class Give_Subscription {
 	/**
 	 * Payment Exists.
 	 *
-	 * @since TBD Prepare the SQL query with placeholders.
+	 * @since 4.19.1 Prepare the SQL query with placeholders.
 	 *
 	 * @param string $txn_id transaction ID.
 	 *

@@ -37,7 +37,7 @@ class GetGatewayDataFromRequest
      /**
      * This checks the server content type for 'application/json' to determine if it is a json request.
      *
-     * @since TBD Unslash and sanitize the content type.
+     * @since 4.19.1 Unslash and sanitize the content type.
      * @since 3.0.0
      */
     protected function requestIsJson(): bool

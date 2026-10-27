@@ -146,7 +146,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Print submit and nonce button.
 		 *
-		 * @since TBD Escape output.
+		 * @since 4.19.1 Escape output.
 		 * @since 1.8.17
 		 */
 		public function submit() {
@@ -160,7 +160,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Print the HTML for core setting importer.
 		 *
-		 * @since TBD Escape output.
+		 * @since 4.19.1 Escape output.
 		 * @since 1.8.17
 		 */
 		public function html() {
@@ -197,7 +197,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Show message after the Core Settings Imported
 		 *
-		 * @since TBD Escape output. Verify a nonce before reverting the imported settings.
+		 * @since 4.19.1 Escape output. Verify a nonce before reverting the imported settings.
 		 * @since 1.8.17
 		 */
 		public function import_success() {
@@ -351,7 +351,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 *
 		 * Print the html of the file upload from which json will be uploaded.
 		 *
-		 * @since TBD Escape output.
+		 * @since 4.19.1 Escape output.
 		 * @since 1.8.17
 		 * @return void
 		 */

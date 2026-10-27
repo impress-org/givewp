@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Displays onboarding message in the event of an empty list table.
  *
- * @since TBD Print the content without passing variables to the translation functions.
+ * @since 4.19.1 Print the content without passing variables to the translation functions.
  *
  * Available Variables:
  *

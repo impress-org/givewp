@@ -23,7 +23,7 @@ class ModelQueryBuilder extends QueryBuilder
     protected $model;
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      *
      * @param class-string<M> $modelClass
      */
@@ -128,7 +128,7 @@ class ModelQueryBuilder extends QueryBuilder
     /**
      * Get row as model
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.19.6
      *
      * @param object|null $row
@@ -149,7 +149,7 @@ class ModelQueryBuilder extends QueryBuilder
     /**
      * Get results as models
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.19.6
      *
      * @param object[] $results

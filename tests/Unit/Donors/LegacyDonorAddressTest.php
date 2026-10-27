@@ -10,14 +10,14 @@ use Give_Donor;
 /**
  * Covers the donor address queries of Give_Donor.
  *
- * @since TBD
+ * @since 4.19.1
  */
 class LegacyDonorAddressTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function legacyDonor(): Give_Donor
     {
@@ -27,7 +27,7 @@ class LegacyDonorAddressTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function address(string $line1, string $zip = '12345'): array
     {
@@ -44,7 +44,7 @@ class LegacyDonorAddressTest extends TestCase
     /**
      * Load the donor again, with an empty meta cache, so the address comes from the database.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     private function reload(Give_Donor $donor): Give_Donor
     {
@@ -54,7 +54,7 @@ class LegacyDonorAddressTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testAddAndReadAddressFromDatabase()
     {
@@ -71,7 +71,7 @@ class LegacyDonorAddressTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testAddressOfOneDonorIsNotReadForAnotherDonor()
     {
@@ -84,7 +84,7 @@ class LegacyDonorAddressTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testAddMultipleAddressesGetsIncreasingIds()
     {
@@ -101,7 +101,7 @@ class LegacyDonorAddressTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testAddAddressesOfDifferentTypes()
     {
@@ -117,7 +117,7 @@ class LegacyDonorAddressTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testRemoveAddress()
     {
@@ -136,7 +136,7 @@ class LegacyDonorAddressTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testRemoveOneOfMultipleAddresses()
     {
@@ -154,7 +154,7 @@ class LegacyDonorAddressTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testUpdateAddress()
     {

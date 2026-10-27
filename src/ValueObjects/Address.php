@@ -43,7 +43,7 @@ class Address implements ValueObjects
     /**
      * Take array and return object.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.7.0
      *
      * @param array $array

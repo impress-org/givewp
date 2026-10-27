@@ -147,7 +147,7 @@ class Give_DB_Comments extends Give_DB {
 	/**
 	 * Retrieves a single comment from the database
 	 *
-	 * @since  TBD Use the registered table name in the query.
+	 * @since  4.19.1 Use the registered table name in the query.
 	 * @since  2.3.0
 	 * @access public
 	 *
@@ -190,7 +190,7 @@ class Give_DB_Comments extends Give_DB {
 	/**
 	 * Retrieve comments from the database.
 	 *
-	 * @since  TBD Document why the query is safe.
+	 * @since  4.19.1 Document why the query is safe.
 	 * @since  2.3.0
 	 * @access public
 	 *
@@ -212,7 +212,7 @@ class Give_DB_Comments extends Give_DB {
 	/**
 	 * Count the total number of comments in the database
 	 *
-	 * @since  TBD Document why the query is safe.
+	 * @since  4.19.1 Document why the query is safe.
 	 * @since  2.3.0
 	 * @access public
 	 *
@@ -267,7 +267,7 @@ class Give_DB_Comments extends Give_DB {
 	/**
 	 * Get sql query from quaried array.
 	 *
-	 * @since  TBD Prepare the comment types, allowlist the order and document why the query is safe.
+	 * @since  4.19.1 Prepare the comment types, allowlist the order and document why the query is safe.
 	 * @since  2.3.0
 	 * @access public
 	 *

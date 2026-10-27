@@ -37,7 +37,7 @@ class SalesCountColumn extends ModelColumn
     /**
      * @inheritDoc
      *
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 3.6.0
      *
      * @param Event $model

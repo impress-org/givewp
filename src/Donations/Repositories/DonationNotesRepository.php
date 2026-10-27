@@ -197,7 +197,7 @@ class DonationNotesRepository
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.21.0
      *
      * @param DonationNote $donationNote

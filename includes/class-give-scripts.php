@@ -263,7 +263,7 @@ class Give_Scripts {
 	/**
 	 * Localize admin scripts.
      *
-	 * @since TBD Add translators comments.
+	 * @since 4.19.1 Add translators comments.
      * @since 2.25.3 Add nonce for payment note AJAX requests.
      * @since 4.15.4   Add nonce for give_set_notification_status AJAX request.
 	 */
@@ -430,7 +430,7 @@ class Give_Scripts {
 	/**
 	 * Global admin head.
 	 *
-	 * @since TBD Escape output.
+	 * @since 4.19.1 Escape output.
 	 */
 	public function global_admin_head() {
 		?>

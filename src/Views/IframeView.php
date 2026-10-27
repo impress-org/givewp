@@ -335,7 +335,7 @@ class IframeView
     }
 
     /**
-     * @since TBD Escape the fallback URL from getIframeURL() after addExtraQueryParams() runs, not before, since add_query_arg() needs the raw, unescaped URL.
+     * @since 4.19.1 Escape the fallback URL from getIframeURL() after addExtraQueryParams() runs, not before, since add_query_arg() needs the raw, unescaped URL.
      *
      *  Setup Default config.
      */
@@ -358,7 +358,7 @@ class IframeView
      * Note: if you want to overwrite this function then do not forget to add action hook in footer and header.
      * We use these hooks to manipulated donation form related actions.
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.7.0
      */
     public function render()

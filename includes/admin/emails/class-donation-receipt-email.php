@@ -293,7 +293,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		/**
 		 * Resend payment receipt by row action.
 		 *
-		 * @since TBD Use a safe redirect.
+		 * @since 4.19.1 Use a safe redirect.
 		 * @since  2.0
 		 * @access public
 		 *

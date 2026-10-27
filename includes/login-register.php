@@ -226,7 +226,7 @@ function give_log_user_in( $user_id, $user_login, $user_pass ) {
 /**
  * Process Register Form
  *
- * @since TBD Use gmdate() instead of date().
+ * @since 4.19.1 Use gmdate() instead of date().
  * @since 4.16.6  Require a valid nonce before processing registration.
  * @since 2.0
  *
@@ -323,7 +323,7 @@ add_action( 'give_user_register', 'give_process_register_form' );
 /**
  * Email access login form.
  *
- * @since TBD Unslash and sanitize the request input.
+ * @since 4.19.1 Unslash and sanitize the request input.
  * @since 1.8.17
  *
  * @return bool

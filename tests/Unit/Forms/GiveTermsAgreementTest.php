@@ -5,12 +5,12 @@ namespace Give\Tests\Unit\Forms;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 class GiveTermsAgreementTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testKeepsLinksInTheAgreementLabel(): void
     {
@@ -24,7 +24,7 @@ class GiveTermsAgreementTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testStripsScriptsFromTheAgreementLabel(): void
     {
@@ -38,7 +38,7 @@ class GiveTermsAgreementTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function createFormWithAgreementLabel(string $label): int
     {

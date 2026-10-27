@@ -47,7 +47,7 @@ class Give_Recurring_Cron {
 	/**
 	 * Check for expired subscriptions once per day and mark them as expired
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since  1.0
 	 */
 	public function check_for_expired_subscriptions() {

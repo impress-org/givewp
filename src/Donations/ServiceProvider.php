@@ -134,7 +134,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 3.0.0
      */
     private function addCustomFieldsToDonationDetails()

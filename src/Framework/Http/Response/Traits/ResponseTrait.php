@@ -186,7 +186,7 @@ trait ResponseTrait
     /**
      * Throws the response in a HttpResponseException instance.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.18.0
      *
      * @return void

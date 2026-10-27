@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 /**
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 4.16.3 Escaped the goal color when rendering the progress bar.
  *
  * @var int $formId

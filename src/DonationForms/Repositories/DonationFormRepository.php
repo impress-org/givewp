@@ -253,7 +253,7 @@ class DonationFormRepository
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 3.0.0
      *
      * @param  DonationForm  $donationForm

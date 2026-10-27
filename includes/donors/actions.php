@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Insert donor comment to donation.
  *
- * @since TBD Unslash and sanitize the posted comment.
+ * @since 4.19.1 Unslash and sanitize the posted comment.
  * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.21.0 remove anonymous
  * @since 2.2.0
@@ -94,7 +94,7 @@ add_action( 'give_payment_deleted', 'give_remove_donor_donation_comment', 10 );
 /**
  * Update anonymous donation for legacy gateways
  *
- * @since TBD Read the anonymous donation flag with absint() only.
+ * @since 4.19.1 Read the anonymous donation flag with absint() only.
  * @since 2.21.3
  *
  * @retrun void

@@ -111,7 +111,7 @@ class TestHasActivePremiumAddons extends TestCase
      * Every paratest worker shares the plugins directory, so a file here could vanish while another
      * worker is scanning it.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     private function registerPluginInCache(): void
     {
@@ -141,7 +141,7 @@ class TestHasActivePremiumAddons extends TestCase
      * from setUp before anything has been installed, and from tearDown after a test
      * has fully or partially run.
      *
-     * @since TBD Reset the cached plugin list and the active plugins, not a plugin file.
+     * @since 4.19.1 Reset the cached plugin list and the active plugins, not a plugin file.
      * @since 4.15.2
      */
     private function resetState(): void

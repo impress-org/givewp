@@ -15,7 +15,7 @@ use function Give\Framework\Http\Response\response;
 class SubscriptionSyncedHandler
 {
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 2.33.0
      *
      * @throws Exception
@@ -54,7 +54,7 @@ class SubscriptionSyncedHandler
     }
 
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 2.33.0
      */
     private function getTransactionData(Donation $donation): array

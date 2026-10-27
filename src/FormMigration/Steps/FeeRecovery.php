@@ -34,7 +34,7 @@ class FeeRecovery extends FormMigrationStep
     }
 
     /**
-     * @since TBD Use the give text domain.
+     * @since 4.19.1 Use the give text domain.
      * @since 3.0.0
      */
     private function getGlobalSettings(): array

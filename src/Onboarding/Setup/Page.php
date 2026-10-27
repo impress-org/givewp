@@ -27,7 +27,7 @@ class Page
     /**
      * Dismiss the Setup Page.
      *
-     * @since TBD Check the capability, sanitize the nonce and use a safe redirect.
+     * @since 4.19.1 Check the capability, sanitize the nonce and use a safe redirect.
      * @since 4.10.0 redirect to campaigns page
      * @since 2.8.0
      */
@@ -129,7 +129,7 @@ class Page
     /**
      * Render the submenu page
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.8.0
      */
     public function render_page()

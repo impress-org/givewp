@@ -610,7 +610,7 @@ function give_donor_email_exists( $email ) {
  *
  * @param string $email Donor Email.
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 1.8.13
  *
  * @return bool

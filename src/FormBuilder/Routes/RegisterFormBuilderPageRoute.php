@@ -22,7 +22,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Use add_submenu_page to register page within WP admin
      *
-     * @since TBD Set explicit versions on the enqueued assets.
+     * @since 4.19.1 Set explicit versions on the enqueued assets.
      * @since 4.14.0 update permission capability to use facade
      * @since 4.3.2 update capability to edit_give_forms
      * @since 4.0.0 set parent slug to empty string
@@ -70,7 +70,7 @@ class RegisterFormBuilderPageRoute
      *
      * @since 4.16.8 Read the query args without assuming they are set.
      * @since 3.22.0 Add locale support
-     * @since TBD Escape output, add a nonce to the dismiss notice URLs and set an explicit version on the registrars style.
+     * @since 4.19.1 Escape output, add a nonce to the dismiss notice URLs and set an explicit version on the registrars style.
      * @since 3.1.0 set translations for scripts
      * @since 3.0.0
      *
@@ -225,7 +225,7 @@ class RegisterFormBuilderPageRoute
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function ajaxUrl(string $action): string
     {

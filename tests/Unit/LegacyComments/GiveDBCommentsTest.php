@@ -15,14 +15,14 @@ use Give_DB_Comments;
  * Every other test was written first and passed on the unchanged code. This includes the unknown
  * fields test, which pins the allowlist that validate_params() already had.
  *
- * @since TBD
+ * @since 4.19.1
  */
 class GiveDBCommentsTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function db(): Give_DB_Comments
     {
@@ -30,7 +30,7 @@ class GiveDBCommentsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function addNote(int $parent, string $content, string $type): int
     {
@@ -48,7 +48,7 @@ class GiveDBCommentsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetCommentsReturnsOnlyTheRequestedType()
     {
@@ -62,7 +62,7 @@ class GiveDBCommentsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetCommentsAcceptsACommaSeparatedListOfTypes()
     {
@@ -76,7 +76,7 @@ class GiveDBCommentsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCountReturnsTheNumberOfMatchingComments()
     {
@@ -89,7 +89,7 @@ class GiveDBCommentsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetCommentByIdReturnsTheRow()
     {
@@ -102,7 +102,7 @@ class GiveDBCommentsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGiveCommentGetReturnsTheNotesOfAParent()
     {
@@ -116,7 +116,7 @@ class GiveDBCommentsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testWordPressCommentCountsRunWithoutErrors()
     {
@@ -134,7 +134,7 @@ class GiveDBCommentsTest extends TestCase
      * Added after the SQL fix: a comment type changed by the give_comment_type filter can hold a
      * double quote or a single quote. It used to break the count query.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testWordPressCommentCountsAcceptCommentTypesWithQuotes()
     {
@@ -156,7 +156,7 @@ class GiveDBCommentsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testOrderCanBeAscendingOrDescending()
     {
@@ -172,7 +172,7 @@ class GiveDBCommentsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetSqlReturnsTheExpectedQueryForNormalInput()
     {
@@ -191,7 +191,7 @@ class GiveDBCommentsTest extends TestCase
     /**
      * Added after the SQL fix.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testUnknownFieldsFallBackToAllColumns()
     {
@@ -205,7 +205,7 @@ class GiveDBCommentsTest extends TestCase
     /**
      * Added after the SQL fix.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testBadOrderFallsBackToTheDefault()
     {
@@ -223,7 +223,7 @@ class GiveDBCommentsTest extends TestCase
     /**
      * Added after the SQL fix.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCommentTypeWithAQuoteDoesNotBreakTheQuery()
     {

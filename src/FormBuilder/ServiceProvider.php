@@ -67,7 +67,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since TBD Verify the nonce and the capability, and sanitize the request input.
+     * @since 4.19.1 Verify the nonce and the capability, and sanitize the request input.
      */
     protected function setupOnboardingTour()
     {
@@ -109,7 +109,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Stops the request unless it carries the form builder nonce and comes from a user who can edit forms.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     private static function verifyAjaxRequest()
     {
@@ -121,7 +121,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private static function getFormIdFromAjaxRequest(): int
     {

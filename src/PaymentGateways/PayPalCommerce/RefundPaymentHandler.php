@@ -34,7 +34,7 @@ class RefundPaymentHandler
     /**
      * Refunds the payment when the donation is marked as refunded
      *
-     * @since TBD Guard and sanitize the posted status.
+     * @since 4.19.1 Guard and sanitize the posted status.
      * @since 2.9.0
      *
      * @param int $donationId

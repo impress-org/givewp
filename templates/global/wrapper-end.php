@@ -6,7 +6,7 @@
  * @subpackage  Templates/Global
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since       1.0
  */
 

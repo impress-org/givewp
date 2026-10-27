@@ -35,7 +35,7 @@ class Give_Core_Settings_Export extends Give_Export {
 	 * Set the export headers
 	 *
 	 * @access public
-	 * @since TBD Use gmdate() and wp_date() instead of date().
+	 * @since 4.19.1 Use gmdate() and wp_date() instead of date().
 	 * @since  1.8.17
 	 * @return void
 	 */
@@ -51,7 +51,7 @@ class Give_Core_Settings_Export extends Give_Export {
 	/**
 	 * Include a nonce check when authenticating
 	 *
-	 * @since TBD
+	 * @since 4.19.1
 	 *
 	 * @return bool
 	 */
@@ -65,7 +65,7 @@ class Give_Core_Settings_Export extends Give_Export {
 	 * Prints Give's core settings in JSON format
 	 *
 	 * @access public
-	 * @since TBD Sanitize the excluded settings; export() verifies the nonce before this runs.
+	 * @since 4.19.1 Sanitize the excluded settings; export() verifies the nonce before this runs.
 	 * @since 1.8.17
 	 */
 	public function json_core_settings_export() {

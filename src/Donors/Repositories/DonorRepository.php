@@ -186,7 +186,7 @@ class DonorRepository
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.4.0 Add support for addresses
      * @since 3.7.0 Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
@@ -251,7 +251,7 @@ class DonorRepository
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.19.6
      *
      * @throws Exception
@@ -336,7 +336,7 @@ class DonorRepository
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.19.6
      *
      * @return void

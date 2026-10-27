@@ -10,7 +10,7 @@ use Give\Tests\TestCase;
 final class LoadingViewTest extends TestCase
 {
     /**
-     * @since TBD Expect the primary color reduced to a hex value.
+     * @since 4.19.1 Expect the primary color reduced to a hex value.
      * @since 4.19.0.1
      */
     public function testPrimaryColorIsEscapedForTheStyleAttribute(): void

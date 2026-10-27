@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings.
  */
 
 echo '<div class="givewp-donation-options inner-panel">

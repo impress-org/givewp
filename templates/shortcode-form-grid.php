@@ -2,7 +2,7 @@
 /**
  * This template is used to display the donation grid with [donation_grid]
  *
- * @since TBD Escape output. Add translators comments.
+ * @since 4.19.1 Escape output. Add translators comments.
  */
 
 use Give\Helpers\Form\Template;
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 /**
  * List of changes
  *
- * @since TBD Render the featured image from its URL when it does not resolve to an attachment
+ * @since 4.19.1 Render the featured image from its URL when it does not resolve to an attachment
  * @since 4.14.2 Add aria-label to the wrapper link and aria-hidden to its inner elements
  * @since 3.16.0 Add filters to enable the async mode and to change the values of the "amount raised" and "donations count" on the progress bar
  * @since 2.27.1 Use get_the_excerpt function to get short description of donation form to display in form grid.

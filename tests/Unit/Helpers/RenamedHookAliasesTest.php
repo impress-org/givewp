@@ -12,7 +12,7 @@ use Give_Donor;
  * arguments and the same filtering result, and log exactly one deprecation notice. With no
  * listener on the old name there is no notice.
  *
- * @since TBD
+ * @since 4.19.1
  */
 class RenamedHookAliasesTest extends TestCase
 {
@@ -24,7 +24,7 @@ class RenamedHookAliasesTest extends TestCase
     private $deprecatedHooks = [];
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -35,7 +35,7 @@ class RenamedHookAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -45,7 +45,7 @@ class RenamedHookAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function recordDeprecatedHook($hook)
     {
@@ -53,7 +53,7 @@ class RenamedHookAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testBeforeInitActionFiresOldThenNewWithoutNotice()
     {
@@ -72,7 +72,7 @@ class RenamedHookAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testBeforeInitActionHasNoNoticeWithoutOldListener()
     {
@@ -88,7 +88,7 @@ class RenamedHookAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonorInitialsNewFilterRuns()
     {
@@ -101,7 +101,7 @@ class RenamedHookAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonorInitialsOldFilterStillAppliesAndIsDeprecated()
     {
@@ -122,7 +122,7 @@ class RenamedHookAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testFeaturedImagePlaceholderNewFilterRuns()
     {
@@ -136,7 +136,7 @@ class RenamedHookAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testFeaturedImagePlaceholderOldFilterStillAppliesAndIsDeprecated()
     {
@@ -156,7 +156,7 @@ class RenamedHookAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testFeaturedImageThumbnailFiltersOldAndNew()
     {
@@ -194,7 +194,7 @@ class RenamedHookAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function makeDonor(): Give_Donor
     {
@@ -204,7 +204,7 @@ class RenamedHookAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function makePostId(): int
     {
@@ -212,7 +212,7 @@ class RenamedHookAliasesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function renderFeaturedImage(int $postId): string
     {

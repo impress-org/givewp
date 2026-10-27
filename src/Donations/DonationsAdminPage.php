@@ -52,7 +52,7 @@ class DonationsAdminPage
      * Render admin page container
      *
      * @since 4.6.0 Add new details page view
-     * @since TBD Escape output. Guard the id param.
+     * @since 4.19.1 Escape output. Guard the id param.
      * @since 2.20.0
      */
     public function render()

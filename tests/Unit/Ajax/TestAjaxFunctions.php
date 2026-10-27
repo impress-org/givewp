@@ -6,7 +6,7 @@ use Give\Tests\TestCase;
 use WPDieException;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 class TestAjaxFunctions extends TestCase
 {
@@ -28,7 +28,7 @@ class TestAjaxFunctions extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testStatesFieldIgnoresMissingRequestValues()
     {
@@ -38,7 +38,7 @@ class TestAjaxFunctions extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testStatesFieldUsesTheUnslashedFieldName()
     {
@@ -52,7 +52,7 @@ class TestAjaxFunctions extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testFormSearchWorksWithoutSearchTerm()
     {
@@ -64,7 +64,7 @@ class TestAjaxFunctions extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCheckoutFieldsCastTheFormIdToAnInteger()
     {
@@ -83,7 +83,7 @@ class TestAjaxFunctions extends TestCase
     /**
      * Runs an AJAX handler and returns its decoded JSON response.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     private function runHandler(string $handler): array
     {

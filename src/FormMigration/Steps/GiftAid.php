@@ -9,7 +9,7 @@ class GiftAid extends FormMigrationStep
 {
 
     /**
-     * @since TBD Use the give text domain.
+     * @since 4.19.1 Use the give text domain.
      * @since 3.4.0
      *
      * @return void

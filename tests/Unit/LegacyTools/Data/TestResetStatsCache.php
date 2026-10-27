@@ -8,14 +8,14 @@ use Give_Tools_Reset_Stats;
 /**
  * Covers how Reset Stats clears the object cache after its raw option delete.
  *
- * @since TBD
+ * @since 4.19.1
  *
  * @covers \Give_Tools_Reset_Stats::get_data
  */
 final class TestResetStatsCache extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -27,7 +27,7 @@ final class TestResetStatsCache extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testClearsDeletedOptionsFromTheCacheAndKeepsTheRestOfTheCache(): void
     {

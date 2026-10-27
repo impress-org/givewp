@@ -92,7 +92,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	/**
 	 * Show the search field
 	 *
-	 * @since  TBD Escape output. Unslash and sanitize the sort request values.
+	 * @since  4.19.1 Escape output. Unslash and sanitize the sort request values.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -270,7 +270,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * Retrieves the search query string
 	 *
 	 * @access public
-	 * @since TBD Unslash and sanitize the search term. Give_Donors_Query escapes it.
+	 * @since 4.19.1 Unslash and sanitize the search term. Give_Donors_Query escapes it.
 	 * @since  1.0
 	 * @return mixed string If search is present, false otherwise
 	 */
@@ -338,7 +338,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	/**
 	 * Get donor query.
 	 *
-	 * @since  TBD Unslash the sort request values.
+	 * @since  4.19.1 Unslash the sort request values.
 	 * @since  1.8.1
 	 * @access public
 	 * @return array

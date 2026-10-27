@@ -33,7 +33,7 @@ class DonorsAdminPage
     /**
      * Render admin page container
      *
-     * @since TBD Escape output. Guard the id param.
+     * @since 4.19.1 Escape output. Guard the id param.
      * @since 4.4.0 Add new details page view
      * @since 2.20.0
      */
@@ -57,7 +57,7 @@ class DonorsAdminPage
     /**
      * Display a button on the old donation forms table that switches to the React view
      *
-     * @since TBD Escape translated output.
+     * @since 4.19.1 Escape translated output.
      * @since 2.20.0
      */
     public function renderReactSwitch()

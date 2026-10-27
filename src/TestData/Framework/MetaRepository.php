@@ -23,7 +23,7 @@ class MetaRepository
     }
 
     /**
-     * @since TBD Prepare each row with placeholders.
+     * @since 4.19.1 Prepare each row with placeholders.
      */
     public function persist($relationshipID, $metaData)
     {

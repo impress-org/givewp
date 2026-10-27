@@ -204,7 +204,7 @@ class Give_Notices {
 	/**
 	 * Display notice.
 	 *
-	 * @since TBD Escape output.
+	 * @since 4.19.1 Escape output.
 	 * @since 1.8.9
 	 */
 	public function render_admin_notices() {
@@ -338,7 +338,7 @@ class Give_Notices {
 	/**
 	 * Print notice js.
 	 *
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @since  1.8.9
 	 * @access private
 	 */
@@ -581,7 +581,7 @@ class Give_Notices {
 	/**
 	 * Print frontend errors.
 	 *
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @since  1.8.9
 	 * @access public
 	 *
@@ -646,7 +646,7 @@ class Give_Notices {
 	 * Print frontend notice.
 	 * Notice: notice type can be success/error/warning
 	 *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 3.7.0 Escape attributes
 	 * @since  1.8.9
 	 * @access public
@@ -725,7 +725,7 @@ class Give_Notices {
 	 * @todo   Implement render_admin_notices function within this function in future.
 	 *
 	 * @access public
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @since  1.8.17
 	 *
 	 * @return string

@@ -62,7 +62,7 @@ class AdminActionHandler
     /**
      * Handle opt_out_into_tracking give action.
      *
-     * @since TBD Verify the nonce.
+     * @since 4.19.1 Verify the nonce.
      * @since 2.10.0
      */
     public function optOutFromUsageTracking()
@@ -88,7 +88,7 @@ class AdminActionHandler
     /**
      * Handle opt_in_into_tracking give action.
      *
-     * @since TBD Verify the nonce.
+     * @since 4.19.1 Verify the nonce.
      * @since 2.10.0
      */
     public function optInToUsageTracking()

@@ -6,12 +6,12 @@ use Give\Tests\TestCase;
 use Give_Donor_List_Table;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 final class DonorTableRequestInputTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -22,7 +22,7 @@ final class DonorTableRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -32,7 +32,7 @@ final class DonorTableRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testQueryUnslashesAndSanitizesTheSortValues(): void
     {
@@ -46,7 +46,7 @@ final class DonorTableRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testQueryCastsThePageToAnInteger(): void
     {
@@ -58,7 +58,7 @@ final class DonorTableRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testSearchUnslashesTheTerm(): void
     {

@@ -1,7 +1,7 @@
 <?php if (!defined('ABSPATH')) { exit; } ?>
 <?php
 /**
- * @since TBD Escape output, including translated strings. Number the placeholders and move the translators comment.
+ * @since 4.19.1 Escape output, including translated strings. Number the placeholders and move the translators comment.
  */
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 ?>

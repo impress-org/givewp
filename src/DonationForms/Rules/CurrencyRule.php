@@ -55,7 +55,7 @@ class CurrencyRule implements ValidationRule
      * Uses give_get_currencies_list() to get the current supported currencies
      * and provides clear error messages with valid currency options.
      *
-     * @since TBD Number the placeholders and add translators comments.
+     * @since 4.19.1 Number the placeholders and add translators comments.
      * @since 4.19.0.1 Require the currency to be one of the form's supported currencies when they are provided.
      * @since 4.10.0
      */

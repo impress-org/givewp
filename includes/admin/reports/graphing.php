@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Show report graphs
  *
- * @since TBD Escape output, including translated strings, and use gmdate() instead of date().
+ * @since 4.19.1 Escape output, including translated strings, and use gmdate() instead of date().
  * @since 1.0
  * @return void
  */
@@ -249,7 +249,7 @@ function give_reports_graph() {
 /**
  * Show report graphs of a specific donation form.
  *
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings.
  * @since 1.0
  *
  * @param int $form_id
@@ -498,7 +498,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 /**
  * Show report graph date filters
  *
- * @since TBD Use gmdate() instead of date(), and unslash and sanitize the tab request value.
+ * @since 4.19.1 Use gmdate() instead of date(), and unslash and sanitize the tab request value.
  * @since 1.0.0
  * @since 1.8.0 The hidden `view` field is replaced with `tab` field.
  *
@@ -614,7 +614,7 @@ function give_reports_graph_controls() {
  * Date sent via $_GET is read first and then modified (if needed) to match the
  * selected date-range (if any)
  *
- * @since TBD Use gmdate() instead of date(), and unslash and sanitize the date request values.
+ * @since 4.19.1 Use gmdate() instead of date(), and unslash and sanitize the date request values.
  * @since 1.0
  *
  * @return array
@@ -805,7 +805,7 @@ function give_get_report_dates() {
 /**
  * Grabs all of the selected date info and then redirects appropriately
  *
- * @since TBD Use a safe redirect, and unslash and sanitize the tab and form id request values.
+ * @since 4.19.1 Use a safe redirect, and unslash and sanitize the tab and form id request values.
  * @since 1.0.0
  * @since 1.8.0 The `tab` query arg is added to the redirect.
  *
@@ -832,7 +832,7 @@ add_action( 'give_filter_reports', 'give_parse_report_dates' );
  *
  * Outputs a "Refresh Reports" button for graphs
  *
- * @since      TBD Escape output, including translated strings.
+ * @since      4.19.1 Escape output, including translated strings.
  * @since      1.3
  */
 function give_reports_refresh_button() {

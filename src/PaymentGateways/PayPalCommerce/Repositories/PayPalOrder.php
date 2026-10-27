@@ -234,7 +234,7 @@ class PayPalOrder
     }
 
     /**
-     * @since TBD Write the failure log data as JSON.
+     * @since 4.19.1 Write the failure log data as JSON.
      * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 3.4.2
      *
@@ -356,7 +356,7 @@ class PayPalOrder
     /**
      * Refunds a processed payment
      *
-     * @since TBD Write the failure log data as JSON.
+     * @since 4.19.1 Write the failure log data as JSON.
      * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 2.9.0
      *
@@ -389,7 +389,7 @@ class PayPalOrder
     /**
      * Validate argument given to create PayPal order.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.9.0
      *
      * @param array $array

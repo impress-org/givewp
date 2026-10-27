@@ -78,7 +78,7 @@ class Stripe
     /**
      * Show Stripe Credit Card Fields.
      *
-     * @since  TBD Escape output.
+     * @since  4.19.1 Escape output.
      * @since  2.8.0
      * @access public
      *
