@@ -235,6 +235,7 @@
         align-items: center;
         display: inline-flex;
         gap: 0.625rem;
+        padding-inline-end: var(--givewp-spacing-6);
 
         &__ring,
         &__check {
@@ -243,32 +244,10 @@
             width: 1.75rem;
         }
 
-        // The filled part is a conic gradient in currentColor, set inline; the mask cuts the hole.
-        // A dot at each end rounds the filled part: one at the top, one on the cap, which is turned
-        // to where the filled part ends.
-        &__ring {
-            background-color: #eeeeee;
-            border-radius: 50%;
-            color: rgb(43, 194, 83);
-            mask: radial-gradient(farthest-side, transparent calc(100% - 0.25rem), #000 calc(100% - 0.25rem));
-            position: relative;
-        }
-
-        &__ring::before,
-        &__cap::before {
-            background-color: currentColor;
-            border-radius: 50%;
-            content: '';
-            height: 0.25rem;
-            left: calc(50% - 0.125rem);
-            position: absolute;
-            top: 0;
-            width: 0.25rem;
-        }
-
-        &__cap {
-            inset: 0;
-            position: absolute;
+        &__ring-image {
+            display: block;
+            height: 100%;
+            width: 100%;
         }
 
         &__check {

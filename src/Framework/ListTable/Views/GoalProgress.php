@@ -20,8 +20,7 @@ class GoalProgress
      */
     public static function render($id, $percentage, $actual, $goal): string
     {
-        // The cell HTML goes through Interweave, which drops SVG and CSS variables, so the ring is a
-        // conic gradient in an inline style. The cap rounds the end of the filled part.
+        // The cell HTML goes through Interweave, which drops inline SVG, so the ring is an SVG image.
         $template = '
             <div class="givewp-goal-progress%6$s">
                 <span
@@ -31,8 +30,7 @@ class GoalProgress
                     aria-valuenow="%2$s"
                     aria-valuemin="0"
                     aria-valuemax="100"
-                    style="background-image: conic-gradient(currentColor %2$s%%, transparent 0)"
-                ><span class="givewp-goal-progress__cap" style="transform: rotate(%7$sdeg)"></span></span>
+                ><img class="givewp-goal-progress__ring-image" src="%7$s" alt="" /></span>
                 <span class="givewp-goal-progress__check" aria-hidden="true"></span>
                 <div id="giveDonationFormsProgressBar-%1$d" class="givewp-goal-progress__amount">
                     <span><span class="goal">%3$s</span>%4$s</span>
@@ -50,23 +48,45 @@ class GoalProgress
             $ringPercentage,
             $actual,
             sprintf(' %s %s', __('of', 'give'), $goal),
-            self::status($ringPercentage, self::isLoading((string)$actual)),
+            self::status($ringPercentage),
             self::isAchieved($percentage) ? ' givewp-goal-progress--achieved' : '',
-            $ringPercentage * 3.6
+            esc_attr(self::ringImage($ringPercentage))
         );
     }
 
     /**
-     * Both lines are rendered; the achieved modifier picks the one shown. The Forms list fills in the
-     * percentage when it loads the goal in the background.
+     * The ring as an SVG data URI: a gray track and a green arc with round ends. The round ends add
+     * half the stroke width at each end, so the arc is drawn that much shorter: a goal at 99% still
+     * shows a gap.
      *
      * @since TBD
      */
-    private static function status($ringPercentage, bool $isLoading): string
+    private static function ringImage($ringPercentage): string
     {
-        $percent = $isLoading
-            ? '<span class="give-skeleton" style="display: inline-block; width: 2ch; height: 1em;"></span>'
-            : esc_html(floor($ringPercentage));
+        // Two half-stroke ends (2 + 2 units) on a circle of 2π × 12 units, as a percentage.
+        $roundEnds = 4 / (2 * M_PI * 12) * 100;
+        $arc = $ringPercentage >= 100 ? 100 : round(max(0, $ringPercentage - $roundEnds), 1);
+
+        $svg = sprintf(
+            "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'>" .
+            "<circle cx='14' cy='14' r='12' fill='none' stroke='#eeeeee' stroke-width='4'/>" .
+            "<circle cx='14' cy='14' r='12' fill='none' stroke='#2bc253' stroke-width='4' stroke-linecap='round'" .
+            " pathLength='100' stroke-dasharray='%s 100' transform='rotate(-90 14 14)'/>" .
+            "</svg>",
+            $arc
+        );
+
+        return 'data:image/svg+xml,' . str_replace(['<', '>', '#'], ['%3C', '%3E', '%23'], $svg);
+    }
+
+    /**
+     * Both lines are rendered; the achieved modifier picks the one shown.
+     *
+     * @since TBD
+     */
+    private static function status($ringPercentage): string
+    {
+        $percent = esc_html(floor($ringPercentage));
 
         return sprintf(
             '<span class="givewp-goal-progress__status givewp-goal-progress__status--progress">%s</span>' .
@@ -81,18 +101,8 @@ class GoalProgress
     }
 
     /**
-     * The Forms list can load the goal in the background; the raised amount is a skeleton until then.
-     *
-     * @since TBD
-     */
-    private static function isLoading(string $actual): bool
-    {
-        return false !== strpos($actual, 'give-skeleton');
-    }
-
-    /**
      * The filter used to set the opacity of the old "Achieved" icon. Any value above 0 still shows
-     * the goal as achieved; the Forms list returns 0 while it loads the goal in the background.
+     * the goal as achieved.
      *
      * @since TBD
      */

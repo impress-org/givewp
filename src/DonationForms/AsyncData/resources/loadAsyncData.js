@@ -43,37 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Fills the goal ring of the new admin form list: the ring, its percentage and, once the goal is
-     * reached, the "Goal achieved" state.
-     *
-     * @since TBD
-     */
-    function updateGoalProgress(goalProgressElement, percentComplete) {
-        const percent = Math.max(0, Math.min(100, Number(percentComplete) || 0));
-        const ring = goalProgressElement.querySelector('.givewp-goal-progress__ring');
-        const cap = goalProgressElement.querySelector('.givewp-goal-progress__cap');
-        const percentElement = goalProgressElement.querySelector('.givewp-goal-progress__percent');
-
-        if (ring) {
-            ring.setAttribute('aria-valuenow', String(percent));
-            ring.style.backgroundImage = `conic-gradient(currentColor ${percent}%, transparent 0)`;
-        }
-
-        if (cap) {
-            cap.style.transform = `rotate(${percent * 3.6}deg)`;
-        }
-
-        if (percentElement) {
-            percentElement.textContent = String(Math.floor(percent));
-        }
-
-        goalProgressElement.classList.toggle('givewp-goal-progress--achieved', percent >= 100);
-    }
-
-    /**
      * This function fetch the async data from the server and set the values to the proper elements in the DOM.
      *
-     * @since TBD Fill the goal ring of the new admin form list.
+     * @since TBD Show the "Achieved" pill to screen readers too once the goal is reached.
      * @since 3.16.0
      */
     const loadFormData = (
@@ -83,8 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         progressBarElement = null,
         goalAchievedElement = null,
         donationsElement = null,
-        earningsElement = null,
-        goalProgressElement = null
+        earningsElement = null
     ) => {
         // If we don't have any of these elements with a placeholder waiting to be updated, then return.
         if (
@@ -139,10 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (!!goalAchievedElement && response.data.percentComplete >= 100) {
                         goalAchievedElement.style.opacity = '1';
-                    }
-
-                    if (!!goalProgressElement) {
-                        updateGoalProgress(goalProgressElement, response.data.percentComplete);
+                        goalAchievedElement.removeAttribute('aria-hidden');
                     }
 
                     if (isPlaceholder(donationsElement)) {
@@ -235,7 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Load the async data of all forms (visible on the screen) from the NEW admin form list view - giveListTable.
      *
-     * @since TBD Find the raised amount and the goal ring in the new goal cell.
      * @since 3.16.0
      */
     function handleAdminFormsListViewItems() {
@@ -251,8 +218,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const formId = select.getAttribute('data-id');
-                const amountRaisedElement = itemElement.querySelector('.givewp-goal-progress .goal');
-                const goalProgressElement = itemElement.querySelector('.givewp-goal-progress');
+                const amountRaisedElement = itemElement.querySelector("[id^='giveDonationFormsProgressBar'] > span");
+                const progressBarElement = itemElement.querySelector('.goalProgress > span');
+                const goalAchievedElement = itemElement.querySelector('.goalProgress--achieved');
                 const donationsElement = itemElement.querySelector('.column-donations-count-value');
                 const earningsElement = itemElement.querySelector('.column-earnings-value');
 
@@ -261,11 +229,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         formId,
                         itemElement,
                         amountRaisedElement,
-                        null,
-                        null,
+                        progressBarElement,
+                        goalAchievedElement,
                         donationsElement,
-                        earningsElement,
-                        goalProgressElement
+                        earningsElement
                     );
                 }
             });
