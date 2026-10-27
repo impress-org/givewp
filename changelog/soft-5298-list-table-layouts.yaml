@@ -1,0 +1,5 @@
+significance: minor
+type: enhancement
+entry: Give remembers each person's column, density and page size choices for
+  every admin list, per site.
+timestamp: 2026-10-27T18:39:38.518Z
