@@ -87,6 +87,23 @@ trait UsesFakeStripeApi
     }
 
     /**
+     * A single page of webhook endpoints as the Stripe API returns it.
+     *
+     * @since TBD
+     *
+     * @param array[] $endpoints Bodies built with endpointBody().
+     */
+    protected function listBody(array $endpoints): array
+    {
+        return [
+            'object' => 'list',
+            'url' => '/v1/webhook_endpoints',
+            'has_more' => false,
+            'data' => $endpoints,
+        ];
+    }
+
+    /**
      * @since TBD
      */
     protected function errorBody(string $type, string $message): array

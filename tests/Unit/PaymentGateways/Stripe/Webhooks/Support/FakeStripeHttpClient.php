@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support;
 
 use RuntimeException;
 use Stripe\HttpClient\ClientInterface;
+use Throwable;
 
 /**
  * Replaces the Stripe SDK's HTTP transport so the real SDK code runs without network access.
@@ -18,7 +19,7 @@ final class FakeStripeHttpClient implements ClientInterface
     public $requests = [];
 
     /**
-     * @var array<int, array{string, int, array}>
+     * @var array<int, array{string, int, array}|Throwable>
      */
     private $responses = [];
 
@@ -28,6 +29,17 @@ final class FakeStripeHttpClient implements ClientInterface
     public function queue(int $status, array $body): void
     {
         $this->responses[] = [json_encode($body), $status, []];
+    }
+
+    /**
+     * Makes the next request throw, the way the SDK's cURL client throws ApiConnectionException when Stripe
+     * cannot be reached.
+     *
+     * @since TBD
+     */
+    public function queueException(Throwable $exception): void
+    {
+        $this->responses[] = $exception;
     }
 
     /**
@@ -46,7 +58,13 @@ final class FakeStripeHttpClient implements ClientInterface
             throw new RuntimeException("No fake Stripe response queued for $method $absUrl");
         }
 
-        return array_shift($this->responses);
+        $response = array_shift($this->responses);
+
+        if ($response instanceof Throwable) {
+            throw $response;
+        }
+
+        return $response;
     }
 
     /**

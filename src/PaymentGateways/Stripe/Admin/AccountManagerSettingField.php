@@ -5,6 +5,7 @@ namespace Give\PaymentGateways\Stripe\Admin;
 use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
+use Give\PaymentGateways\Stripe\Webhooks\Controllers\EnsureWebhookEndpointsController;
 use Give_Admin_Settings;
 
 use function add_query_arg;
@@ -464,6 +465,7 @@ class AccountManagerSettingField
     }
 
     /**
+     * @since TBD Add the nonce for the webhook setup request.
      * @since TBD Escape output.
      * @since 2.13.0
      */
@@ -511,6 +513,8 @@ class AccountManagerSettingField
             echo esc_attr($can_display); ?>"
             data-redirect-url="<?php
             echo esc_url_raw($redirectUrl); ?>"
+            data-webhook-nonce="<?php
+            echo esc_attr(wp_create_nonce(EnsureWebhookEndpointsController::ACTION)); ?>"
         >
         </div>
         <?php
