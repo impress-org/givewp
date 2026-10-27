@@ -46,6 +46,13 @@ jobs:
                     mv wp-cli.phar /usr/local/bin/wp
                     php -d xdebug.mode=off "$(which wp)" i18n make-pot ${{github.workspace}} ${{github.workspace}}/languages/give.pot --exclude="$(cat .distignore | tr "\n" "," | sed 's/,$/ /' | tr " " "\n"),src/**/*.js,*.js.map,blocks/**/*.js"
 
+            # A release that touches many files makes wp.org take longer than SVN's default 10 minute
+            # wait to finish the commit, and the client gives up with E175012 even though the upload is done.
+            -   name: Raise the SVN timeout
+                run: |
+                    mkdir -p ~/.subversion
+                    printf '[global]\nhttp-timeout = 3600\n' >> ~/.subversion/servers
+
             -   name: WordPress Plugin Deploy
                 id: deploy
                 uses: 10up/action-wordpress-plugin-deploy@stable
