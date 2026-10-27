@@ -37,7 +37,7 @@ class GoalColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Show "Achieved" as a pill next to the amount, hidden (also from screen readers) unless the goal is met or the givewp_list_table_goal_progress_achieved_opacity filter returns a truthy value.
+     * @since TBD Show a progress ring next to the amount, and a check with "Goal achieved" once the goal is met or the givewp_list_table_goal_progress_achieved_opacity filter returns a value above 0.
      * @since 4.3.0 use DonationFormDataRepository
      * @since 4.2.0 convert goal data to v3 form format
      * @since 3.16.0 Remove "give_get_form_earnings_stats" filter logic and add filters to change the cell value content

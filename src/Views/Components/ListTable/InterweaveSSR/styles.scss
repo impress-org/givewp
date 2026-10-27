@@ -229,13 +229,94 @@
         }
     }
 
-    // The bar spans the amount line, "Achieved" pill included. The pill is in every row (hidden when
-    // the goal is not met), so bars keep the same length.
-    .goalProgress__container {
+    // A progress ring next to the amount. Once the goal is met, a check replaces the ring and
+    // "Goal achieved" replaces the percentage.
+    .givewp-goal-progress {
+        align-items: center;
         display: inline-flex;
-        flex-direction: column;
+        gap: 0.625rem;
+
+        &__ring,
+        &__check {
+            flex-shrink: 0;
+            height: 1.75rem;
+            width: 1.75rem;
+        }
+
+        // The filled part is a conic gradient in currentColor, set inline; the mask cuts the hole.
+        // A dot at each end rounds the filled part: one at the top, one on the cap, which is turned
+        // to where the filled part ends.
+        &__ring {
+            background-color: #eeeeee;
+            border-radius: 50%;
+            color: rgb(43, 194, 83);
+            mask: radial-gradient(farthest-side, transparent calc(100% - 0.25rem), #000 calc(100% - 0.25rem));
+            position: relative;
+        }
+
+        &__ring::before,
+        &__cap::before {
+            background-color: currentColor;
+            border-radius: 50%;
+            content: '';
+            height: 0.25rem;
+            left: calc(50% - 0.125rem);
+            position: absolute;
+            top: 0;
+            width: 0.25rem;
+        }
+
+        &__cap {
+            inset: 0;
+            position: absolute;
+        }
+
+        &__check {
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Ccircle cx='14' cy='14' r='14' fill='%231a6b2f'/%3E%3Cpath d='M8.5 14.5l3.5 3.5 7.5-8' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+                center / contain no-repeat;
+            display: none;
+        }
+
+        &__amount {
+            color: #1e1e1e;
+            display: flex;
+            flex-direction: column;
+            font-size: 0.8125rem;
+            font-variant-numeric: tabular-nums;
+            gap: 1px;
+            line-height: normal;
+            white-space: nowrap;
+
+            .goal {
+                font-weight: 700;
+            }
+        }
+
+        &__status {
+            color: #50575e;
+            font-size: 0.75rem;
+
+            &--achieved {
+                color: #1a6b2f;
+                display: none;
+                font-weight: 600;
+            }
+        }
+
+        &--achieved {
+            .givewp-goal-progress__ring,
+            .givewp-goal-progress__status--progress {
+                display: none;
+            }
+
+            .givewp-goal-progress__check,
+            .givewp-goal-progress__status--achieved {
+                display: block;
+            }
+        }
     }
 
+    // The Event Tickets sales bar.
     .goalProgress {
         width: 100%;
         height: 0.5rem;
@@ -244,40 +325,6 @@
         border-radius: 1.5625rem;
         overflow: hidden;
         margin: 0.3125rem 0 0.125rem;
-
-        // The amount line, with the "Achieved" pill next to it.
-        &__amount {
-            align-items: center;
-            display: flex;
-            font-variant-numeric: tabular-nums;
-            gap: var(--givewp-spacing-2);
-            white-space: nowrap;
-        }
-
-        &--achieved {
-            align-items: center;
-            background-color: var(--givewp-green-100);
-            border-radius: var(--givewp-rounded-12);
-            color: var(--givewp-green-900);
-            display: inline-flex;
-            font-size: var(--givewp-font-size-paragraph-md);
-            font-weight: 600;
-            gap: var(--givewp-spacing-1);
-            line-height: 1.5;
-            padding: 0 var(--givewp-spacing-2);
-
-            // Keeps its space so the bar length matches the other rows. aria-hidden keeps it from
-            // screen readers too.
-            &[aria-hidden='true'] {
-                visibility: hidden;
-            }
-
-            img {
-                flex-shrink: 0;
-                height: 0.625rem;
-                width: 0.625rem;
-            }
-        }
 
         & > span {
             display: block;

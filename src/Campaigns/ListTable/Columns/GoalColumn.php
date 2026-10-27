@@ -32,7 +32,7 @@ class GoalColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Show "Achieved" as a pill next to the amount, hidden (also from screen readers) unless the goal is met or the givewp_list_table_goal_progress_achieved_opacity filter returns a truthy value.
+     * @since TBD Show a progress ring next to the amount, and a check with "Goal achieved" once the goal is met or the givewp_list_table_goal_progress_achieved_opacity filter returns a value above 0.
      * @since 4.0.0
      *
      * @param Campaign $model
