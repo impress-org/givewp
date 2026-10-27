@@ -38,11 +38,22 @@ class GoalProgressTest extends TestCase
     /**
      * @since TBD
      */
-    public function testStartsTheRingAt0(): void
+    public function testLeavesTheRingEmptyAt0(): void
     {
         $html = GoalProgress::render(7, -5, '$0', '$100');
 
         $this->assertStringContainsString('aria-valuenow="0"', $html);
+        $this->assertStringNotContainsString('%232bc253', $html);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testShowsADotForSmallProgress(): void
+    {
+        $html = GoalProgress::render(7, 3, '$3', '$100');
+
+        $this->assertStringContainsString('stroke=&#039;%232bc253&#039;', $html);
         $this->assertStringContainsString('stroke-dasharray=&#039;0 100&#039;', $html);
     }
 

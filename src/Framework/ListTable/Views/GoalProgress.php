@@ -65,7 +65,7 @@ class GoalProgress
     /**
      * The ring as an SVG data URI: a gray track and a green arc with round ends. The round ends add
      * half the stroke width at each end, so the arc is drawn that much shorter: a goal at 99% still
-     * shows a gap.
+     * shows a gap, and any progress above 0 shows at least a dot. At 0 there is no arc.
      *
      * @since TBD
      */
@@ -74,6 +74,7 @@ class GoalProgress
         // Two half-stroke ends (2 + 2 units) on a circle of 2π × 12 units, as a percentage.
         $roundEnds = 4 / (2 * M_PI * 12) * 100;
         $arc = $ringPercentage >= 100 ? 100 : round(max(0, $ringPercentage - $roundEnds), 1);
+        $arcColor = $ringPercentage > 0 ? self::RING_COLOR : 'none';
 
         $svg = sprintf(
             "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'>" .
@@ -82,7 +83,7 @@ class GoalProgress
             " pathLength='100' stroke-dasharray='%s 100' transform='rotate(-90 14 14)'/>" .
             "</svg>",
             self::TRACK_COLOR,
-            self::RING_COLOR,
+            $arcColor,
             $arc
         );
 
