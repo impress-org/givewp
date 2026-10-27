@@ -64,6 +64,9 @@ class ListTableLayoutStoreTest extends TestCase
 
         global $wpdb;
 
+        // Give's legacy install code still listens to this hook, which WordPress marks as deprecated.
+        $this->setExpectedDeprecated('wpmu_new_blog');
+
         $userId = self::factory()->user->create();
         $siteId = self::factory()->blog->create();
         $store = new ListTableLayoutStore();
