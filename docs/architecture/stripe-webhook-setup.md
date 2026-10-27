@@ -1,13 +1,12 @@
 # Stripe webhook setup
 
 GiveWP creates, checks and deletes the Stripe webhook endpoint of each saved Stripe account, so the admin does
-not have to add it in the Stripe Dashboard. This document covers what sets the endpoint up, how
-GiveWP decides what to change, which credential each request uses, and what is not built yet.
+not have to add it in the Stripe Dashboard.
 
 ## The rule
 
-**The site sends an endpoint request only to a Stripe account saved in Give, with the key saved for
-that account and mode, and a health check never writes.**
+The site sends an endpoint request only to a Stripe account saved in Give, using the key saved for
+that account and mode. A health check never writes.
 
 Two consequences:
 
@@ -25,8 +24,8 @@ Two consequences:
 | Hourly cron `givewp_stripe_webhook_health_check` | Lists the endpoints of every account and emails the site administrator when one has a problem. | No |
 | Account disconnected (AJAX `disconnect_stripe_account`) | Deletes this site's endpoint from the account, then removes the account from Give. | Yes (delete) |
 
-The AJAX action is `givewp_stripe_ensure_webhook_endpoints`. It is registered only on `wp_ajax_`,
-checks a nonce, and requires `manage_give_settings`.
+The AJAX action `givewp_stripe_ensure_webhook_endpoints` is registered only on `wp_ajax_`, checks a
+nonce, and requires `manage_give_settings`.
 
 ### Disconnecting an account
 
@@ -35,10 +34,9 @@ checks a nonce, and requires `manage_give_settings`.
 or manual, is disconnected through this AJAX action, so the give-stripe add-on needs no hook. Code
 that calls `give_stripe_disconnect_account()` directly skips the delete.
 
-The action works on both modes, not only the current one, for each mode where the account holds a key.
-It lists the endpoints, deletes each one whose URL matches this site's listener URL, and leaves every
-other endpoint alone. A 404 on delete counts as deleted. The result per mode is `deleted`,
-`nothing_matched` or `failed`.
+For each mode where the account holds a key, it lists the endpoints, deletes each one whose URL
+matches this site's listener URL, and leaves every other endpoint alone. A 404 on delete counts as
+deleted. The result per mode is `deleted`, `nothing_matched` or `failed`.
 
 A Stripe failure never stops the disconnect. A revoked OAuth token, a restricted key without write
 access and a network error are logged with `give_record_gateway_error()` as `Stripe Webhook
@@ -53,17 +51,17 @@ sees no message. The endpoint then stays on Stripe.
 2. Find the endpoint whose URL is this site's listener URL (see below). If several match, it prefers
    one that is enabled and has every required event.
 3. Branch:
-   - **No match, fewer than 16 endpoints:** create one with the required events, the API version
+   - No match, fewer than 16 endpoints: create one with the required events, the API version
      below, and the description `GiveWP`. Result `created`.
-   - **No match, 16 endpoints:** throw `WebhookEndpointLimitReached`. Nothing is created.
-   - **Match, enabled, every required event (or `*`):** change nothing. Result `found`.
-   - **Match, disabled or missing events:** update it. The request carries only what changed:
+   - No match, 16 endpoints: throw `WebhookEndpointLimitReached`. Nothing is created.
+   - Match, enabled, every required event (or `*`): change nothing. Result `found`.
+   - Match, disabled or missing events: update it. The request carries only what changed:
      `disabled=false`, and `enabled_events` as the existing events plus the missing ones. Extra
      events already on the endpoint are kept. Result `updated`. If Stripe refuses the update,
      `IncompleteWebhookEndpoint` is thrown.
 
-The required events are in `WebhookTarget::REQUIRED_EVENTS`. They are the ten events the Stripe
-listeners in GiveWP and Give Recurring act on.
+The required events are the ten events in `WebhookTarget::REQUIRED_EVENTS` that the Stripe listeners
+in GiveWP and Give Recurring act on.
 
 `CheckWebhookEndpointHealth` runs the same list and match steps and returns `healthy`, `missing`,
 `disabled` or `missing_events` without writing.
@@ -105,17 +103,14 @@ and renders the result. If the request itself fails, it falls back to the conten
 from the `data-*` attributes of `#give-stripe-connected`. If the admin closes the loader before the
 response arrives, the result is not opened.
 
-While a request is running, the **Set up webhooks** and **Try again** buttons are disabled and no
-second request starts. They are enabled again when the request ends.
-
 ## Credentials
 
 The endpoint actions read the key saved in `_give_stripe_get_all_accounts`:
 
-- **Connect accounts:** `live_secret_key` and `test_secret_key` hold the OAuth access token that
+- Connect accounts: `live_secret_key` and `test_secret_key` hold the OAuth access token that
   connect.givewp.com returned. The token is sent as the `api_key` option of each SDK call, so the
   endpoint belongs to the connected account.
-- **Manual accounts (give-stripe add-on):** the same fields hold a restricted key (`rk_`). The
+- Manual accounts (give-stripe add-on): the same fields hold a restricted key (`rk_`). The
   add-on rejects `sk_` keys. An account can hold the key of one mode only, and `account_id`,
   `account_email` and `account_country` can be empty. `GetStripeAccountsForMode` skips an account
   that has no key for the requested mode.
@@ -125,12 +120,12 @@ the marker of the other mode (`_test_` in live mode, `_live_` in test mode).
 
 ## Stripe constraints
 
-- **`api_version` is required** when an endpoint is created on a connected account, and it cannot be
+- `api_version` is required when an endpoint is created on a connected account, and it cannot be
   changed afterwards. `EnsureWebhookEndpoint::API_VERSION` is `2026-09-30.endive`. GiveWP's own
   Stripe API calls stay pinned to `2019-05-16`. Moving an endpoint to another version means creating
   a second endpoint, switching to it, and disabling the first.
-- **An account can have at most 16 endpoints.**
-- **The signing secret (`whsec_`) is in the response of the create request only.** The code
+- An account can have at most 16 endpoints.
+- The signing secret (`whsec_`) is in the response of the create request only. The code
   discards it, so the receiver cannot verify signatures.
 
 ## Health email
@@ -192,12 +187,3 @@ which endpoints GiveWP created or deleted is therefore not kept by default.
   `webhooks` group
 - `src/PaymentGateways/Stripe/Admin/AccountManagerSettingField.php` — renders `#give-stripe-connected`
   with the nonce for the AJAX action
-
-## Checklist for a change here
-
-- Does a new request go through one of the endpoint actions, with the key of the account and mode it
-  is for?
-- Can the hourly check still run without writing to Stripe?
-- Can a Stripe failure still not block a disconnect?
-- Does a new failure path log through `WebhookLogger` with the account, mode and Stripe request id,
-  and without a key?
