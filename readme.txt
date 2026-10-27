@@ -273,7 +273,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 4.19.1: October 28th, 2026 =
+= 4.19.1: October 27th, 2026 =
 * Fix: Updated the codebase to be fully compatible with the official WordPress Plugin Check guidelines.
 * Fix: Added nonce and capability checks to dismiss, onboarding, import, export, usage tracking and database updater requests. A manual migration now requires a URL with a valid nonce (wp_nonce_url with the give_manual_migration action) or the Migration log page.
 * Fix: Renamed unprefixed functions and hooks to give_-prefixed names. The old names still work and log a deprecation notice, except _give_is_form_migrated() and before_give_init, which add-ons still use.
