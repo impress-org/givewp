@@ -3,6 +3,17 @@
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
+/**
+ * @since 4.19.1 Escape output.
+ */
+
 if (!isset($attributes['campaignId'])) {
     return;
 }
@@ -38,7 +49,7 @@ if ($attributes['align'] !== 'full' && $attributes['align'] !== 'wide') {
         <img
             src="<?php echo esc_url($campaign->image); ?>"
             alt="<?php echo esc_attr($altText); ?>"
-            style="<?php echo trim(esc_attr($widthStyle) . esc_attr($heightStyle) . esc_attr($borderRadius)); ?>"
+            style="<?php echo esc_attr(trim(esc_attr($widthStyle) . esc_attr($heightStyle) . esc_attr($borderRadius))); ?>"
         />
     </figure>
 </div>

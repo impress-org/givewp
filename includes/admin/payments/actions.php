@@ -21,6 +21,7 @@ if (!defined('ABSPATH')) {
  *
  * Process the payment details edit
  *
+ * @since 4.19.1 Escape output, use gmdate() instead of date(), and unslash and sanitize the comment.
  * @since 2.27.0 Change to save comment to donations meta table
  * @since  1.0
  *
@@ -33,7 +34,7 @@ if (!defined('ABSPATH')) {
 function give_update_payment_details( $data ) {
 
 	if ( ! current_user_can( 'edit_give_payments', $data['give_payment_id'] ) ) {
-		wp_die( __( 'You do not have permission to edit payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	check_admin_referer( 'give_update_payment_details_nonce' );
@@ -67,7 +68,7 @@ function give_update_payment_details( $data ) {
 
 	$curr_total = $payment->total;
 	$new_total  = give_maybe_sanitize_amount( ( ! empty( $data['give-payment-total'] ) ? $data['give-payment-total'] : 0 ) );
-	$date       = date( 'Y-m-d', strtotime( give_clean( $data['give-payment-date'] ) ) ) . ' ' . $hour . ':' . $minute . ':00';
+	$date       = gmdate( 'Y-m-d', strtotime( give_clean( $data['give-payment-date'] ) ) ) . ' ' . $hour . ':' . $minute . ':00';
 
 	$curr_donor_id = sanitize_text_field( $data['give-current-donor'] );
 	$new_donor_id  = sanitize_text_field( $data['donor-id'] );
@@ -88,7 +89,7 @@ function give_update_payment_details( $data ) {
 	$updated = $payment->save();
 
 	if ( 0 === $updated ) {
-		wp_die( __( 'Error Updating Donation.', 'give' ), __( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Error Updating Donation.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 	$donor_changed = false;
@@ -101,7 +102,7 @@ function give_update_payment_details( $data ) {
 		$names      = strip_tags( wp_unslash( trim( "{$first_name} {$last_name}" ) ) );
 
 		if ( empty( $email ) || empty( $first_name ) ) {
-			wp_die( __( 'New Donor requires first name and email address.', 'give' ), __( 'Error', 'give' ), array( 'response' => 400 ) );
+			wp_die( esc_html__( 'New Donor requires first name and email address.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 		}
 
 		$donor = new Give_Donor( $email );
@@ -336,8 +337,10 @@ function give_update_payment_details( $data ) {
 	// Update comment.
 	if ( give_is_donor_comment_field_enabled( $payment->form_id ) ) {
 		// We are access comment directly from $_POST because comment formatting remove because of give_clean in give_post_actions.
-        $data['give_comment'] = trim($_POST['give_comment']);
-        $payment->update_meta(DonationMetaKeys::COMMENT, sanitize_textarea_field($data['give_comment']));
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by check_admin_referer() at the top of this function.
+        $data['give_comment'] = isset($_POST['give_comment']) ? sanitize_textarea_field(wp_unslash($_POST['give_comment'])) : '';
+        // Meta functions unslash the value, so slash it again to keep real backslashes.
+        $payment->update_meta(DonationMetaKeys::COMMENT, wp_slash($data['give_comment']));
 	}
 
 	// Check if payment status is not completed then update the goal progress for donation form.
@@ -364,6 +367,7 @@ add_action( 'give_update_payment_details', 'give_update_payment_details' );
 /**
  * Trigger a Donation Deletion.
  *
+ * @since 4.19.1 Escape output. Use a safe redirect.
  * @since 1.0
  *
  * @param array $data Arguments passed.
@@ -376,11 +380,11 @@ function give_trigger_donation_delete( $data ) {
 		$payment_id = absint( $data['purchase_id'] );
 
 		if ( ! current_user_can( 'delete_give_payments', $payment_id ) ) {
-			wp_die( __( 'You do not have permission to delete payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to delete payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		give_delete_donation( $payment_id );
-		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&give-messages[]=donation-deleted' ) );
+		wp_safe_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&give-messages[]=donation-deleted' ) );
 		give_die();
 	}
 }
@@ -390,17 +394,19 @@ add_action( 'give_delete_payment', 'give_trigger_donation_delete' );
 /**
  * AJAX Store Donation Note
  *
+ * @since 4.19.1 Escape output. Unslash and sanitize the request input.
  * @since 2.25.3 Add nonce check.
  */
 function give_ajax_store_payment_note() {
     check_ajax_referer('give_insert_payment_note');
 
-    $payment_id = absint($_POST['payment_id']);
-    $note = wp_kses($_POST['note'], []);
-    $note_type = give_clean($_POST['type']);
+    $payment_id = isset($_POST['payment_id']) ? absint($_POST['payment_id']) : 0;
+    // Slash again after sanitizing: the note is unslashed a second time when it is saved, which would drop backslashes.
+    $note = isset($_POST['note']) ? wp_slash(wp_kses(wp_unslash($_POST['note']), [])) : '';
+    $note_type = isset($_POST['type']) ? give_clean($_POST['type']) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
     if ( ! current_user_can('edit_give_payments', $payment_id)) {
-        wp_die(__('You do not have permission to edit payments.', 'give'), __('Error', 'give'), ['response' => 403]);
+        wp_die(esc_html__('You do not have permission to edit payments.', 'give'), esc_html__('Error', 'give'), ['response' => 403]);
     }
 
 	if ( empty( $payment_id ) || empty( $note ) ) {
@@ -437,7 +443,7 @@ function give_ajax_store_payment_note() {
 		do_action( 'give_donor-note_email_notification', $note_id, $payment_id );
 	}
 
-	die( give_get_payment_note_html( $note_id ) );
+	die( wp_kses_post( give_get_payment_note_html( $note_id ) ) );
 }
 
 add_action( 'wp_ajax_give_insert_payment_note', 'give_ajax_store_payment_note' );
@@ -445,6 +451,7 @@ add_action( 'wp_ajax_give_insert_payment_note', 'give_ajax_store_payment_note' )
 /**
  * Triggers a donation note deletion without ajax
  *
+ * @since 4.19.1 Escape output. Use a safe redirect.
  * @since 1.0
  *
  * @param array $data Arguments passed
@@ -458,14 +465,14 @@ function give_trigger_payment_note_deletion( $data ) {
 	}
 
 	if ( ! current_user_can( 'edit_give_payments', $data['payment_id'] ) ) {
-		wp_die( __( 'You do not have permission to edit payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	$edit_order_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&give-messages[]=donation-note-deleted&id=' . absint( $data['payment_id'] ) );
 
 	give_delete_payment_note( $data['note_id'], $data['payment_id'] );
 
-	wp_redirect( $edit_order_url );
+	wp_safe_redirect( $edit_order_url );
 }
 
 add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );
@@ -473,6 +480,7 @@ add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );
 /**
  * Delete a payment note deletion with ajax
  *
+ * @since 4.19.1 Escape output. Sanitize the request input.
  * @since 2.25.3 Add nonce check.
  * @since 1.0
  *
@@ -481,11 +489,14 @@ add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );
 function give_ajax_delete_payment_note() {
     check_ajax_referer('give_delete_payment_note');
 
-	if ( ! current_user_can( 'edit_give_payments', $_POST['payment_id'] ) ) {
-		wp_die( __( 'You do not have permission to edit payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+	$payment_id = isset( $_POST['payment_id'] ) ? absint( $_POST['payment_id'] ) : 0;
+	$note_id    = isset( $_POST['note_id'] ) ? absint( $_POST['note_id'] ) : 0;
+
+	if ( ! current_user_can( 'edit_give_payments', $payment_id ) ) {
+		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	if ( give_delete_payment_note( $_POST['note_id'], $_POST['payment_id'] ) ) {
+	if ( give_delete_payment_note( $note_id, $payment_id ) ) {
 		die( '1' );
 	} else {
 		die( '-1' );

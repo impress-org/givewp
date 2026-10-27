@@ -265,6 +265,8 @@ class LegacyServiceProvider implements ServiceProvider
      * @param string $type admin, ajax, cron or frontend.
      *
      * @return bool
+     *
+     * @since 4.19.1 Escape exception message.
      * @throws UnknownRequestTypeException
      */
     private function is_request($type)
@@ -281,7 +283,7 @@ class LegacyServiceProvider implements ServiceProvider
             case RequestType::WPCLI:
                 return defined('WP_CLI') && WP_CLI;
             default:
-                throw new UnknownRequestTypeException($type);
+                throw new UnknownRequestTypeException(esc_html($type));
         }
     }
 }

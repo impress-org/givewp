@@ -88,10 +88,11 @@ class Give_Cache {
 	 * Get result if cache enabled or not.
 	 *
 	 * @return bool
+	 * @since 4.19.1 Unslash and sanitize the request URI.
 	 * @since 2.6.1
 	 */
 	private function is_cache_enabled() {
-		return give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) && ( is_admin() || false !== strpos( $_SERVER['REQUEST_URI'], rest_get_url_prefix() . '/give-api/' ) );
+		return give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) && ( is_admin() || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), rest_get_url_prefix() . '/give-api/' ) ) );
 	}
 
 	/**
@@ -149,6 +150,7 @@ class Give_Cache {
 	/**
 	 * Notices function.
 	 *
+     * @since 4.19.1 Add translators comments.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.5
 	 * @access public
@@ -166,7 +168,7 @@ class Give_Cache {
 		if ( $enabled && ! in_array( 'give', $settings, true ) ) {
 			?>
 			<div class="error">
-				<p><?php echo wp_kses_post( sprintf( __( 'In order for <strong>database caching</strong> to work with GiveWP you must add %1$s to the "Ignored query stems" option in <a href="%2$s">W3 Total Cache settings</a>.', 'give' ), '<code>give</code>', esc_url( admin_url( 'admin.php?page=w3tc_dbcache#dbcache_reject_sql' ) ) ) ); ?></p>
+				<p><?php echo wp_kses_post( sprintf( /* translators: 1: Query stem to add, 2: URL of the W3 Total Cache settings page */ __( 'In order for <strong>database caching</strong> to work with GiveWP you must add %1$s to the "Ignored query stems" option in <a href="%2$s">W3 Total Cache settings</a>.', 'give' ), '<code>give</code>', esc_url( admin_url( 'admin.php?page=w3tc_dbcache#dbcache_reject_sql' ) ) ) ); ?></p>
 			</div>
 			<?php
 		}
@@ -324,6 +326,7 @@ class Give_Cache {
 	 *
 	 * Note: only for internal use
 	 *
+	 * @since 4.19.1 Remove quotes around the placeholder.
 	 * @since  1.8.7
 	 * @access public
 	 * @global wpdb $wpdb
@@ -334,12 +337,12 @@ class Give_Cache {
 	 */
 	public static function delete_all_expired( $force = false ) {
 		global $wpdb;
-		$options = $wpdb->get_results(
+		$options = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds Give_Cache rows in wp_options by name pattern, which get_option() cannot do.
 			$wpdb->prepare(
 				"SELECT option_name, option_value
 						FROM {$wpdb->options}
 						Where option_name
-						LIKE '%s'",
+						LIKE %s",
 				'%give_cache%'
 			),
 			ARRAY_A
@@ -379,6 +382,7 @@ class Give_Cache {
 	 *
 	 * Note: only for internal use
 	 *
+	 * @since 4.19.1 Remove quotes around the placeholder and the SQL field variable.
 	 * @since  1.8.7
 	 * @access public
 	 *
@@ -390,26 +394,24 @@ class Give_Cache {
 	public static function get_options_like( $option_name, $fields = false ) {
 		global $wpdb;
 
-		$field_names = $fields ? 'option_name, option_value' : 'option_name';
-
 		if ( $fields ) {
-			$options = $wpdb->get_results(
+			$options = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds Give_Cache rows in wp_options by name pattern, which get_option() cannot do.
 				$wpdb->prepare(
-					"SELECT {$field_names }
+					"SELECT option_name, option_value
 						FROM {$wpdb->options}
 						Where option_name
-						LIKE '%s'",
+						LIKE %s",
 					"%give_cache_{$option_name}%"
 				),
 				ARRAY_A
 			);
 		} else {
-			$options = $wpdb->get_col(
+			$options = $wpdb->get_col( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds Give_Cache rows in wp_options by name pattern, which get_option() cannot do.
 				$wpdb->prepare(
 					"SELECT *
 						FROM {$wpdb->options}
 						Where option_name
-						LIKE '%s'",
+						LIKE %s",
 					"%give_cache_{$option_name}%"
 				),
 				1
@@ -725,8 +727,8 @@ class Give_Cache {
 	public static function flush_cache( $force = false ) {
 		if (
 			$force
-			|| ( Give_Admin_Settings::is_saving_settings() && isset( $_POST['cache'] ) && give_is_setting_enabled( give_clean( $_POST['cache'] ) ) )
-			|| ( wp_doing_ajax() && isset( $_GET['action'] ) && 'give_cache_flush' === give_clean( $_GET['action'] ) )
+			|| ( Give_Admin_Settings::is_saving_settings() && isset( $_POST['cache'] ) && give_is_setting_enabled( give_clean( $_POST['cache'] ) ) ) // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified by Give_Admin_Settings::is_saving_settings() just before this read; give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+			|| ( wp_doing_ajax() && isset( $_GET['action'] ) && 'give_cache_flush' === give_clean( $_GET['action'] ) ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only compares the action name; give_cache_flush() verifies the nonce with check_ajax_referer() before it calls this. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 		) {
 			self::$instance->get_incrementer( true );
 			self::$instance->get_incrementer( true, 'give-cache-incrementer' );

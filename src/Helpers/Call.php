@@ -9,6 +9,7 @@ class Call
     /**
      * Call an invokable class.
      *
+     * @since 4.19.1 Escape exception message.
      * @since 2.17.0
      *
      * @param mixed $args
@@ -20,7 +21,7 @@ class Call
     public static function invoke(string $class, ...$args)
     {
         if (!method_exists($class, '__invoke')) {
-            throw new InvalidArgumentException("{$class} class is not invokable");
+            throw new InvalidArgumentException(esc_html("{$class} class is not invokable"));
         }
 
         /** @var callable $instance */

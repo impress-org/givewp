@@ -73,6 +73,8 @@ class Give_Donation_Form_Grid_Block {
 	/**
 	 * Register block
 	 *
+	 * @since 4.19.1 Changed the 'Donate' button text color default to #2B642C and the progress bar color default to #438D45 to meet color contrast requirements.
+	 *
 	 * @access public
 	 */
 	public function register_block() {
@@ -169,7 +171,7 @@ class Give_Donation_Form_Grid_Block {
                     ),
                     'donateButtonTextColor' => array(
                         'type'    => 'string',
-                        'default' => '#69b86b',
+                        'default' => '#2B642C',
                     ),
 					'displayType'       => array(
 						'type'    => 'string',
@@ -189,7 +191,7 @@ class Give_Donation_Form_Grid_Block {
                     ),
                     'progressBarColor'  => array(
                         'type' => 'string',
-                        'default' => '#69b86b'
+                        'default' => '#438D45'
                     )
 				),
 			)
@@ -212,14 +214,14 @@ class Give_Donation_Form_Grid_Block {
 			'ids'                 => implode(',',
                 array_map(
                     static function ($id) {
-                        _give_redirect_form_id($id);
+                        give_redirect_form_id($id);
 
                         return $id;
                     },
                     $this->getAsArray($attributes['formIDs'])
                 )
             ),
-			'exclude'             => implode(',', $this->getAsArray($attributes['excludedFormIDs'] ) ),
+			'exclude'             => implode(',', $this->getAsArray($attributes['excludedFormIDs'] ) ), // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- this is a shortcode attribute, not a query argument; hiding the chosen forms is the feature.
 			'orderby'             => $attributes['orderBy'],
 			'order'               => $attributes['order'],
 			'cats'                => implode(',', $this->getAsArray($attributes['categories'] ) ),

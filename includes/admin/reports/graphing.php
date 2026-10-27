@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Show report graphs
  *
+ * @since 4.19.1 Escape output, including translated strings, and use gmdate() instead of date().
  * @since 1.0
  * @return void
  */
@@ -59,7 +60,7 @@ function give_reports_graph() {
 
 		// Hour by hour.
 		$hour  = 0;
-		$month = date( 'n', current_time( 'timestamp' ) );
+		$month = gmdate( 'n', current_time( 'timestamp' ) );
 		while ( $hour <= 23 ) :
 
 			$start_date = mktime( $hour, 0, 0, $month, $dates['day'], $dates['year'] );
@@ -204,21 +205,21 @@ function give_reports_graph() {
 			<table class="widefat reports-table alignleft" style="max-width:450px">
 				<tbody>
 				<tr>
-					<th scope="row"><strong><?php _e( 'Total revenue for period:', 'give' ); ?></strong></th>
-					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals, [ 'sanitize' => false ] ) ); ?></td>
+					<th scope="row"><strong><?php esc_html_e( 'Total revenue for period:', 'give' ); ?></strong></th>
+					<td><?php echo esc_html( give_currency_filter( give_format_amount( $earnings_totals, [ 'sanitize' => false ] ) ) ); ?></td>
 				</tr>
 				<tr class="alternate">
-					<th scope="row"><strong><?php _e( 'Total donations for period:', 'give' ); ?><strong></th>
-					<td><?php echo $sales_totals; ?></td>
+					<th scope="row"><strong><?php esc_html_e( 'Total donations for period:', 'give' ); ?><strong></th>
+					<td><?php echo esc_html( $sales_totals ); ?></td>
 				</tr>
 				<?php if ( 'this_month' === $dates['range'] ) : ?>
 					<tr>
-						<th scope="row"><strong><?php _e( 'Estimated monthly revenue:', 'give' ); ?></strong></th>
-						<td><?php echo give_currency_filter( give_format_amount( $estimated['earnings'], [ 'sanitize' => false ] ) ); ?></td>
+						<th scope="row"><strong><?php esc_html_e( 'Estimated monthly revenue:', 'give' ); ?></strong></th>
+						<td><?php echo esc_html( give_currency_filter( give_format_amount( $estimated['earnings'], [ 'sanitize' => false ] ) ) ); ?></td>
 					</tr>
 					<tr class="alternate">
-						<th scope="row"><strong><?php _e( 'Estimated monthly donations:', 'give' ); ?></strong></th>
-						<td><?php echo floor( $estimated['sales'] ); ?></td>
+						<th scope="row"><strong><?php esc_html_e( 'Estimated monthly donations:', 'give' ); ?></strong></th>
+						<td><?php echo (int) floor( $estimated['sales'] ); ?></td>
 					</tr>
 				<?php endif; ?>
 			</table>
@@ -241,12 +242,14 @@ function give_reports_graph() {
 	$output = ob_get_contents();
 	ob_end_clean();
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $output is this widget's own buffered markup, including Give_Graph::display()'s <script> block (already escaped internally); wp_kses_post() would strip the script tag.
 	echo $output;
 }
 
 /**
  * Show report graphs of a specific donation form.
  *
+ * @since 4.19.1 Escape output, including translated strings.
  * @since 1.0
  *
  * @param int $form_id
@@ -435,7 +438,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			printf(
 				/* translators: %s: form title */
 				esc_html__( 'Revenue Report for %s', 'give' ),
-				get_the_title( $form_id )
+				esc_html( get_the_title( $form_id ) )
 			);
 	?>
 			</span></h3>
@@ -456,19 +459,19 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			<table class="widefat reports-table alignleft" style="max-width:450px">
 				<tbody>
 				<tr>
-					<th scope="row"><strong><?php _e( 'Total revenue for period:', 'give' ); ?></strong></th>
-					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals, [ 'sanitize' => false ] ) ); ?></td>
+					<th scope="row"><strong><?php esc_html_e( 'Total revenue for period:', 'give' ); ?></strong></th>
+					<td><?php echo esc_html( give_currency_filter( give_format_amount( $earnings_totals, [ 'sanitize' => false ] ) ) ); ?></td>
 				</tr>
 				<tr class="alternate">
-					<th scope="row"><strong><?php _e( 'Total donations for period:', 'give' ); ?></strong></th>
-					<td><?php echo $sales_totals; ?></td>
+					<th scope="row"><strong><?php esc_html_e( 'Total donations for period:', 'give' ); ?></strong></th>
+					<td><?php echo esc_html( $sales_totals ); ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><strong><?php _e( 'Average monthly revenue:', 'give' ); ?></strong></th>
-					<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ), [ 'sanitize' => false ] ) ); ?></td>
+					<th scope="row"><strong><?php esc_html_e( 'Average monthly revenue:', 'give' ); ?></strong></th>
+					<td><?php echo esc_html( give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ), [ 'sanitize' => false ] ) ) ); ?></td>
 				</tr>
 				<tr class="alternate">
-					<th scope="row"><strong><?php _e( 'Average monthly donations:', 'give' ); ?></strong></th>
+					<th scope="row"><strong><?php esc_html_e( 'Average monthly donations:', 'give' ); ?></strong></th>
 					<td><?php echo number_format( give_get_average_monthly_form_sales( $form_id ), 0 ); ?></td>
 				</tr>
 				</tbody>
@@ -488,12 +491,14 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 		</div>
 	</div>
 	<?php
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- this widget's own buffered markup, including Give_Graph::display()'s <script> block (already escaped internally); wp_kses_post() would strip the script tag.
 	echo ob_get_clean();
 }
 
 /**
  * Show report graph date filters
  *
+ * @since 4.19.1 Use gmdate() instead of date(), and unslash and sanitize the tab request value.
  * @since 1.0.0
  * @since 1.8.0 The hidden `view` field is replaced with `tab` field.
  *
@@ -519,10 +524,10 @@ function give_reports_graph_controls() {
 
 	$dates   = give_get_report_dates();
 	$display = $dates['range'] == 'other' ? '' : 'display: none;';
-	$tab     = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
+	$tab     = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'earnings'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only tab name; it selects which report to show and saves nothing.
 
 	if ( empty( $dates['day_end'] ) ) {
-		$dates['day_end'] = cal_days_in_month( CAL_GREGORIAN, date( 'n' ), date( 'Y' ) );
+		$dates['day_end'] = cal_days_in_month( CAL_GREGORIAN, gmdate( 'n' ), gmdate( 'Y' ) );
 	}
 
 	/**
@@ -540,8 +545,8 @@ function give_reports_graph_controls() {
 				<input type="hidden" name="page" value="give-reports" />
 				<input type="hidden" name="tab" value="<?php echo esc_attr( $tab ); ?>" />
 
-				<?php if ( isset( $_GET['form-id'] ) ) : ?>
-					<input type="hidden" name="form-id" value="<?php echo absint( $_GET['form-id'] ); ?>" />
+				<?php if ( isset( $_GET['form-id'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form filter; it only narrows the report and saves nothing. ?>
+					<input type="hidden" name="form-id" value="<?php echo absint( $_GET['form-id'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form filter; it only narrows the report and saves nothing. ?>" />
 				<?php endif; ?>
 
 				<div id="give-graphs-date-options-wrap">
@@ -552,7 +557,7 @@ function give_reports_graph_controls() {
 					</select>
 
 					<div id="give-date-range-options" style="<?php echo esc_attr( $display ); ?>">
-						<span class="screen-reader-text"><?php _e( 'From', 'give' ); ?>&nbsp;</span>
+						<span class="screen-reader-text"><?php esc_html_e( 'From', 'give' ); ?>&nbsp;</span>
 						<select id="give-graphs-month-start" name="m_start" aria-label="Start Month">
 							<?php for ( $i = 1; $i <= 12; $i ++ ) : ?>
 								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['m_start'] ) ); ?>><?php echo esc_html( give_month_num_to_name( $i ) ); ?></option>
@@ -564,7 +569,7 @@ function give_reports_graph_controls() {
 							<?php endfor; ?>
 						</select>
 						<select id="give-graphs-year-start" name="year" aria-label="Start Year">
-							<?php for ( $i = 2007; $i <= date( 'Y' ); $i ++ ) : ?>
+							<?php for ( $i = 2007; $i <= gmdate( 'Y' ); $i ++ ) : ?>
 								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['year'] ) ); ?>><?php echo esc_html( $i ); ?></option>
 							<?php endfor; ?>
 						</select>
@@ -581,13 +586,13 @@ function give_reports_graph_controls() {
 							<?php endfor; ?>
 						</select>
 						<select id="give-graphs-year-end" name="year_end" aria-label="End Year">
-							<?php for ( $i = 2007; $i <= date( 'Y' ); $i ++ ) : ?>
+							<?php for ( $i = 2007; $i <= gmdate( 'Y' ); $i ++ ) : ?>
 								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['year_end'] ) ); ?>><?php echo esc_html( $i ); ?></option>
 							<?php endfor; ?>
 						</select>
 					</div>
 
-					<input type="submit" class="button-secondary" value="<?php _e( 'Filter', 'give' ); ?>" />
+					<input type="submit" class="button-secondary" value="<?php esc_attr_e( 'Filter', 'give' ); ?>" />
 				</div>
 
 				<input type="hidden" name="give_action" value="filter_reports" />
@@ -609,6 +614,7 @@ function give_reports_graph_controls() {
  * Date sent via $_GET is read first and then modified (if needed) to match the
  * selected date-range (if any)
  *
+ * @since 4.19.1 Use gmdate() instead of date(), and unslash and sanitize the date request values.
  * @since 1.0
  *
  * @return array
@@ -618,53 +624,55 @@ function give_get_report_dates() {
 
 	$current_time = current_time( 'timestamp' );
 
-	$dates['range']    = isset( $_GET['range'] ) ? $_GET['range'] : 'this_month';
-	$dates['year']     = isset( $_GET['year'] ) ? $_GET['year'] : date( 'Y' );
-	$dates['year_end'] = isset( $_GET['year_end'] ) ? $_GET['year_end'] : date( 'Y' );
-	$dates['m_start']  = isset( $_GET['m_start'] ) ? $_GET['m_start'] : 1;
-	$dates['m_end']    = isset( $_GET['m_end'] ) ? $_GET['m_end'] : 12;
-	$dates['day']      = isset( $_GET['day'] ) ? $_GET['day'] : 1;
-	$dates['day_end']  = isset( $_GET['day_end'] ) ? $_GET['day_end'] : cal_days_in_month( CAL_GREGORIAN, $dates['m_end'], $dates['year'] );
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only report date filters; they only change the date range the report shows and save nothing.
+	$dates['range']    = isset( $_GET['range'] ) ? sanitize_text_field( wp_unslash( $_GET['range'] ) ) : 'this_month';
+	$dates['year']     = isset( $_GET['year'] ) ? sanitize_text_field( wp_unslash( $_GET['year'] ) ) : gmdate( 'Y' );
+	$dates['year_end'] = isset( $_GET['year_end'] ) ? sanitize_text_field( wp_unslash( $_GET['year_end'] ) ) : gmdate( 'Y' );
+	$dates['m_start']  = isset( $_GET['m_start'] ) ? sanitize_text_field( wp_unslash( $_GET['m_start'] ) ) : 1;
+	$dates['m_end']    = isset( $_GET['m_end'] ) ? sanitize_text_field( wp_unslash( $_GET['m_end'] ) ) : 12;
+	$dates['day']      = isset( $_GET['day'] ) ? sanitize_text_field( wp_unslash( $_GET['day'] ) ) : 1;
+	$dates['day_end']  = isset( $_GET['day_end'] ) ? sanitize_text_field( wp_unslash( $_GET['day_end'] ) ) : cal_days_in_month( CAL_GREGORIAN, $dates['m_end'], $dates['year'] );
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	// Modify dates based on predefined ranges.
 	switch ( $dates['range'] ) :
 
 		case 'this_month':
-			$dates['m_start']  = date( 'n', $current_time );
-			$dates['m_end']    = date( 'n', $current_time );
+			$dates['m_start']  = gmdate( 'n', $current_time );
+			$dates['m_end']    = gmdate( 'n', $current_time );
 			$dates['day']      = 1;
 			$dates['day_end']  = cal_days_in_month( CAL_GREGORIAN, $dates['m_end'], $dates['year'] );
-			$dates['year']     = date( 'Y' );
-			$dates['year_end'] = date( 'Y' );
+			$dates['year']     = gmdate( 'Y' );
+			$dates['year_end'] = gmdate( 'Y' );
 			break;
 
 		case 'last_month':
-			if ( date( 'n' ) == 1 ) {
+			if ( gmdate( 'n' ) == 1 ) {
 				$dates['m_start']  = 12;
 				$dates['m_end']    = 12;
-				$dates['year']     = date( 'Y', $current_time ) - 1;
-				$dates['year_end'] = date( 'Y', $current_time ) - 1;
+				$dates['year']     = gmdate( 'Y', $current_time ) - 1;
+				$dates['year_end'] = gmdate( 'Y', $current_time ) - 1;
 			} else {
-				$dates['m_start']  = date( 'n' ) - 1;
-				$dates['m_end']    = date( 'n' ) - 1;
+				$dates['m_start']  = gmdate( 'n' ) - 1;
+				$dates['m_end']    = gmdate( 'n' ) - 1;
 				$dates['year_end'] = $dates['year'];
 			}
 			$dates['day_end'] = cal_days_in_month( CAL_GREGORIAN, $dates['m_end'], $dates['year'] );
 			break;
 
 		case 'today':
-			$dates['day']      = date( 'd', $current_time );
-			$dates['day_end']  = date( 'd', $current_time );
-			$dates['m_start']  = date( 'n', $current_time );
-			$dates['m_end']    = date( 'n', $current_time );
-			$dates['year']     = date( 'Y', $current_time );
-			$dates['year_end'] = date( 'Y', $current_time );
+			$dates['day']      = gmdate( 'd', $current_time );
+			$dates['day_end']  = gmdate( 'd', $current_time );
+			$dates['m_start']  = gmdate( 'n', $current_time );
+			$dates['m_end']    = gmdate( 'n', $current_time );
+			$dates['year']     = gmdate( 'Y', $current_time );
+			$dates['year_end'] = gmdate( 'Y', $current_time );
 			break;
 
 		case 'yesterday':
-			$year  = date( 'Y', $current_time );
-			$month = date( 'n', $current_time );
-			$day   = date( 'd', $current_time );
+			$year  = gmdate( 'Y', $current_time );
+			$month = gmdate( 'n', $current_time );
+			$day   = gmdate( 'd', $current_time );
 
 			if ( $month == 1 && $day == 1 ) {
 
@@ -691,36 +699,36 @@ function give_get_report_dates() {
 			break;
 
 		case 'this_week':
-			$dates['day']     = date( 'd', $current_time - ( date( 'w', $current_time ) - 1 ) * 60 * 60 * 24 ) - 1;
+			$dates['day']     = gmdate( 'd', $current_time - ( gmdate( 'w', $current_time ) - 1 ) * 60 * 60 * 24 ) - 1;
 			$dates['day']    += get_option( 'start_of_week' );
 			$dates['day_end'] = $dates['day'] + 6;
-			$dates['m_start'] = date( 'n', $current_time );
-			$dates['m_end']   = date( 'n', $current_time );
-			$dates['year']    = date( 'Y', $current_time );
+			$dates['m_start'] = gmdate( 'n', $current_time );
+			$dates['m_end']   = gmdate( 'n', $current_time );
+			$dates['year']    = gmdate( 'Y', $current_time );
 			break;
 
 		case 'last_week':
-			$dates['day']     = date( 'd', $current_time - ( date( 'w' ) - 1 ) * 60 * 60 * 24 ) - 8;
+			$dates['day']     = gmdate( 'd', $current_time - ( gmdate( 'w' ) - 1 ) * 60 * 60 * 24 ) - 8;
 			$dates['day']    += get_option( 'start_of_week' );
 			$dates['day_end'] = $dates['day'] + 6;
-			$dates['year']    = date( 'Y' );
+			$dates['year']    = gmdate( 'Y' );
 
-			if ( date( 'j', $current_time ) <= 7 ) {
-				$dates['m_start'] = date( 'n', $current_time ) - 1;
-				$dates['m_end']   = date( 'n', $current_time ) - 1;
+			if ( gmdate( 'j', $current_time ) <= 7 ) {
+				$dates['m_start'] = gmdate( 'n', $current_time ) - 1;
+				$dates['m_end']   = gmdate( 'n', $current_time ) - 1;
 				if ( $dates['m_start'] <= 1 ) {
-					$dates['year']     = date( 'Y', $current_time ) - 1;
-					$dates['year_end'] = date( 'Y', $current_time ) - 1;
+					$dates['year']     = gmdate( 'Y', $current_time ) - 1;
+					$dates['year_end'] = gmdate( 'Y', $current_time ) - 1;
 				}
 			} else {
-				$dates['m_start'] = date( 'n', $current_time );
-				$dates['m_end']   = date( 'n', $current_time );
+				$dates['m_start'] = gmdate( 'n', $current_time );
+				$dates['m_end']   = gmdate( 'n', $current_time );
 			}
 			break;
 
 		case 'this_quarter':
-			$month_now     = date( 'n', $current_time );
-			$dates['year'] = date( 'Y', $current_time );
+			$month_now     = gmdate( 'n', $current_time );
+			$dates['year'] = gmdate( 'Y', $current_time );
 
 			if ( $month_now <= 3 ) {
 
@@ -741,21 +749,21 @@ function give_get_report_dates() {
 
 				$dates['m_start']  = 10;
 				$dates['m_end']    = 1;
-				$dates['year_end'] = date( 'Y', $current_time ) + 1;
+				$dates['year_end'] = gmdate( 'Y', $current_time ) + 1;
 
 			}
 			break;
 
 		case 'last_quarter':
-			$month_now         = date( 'n', $current_time );
-			$dates['year']     = date( 'Y', $current_time );
-			$dates['year_end'] = date( 'Y', $current_time );
+			$month_now         = gmdate( 'n', $current_time );
+			$dates['year']     = gmdate( 'Y', $current_time );
+			$dates['year_end'] = gmdate( 'Y', $current_time );
 
 			if ( $month_now <= 3 ) {
 
 				$dates['m_start'] = 10;
 				$dates['m_end']   = 1;
-				$dates['year']    = date( 'Y', $current_time ) - 1; // Previous year.
+				$dates['year']    = gmdate( 'Y', $current_time ) - 1; // Previous year.
 
 			} elseif ( $month_now <= 6 ) {
 
@@ -778,15 +786,15 @@ function give_get_report_dates() {
 		case 'this_year':
 			$dates['m_start']  = 1;
 			$dates['m_end']    = 12;
-			$dates['year']     = date( 'Y', $current_time );
-			$dates['year_end'] = date( 'Y', $current_time );
+			$dates['year']     = gmdate( 'Y', $current_time );
+			$dates['year_end'] = gmdate( 'Y', $current_time );
 			break;
 
 		case 'last_year':
 			$dates['m_start']  = 1;
 			$dates['m_end']    = 12;
-			$dates['year']     = date( 'Y', $current_time ) - 1;
-			$dates['year_end'] = date( 'Y', $current_time ) - 1;
+			$dates['year']     = gmdate( 'Y', $current_time ) - 1;
+			$dates['year_end'] = gmdate( 'Y', $current_time ) - 1;
 			break;
 
 	endswitch;
@@ -797,6 +805,7 @@ function give_get_report_dates() {
 /**
  * Grabs all of the selected date info and then redirects appropriately
  *
+ * @since 4.19.1 Use a safe redirect, and unslash and sanitize the tab and form id request values.
  * @since 1.0.0
  * @since 1.8.0 The `tab` query arg is added to the redirect.
  *
@@ -806,10 +815,12 @@ function give_parse_report_dates( $data ) {
 	$dates = give_get_report_dates();
 
 	$view = give_get_reporting_view();
-	$tab  = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
-	$id   = isset( $_GET['form-id'] ) ? $_GET['form-id'] : null;
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only filters; this handler only redirects to the report with the chosen dates and saves nothing.
+	$tab  = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'earnings';
+	$id   = isset( $_GET['form-id'] ) ? absint( wp_unslash( $_GET['form-id'] ) ) : null;
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-	wp_redirect( esc_url_raw(add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&legacy=true&tab=' . esc_attr( $tab ) . '&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) ) );
+	wp_safe_redirect( esc_url_raw(add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&legacy=true&tab=' . esc_attr( $tab ) . '&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) ) );
 	give_die();
 }
 
@@ -821,6 +832,7 @@ add_action( 'give_filter_reports', 'give_parse_report_dates' );
  *
  * Outputs a "Refresh Reports" button for graphs
  *
+ * @since      4.19.1 Escape output, including translated strings.
  * @since      1.3
  */
 function give_reports_refresh_button() {
@@ -835,7 +847,7 @@ function give_reports_refresh_button() {
 		'give-refresh-reports'
 	);
 
-	echo Give()->tooltips->render_link(
+	echo Give()->tooltips->render_link( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- render_link() escapes every attribute value (href, aria-label, class) and the tag name; tag_content is a fixed icon span plus esc_html__().
 		[
 			'label'       => esc_attr__( 'Clicking this will clear the reports cache.', 'give' ),
 			'tag_content' => '<span class="give-admin-button-icon give-admin-button-icon-update"></span>' . esc_html__( 'Refresh Report Data', 'give' ),

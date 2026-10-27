@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Helps get a single option from the give_get_settings() array.
  *
@@ -146,6 +151,7 @@ function give_is_setting_enabled( $value, $compare_with = null ) {
 /**
  * Verify admin setting nonce
  *
+ * @since 4.19.1 Unslash and sanitize the nonce.
  * @since  2.4.0
  * @access public
  *
@@ -154,7 +160,7 @@ function give_is_setting_enabled( $value, $compare_with = null ) {
 function give_is_saving_settings() {
 	if (
 		empty( $_REQUEST['_give-save-settings'] )
-		|| ! wp_verify_nonce( $_REQUEST['_give-save-settings'], 'give-save-settings' )
+		|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_give-save-settings'] ) ), 'give-save-settings' )
 	) {
 		return false;
 	}

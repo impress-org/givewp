@@ -1,7 +1,13 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Get current setting tab.
  *
+ * @since 4.19.1 Unslash and sanitize the tab name.
  * @since  1.8
  * @return string
  */
@@ -19,7 +25,8 @@ function give_get_current_setting_tab() {
 	$default_current_tab = apply_filters( "give_default_setting_tab_{$current_setting_page}", 'general' );
 
 	// Get current tab.
-	$current_tab = empty( $_GET['tab'] ) ? $default_current_tab : urldecode( $_GET['tab'] );
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only tab param; it only selects which settings screen to show and saves nothing.
+	$current_tab = empty( $_GET['tab'] ) ? $default_current_tab : urldecode( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) );
 
 	// Output.
 	return $current_tab;
@@ -29,6 +36,7 @@ function give_get_current_setting_tab() {
 /**
  * Get current setting section.
  *
+ * @since 4.19.1 Unslash and sanitize the section name.
  * @since  1.8
  * @return string
  */
@@ -46,7 +54,8 @@ function give_get_current_setting_section() {
 	$default_current_section = apply_filters( "give_default_setting_tab_section_{$current_tab}", '' );
 
 	// Get current section.
-	$current_section = empty( $_REQUEST['section'] ) ? $default_current_section : urldecode( $_REQUEST['section'] );
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only section param; it only selects which settings screen to show and saves nothing.
+	$current_section = empty( $_REQUEST['section'] ) ? $default_current_section : urldecode( sanitize_text_field( wp_unslash( $_REQUEST['section'] ) ) );
 
 	// Output.
 	return $current_section;
@@ -55,12 +64,14 @@ function give_get_current_setting_section() {
 /**
  * Get current setting page.
  *
+ * @since 4.19.1 Unslash and sanitize the page name.
  * @since  1.8
  * @return string
  */
 function give_get_current_setting_page() {
 	// Get current page.
-	$setting_page = ! empty( $_GET['page'] ) ? urldecode( $_GET['page'] ) : '';
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page param; it only selects which settings screen to show and saves nothing.
+	$setting_page = ! empty( $_GET['page'] ) ? urldecode( sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) : '';
 
 	// Output.
 	return $setting_page;

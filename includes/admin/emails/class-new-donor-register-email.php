@@ -127,12 +127,14 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		/**
 		 * email preview header.
 		 *
+		 * @since 4.19.1 Escape output, unslash and sanitize the request values, and return '' instead of null, so later give_email_preview_header callbacks get a string.
 		 * @since  2.0
 		 * @access public
 		 *
 		 * @param string                        $email_preview_header
 		 * @param Give_New_Donor_Register_Email $email
-		 * @return string
+		 *
+		 * @return string Unchanged header for other emails; '' for this one, which prints its own switcher.
 		 */
 		public function email_preview_header( $email_preview_header, $email ) {
 			// Bailout.
@@ -141,7 +143,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			}
 
 			// Payment receipt switcher
-			$user_id = give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' );
+			$user_id = give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only preview param; it only picks which donor to preview and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
 			// Get payments.
 			$donors  = new Give_API();
@@ -163,7 +165,8 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				}
 			}
 
-			$request_url_data = wp_parse_url( $_SERVER['REQUEST_URI'] );
+			$request_uri      = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+			$request_url_data = wp_parse_url( $request_uri );
 			$query            = $request_url_data['query'];
 
 			// Remove user id query param if set from request url.
@@ -176,7 +179,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 					var transactions = document.getElementById("give_preview_email_user_id");
 					var selected_trans = transactions.options[transactions.selectedIndex];
 					if (selected_trans) {
-						var url_string = "<?php echo $request_url; ?>&user_id=" + selected_trans.value;
+						var url_string = <?php echo wp_json_encode( $request_url, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ); ?> + "&user_id=" + selected_trans.value;
 						window.location = url_string;
 					}
 				}
@@ -208,13 +211,14 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 
 				<?php
 				// The select field with 100 latest transactions
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- select() renders a <select> control; wp_kses_post() would strip it.
 				echo Give()->html->select(
 					array(
 						'name'             => 'preview_email_user_id',
-						'selected'         => $user_id,
+						'selected'         => $user_id, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- passed as data to select(), which escapes each option itself.
 						'id'               => 'give_preview_email_user_id',
 						'class'            => 'give-preview-email-donor-id',
-						'options'          => $options,
+						'options'          => $options, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- passed as data to select(), which escapes each option itself.
 						'chosen'           => false,
 						'select_atts'      => 'onchange="change_preview()"',
 						'show_option_all'  => false,
@@ -225,6 +229,8 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				<!-- Closing tag-->
 			</div>
 			<?php
+
+			return '';
 		}
 	}
 

@@ -4,7 +4,15 @@ use Give\Campaigns\Blocks\CampaignComments\Controller\BlockRenderController;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 /**
+ * @since 4.19.1 Escape output.
+ *
  * @var array    $attributes
  * @var Campaign $campaign
  */
@@ -15,4 +23,4 @@ if (!isset($attributes['campaignId'])
     return;
 }
 
-echo (new BlockRenderController())->render($attributes, $campaign->secondaryColor ?? '#27ae60');
+echo (new BlockRenderController())->render($attributes, $campaign->secondaryColor ?? '#27ae60'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- render() escapes every interpolated value with esc_attr() into a fixed <div> template; wp_kses_post() was a no-op here.

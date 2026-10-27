@@ -26,6 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Displays a user's donation history.
  *
+ * @since 4.19.1 Escape output. Unslash and sanitize the referrer.
  * @since 3.7.0 Sanitize attributes
  * @since 3.1.0 pass form id by reference in give_totals shortcode.
  * @since  1.0
@@ -74,8 +75,8 @@ function give_donation_history( $atts, $content = false ) {
 		if ( give_get_receipt_session() || is_user_logged_in() ) {
 			echo sprintf(
 				'<a href="%s">%s</a>',
-				esc_url($_SERVER['HTTP_REFERER'] ),
-				__( '&laquo; Return to All Donations', 'give' )
+				esc_url( isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '' ),
+				esc_html__( '&laquo; Return to All Donations', 'give' )
 			);
 		}
 
@@ -109,7 +110,7 @@ function give_donation_history( $atts, $content = false ) {
 
 	} else {
 
-		echo apply_filters( 'give_donation_history_nonuser_message', Give_Notices::print_frontend_notice( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
+		echo wp_kses_post( apply_filters( 'give_donation_history_nonuser_message', Give_Notices::print_frontend_notice( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) ) );
 		echo do_shortcode( '[give_login]' );
 	}
 
@@ -134,6 +135,7 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * Show the Give donation form.
  *
+ * @since 4.19.1 Escape output.
  * @since 4.3.0 Add check for 'modal' in display_style to allow v2 forms to be shown in a modal.
  * @since 3.7.0 Sanitize attributes
  * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
@@ -176,7 +178,7 @@ function give_form_shortcode( $atts ) {
         return ob_get_clean();
     }
 
-    _give_redirect_form_id($formId, $atts['id']);
+    give_redirect_form_id($formId, $atts['id']);
 
     // Short-circuit the shortcode output if the filter returns a non-empty string.
     $output = apply_filters('givewp_form_shortcode_output', '', $atts);
@@ -194,6 +196,7 @@ function give_form_shortcode( $atts ) {
 
 		ConfirmDonation::storePostedDataInDonationSession();
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- IframeView::render() outputs the complete iframe document built from escaped parts.
 		echo $iframeView->setFormId( $formId )
 				   ->showInModal( $showIframeInModal )
 				   ->setButtonTitle( $atts['continue_button_title'] )
@@ -239,7 +242,7 @@ function give_goal_shortcode( $atts ) {
 		'give_goal'
 	);
 
-    _give_redirect_form_id($atts['id']);
+    give_redirect_form_id($atts['id']);
 
 	// get the Give Form.
 	ob_start();
@@ -536,6 +539,7 @@ function give_process_profile_editor_updates( $data ) {
 
 	if ( $errors ) {
 		// Send back to the profile editor if there are errors.
+		// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- the redirect URL comes from the shortcode or block settings and may point to another host (SSO, a subdomain); wp_safe_redirect() would send those users to the home page instead.
 		wp_redirect( $data['give_redirect'] );
 		give_die();
 	}
@@ -618,6 +622,7 @@ function give_process_profile_editor_updates( $data ) {
 		if ( '2' === $update_code || '3' === $update_code ) {
 			wp_logout();
 		} else {
+			// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- the redirect URL comes from the shortcode or block settings and may point to another host (SSO, a subdomain); wp_safe_redirect() would send those users to the home page instead.
 			wp_redirect( esc_url_raw( add_query_arg( $profile_edit_redirect_args, $data['give_redirect'] ) ) );
 		}
 
@@ -634,6 +639,7 @@ add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
  *
  * Shows a donation total.
  *
+ * @since 4.19.1 Escape output.
  * @since 3.14.0 Replace "_give_form_earnings" form meta with $query->form($post)->sumAmount()
  * @since 3.7.0 Sanitize attributes
  * @since  2.1
@@ -687,7 +693,7 @@ function give_totals_shortcode( $atts ) {
 
         $form_ids = array_map(
             static function ($id) {
-                _give_redirect_form_id($id);
+                give_redirect_form_id($id);
 
                 return $id;
             },
@@ -707,7 +713,7 @@ function give_totals_shortcode( $atts ) {
 			'post__in'       => $form_ids,
 			'posts_per_page' => - 1,
 			'fields'         => 'ids',
-			'tax_query'      => [
+			'tax_query'      => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Base tax query that the category and tag filters below fill in; the taxonomy filter is the feature.
 				'relation' => 'AND',
 			],
 		];
@@ -812,7 +818,7 @@ function give_totals_shortcode( $atts ) {
 			give_show_goal_totals_progress( $total, $total_goal );
 		}
 
-		echo sprintf( $message ) . $donate_link;
+		echo wp_kses_post( sprintf( $message ) . $donate_link );
 		?>
 	</div>
 	<?php
@@ -845,6 +851,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
 /**
  * Displays donation forms in a grid layout.
  *
+ * @since 4.19.1 Changed the progress_bar_color default to #438D45 to meet non-text color contrast requirements (WCAG 1.4.11).
  * @since 3.7.0 Sanitize attributes
  * @since  2.1.0
  *
@@ -880,6 +887,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  * @type string $display_style How the form is displayed, either in new page or modal popup.
  *                                       Default 'redirect'. Accepts 'redirect', 'modal'.
  *
+ * @since 4.19.1 Escape output.
  * @return string|bool The markup of the form grid or false.
  */
 function give_form_grid_shortcode( $atts ) {
@@ -891,7 +899,7 @@ function give_form_grid_shortcode( $atts ) {
 			'forms_per_page'      => 12,
 			'paged'               => true,
 			'ids'                 => '',
-			'exclude'             => '',
+			'exclude'             => '', // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- this is a shortcode attribute, not a query argument; hiding the chosen forms is the feature.
 			'orderby'             => 'date',
 			'order'               => 'DESC',
 			'cats'                => '',
@@ -910,7 +918,7 @@ function give_form_grid_shortcode( $atts ) {
 			'image_height'        => 'auto',
 			'excerpt_length'      => 16,
 			'display_style'       => 'modal_reveal',
-            'progress_bar_color' => '#69b868',
+            'progress_bar_color' => '#438D45',
 			'status'              => '', // open or closed.
 		],
 		$atts
@@ -941,7 +949,7 @@ function give_form_grid_shortcode( $atts ) {
 		'orderby'        => $atts['orderby'],
 		'order'          => $atts['order'],
         'paged'          => $atts['paged'],
-		'tax_query'      => [
+		'tax_query'      => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Base tax query that the category and tag filters below fill in; the taxonomy filter is the feature.
 			'relation' => 'AND',
 		],
 	];
@@ -950,7 +958,7 @@ function give_form_grid_shortcode( $atts ) {
 	$form_closed_status = trim( $atts['status'] );
 
 	if ( ! empty( $form_closed_status ) ) {
-		$form_args['meta_query'] = [
+		$form_args['meta_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Filters the form grid by form status, which is stored as meta.
 			[
 				'key'   => '_give_form_status',
 				'value' => $form_closed_status,
@@ -967,7 +975,7 @@ function give_form_grid_shortcode( $atts ) {
 	if ( ! empty( $atts['ids'] ) ) {
         $form_args['post__in'] = array_map(
             static function ($id) {
-                _give_redirect_form_id($id);
+                give_redirect_form_id($id);
 
                 return $id;
             }, array_filter(array_map('trim', explode(',', $atts['ids'])))
@@ -976,7 +984,7 @@ function give_form_grid_shortcode( $atts ) {
 
 	// Convert comma-separated form IDs into array.
 	if ( ! empty( $atts['exclude'] ) ) {
-		$form_args['post__not_in'] = array_filter(
+		$form_args['post__not_in'] = array_filter( // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- hiding the forms chosen in the shortcode is the feature.
 			array_map(
 				function( $item ) {
 					return intval( trim( $item ) );
@@ -1050,11 +1058,11 @@ function give_form_grid_shortcode( $atts ) {
 	// Maybe filter by form Amount Donated or Number of Donations.
 	switch ( $atts['orderby'] ) {
 		case 'amount_donated':
-			$form_args['meta_key'] = '_give_form_earnings';
+			$form_args['meta_key'] = '_give_form_earnings'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the form grid by the stored earnings total; WP_Query sorts by meta only.
 			$form_args['orderby']  = 'meta_value_num';
 			break;
 		case 'number_donations':
-			$form_args['meta_key'] = '_give_form_sales';
+			$form_args['meta_key'] = '_give_form_sales'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the form grid by the stored sales total; WP_Query sorts by meta only.
 			$form_args['orderby']  = 'meta_value_num';
 			break;
         case 'random':
@@ -1062,7 +1070,7 @@ function give_form_grid_shortcode( $atts ) {
             break;
 		case 'closest_to_goal':
 			if ( give_has_upgrade_completed( 'v240_update_form_goal_progress' ) ) {
-				$form_args['meta_key'] = '_give_form_goal_progress';
+				$form_args['meta_key'] = '_give_form_goal_progress'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Sorts the form grid by the stored goal progress; WP_Query sorts by meta only.
 				$form_args['orderby']  = 'meta_value_num';
 			}
 			break;
@@ -1115,7 +1123,7 @@ function give_form_grid_shortcode( $atts ) {
 
 			printf(
 				'<div class="give-page-numbers">%s</div>',
-				paginate_links( $paginate_args )
+				wp_kses_post( paginate_links( $paginate_args ) )
 			);
 		}
 		echo '</div><!-- .give-wrap -->';

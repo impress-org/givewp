@@ -43,7 +43,7 @@ class ServiceProvider implements ServiceProviderInterface
         add_action(
             'give_checkout_error_checks',
             function () {
-                $formId = absint($_POST['give-form-id']);
+                $formId = absint($_POST['give-form-id']); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- runs on give_checkout_error_checks, after give_process_donation() or the signed v3 route verified the request. cast with absint() before use.
                 give(TemplateHooks::class)->walk(new Commands\SetupFieldValidation($formId));
             }
         );

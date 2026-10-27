@@ -120,7 +120,7 @@ class DonationFormsAdminPage
             'give-admin-ui-font',
             'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400..700&display=swap',
             [],
-            null
+            null // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- external Google Fonts stylesheet, not versioned by GiveWP.
         );
 
         wp_enqueue_style('givewp-design-system-foundation');
@@ -128,6 +128,7 @@ class DonationFormsAdminPage
 
     /**
      * Load migration onboarding scripts
+     * @since 4.19.1 Guard the post param.
      * @since 3.2.0
      *
      * @return void
@@ -148,9 +149,9 @@ class DonationFormsAdminPage
         }
 
         if ($this->isShowingEditV2FormPage()) {
-            $formId = (int)$_GET['post'];
+            $formId = absint($_GET['post'] ?? 0); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only post id; it only selects which form to show and saves nothing.
             $campaign = Campaign::findByFormId($formId);
-            $isMigrated = _give_is_form_migrated($formId);
+            $isMigrated = give_is_form_migrated($formId);
 
             $campaignUrl = $campaign
                 ? admin_url('edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id)
@@ -214,7 +215,7 @@ class DonationFormsAdminPage
         ];
 
         if (CampaignsAdminPage::isShowingDetailsPage()) {
-            $queryParameters['campaignId'] = isset($_GET['id']) ? absint($_GET['id']) : null;
+            $queryParameters['campaignId'] = isset($_GET['id']) ? absint($_GET['id']) : null; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only id param; it only selects which record to show and saves nothing.
         }
 
         $request = WP_REST_Request::from_url(
@@ -272,6 +273,7 @@ class DonationFormsAdminPage
     /**
      * Display a button on the old donation forms table that switches to the React view
      *
+     * @since 4.19.1 Escape output, including translated strings.
      * @since 2.20.0
      */
     public function renderReactSwitch()
@@ -287,7 +289,7 @@ class DonationFormsAdminPage
                 fetch('<?php echo esc_url_raw(rest_url('give-api/v2/admin/forms/view?isLegacy=0')) ?>', {
                     method: 'GET',
                     headers: {
-                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                        ['X-WP-Nonce']: '<?php echo esc_js(wp_create_nonce('wp_rest')) ?>'
                     }
                 })
                     .then((res) => {
@@ -297,10 +299,10 @@ class DonationFormsAdminPage
 
             jQuery(function() {
                 jQuery(jQuery('.wrap .wp-heading-inline')).after(
-                    '<button class="page-title-action switch-new-view" onclick="showReactTable()"><?php _e(
+                    '<button class="page-title-action switch-new-view" onclick="showReactTable()"><?php echo esc_js(__(
                         'Switch to New View',
                         'give'
-                    ) ?></button>'
+                    )) ?></button>'
                 );
                 jQuery('.page-title-action:not(.switch-new-view)').remove();
             });
@@ -315,7 +317,7 @@ class DonationFormsAdminPage
      */
     public static function isShowing(): bool
     {
-        return isset($_GET['page']) && ($_GET['page'] === 'give-forms');
+        return isset($_GET['page']) && ($_GET['page'] === 'give-forms'); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**
@@ -328,7 +330,7 @@ class DonationFormsAdminPage
      */
     private function isShowingEditV2FormPage(): bool
     {
-        return isset($_GET['action'], $GLOBALS['post']) && $_GET['action'] === 'edit' && $GLOBALS['post']->post_type === 'give_forms';
+        return isset($_GET['action'], $GLOBALS['post']) && $_GET['action'] === 'edit' && $GLOBALS['post']->post_type === 'give_forms'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**
@@ -340,7 +342,7 @@ class DonationFormsAdminPage
      */
     private function isShowingAddV2FormPage(): bool
     {
-        return !isset($_GET['page']) && isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
+        return !isset($_GET['page']) && isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**
@@ -350,7 +352,7 @@ class DonationFormsAdminPage
      */
     public static function isShowingLegacyPage(): bool
     {
-        return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms' && empty($_GET['page']);
+        return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms' && empty($_GET['page']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**

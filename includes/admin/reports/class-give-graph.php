@@ -149,22 +149,23 @@ class Give_Graph {
 	/**
 	 * Load the graphing library script
 	 *
+	 * @since 4.19.1 Set explicit versions on the enqueued assets.
 	 * @since 1.0
 	 */
 	public function load_scripts() {
 		// Use minified libraries if SCRIPT_DEBUG is turned off
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-		wp_register_script( 'jquery-flot-orderbars', GIVE_PLUGIN_URL . 'build/assets/js/plugins/jquery.flot.orderBars' . $suffix . '.js', array( 'jquery-flot' ), GIVE_VERSION );
+		wp_register_script( 'jquery-flot-orderbars', GIVE_PLUGIN_URL . 'build/assets/js/plugins/jquery.flot.orderBars' . $suffix . '.js', array( 'jquery-flot' ), GIVE_VERSION, false );
 		wp_enqueue_script( 'jquery-flot-orderbars' );
 
-		wp_register_script( 'jquery-flot-time', GIVE_PLUGIN_URL . 'build/assets/js/plugins/jquery.flot.time' . $suffix . '.js', array( 'jquery-flot' ), GIVE_VERSION );
+		wp_register_script( 'jquery-flot-time', GIVE_PLUGIN_URL . 'build/assets/js/plugins/jquery.flot.time' . $suffix . '.js', array( 'jquery-flot' ), GIVE_VERSION, false );
 		wp_enqueue_script( 'jquery-flot-time' );
 
-		wp_register_script( 'jquery-flot-resize', GIVE_PLUGIN_URL . 'build/assets/js/plugins/jquery.flot.resize' . $suffix . '.js', array( 'jquery-flot' ), GIVE_VERSION );
+		wp_register_script( 'jquery-flot-resize', GIVE_PLUGIN_URL . 'build/assets/js/plugins/jquery.flot.resize' . $suffix . '.js', array( 'jquery-flot' ), GIVE_VERSION, false );
 		wp_enqueue_script( 'jquery-flot-resize' );
 
-		wp_register_script( 'jquery-flot', GIVE_PLUGIN_URL . 'build/assets/js/plugins/jquery.flot' . $suffix . '.js', false, GIVE_VERSION );
+		wp_register_script( 'jquery-flot', GIVE_PLUGIN_URL . 'build/assets/js/plugins/jquery.flot' . $suffix . '.js', false, GIVE_VERSION, false );
 		wp_enqueue_script( 'jquery-flot' );
 
 	}
@@ -173,6 +174,7 @@ class Give_Graph {
 	 * Build the graph and return it as a string
 	 *
 	 * @var array
+	 * @since 4.19.1 Escape output.
 	 * @since 1.0
 	 * @return string
 	 */
@@ -186,7 +188,7 @@ class Give_Graph {
 
 			jQuery( document ).ready( function ( $ ) {
 				$.plot(
-					$( "#give-graph-<?php echo $this->id; ?>" ),
+					$( "#give-graph-<?php echo esc_js( $this->id ); ?>" ),
 					[
 						<?php
 							$order = 0;
@@ -195,12 +197,12 @@ class Give_Graph {
 						{
 							label : "<?php echo esc_attr( $label ); ?>",
 							id    : "<?php echo sanitize_key( $label ); ?>",
-							dataType  : '<?php echo ( ! empty( $this->options['dataType'][ $order ] ) ? $this->options['dataType'][ $order ] : 'count' ); ?>',
+							dataType  : '<?php echo esc_js( ! empty( $this->options['dataType'][ $order ] ) ? $this->options['dataType'][ $order ] : 'count' ); ?>',
 							// data format is: [ point on x, value on y ]
 							data  : [
 							<?php
 							foreach ( $data as $point ) {
-								echo '[' . implode( ',', $point ) . '],'; }
+								echo '[' . implode( ',', array_map( 'floatval', $point ) ) . '],'; }
 							?>
 							],
 							points: {
@@ -209,7 +211,7 @@ class Give_Graph {
 							bars  : {
 								show    : <?php echo $this->options['bars'] ? 'true' : 'false'; ?>,
 								barWidth: 100,
-				                order: <?php echo $order++; ?>,
+				                order: <?php echo (int) $order++; ?>,
 								align   : 'center'
 							},
 							lines : {
@@ -218,7 +220,7 @@ class Give_Graph {
 								fillColor: {colors: [{opacity: 0.4}, {opacity: 0.1}]}
 							},
 							<?php if ( $this->options['multiple_y_axes'] ) : ?>
-							yaxis : <?php echo $yaxis_count; ?>
+							yaxis : <?php echo (int) $yaxis_count; ?>
 							<?php endif; ?>
 
 						},
@@ -234,9 +236,9 @@ endforeach;
 						grid: {
 							show           : true,
 							aboveData      : false,
-							color          : "<?php echo $this->options['color']; ?>",
-							backgroundColor: "<?php echo $this->options['bgcolor']; ?>",
-							borderColor    : "<?php echo $this->options['bordercolor']; ?>",
+							color          : "<?php echo esc_js( $this->options['color'] ); ?>",
+							backgroundColor: "<?php echo esc_js( $this->options['bgcolor'] ); ?>",
+							borderColor    : "<?php echo esc_js( $this->options['bordercolor'] ); ?>",
 							borderWidth    : <?php echo absint( $this->options['borderwidth'] ); ?>,
 							clickable      : false,
 							hoverable      : true
@@ -245,20 +247,20 @@ endforeach;
 						colors: ["#69B868", "#546e7a"], //Give Colors
 
 						xaxis: {
-							mode        : "<?php echo $this->options['x_mode']; ?>",
-							timeFormat  : "<?php echo $this->options['x_mode'] == 'time' ? $this->options['time_format'] : ''; ?>",
+							mode        : "<?php echo esc_js( $this->options['x_mode'] ); ?>",
+							timeFormat  : "<?php echo esc_js( $this->options['x_mode'] == 'time' ? $this->options['time_format'] : '' ); ?>",
 							tickSize    : "<?php echo $this->options['x_mode'] == 'time' ? '' : 1; ?>",
 							<?php if ( $this->options['x_mode'] != 'time' ) : ?>
-							tickDecimals: <?php echo $this->options['x_decimals']; ?>
+							tickDecimals: <?php echo (int) $this->options['x_decimals']; ?>
 							<?php endif; ?>
 						},
 						yaxis: {
 							position    : 'right',
 							min         : 0,
-							mode        : "<?php echo $this->options['y_mode']; ?>",
-							timeFormat  : "<?php echo $this->options['y_mode'] == 'time' ? $this->options['time_format'] : ''; ?>",
+							mode        : "<?php echo esc_js( $this->options['y_mode'] ); ?>",
+							timeFormat  : "<?php echo esc_js( $this->options['y_mode'] == 'time' ? $this->options['time_format'] : '' ); ?>",
 							<?php if ( $this->options['y_mode'] != 'time' ) : ?>
-							tickDecimals: <?php echo $this->options['y_decimals']; ?>,
+							tickDecimals: <?php echo (int) $this->options['y_decimals']; ?>,
 							<?php endif; ?>
 							tickFormatter: function(val) {
 								return val.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, give_vars.thousands_separator);
@@ -281,7 +283,7 @@ endforeach;
 				}
 
 				var previousPoint = null;
-				$( "#give-graph-<?php echo $this->id; ?>" ).bind( "plothover", function ( event, pos, item ) {
+				$( "#give-graph-<?php echo esc_js( $this->id ); ?>" ).bind( "plothover", function ( event, pos, item ) {
 
 					$( "#x" ).text( pos.x.toFixed( 2 ) );
 					$( "#y" ).text( pos.y.toFixed( 2 ) );
@@ -313,7 +315,7 @@ endforeach;
 			} );
 
 		</script>
-		<div id="give-graph-<?php echo $this->id; ?>" class="give-graph" style="height: 300px;"></div>
+		<div id="give-graph-<?php echo esc_attr( $this->id ); ?>" class="give-graph" style="height: 300px;"></div>
 		<?php
 		return ob_get_clean();
 	}
@@ -321,6 +323,7 @@ endforeach;
 	/**
 	 * Output the final graph
 	 *
+	 * @since 4.19.1 Escape output.
 	 * @since 1.0
 	 */
 	public function display() {
@@ -334,6 +337,7 @@ endforeach;
 		do_action( 'give_before_graph', $this );
 
 		// Build the graph.
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- build_graph() renders the chart's <script> and container markup; its own values are escaped internally, and wp_kses_post() would strip the script tag.
 		echo $this->build_graph();
 
 		/**

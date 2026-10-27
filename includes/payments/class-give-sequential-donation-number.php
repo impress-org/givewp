@@ -1,6 +1,7 @@
 <?php
 // Exit if access directly.
 use Give\Framework\Database\DB;
+use Give\Log\Log;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -66,6 +67,7 @@ class Give_Sequential_Donation_Number {
 	 * Set serialize donation number as donation title.
 	 * Note: only for internal use
 	 *
+     * @since 4.19.1 Send caught exceptions to the GiveWP log.
      * @since 4.9.0 rename function - PHP 8 compatibility
      * @since 3.0.0 replace wp_update_post with DB::update to avoid affecting the post update date and invalidating the donation model's updatedAt date
 	 * @since  2.1.0
@@ -129,7 +131,11 @@ class Give_Sequential_Donation_Number {
 
 			give_update_option( 'sequential-ordering_number', ( $serial_number + 1 ) );
 		} catch ( Exception $e ) {
-			error_log( "GiveWP caught exception: {$e->getMessage()}" );
+			Log::error( "GiveWP caught exception: {$e->getMessage()}", [
+				'category'        => 'Payment',
+				'source'          => 'Sequential donation numbers',
+				'exception_class' => get_class( $e ),
+			] );
 		}
 	}
 
@@ -300,7 +306,7 @@ class Give_Sequential_Donation_Number {
 			);
 		}
 
-		return $wpdb->get_var(
+		return $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds a donation post by exact title (the donation number); it must be read live so numbers stay unique.
 			$wpdb->prepare(
 				"
 				SELECT ID
@@ -315,6 +321,7 @@ class Give_Sequential_Donation_Number {
 	/**
 	 * Get maximum donation number
 	 *
+	 * @since 4.19.1 Use %i for the table name.
 	 * @since  2.1.0
 	 * @access public
 	 *
@@ -325,13 +332,16 @@ class Give_Sequential_Donation_Number {
 		$table_name = Give()->sequential_donation_db->table_name;
 
 		return absint(
-			$wpdb->get_var(
-				"
-				SELECT ID
-				FROM {$table_name}
-				ORDER BY id DESC
-				LIMIT 1
-				"
+			$wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP sequential ordering table; WordPress has no cache layer for it, and the highest number must be read live.
+				$wpdb->prepare(
+					'
+					SELECT ID
+					FROM %i
+					ORDER BY id DESC
+					LIMIT 1
+					',
+					$table_name
+				)
 			)
 		);
 	}
@@ -348,7 +358,7 @@ class Give_Sequential_Donation_Number {
 		global $wpdb;
 
 		return absint(
-			$wpdb->get_var(
+			$wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Reads the newest published donation ID; it must be read live so numbers stay in order.
 				$wpdb->prepare(
 					"
 					SELECT ID

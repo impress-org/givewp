@@ -6,12 +6,15 @@
  * @subpackage  Templates/Global
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
+ * @since 4.19.1 Escape output.
  * @since       1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 $template = get_option( 'template' );
 
@@ -60,6 +63,6 @@ switch ( $template ) {
 		echo '</div>';
 		break;
 	default:
-		echo apply_filters( 'give_default_wrapper_end', '</div></div>' );
+		echo wp_kses_post( apply_filters( 'give_default_wrapper_end', '</div></div>' ) );
 		break;
 }

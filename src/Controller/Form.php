@@ -288,7 +288,7 @@ class Form
         );
 
         $url = explode('?', esc_url_raw($redirect), 2);
-        $url[0] = Give()->routeForm->getURL(get_post_field('post_name', absint($_REQUEST['give-form-id'])));
+        $url[0] = Give()->routeForm->getURL(get_post_field('post_name', absint($_REQUEST['give-form-id']))); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- filter runs inside the v2 donation flow, after give_process_donation() verified the nonce. cast with absint() before use.
 
         return implode('?', $url);
     }
@@ -405,10 +405,12 @@ class Form
      *
      * Note: it will render style on basis on selected form template.
      *
+     * @since 4.19.1 Escape output.
      * @since 2.7.0
      */
     public function renderFormOnSingleDonationFormPage()
     {
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_form_shortcode() escapes internally (it renders includes/forms/template.php, fixed in a prior phase).
         echo give_form_shortcode([]);
     }
 }

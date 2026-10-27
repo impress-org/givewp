@@ -68,7 +68,7 @@ function give_stripe_get_connected_account_id( $form_id = 0 ) {
  * @return array
  */
 function give_stripe_get_connected_account_options() {
-	$form_id                = ! empty( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
+	$form_id                = ! empty( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- cast with absint() and only picks which Stripe account to use; on donation requests the nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 	$default_account        = give_stripe_get_default_account( $form_id );
 	$args['stripe_account'] = $default_account['account_id'];
 
@@ -428,8 +428,8 @@ function give_stripe_get_statement_descriptor($donation_data = [])
 
     if ($donation_data && $donation_data['post_data']['give-form-id']) {
         $form_id = (int)$donation_data['post_data']['give-form-id'];
-    } elseif (!empty($_POST['give-form-id'])) {
-        $form_id = absint($_POST['give-form-id']);
+    } elseif (!empty($_POST['give-form-id'])) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- cast with absint() on the next line; it only picks the form for the descriptor, and on donation requests the nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
+        $form_id = absint($_POST['give-form-id']); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- same read as the line above.
     }
 
     /*
@@ -502,7 +502,7 @@ function give_stripe_get_custom_ffm_fields( $form_id, $donation_id = 0 ) {
 				continue;
 			}
 
-			$input_field_value = ! empty( $_POST[ $field['name'] ] ) ? give_clean( $_POST[ $field['name'] ] ) : '';
+			$input_field_value = ! empty( $_POST[ $field['name'] ] ) ? give_clean( $_POST[ $field['name'] ] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data; the nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 
 			if ( $donation_id > 0 ) {
 				$field_value = give_get_meta( $donation_id, $field['name'], true );
@@ -597,7 +597,7 @@ function give_stripe_set_app_info( $form_id = 0 ) {
 		give_set_error( 'stripe_app_info_error', __( 'Unable to set application information to Stripe. Please try again.', 'give' ) );
 	} // End try().
 
-	$form_id = ! empty( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : $form_id;
+	$form_id = ! empty( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : $form_id; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- cast with absint() and only picks which Stripe account to use; on donation requests the nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 
 	// Set API Key on every Stripe API request call.
 	give_stripe_set_api_key( $form_id );
@@ -636,10 +636,23 @@ function give_stripe_get_application_fee_amount( $amount ) {
 }
 
 /**
+ * Get the payment mode of the current donation request, to build the checkout redirect URL.
+ *
+ * @since 4.19.1
+ *
+ * @return string
+ */
+function give_stripe_get_payment_mode_from_request() {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- only builds the checkout redirect URL; on donation requests the nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
+	return isset( $_GET['payment-mode'] ) ? sanitize_text_field( wp_unslash( $_GET['payment-mode'] ) ) : '';
+}
+
+/**
  * This function is used to set Stripe API Key.
  *
  * @param int $form_id Form ID.
  *
+ * @since 4.19.1 Read the payment mode through a sanitizing helper.
  * @since 2.5.0
  *
  * @return void
@@ -668,7 +681,7 @@ function give_stripe_set_api_key( $form_id = 0 ) {
 		give_set_error( 'stripe_error', __( 'An error occurred while processing the donation. Please try again.', 'give' ) );
 
 		// Send donor back to donation form page.
-		give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
+		give_send_back_to_checkout( '?payment-mode=' . give_stripe_get_payment_mode_from_request() );
 
 	}
 
@@ -849,6 +862,7 @@ function give_stripe_is_source_type( $id, $type = 'src' ) {
 /**
  * This helper function is used to process Stripe payments.
  *
+ * @since 4.19.1 Read the payment mode through a sanitizing helper.
  * @since 3.5.0 remove descriptor as Stripe automatically adds it, per Stripe API changes (https://support.stripe.com/questions/use-of-the-statement-descriptor-parameter-on-paymentintents-for-card-charges)
  * @since 2.33.0 no longer store the payment intent secret
  * @since 2.5.0
@@ -864,6 +878,8 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 	give_clear_errors();
 
 	$stripe_gateway = new Give_Stripe_Gateway();
+
+	$payment_mode = isset( $_POST['payment-mode'] ) ? sanitize_text_field( wp_unslash( $_POST['payment-mode'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- only builds the checkout redirect URL; the nonce verified by give_verify_donation_form_nonce() in give_process_donation_form() before this runs.
 
 	$payment_method_id = ! empty( $donation_data['post_data']['give_stripe_payment_method'] )
 		? $donation_data['post_data']['give_stripe_payment_method']
@@ -975,11 +991,11 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 				)
 			);
 			give_set_error( 'stripe_error', __( 'The Stripe Gateway returned an error while processing the donation.', 'give' ) );
-			give_send_back_to_checkout( '?payment-mode=' . give_clean( $_POST['payment-mode'] ) );
+			give_send_back_to_checkout( '?payment-mode=' . $payment_mode );
 
 		} // End if().
 	} else {
-		give_send_back_to_checkout( '?payment-mode=' . give_clean( $_POST['payment-mode'] ) );
+		give_send_back_to_checkout( '?payment-mode=' . $payment_mode );
 	} // End if().
 }
 
@@ -1004,6 +1020,7 @@ function give_stripe_process_additional_authentication( $donation_id, $payment_i
 		give_insert_payment_note( $donation_id, 'Stripe requires additional action to be fulfilled.' );
 		give_update_meta( $donation_id, '_give_stripe_payment_intent_require_action_url', $action_url );
 
+		// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- redirects off-site to the Stripe authentication page; wp_safe_redirect() would block it.
 		wp_redirect( $action_url );
 		exit;
 	}
@@ -1154,6 +1171,7 @@ function give_stripe_is_update_payment_method_screen() {
  *
  * @param string $method Type of Direct Debit Method.
  *
+ * @since 4.19.1 Add translators comments.
  * @since 2.6.1
  *
  * @return string
@@ -1162,6 +1180,7 @@ function give_stripe_get_default_mandate_acceptance_text( $method = 'sepa' ) {
 
 	// For SEPA Direct Debit.
 	$mandate_acceptance_text = sprintf(
+		/* translators: %1$s: Site name */
 		__( 'By providing your IBAN and confirming this payment, you are authorizing %1$s and Stripe, our payment service provider, to send instructions to your bank to debit your account and your bank to debit your account in accordance with those instructions. You are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.', 'give' ),
 		get_bloginfo( 'sitename' )
 	);
@@ -1169,6 +1188,7 @@ function give_stripe_get_default_mandate_acceptance_text( $method = 'sepa' ) {
 	if ( 'becs' === $method ) {
 		// For BECS Direct Debit.
 		$mandate_acceptance_text = sprintf(
+			/* translators: 1: URL of the Direct Debit Request service agreement, 2: Site name */
 			__( 'By providing your bank account details and confirming this payment, you agree to this Direct Debit Request and the <a href="%1$s" target="_blank">Direct Debit Request service agreement</a>, and authorize Stripe Payments Australia Pty Ltd ACN 160 180 343 Direct Debit User ID number 507156 (“Stripe”) to debit your account through the Bulk Electronic Clearing System (BECS) on behalf of %2$s (the “Merchant”) for any amounts separately communicated to you by the Merchant. You certify that you are either an account holder or an authorized signatory on the account listed above.', 'give' ),
 			esc_url_raw( 'https://stripe.com/au-becs-dd-service-agreement/legal' ),
 			get_bloginfo( 'sitename' )

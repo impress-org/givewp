@@ -228,6 +228,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	/**
 	 * Given a key, get the information from the Database Directly
 	 *
+	 * @since 4.19.1 Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name
@@ -235,8 +236,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	 * @return mixed       Returns the data from the database
 	 */
 	private function get_stored_data( $key ) {
-		global $wpdb;
-		$value = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = '%s'", $key ) );
+		$value = get_option( $key, null );
 
 		if ( empty( $value ) ) {
 			return false;
@@ -253,6 +253,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	/**
 	 * Give a key, store the value
 	 *
+	 * @since 4.19.1 Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name
@@ -261,28 +262,15 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	 * @return void
 	 */
 	private function store_data( $key, $value ) {
-		global $wpdb;
-
 		$value = is_array( $value ) ? wp_json_encode( $value ) : esc_attr( $value );
 
-		$data = [
-			'option_name'  => $key,
-			'option_value' => $value,
-			'autoload'     => 'no',
-		];
-
-		$formats = [
-			'%s',
-			'%s',
-			'%s',
-		];
-
-		$wpdb->replace( $wpdb->options, $data, $formats );
+		update_option( $key, $value, false );
 	}
 
 	/**
 	 * Delete an option
 	 *
+	 * @since 4.19.1 Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name to delete
@@ -290,8 +278,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	 * @return void
 	 */
 	private function delete_data( $key ) {
-		global $wpdb;
-		$wpdb->delete( $wpdb->options, [ 'option_name' => $key ] );
+		delete_option( $key );
 	}
 
 	/**

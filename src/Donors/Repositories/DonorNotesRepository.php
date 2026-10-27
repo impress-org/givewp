@@ -76,8 +76,8 @@ class DonorNotesRepository
                 DB::table('give_commentmeta')
                     ->insert([
                         'give_comment_id' => $commentId,
-                        'meta_key' => DonorNoteMetaKeys::TYPE,
-                        'meta_value' => DonorNoteType::DONOR,
+                        'meta_key' => DonorNoteMetaKeys::TYPE, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the comment meta table, not a query filter.
+                        'meta_value' => DonorNoteType::DONOR, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
                     ]);
             }
         } catch (Exception $exception) {
@@ -85,7 +85,7 @@ class DonorNotesRepository
 
             Log::error('Failed creating a donor note', compact('donorNote'));
 
-            throw new Exception('Failed creating a donor note', 0, $exception);
+            throw new Exception('Failed creating a donor note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::commit();
@@ -126,7 +126,7 @@ class DonorNotesRepository
 
             Log::error('Failed updating a donor note', compact('donorNote'));
 
-            throw new Exception('Failed updating a donor note', 0, $exception);
+            throw new Exception('Failed updating a donor note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::commit();
@@ -159,7 +159,7 @@ class DonorNotesRepository
 
             Log::error('Failed deleting a donor note', compact('donorNote'));
 
-            throw new Exception('Failed deleting a donor note', 0, $exception);
+            throw new Exception('Failed deleting a donor note', 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $exception is the caught Exception object chained as the $previous constructor arg, not string output.
         }
 
         DB::commit();
@@ -180,6 +180,7 @@ class DonorNotesRepository
     }
 
     /**
+     * @since 4.19.1 Escape exception message.
      * @since 4.4.0
      *
      * @return void
@@ -188,7 +189,7 @@ class DonorNotesRepository
     {
         foreach ($this->requiredDonorProperties as $key) {
             if ( ! isset($donorNote->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
 
@@ -237,15 +238,15 @@ class DonorNotesRepository
         if ( ! $query) {
             $table->insert([
                 'give_comment_id' => $donorNote->id,
-                'meta_key' => DonorNoteMetaKeys::TYPE,
-                'meta_value' => $donorNote->type->getValue(),
+                'meta_key' => DonorNoteMetaKeys::TYPE, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column name in an insert or update of the comment meta table, not a query filter.
+                'meta_value' => $donorNote->type->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
             ]);
         } else {
             $table
                 ->where('give_comment_id', $donorNote->id)
                 ->where('meta_key', DonorNoteMetaKeys::TYPE)
                 ->update([
-                    'meta_value' => $donorNote->type->getValue(),
+                    'meta_value' => $donorNote->type->getValue(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an insert or update of the comment meta table, not a query filter.
                 ]);
         }
     }

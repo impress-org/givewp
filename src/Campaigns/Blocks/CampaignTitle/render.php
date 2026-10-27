@@ -3,6 +3,17 @@
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
+/**
+ * @since 4.19.1 Escape output.
+ */
+
 if ( ! isset($attributes['campaignId'])) {
     return;
 }
@@ -21,7 +32,7 @@ $textAlignClass = isset($attributes['textAlign']) ? 'has-text-align-' . $attribu
 ?>
 
 <<?php
-echo $headingTag; ?> <?php
+echo esc_html($headingTag); ?> <?php
 echo wp_kses_data(get_block_wrapper_attributes(['class' => $textAlignClass])); ?>>
 <?php echo esc_html($campaign->title); ?>
-</<?php echo $headingTag; ?>>
+</<?php echo esc_html($headingTag); ?>>

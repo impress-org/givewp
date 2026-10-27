@@ -5,6 +5,7 @@ namespace Give\Donations\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
+ * @since 4.19.1 Keep @deprecated off the @method lines: IDEs read it as deprecating the whole class.
  * @since 4.6.0 add trash status
  * @since 2.19.6
  *
@@ -18,7 +19,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method static DonationStatus PROCESSING()
  * @method static DonationStatus REVOKED()
  * @method static DonationStatus TRASH()
- * @method static DonationStatus RENEWAL() @deprecated
+ * @method static DonationStatus RENEWAL() Deprecated since 2.23.0. Set the donation type to "renewal" and use COMPLETE.
  * @method bool isPending()
  * @method bool isComplete()
  * @method bool isRefunded()
@@ -29,7 +30,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method bool isProcessing()
  * @method bool isRevoked()
  * @method bool isTrash()
- * @method bool isRenewal() @deprecated Do not use this. Instead, set the donation type to "renewal" and use COMPLETE status.
+ * @method bool isRenewal() Deprecated since 2.23.0. Check the donation type instead.
  */
 class DonationStatus extends Enum
 {

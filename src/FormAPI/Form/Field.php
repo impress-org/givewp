@@ -127,6 +127,7 @@ abstract class Field
     /**
      * Validate field arguments
      *
+     * @since 4.19.1 Escape exception message.
      * @since 2.7.0
      *
      * @param $array
@@ -138,7 +139,7 @@ abstract class Field
 
         if (array_diff($required, array_keys($array))) {
             throw new InvalidArgumentException(
-                __('To create a TextField object, please provide valid id, name and type.', 'give')
+                esc_html__('To create a TextField object, please provide valid id, name and type.', 'give')
             );
         }
     }

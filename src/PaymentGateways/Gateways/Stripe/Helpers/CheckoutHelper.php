@@ -27,13 +27,14 @@ class CheckoutHelper
     }
 
     /**
+     * @since 4.19.1 Escape output.
      * @since  2.5.5
      * @since 2.19.0 Migrated from the legacy Give_Stripe_Checkout::redirect_to_checkout implementation of the Stripe Checkout Gateway.
      * @return void
      */
     public function maybeHandleRedirect()
     {
-        $get_data          = give_clean( $_GET );
+        $get_data          = give_clean( $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Stripe Checkout return page; it only reads the session id and action to print the redirect script and saves nothing, and Stripe cannot send a WordPress nonce.
         $form_id           = ! empty( $get_data['id'] ) ? absint( $get_data['id'] ) : false;
         $publishable_key   = give_stripe_get_publishable_key( $form_id );
         $session_id        = ! empty( $get_data['session'] ) ? $get_data['session'] : false;
@@ -70,11 +71,11 @@ class CheckoutHelper
             window.addEventListener('load', function() {
                 let stripe = {};
 
-                stripe = Stripe( '<?php echo $publishable_key; ?>' );
+                stripe = Stripe( '<?php echo esc_js( $publishable_key ); ?>' );
 
                 <?php if ( ! empty( $stripe_account_id ) ) { ?>
-                stripe = Stripe( '<?php echo $publishable_key; ?>', {
-                    'stripeAccount': '<?php echo $stripe_account_id; ?>'
+                stripe = Stripe( '<?php echo esc_js( $publishable_key ); ?>', {
+                    'stripeAccount': '<?php echo esc_js( $stripe_account_id ); ?>'
                 } );
                 <?php } ?>
 
@@ -83,7 +84,7 @@ class CheckoutHelper
                     // Make the id field from the Checkout Session creation API response
                     // available to this file, so you can provide it as parameter here
                     // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-                    sessionId: '<?php echo $session_id; ?>'
+                    sessionId: '<?php echo esc_js( $session_id ); ?>'
                 }).then( ( result ) => {
                     console.log(result);
                     // If `redirectToCheckout` fails due to a browser or network

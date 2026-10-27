@@ -33,7 +33,7 @@ Give_Cron::add_thricely_event( 'give_refresh_licenses' );
  */
 function give_get_actions() {
 
-	$get_data = give_clean( $_GET ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$get_data = give_clean( $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- dispatcher only; each give_{action} handler verifies its own nonce.
 
 	$_get_action = ! empty( $get_data['give_action'] ) ? $get_data['give_action'] : null;
 
@@ -68,7 +68,7 @@ add_action( 'init', 'give_get_actions' );
  */
 function give_post_actions() {
 
-	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- dispatcher only; each give_{action} handler verifies its own nonce.
 
 	$_post_action = ! empty( $post_data['give_action'] ) ? $post_data['give_action'] : null;
 
@@ -98,6 +98,7 @@ add_action( 'init', 'give_post_actions' );
  * @param  int   $user_id   User ID.
  * @param  array $user_data User Data.
  *
+ * @since 4.19.1 Add translators comments.
  * @since 4.16.6 Only auto-link when registered via the donation-checkout flow.
  * @since  1.7
  *
@@ -116,6 +117,7 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ) {
 
 		// Update donor user_id.
 		if ( $donor->update( [ 'user_id' => $user_id ] ) ) {
+			/* translators: 1: WordPress user ID, 2: Donor ID */
 			$donor_note = sprintf( esc_html__( 'WordPress user #%1$d is connected to #%2$d', 'give' ), $user_id, $donor->id );
 			$donor->add_note( $donor_note );
 
@@ -160,15 +162,20 @@ add_action( 'give_file_export_complete', 'give_donor_batch_export_complete' );
  *
  * @param int $form_id Donation Form ID.
  *
+ * @since 4.19.1 Unslash and sanitize the posted price option and donation levels.
  * @since 1.8.9
  *
  * @return void
  */
 function give_set_donation_levels_max_min_amount( $form_id ) {
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- nonce verified by Give_MetaBox_Form_Data::save() before give_pre_process_give_forms_meta fires.
+	$price_option    = isset( $_POST['_give_price_option'] ) ? sanitize_text_field( wp_unslash( $_POST['_give_price_option'] ) ) : '';
+	$donation_levels = isset( $_POST['_give_donation_levels'] ) ? map_deep( wp_unslash( $_POST['_give_donation_levels'] ), 'sanitize_text_field' ) : [];
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
+
 	if (
-		( 'set' === $_POST['_give_price_option'] ) ||
-		( in_array( '_give_donation_levels', $_POST ) && count( $_POST['_give_donation_levels'] ) <= 0 ) ||
-		! ( $donation_levels_amounts = wp_list_pluck( $_POST['_give_donation_levels'], '_give_amount' ) )
+		( 'set' === $price_option ) ||
+		! ( $donation_levels_amounts = wp_list_pluck( (array) $donation_levels, '_give_amount' ) )
 	) {
 		// Delete old meta.
 		give_delete_meta( $form_id, '_give_levels_minimum_amount' );
@@ -218,6 +225,7 @@ add_action( 'give_complete_donation', '_give_save_donor_billing_address', 9999 )
 /**
  * Verify addon dependency before addon update
  *
+ * @since 4.19.1 Add translators comments.
  * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 4.1.0 add bailout for GiveWP to protect it from licensing issues
  * @since 2.1.4
@@ -267,6 +275,7 @@ function give_verify_addon_dependency_before_update( $error, $hook_extra ) {
 		return new WP_Error(
 			'Give_Addon_Update_Error',
 			sprintf(
+				/* translators: %s: Minimum GiveWP version number */
 				__( 'GiveWP version %s is required to update this add-on.', 'give' ),
 				$give_min_version
 			)
@@ -289,7 +298,7 @@ add_filter( 'upgrader_pre_install', 'give_verify_addon_dependency_before_update'
  * @return array WP query argument for Total Goal.
  */
 function give_wpml_total_goal_shortcode_agrs( $args ) {
-	$args['suppress_filters'] = true;
+	$args['suppress_filters'] = true; // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters -- intended: WPML must not filter the language, so the goal counts forms in every language.
 
 	return $args;
 }

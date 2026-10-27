@@ -186,6 +186,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			}
 
 			// Apply filter only for current email notification section.
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only section param; it only checks that a settings section is open and saves nothing.
 			if ( isset( $_GET['section'] ) && give_get_current_setting_section() === $this->config['id'] ) {
 				// Initialize email context for email notification.
 				$this->config['email_tag_context'] = apply_filters(
@@ -593,6 +594,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get allowed email tags for current email notification.
 		 *
+		 * @since  4.19.1 Escape output.
 		 * @since  2.0
 		 * @access private
 		 *
@@ -633,8 +635,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				ob_start() ?>
 				<ul class="give-email-tags-wrap">
 					<?php foreach ( $email_tags as $email_tag ) : ?>
-						<li class="give_<?php echo $email_tag['tag']; ?>_tag">
-							<code>{<?php echo $email_tag['tag']; ?>}</code> - <?php echo $email_tag['desc']; ?>
+						<li class="give_<?php echo esc_attr( $email_tag['tag'] ); ?>_tag">
+							<code>{<?php echo esc_html( $email_tag['tag'] ); ?>}</code> - <?php echo esc_html( $email_tag['desc'] ); ?>
 						</li>
 					<?php endforeach; ?>
 				</ul>
@@ -704,6 +706,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function send_preview_email( $send = true ) {
 			// Get form id
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Give_Email_Notifications::preview_email() and send_preview_email() verify the nonce with give_validate_nonce() before they call this; the ID is cast with absint().
 			$form_id = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 
 			// setup email data.
@@ -843,6 +846,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Decode preview email template tags.
 		 *
+		 * @since 4.19.1 Use gmdate() instead of date().
 		 * @since 2.14.0 display payment sequential number as id
 		 * @since 2.0
 		 *
@@ -902,7 +906,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'payment_id'              => $payment_id ? $payment->number : rand( 2000, 2050 ),
 					'receipt_link_url'        => $receipt_link_url,
 					'receipt_link'            => $receipt_link,
-					'date'                    => $payment_id ? date( give_date_format(), strtotime( $payment->date ) ) : date( give_date_format(), current_time( 'timestamp' ) ),
+					'date'                    => $payment_id ? gmdate( give_date_format(), strtotime( $payment->date ) ) : gmdate( give_date_format(), current_time( 'timestamp' ) ),
 					'donation'                => $payment_id ? give_email_tag_donation( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title', 'give' ),
 					'form_title'              => $payment_id ? give_email_tag_form_title( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title - Sample Donation Level', 'give' ),
 					'sitename'                => $payment_id ? give_email_tag_sitename( array( 'payment_id' => $payment_id ) ) : get_bloginfo( 'name' ),

@@ -54,17 +54,18 @@ class ValidateDonationFormRequest
      * after the run: before, so an earlier failed attempt in the same session cannot bleed in;
      * after, because the errors now live on the exception.
      *
+     * @since 4.19.1 Escape exception message.
      * @since 4.16.7.1
      *
      * @throws DonationFormFieldErrorsException
      */
     private function validateLegacyRequest(int $formId): void
     {
-        if (absint($_POST['give-form-id'] ?? 0) !== $formId) {
+        if (absint($_POST['give-form-id'] ?? 0) !== $formId) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- v3 donation request; the signed route (DonateRouteData::validateSignature()) protects it, and legacy code reads $_POST.
             throw new DonationFormFieldErrorsException(
-                new WP_Error(
+                new WP_Error( // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- WP_Error object; its messages are returned as JSON and rendered as text by the form.
                     'give_invalid_donation_form',
-                    __('The donation form ID is invalid. Please reload the page and try again.', 'give')
+                    esc_html__('The donation form ID is invalid. Please reload the page and try again.', 'give')
                 )
             );
         }
@@ -73,7 +74,7 @@ class ValidateDonationFormRequest
         $validData = give_donation_form_validate_fields();
 
         /** This action is documented in includes/process-donation.php */
-        do_action('give_checkout_error_checks', $validData, give_clean($_POST));
+        do_action('give_checkout_error_checks', $validData, give_clean($_POST)); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- v3 donation request; the signed route (DonateRouteData::validateSignature()) protects it, and legacy code reads $_POST.
 
         $errors = give_get_errors();
 
@@ -89,6 +90,6 @@ class ValidateDonationFormRequest
             $wpError->add($errorId, is_array($error) ? $error['message'] : $error);
         }
 
-        throw new DonationFormFieldErrorsException($wpError);
+        throw new DonationFormFieldErrorsException($wpError); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- WP_Error object; its messages are returned as JSON and rendered as text by the form.
     }
 }

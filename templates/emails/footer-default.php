@@ -4,11 +4,14 @@
  *
  * @package     Give/Templates/Emails
  * @version     1.0
+ * @since 4.19.1 Escape output.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 
 // For gmail compatibility, including CSS styles in head/body are stripped out therefore styles need to be inline. These variables contain rules which are added to the template inline.
@@ -40,13 +43,13 @@ $credit = "
 							<tr>
 								<td align="center" valign="top">
 									<!-- Footer -->
-									<table border="0" cellpadding="10" cellspacing="0" width="600" id="template_footer" style="<?php echo $template_footer; ?>">
+									<table border="0" cellpadding="10" cellspacing="0" width="600" id="template_footer" style="<?php echo esc_attr( $template_footer ); ?>">
 										<tr>
 											<td valign="top">
 												<table border="0" cellpadding="10" cellspacing="0" width="100%">
 													<tr>
-														<td colspan="2" valign="middle" id="credit" style="<?php echo $credit; ?>">
-															<?php echo wpautop( wp_kses_post( wptexturize( apply_filters( 'give_email_footer_text', '<a href="' . esc_url( home_url() ) . '">' . get_bloginfo( 'name' ) . '</a>' ) ) ) ); ?>
+														<td colspan="2" valign="middle" id="credit" style="<?php echo esc_attr( $credit ); ?>">
+															<?php echo wp_kses_post( wpautop( wptexturize( apply_filters( 'give_email_footer_text', '<a href="' . esc_url( home_url() ) . '">' . esc_html( get_bloginfo( 'name' ) ) . '</a>' ) ) ) ); ?>
 														</td>
 													</tr>
 												</table>

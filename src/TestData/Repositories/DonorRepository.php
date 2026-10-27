@@ -5,6 +5,8 @@ namespace Give\TestData\Repositories;
 use Give\TestData\Factories\DonorFactory;
 use Give\TestData\Framework\MetaRepository;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery -- WP-CLI test data code; it writes and reads fake data directly for speed, runs only from the command line, and is not cached.
+
 /**
  * Class DonorRepository
  * @package GiveTestData\TestData\Repositories

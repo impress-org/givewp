@@ -19,6 +19,7 @@ class SubscriptionsAdminPage
     /**
      * Render the Subscription Details page.
      *
+     * @since 4.19.1 Escape output. Guard the id param.
      * @since 4.8.0
      */
     public function render()
@@ -26,10 +27,10 @@ class SubscriptionsAdminPage
         if (self::isShowingDetailsPage()) {
             remove_action('give_forms_page_give-subscriptions', 'give_subscriptions_page');
 
-            $subscription = Subscription::find(absint($_GET['id']));
+            $subscription = Subscription::find(absint($_GET['id'] ?? 0)); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only id param; it only selects which record to show and saves nothing.
 
             if ( ! $subscription) {
-                wp_die(__('Subscription not found', 'give'), 404);
+                wp_die(esc_html__('Subscription not found', 'give'), 404);
             }
 
             give(LoadSubscriptionDetailsAssets::class)();
@@ -43,6 +44,7 @@ class SubscriptionsAdminPage
     /**
      * Display a button on the old subscriptions table that switches to the React view
      *
+     * @since 4.19.1 Escape translated output.
      * @since 2.24.0
      */
     public function renderReactSwitch()
@@ -53,7 +55,7 @@ class SubscriptionsAdminPage
                 fetch( '<?php echo esc_url_raw(rest_url('give-api/v2/admin/subscriptions/view?isLegacy=0')) ?>', {
                     method: 'GET',
                     headers: {
-                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                        ['X-WP-Nonce']: '<?php echo esc_js(wp_create_nonce('wp_rest')) ?>'
                     }
                 })
                     .then((res) => {
@@ -62,7 +64,7 @@ class SubscriptionsAdminPage
             }
             jQuery( function() {
                 jQuery(jQuery(".wrap .wp-header-end")).before(
-                    '<button class="page-title-action" onclick="showReactTable()"><?php _e('Switch to New View', 'give') ?></button>'
+                    '<button class="page-title-action" onclick="showReactTable()"><?php echo esc_js(__('Switch to New View', 'give')) ?></button>'
                 );
             });
         </script>
@@ -78,7 +80,7 @@ class SubscriptionsAdminPage
      */
     public static function isShowing()
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-subscriptions' && ! isset($_GET['view']);
+        return isset($_GET['page']) && $_GET['page'] === 'give-subscriptions' && ! isset($_GET['view']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 
     /**
@@ -86,6 +88,6 @@ class SubscriptionsAdminPage
      */
     public static function isShowingDetailsPage(): bool
     {
-        return isset($_GET['id'], $_GET['page']) && 'give-subscriptions' === $_GET['page'];
+        return isset($_GET['id'], $_GET['page']) && 'give-subscriptions' === $_GET['page']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides what to show and saves nothing.
     }
 }

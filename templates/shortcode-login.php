@@ -1,7 +1,15 @@
 <?php
 /**
  * This template is used to display the login form with [give_login]
+ *
+ * @since 4.19.1 Escape output.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 $get_data = give_clean( filter_input_array( INPUT_GET ) );
 
@@ -42,7 +50,7 @@ if ( ! is_user_logged_in() ) {
 
 			<div class="give-login-submit give-login">
 				<input type="hidden" name="give_login_redirect" value="<?php echo esc_url( $give_login_redirect ); ?>" />
-				<input type="hidden" name="give_login_nonce" value="<?php echo wp_create_nonce( 'give-login-nonce' ); ?>" />
+				<input type="hidden" name="give_login_nonce" value="<?php echo esc_attr( wp_create_nonce( 'give-login-nonce' ) ); ?>" />
 				<input type="hidden" name="give_action" value="user_login" />
 				<input id="give_login_submit" type="submit" class="give_submit" value="<?php esc_html_e( 'Log In', 'give' ); ?>" />
 			</div>

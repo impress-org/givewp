@@ -41,8 +41,10 @@ add_filter( 'give_shortcode_button_condition', 'give_shortcode_button_condition'
  * @param array $args
  *
  * @return int|false
+ *
+ * @since 4.19.1 Renamed from get_form_id_from_args().
  */
-function get_form_id_from_args( $args ) {
+function give_get_form_id_from_args( $args ) {
 
 	if ( isset( $args['form_id'] ) && $args['form_id'] != 0 ) {
 
@@ -50,6 +52,17 @@ function get_form_id_from_args( $args ) {
 	}
 
 	return false;
+}
+
+/**
+ * Get the form ID from the form $args
+ *
+ * @deprecated 4.19.1 Use give_get_form_id_from_args() instead.
+ */
+function get_form_id_from_args($args) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_form_id_from_args().
+	_give_deprecated_function( __FUNCTION__, '4.19.1', 'give_get_form_id_from_args()' );
+
+	return give_get_form_id_from_args($args);
 }
 
 /**
@@ -162,8 +175,9 @@ function give_send_to_success_page( $query_string = null ) {
 		$redirect .= $query_string;
 	}
 
-	$gateway = isset( $_REQUEST['give-gateway'] ) ? give_clean( $_REQUEST['give-gateway'] ) : '';
+	$gateway = isset( $_REQUEST['give-gateway'] ) ? give_clean( $_REQUEST['give-gateway'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- public donation request that is on its way to the success page; the gateway id only goes to the give_success_page_redirect filter and nothing is saved. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
 
+	// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- the public give_success_page_redirect filter lets add-ons send donors to another site; wp_safe_redirect() would block it.
 	wp_redirect( apply_filters( 'give_success_page_redirect', $redirect, $gateway, $query_string ) );
 	give_die();
 }
@@ -177,24 +191,26 @@ function give_send_to_success_page( $query_string = null ) {
  * @param array|string $args
  *
  * @access public
+ * @since 4.19.1 Unslash and sanitize the posted values.
  * @since 2.21.0 Auto set "payment-mode" in redirect url.
  * @since  1.0
  * @return Void
  */
 function give_send_back_to_checkout( $args = [] ) {
 
-	$url     = isset( $_POST['give-current-url'] ) ? sanitize_text_field( $_POST['give-current-url'] ) : '';
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- public donation form request that is sent back to the form; the form nonce is checked in give_process_donation_form(), and this only builds the redirect URL and saves nothing.
+	$url     = isset( $_POST['give-current-url'] ) ? sanitize_text_field( wp_unslash( $_POST['give-current-url'] ) ) : '';
 	$form_id = 0;
     $defaults = [];
 
 	// Set the form_id.
 	if ( isset( $_POST['give-form-id'] ) ) {
-        $defaults['form-id'] = (int) sanitize_text_field( $_POST['give-form-id'] );
+        $defaults['form-id'] = (int) sanitize_text_field( wp_unslash( $_POST['give-form-id'] ) );
 	}
 
     // Set the payment mode.
     if ( isset( $_POST['payment-mode'] ) ) {
-        $defaults['payment-mode'] = sanitize_text_field( $_POST['payment-mode'] );
+        $defaults['payment-mode'] = sanitize_text_field( wp_unslash( $_POST['payment-mode'] ) );
     }
 
 	// Need a URL to continue. If none, redirect back to single form.
@@ -205,13 +221,14 @@ function give_send_back_to_checkout( $args = [] ) {
 
 	// Set the $level_id.
 	if ( isset( $_POST['give-price-id'] ) ) {
-		$defaults['level-id'] = sanitize_text_field( $_POST['give-price-id'] );
+		$defaults['level-id'] = sanitize_text_field( wp_unslash( $_POST['give-price-id'] ) );
 
 		// If custom, set amount
 		if( 'custom' === $defaults[ 'level-id' ] ) {
-			$defaults['custom-amount'] = sanitize_text_field( $_POST['give-amount'] );
+			$defaults['custom-amount'] = isset( $_POST['give-amount'] ) ? sanitize_text_field( wp_unslash( $_POST['give-amount'] ) ) : '';
 		}
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 	// Check for backward compatibility.
 	if ( is_string( $args ) ) {
@@ -311,6 +328,7 @@ function give_is_failed_transaction_page() {
 /**
  * Mark payments as Failed when returning to the Failed Donation Page
  *
+ * @since 4.19.1 Unslash the nonce before it is verified.
  * @since  1.0
  * @since  1.8.16 Add security check
  *
@@ -318,7 +336,7 @@ function give_is_failed_transaction_page() {
  */
 function give_listen_for_failed_payments() {
 	$payment_id = ! empty( $_GET['payment-id'] ) ? absint( $_GET['payment-id'] ) : 0;
-	$nonce      = ! empty( $_GET['_wpnonce'] ) ? give_clean( $_GET['_wpnonce'] ) : false;
+	$nonce      = ! empty( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : false; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- this is the nonce itself; wp_verify_nonce() checks it right below.
 
 	// Bailout.
 	if ( ! $payment_id || ! wp_verify_nonce( $nonce, "give-failed-donation-{$payment_id}" ) ) {
@@ -658,6 +676,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 /**
  * Retrieves a price from from low to high of a variable priced form
  *
+ * @since 4.19.1 Unslash and sanitize the order param.
  * @since 1.0
  *
  * @param int  $form_id   ID of the form
@@ -668,7 +687,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 function give_price_range( $form_id = 0, $formatted = true ) {
 	$low        = give_get_lowest_price_option( $form_id );
 	$high       = give_get_highest_price_option( $form_id );
-	$order_type = ! empty( $_REQUEST['order'] ) ? $_REQUEST['order'] : 'asc';
+	$order_type = ! empty( $_REQUEST['order'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ) : 'asc'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only sort param; it only changes which end of the price range is shown first and saves nothing.
 
 	$range = sprintf(
 		'<span class="give_price_range_%1$s">%2$s</span><span class="give_price_range_sep">&nbsp;&ndash;&nbsp;</span><span class="give_price_range_%3$s">%4$s</span>',
@@ -853,6 +872,7 @@ function give_get_form_maximum_price( $form_id = 0 ) {
 /**
  * Displays a formatted price for a donation form
  *
+ * @since 4.19.1 Escape output.
  * @since 1.0
  *
  * @param int      $form_id  ID of the form price to show
@@ -891,13 +911,13 @@ function give_price( $form_id = 0, $echo = true, $price_id = false ) {
 	}
 
 	$price           = apply_filters( 'give_form_price', give_maybe_sanitize_amount( $price ), $form_id );
-	$formatted_price = '<span class="give_price" id="give_price_' . $form_id . '">' . $price . '</span>';
+	$formatted_price = '<span class="give_price" id="give_price_' . (int) $form_id . '">' . esc_html( $price ) . '</span>';
 	$formatted_price = apply_filters( 'give_form_price_after_html', $formatted_price, $form_id, $price );
 
 	if ( $echo ) {
-		echo $formatted_price;
+		echo wp_kses_post( $formatted_price );
 	} else {
-		return $formatted_price;
+		return wp_kses_post( $formatted_price );
 	}
 }
 
@@ -983,6 +1003,7 @@ function give_get_form_goal_format( $form_id = 0 ) {
 /**
  * Display/Return a formatted goal for a donation form
  *
+ * @since 4.19.1 Escape output.
  * @since 1.0
  *
  * @param int  $form_id ID of the form price to show
@@ -1007,15 +1028,15 @@ function give_goal( $form_id = 0, $echo = true ) {
 
 	$formatted_goal = sprintf(
 		'<span class="give_price" id="give_price_%1$s">%2$s</span>',
-		$form_id,
-		$goal
+		(int) $form_id,
+		esc_html( $goal )
 	);
 	$formatted_goal = apply_filters( 'give_form_price_after_html', $formatted_goal, $form_id, $goal );
 
 	if ( $echo ) {
-		echo $formatted_goal;
+		echo wp_kses_post( $formatted_goal );
 	} else {
-		return $formatted_goal;
+		return wp_kses_post( $formatted_goal );
 	}
 }
 
@@ -1067,13 +1088,14 @@ function give_show_login_register_option( $form_id ) {
  *
  * Note: this function will extract form field values from give_purchase session data.
  *
+ * @since 4.19.1 Renamed from _give_get_prefill_form_field_values().
  * @since  1.8
  *
  * @param  int $form_id Form ID.
  *
  * @return array
  */
-function _give_get_prefill_form_field_values( $form_id ) {
+function give_get_prefill_form_field_values( $form_id ) {
 	$logged_in_donor_info = [];
 
 	if ( is_user_logged_in() ) :
@@ -1120,9 +1142,9 @@ function _give_get_prefill_form_field_values( $form_id ) {
 
 	// Bailout: Auto fill form field values only form form which donor is donating.
 	if (
-		empty( $_GET['form-id'] )
+		empty( $_GET['form-id'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form id param; it only decides whether to prefill the form and saves nothing.
 		|| ! $form_id
-		|| ( $form_id !== absint( $_GET['form-id'] ) )
+		|| ( $form_id !== absint( $_GET['form-id'] ) ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form id param; it only decides whether to prefill the form and saves nothing.
 	) {
 		return $logged_in_donor_info;
 	}
@@ -1140,8 +1162,22 @@ function _give_get_prefill_form_field_values( $form_id ) {
 }
 
 /**
+ * Get pre fill form field values.
+ *
+ * @since 4.19.1 Renamed to give_get_prefill_form_field_values(); this old name is a deprecated alias.
+ * @since 1.8
+ * @deprecated 4.19.1 Use give_get_prefill_form_field_values() instead.
+ */
+function _give_get_prefill_form_field_values($form_id) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- deprecated alias kept for add-ons; use give_get_prefill_form_field_values().
+	_give_deprecated_function( __FUNCTION__, '4.19.1', 'give_get_prefill_form_field_values()' );
+
+	return give_get_prefill_form_field_values($form_id);
+}
+
+/**
  * Get donor count of form
  *
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 2.1.0
  *
  * @param int   $form_id
@@ -1164,33 +1200,35 @@ function give_get_form_donor_count( $form_id, $args = [] ) {
 			]
 		);
 
-		$donation_meta_table  = Give()->payment_meta->table_name;
 		$donation_id_col_name = Give()->payment_meta->get_meta_type() . '_id';
 
 		$distinct = $args['unique'] ? 'DISTINCT meta_value' : 'meta_value';
 
 		$query = $wpdb->prepare(
-			"
-			SELECT COUNT({$distinct})
-			FROM {$donation_meta_table}
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $distinct is one of two literals set above.
+			"SELECT COUNT({$distinct})
+			FROM {$wpdb->donationmeta}
 			WHERE meta_key=%s
-			AND {$donation_id_col_name} IN(
-				SELECT {$donation_id_col_name}
-				FROM {$donation_meta_table} as pm
+			AND %i IN(
+				SELECT %i
+				FROM {$wpdb->donationmeta} as pm
 				INNER JOIN {$wpdb->posts} as p
-				ON pm.{$donation_id_col_name}=p.ID
+				ON pm.%i=p.ID
 				WHERE pm.meta_key=%s
 				AND pm.meta_value=%s
 				AND p.post_status=%s
 			)
 			",
 			'_give_payment_donor_id',
+			$donation_id_col_name,
+			$donation_id_col_name,
+			$donation_id_col_name,
 			'_give_payment_form_id',
 			$form_id,
 			'publish'
 		);
 
-		$donor_count = absint( $wpdb->get_var( $query ) );
+		$donor_count = absint( $wpdb->get_var( $query ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $query is prepared above; $distinct is a literal. GiveWP custom table; WordPress has no cache layer for it.
 	}
 
 	/**
@@ -1562,6 +1600,7 @@ function give_is_name_title_prefix_required( $form_id = 0 ) {
 /**
  * Deletes form meta when the form is permanently deleted from the trash.
  *
+ * @since 4.19.1 Remove the quotes around the %d placeholder.
  * @since 2.3.0
  *
  * @param integer $id Donation Form ID which needs to be deleted.
@@ -1573,7 +1612,7 @@ function give_handle_form_meta_on_delete( $id ) {
 	global $wpdb;
 
 	$form     = get_post( $id );
-	$get_data = give_clean( $_GET );
+	$get_data = give_clean( $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- WordPress core verifies the nonce before it deletes a post and fires before_delete_post.
 
 	if (
 		'give_forms' === $form->post_type &&
@@ -1583,7 +1622,7 @@ function give_handle_form_meta_on_delete( $id ) {
 			! empty( $get_data['delete_all'] )
 		)
 	) {
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->formmeta} WHERE form_id = '%d'", $form->ID ) );
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->formmeta} WHERE form_id = %d", $form->ID ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 	}
 }
 

@@ -125,13 +125,14 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	/**
 	 * Process a step
 	 *
+	 * @since 4.19.1 Escape output.
 	 * @since 1.5
 	 * @return bool
 	 */
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( __( 'You do not have permission to delete test transactions.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to delete test transactions.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		$had_data = $this->get_data();
@@ -194,7 +195,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 				array(
 					'post_status' => 'any',
 					'number'      => - 1,
-					'meta_query'  => array(
+					'meta_query'  => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Selects test mode donations by payment mode and gateway meta; admin tool.
 						'relation' => 'OR',
 						array(
 							'key'   => '_give_payment_mode',
@@ -231,6 +232,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	/**
 	 * Given a key, get the information from the Database Directly
 	 *
+	 * @since 4.19.1 Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name
@@ -238,8 +240,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	 * @return mixed       Returns the data from the database
 	 */
 	private function get_stored_data( $key ) {
-		global $wpdb;
-		$value = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = '%s'", $key ) );
+		$value = get_option( $key, null );
 
 		if ( empty( $value ) ) {
 			return false;
@@ -256,6 +257,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	/**
 	 * Give a key, store the value
 	 *
+	 * @since 4.19.1 Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name
@@ -264,28 +266,15 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	 * @return void
 	 */
 	private function store_data( $key, $value ) {
-		global $wpdb;
-
 		$value = is_array( $value ) ? wp_json_encode( $value ) : esc_attr( $value );
 
-		$data = array(
-			'option_name'  => $key,
-			'option_value' => $value,
-			'autoload'     => 'no',
-		);
-
-		$formats = array(
-			'%s',
-			'%s',
-			'%s',
-		);
-
-		$wpdb->replace( $wpdb->options, $data, $formats );
+		update_option( $key, $value, false );
 	}
 
 	/**
 	 * Delete an option
 	 *
+	 * @since 4.19.1 Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name to delete
@@ -293,8 +282,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	 * @return void
 	 */
 	private function delete_data( $key ) {
-		global $wpdb;
-		$wpdb->delete( $wpdb->options, array( 'option_name' => $key ) );
+		delete_option( $key );
 	}
 
 	/**

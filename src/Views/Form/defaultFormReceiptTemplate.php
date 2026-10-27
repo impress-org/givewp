@@ -2,13 +2,20 @@
 /**
  * Payment receipt view.
  *
+ * @since 4.19.1 Escape output.
  * @since 2.7.0
  */
 
 use Give\Views\IframeContentView;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 $pageId     = give_get_option('success_page');
 $iframeView = new IframeContentView();
 
-echo $iframeView->setTitle(esc_html__('Donation Receipt', 'give'))->setPostId($pageId)
-                ->setBody('<div id="give-receipt"></div>')->render();
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- IframeContentView::render() escapes internally.
+echo $iframeView->setTitle(esc_html__('Donation Receipt', 'give'))->setPostId($pageId)->setBody('<div id="give-receipt"></div>')->render();

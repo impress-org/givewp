@@ -1,13 +1,20 @@
 <?php
+/** @since 4.19.1 Escape output. */
 
 use Give\Helpers\Form\Template;
 use Give\Views\Form\Templates\Sequoia\Sequoia;
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 /** @var int $formId */
 /** @var Give\Framework\FieldsAPI\Field|Give\Framework\FieldsAPI\Text $field */
 ?>
 <?php
-echo $field->getLabel(); ?>
+echo esc_html($field->getLabel()); ?>
 <?php
 if ($field->isRequired()) : ?>
     <span class="give-required-indicator">
@@ -18,12 +25,12 @@ if ($field->isRequired()) : ?>
 <?php
 endif; ?>
 <?php
-echo ($helpText = $field->getHelpText()) ?
-    Give()->tooltips->render_help([
-                                      'label' => $helpText,
-                                      'position' => give(Sequoia::class)->getID() === Template::getActiveID(
-                                          $formId
-                                      ) ? 'right' : 'top',
-                                  ]) :
-    '';
+if ($helpText = $field->getHelpText()) {
+    Give()->tooltips->print_render_help([
+        'label' => $helpText,
+        'position' => give(Sequoia::class)->getID() === Template::getActiveID(
+            $formId
+        ) ? 'right' : 'top',
+    ]);
+}
 ?>

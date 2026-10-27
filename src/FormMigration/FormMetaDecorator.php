@@ -8,6 +8,8 @@ use Give\FormMigration\Contracts\FormModelDecorator;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give_Email_Notification_Util;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- reads the GiveWP funds custom table during a form migration; WordPress has no cache layer for it.
+
 class FormMetaDecorator extends FormModelDecorator
 {
     /**
@@ -992,6 +994,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
+     * @since 4.19.1 Use the give text domain and add translators comments.
      * @since 3.13.0
      */
     public function getCurrencySwitcherMessage(): string
@@ -999,7 +1002,8 @@ class FormMetaDecorator extends FormModelDecorator
         return $this->getMeta(
             'cs_message',
             sprintf(
-                __('The current exchange rate is 1.00 %1$s equals %2$s %3$s.', 'give-currency-switcher'),
+                /* translators: 1: Currency code of the base currency, 2: Exchange rate, 3: Currency code of the new currency */
+                __('The current exchange rate is 1.00 %1$s equals %2$s %3$s.', 'give'),
                 '{base_currency}',
                 '{new_currency_rate}',
                 '{new_currency}'

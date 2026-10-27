@@ -74,6 +74,7 @@ class ScriptResponse
     }
 
     /**
+     * @since 4.19.1 Sanitize the If-None-Match header.
      * @since 4.17.0
      *
      * @param array $request Request data handed to the localize callable.
@@ -93,11 +94,12 @@ class ScriptResponse
         header("Cache-Control: public, max-age={$this->maxAge}");
         header("ETag: {$etag}");
 
-        if ($this->matchesIfNoneMatch($etag, $_SERVER['HTTP_IF_NONE_MATCH'] ?? '')) {
+        if ($this->matchesIfNoneMatch($etag, sanitize_text_field(wp_unslash($_SERVER['HTTP_IF_NONE_MATCH'] ?? '')))) {
             status_header(304);
             exit;
         }
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- writes a JavaScript response body (Content-Type: application/javascript), not HTML; $prologue is built with wp_json_encode().
         echo $prologue;
         readfile($this->file);
         exit;

@@ -132,6 +132,7 @@ class RegisterPaymentGateways
     }
 
     /**
+     * @since 4.19.1 Escape exception message. Guard the posted PayPal order id.
      * @since 4.0.0 updated to support authorize and capture
      * @since 3.2.0 Prevent undefined index notice when getting payPalOrderId from gateway data.
      * @since 2.26.0 Add support for the updated PayPal Commerce gateway data.
@@ -150,12 +151,13 @@ class RegisterPaymentGateways
                 if (array_key_exists('payPalOrderId', $gatewayData)) {
                     $paypalOrderId = $gatewayData['payPalOrderId'];
                 } else {
-                    $paypalOrderId = give_clean($_POST['payPalOrderId']);
+                    // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- donation request; DonateRoute verifies the signed route for v3 forms and give_process_donation() verifies the donation form nonce for v2 forms.; give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+                    $paypalOrderId = isset($_POST['payPalOrderId']) ? give_clean($_POST['payPalOrderId']) : '';
                     $gatewayData['payPalOrderId'] = $paypalOrderId;
                 }
 
                 if (! $paypalOrderId) {
-                    throw new PayPalOrderIdException(__('PayPal order id is missing.', 'give'));
+                    throw new PayPalOrderIdException(esc_html__('PayPal order id is missing.', 'give'));
                 }
 
                return $gatewayData;

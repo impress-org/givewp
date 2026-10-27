@@ -48,6 +48,9 @@ class TotalRefunds extends Endpoint
         return $data;
     }
 
+    /**
+     * @since 4.19.1 Add translators comments.
+     */
     public function get_data($start, $end, $intervalStr)
     {
         $tooltips = [];
@@ -88,6 +91,7 @@ class TotalRefunds extends Endpoint
             ];
 
             $tooltips[] = [
+                /* translators: %d: Number of refunds */
                 'title' => sprintf(_n('%d Donor', '%d Donors', $refundsForPeriod, 'give'), $refundsForPeriod),
                 'body' => __('Total Refunds', 'give'),
                 'footer' => $periodLabel,

@@ -58,6 +58,8 @@ class CardInfo implements ValueObjects
     /**
      * Take array and return object.
      *
+     * @since 4.19.1 Escape exception message.
+     *
      * @param $array
      *
      * @return CardInfo
@@ -70,7 +72,7 @@ class CardInfo implements ValueObjects
 
         if (empty($array)) {
             throw new InvalidArgumentException(
-                'Invalid DonorInfo object, must have the exact following keys: ' . implode(', ', $expectedKeys)
+                'Invalid DonorInfo object, must have the exact following keys: ' . esc_html(implode(', ', $expectedKeys))
             );
         }
 

@@ -20,10 +20,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Renders the payment history page contents.
  *
  * @access      private
+ * @since       4.19.1 Escape output.
  * @since       1.0
  * @return      void
  */
 function give_payment_history_page() {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only view param; it only picks which screen to show and saves nothing.
 	if ( isset( $_GET['view'] ) && 'view-payment-details' == $_GET['view'] ) {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/view-payment-details.php';
 	} else {
@@ -33,7 +35,7 @@ function give_payment_history_page() {
 		?>
 	<div class="wrap">
 
-		<h1 class="wp-heading-inline"><?php echo get_admin_page_title(); ?></h1>
+		<h1 class="wp-heading-inline"><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
 		<?php
 		/**
@@ -45,18 +47,20 @@ function give_payment_history_page() {
 		?>
 		<hr class="wp-header-end">
 
-		<form id="give-payments-advanced-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
+		<form id="give-payments-advanced-filter" method="get" action="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ) ); ?>">
 			<input type="hidden" name="post_type" value="give_forms" />
 			<input type="hidden" name="page" value="give-payment-history" />
 			<?php $payments_table->views(); ?>
 			<?php $payments_table->advanced_filters(); ?>
 		</form>
 
-		<form id="give-payments-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
+		<form id="give-payments-filter" method="get" action="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ) ); ?>">
 			<input type="hidden" name="post_type" value="give_forms" />
 			<input type="hidden" name="page" value="give-payment-history" />
 			<?php
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only donor filter param; it only changes what is shown and saves nothing.
 			if ( ! empty( $_GET['donor'] ) ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only donor filter param; it only changes what is shown and saves nothing.
 				echo sprintf( '<input type="hidden" name="donor" value="%s"/>', absint( $_GET['donor'] ) );
 			}
 
@@ -93,10 +97,12 @@ function give_view_donation_details_title( $admin_title, $title ) {
 		return $admin_title;
 	}
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only action param; it only picks the page title and saves nothing.
 	if ( ! isset( $_GET['give-action'] ) ) {
 		return $admin_title;
 	}
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only action param; it only picks the page title and saves nothing.
 	switch ( $_GET['give-action'] ) :
 
 		case 'view-payment-details':

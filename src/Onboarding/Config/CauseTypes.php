@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 return [
     'advocacy' => __('Advocacy', 'give'),
     'education' => __('Education', 'give'),

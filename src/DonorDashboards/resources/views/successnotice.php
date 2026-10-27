@@ -1,4 +1,17 @@
 <?php
+/**
+ * @since 4.19.1 Add translators comments.
+ */
+
+/**
+ * @since 4.19.1 Escape output.
+ */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 $pageId = give_get_option('donor_dashboard_page');
 
@@ -8,8 +21,9 @@ $pageUrl = get_permalink($pageId);
 
 <div class="notice notice-success is-dismissible">
     <p><?php
-        printf(
+        echo wp_kses_post( sprintf(
+            /* translators: %s: URL of the Donor Dashboard page */
             __('Success! Donor Dashboard page was created. You can <a href="%s">take a look at it here.</a>', 'give'),
-            $pageUrl
-        ); ?></p>
+            esc_url( $pageUrl )
+        ) ); ?></p>
 </div>

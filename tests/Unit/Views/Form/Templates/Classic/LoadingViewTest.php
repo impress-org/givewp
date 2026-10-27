@@ -10,6 +10,7 @@ use Give\Tests\TestCase;
 final class LoadingViewTest extends TestCase
 {
     /**
+     * @since 4.19.1 Expect the primary color reduced to a hex value.
      * @since 4.19.0.1
      */
     public function testPrimaryColorIsEscapedForTheStyleAttribute(): void
@@ -21,8 +22,8 @@ final class LoadingViewTest extends TestCase
         // The raw double-quote must not survive to break out of the surrounding style attribute.
         $this->assertStringNotContainsString('onfocus="alert(1)"', $html);
 
-        // The value is present, escaped for the attribute context (quotes encoded).
-        $this->assertStringContainsString(esc_attr(trim($input, '#')), $html);
+        // The value is reduced to hex characters, so no attribute text survives.
+        $this->assertStringNotContainsString('tabindex', $html);
     }
 
     /**

@@ -25,12 +25,13 @@ class GiveCurrencies implements Currencies
     }
 
     /**
+     * @since 4.19.1 Escape exception message.
      * @since 4.10.0
      */
     public function subunitFor(Currency $currency): int
     {
         if (!$this->contains($currency)) {
-            throw new UnknownCurrencyException('Unknown currency: ' . $currency->getCode());
+            throw new UnknownCurrencyException('Unknown currency: ' . esc_html($currency->getCode()));
         }
 
         $currencies = give_get_currencies_list();

@@ -52,6 +52,7 @@
 .lintstagedrc.json
 .distignore
 .stylelintignore
+.coderabbit.yaml
 jsconfig.json
 globals.d.ts
 tsconfig.json
@@ -97,3 +98,4 @@ wp-textdomain.js
 /LICENSE
 /wpml-config.xml
 
+/languages/.gitkeep

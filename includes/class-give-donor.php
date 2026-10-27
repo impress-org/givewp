@@ -240,27 +240,30 @@ class Give_Donor {
 	/**
 	 * Setup donor address.
 	 *
+	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since  2.0
 	 * @access public
 	 */
 	public function setup_address() {
 		global $wpdb;
-		$meta_type       = Give()->donor_meta->meta_type;
-		$meta_table_name = Give()->donor_meta->table_name;
+		$meta_type = Give()->donor_meta->meta_type;
 
+		// Use the table name of GiveWP's own donor meta. Other plugins, such as Charitable, can overwrite $wpdb->donormeta.
 		$addresses = $this->get_addresses_from_meta_cache();
 
 		$addresses = ! empty( $addresses )
 			? $addresses
-			: $wpdb->get_results(
+			: $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP donor meta custom table; WordPress has no cache layer for it.
 				$wpdb->prepare(
 					"
-				SELECT meta_key, meta_value FROM {$meta_table_name}
+				SELECT meta_key, meta_value FROM %i
 				WHERE meta_key
-				LIKE '%s'
-				AND {$meta_type}_id=%d
+				LIKE %s
+				AND %i=%d
 				",
+					Give()->donor_meta->table_name,
 					'%give_donor_address%',
+					$meta_type . '_id',
 					$this->id
 				),
 				ARRAY_N
@@ -1334,6 +1337,7 @@ class Give_Donor {
 	/**
 	 * Add donor address
 	 *
+	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since  2.0
 	 * @access public
 	 *
@@ -1388,22 +1392,23 @@ class Give_Donor {
 		global $wpdb;
 		$meta_key_prefix = "_give_donor_address_{$address_type}_{address_name}";
 		$meta_type       = Give()->donor_meta->meta_type;
-		$meta_table_name = Give()->donor_meta->table_name;
 
 		if ( $is_multi_address ) {
 			if ( is_null( $multi_address_id ) ) {
 				// Get latest address key to set multi address id.
-				$multi_address_id = $wpdb->get_var(
+				$multi_address_id = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP donor meta custom table; WordPress has no cache layer for it.
 					$wpdb->prepare(
 						"
-						SELECT meta_key FROM {$meta_table_name}
+						SELECT meta_key FROM %i
 						WHERE meta_key
-						LIKE '%s'
-						AND {$meta_type}_id=%d
+						LIKE %s
+						AND %i=%d
 						ORDER BY meta_id DESC
 						LIMIT 1
 						",
+						Give()->donor_meta->table_name,
 						"%_give_donor_address_{$address_type}_line1%",
+						$meta_type . '_id',
 						$this->id
 					)
 				);
@@ -1433,6 +1438,7 @@ class Give_Donor {
 	/**
 	 * Remove donor address
 	 *
+	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since  2.0
 	 * @access public
 	 * @global wpdb  $wpdb
@@ -1458,19 +1464,20 @@ class Give_Donor {
 			$meta_key_prefix .= "_{$address_count}";
 		}
 
-		$meta_type       = Give()->donor_meta->meta_type;
-		$meta_table_name = Give()->donor_meta->table_name;
+		$meta_type = Give()->donor_meta->meta_type;
 
 		// Process query.
-		$row_affected = $wpdb->query(
+		$row_affected = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- GiveWP donor meta custom table; WordPress has no cache layer for it.
 			$wpdb->prepare(
 				"
-				DELETE FROM {$meta_table_name}
+				DELETE FROM %i
 				WHERE meta_key
-				LIKE '%s'
-				AND {$meta_type}_id=%d
+				LIKE %s
+				AND %i=%d
 				",
+				Give()->donor_meta->table_name,
 				$meta_key_prefix,
+				$meta_type . '_id',
 				$this->id
 			)
 		);
@@ -1487,6 +1494,7 @@ class Give_Donor {
 	/**
 	 * Update donor address
 	 *
+	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since  2.0
 	 * @access public
 	 * @global wpdb  $wpdb
@@ -1513,19 +1521,20 @@ class Give_Donor {
 			$meta_key_prefix .= "_{$address_count}";
 		}
 
-		$meta_type       = Give()->donor_meta->meta_type;
-		$meta_table_name = Give()->donor_meta->table_name;
+		$meta_type = Give()->donor_meta->meta_type;
 
 		// Process query.
-		$row_affected = $wpdb->get_results(
+		$row_affected = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP donor meta custom table; WordPress has no cache layer for it.
 			$wpdb->prepare(
 				"
-				SELECT meta_key FROM {$meta_table_name}
+				SELECT meta_key FROM %i
 				WHERE meta_key
-				LIKE '%s'
-				AND {$meta_type}_id=%d
+				LIKE %s
+				AND %i=%d
 				",
+				Give()->donor_meta->table_name,
 				$meta_key_prefix,
+				$meta_type . '_id',
 				$this->id
 			)
 		);
@@ -1735,25 +1744,33 @@ class Give_Donor {
 	/**
 	 * Retrieves a donor's initials (first name and last name).
 	 *
+	 * @since 4.19.1 Filter with `give_get_donor_initials`. The old `get_donor_initals` filter still runs, as deprecated.
 	 * @since   2.1
 	 *
 	 * @return string The donor's two initials (no middle).
 	 */
 	public function get_donor_initals() {
+		$initials = give_get_name_initial(
+			[
+				'firstname' => $this->get_first_name(),
+				'lastname'  => $this->get_last_name(),
+			]
+		);
+
 		/**
-		 * Filter the donor name initials
+		 * Filter the donor name initials. Deprecated: use `give_get_donor_initials`.
 		 *
+		 * @since 4.19.1 Deprecated in favor of `give_get_donor_initials`.
 		 * @since 2.1.0
 		 */
-		return apply_filters(
-			'get_donor_initals',
-			give_get_name_initial(
-				[
-					'firstname' => $this->get_first_name(),
-					'lastname'  => $this->get_last_name(),
-				]
-			)
-		);
+		$initials = apply_filters_deprecated( 'get_donor_initals', [ $initials ], '4.19.1', 'give_get_donor_initials' );
+
+		/**
+		 * Filter the donor name initials.
+		 *
+		 * @since 4.19.1 Replaces `get_donor_initals`.
+		 */
+		return apply_filters( 'give_get_donor_initials', $initials );
 
 	}
 
