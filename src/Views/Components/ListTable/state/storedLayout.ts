@@ -97,7 +97,9 @@ function mergeOrder(storedOrder: unknown, visible: string[], defaults: ScreenDef
             merged.splice(anchor === undefined ? 0 : merged.indexOf(anchor) + 1, 0, id);
         });
 
-    return visible.includes(defaults.pinnedLast) ? [...merged, defaults.pinnedLast] : merged;
+    const pinned = defaults.pinnedLast;
+
+    return pinned !== undefined && visible.includes(pinned) ? [...merged, pinned] : merged;
 }
 
 /**

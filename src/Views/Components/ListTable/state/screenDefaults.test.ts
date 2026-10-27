@@ -119,7 +119,12 @@ describe('resolveScreenDefaults', () => {
     });
 
     it('works without a screen config', () => {
-        expect(resolveScreenDefaults(undefined, columns, 'donor').fields).toEqual(['id', 'amount', 'paymentType', 'date']);
+        expect(resolveScreenDefaults(undefined, columns, 'donor').fields).toEqual([
+            'id',
+            'amount',
+            'paymentType',
+            'date',
+        ]);
     });
 
     it('carries the default filters it is given', () => {

@@ -77,9 +77,9 @@ describe('applyStoredLayout', () => {
     );
 
     it('applies stored visibility and keeps the default for columns it does not name', () => {
-        expect(applyStoredLayout(defaults, {version: 1, visibility: {paymentType: false, gateway: true}}).fields).toEqual(
-            ['id', 'amount', 'gateway', 'date', PINNED]
-        );
+        expect(
+            applyStoredLayout(defaults, {version: 1, visibility: {paymentType: false, gateway: true}}).fields
+        ).toEqual(['id', 'amount', 'gateway', 'date', PINNED]);
     });
 
     it('ignores unknown ids and values that are not booleans', () => {
