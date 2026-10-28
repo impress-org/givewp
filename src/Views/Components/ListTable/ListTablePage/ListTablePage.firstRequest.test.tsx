@@ -282,14 +282,59 @@ describe('ListTablePage URL state', () => {
         expect(window.location.href).toBe(href);
     });
 
-    it('never reads or writes the address without a screen config', async () => {
-        window.history.replaceState(null, '', `${PATH}?page=give-payment-history&give-paged=3`);
+    it('never writes the address without a screen config, and reads only the filters it names', async () => {
+        window.history.replaceState(null, '', `${PATH}?page=give-payment-history&give-paged=3&donor=58`);
         const href = window.location.href;
 
         await render({screen: undefined});
-        await changeView((view) => ({...view, page: 2}));
 
         expect(firstView().page).toBe(1);
+        expect(Object.fromEntries(listRequests()[0].searchParams)).toMatchObject({donor: '58', page: '1'});
+
+        await changeView((view) => ({...view, page: 2}));
+
         expect(window.location.href).toBe(href);
+    });
+
+    it('does not ask for the list again when only the columns or density change, even with a Period filter', async () => {
+        jest.useFakeTimers({
+            now: new Date('2026-10-28T10:00:00Z'),
+            doNotFake: ['setTimeout', 'setInterval', 'clearTimeout', 'clearInterval', 'setImmediate', 'clearImmediate'],
+        });
+        window.history.replaceState(null, '', `${PATH}?page=give-payment-history&give-period=7`);
+
+        try {
+            await render({
+                filterSettings: [
+                    ...filterSettings,
+                    {
+                        name: 'periodFilter',
+                        type: 'filterby',
+                        groupedOptions: [
+                            {
+                                id: 'period',
+                                apiParam: 'start',
+                                name: 'Period',
+                                type: 'radio',
+                                options: [{text: 'Last 7 days', value: '7'}],
+                                toApiValue: (days: string, now: Date) =>
+                                    new Date(now.getTime() - Number(days) * 86_400_000).toISOString(),
+                            },
+                        ],
+                    },
+                ],
+            });
+            const before = listRequests();
+
+            expect(before[0].searchParams.get('start')).toBe('2026-10-21T10:00:00.000Z');
+
+            jest.setSystemTime(new Date('2026-10-28T10:05:00Z'));
+            await changeView((view) => ({...view, layout: {density: 'comfortable'}}));
+            await changeView((view) => ({...view, fields: ['amount']}));
+
+            expect(listRequests()).toHaveLength(before.length);
+        } finally {
+            jest.useRealTimers();
+        }
     });
 });
