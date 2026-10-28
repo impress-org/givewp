@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react';
+import {useEffect, useLayoutEffect, useRef} from 'react';
 import {assembleView} from '../state/assembleView';
 import {isCurrentQuery, onPopState, pushEntry, readQuery, readTabState, replaceEntry} from '../state/listTableHistory';
 import {parseViewQuery, serializeViewQuery, viewQueryKeys} from '../state/viewQuery';
@@ -114,8 +114,9 @@ export default function useListTableUrlState({
     const currentView = useRef(view);
     const currentLayoutPerPage = useRef(layoutPerPage);
 
-    // Kept after each commit, so the popstate listener never reads the view of an abandoned render.
-    useEffect(() => {
+    // Synced after each commit, as the layout hook does, so the popstate listener never reads the view of
+    // an abandoned render.
+    useLayoutEffect(() => {
         currentView.current = view;
         currentLayoutPerPage.current = layoutPerPage;
     });
