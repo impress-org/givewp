@@ -5,6 +5,7 @@ import {failedCalls, watchRestCalls} from './utils/rest';
 import {createStandaloneForm} from './utils/standalone-form';
 import {wp} from './utils/wp-cli';
 import {applyFilter, expectListMounts, listRows, listTable, rowById, selectionBar} from './utils/list-table';
+import {adminInNewBrowser, deleteUser, isLayoutWrite, resetLayout, signInNewUser} from './utils/user';
 
 /**
  * The Donations list: which form a donation went to, and filtering the list by it.
@@ -299,10 +300,71 @@ test.describe('Donations list behavior', () => {
 });
 
 /**
+ * The layout (columns, density, page size) is stored per user per screen on the server, so it follows
+ * the admin to another browser and does not reach anyone else. The record's rules are covered by
+ * PHPUnit and the merge with the defaults by Jest.
+ */
+test.describe('Donations list layout', () => {
+    test.beforeEach(async ({requestUtils}) => {
+        createDonation((await createCampaignWithForm(requestUtils)).formId);
+        await resetLayout(requestUtils, 'donations');
+    });
+
+    test.afterEach(async ({requestUtils}) => {
+        await resetLayout(requestUtils, 'donations');
+    });
+
+    test('follows the admin to a second browser and not to a second user', async ({
+        page,
+        admin,
+        browser,
+        requestUtils,
+    }) => {
+        await visitDonations(page, admin);
+
+        const stored = page.waitForResponse(
+            (response) => response.url().includes('list-table-layouts/donations') && isLayoutWrite(response.request())
+        );
+        await listTable(page).getByRole('button', {name: 'View options'}).click();
+        await page.getByRole('radio', {name: 'Compact', exact: true}).click();
+        await page.keyboard.press('Escape');
+        expect((await stored).ok()).toBe(true);
+        await expect(page.locator('.dataviews-view-table.has-compact-density')).toBeVisible();
+
+        const secondBrowser = await adminInNewBrowser(browser);
+        const samePerson = await secondBrowser.newPage();
+        await visitDonations(samePerson);
+        await expect(samePerson.locator('.dataviews-view-table.has-compact-density')).toBeVisible();
+        await secondBrowser.close();
+
+        const otherAdmin = await signInNewUser(browser, requestUtils, 'administrator');
+        await visitDonations(otherAdmin.page);
+        await expect(otherAdmin.page.locator('.dataviews-view-table')).toBeVisible();
+        await expect(otherAdmin.page.locator('.dataviews-view-table.has-compact-density')).toHaveCount(0);
+        await deleteUser(requestUtils, otherAdmin);
+    });
+
+    test('shows Payment Type by default only when recurring giving is available', async ({page, admin}) => {
+        await visitDonations(page, admin);
+
+        const recurring = await page.evaluate(() =>
+            Boolean((window as {GiveDonations?: {recurringDonationsEnabled?: boolean}}).GiveDonations?.recurringDonationsEnabled)
+        );
+        const header = page.locator('.dataviews-view-table thead th', {hasText: 'Payment Type'});
+
+        await expect(header).toHaveCount(recurring ? 1 : 0);
+    });
+});
+
+/**
  * Opens the list and waits for its rows, so the filters are mounted by the time a test uses them.
  */
-async function visitDonations(page: Page, admin): Promise<void> {
-    await admin.visitAdminPage('edit.php', DONATIONS_LIST);
+async function visitDonations(page: Page, admin?): Promise<void> {
+    if (admin) {
+        await admin.visitAdminPage('edit.php', DONATIONS_LIST);
+    } else {
+        await page.goto(`/wp-admin/edit.php?${DONATIONS_LIST}`);
+    }
     await expect(page.getByRole('heading', {level: 1, name: 'Donations'})).toBeVisible({timeout: 15_000});
     await expect(listRows(page).first()).toBeVisible({timeout: 15_000});
 }
