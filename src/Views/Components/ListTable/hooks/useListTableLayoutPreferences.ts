@@ -51,7 +51,7 @@ export type LayoutPreferences = {
  * The page of the new page size that holds the row the current page starts with, so a reset does not
  * move the admin away from the rows they were looking at.
  */
-const pageHoldingFirstRow = ({page = 1, perPage = 1}: ListTableView, nextPerPage: number) =>
+const pageHoldingFirstRow = (page: number, perPage: number, nextPerPage: number) =>
     Math.floor(((page - 1) * perPage) / nextPerPage) + 1;
 
 const layoutKeyOf = ({fields, layout, perPage}: ListTableView) => JSON.stringify([fields, layout?.density, perPage]);
@@ -166,7 +166,7 @@ export default function useListTableLayoutPreferences({
             fields: defaults.fields,
             layout: {...current.layout, density: defaults.density},
             perPage: defaults.perPage,
-            page: pageHoldingFirstRow(current, defaults.perPage),
+            page: pageHoldingFirstRow(current.page ?? 1, current.perPage ?? defaults.perPage, defaults.perPage),
         };
 
         cancel();
