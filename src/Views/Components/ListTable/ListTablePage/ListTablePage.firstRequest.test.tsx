@@ -79,6 +79,7 @@ async function render(overrides: Partial<ListTablePageProps> = {}) {
 
 const listRequests = () =>
     mockedFetch.mock.calls
+        .filter(([options]) => options.url)
         .map(([options]) => new URL(options.url))
         .filter((url) => url.pathname.endsWith('/donations'));
 
@@ -114,8 +115,58 @@ describe('ListTablePage first render', () => {
         expect(firstView().layout).toEqual({density: 'compact'});
     });
 
-    // The stored layout is read by the next slice (`state/layoutApi.ts`); this slice passes none.
-    it.todo('already shows the stored fields and density on the first render');
+    describe('with a stored layout', () => {
+        beforeEach(() => {
+            window.GiveListTableLayouts = {
+                path: '/givewp/v3/list-table-layouts',
+                layouts: {
+                    donations: {
+                        version: 1,
+                        visibility: {form: true, donor: false},
+                        order: ['form', 'amount'],
+                        density: 'comfortable',
+                        perPage: 20,
+                    },
+                },
+            };
+        });
+
+        afterEach(() => {
+            delete window.GiveListTableLayouts;
+        });
+
+        it('already shows the stored fields and density on the first render', async () => {
+            await render();
+
+            expect(firstView().fields).toEqual(['id', 'form', 'amount']);
+            expect(firstView().layout).toEqual({density: 'comfortable'});
+        });
+
+        it("still sends the URL's view with the first request, and no second one", async () => {
+            await render();
+
+            const requests = listRequests();
+
+            expect(requests).toHaveLength(1);
+            expect(Object.fromEntries(requests[0].searchParams)).toMatchObject({
+                page: '3',
+                perPage: '50',
+                sortColumn: 'amount',
+                sortDirection: 'asc',
+                status: 'failed,pending',
+                search: 'smith',
+            });
+        });
+
+        it('starts with the stored page size when the URL names none', async () => {
+            window.history.replaceState(null, '', `${PATH}?page=give-payment-history`);
+
+            await render();
+
+            expect(firstView().perPage).toBe(20);
+            expect(listRequests()).toHaveLength(1);
+        });
+    });
 
     it("sends the URL's page, sort, filters and page size and the tab's search with the first request", async () => {
         await render();

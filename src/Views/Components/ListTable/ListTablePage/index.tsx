@@ -14,10 +14,13 @@ import {defaultFilters, scopeFromFilterSettings} from '../adapters/viewFromIniti
 import {PER_PAGE_SIZES, viewFilterValue, viewToParameters, withToggleFilter} from '../adapters/viewToParameters';
 import {getItemName} from '../adapters/getItemName';
 import {assembleView} from '../state/assembleView';
+import {readStoredLayout} from '../state/layoutApi';
+import {applyStoredLayout} from '../state/storedLayout';
 import {resolveScreenDefaults} from '../state/screenDefaults';
 import type {ViewQueryContext} from '../state/types';
 import useListTableView from '../hooks/useListTableView';
 import useListTableUrlState, {readUrlState, urlScreenKey} from '../hooks/useListTableUrlState';
+import useListTableLayoutPreferences from '../hooks/useListTableLayoutPreferences';
 import useListTableSelection from '../hooks/useListTableSelection';
 import useListTableQuery from '../hooks/useListTableQuery';
 import useListTableActionNotices from '../hooks/useListTableActionNotices';
@@ -67,7 +70,7 @@ export const ShowConfirmModalContext = createContext(
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
  *
- * @since TBD Render the list through `@wordpress/dataviews`; accept typed row actions; keep the view in the URL.
+ * @since TBD Render the list through `@wordpress/dataviews`; accept typed row actions; keep the view in the URL; store the layout.
  * @since 2.24.0
  */
 const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
@@ -120,12 +123,18 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             };
             const screenKey = urlScreenKey(screen, contentMode);
 
-            return {defaults, context, urlState: screenKey ? readUrlState(screenKey, context) : undefined};
+            return {
+                defaults,
+                context,
+                layout: screen ? applyStoredLayout(defaults, readStoredLayout(screen.key)) : undefined,
+                urlState: screenKey ? readUrlState(screenKey, context) : undefined,
+            };
         });
 
         const {view, origin, onChangeView, replaceView, hasActiveFilters, clearFilters} = useListTableView(() =>
             assembleView({
                 defaults: start.defaults,
+                layout: start.layout,
                 query: start.urlState?.query,
                 search: start.urlState?.search,
             })
@@ -137,6 +146,14 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             context: start.context,
             defaults: start.defaults,
             initial: start.urlState,
+            view,
+            origin,
+            replaceView,
+        });
+        // Also returns `resetLayout` and `isDefaultLayout`, for the "Reset view" button.
+        useListTableLayoutPreferences({
+            screen,
+            defaults: start.defaults,
             view,
             origin,
             replaceView,
