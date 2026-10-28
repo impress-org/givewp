@@ -1,4 +1,5 @@
 import {snapPerPage} from '../adapters/viewToParameters';
+import {insertAtDefaultPosition, withPinnedLast} from './fieldOrder';
 import type {ListTableDensity, ListTableView, ScreenDefaults, StoredLayout, ViewLayoutPart} from './types';
 
 /**
@@ -80,26 +81,17 @@ function isVisible(id: string, visibility: Record<string, unknown>, defaults: Sc
 }
 
 /**
- * Puts each visible field the stored order does not name after the nearest field that comes before it
- * in the default order, or first when none does. The pinned field goes last.
+ * Keeps the stored order of the fields it names, and puts each other visible field at its default
+ * position. The pinned field goes last.
  */
 function mergeOrder(storedOrder: unknown, visible: string[], defaults: ScreenDefaults): string[] {
     const named = Array.isArray(storedOrder) ? storedOrder : [];
-    const movable = visible.filter((id) => id !== defaults.pinnedLast);
-    const merged = movable.filter((id) => named.includes(id)).sort((a, b) => named.indexOf(a) - named.indexOf(b));
+    const ordered = visible.filter((id) => named.includes(id)).sort((a, b) => named.indexOf(a) - named.indexOf(b));
+    const merged = visible
+        .filter((id) => !ordered.includes(id))
+        .reduce((fields, id) => insertAtDefaultPosition(fields, id, defaults.fieldOrder), ordered);
 
-    movable
-        .filter((id) => !merged.includes(id))
-        .forEach((id) => {
-            const before = defaults.fieldOrder.slice(0, defaults.fieldOrder.indexOf(id)).reverse();
-            const anchor = before.find((other) => merged.includes(other));
-
-            merged.splice(anchor === undefined ? 0 : merged.indexOf(anchor) + 1, 0, id);
-        });
-
-    const pinned = defaults.pinnedLast;
-
-    return pinned !== undefined && visible.includes(pinned) ? [...merged, pinned] : merged;
+    return withPinnedLast(merged, defaults.pinnedLast);
 }
 
 /**
@@ -132,5 +124,5 @@ export function applyStoredLayout(defaults: ScreenDefaults, stored: unknown): Vi
  * @since TBD
  */
 export function isDefaultLayout(view: ListTableView, defaults: ScreenDefaults): boolean {
-    return Object.keys(toStoredLayout(view, defaults)).length === 1;
+    return Object.keys(toStoredLayout(view, defaults)).every((key) => key === 'version');
 }

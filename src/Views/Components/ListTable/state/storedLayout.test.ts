@@ -104,18 +104,18 @@ describe('applyStoredLayout', () => {
     it('applies the stored order and inserts missing visible columns at their default position', () => {
         const stored = {version: 1, order: ['date', 'id']};
 
-        expect(applyStoredLayout(defaults, stored).fields).toEqual(['date', 'id', 'amount', 'paymentType', PINNED]);
+        expect(applyStoredLayout(defaults, stored).fields).toEqual(['amount', 'paymentType', 'date', 'id', PINNED]);
     });
 
-    it('places a new column after the nearest column before it in the default order', () => {
+    it('places a new column before the first column that comes after it in the default order', () => {
         const withNew = {
             ...defaults,
             fields: ['id', 'amount', 'newColumn', 'paymentType', 'date', PINNED],
             fieldOrder: ['id', 'amount', 'newColumn', 'paymentType', 'gateway', 'date', PINNED],
         };
 
-        expect(applyStoredLayout(withNew, {version: 1, order: ['paymentType', 'amount', 'date', 'id']}).fields).toEqual(
-            ['paymentType', 'amount', 'newColumn', 'date', 'id', PINNED]
+        expect(applyStoredLayout(withNew, {version: 1, order: ['amount', 'paymentType', 'date', 'id']}).fields).toEqual(
+            ['amount', 'newColumn', 'paymentType', 'date', 'id', PINNED]
         );
     });
 
@@ -132,15 +132,15 @@ describe('applyStoredLayout', () => {
     it('drops hidden and duplicate ids from the stored order', () => {
         const stored = {version: 1, visibility: {amount: false}, order: ['date', 'amount', 'date', 'id']};
 
-        expect(applyStoredLayout(defaults, stored).fields).toEqual(['date', 'id', 'paymentType', PINNED]);
+        expect(applyStoredLayout(defaults, stored).fields).toEqual(['paymentType', 'date', 'id', PINNED]);
     });
 
     it('moves the pinned field back to the end', () => {
         expect(applyStoredLayout(defaults, {version: 1, order: [PINNED, 'date', 'id']}).fields).toEqual([
-            'date',
-            'id',
             'amount',
             'paymentType',
+            'date',
+            'id',
             PINNED,
         ]);
     });
