@@ -224,9 +224,11 @@ table.
 
 Every list screen renders through `ListTablePage`, which hands the rows to `@wordpress/dataviews`. The
 screen's settings stay the same shape (columns from `ModelColumn::toArray()`, filter settings, bulk
-actions); small pure functions in `ListTable/adapters/` turn them into DataViews fields, view and
-actions, and turn the view back into the endpoint's request parameters (`viewToParameters` is the
-only place that knows those names). Sorting, filtering, searching and paging stay on the server.
+actions); small pure functions in `ListTable/adapters/` turn them into DataViews fields, default
+filters and actions, and turn the view back into the endpoint's request parameters
+(`viewToParameters` is the only place that knows those names). The view itself is assembled in
+`ListTable/state/` (see [View state](#view-state)). Sorting, filtering, searching and paging stay on
+the server.
 
 - **Stock behavior inside the list.** Toolbar, filter chips, row menu, selection bar, loading state
   and pagination are DataViews' own, as WordPress core uses them. Give adds the page header, stat
