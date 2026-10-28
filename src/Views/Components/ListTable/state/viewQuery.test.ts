@@ -241,6 +241,13 @@ describe('serializeViewQuery', () => {
         expect(serializeViewQuery(view(), donations)).toEqual({});
     });
 
+    it('treats a view without a filter list as test mode off', () => {
+        const noFilters = {...view(), filters: undefined};
+
+        expect(serializeViewQuery(noFilters, donations)).toEqual({});
+        expect(serializeViewQuery(noFilters, {...donations, siteTestMode: true})).toEqual({'give-test-mode': '0'});
+    });
+
     it('never writes test mode on a screen without the toggle', () => {
         expect(serializeViewQuery(view(), {...forms, siteTestMode: true})).toEqual({});
     });
