@@ -17,7 +17,7 @@ import {assembleView} from '../state/assembleView';
 import {resolveScreenDefaults} from '../state/screenDefaults';
 import type {ViewQueryContext} from '../state/types';
 import useListTableView from '../hooks/useListTableView';
-import useListTableUrlState, {readLegacyUrlState, readUrlState, urlScreenKey} from '../hooks/useListTableUrlState';
+import useListTableUrlState, {readInitialUrlState} from '../hooks/useListTableUrlState';
 import useListTableSelection from '../hooks/useListTableSelection';
 import useListTableQuery from '../hooks/useListTableQuery';
 import useListTableActionNotices from '../hooks/useListTableActionNotices';
@@ -118,15 +118,8 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                 defaults,
                 siteTestMode: Boolean(paymentMode),
             };
-            const screenKey = urlScreenKey(screen, contentMode);
 
-            const urlState = screenKey
-                ? readUrlState(screenKey, context)
-                : contentMode
-                ? undefined
-                : readLegacyUrlState(context);
-
-            return {defaults, context, urlState};
+            return {defaults, context, urlState: readInitialUrlState(screen, contentMode, context)};
         });
 
         const {view, origin, onChangeView, replaceView, hasActiveFilters, clearFilters} = useListTableView(() =>
