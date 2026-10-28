@@ -73,6 +73,49 @@ For urgent fixes that can't wait for the normal release cycle, branch off `maste
 * Confirm automatic updates work from the previous version.
 * Monitor the [support forums](https://wordpress.org/support/plugin/give) and error tracking for new issues over the next 24–48 hours.
 
+## Adopting this flow in an add-on
+
+An add-on gets the same preparation once it has the same three files as core and its changelog
+history is in the same format. Work on a branch of the add-on, from an add-on checkout next to
+this repository, because the conversion command is in this repository. impress-org/give-recurring#1253
+is an example to follow.
+
+1. A `.puprc` with `paths.versions` (plugin header, version constant, `Stable tag` in
+   `readme.txt`) and `checks.tbd.dirs`. The shape is in the
+   [release-prep action's README](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/release-prep#what-the-repository-needs).
+2. A `changelogger` section in `package.json`: copy core's, with `files` pointing at the
+   add-on's `readme.txt` and `"strategy": "stellarwp-readme"`, and a `changelog/` directory
+   with a `.gitkeep`. If `readme.txt` already lists the changes of an unreleased version under
+   a `= x.y.z: TBD =` header, move each line to a YAML file in `changelog/`
+   (`npx @stellarwp/changelogger add`) and delete the block: the workflow writes those entries
+   at release time.
+3. `.github/workflows/release-prep.yml`, copied from core as it is.
+4. The changelog history converted. The changelogger writes entries as
+   `= [2.20.3] 2026-10-14 =` and `* Fix - …`; an add-on's history is in Give's earlier form,
+   `= 2.20.3: October 14th, 2026 =` and `* Fix: …`, so convert it once, or the file carries both
+   formats from the next release on. From the add-on's root:
+
+   ```bash
+   node ../give/bin/convert-changelog-format.js readme.txt
+   ```
+
+   It rewrites the changelog section, checks the result against the original before writing,
+   and prints both counts, for example
+   `116 header(s) and 369 bullet(s) converted; verified against the original: 126 version(s) and 372 entries match`.
+   When something does not verify, nothing is written and the problems are listed. Commit the
+   conversion on its own, so the reviewer can skim it.
+5. The same check, with the original taken from git, to quote in the pull request:
+
+   ```bash
+   git show HEAD~1:readme.txt > /tmp/readme-before.txt
+   node ../give/bin/convert-changelog-format.js --verify /tmp/readme-before.txt readme.txt
+   ```
+
+6. The workflow can only be dispatched once it is on the add-on's default branch. After the
+   merge, run it once on a throwaway branch
+   (`gh workflow run release-prep.yml -f branch=<branch> -f version=<next>`) and check the
+   `Prepare <branch> (<version>)` commit.
+
 ## Notes
 
 * The release tooling lives in `bin/` and is built on [stellarwp/pup](https://github.com/stellarwp/pup) and [@stellarwp/changelogger](https://github.com/stellarwp/changelogger). Its own tests can be run with `composer run release:test`.
