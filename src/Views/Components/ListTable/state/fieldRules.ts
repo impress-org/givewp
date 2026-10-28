@@ -1,4 +1,5 @@
 import type {Field, View} from '@wordpress/dataviews';
+import {insertAtDefaultPosition, withPinnedLast} from './fieldOrder';
 import type {ScreenDefaults} from './types';
 
 /**
@@ -17,14 +18,10 @@ export function lockFields<Item>(fields: Field<Item>[], defaults: ScreenDefaults
  * @since TBD
  */
 export function keepPinnedLast<V extends View>(view: V, defaults: ScreenDefaults): V {
-    const pinned = defaults.pinnedLast;
     const fields = view.fields ?? [];
+    const ordered = withPinnedLast(fields, defaults.pinnedLast);
 
-    if (pinned === undefined || !fields.includes(pinned) || fields[fields.length - 1] === pinned) {
-        return view;
-    }
-
-    return {...view, fields: [...fields.filter((id) => id !== pinned), pinned]};
+    return ordered === fields ? view : {...view, fields: ordered};
 }
 
 /**
@@ -43,15 +40,10 @@ export function placeShownFields<V extends View>(next: V, previous: View, defaul
         return next;
     }
 
-    const rankOf = (id: string) => defaults.fieldOrder.indexOf(id);
-    const fields = after.filter((id) => before.includes(id));
-
-    shown.forEach((id) => {
-        const rank = rankOf(id);
-        const at = rank === -1 ? -1 : fields.findIndex((other) => rankOf(other) > rank);
-
-        fields.splice(at === -1 ? fields.length : at, 0, id);
-    });
+    const fields = shown.reduce(
+        (placed, id) => insertAtDefaultPosition(placed, id, defaults.fieldOrder),
+        after.filter((id) => before.includes(id))
+    );
 
     return {...next, fields};
 }

@@ -54,7 +54,7 @@ describe('ListTableViewReset', () => {
         expect(description?.textContent).toBe('The columns, density or page size differ from the defaults.');
     });
 
-    it('asks before resetting, in a labelled dialog that takes focus', async () => {
+    it('asks before resetting, in a labeled dialog that takes focus', async () => {
         await openDialog();
 
         expect(onConfirm).not.toHaveBeenCalled();

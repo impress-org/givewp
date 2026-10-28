@@ -46,20 +46,38 @@ class ListTableScreensTest extends TestCase
 
     /**
      * @since TBD
+     *
+     * @dataProvider capabilityProvider
+     *
+     * @param string[] $expectedScreens
      */
-    public function testMapsEachScreenToTheCapabilityOfTheAdminPageThatShowsIt(): void
-    {
-        $screens = new ListTableScreens();
+    public function testMapsEachScreenToTheCapabilityOfTheAdminPageThatShowsIt(
+        string $capability,
+        array $expectedScreens
+    ): void {
+        $user = self::factory()->user->create_and_get(['role' => '']);
+        $user->add_cap($capability);
+        wp_set_current_user($user->ID);
 
-        $this->assertSame('view_give_forms', $screens->capability('campaigns'));
-        $this->assertSame('view_give_forms', $screens->capability('donation-forms'));
-        $this->assertSame('view_give_forms', $screens->capability('campaign-forms'));
-        $this->assertSame('view_give_payments', $screens->capability('donations'));
-        $this->assertSame('view_give_reports', $screens->capability('donors'));
-        $this->assertSame('view_give_payments', $screens->capability('subscriptions'));
-        $this->assertSame('view_give_forms', $screens->capability('event-tickets'));
-        $this->assertSame('view_give_payments', $screens->capability('subscription-donations'));
-        $this->assertSame('', $screens->capability('settings'));
+        $this->assertSame($expectedScreens, (new ListTableScreens())->viewableByCurrentUser());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function capabilityProvider(): array
+    {
+        return [
+            'view_give_forms' => [
+                'view_give_forms',
+                ['campaigns', 'donation-forms', 'campaign-forms', 'event-tickets'],
+            ],
+            'view_give_payments' => [
+                'view_give_payments',
+                ['donations', 'subscriptions', 'subscription-donations'],
+            ],
+            'view_give_reports' => ['view_give_reports', ['donors']],
+        ];
     }
 
     /**

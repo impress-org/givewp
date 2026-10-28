@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react';
+import {useEffect, useLayoutEffect, useRef} from 'react';
 import {assembleView} from '../state/assembleView';
 import {onPopState, pushEntry, readQuery, readTabState, rememberSearch, replaceEntry} from '../state/listTableHistory';
 import {parseViewQuery, serializeViewQuery, viewQueryKeys} from '../state/viewQuery';
@@ -22,23 +22,15 @@ export type UrlState = ParseResult & {search: string};
 /**
  * The key of a screen that keeps its view in the URL: a screen with a config that is not embedded
  * (`contentMode`). Embedded tables never read or write the address or the tab state.
- *
- * @since TBD
  */
-export function urlScreenKey(
-    screen: ListTableScreen | undefined,
-    contentMode: boolean
-): ListTableScreenKey | undefined {
+function urlScreenKey(screen: ListTableScreen | undefined, contentMode: boolean): ListTableScreenKey | undefined {
     return contentMode ? undefined : screen?.key;
 }
 
 /**
- * Reads the address and the tab state once, before the first render, so the first list request
- * already carries them.
- *
- * @since TBD
+ * Reads the address and the tab state of a screen that keeps its view in the URL.
  */
-export function readUrlState(screenKey: ListTableScreenKey, context: ViewQueryContext): UrlState {
+function readUrlState(screenKey: ListTableScreenKey, context: ViewQueryContext): UrlState {
     return {
         ...parseViewQuery(readQuery(), context),
         search: readTabState(screenKey)?.search ?? '',
@@ -49,13 +41,34 @@ export function readUrlState(screenKey: ListTableScreenKey, context: ViewQueryCo
  * What a standalone table without a screen config reads on load: only the filters named in the address
  * (links such as `?donor=ID` that were built before the view moved into the URL). It never writes the
  * address, and ignores the page, sort and page size.
- *
- * @since TBD
  */
-export function readLegacyUrlState(context: ViewQueryContext): UrlState {
+function readLegacyUrlState(context: ViewQueryContext): UrlState {
     const {query} = parseViewQuery(readQuery(), context);
 
     return {query: {filters: query.filters}, corrected: false, legacyKeys: [], search: ''};
+}
+
+/**
+ * What a table reads from the address once, before the first render, so the first list request
+ * already carries it: a screen that keeps its view in the URL reads the address and the tab state, a
+ * standalone table without a screen config reads only the legacy filters, and an embedded table reads
+ * nothing.
+ *
+ * @since TBD
+ */
+export function readInitialUrlState(
+    screen: ListTableScreen | undefined,
+    contentMode: boolean,
+    context: ViewQueryContext
+): UrlState | undefined {
+    const screenKey = urlScreenKey(screen, contentMode);
+
+    if (screenKey) {
+        return readUrlState(screenKey, context);
+    }
+
+    // No key and not embedded means a standalone table without a screen config.
+    return contentMode ? undefined : readLegacyUrlState(context);
 }
 
 /**
@@ -67,8 +80,10 @@ export type ListTableUrlStateOptions = {
     contentMode: boolean;
     context: ViewQueryContext;
     defaults: ScreenDefaults;
-    /** What `readUrlState` read on load. */
+    /** What `readInitialUrlState` read on load. */
     initial?: UrlState;
+    /** The page size of the user's layout, used on back and forward when the entry names none. */
+    layoutPerPage: number;
     view: ListTableView;
     origin: ViewChangeOrigin;
     replaceView: (view: ListTableView, origin: 'history') => void;
@@ -90,16 +105,20 @@ export default function useListTableUrlState({
     context,
     defaults,
     initial,
+    layoutPerPage,
     view,
     origin,
     replaceView,
 }: ListTableUrlStateOptions) {
     const previousView = useRef(view);
     const currentView = useRef(view);
+    const currentLayoutPerPage = useRef(layoutPerPage);
 
-    // Kept after each commit, so the popstate listener never reads the view of an abandoned render.
-    useEffect(() => {
+    // Synced after each commit, as the layout hook does, so the popstate listener never reads the view of
+    // an abandoned render.
+    useLayoutEffect(() => {
         currentView.current = view;
+        currentLayoutPerPage.current = layoutPerPage;
     });
 
     const screenKey = urlScreenKey(screen, contentMode);
@@ -157,11 +176,11 @@ export default function useListTableUrlState({
             replaceView(
                 assembleView({
                     defaults,
-                    // Columns and density stay as they are; the page size comes from the address or the start.
+                    // Columns, density and the layout's page size stay as they are; the address may name another size.
                     layout: {
                         fields: fields ?? defaults.fields,
                         density: layout?.density ?? defaults.density,
-                        perPage: defaults.perPage,
+                        perPage: currentLayoutPerPage.current,
                     },
                     query,
                     search,

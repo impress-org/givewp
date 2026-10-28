@@ -1,14 +1,26 @@
 import {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {useDispatch} from '@wordpress/data';
-import {__} from '@wordpress/i18n';
 import '../../AdminDetailsPage/store';
 import {clearLayout, readStoredLayout, saveLayout} from '../state/layoutApi';
+import {enqueueLayoutWrite, notifyLayoutErrorOnce, sendLayoutNow} from '../state/layoutWriteQueue';
 import {applyStoredLayout, isDefaultLayout as showsDefaultLayout, toStoredLayout} from '../state/storedLayout';
-import type {ListTableScreen, ListTableView, ScreenDefaults} from '../state/types';
+import type {ListTableScreen, ListTableView, ScreenDefaults, ViewLayoutPart} from '../state/types';
 import type {ViewChangeOrigin} from './useListTableView';
 
 const WRITE_DELAY = 1000;
-const ERROR_NOTICE_ID = 'givewp-list-table-layout-error';
+
+/**
+ * The stored layout of the screen applied to its defaults, or undefined without a screen config. Read
+ * once, before the first render.
+ *
+ * @since TBD
+ */
+export function readInitialLayout(
+    screen: ListTableScreen | undefined,
+    defaults: ScreenDefaults
+): ViewLayoutPart | undefined {
+    return screen ? applyStoredLayout(defaults, readStoredLayout(screen.key)) : undefined;
+}
 
 /**
  * @since TBD
@@ -17,6 +29,8 @@ export type LayoutPreferencesOptions = {
     /** Without a screen config nothing is stored. */
     screen?: ListTableScreen;
     defaults: ScreenDefaults;
+    /** What `readInitialLayout` read on load. */
+    initialLayout?: ViewLayoutPart;
     view: ListTableView;
     origin: ViewChangeOrigin;
     replaceView: (view: ListTableView, origin: 'reset') => void;
@@ -29,34 +43,15 @@ export type LayoutPreferences = {
     /** Puts the columns, density and page size back to the screen defaults and clears the stored record. */
     resetLayout: () => void;
     isDefaultLayout: boolean;
+    /** The page size of the user's layout, used when an address names no page size. */
+    layoutPerPage: number;
 };
-
-/**
- * Whether the failed-write notice was shown in this page view. Kept outside the hook so a remounted
- * table (an embedded tab opened again) does not show it twice.
- */
-let hasNotified = false;
-
-/**
- * Writes run one after another, so an older write never finishes after a newer one.
- */
-let writes: Promise<unknown> = Promise.resolve();
-
-/**
- * Starts a new page view for the notice and the write queue. For tests.
- *
- * @since TBD
- */
-export function resetLayoutPreferencesState(): void {
-    hasNotified = false;
-    writes = Promise.resolve();
-}
 
 /**
  * The page of the new page size that holds the row the current page starts with, so a reset does not
  * move the admin away from the rows they were looking at.
  */
-const pageHoldingFirstRow = ({page = 1, perPage = 1}: ListTableView, nextPerPage: number) =>
+const pageHoldingFirstRow = (page: number, perPage: number, nextPerPage: number) =>
     Math.floor(((page - 1) * perPage) / nextPerPage) + 1;
 
 const layoutKeyOf = ({fields, layout, perPage}: ListTableView) => JSON.stringify([fields, layout?.density, perPage]);
@@ -72,6 +67,7 @@ const layoutKeyOf = ({fields, layout, perPage}: ListTableView) => JSON.stringify
 export default function useListTableLayoutPreferences({
     screen,
     defaults,
+    initialLayout,
     view,
     origin,
     replaceView,
@@ -82,11 +78,7 @@ export default function useListTableLayoutPreferences({
     const previousLayout = useRef(layoutKeyOf(view));
     const previousPerPage = useRef(view.perPage);
     // The page size the user chose for this screen. A size that only came from the address is not part of the layout.
-    const [layoutPerPage, setLayoutPerPage] = useState(
-        () =>
-            (screenKey ? applyStoredLayout(defaults, readStoredLayout(screenKey)).perPage : defaults.perPage) ??
-            defaults.perPage
-    );
+    const [layoutPerPage, setLayoutPerPage] = useState(initialLayout?.perPage ?? defaults.perPage);
     const layoutPerPageRef = useRef(layoutPerPage);
     const pending = useRef<ListTableView | null>(null);
     const timer = useRef<ReturnType<typeof setTimeout>>();
@@ -96,29 +88,17 @@ export default function useListTableLayoutPreferences({
             return;
         }
 
-        const record = toStoredLayout(target, defaults);
         const write = () =>
             (showsDefaultLayout(target, defaults)
                 ? clearLayout(screenKey, {keepalive})
-                : saveLayout(screenKey, record, {keepalive})
-            ).catch(notifyOnce);
+                : saveLayout(screenKey, toStoredLayout(target, defaults), {keepalive})
+            ).catch(() => notifyLayoutErrorOnce(addNotice));
 
-        // The page is closing: send now, the queue may never get to it.
-        writes = keepalive ? write() : writes.then(write);
-    };
-
-    const notifyOnce = () => {
-        if (hasNotified) {
-            return;
+        if (keepalive) {
+            sendLayoutNow(write);
+        } else {
+            enqueueLayoutWrite(write);
         }
-
-        hasNotified = true;
-        addNotice({
-            id: ERROR_NOTICE_ID,
-            type: 'error',
-            isDismissible: true,
-            content: __('Give could not save your table layout. Your changes stay until you leave this page.', 'give'),
-        });
     };
 
     const cancel = () => {
@@ -146,7 +126,8 @@ export default function useListTableLayoutPreferences({
         layoutPerPageRef.current = layoutPerPage;
     });
 
-    useEffect(() => {
+    // Staged in the commit phase, so a pagehide right after a change already flushes it.
+    useLayoutEffect(() => {
         const layoutKey = layoutKeyOf(view);
         const changed = layoutKey !== previousLayout.current;
         const perPageChanged = view.perPage !== previousPerPage.current;
@@ -157,7 +138,7 @@ export default function useListTableLayoutPreferences({
             return;
         }
 
-        const nextPerPage = perPageChanged ? view.perPage : layoutPerPageRef.current;
+        const nextPerPage = perPageChanged ? view.perPage ?? defaults.perPage : layoutPerPageRef.current;
         setLayoutPerPage(nextPerPage);
         pending.current = {...view, perPage: nextPerPage};
         clearTimeout(timer.current);
@@ -185,7 +166,7 @@ export default function useListTableLayoutPreferences({
             fields: defaults.fields,
             layout: {...current.layout, density: defaults.density},
             perPage: defaults.perPage,
-            page: pageHoldingFirstRow(current, defaults.perPage),
+            page: pageHoldingFirstRow(current.page ?? 1, current.perPage ?? defaults.perPage, defaults.perPage),
         };
 
         cancel();
@@ -194,5 +175,9 @@ export default function useListTableLayoutPreferences({
         send(next, false);
     }, [defaults, replaceView, screenKey]);
 
-    return {resetLayout, isDefaultLayout: showsDefaultLayout({...view, perPage: layoutPerPage}, defaults)};
+    return {
+        resetLayout,
+        isDefaultLayout: showsDefaultLayout({...view, perPage: layoutPerPage}, defaults),
+        layoutPerPage,
+    };
 }

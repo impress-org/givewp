@@ -15,13 +15,11 @@ import {PER_PAGE_SIZES, viewFilterValue, viewToParameters, withToggleFilter} fro
 import {getItemName} from '../adapters/getItemName';
 import {assembleView} from '../state/assembleView';
 import {keepPinnedLast, lockFields, placeShownFields} from '../state/fieldRules';
-import {readStoredLayout} from '../state/layoutApi';
-import {applyStoredLayout} from '../state/storedLayout';
 import {resolveScreenDefaults} from '../state/screenDefaults';
 import type {ViewQueryContext} from '../state/types';
 import useListTableView from '../hooks/useListTableView';
-import useListTableUrlState, {readLegacyUrlState, readUrlState, urlScreenKey} from '../hooks/useListTableUrlState';
-import useListTableLayoutPreferences from '../hooks/useListTableLayoutPreferences';
+import useListTableUrlState, {readInitialUrlState} from '../hooks/useListTableUrlState';
+import useListTableLayoutPreferences, {readInitialLayout} from '../hooks/useListTableLayoutPreferences';
 import useListTableSelection from '../hooks/useListTableSelection';
 import useListTableQuery from '../hooks/useListTableQuery';
 import useListTableActionNotices from '../hooks/useListTableActionNotices';
@@ -122,19 +120,12 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                 defaults,
                 siteTestMode: Boolean(paymentMode),
             };
-            const screenKey = urlScreenKey(screen, contentMode);
-
-            const urlState = screenKey
-                ? readUrlState(screenKey, context)
-                : contentMode
-                ? undefined
-                : readLegacyUrlState(context);
 
             return {
                 defaults,
                 context,
-                layout: screen ? applyStoredLayout(defaults, readStoredLayout(screen.key)) : undefined,
-                urlState,
+                layout: readInitialLayout(screen, defaults),
+                urlState: readInitialUrlState(screen, contentMode, context),
             };
         });
 
@@ -147,19 +138,21 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             })
         );
 
+        const {resetLayout, isDefaultLayout, layoutPerPage} = useListTableLayoutPreferences({
+            screen,
+            defaults: start.defaults,
+            initialLayout: start.layout,
+            view,
+            origin,
+            replaceView,
+        });
         useListTableUrlState({
             screen,
             contentMode,
             context: start.context,
             defaults: start.defaults,
             initial: start.urlState,
-            view,
-            origin,
-            replaceView,
-        });
-        const {resetLayout, isDefaultLayout} = useListTableLayoutPreferences({
-            screen,
-            defaults: start.defaults,
+            layoutPerPage,
             view,
             origin,
             replaceView,
