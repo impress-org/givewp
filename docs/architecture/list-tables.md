@@ -322,8 +322,10 @@ Only a `user` change to the layout, or a reset, is stored.
 
 The search can be a donor's name or email, so it never goes in the address, a bookmark, a shared
 link or the stored layout. It lives in the tab's history entry (`history.state.giveListTable`, keys
-belonging to others are kept), so reload, back and forward in that tab restore it and a new tab opens
-without it.
+belonging to others are kept), so reload, back and forward in that tab restore it and a new tab
+usually opens without it. A tab that the page opens itself (`window.open`, or a link without
+`noopener`) starts with a copy of this tab's `sessionStorage`, so it can restore the search when it
+opens the same address.
 
 **WordPress clears `history.state` on every admin page load.** Core's admin canonical-URL script
 runs `history.replaceState(null, …)` after the page loads, so after a reload the entry's state is
@@ -387,8 +389,9 @@ WordPress prints inline data only with its handle, so it appears only on list pa
 `ListTableViewReset` is a button next to the stock view options, shown only while the layout
 differs from the defaults. After a confirmation it puts the columns, density and page size back to
 the defaults and deletes the stored record. Filters, sort and search stay. When the page size
-changes, the page goes back to one, and that change adds a history entry like any other. Without a `screen` config it still resets the layout for
-the current page view; nothing is stored.
+changes, the page becomes the one that holds the row the current page starts with (page 3 of 50 rows
+becomes page 4 of 30), and that change adds a history entry like any other. Without a `screen`
+config it still resets the layout for the current page view; nothing is stored.
 
 - **[Judgement]** The closed screen list means an add-on's own list page cannot keep its view in
   the URL or store a layout. Opening the list to add-ons (a filter on the PHP list and a way to

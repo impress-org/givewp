@@ -126,14 +126,20 @@ incident shape.
 `window.GiveListTableLayouts` with `wp_add_inline_script` (inlined into the page just like localized
 data) before the shared `givewp-list-table` script: the layout route path and the signed-in user's
 own stored layouts, one per screen they can open. A layout holds column ids, a density word and a
-page size — ids and enumerated values only, no rows and nothing about a donor.
-Each record is checked again by `ListTableLayoutValidator` before it is printed, and the output is
-built with `wp_json_encode`. The list still fetches its rows through the REST API.
+page size. The normal client sends ids and enumerated values only, no rows and nothing about a donor.
+`ListTableLayoutValidator` checks the shape of each column id (letters, digits, `_` and `-`, up to 64
+characters), the density word and the page size, but it does not check ids against the screen's
+columns. So an authorized caller can store a string that looks like an id and is not a column;
+validation alone does not guarantee that a stored string holds no personal information. The record
+belongs to that user, is only printed back to that user, and is checked again before it is printed.
+The output is built with `wp_json_encode`. The list still fetches its rows through the REST API.
 
 **The list search term never leaves the tab.** An admin can type a donor's name or email into a
 list's search, so the term is never written to the address, a stored layout, or the server outside
 the list request itself. It is kept only in the tab's `history.state` and a `sessionStorage` copy,
-both of which die with the tab. The address carries ids and enumerated values only. See
+both of which die with the tab. A tab that this page opens itself starts with a copy of its
+`sessionStorage`, so it can restore the term when it opens the same address. The address carries ids
+and enumerated values only. See
 [list-tables.md](list-tables.md#view-state).
 
 **Admin and public localization are separate classes on purpose.** Campaigns has
