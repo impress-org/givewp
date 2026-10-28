@@ -4,7 +4,10 @@ import apiFetch from '@wordpress/api-fetch';
 import {dispatch, select} from '@wordpress/data';
 import type {ListTableScreen, ListTableView, ScreenDefaults} from '../state/types';
 import type {ViewChangeOrigin} from './useListTableView';
-import useListTableLayoutPreferences, {type LayoutPreferences} from './useListTableLayoutPreferences';
+import useListTableLayoutPreferences, {
+    type LayoutPreferences,
+    resetLayoutPreferencesState,
+} from './useListTableLayoutPreferences';
 
 jest.mock('@wordpress/api-fetch', () => jest.fn());
 
@@ -58,6 +61,7 @@ beforeEach(() => {
     mockedFetch.mockReset();
     mockedFetch.mockResolvedValue({});
     replaceView.mockReset();
+    resetLayoutPreferencesState();
     dispatch(NOTICES).dismissNotification('givewp-list-table-layout-error');
     root = createRoot(document.createElement('div'));
 });
@@ -121,6 +125,43 @@ describe('useListTableLayoutPreferences', () => {
 
         expect(layoutNotices()).toEqual([]);
         expect(requests()[1].data).toEqual({version: 1, visibility: {donor: false}, density: 'compact'});
+    });
+
+    it('does not show the notice again when the table is mounted again', async () => {
+        mockedFetch.mockRejectedValue(new Error('offline'));
+        await render({view: defaultView, origin: 'load', screen});
+        await change({fields: ['amount']});
+        await advance(1000);
+        await act(async () => dispatch(NOTICES).dismissNotification('givewp-list-table-layout-error'));
+
+        act(() => root.unmount());
+        root = createRoot(document.createElement('div'));
+        await render({view: defaultView, origin: 'load', screen});
+        await change({layout: {density: 'compact'}});
+        await advance(1000);
+
+        expect(mockedFetch).toHaveBeenCalledTimes(2);
+        expect(layoutNotices()).toEqual([]);
+    });
+
+    it('starts a write only after the one before it has finished', async () => {
+        let finishFirst: (value: unknown) => void = () => undefined;
+        mockedFetch.mockReturnValueOnce(new Promise((resolve) => (finishFirst = resolve)));
+        await render({view: defaultView, origin: 'load', screen});
+
+        await change({fields: ['amount']});
+        await advance(1000);
+        await change({fields: ['amount'], layout: {density: 'compact'}});
+        await advance(1000);
+
+        expect(mockedFetch).toHaveBeenCalledTimes(1);
+
+        await act(async () => finishFirst({}));
+
+        expect(requests().map(({data}) => data)).toEqual([
+            {version: 1, visibility: {donor: false}},
+            {version: 1, visibility: {donor: false}, density: 'compact'},
+        ]);
     });
 
     it('sends DELETE when the layout is back to the defaults', async () => {

@@ -31,6 +31,27 @@ export type LayoutPreferences = {
     isDefaultLayout: boolean;
 };
 
+/**
+ * Whether the failed-write notice was shown in this page view. Kept outside the hook so a remounted
+ * table (an embedded tab opened again) does not show it twice.
+ */
+let hasNotified = false;
+
+/**
+ * Writes run one after another, so an older write never finishes after a newer one.
+ */
+let writes: Promise<unknown> = Promise.resolve();
+
+/**
+ * Starts a new page view for the notice and the write queue. For tests.
+ *
+ * @since TBD
+ */
+export function resetLayoutPreferencesState(): void {
+    hasNotified = false;
+    writes = Promise.resolve();
+}
+
 const layoutKeyOf = ({fields, layout, perPage}: ListTableView) => JSON.stringify([fields, layout?.density, perPage]);
 
 /**
@@ -54,7 +75,6 @@ export default function useListTableLayoutPreferences({
     const previousLayout = useRef(layoutKeyOf(view));
     const pending = useRef<ListTableView | null>(null);
     const timer = useRef<ReturnType<typeof setTimeout>>();
-    const hasNotified = useRef(false);
     currentView.current = view;
 
     const send = (target: ListTableView, keepalive: boolean) => {
@@ -63,25 +83,27 @@ export default function useListTableLayoutPreferences({
         }
 
         const record = toStoredLayout(target, defaults);
-        const request = showsDefaultLayout(target, defaults)
-            ? clearLayout(screenKey, {keepalive})
-            : saveLayout(screenKey, record, {keepalive});
+        const write = () =>
+            (showsDefaultLayout(target, defaults)
+                ? clearLayout(screenKey, {keepalive})
+                : saveLayout(screenKey, record, {keepalive})
+            ).catch(notifyOnce);
 
-        request.catch(() => {
-            if (hasNotified.current) {
-                return;
-            }
+        // The page is closing: send now, the queue may never get to it.
+        writes = keepalive ? write() : writes.then(write);
+    };
 
-            hasNotified.current = true;
-            addNotice({
-                id: ERROR_NOTICE_ID,
-                type: 'error',
-                isDismissible: true,
-                content: __(
-                    'Give could not save your table layout. Your changes stay until you leave this page.',
-                    'give'
-                ),
-            });
+    const notifyOnce = () => {
+        if (hasNotified) {
+            return;
+        }
+
+        hasNotified = true;
+        addNotice({
+            id: ERROR_NOTICE_ID,
+            type: 'error',
+            isDismissible: true,
+            content: __('Give could not save your table layout. Your changes stay until you leave this page.', 'give'),
         });
     };
 
