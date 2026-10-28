@@ -3,6 +3,7 @@ import {__experimentalHStack as HStack} from '@wordpress/components';
 import {DataViews} from '@wordpress/dataviews';
 import type {Action, Field, View} from '@wordpress/dataviews';
 import type {ListTableItem} from '../ListTablePage/types';
+import ListTableViewReset from '../ListTableViewReset';
 import './styles.scss';
 
 /**
@@ -22,14 +23,19 @@ export interface DataViewsListTableProps {
     perPageSizes: number[];
     search: boolean;
     searchLabel?: string;
+    /** True while the layout is the screen default. Hides "Reset view". */
+    isDefaultLayout?: boolean;
+    /** Puts the layout back to the screen defaults. Without it there is no "Reset view". */
+    onResetLayout?: () => void;
 }
 
 const getItemId = (item: ListTableItem) => String(item.id);
 
 /**
- * The stock DataViews layout, with one change: while rows are selected, the bulk actions also take
- * the place of the search row above the table, so they show where the selection starts. The stock
- * footer keeps its own copy next to the pagination.
+ * The stock DataViews layout, with two changes: while rows are selected, the bulk actions also take
+ * the place of the search row above the table, so they show where the selection starts (the stock
+ * footer keeps its own copy next to the pagination); and a "Reset view" button sits after the view
+ * options, which this DataViews version does not offer.
  *
  * @since TBD
  */
@@ -37,10 +43,14 @@ function ListTableLayout({
     hasSelection,
     search,
     searchLabel,
+    isDefaultLayout,
+    onResetLayout,
 }: {
     hasSelection: boolean;
     search: boolean;
     searchLabel?: string;
+    isDefaultLayout: boolean;
+    onResetLayout?: () => void;
 }) {
     return (
         <>
@@ -57,6 +67,7 @@ function ListTableLayout({
                     <HStack spacing={1} expanded={false} style={{flexShrink: 0}}>
                         <DataViews.LayoutSwitcher />
                         <DataViews.ViewConfig />
+                        {onResetLayout && <ListTableViewReset isDefault={isDefaultLayout} onConfirm={onResetLayout} />}
                     </HStack>
                 </HStack>
             )}
@@ -87,6 +98,8 @@ export default function DataViewsListTable({
     perPageSizes,
     search,
     searchLabel,
+    isDefaultLayout = true,
+    onResetLayout,
 }: DataViewsListTableProps) {
     return (
         <div className="givewp-list-table">
@@ -111,6 +124,8 @@ export default function DataViewsListTable({
                     hasSelection={selection.length > 0}
                     search={search}
                     searchLabel={searchLabel}
+                    isDefaultLayout={isDefaultLayout}
+                    onResetLayout={onResetLayout}
                 />
             </DataViews>
         </div>

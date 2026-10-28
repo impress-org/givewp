@@ -201,4 +201,17 @@ describe('useListTableLayoutPreferences', () => {
         expect(replaceView).toHaveBeenCalledWith({...defaultView, page: 2}, 'reset');
         expect(requests()).toEqual([expect.objectContaining({method: 'DELETE'})]);
     });
+
+    it('keeps the search, filters and sort on reset', async () => {
+        const query: Partial<ListTableView> = {
+            search: 'jane',
+            sort: {field: 'amount', direction: 'asc'},
+            filters: [{field: 'status', operator: 'is', value: 'publish'}],
+        };
+        await render({view: {...defaultView, ...query, layout: {density: 'compact'}}, origin: 'load', screen});
+
+        await act(async () => latest.resetLayout());
+
+        expect(replaceView).toHaveBeenCalledWith({...defaultView, ...query}, 'reset');
+    });
 });
