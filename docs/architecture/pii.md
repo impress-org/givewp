@@ -122,6 +122,20 @@ wp_localize_script($handleName, 'GiveDonors', [
 If you find yourself localizing an array of donors, donations, or subscriptions, stop — that is the
 incident shape.
 
+**The list table layout bootstrap is configuration too.** `PrintListTableLayouts` prints
+`window.GiveListTableLayouts` with `wp_add_inline_script` (inlined into the page just like localized
+data) before the shared `givewp-list-table` script: the layout route path and the signed-in user's
+own stored layouts, one per screen they can open. A layout holds column ids, a density word and a
+page size — ids and enumerated values only, no rows and nothing about a donor.
+Each record is checked again by `ListTableLayoutValidator` before it is printed, and the output is
+built with `wp_json_encode`. The list still fetches its rows through the REST API.
+
+**The list search term never leaves the tab.** An admin can type a donor's name or email into a
+list's search, so the term is never written to the address, a stored layout, or the server outside
+the list request itself. It is kept only in the tab's `history.state` and a `sessionStorage` copy,
+both of which die with the tab. The address carries ids and enumerated values only. See
+[list-tables.md](list-tables.md#view-state).
+
 **Admin and public localization are separate classes on purpose.** Campaigns has
 `LoadCampaignAdminOptions` and `LoadCampaignPublicOptions`, and the public one is deliberately
 minimal — currency and an `isAdmin` flag. Don't merge them, and don't add a field to the public one
