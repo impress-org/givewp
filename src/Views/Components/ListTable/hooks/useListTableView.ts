@@ -1,5 +1,15 @@
 import {useCallback, useState} from 'react';
 import type {View} from '@wordpress/dataviews';
+import type {ListTableView} from '../state/types';
+
+/**
+ * Where a view change came from, so the URL knows whether to write: `user` adds a history entry,
+ * `correction` replaces it, `history` (back and forward) writes nothing, and `reset` behaves like a
+ * user change. `load` is the first view.
+ *
+ * @since TBD
+ */
+export type ViewChangeOrigin = 'load' | 'user' | 'history' | 'correction' | 'reset';
 
 const isApplied = (value: unknown) =>
     value !== undefined && value !== null && value !== '' && !(Array.isArray(value) && value.length === 0);
@@ -10,15 +20,33 @@ const isApplied = (value: unknown) =>
 const queryOf = (view: View) => JSON.stringify([view.search, view.filters, view.sort, view.perPage]);
 
 /**
- * Owns the list view (page, page size, sort, search, filters, columns) for the life of the page.
+ * Owns the list view (page, page size, sort, search, filters, columns) for the life of the page, and
+ * where its last change came from.
  *
  * @since TBD
  */
-export default function useListTableView(initialView: View | (() => View)) {
-    const [view, setView] = useState<View>(initialView);
+export default function useListTableView(initialView: ListTableView | (() => ListTableView)) {
+    const [state, setState] = useState<{view: ListTableView; origin: ViewChangeOrigin}>(() => ({
+        view: typeof initialView === 'function' ? initialView() : initialView,
+        origin: 'load',
+    }));
+    const {view, origin} = state;
 
+    // DataViews hands back the view it was given, so a table view stays a table view.
     const onChangeView = useCallback((next: View) => {
-        setView((previous) => (queryOf(next) === queryOf(previous) ? next : {...next, page: 1}));
+        const nextView = next as ListTableView;
+
+        setState((previous) => ({
+            view: queryOf(nextView) === queryOf(previous.view) ? nextView : {...nextView, page: 1},
+            origin: 'user',
+        }));
+    }, []);
+
+    /**
+     * Sets the view as it is, without the page reset of a user change.
+     */
+    const replaceView = useCallback((next: ListTableView, nextOrigin: 'correction' | 'history' = 'correction') => {
+        setState({view: next, origin: nextOrigin});
     }, []);
 
     const hasActiveFilters =
@@ -28,13 +56,16 @@ export default function useListTableView(initialView: View | (() => View)) {
      * Clears the search term and every filter the admin can change. Sort and page size stay.
      */
     const clearFilters = useCallback(() => {
-        setView((previous) => ({
-            ...previous,
-            page: 1,
-            search: '',
-            filters: (previous.filters ?? []).filter((filter) => filter.isLocked),
+        setState((previous) => ({
+            view: {
+                ...previous.view,
+                page: 1,
+                search: '',
+                filters: (previous.view.filters ?? []).filter((filter) => filter.isLocked),
+            },
+            origin: 'user',
         }));
     }, []);
 
-    return {view, onChangeView, hasActiveFilters, clearFilters};
+    return {view, origin, onChangeView, replaceView, hasActiveFilters, clearFilters};
 }
