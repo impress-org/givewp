@@ -1,14 +1,7 @@
 import type {Filter} from '@wordpress/dataviews';
 import type {Column} from '../ListTablePage/types';
-import {PER_PAGE_SIZES} from '../adapters/viewToParameters';
+import {snapPerPage} from '../adapters/viewToParameters';
 import type {ListTableScreen, ScreenDefaults} from './types';
-
-/**
- * The page size used when neither the screen nor the page sets one.
- *
- * @since TBD
- */
-export const DEFAULT_PER_PAGE = 30;
 
 /**
  * The id column, locked when a screen has no title field.
@@ -16,22 +9,6 @@ export const DEFAULT_PER_PAGE = 30;
  * @since TBD
  */
 export const ID_FIELD = 'id';
-
-/**
- * The nearest offered page size. On a tie the smaller size wins. A value that is not a number gives
- * the fallback.
- *
- * @since TBD
- */
-export function snapPerPage(perPage: number | undefined, fallback: number = DEFAULT_PER_PAGE): number {
-    if (typeof perPage !== 'number' || !Number.isFinite(perPage)) {
-        return fallback;
-    }
-
-    return PER_PAGE_SIZES.reduce((nearest, size) =>
-        Math.abs(size - perPage) < Math.abs(nearest - perPage) ? size : nearest
-    );
-}
 
 /**
  * What the page adds to the screen config: its `perPage` prop, the legacy row-actions field when the

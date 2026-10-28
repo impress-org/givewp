@@ -1,13 +1,11 @@
-import {act} from 'react';
+import {act, useLayoutEffect} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
 import apiFetch from '@wordpress/api-fetch';
 import {dispatch, select} from '@wordpress/data';
-import type {ListTableScreen, ListTableView, ScreenDefaults} from '../state/types';
+import type {ListTableScreen, ListTableView, ScreenDefaults, ViewLayoutPart} from '../state/types';
 import type {ViewChangeOrigin} from './useListTableView';
-import useListTableLayoutPreferences, {
-    type LayoutPreferences,
-    resetLayoutPreferencesState,
-} from './useListTableLayoutPreferences';
+import {resetLayoutWriteQueue} from '../state/layoutWriteQueue';
+import useListTableLayoutPreferences, {type LayoutPreferences} from './useListTableLayoutPreferences';
 
 jest.mock('@wordpress/api-fetch', () => jest.fn());
 
@@ -38,14 +36,14 @@ const defaultView: ListTableView = {
     layout: {density: 'balanced'},
 };
 
-type Props = {view: ListTableView; origin: ViewChangeOrigin; screen?: ListTableScreen};
+type Props = {view: ListTableView; origin: ViewChangeOrigin; screen?: ListTableScreen; initialLayout?: ViewLayoutPart};
 
 let root: Root;
 let latest: LayoutPreferences;
 const replaceView = jest.fn();
 
-function Harness({view, origin, screen: currentScreen}: Props) {
-    latest = useListTableLayoutPreferences({screen: currentScreen, defaults, view, origin, replaceView});
+function Harness({view, origin, screen: currentScreen, initialLayout}: Props) {
+    latest = useListTableLayoutPreferences({screen: currentScreen, defaults, initialLayout, view, origin, replaceView});
 
     return null;
 }
@@ -61,7 +59,7 @@ beforeEach(() => {
     mockedFetch.mockReset();
     mockedFetch.mockResolvedValue({});
     replaceView.mockReset();
-    resetLayoutPreferencesState();
+    resetLayoutWriteQueue();
     dispatch(NOTICES).dismissNotification('givewp-list-table-layout-error');
     root = createRoot(document.createElement('div'));
 });
@@ -105,6 +103,31 @@ describe('useListTableLayoutPreferences', () => {
         await advance(1000);
 
         expect(mockedFetch).toHaveBeenCalledTimes(1);
+    });
+
+    it('flushes the latest layout on a pagehide right after the change is committed', async () => {
+        // Fires pagehide from a layout effect that runs after the hook's own, before any passive effect.
+        function PageHideOnCommit() {
+            useLayoutEffect(() => {
+                window.dispatchEvent(new Event('pagehide'));
+            }, []);
+
+            return null;
+        }
+
+        await render({view: defaultView, origin: 'load', screen});
+        await act(() =>
+            root.render(
+                <>
+                    <Harness view={{...defaultView, layout: {density: 'compact'}}} origin="user" screen={screen} />
+                    <PageHideOnCommit />
+                </>
+            )
+        );
+
+        expect(requests()).toEqual([
+            expect.objectContaining({method: 'PUT', keepalive: true, data: {version: 1, density: 'compact'}}),
+        ]);
     });
 
     it('keeps the change on screen, shows one notice per page view, and sends the full record next', async () => {
@@ -216,6 +239,29 @@ describe('useListTableLayoutPreferences', () => {
 
         expect(latest.isDefaultLayout).toBe(false);
         expect(requests()).toEqual([expect.objectContaining({method: 'PUT', data: {version: 1, perPage: 50}})]);
+    });
+
+    it("follows the page size of the user's layout, starting from the stored one", async () => {
+        await act(() =>
+            root.render(
+                <Harness
+                    view={{...defaultView, perPage: 20}}
+                    origin="load"
+                    screen={screen}
+                    initialLayout={{fields: defaultView.fields, density: 'balanced', perPage: 20}}
+                />
+            )
+        );
+
+        expect(latest.layoutPerPage).toBe(20);
+
+        await change({perPage: 50});
+
+        expect(latest.layoutPerPage).toBe(50);
+
+        await act(async () => latest.resetLayout());
+
+        expect(latest.layoutPerPage).toBe(30);
     });
 
     it('resets the layout to the defaults and clears the stored record', async () => {

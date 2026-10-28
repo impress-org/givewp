@@ -34,18 +34,6 @@ class ListTableScreens
     }
 
     /**
-     * The capability a user needs to use the screen, or an empty string for an unknown screen.
-     *
-     * @since TBD
-     */
-    public function capability(string $screen): string
-    {
-        $permission = $this->permission($screen);
-
-        return $permission ? $permission->viewCap() : '';
-    }
-
-    /**
      * @since TBD
      */
     public function currentUserCanView(string $screen): bool
