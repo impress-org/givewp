@@ -20,7 +20,7 @@ import {applyStoredLayout} from '../state/storedLayout';
 import {resolveScreenDefaults} from '../state/screenDefaults';
 import type {ViewQueryContext} from '../state/types';
 import useListTableView from '../hooks/useListTableView';
-import useListTableUrlState, {readUrlState, urlScreenKey} from '../hooks/useListTableUrlState';
+import useListTableUrlState, {readLegacyUrlState, readUrlState, urlScreenKey} from '../hooks/useListTableUrlState';
 import useListTableLayoutPreferences from '../hooks/useListTableLayoutPreferences';
 import useListTableSelection from '../hooks/useListTableSelection';
 import useListTableQuery from '../hooks/useListTableQuery';
@@ -124,11 +124,17 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             };
             const screenKey = urlScreenKey(screen, contentMode);
 
+            const urlState = screenKey
+                ? readUrlState(screenKey, context)
+                : contentMode
+                ? undefined
+                : readLegacyUrlState(context);
+
             return {
                 defaults,
                 context,
                 layout: screen ? applyStoredLayout(defaults, readStoredLayout(screen.key)) : undefined,
-                urlState: screenKey ? readUrlState(screenKey, context) : undefined,
+                urlState,
             };
         });
 
@@ -166,7 +172,9 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const report = useListTableActionNotices(singleName, pluralName);
 
         // "Filter by" values such as "Period" count from this time; fixed per view so the request stays the same.
-        const requestTime = useMemo(() => new Date(), [view]);
+        // Only what changes the request restarts the clock, not a layout change such as density or columns.
+        const requestKey = JSON.stringify([view.page, view.perPage, view.sort, view.filters, view.search]);
+        const requestTime = useMemo(() => new Date(), [requestKey]);
         const parameters = useMemo(
             () => viewToParameters(view, filterSettings, scope, {locale, testMode, now: requestTime}),
             [view, filterSettings, scope, locale, testMode, requestTime]
