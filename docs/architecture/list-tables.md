@@ -304,7 +304,10 @@ Only a `user` change to the layout, or a reset, is stored.
 - **Only ids and enumerated values.** Each value must match `[A-Za-z0-9_-]{1,64}` and be one the
   screen offers (a sortable column, a filter option, a page size in `PER_PAGE_SIZES`, an id for a
   campaign or form filter). Anything else is dropped, the result is marked `corrected`, and the
-  address is replaced. Nothing read from the address is rendered as markup. "Filter by" options whose
+  address is replaced. **The exception is a hidden filter** (such as `donor`): it has no list of
+  offered values, so it accepts any token that matches the pattern, and `give-donor=Jane` is applied
+  as typed. The app itself only writes ids there; the address is not a privacy boundary for what a
+  person types into it by hand. Nothing read from the address is rendered as markup. "Filter by" options whose
   real value is a moment in time keep a stable option value (`7`, `30`, `90` for "Period") and turn
   it into the request value with `toApiValue`, fixed per view so the request does not change on
   every render.
@@ -357,8 +360,9 @@ multisite network keeps a separate record on each site.
   known screen (404), the screen's view capability (403). It only ever reads or writes the signed-in
   user's own record. `ListTableLayoutValidator` accepts version `1`, at most 50 column ids matching
   `[A-Za-z0-9_-]{1,64}`, one of the three densities, and a page size from 1 to 100.
-- **Writes** wait one second after the last change, run one after another, and are sent at once with
-  `keepalive` on `pagehide`. A failed write keeps the change on screen and shows one notice per page
+- **Writes** wait one second after the last change and run one after another. The exception is the
+  send on `pagehide`: it goes out at once with `keepalive` and skips the queue, so it can overtake an
+  older write that is still in flight. A failed write keeps the change on screen and shows one notice per page
   view; the next write sends the whole record again.
 - **Locked columns.** The identifying column (the title column, or `id` when there is none) cannot
   be hidden, and the legacy row-actions column, when a screen uses one, cannot be hidden and stays
