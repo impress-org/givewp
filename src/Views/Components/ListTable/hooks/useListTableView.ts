@@ -11,6 +11,13 @@ import type {ListTableView} from '../state/types';
  */
 export type ViewChangeOrigin = 'load' | 'user' | 'history' | 'correction' | 'reset';
 
+/**
+ * The origins of a view set as it is, not through DataViews.
+ *
+ * @since TBD
+ */
+export type ReplaceOrigin = Extract<ViewChangeOrigin, 'correction' | 'history' | 'reset'>;
+
 const isApplied = (value: unknown) =>
     value !== undefined && value !== null && value !== '' && !(Array.isArray(value) && value.length === 0);
 
@@ -45,7 +52,7 @@ export default function useListTableView(initialView: ListTableView | (() => Lis
     /**
      * Sets the view as it is, without the page reset of a user change.
      */
-    const replaceView = useCallback((next: ListTableView, nextOrigin: 'correction' | 'history' = 'correction') => {
+    const replaceView = useCallback((next: ListTableView, nextOrigin: ReplaceOrigin = 'correction') => {
         setState({view: next, origin: nextOrigin});
     }, []);
 
