@@ -16,7 +16,7 @@ class ListTableLayoutValidator
 {
     public const VERSION = 1;
     public const MAX_ENTRIES = 50;
-    public const ID_PATTERN = '/^[A-Za-z0-9_-]{1,64}$/';
+    public const ID_PATTERN = '/^[A-Za-z0-9_-]{1,64}$/D';
     public const DENSITIES = ['compact', 'balanced', 'comfortable'];
     public const MIN_PER_PAGE = 1;
     public const MAX_PER_PAGE = 100;
