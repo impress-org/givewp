@@ -109,7 +109,8 @@ export default function useListTableLayoutPreferences({
         flushRef.current = flush;
     });
 
-    useEffect(() => {
+    // Staged in the commit phase, so a pagehide right after a change already flushes it.
+    useLayoutEffect(() => {
         const layoutKey = layoutKeyOf(view);
         const changed = layoutKey !== previousLayout.current;
         previousLayout.current = layoutKey;

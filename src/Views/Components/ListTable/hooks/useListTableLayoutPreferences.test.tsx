@@ -1,4 +1,4 @@
-import {act} from 'react';
+import {act, useLayoutEffect} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
 import apiFetch from '@wordpress/api-fetch';
 import {dispatch, select} from '@wordpress/data';
@@ -103,6 +103,31 @@ describe('useListTableLayoutPreferences', () => {
         await advance(1000);
 
         expect(mockedFetch).toHaveBeenCalledTimes(1);
+    });
+
+    it('flushes the latest layout on a pagehide right after the change is committed', async () => {
+        // Fires pagehide from a layout effect that runs after the hook's own, before any passive effect.
+        function PageHideOnCommit() {
+            useLayoutEffect(() => {
+                window.dispatchEvent(new Event('pagehide'));
+            }, []);
+
+            return null;
+        }
+
+        await render({view: defaultView, origin: 'load', screen});
+        await act(() =>
+            root.render(
+                <>
+                    <Harness view={{...defaultView, layout: {density: 'compact'}}} origin="user" screen={screen} />
+                    <PageHideOnCommit />
+                </>
+            )
+        );
+
+        expect(requests()).toEqual([
+            expect.objectContaining({method: 'PUT', keepalive: true, data: {version: 1, density: 'compact'}}),
+        ]);
     });
 
     it('keeps the change on screen, shows one notice per page view, and sends the full record next', async () => {
