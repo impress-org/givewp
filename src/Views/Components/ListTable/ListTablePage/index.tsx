@@ -19,7 +19,7 @@ import {applyStoredLayout} from '../state/storedLayout';
 import {resolveScreenDefaults} from '../state/screenDefaults';
 import type {ViewQueryContext} from '../state/types';
 import useListTableView from '../hooks/useListTableView';
-import useListTableUrlState, {readLegacyUrlState, readUrlState, urlScreenKey} from '../hooks/useListTableUrlState';
+import useListTableUrlState, {readInitialUrlState} from '../hooks/useListTableUrlState';
 import useListTableLayoutPreferences from '../hooks/useListTableLayoutPreferences';
 import useListTableSelection from '../hooks/useListTableSelection';
 import useListTableQuery from '../hooks/useListTableQuery';
@@ -121,19 +121,12 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                 defaults,
                 siteTestMode: Boolean(paymentMode),
             };
-            const screenKey = urlScreenKey(screen, contentMode);
-
-            const urlState = screenKey
-                ? readUrlState(screenKey, context)
-                : contentMode
-                ? undefined
-                : readLegacyUrlState(context);
 
             return {
                 defaults,
                 context,
                 layout: screen ? applyStoredLayout(defaults, readStoredLayout(screen.key)) : undefined,
-                urlState,
+                urlState: readInitialUrlState(screen, contentMode, context),
             };
         });
 
