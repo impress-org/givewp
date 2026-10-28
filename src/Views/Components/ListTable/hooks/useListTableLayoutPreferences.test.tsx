@@ -191,6 +191,33 @@ describe('useListTableLayoutPreferences', () => {
         expect(mockedFetch).not.toHaveBeenCalled();
     });
 
+    it('does not count a page size that only came from the address as a changed layout', async () => {
+        await render({view: {...defaultView, perPage: 10}, origin: 'load', screen});
+
+        expect(latest.isDefaultLayout).toBe(true);
+    });
+
+    it('keeps an address page size out of the stored record when another part of the layout changes', async () => {
+        await render({view: {...defaultView, perPage: 10}, origin: 'load', screen});
+
+        await change({perPage: 10, fields: ['amount']});
+        await advance(1000);
+
+        expect(requests()).toEqual([
+            expect.objectContaining({method: 'PUT', data: {version: 1, visibility: {donor: false}}}),
+        ]);
+    });
+
+    it('counts a page size the user picked as part of the layout', async () => {
+        await render({view: defaultView, origin: 'load', screen});
+
+        await change({perPage: 50});
+        await advance(1000);
+
+        expect(latest.isDefaultLayout).toBe(false);
+        expect(requests()).toEqual([expect.objectContaining({method: 'PUT', data: {version: 1, perPage: 50}})]);
+    });
+
     it('resets the layout to the defaults and clears the stored record', async () => {
         await render({view: {...defaultView, fields: ['amount'], page: 2}, origin: 'load', screen});
 
