@@ -1,7 +1,7 @@
 import {MouseEventHandler, useCallback, useEffect} from 'react';
 import {createPortal} from 'react-dom';
 import {__} from '@wordpress/i18n';
-import {useConstrainedTabbing, useFocusOnMount, useMergeRefs} from '@wordpress/compose';
+import {useConstrainedTabbing, useFocusOnMount, useFocusReturn, useMergeRefs} from '@wordpress/compose';
 import {ExitIcon} from '@givewp/components/AdminUI/Icons';
 import './style.scss';
 
@@ -31,7 +31,9 @@ export default function Modal({
     showCloseIcon = true,
     wrapperClassName = '',
 }: ModalProps) {
-    const dialogRef = useMergeRefs([useFocusOnMount(true), useConstrainedTabbing()]);
+    // Focus goes into the dialog when it opens and back to what had it when it closes. The return hook
+    // comes first, so it records the focused element before the dialog takes focus.
+    const dialogRef = useMergeRefs([useFocusReturn(), useFocusOnMount(true), useConstrainedTabbing()]);
 
     // ESC key closes modal, but only while it is open
     const closeModal = useCallback(
