@@ -14,7 +14,7 @@ import {defaultFilters, scopeFromFilterSettings} from '../adapters/defaultFilter
 import {PER_PAGE_SIZES, viewFilterValue, viewToParameters, withToggleFilter} from '../adapters/viewToParameters';
 import {getItemName} from '../adapters/getItemName';
 import {assembleView} from '../state/assembleView';
-import {keepPinnedLast, lockFields} from '../state/fieldRules';
+import {keepPinnedLast, lockFields, placeShownFields} from '../state/fieldRules';
 import {readStoredLayout} from '../state/layoutApi';
 import {applyStoredLayout} from '../state/storedLayout';
 import {resolveScreenDefaults} from '../state/screenDefaults';
@@ -222,8 +222,8 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             [columns, columnFilters, data, legacyRowActionsField, filters]
         );
         const onChangeTableView = useCallback(
-            (next: View) => onChangeView(keepPinnedLast(next, start.defaults)),
-            [onChangeView]
+            (next: View) => onChangeView(keepPinnedLast(placeShownFields(next, view, start.defaults), start.defaults)),
+            [onChangeView, view]
         );
 
         const {actions, actionDialog, closeActionDialog, customAction, setCustomActionOpen} = useListTableActions({
