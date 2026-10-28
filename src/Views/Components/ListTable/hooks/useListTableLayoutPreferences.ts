@@ -1,14 +1,26 @@
 import {useCallback, useEffect, useLayoutEffect, useRef} from 'react';
 import {useDispatch} from '@wordpress/data';
-import {__} from '@wordpress/i18n';
 import '../../AdminDetailsPage/store';
-import {clearLayout, saveLayout} from '../state/layoutApi';
-import {isDefaultLayout as showsDefaultLayout, toStoredLayout} from '../state/storedLayout';
-import type {ListTableScreen, ListTableView, ScreenDefaults} from '../state/types';
+import {clearLayout, readStoredLayout, saveLayout} from '../state/layoutApi';
+import {enqueueLayoutWrite, notifyLayoutErrorOnce, sendLayoutNow} from '../state/layoutWriteQueue';
+import {applyStoredLayout, isDefaultLayout as showsDefaultLayout, toStoredLayout} from '../state/storedLayout';
+import type {ListTableScreen, ListTableView, ScreenDefaults, ViewLayoutPart} from '../state/types';
 import type {ViewChangeOrigin} from './useListTableView';
 
 const WRITE_DELAY = 1000;
-const ERROR_NOTICE_ID = 'givewp-list-table-layout-error';
+
+/**
+ * The stored layout of the screen applied to its defaults, or undefined without a screen config. Read
+ * once, before the first render.
+ *
+ * @since TBD
+ */
+export function readInitialLayout(
+    screen: ListTableScreen | undefined,
+    defaults: ScreenDefaults
+): ViewLayoutPart | undefined {
+    return screen ? applyStoredLayout(defaults, readStoredLayout(screen.key)) : undefined;
+}
 
 /**
  * @since TBD
@@ -30,27 +42,6 @@ export type LayoutPreferences = {
     resetLayout: () => void;
     isDefaultLayout: boolean;
 };
-
-/**
- * Whether the failed-write notice was shown in this page view. Kept outside the hook so a remounted
- * table (an embedded tab opened again) does not show it twice.
- */
-let hasNotified = false;
-
-/**
- * Writes run one after another, so an older write never finishes after a newer one.
- */
-let writes: Promise<unknown> = Promise.resolve();
-
-/**
- * Starts a new page view for the notice and the write queue. For tests.
- *
- * @since TBD
- */
-export function resetLayoutPreferencesState(): void {
-    hasNotified = false;
-    writes = Promise.resolve();
-}
 
 const layoutKeyOf = ({fields, layout, perPage}: ListTableView) => JSON.stringify([fields, layout?.density, perPage]);
 
@@ -81,29 +72,17 @@ export default function useListTableLayoutPreferences({
             return;
         }
 
-        const record = toStoredLayout(target, defaults);
         const write = () =>
             (showsDefaultLayout(target, defaults)
                 ? clearLayout(screenKey, {keepalive})
-                : saveLayout(screenKey, record, {keepalive})
-            ).catch(notifyOnce);
+                : saveLayout(screenKey, toStoredLayout(target, defaults), {keepalive})
+            ).catch(() => notifyLayoutErrorOnce(addNotice));
 
-        // The page is closing: send now, the queue may never get to it.
-        writes = keepalive ? write() : writes.then(write);
-    };
-
-    const notifyOnce = () => {
-        if (hasNotified) {
-            return;
+        if (keepalive) {
+            sendLayoutNow(write);
+        } else {
+            enqueueLayoutWrite(write);
         }
-
-        hasNotified = true;
-        addNotice({
-            id: ERROR_NOTICE_ID,
-            type: 'error',
-            isDismissible: true,
-            content: __('Give could not save your table layout. Your changes stay until you leave this page.', 'give'),
-        });
     };
 
     const cancel = () => {

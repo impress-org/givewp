@@ -14,13 +14,11 @@ import {defaultFilters, scopeFromFilterSettings} from '../adapters/viewFromIniti
 import {PER_PAGE_SIZES, viewFilterValue, viewToParameters, withToggleFilter} from '../adapters/viewToParameters';
 import {getItemName} from '../adapters/getItemName';
 import {assembleView} from '../state/assembleView';
-import {readStoredLayout} from '../state/layoutApi';
-import {applyStoredLayout} from '../state/storedLayout';
 import {resolveScreenDefaults} from '../state/screenDefaults';
 import type {ViewQueryContext} from '../state/types';
 import useListTableView from '../hooks/useListTableView';
 import useListTableUrlState, {readInitialUrlState} from '../hooks/useListTableUrlState';
-import useListTableLayoutPreferences from '../hooks/useListTableLayoutPreferences';
+import useListTableLayoutPreferences, {readInitialLayout} from '../hooks/useListTableLayoutPreferences';
 import useListTableSelection from '../hooks/useListTableSelection';
 import useListTableQuery from '../hooks/useListTableQuery';
 import useListTableActionNotices from '../hooks/useListTableActionNotices';
@@ -125,7 +123,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             return {
                 defaults,
                 context,
-                layout: screen ? applyStoredLayout(defaults, readStoredLayout(screen.key)) : undefined,
+                layout: readInitialLayout(screen, defaults),
                 urlState: readInitialUrlState(screen, contentMode, context),
             };
         });
@@ -139,20 +137,20 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             })
         );
 
+        // Also returns `resetLayout` and `isDefaultLayout`, for the "Reset view" button.
+        useListTableLayoutPreferences({
+            screen,
+            defaults: start.defaults,
+            view,
+            origin,
+            replaceView,
+        });
         useListTableUrlState({
             screen,
             contentMode,
             context: start.context,
             defaults: start.defaults,
             initial: start.urlState,
-            view,
-            origin,
-            replaceView,
-        });
-        // Also returns `resetLayout` and `isDefaultLayout`, for the "Reset view" button.
-        useListTableLayoutPreferences({
-            screen,
-            defaults: start.defaults,
             view,
             origin,
             replaceView,

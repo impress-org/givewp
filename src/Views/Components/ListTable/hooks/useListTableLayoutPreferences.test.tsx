@@ -4,10 +4,8 @@ import apiFetch from '@wordpress/api-fetch';
 import {dispatch, select} from '@wordpress/data';
 import type {ListTableScreen, ListTableView, ScreenDefaults} from '../state/types';
 import type {ViewChangeOrigin} from './useListTableView';
-import useListTableLayoutPreferences, {
-    type LayoutPreferences,
-    resetLayoutPreferencesState,
-} from './useListTableLayoutPreferences';
+import {resetLayoutWriteQueue} from '../state/layoutWriteQueue';
+import useListTableLayoutPreferences, {type LayoutPreferences} from './useListTableLayoutPreferences';
 
 jest.mock('@wordpress/api-fetch', () => jest.fn());
 
@@ -61,7 +59,7 @@ beforeEach(() => {
     mockedFetch.mockReset();
     mockedFetch.mockResolvedValue({});
     replaceView.mockReset();
-    resetLayoutPreferencesState();
+    resetLayoutWriteQueue();
     dispatch(NOTICES).dismissNotification('givewp-list-table-layout-error');
     root = createRoot(document.createElement('div'));
 });
