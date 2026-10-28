@@ -166,6 +166,21 @@ describe('ListTablePage first render', () => {
             expect(firstView().perPage).toBe(20);
             expect(listRequests()).toHaveLength(1);
         });
+
+        it('keeps the stored page size on back and forward to an entry that names none', async () => {
+            window.history.replaceState(null, '', `${PATH}?page=give-payment-history`);
+            await render();
+
+            window.history.pushState(null, '', `${PATH}?page=give-payment-history&give-paged=2`);
+            await act(async () => window.dispatchEvent(new PopStateEvent('popstate')));
+
+            expect(lastTable().view).toMatchObject({page: 2, perPage: 20});
+
+            window.history.pushState(null, '', `${PATH}?page=give-payment-history&give-per-page=50`);
+            await act(async () => window.dispatchEvent(new PopStateEvent('popstate')));
+
+            expect(lastTable().view.perPage).toBe(50);
+        });
     });
 
     it("sends the URL's page, sort, filters and page size and the tab's search with the first request", async () => {
