@@ -27,6 +27,11 @@
         max-height: calc(100% - 2rem);
         overflow-y: auto;
 
+        // Takes focus when it opens so screen readers read its title; the controls inside show focus.
+        &:focus {
+            outline: none;
+        }
+
         .givewp-modal-header {
             display: flex;
             align-self: stretch;

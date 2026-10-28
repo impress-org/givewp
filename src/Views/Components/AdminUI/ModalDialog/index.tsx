@@ -1,6 +1,7 @@
 import {MouseEventHandler, useCallback, useEffect} from 'react';
 import {createPortal} from 'react-dom';
 import {__} from '@wordpress/i18n';
+import {useConstrainedTabbing, useFocusOnMount, useMergeRefs} from '@wordpress/compose';
 import {ExitIcon} from '@givewp/components/AdminUI/Icons';
 import './style.scss';
 
@@ -16,6 +17,9 @@ export interface ModalProps {
     wrapperClassName?: string;
 }
 
+/**
+ * @since TBD Move focus into the dialog when it opens and keep Tab inside it.
+ */
 export default function Modal({
     title,
     icon,
@@ -27,6 +31,8 @@ export default function Modal({
     showCloseIcon = true,
     wrapperClassName = '',
 }: ModalProps) {
+    const dialogRef = useMergeRefs([useFocusOnMount(true), useConstrainedTabbing()]);
+
     // ESC key closes modal
     const closeModal = useCallback((e) => {
         if (e.keyCode === 27 && typeof handleClose === 'function') {
@@ -58,7 +64,14 @@ export default function Modal({
 
     return createPortal(
         <div className={`givewp-modal-wrapper ${wrapperClassName}`}>
-            <div role="dialog" aria-label={title} className="givewp-modal-dialog">
+            <div
+                ref={dialogRef}
+                role="dialog"
+                aria-modal="true"
+                aria-label={title}
+                tabIndex={-1}
+                className="givewp-modal-dialog"
+            >
                 <div className={`givewp-modal-dialog-content`}>
                     {showHeader ? (
                         <div className="givewp-modal-header">
