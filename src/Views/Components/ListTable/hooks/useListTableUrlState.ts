@@ -46,6 +46,19 @@ export function readUrlState(screenKey: ListTableScreenKey, context: ViewQueryCo
 }
 
 /**
+ * What a standalone table without a screen config reads on load: only the filters named in the address
+ * (links such as `?donor=ID` that were built before the view moved into the URL). It never writes the
+ * address, and ignores the page, sort and page size.
+ *
+ * @since TBD
+ */
+export function readLegacyUrlState(context: ViewQueryContext): UrlState {
+    const {query} = parseViewQuery(readQuery(), context);
+
+    return {query: {filters: query.filters}, corrected: false, legacyKeys: [], search: ''};
+}
+
+/**
  * @since TBD
  */
 export type ListTableUrlStateOptions = {
@@ -83,7 +96,11 @@ export default function useListTableUrlState({
 }: ListTableUrlStateOptions) {
     const previousView = useRef(view);
     const currentView = useRef(view);
-    currentView.current = view;
+
+    // Kept after each commit, so the popstate listener never reads the view of an abandoned render.
+    useEffect(() => {
+        currentView.current = view;
+    });
 
     const screenKey = urlScreenKey(screen, contentMode);
     const owned = viewQueryKeys(context);
