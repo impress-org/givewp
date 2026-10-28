@@ -229,6 +229,14 @@ describe('useListTableLayoutPreferences', () => {
         expect(requests()).toEqual([expect.objectContaining({method: 'DELETE'})]);
     });
 
+    it('keeps the admin on the rows they were looking at when reset changes the page size', async () => {
+        await render({view: {...defaultView, perPage: 50, page: 2, fields: ['amount']}, origin: 'load', screen});
+
+        await act(async () => latest.resetLayout());
+
+        expect(replaceView).toHaveBeenCalledWith(expect.objectContaining({perPage: 30, page: 2}), 'reset');
+    });
+
     it('keeps the search, filters and sort on reset', async () => {
         const query: Partial<ListTableView> = {
             search: 'jane',
