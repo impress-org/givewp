@@ -34,23 +34,23 @@ teardown() {
     assert_output --partial "is not installed"
 }
 
-@test "dry-run renders the new version into both changelog files (legacy format)" {
+@test "dry-run renders the new version into both changelog files in the stellarwp-readme format" {
     run "$BIN_DIR/write-changelog.sh" 9.9.9 --dry-run
     assert_success
-    # Legacy GiveWP format from bin/lib/changelog-strategy.js: "= <version>: <date> ="
-    # and "* <Label>: <entry>" (not the changelogger-native "= [..]" / "* X - ").
-    assert_output --partial "= 9.9.9:"
-    assert_output --partial "* Fix: Bats temporary test entry"
-    refute_output --partial "= [9.9.9]"
-    refute_output --partial "* Fix - "
+    # The changelogger's stellarwp-readme strategy: "= [<version>] <date> =" and "* <Label> - <entry>",
+    # the format the other StellarWP plugins use. The labels come from changelogger.types in package.json.
+    assert_output --partial "= [9.9.9] "
+    assert_output --partial "* Fix - Bats temporary test entry"
+    refute_output --partial "= 9.9.9:"
+    refute_output --partial "* Fix: "
     assert_output --partial "readme.txt"
     assert_output --partial "changelog.txt"
 }
 
-@test "formats the release date with an ordinal day (legacy style)" {
+@test "writes the release date as YYYY-MM-DD" {
     run "$BIN_DIR/write-changelog.sh" 9.9.9 --dry-run --date 2026-07-15
     assert_success
-    assert_output --partial "= 9.9.9: July 15th, 2026 ="
+    assert_output --partial "= [9.9.9] 2026-07-15 ="
 }
 
 @test "dry-run does not modify the real changelog files" {
@@ -58,5 +58,12 @@ teardown() {
     assert_success
 
     run cat "$REPO_ROOT/readme.txt"
-    refute_output --partial "= 9.9.9:"
+    refute_output --partial "= [9.9.9]"
+}
+
+@test "the changelog history is in the stellarwp-readme format" {
+    # bin/convert-changelog-format.js moved the history once; a legacy header or bullet
+    # ("= 4.19.1: October 27th, 2026 =", "* Fix: ...") would sit next to the new entries.
+    run node "$BIN_DIR/convert-changelog-format.js" --check "$REPO_ROOT/readme.txt" "$REPO_ROOT/changelog.txt"
+    assert_success
 }
