@@ -1,8 +1,6 @@
 import {useCallback, useState} from 'react';
 import type {View} from '@wordpress/dataviews';
-
-const isApplied = (value: unknown) =>
-    value !== undefined && value !== null && value !== '' && !(Array.isArray(value) && value.length === 0);
+import {isApplied} from '../adapters/viewToParameters';
 
 /**
  * The parts of a view that change which rows match. A change to any of them starts again at page one.

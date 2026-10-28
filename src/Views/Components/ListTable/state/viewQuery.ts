@@ -1,8 +1,7 @@
 import type {Filter} from '@wordpress/dataviews';
 import type {FilterByGroupedOptions, FilterConfig} from '../ListTablePage/types';
-import {TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
-import {filterFieldId} from '../adapters/viewToParameters';
-import {snapPerPage} from './screenDefaults';
+import {hasTestModeToggle, TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
+import {filterFieldId, isApplied, snapPerPage} from '../adapters/viewToParameters';
 import type {ListTableView, ParseResult, ViewQuery, ViewQueryContext} from './types';
 
 /**
@@ -27,6 +26,7 @@ const TEST_MODE = 'give-test-mode';
 const BARE_SEARCH = 'search';
 const COMMON_KEYS = [PAGE, PER_PAGE, ORDER_BY, ORDER, TEST_MODE];
 const TOGGLE_ON = '1';
+const TOGGLE_OFF = '0';
 
 /**
  * A filter value read from the URL, and whether anything was dropped while reading it.
@@ -46,9 +46,6 @@ type FilterParameter = {
 };
 
 const isToken = (value: string) => VALUE_PATTERN.test(value);
-
-const isApplied = (value: unknown) =>
-    value !== undefined && value !== null && value !== '' && !(Array.isArray(value) && value.length === 0);
 
 /**
  * The URL parameter of a filter or group id: `give-` plus the id in kebab case.
@@ -147,6 +144,7 @@ function parametersOf(filter: FilterConfig): FilterParameter[] {
 
     switch (filter.type) {
         case 'select':
+            // The first option is "All", which means no filter, so it is never a URL value.
             return [singleValue(filter.name, oneOf(staticValues.slice(1)), true)];
         case 'campaignselect':
         case 'formselect':
@@ -164,9 +162,6 @@ function parametersOf(filter: FilterConfig): FilterParameter[] {
 
 const filterParameters = (context: ViewQueryContext) => context.filterSettings.flatMap(parametersOf);
 
-const hasTestModeToggle = (context: ViewQueryContext) =>
-    context.filterSettings.some((filter) => filter.name === 'toggle');
-
 /**
  * Every `give-` parameter the screen reads and writes, in the order they are written.
  *
@@ -175,7 +170,7 @@ const hasTestModeToggle = (context: ViewQueryContext) =>
 export function viewQueryKeys(context: ViewQueryContext): string[] {
     return [
         ...filterParameters(context).map((parameter) => parameter.key),
-        ...(hasTestModeToggle(context) ? [TEST_MODE] : []),
+        ...(hasTestModeToggle(context.filterSettings) ? [TEST_MODE] : []),
         ORDER_BY,
         ORDER,
         PAGE,
@@ -211,7 +206,9 @@ function writeTestMode(view: ListTableView, context: ViewQueryContext): Array<[s
         view.filters?.some((filter) => filter.field === filterFieldId(TEST_MODE_FILTER) && filter.value === true) ??
         false;
 
-    return hasTestModeToggle(context) && isOn !== context.siteTestMode ? [[TEST_MODE, isOn ? '1' : '0']] : [];
+    return hasTestModeToggle(context.filterSettings) && isOn !== context.siteTestMode
+        ? [[TEST_MODE, isOn ? TOGGLE_ON : TOGGLE_OFF]]
+        : [];
 }
 
 /**
@@ -312,11 +309,13 @@ function readSort(params: URLSearchParams, sortableFields: string[]): {sort?: Vi
  * Reads `give-test-mode`: `1` or `0`, only on a screen with the test-mode toggle.
  */
 function readTestMode(raw: string | null, context: ViewQueryContext): {testMode?: boolean; corrected: boolean} {
-    if (raw === null || !hasTestModeToggle(context)) {
+    if (raw === null || !hasTestModeToggle(context.filterSettings)) {
         return {corrected: false};
     }
 
-    return raw === '1' || raw === '0' ? {testMode: raw === '1', corrected: false} : {corrected: true};
+    return raw === TOGGLE_ON || raw === TOGGLE_OFF
+        ? {testMode: raw === TOGGLE_ON, corrected: false}
+        : {corrected: true};
 }
 
 /**

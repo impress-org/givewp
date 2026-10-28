@@ -1,6 +1,6 @@
 import type {Filter, View} from '@wordpress/dataviews';
 import type {FilterConfig} from '../ListTablePage/types';
-import {clampPerPage, filterFieldId} from './viewToParameters';
+import {filterFieldId, snapPerPage} from './viewToParameters';
 
 /**
  * Campaign and form ids arrive from the URL as text; their filter options use numbers.
@@ -87,7 +87,7 @@ export function viewFromInitialState(
     return {
         type: 'table',
         page: 1,
-        perPage: clampPerPage(defaults.perPage),
+        perPage: snapPerPage(defaults.perPage),
         sort: {field: 'id', direction: 'desc'},
         search: searchTerm,
         filters,

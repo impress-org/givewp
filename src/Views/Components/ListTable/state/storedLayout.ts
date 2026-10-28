@@ -1,4 +1,4 @@
-import {snapPerPage} from './screenDefaults';
+import {snapPerPage} from '../adapters/viewToParameters';
 import type {ListTableDensity, ListTableView, ScreenDefaults, StoredLayout, ViewLayoutPart} from './types';
 
 /**
