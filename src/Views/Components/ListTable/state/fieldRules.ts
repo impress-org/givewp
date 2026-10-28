@@ -26,3 +26,32 @@ export function keepPinnedLast<V extends View>(view: V, defaults: ScreenDefaults
 
     return {...view, fields: [...fields.filter((id) => id !== pinned), pinned]};
 }
+
+/**
+ * Puts a column the admin just showed back at its default position among the shown columns, because the
+ * view options add it at the end. Columns that stay shown keep the order the admin gave them, so hiding
+ * a column and showing it again leaves the layout as it was.
+ *
+ * @since TBD
+ */
+export function placeShownFields<V extends View>(next: V, previous: View, defaults: ScreenDefaults): V {
+    const before = previous.fields ?? [];
+    const after = next.fields ?? [];
+    const shown = after.filter((id) => !before.includes(id));
+
+    if (shown.length === 0) {
+        return next;
+    }
+
+    const rankOf = (id: string) => defaults.fieldOrder.indexOf(id);
+    const fields = after.filter((id) => before.includes(id));
+
+    shown.forEach((id) => {
+        const rank = rankOf(id);
+        const at = rank === -1 ? -1 : fields.findIndex((other) => rankOf(other) > rank);
+
+        fields.splice(at === -1 ? fields.length : at, 0, id);
+    });
+
+    return {...next, fields};
+}
