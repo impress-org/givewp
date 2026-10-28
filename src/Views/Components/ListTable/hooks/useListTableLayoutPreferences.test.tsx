@@ -2,7 +2,7 @@ import {act, useLayoutEffect} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
 import apiFetch from '@wordpress/api-fetch';
 import {dispatch, select} from '@wordpress/data';
-import type {ListTableScreen, ListTableView, ScreenDefaults} from '../state/types';
+import type {ListTableScreen, ListTableView, ScreenDefaults, ViewLayoutPart} from '../state/types';
 import type {ViewChangeOrigin} from './useListTableView';
 import {resetLayoutWriteQueue} from '../state/layoutWriteQueue';
 import useListTableLayoutPreferences, {type LayoutPreferences} from './useListTableLayoutPreferences';
@@ -36,14 +36,14 @@ const defaultView: ListTableView = {
     layout: {density: 'balanced'},
 };
 
-type Props = {view: ListTableView; origin: ViewChangeOrigin; screen?: ListTableScreen};
+type Props = {view: ListTableView; origin: ViewChangeOrigin; screen?: ListTableScreen; initialLayout?: ViewLayoutPart};
 
 let root: Root;
 let latest: LayoutPreferences;
 const replaceView = jest.fn();
 
-function Harness({view, origin, screen: currentScreen}: Props) {
-    latest = useListTableLayoutPreferences({screen: currentScreen, defaults, view, origin, replaceView});
+function Harness({view, origin, screen: currentScreen, initialLayout}: Props) {
+    latest = useListTableLayoutPreferences({screen: currentScreen, defaults, initialLayout, view, origin, replaceView});
 
     return null;
 }
@@ -212,6 +212,29 @@ describe('useListTableLayoutPreferences', () => {
         await act(async () => window.dispatchEvent(new Event('pagehide')));
 
         expect(mockedFetch).not.toHaveBeenCalled();
+    });
+
+    it("follows the page size of the user's layout, starting from the stored one", async () => {
+        await act(() =>
+            root.render(
+                <Harness
+                    view={{...defaultView, perPage: 20}}
+                    origin="load"
+                    screen={screen}
+                    initialLayout={{fields: defaultView.fields, density: 'balanced', perPage: 20}}
+                />
+            )
+        );
+
+        expect(latest.layoutPerPage).toBe(20);
+
+        await change({perPage: 50});
+
+        expect(latest.layoutPerPage).toBe(50);
+
+        await act(async () => latest.resetLayout());
+
+        expect(latest.layoutPerPage).toBe(30);
     });
 
     it('resets the layout to the defaults and clears the stored record', async () => {

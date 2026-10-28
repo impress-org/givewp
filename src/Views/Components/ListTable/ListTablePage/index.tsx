@@ -138,9 +138,10 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         );
 
         // Also returns `resetLayout` and `isDefaultLayout`, for the "Reset view" button.
-        useListTableLayoutPreferences({
+        const {layoutPerPage} = useListTableLayoutPreferences({
             screen,
             defaults: start.defaults,
+            initialLayout: start.layout,
             view,
             origin,
             replaceView,
@@ -151,6 +152,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             context: start.context,
             defaults: start.defaults,
             initial: start.urlState,
+            layoutPerPage,
             view,
             origin,
             replaceView,

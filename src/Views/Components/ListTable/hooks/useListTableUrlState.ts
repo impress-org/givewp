@@ -82,6 +82,8 @@ export type ListTableUrlStateOptions = {
     defaults: ScreenDefaults;
     /** What `readInitialUrlState` read on load. */
     initial?: UrlState;
+    /** The page size of the user's layout, used on back and forward when the entry names none. */
+    layoutPerPage: number;
     view: ListTableView;
     origin: ViewChangeOrigin;
     replaceView: (view: ListTableView, origin: 'history') => void;
@@ -103,16 +105,19 @@ export default function useListTableUrlState({
     context,
     defaults,
     initial,
+    layoutPerPage,
     view,
     origin,
     replaceView,
 }: ListTableUrlStateOptions) {
     const previousView = useRef(view);
     const currentView = useRef(view);
+    const currentLayoutPerPage = useRef(layoutPerPage);
 
     // Kept after each commit, so the popstate listener never reads the view of an abandoned render.
     useEffect(() => {
         currentView.current = view;
+        currentLayoutPerPage.current = layoutPerPage;
     });
 
     const screenKey = urlScreenKey(screen, contentMode);
@@ -168,11 +173,11 @@ export default function useListTableUrlState({
             replaceView(
                 assembleView({
                     defaults,
-                    // Columns and density stay as they are; the page size comes from the address or the start.
+                    // Columns, density and the layout's page size stay as they are; the address may name another size.
                     layout: {
                         fields: fields ?? defaults.fields,
                         density: layout?.density ?? defaults.density,
-                        perPage: defaults.perPage,
+                        perPage: currentLayoutPerPage.current,
                     },
                     query,
                     search: readTabState(screenKey)?.search ?? '',

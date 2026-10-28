@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useLayoutEffect, useRef} from 'react';
+import {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {useDispatch} from '@wordpress/data';
 import '../../AdminDetailsPage/store';
 import {clearLayout, readStoredLayout, saveLayout} from '../state/layoutApi';
@@ -29,6 +29,8 @@ export type LayoutPreferencesOptions = {
     /** Without a screen config nothing is stored. */
     screen?: ListTableScreen;
     defaults: ScreenDefaults;
+    /** What `readInitialLayout` read on load. */
+    initialLayout?: ViewLayoutPart;
     view: ListTableView;
     origin: ViewChangeOrigin;
     replaceView: (view: ListTableView, origin: 'reset') => void;
@@ -41,6 +43,8 @@ export type LayoutPreferences = {
     /** Puts the columns, density and page size back to the screen defaults and clears the stored record. */
     resetLayout: () => void;
     isDefaultLayout: boolean;
+    /** The page size of the user's layout, used when an address names no page size. */
+    layoutPerPage: number;
 };
 
 const layoutKeyOf = ({fields, layout, perPage}: ListTableView) => JSON.stringify([fields, layout?.density, perPage]);
@@ -56,6 +60,7 @@ const layoutKeyOf = ({fields, layout, perPage}: ListTableView) => JSON.stringify
 export default function useListTableLayoutPreferences({
     screen,
     defaults,
+    initialLayout,
     view,
     origin,
     replaceView,
@@ -66,6 +71,7 @@ export default function useListTableLayoutPreferences({
     const previousLayout = useRef(layoutKeyOf(view));
     const pending = useRef<ListTableView | null>(null);
     const timer = useRef<ReturnType<typeof setTimeout>>();
+    const [layoutPerPage, setLayoutPerPage] = useState(initialLayout?.perPage ?? defaults.perPage);
 
     const send = (target: ListTableView, keepalive: boolean) => {
         if (!screenKey) {
@@ -119,6 +125,7 @@ export default function useListTableLayoutPreferences({
             return;
         }
 
+        setLayoutPerPage(view.perPage ?? defaults.perPage);
         pending.current = view;
         clearTimeout(timer.current);
         timer.current = setTimeout(() => flushRef.current(false), WRITE_DELAY);
@@ -149,9 +156,10 @@ export default function useListTableLayoutPreferences({
         };
 
         cancel();
+        setLayoutPerPage(defaults.perPage);
         replaceView(next, 'reset');
         send(next, false);
     }, [defaults, replaceView, screenKey]);
 
-    return {resetLayout, isDefaultLayout: showsDefaultLayout(view, defaults)};
+    return {resetLayout, isDefaultLayout: showsDefaultLayout(view, defaults), layoutPerPage};
 }
