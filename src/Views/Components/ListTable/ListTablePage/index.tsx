@@ -10,7 +10,7 @@ import useLegacyRowActionsField from '../LegacyRowActions/useLegacyRowActionsFie
 import {columnsToFields, titleFieldId} from '../adapters/columnsToFields';
 import {filterSettingsToFields, TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
 import {loadEntityElements} from '../adapters/loadEntityElements';
-import {defaultFilters, scopeFromFilterSettings} from '../adapters/viewFromInitialState';
+import {defaultFilters, scopeFromFilterSettings} from '../adapters/defaultFilters';
 import {PER_PAGE_SIZES, viewFilterValue, viewToParameters, withToggleFilter} from '../adapters/viewToParameters';
 import {getItemName} from '../adapters/getItemName';
 import {assembleView} from '../state/assembleView';

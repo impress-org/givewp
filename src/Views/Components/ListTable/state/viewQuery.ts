@@ -17,7 +17,7 @@ export const MAX_ADDRESS_LENGTH = 2000;
  *
  * @since TBD
  */
-export const VALUE_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
+const VALUE_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
 
 const PAGE = 'give-paged';
 const PER_PAGE = 'give-per-page';

@@ -8,14 +8,14 @@ import type {ListTableScreen, ScreenDefaults} from './types';
  *
  * @since TBD
  */
-export const DEFAULT_PER_PAGE = 30;
+const DEFAULT_PER_PAGE = 30;
 
 /**
  * The id column, locked when a screen has no title field.
  *
  * @since TBD
  */
-export const ID_FIELD = 'id';
+const ID_FIELD = 'id';
 
 /**
  * The nearest offered page size. On a tie the smaller size wins. A value that is not a number gives
