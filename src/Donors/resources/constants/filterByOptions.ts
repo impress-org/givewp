@@ -8,10 +8,12 @@ const filterByOptions: Array<FilterByGroupedOptions> = [
         apiParam: 'start',
         name: __('Period', 'give'),
         type: 'radio',
+        // Stable values keep the URL valid on reload; the endpoint receives the ISO date.
+        toApiValue: (days, now) => subDays(now, Number(days)).toISOString(),
         options: [
-            { text: __('Last 90 days', 'give'), value: subDays(new Date(), 90).toISOString() },
-            { text: __('Last 30 days', 'give'), value: subDays(new Date(), 30).toISOString() },
-            { text: __('Last 7 days', 'give'), value: subDays(new Date(), 7).toISOString() },
+            { text: __('Last 90 days', 'give'), value: '90' },
+            { text: __('Last 30 days', 'give'), value: '30' },
+            { text: __('Last 7 days', 'give'), value: '7' },
         ]
     }
 ];
