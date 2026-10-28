@@ -1,5 +1,6 @@
 significance: minor
 type: enhancement
-entry: Give remembers each person's column, density and page size choices for
-  every admin list, per site.
+entry: Give admin lists now keep the page, sort and filters in the address, so reload, the back
+  button and shared links open the same view, and remember each person's columns, density and page
+  size for every list, per site, with a "Reset view" button to go back to the defaults.
 timestamp: 2026-10-27T18:39:38.518Z
