@@ -97,6 +97,20 @@ describe('ListTableViewReset', () => {
         expect(dialog()).toBeNull();
         expect(document.activeElement).toBe(resetButton());
     });
+
+    it('leaves focus where it is when Escape is pressed while the dialog is closed', async () => {
+        await render(false);
+        const input = document.createElement('input');
+        document.body.appendChild(input);
+        input.focus();
+
+        await act(() => {
+            document.dispatchEvent(new KeyboardEvent('keydown', {keyCode: 27, bubbles: true}));
+        });
+
+        expect(document.activeElement).toBe(input);
+        input.remove();
+    });
 });
 
 function confirmButton() {

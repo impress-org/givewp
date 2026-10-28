@@ -33,12 +33,15 @@ export default function Modal({
 }: ModalProps) {
     const dialogRef = useMergeRefs([useFocusOnMount(true), useConstrainedTabbing()]);
 
-    // ESC key closes modal
-    const closeModal = useCallback((e) => {
-        if (e.keyCode === 27 && typeof handleClose === 'function') {
-            handleClose(e);
-        }
-    }, []);
+    // ESC key closes modal, but only while it is open
+    const closeModal = useCallback(
+        (e) => {
+            if (isOpen && e.keyCode === 27 && typeof handleClose === 'function') {
+                handleClose(e);
+            }
+        },
+        [isOpen, handleClose]
+    );
 
     useEffect(() => {
         document.addEventListener('keydown', closeModal, false);
@@ -46,7 +49,7 @@ export default function Modal({
         return () => {
             document.removeEventListener('keydown', closeModal, false);
         };
-    }, []);
+    }, [closeModal]);
 
     useEffect(() => {
         if (isOpen) {
@@ -109,4 +112,3 @@ export default function Modal({
         insertInto ? document.querySelector(insertInto) : document.body
     );
 }
-
