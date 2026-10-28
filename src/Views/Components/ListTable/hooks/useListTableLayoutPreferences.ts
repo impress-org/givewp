@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useRef} from 'react';
+import {useCallback, useEffect, useLayoutEffect, useRef} from 'react';
 import {useDispatch} from '@wordpress/data';
 import {__} from '@wordpress/i18n';
 import '../../AdminDetailsPage/store';
@@ -75,7 +75,6 @@ export default function useListTableLayoutPreferences({
     const previousLayout = useRef(layoutKeyOf(view));
     const pending = useRef<ListTableView | null>(null);
     const timer = useRef<ReturnType<typeof setTimeout>>();
-    currentView.current = view;
 
     const send = (target: ListTableView, keepalive: boolean) => {
         if (!screenKey) {
@@ -123,7 +122,13 @@ export default function useListTableLayoutPreferences({
     };
 
     const flushRef = useRef(flush);
-    flushRef.current = flush;
+
+    // Synced after each commit and before the effects below, so the timer, the pagehide handler and the
+    // unmount cleanup never use a render React discarded.
+    useLayoutEffect(() => {
+        currentView.current = view;
+        flushRef.current = flush;
+    });
 
     useEffect(() => {
         const layoutKey = layoutKeyOf(view);
