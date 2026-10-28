@@ -8,10 +8,16 @@ import ListTableEmptyState from '../EmptyStates';
 import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
 import useLegacyRowActionsField from '../LegacyRowActions/useLegacyRowActionsField';
 import {columnsToFields, titleFieldId} from '../adapters/columnsToFields';
-import {filterSettingsToFields, TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
+import {filterSettingsToFields, TEST_MODE_FILTER, TEST_MODE_SETTING} from '../adapters/filterSettingsToFields';
 import {loadEntityElements} from '../adapters/loadEntityElements';
 import {defaultFilters, scopeFromFilterSettings} from '../adapters/defaultFilters';
-import {PER_PAGE_SIZES, viewFilterValue, viewToParameters, withToggleFilter} from '../adapters/viewToParameters';
+import {
+    DEFAULT_PER_PAGE,
+    PER_PAGE_SIZES,
+    viewFilterValue,
+    viewToParameters,
+    withToggleFilter,
+} from '../adapters/viewToParameters';
 import {getItemName} from '../adapters/getItemName';
 import {assembleView} from '../state/assembleView';
 import {keepPinnedLast, lockFields, placeShownFields} from '../state/fieldRules';
@@ -89,7 +95,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             columnFilters = [],
             banner,
             contentMode = false,
-            perPage = 30,
+            perPage = DEFAULT_PER_PAGE,
             statsConfig,
             screen,
         }: ListTablePageProps,
@@ -98,7 +104,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const columns = apiSettings.table.columns as Column[];
         const legacyRowActions = typeof rowActions === 'function' ? (rowActions as LegacyRowActionsRender) : null;
         const typedRowActions = Array.isArray(rowActions) ? (rowActions as ListTableRowAction[]) : null;
-        const testModeFilter = filterSettings.find((filter) => filter.name === 'toggle');
+        const testModeFilter = filterSettings.find((filter) => filter.name === TEST_MODE_SETTING);
         const locale = navigator.language || navigator.languages[0];
 
         // Read once: some screens' header modals rewrite `apiSettings.apiRoot` while they render.
