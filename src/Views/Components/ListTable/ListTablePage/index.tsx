@@ -7,13 +7,17 @@ import DataViewsListTable from '../DataViewsListTable';
 import ListTableEmptyState from '../EmptyStates';
 import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
 import useLegacyRowActionsField from '../LegacyRowActions/useLegacyRowActionsField';
-import {columnsToFields, titleFieldId, visibleFieldIds} from '../adapters/columnsToFields';
+import {columnsToFields, titleFieldId} from '../adapters/columnsToFields';
 import {filterSettingsToFields, TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
 import {loadEntityElements} from '../adapters/loadEntityElements';
-import {scopeFromFilterSettings, viewFromInitialState} from '../adapters/viewFromInitialState';
+import {defaultFilters, scopeFromFilterSettings} from '../adapters/viewFromInitialState';
 import {PER_PAGE_SIZES, viewFilterValue, viewToParameters, withToggleFilter} from '../adapters/viewToParameters';
 import {getItemName} from '../adapters/getItemName';
+import {assembleView} from '../state/assembleView';
+import {resolveScreenDefaults} from '../state/screenDefaults';
+import type {ViewQueryContext} from '../state/types';
 import useListTableView from '../hooks/useListTableView';
+import useListTableUrlState, {readUrlState, urlScreenKey} from '../hooks/useListTableUrlState';
 import useListTableSelection from '../hooks/useListTableSelection';
 import useListTableQuery from '../hooks/useListTableQuery';
 import useListTableActionNotices from '../hooks/useListTableActionNotices';
@@ -63,7 +67,7 @@ export const ShowConfirmModalContext = createContext(
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
  *
- * @since TBD Render the list through `@wordpress/dataviews`; accept typed row actions.
+ * @since TBD Render the list through `@wordpress/dataviews`; accept typed row actions; keep the view in the URL.
  * @since 2.24.0
  */
 const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
@@ -85,6 +89,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             contentMode = false,
             perPage = 30,
             statsConfig,
+            screen,
         }: ListTablePageProps,
         ref
     ) => {
@@ -97,24 +102,44 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         // Read once: some screens' header modals rewrite `apiSettings.apiRoot` while they render.
         const [apiRoot] = useState(apiSettings.apiRoot);
         const [listTableApi] = useState(() => new ListTableApi(apiSettings));
-        const [urlSearch] = useState(() => new URLSearchParams(window.location.search));
-        const [scope] = useState(() => scopeFromFilterSettings(filterSettings, contentMode, urlSearch));
+        const [scope] = useState(() => scopeFromFilterSettings(filterSettings, contentMode));
         const [legacyConfirm, setLegacyConfirm] = useState<LegacyConfirmRequest | null>(null);
 
-        const {view, onChangeView, hasActiveFilters, clearFilters} = useListTableView(() => {
-            const titleField = titleFieldId(columns);
-            const fields = [
-                ...visibleFieldIds(columns, titleField),
-                ...(legacyRowActions ? [LEGACY_ROW_ACTIONS_FIELD] : []),
-            ];
-
-            const initialView = viewFromInitialState(
+        // Resolved once, before the first render, so the first list request already carries the URL's view.
+        const [start] = useState(() => {
+            const defaults = resolveScreenDefaults(screen, columns, titleFieldId(columns), {
+                perPage,
+                pinnedField: legacyRowActions ? LEGACY_ROW_ACTIONS_FIELD : undefined,
+                filters: defaultFilters(filterSettings, {contentMode, testMode: Boolean(paymentMode)}),
+            });
+            const context: ViewQueryContext = {
                 filterSettings,
-                {perPage, fields, titleField, contentMode},
-                urlSearch
-            );
+                sortableFields: columns.filter((column) => column.sortable).map((column) => column.id),
+                defaults,
+                siteTestMode: Boolean(paymentMode),
+            };
+            const screenKey = urlScreenKey(screen, contentMode);
 
-            return testModeFilter && paymentMode ? withToggleFilter(initialView, TEST_MODE_FILTER, true) : initialView;
+            return {defaults, context, urlState: screenKey ? readUrlState(screenKey, context) : undefined};
+        });
+
+        const {view, origin, onChangeView, replaceView, hasActiveFilters, clearFilters} = useListTableView(() =>
+            assembleView({
+                defaults: start.defaults,
+                query: start.urlState?.query,
+                search: start.urlState?.search,
+            })
+        );
+
+        useListTableUrlState({
+            screen,
+            contentMode,
+            context: start.context,
+            defaults: start.defaults,
+            initial: start.urlState,
+            view,
+            origin,
+            replaceView,
         });
         // A screen with the test-mode toggle keeps test mode in the view, so it shows as a chip.
         const testMode = testModeFilter ? viewFilterValue(view, TEST_MODE_FILTER) === true : paymentMode;
@@ -123,9 +148,11 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const clearSelection = useCallback(() => onChangeSelection([]), [onChangeSelection]);
         const report = useListTableActionNotices(singleName, pluralName);
 
+        // "Filter by" values such as "Period" count from this time; fixed per view so the request stays the same.
+        const requestTime = useMemo(() => new Date(), [view]);
         const parameters = useMemo(
-            () => viewToParameters(view, filterSettings, scope, {locale, testMode}),
-            [view, filterSettings, scope, locale, testMode]
+            () => viewToParameters(view, filterSettings, scope, {locale, testMode, now: requestTime}),
+            [view, filterSettings, scope, locale, testMode, requestTime]
         );
 
         const {
@@ -148,7 +175,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         // After records are removed, the current page can be past the last one.
         useEffect(() => {
             if (data && data.totalPages > 0 && view.page > data.totalPages) {
-                onChangeView({...view, page: data.totalPages});
+                replaceView({...view, page: data.totalPages}, 'correction');
             }
         }, [data]);
 

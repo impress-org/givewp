@@ -1,5 +1,5 @@
 import type {FilterConfig} from '../ListTablePage/types';
-import {scopeFromFilterSettings, viewFromInitialState} from './viewFromInitialState';
+import {defaultFilters, scopeFromFilterSettings} from './viewFromInitialState';
 import {filterFieldId} from './viewToParameters';
 
 const filters: FilterConfig[] = [
@@ -12,74 +12,51 @@ const filters: FilterConfig[] = [
         ],
     },
     {name: 'search', type: 'search'},
+    {name: 'toggle', type: 'checkbox', text: 'Test'},
     {name: 'campaignId', type: 'campaignselect'},
-    {name: 'donor', type: 'hidden'},
+    {name: 'donor', type: 'hidden', options: [{value: '12', text: ''}]},
     {
         name: 'filterBy',
         type: 'filterby',
         groupedOptions: [
             {id: 'status', apiParam: 'status', name: 'Status', type: 'checkbox', defaultValue: 'publish', options: []},
-            {id: 'period', apiParam: 'start', name: 'Period', type: 'radio', options: []},
+            {id: 'period', apiParam: 'start', name: 'Period', type: 'radio', defaultValue: ['30'], options: []},
+            {id: 'showTrashed', apiParam: 'status', name: 'Trash', type: 'toggle', options: []},
         ],
     },
 ];
 
-const defaults = {fields: ['id', 'amount'], titleField: 'donor'};
-
-describe('viewFromInitialState', () => {
-    it('starts on page one, newest first, with the screen page size and columns', () => {
-        expect(viewFromInitialState(filters, {...defaults, perPage: 20}, new URLSearchParams())).toEqual({
-            type: 'table',
-            page: 1,
-            perPage: 20,
-            sort: {field: 'id', direction: 'desc'},
-            search: '',
-            filters: [{field: filterFieldId('status'), operator: 'isAny', value: ['publish']}],
-            fields: ['id', 'amount'],
-            titleField: 'donor',
-            layout: {},
-        });
-    });
-
-    it('uses 30 rows per page when the screen sets none', () => {
-        expect(viewFromInitialState([], defaults, new URLSearchParams()).perPage).toBe(30);
-    });
-
-    it('reads the search term and the link-driven filters from the URL', () => {
-        const view = viewFromInitialState(
-            filters,
-            defaults,
-            new URLSearchParams('search=jane&donor=12&campaignId=4&status=trash')
-        );
-
-        expect(view.search).toBe('jane');
-        expect(view.filters).toEqual(
-            expect.arrayContaining([
-                {field: filterFieldId('status'), operator: 'is', value: 'trash'},
-                {field: filterFieldId('campaignId'), operator: 'is', value: 4},
-                {field: filterFieldId('donor'), operator: 'is', value: '12'},
-            ])
-        );
-    });
-
-    it('keeps a URL value that cannot be decoded as it is', () => {
-        const view = viewFromInitialState(filters, defaults, new URLSearchParams('search=100%25'));
-
-        expect(view.search).toBe('100%');
-    });
-
-    it('does not apply a select filter set to its default first option', () => {
-        const view = viewFromInitialState(filters, defaults, new URLSearchParams('status=any'));
-
-        expect(
-            view.filters.some((filter) => filter.field === filterFieldId('status') && filter.operator === 'is')
-        ).toBe(false);
+describe('defaultFilters', () => {
+    it("applies each group's default and the hidden filter's own option", () => {
+        expect(defaultFilters(filters)).toEqual([
+            {field: filterFieldId('donor'), operator: 'is', value: '12'},
+            {field: filterFieldId('status'), operator: 'isAny', value: ['publish']},
+            {field: filterFieldId('period'), operator: 'is', value: '30'},
+        ]);
     });
 
     it('leaves hidden filters out of the view in content mode', () => {
-        const view = viewFromInitialState(filters, {...defaults, contentMode: true}, new URLSearchParams('donor=12'));
+        expect(defaultFilters(filters, {contentMode: true}).map((filter) => filter.field)).not.toContain(
+            filterFieldId('donor')
+        );
+    });
 
-        expect(view.filters.some((filter) => filter.field === filterFieldId('donor'))).toBe(false);
+    it('turns test mode on for a site in test mode, only on a screen with the toggle', () => {
+        const testMode = {field: filterFieldId('testMode'), operator: 'is', value: true};
+
+        expect(defaultFilters(filters, {testMode: true})).toContainEqual(testMode);
+        expect(defaultFilters(filters)).not.toContainEqual(testMode);
+        expect(defaultFilters([], {testMode: true})).toEqual([]);
+    });
+
+    it('never reads the address', () => {
+        window.history.replaceState(null, '', '/wp-admin/edit.php?status=trash&campaignId=4&search=jane');
+
+        expect(defaultFilters(filters).map((filter) => filter.field)).toEqual([
+            filterFieldId('donor'),
+            filterFieldId('status'),
+            filterFieldId('period'),
+        ]);
     });
 });
 
@@ -90,11 +67,13 @@ describe('scopeFromFilterSettings', () => {
     ];
 
     it('sends hidden filters as table scope in content mode only', () => {
-        expect(scopeFromFilterSettings(scoped, true, new URLSearchParams())).toEqual({campaignId: '7'});
-        expect(scopeFromFilterSettings(scoped, false, new URLSearchParams())).toEqual({});
+        expect(scopeFromFilterSettings(scoped, true)).toEqual({campaignId: '7'});
+        expect(scopeFromFilterSettings(scoped, false)).toEqual({});
     });
 
-    it('prefers the URL value', () => {
-        expect(scopeFromFilterSettings(scoped, true, new URLSearchParams('campaignId=9'))).toEqual({campaignId: '9'});
+    it('does not read the host page address', () => {
+        window.history.replaceState(null, '', '/wp-admin/edit.php?campaignId=9');
+
+        expect(scopeFromFilterSettings(scoped, true)).toEqual({campaignId: '7'});
     });
 });
