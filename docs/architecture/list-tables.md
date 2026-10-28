@@ -31,7 +31,7 @@ if (empty($showLegacy)) {
 }
 ```
 
-Two consequences worth internalising:
+Two consequences worth internalizing:
 
 - **A bug report about "the donations page" is ambiguous** until you know which UI the reporter is
   on. The fix location is completely different, and neither implementation shares code with the
