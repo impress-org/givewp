@@ -17,6 +17,22 @@ export type LoadEntityElements = (entity: 'campaign' | 'form') => Promise<Option
  */
 export const TEST_MODE_FILTER = 'testMode';
 
+/**
+ * The name of the filter setting that adds the test-mode toggle to the page header.
+ *
+ * @since TBD
+ */
+export const TEST_MODE_SETTING = 'toggle';
+
+/**
+ * Whether the screen's filter settings include the test-mode toggle.
+ *
+ * @since TBD
+ */
+export function hasTestModeToggle(filterSettings: FilterConfig[]): boolean {
+    return filterSettings.some((filter) => filter.name === TEST_MODE_SETTING);
+}
+
 const toElements = (options: Array<{text: string; value: string}> = []): Option[] =>
     options.map((option) => ({value: option.value, label: option.text}));
 
@@ -103,7 +119,7 @@ export function filterSettingsToFields(
                 break;
             }
             case 'checkbox':
-                if (filter.name === 'toggle') {
+                if (filter.name === TEST_MODE_SETTING) {
                     fields.push(
                         filterField(TEST_MODE_FILTER, __('Test mode', 'give'), 'is', [
                             {value: true, label: __('On', 'give')},

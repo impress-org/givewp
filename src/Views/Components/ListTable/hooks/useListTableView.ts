@@ -1,5 +1,6 @@
 import {useCallback, useState} from 'react';
 import type {View} from '@wordpress/dataviews';
+import {isApplied} from '../adapters/viewToParameters';
 import type {ListTableView} from '../state/types';
 
 /**
@@ -10,9 +11,6 @@ import type {ListTableView} from '../state/types';
  * @since TBD
  */
 export type ViewChangeOrigin = 'load' | 'user' | 'history' | 'correction' | 'reset';
-
-const isApplied = (value: unknown) =>
-    value !== undefined && value !== null && value !== '' && !(Array.isArray(value) && value.length === 0);
 
 /**
  * The parts of a view that change which rows match. A change to any of them starts again at page one.

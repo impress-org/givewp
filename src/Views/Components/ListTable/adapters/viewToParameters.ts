@@ -7,14 +7,26 @@ import type {FilterByGroupedOptions, FilterConfig, FilterValues, ListTableParame
 export const PER_PAGE_SIZES = [10, 20, 30, 50, 100];
 
 /**
- * The list endpoints accept any page size; the client keeps it to the largest offered size.
+ * The page size used when neither the screen nor the page sets one.
  *
  * @since TBD
  */
-export function clampPerPage(perPage: number | undefined): number {
-    const size = Math.round(Number(perPage)) || 30;
+export const DEFAULT_PER_PAGE = 30;
 
-    return Math.min(Math.max(size, 1), PER_PAGE_SIZES[PER_PAGE_SIZES.length - 1]);
+/**
+ * The nearest offered page size. On a tie the smaller size wins. A value that is not a number gives
+ * the fallback. Every page size goes through this rule, so the view only ever holds an offered size.
+ *
+ * @since TBD
+ */
+export function snapPerPage(perPage: number | undefined, fallback: number = DEFAULT_PER_PAGE): number {
+    if (typeof perPage !== 'number' || !Number.isFinite(perPage)) {
+        return fallback;
+    }
+
+    return PER_PAGE_SIZES.reduce((nearest, size) =>
+        Math.abs(size - perPage) < Math.abs(nearest - perPage) ? size : nearest
+    );
 }
 
 /**
@@ -55,8 +67,16 @@ export function filterByGroups(filterSettings: FilterConfig[]): FilterByGroupedO
     return filterSettings.flatMap((filter) => (filter.type === 'filterby' ? filter.groupedOptions ?? [] : []));
 }
 
-const isEmpty = (value: unknown) =>
-    value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0);
+/**
+ * Whether a search or filter value narrows the rows: not empty, not null and not an empty list.
+ *
+ * @since TBD
+ */
+export function isApplied(value: unknown): boolean {
+    return value !== undefined && value !== null && value !== '' && !(Array.isArray(value) && value.length === 0);
+}
+
+const isEmpty = (value: unknown) => !isApplied(value);
 
 /**
  * The applied "Filter by" values keyed by API parameter, as the groups' `isVisible` rules read them.
@@ -110,7 +130,7 @@ export function viewToParameters(
 ): ListTableParameters {
     const parameters: ListTableParameters = {
         page: view.page ?? 1,
-        perPage: clampPerPage(view.perPage),
+        perPage: snapPerPage(view.perPage),
         sortColumn: view.sort?.field ?? 'id',
         sortDirection: view.sort?.direction ?? 'desc',
         locale: extra.locale,

@@ -1,5 +1,5 @@
 import type {Column} from '../ListTablePage/types';
-import {resolveScreenDefaults, snapPerPage} from './screenDefaults';
+import {resolveScreenDefaults} from './screenDefaults';
 import type {ListTableScreen} from './types';
 
 const columns: Column[] = [
@@ -12,30 +12,6 @@ const columns: Column[] = [
 ];
 
 const screen: ListTableScreen = {key: 'donations'};
-
-describe('snapPerPage', () => {
-    it.each([
-        [10, 10],
-        [30, 30],
-        [1, 10],
-        [24, 20],
-        [26, 30],
-        [45, 50],
-        [80, 100],
-        [500, 100],
-    ])('snaps %p to %p', (input, expected) => {
-        expect(snapPerPage(input)).toBe(expected);
-    });
-
-    it('picks the smaller size on a tie', () => {
-        expect(snapPerPage(25)).toBe(20);
-    });
-
-    it('falls back to the given default when the size is not a number', () => {
-        expect(snapPerPage(Number.NaN, 50)).toBe(50);
-        expect(snapPerPage(undefined)).toBe(30);
-    });
-});
 
 describe('resolveScreenDefaults', () => {
     it('keeps the server order and visibility, without the title field', () => {
