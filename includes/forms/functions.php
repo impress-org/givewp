@@ -1118,7 +1118,7 @@ function give_get_prefill_form_field_values( $form_id ) {
 			'company_name'    => $company_name,
 
 			// Email.
-			'give_email'      => $donor_data->user_email,
+			'give_email'      => ! empty( $donor->email ) ? $donor->email : $donor_data->user_email,
 
 			// Street address 1.
 			'card_address'    => $donor_address['line1'],

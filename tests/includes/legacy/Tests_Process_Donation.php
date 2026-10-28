@@ -6,6 +6,54 @@
  */
 class Tests_Process_Donation extends Give_Unit_Test_Case {
 
+	public function test_logged_in_donor_requires_primary_email() {
+		$user_id = self::factory()->user->create( [ 'role' => 'subscriber', 'user_email' => 'wp@example.org' ] );
+		$legacy_donor = new Give_Donor();
+		$legacy_donor->create( [
+			'user_id' => $user_id,
+			'email' => 'primary@example.org',
+			'name' => 'Primary Donor',
+		] );
+		$legacy_donor->add_email( 'additional@example.org' );
+		wp_set_current_user( $user_id );
+
+		try {
+			foreach ( [ 'unused@example.org', 'additional@example.org', 'wp@example.org' ] as $email ) {
+				give_clear_errors();
+				$data = [ 'user_email' => $email ];
+				give_check_logged_in_user_for_existing_email( $data );
+				$this->assertNotEmpty( give_get_errors() );
+			}
+			give_clear_errors();
+			$data = [ 'user_email' => 'PRIMARY@example.org' ];
+			give_check_logged_in_user_for_existing_email( $data );
+			$this->assertEmpty( give_get_errors() );
+			$this->assertSame( $legacy_donor->email, $data['user_email'] );
+			$this->assertSame( $legacy_donor->email, give_get_prefill_form_field_values( 0 )['give_email'] );
+		} finally {
+			wp_set_current_user( 0 );
+			give_clear_errors();
+		}
+	}
+
+	public function test_logged_in_user_without_donor_requires_wordpress_email() {
+		$user_id = self::factory()->user->create( [ 'role' => 'subscriber', 'user_email' => 'wp@example.org' ] );
+		wp_set_current_user( $user_id );
+
+		try {
+			$data = [ 'user_email' => 'unused@example.org' ];
+			give_check_logged_in_user_for_existing_email( $data );
+			$this->assertNotEmpty( give_get_errors() );
+			give_clear_errors();
+			$data = [ 'user_email' => 'wp@example.org' ];
+			give_check_logged_in_user_for_existing_email( $data );
+			$this->assertEmpty( give_get_errors() );
+		} finally {
+			wp_set_current_user( 0 );
+			give_clear_errors();
+		}
+	}
+
 	/**
 	 * Set up tests.
 	 */

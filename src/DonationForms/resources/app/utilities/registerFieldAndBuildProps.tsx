@@ -24,6 +24,7 @@ export default function registerFieldAndBuildProps(
     const inputProps = {
         ...baseInputProps,
         'aria-required': !!field.validationRules?.required ? 'true' : undefined,
+        readOnly: (field as any).isReadOnly || (field as any).readOnly || undefined,
     };
 
     return {

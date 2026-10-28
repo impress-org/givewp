@@ -157,7 +157,7 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
         if (response.ok) {
             setValue('firstName', firstName || responseData.firstName);
             setValue('lastName', lastName || responseData.lastName);
-            setValue('email', email || responseData.email);
+            setValue('email', responseData.email || email);
 
             /*
              * Inside a cross-site iframe the browser drops the login cookie, so the

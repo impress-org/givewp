@@ -22,6 +22,74 @@ class ValidationRouteDataTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function testLoggedInDonorCannotValidateAnotherEmail(): void
+    {
+        $userId = self::factory()->user->create(['role' => 'subscriber']);
+        $donor = \Give\Donors\Models\Donor::factory()->create([
+            'userId' => $userId,
+            'email' => 'primary@example.org',
+            'additionalEmails' => ['additional@example.org'],
+        ]);
+        $form = DonationForm::factory()->create();
+        wp_set_current_user($userId);
+
+        try {
+            foreach (['unused@example.org', 'additional@example.org'] as $email) {
+                try {
+                    ValidationRouteData::fromRequest(['formId' => $form->id, 'email' => $email])->validate();
+                    $this->fail('Expected an email validation error.');
+                } catch (DonationFormFieldErrorsException $exception) {
+                    $this->assertNotEmpty($exception->getError()->get_error_messages('email'));
+                }
+            }
+            $this->assertEquals($donor->additionalEmails, \Give\Donors\Models\Donor::find($donor->id)->additionalEmails);
+        } finally {
+            wp_set_current_user(0);
+        }
+    }
+
+    public function testLoggedInDonorCanValidatePrimaryEmail(): void
+    {
+        $userId = self::factory()->user->create(['role' => 'subscriber', 'user_email' => 'wp@example.org']);
+        \Give\Donors\Models\Donor::factory()->create(['userId' => $userId, 'email' => 'primary@example.org']);
+        $form = DonationForm::factory()->create();
+        wp_set_current_user($userId);
+
+        try {
+            $response = ValidationRouteData::fromRequest([
+                'formId' => $form->id,
+                'email' => 'PRIMARY@example.org',
+            ])->validate();
+            $this->assertEquals(new JsonResponse(['valid' => true]), $response);
+            $emailField = $form->schema()->getNodeByName('email');
+            $this->assertSame('primary@example.org', $emailField->getDefaultValue());
+            $this->assertTrue($emailField->isReadOnly());
+            $this->assertSame('primary@example.org', \Give\DonationForms\DataTransferObjects\UserData::fromUser(get_userdata($userId))->email);
+        } finally {
+            wp_set_current_user(0);
+        }
+    }
+
+    public function testLoggedInUserWithoutDonorUsesWordPressEmail(): void
+    {
+        $uniqueLogin = 'nodonor_' . wp_generate_password(8, false);
+        $uniqueEmail = $uniqueLogin . '@example.com';
+        $userId = wp_create_user($uniqueLogin, 'password123', $uniqueEmail);
+        $this->assertIsInt($userId);
+        $this->assertGreaterThan(0, $userId);
+
+        $form = DonationForm::factory()->create();
+        wp_set_current_user($userId);
+
+        try {
+            $response = ValidationRouteData::fromRequest(['formId' => $form->id, 'email' => $uniqueEmail])->validate();
+            $this->assertEquals(new JsonResponse(['valid' => true]), $response);
+            $this->assertSame($uniqueEmail, $form->schema()->getNodeByName('email')->getDefaultValue());
+        } finally {
+            wp_set_current_user(0);
+        }
+    }
+
     /**
      * @since 3.0.0
      * @throws DonationFormFieldErrorsException

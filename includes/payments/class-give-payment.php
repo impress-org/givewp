@@ -723,11 +723,6 @@ final class Give_Payment {
 
 			if ( did_action( 'give_pre_process_donation' ) && is_user_logged_in() ) {
 				$donor = new Give_Donor( get_current_user_id(), true );
-
-				// Donor is logged in but used a different email to purchase with so assign to their donor record.
-				if ( ! empty( $donor->id ) && $this->email !== $donor->email ) {
-					$donor->add_email( $this->email );
-				}
 			}
 
 			if ( empty( $donor->id ) ) {

@@ -301,37 +301,36 @@ function give_check_logged_in_user_for_existing_email( &$valid_data ) {
 
 		$donor = new Give_Donor( get_current_user_id(), true );
 
-		// Bailout: check if wp user is existing donor or not.
+		// If the user does not have a donor record yet, enforce their WordPress user email.
 		if ( ! $donor->id ) {
+			$user = wp_get_current_user();
+			$expected_email = strtolower( $user->user_email );
+			$submitted_email = strtolower( $valid_data['user_email'] );
+
+			if ( $submitted_email !== $expected_email ) {
+				give_set_error(
+					'give-logged-in-user-email-mismatch',
+					__( 'You are logged in and must use your account email address to submit a donation.', 'give' )
+				);
+			}
+
 			return;
 		}
 
 		$submitted_email = strtolower( $valid_data['user_email'] );
+		$primary_email   = strtolower( $donor->email );
 
-		$donor_emails = array_map( 'strtolower', $donor->emails );
-		$email_index  = array_search( $submitted_email, $donor_emails, true );
-
-		// If donor matched with email then return set formatted email from database.
-		if ( false !== $email_index ) {
-			$valid_data['user_email'] = $donor->emails[ $email_index ];
+		// Logged in donor must use their primary email.
+		if ( $submitted_email === $primary_email ) {
+			$valid_data['user_email'] = $donor->email;
 
 			return;
 		}
 
-		// If this email address is not registered with this customer, see if it belongs to any other customer.
-		$found_donor = new Give_Donor( $submitted_email );
-
-		if ( $found_donor->id > 0 ) {
-			give_set_error(
-				'give-customer-email-exists',
-				sprintf(
-					/* translators: 1. Donor Email, 2. Submitted Email */
-					__( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.', 'give' ),
-					$donor->email,
-					$submitted_email
-				)
-			);
-		}
+		give_set_error(
+			'give-donor-primary-email-required',
+			__( 'You are logged in and must use your account primary email address to submit a donation.', 'give' )
+		);
 	}
 }
 

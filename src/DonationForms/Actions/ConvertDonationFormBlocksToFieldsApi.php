@@ -9,7 +9,9 @@ use Give\DonationForms\Rules\BillingAddressCityRule;
 use Give\DonationForms\Rules\BillingAddressStateRule;
 use Give\DonationForms\Rules\BillingAddressZipRule;
 use Give\DonationForms\Rules\GatewayRule;
+use Give\DonationForms\Rules\LoggedInDonorEmailRule;
 use Give\DonationForms\Rules\PhoneIntlInputRule;
+use Give\Donors\Models\Donor;
 use Give\FormBuilder\BlockModels\DonationAmountBlockModel;
 use Give\FormBuilder\BlockTypes\TextBlockType;
 use Give\Framework\Blocks\BlockCollection;
@@ -169,10 +171,15 @@ class ConvertDonationFormBlocksToFieldsApi
             case "givewp/email":
                 return Email::make('email')
                     ->emailTag('email')
-                    ->rules('required', 'email')
+                    ->rules('required', 'email', new LoggedInDonorEmailRule())
                     ->tap(function ($email) use ($block) {
                         if (is_user_logged_in()) {
-                            $email->defaultValue(wp_get_current_user()->user_email);
+                            $userId = get_current_user_id();
+                            $donor = Donor::whereUserId($userId);
+                            $userEmail = ($donor && !empty($donor->email)) ? $donor->email : wp_get_current_user()->user_email;
+
+                            $email->defaultValue($userEmail);
+                            $email->readOnly();
                         }
 
                         return $email;
