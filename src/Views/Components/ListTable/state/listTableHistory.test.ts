@@ -123,6 +123,15 @@ describe('listTableHistory search copy', () => {
         expect(readTabState('donations')).toEqual(tabState('smith'));
     });
 
+    it('restores the search when WordPress encodes a comma that was written plain', () => {
+        pushEntry({'give-status': 'failed,pending'}, options, tabState('smith'));
+        const encoded = window.location.href.replace(/,/g, '%2C');
+        window.history.replaceState(null, '', encoded);
+
+        expect(window.location.search).toContain('%2C');
+        expect(readTabState('donations')).toEqual(tabState('smith'));
+    });
+
     it('reads no search in a new tab with no copy', () => {
         expect(readTabState('donations')).toBeUndefined();
     });

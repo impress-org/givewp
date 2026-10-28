@@ -53,9 +53,11 @@ function nextQuery(parameters: Record<string, string>, options: HistoryWriteOpti
 
 /**
  * The session storage key of the search copy for a screen at the current address (without the hash).
+ * The query is normalized, because WordPress core rewrites the address on load and may encode a character
+ * such as a comma that was written plain.
  */
 const searchCopyKey = (screen: ListTableScreenKey) =>
-    `give-list-search:${screen}:${window.location.pathname}${window.location.search}`;
+    `give-list-search:${screen}:${window.location.pathname}?${new URLSearchParams(window.location.search)}`;
 
 /**
  * Keeps a copy of the tab's search in session storage, which also lives only as long as the tab.
