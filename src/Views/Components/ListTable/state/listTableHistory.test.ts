@@ -1,9 +1,9 @@
 import {
-    isCurrentQuery,
     onPopState,
     pushEntry,
     readQuery,
     readTabState,
+    rememberSearch,
     replaceEntry,
     SEARCH_COLLAPSE_MS,
 } from './listTableHistory';
@@ -93,14 +93,6 @@ describe('listTableHistory', () => {
         expect(readTabState('donors')).toBeUndefined();
     });
 
-    it('tells whether the address already holds the parameters', () => {
-        replaceEntry({'give-status': 'failed'}, options, tabState());
-
-        expect(isCurrentQuery({'give-status': 'failed'}, options)).toBe(true);
-        expect(isCurrentQuery({}, options)).toBe(false);
-        expect(isCurrentQuery({'give-status': 'failed'}, {...options, legacyKeys: ['page']})).toBe(false);
-    });
-
     it('calls back on popstate until unsubscribed', () => {
         const callback = jest.fn();
         const unsubscribe = onPopState(callback);
@@ -115,6 +107,32 @@ describe('listTableHistory', () => {
 
 describe('listTableHistory search copy', () => {
     beforeEach(() => window.sessionStorage.clear());
+
+    const back = () =>
+        new Promise<void>((resolve) => {
+            window.addEventListener('popstate', () => resolve(), {once: true});
+            window.history.back();
+        });
+
+    it('does not restore a later search into an earlier entry at the same address', async () => {
+        replaceEntry({}, options, tabState(''));
+        pushEntry({}, options, tabState('smith'));
+
+        await back();
+
+        expect(readTabState('donations')).toEqual(tabState(''));
+    });
+
+    it('remembers the search of the entry the admin moved to, so a reload does not bring back another one', async () => {
+        replaceEntry({}, options, tabState(''));
+        pushEntry({}, options, tabState('smith'));
+
+        await back();
+        rememberSearch(tabState(readTabState('donations')?.search ?? ''));
+        window.history.replaceState(null, '', window.location.href);
+
+        expect(readTabState('donations')).toBeUndefined();
+    });
 
     it('restores the search after the admin canonical-URL script clears history.state', () => {
         pushEntry({'give-status': 'failed'}, options, tabState('smith'));

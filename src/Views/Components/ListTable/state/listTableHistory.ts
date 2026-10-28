@@ -77,6 +77,16 @@ function writeSearchCopy({screen, search}: ListTableTabState) {
     }
 }
 
+/**
+ * Makes the session copy hold the search of the entry the admin moved to with back or forward. Without
+ * this, a reload on that entry would bring back the search of the entry they came from.
+ *
+ * @since TBD
+ */
+export function rememberSearch(tabState: ListTableTabState) {
+    writeSearchCopy(tabState);
+}
+
 function readSearchCopy(screen: ListTableScreenKey): string | null {
     try {
         return window.sessionStorage.getItem(searchCopyKey(screen));
@@ -123,15 +133,6 @@ export function readTabState(screen: ListTableScreenKey): ListTableTabState | un
     const search = readSearchCopy(screen);
 
     return search ? {screen, search} : undefined;
-}
-
-/**
- * Whether the address already holds exactly these parameters, with nothing to remove.
- *
- * @since TBD
- */
-export function isCurrentQuery(parameters: Record<string, string>, options: HistoryWriteOptions): boolean {
-    return nextQuery(parameters, options) === window.location.search;
 }
 
 /**
