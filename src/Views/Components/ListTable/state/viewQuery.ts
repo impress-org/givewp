@@ -206,9 +206,10 @@ function writeFilters(view: ListTableView, context: ViewQueryContext): Array<[st
  * The test-mode parameter, written only when it differs from the site's payment mode.
  */
 function writeTestMode(view: ListTableView, context: ViewQueryContext): Array<[string, string]> {
-    const isOn = view.filters?.some(
-        (filter) => filter.field === filterFieldId(TEST_MODE_FILTER) && filter.value === true
-    );
+    // A view without filters has test mode off, the same as one whose filter list does not hold it.
+    const isOn =
+        view.filters?.some((filter) => filter.field === filterFieldId(TEST_MODE_FILTER) && filter.value === true) ??
+        false;
 
     return hasTestModeToggle(context) && isOn !== context.siteTestMode ? [[TEST_MODE, isOn ? '1' : '0']] : [];
 }
