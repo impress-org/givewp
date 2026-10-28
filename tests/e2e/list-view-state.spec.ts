@@ -97,10 +97,7 @@ test.describe('List view in the address', () => {
     });
 
     test('keeps the search on reload of the same tab', async ({page, admin}) => {
-        // WordPress core's admin canonical-URL script runs `history.replaceState(null, …)` on every admin
-        // page load, before the list reads the tab's history entry, so the term is lost on reload.
-        test.fail(true, 'The admin canonical-URL script clears history.state on load');
-
+        // Core's admin canonical-URL script clears history.state on load; the tab's session copy restores it.
         await visitDonations(page, admin);
         await search(page, 'Eve');
 

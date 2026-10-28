@@ -112,3 +112,50 @@ describe('listTableHistory', () => {
         expect(callback).toHaveBeenCalledTimes(1);
     });
 });
+
+describe('listTableHistory search copy', () => {
+    beforeEach(() => window.sessionStorage.clear());
+
+    it('restores the search after the admin canonical-URL script clears history.state', () => {
+        pushEntry({'give-status': 'failed'}, options, tabState('smith'));
+        window.history.replaceState(null, '', window.location.href);
+
+        expect(readTabState('donations')).toEqual(tabState('smith'));
+    });
+
+    it('reads no search in a new tab with no copy', () => {
+        expect(readTabState('donations')).toBeUndefined();
+    });
+
+    it('removes the copy when the search is cleared', () => {
+        pushEntry({}, options, tabState('smith'));
+        pushEntry({}, options, tabState(''), {searchOnly: true});
+
+        expect(window.sessionStorage.length).toBe(0);
+    });
+
+    it('keeps the page working when storage throws', () => {
+        jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+            throw new Error('blocked');
+        });
+        jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+            throw new Error('blocked');
+        });
+
+        expect(() => pushEntry({}, options, tabState('smith'))).not.toThrow();
+        window.history.replaceState(null, '', window.location.href);
+        expect(readTabState('donations')).toBeUndefined();
+    });
+
+    it('does not read the copy for another address or screen', () => {
+        pushEntry({'give-status': 'failed'}, options, tabState('smith'));
+        window.history.replaceState(null, '', `${PATH}?post_type=give_forms&page=give-payment-history`);
+
+        expect(readTabState('donations')).toBeUndefined();
+
+        pushEntry({'give-status': 'failed'}, options, tabState('smith'));
+        window.history.replaceState(null, '', window.location.href);
+
+        expect(readTabState('donors')).toBeUndefined();
+    });
+});

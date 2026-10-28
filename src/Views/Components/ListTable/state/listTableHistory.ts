@@ -51,6 +51,38 @@ function nextQuery(parameters: Record<string, string>, options: HistoryWriteOpti
     });
 }
 
+/**
+ * The session storage key of the search copy for a screen at the current address (without the hash).
+ */
+const searchCopyKey = (screen: ListTableScreenKey) =>
+    `give-list-search:${screen}:${window.location.pathname}${window.location.search}`;
+
+/**
+ * Keeps a copy of the tab's search in session storage, which also lives only as long as the tab.
+ * WordPress core's admin canonical-URL script runs `history.replaceState(null, …)` on every admin
+ * page load, so after a reload `history.state` is empty and this copy is what restores the search.
+ * Blocked storage only loses the copy.
+ */
+function writeSearchCopy({screen, search}: ListTableTabState) {
+    try {
+        if (search) {
+            window.sessionStorage.setItem(searchCopyKey(screen), search);
+        } else {
+            window.sessionStorage.removeItem(searchCopyKey(screen));
+        }
+    } catch {
+        // Storage is blocked or full: history.state still holds the search.
+    }
+}
+
+function readSearchCopy(screen: ListTableScreenKey): string | null {
+    try {
+        return window.sessionStorage.getItem(searchCopyKey(screen));
+    } catch {
+        return null;
+    }
+}
+
 function write(
     method: 'pushState' | 'replaceState',
     parameters: Record<string, string>,
@@ -61,6 +93,7 @@ function write(
     const state: ListTableHistoryState = {...currentState(), giveListTable: tabState};
 
     window.history[method](state, '', `${pathname}${nextQuery(parameters, options)}${hash}`);
+    writeSearchCopy(tabState);
 }
 
 /**
@@ -73,14 +106,21 @@ export function readQuery(): URLSearchParams {
 }
 
 /**
- * The list table state of the current history entry, when it belongs to this screen.
+ * The list table state of the current history entry, when it belongs to this screen. When the entry's
+ * state was cleared (a reload in the WordPress admin), the tab's session copy for this address is used.
  *
  * @since TBD
  */
 export function readTabState(screen: ListTableScreenKey): ListTableTabState | undefined {
     const tabState = currentState().giveListTable;
 
-    return tabState?.screen === screen && typeof tabState.search === 'string' ? tabState : undefined;
+    if (tabState?.screen === screen && typeof tabState.search === 'string') {
+        return tabState;
+    }
+
+    const search = readSearchCopy(screen);
+
+    return search ? {screen, search} : undefined;
 }
 
 /**
