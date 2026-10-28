@@ -1,9 +1,9 @@
-import {useCallback, useEffect, useRef} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {useDispatch} from '@wordpress/data';
 import {__} from '@wordpress/i18n';
 import '../../AdminDetailsPage/store';
-import {clearLayout, saveLayout} from '../state/layoutApi';
-import {isDefaultLayout as showsDefaultLayout, toStoredLayout} from '../state/storedLayout';
+import {clearLayout, readStoredLayout, saveLayout} from '../state/layoutApi';
+import {applyStoredLayout, isDefaultLayout as showsDefaultLayout, toStoredLayout} from '../state/storedLayout';
 import type {ListTableScreen, ListTableView, ScreenDefaults} from '../state/types';
 import type {ViewChangeOrigin} from './useListTableView';
 
@@ -73,6 +73,15 @@ export default function useListTableLayoutPreferences({
     const screenKey = screen?.key;
     const currentView = useRef(view);
     const previousLayout = useRef(layoutKeyOf(view));
+    const previousPerPage = useRef(view.perPage);
+    // The page size the user chose for this screen. A size that only came from the address is not part of the layout.
+    const [layoutPerPage, setLayoutPerPage] = useState(
+        () =>
+            (screenKey ? applyStoredLayout(defaults, readStoredLayout(screenKey)).perPage : defaults.perPage) ??
+            defaults.perPage
+    );
+    const layoutPerPageRef = useRef(layoutPerPage);
+    layoutPerPageRef.current = layoutPerPage;
     const pending = useRef<ListTableView | null>(null);
     const timer = useRef<ReturnType<typeof setTimeout>>();
     currentView.current = view;
@@ -128,13 +137,17 @@ export default function useListTableLayoutPreferences({
     useEffect(() => {
         const layoutKey = layoutKeyOf(view);
         const changed = layoutKey !== previousLayout.current;
+        const perPageChanged = view.perPage !== previousPerPage.current;
         previousLayout.current = layoutKey;
+        previousPerPage.current = view.perPage;
 
         if (!screenKey || !changed || origin !== 'user') {
             return;
         }
 
-        pending.current = view;
+        const nextPerPage = perPageChanged ? view.perPage : layoutPerPageRef.current;
+        setLayoutPerPage(nextPerPage);
+        pending.current = {...view, perPage: nextPerPage};
         clearTimeout(timer.current);
         timer.current = setTimeout(() => flushRef.current(false), WRITE_DELAY);
     }, [view]);
@@ -164,9 +177,10 @@ export default function useListTableLayoutPreferences({
         };
 
         cancel();
+        setLayoutPerPage(defaults.perPage);
         replaceView(next, 'reset');
         send(next, false);
     }, [defaults, replaceView, screenKey]);
 
-    return {resetLayout, isDefaultLayout: showsDefaultLayout(view, defaults)};
+    return {resetLayout, isDefaultLayout: showsDefaultLayout({...view, perPage: layoutPerPage}, defaults)};
 }
