@@ -40,18 +40,19 @@ Normal releases follow a [gitflow](https://nvie.com/posts/a-successful-git-branc
 
 ## Preparing a release with the Release Prep workflow
 
-Step 3 above can also run in CI, through the [Release Prep](.github/workflows/release-prep.yml) GitHub Action. It runs the same three steps as `composer run release:prep`, with the same `.puprc`, changelog entries and `bin/lib/changelog-strategy.js`, through the shared [release-prep action](https://github.com/stellarwp/plugin-toolbox/tree/2b6a48cdf8dffd44b2fe6c847f11033ffdc83fb6/.github/actions/release-prep) in stellarwp/plugin-toolbox. It then pushes the result to the release branch as one commit, `Prepare release/x.y.z (x.y.z)`. Nothing needs to be installed locally.
+Step 3 above can also run in CI, through the [Release Prep](.github/workflows/release-prep.yml) GitHub Action. It runs the same three steps as `composer run release:prep`, with the same `.puprc`, changelog entries and changelogger configuration, through the shared [release-prep action](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/release-prep) in stellarwp/plugin-toolbox. It then commits the result to the release branch as one commit, `Prepare release/x.y.z (x.y.z)`. Nothing needs to be installed locally.
 
 The NX1 release dashboard uses this workflow for a release's prepare step. To run it by hand once the release branch exists:
 
 ```bash
-gh workflow run release-prep.yml -f ref=release/4.16.0 -f version=4.16.0
+gh workflow run release-prep.yml -f branch=release/4.16.0 -f version=4.16.0
 ```
 
 * `-f date=YYYY-MM-DD` sets the changelog date; it defaults to today, in UTC.
 * The version must be three or four numbers (`4.16.0`, `4.16.0.1`). A pre-release such as `4.16.0-beta.1` is refused before anything changes.
-* Running it again for the same version changes nothing and pushes nothing.
-* `ref` is the release branch to prepare. It has to exist already (step 2 above).
+* Running it again for the same version changes nothing and commits nothing.
+* The preparation commit does not trigger CI on its own: GitHub does not run workflows for commits made with a workflow's `GITHUB_TOKEN`. Opening the pull request, or any push after it, runs every check on the whole branch, so the missing run only matters when the preparation is the last commit on the branch: the pull request then keeps the checks of the commit before it. A push after it, even an empty commit, runs them.
+* `branch` is the release branch to prepare, `release/*` or `hotfix/*`. It has to exist already (step 2 above). Its version has to be lower than or equal to the one you pass: preparing `4.16.0` on a branch already at `4.17.0` is refused.
 
 After it runs, continue from step 4 above. It works the same for a `hotfix/x.y.z` branch.
 

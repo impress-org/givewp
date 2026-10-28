@@ -2,24 +2,24 @@ name: Release Prep
 
 # Prepares a release branch: bumps the version in the files .puprc lists under paths.versions,
 # replaces the @since TBD / @deprecated TBD placeholders, and compiles the pending entries in
-# ./changelog into readme.txt and changelog.txt. Then it commits that and pushes it to the branch.
+# ./changelog into readme.txt and changelog.txt. Then it commits that to the branch through the GitHub API.
 # No pull request is opened: the change is reviewed in the release branch's own pull request.
 #
 # It does in CI what `composer run release:prep <version>` does locally, through the shared
 # release-prep action in stellarwp/plugin-toolbox: pup replace-version, pup replace-tbd, then the
-# changelogger with bin/lib/changelog-strategy.js.
+# changelogger with the stellarwp-readme strategy package.json configures.
 #
-# The NX1 release dashboard dispatches this file for the prepare step, sending `ref` and `version`.
+# The NX1 release dashboard dispatches this file for the prepare step, sending `branch` and `version`.
 # Keep `date` optional: the dashboard refuses a workflow that requires an input it does not send.
 #
 # Run it by hand:
-#   gh workflow run release-prep.yml -f ref=release/4.19.0 -f version=4.19.0
+#   gh workflow run release-prep.yml -f branch=release/4.19.0 -f version=4.19.0
 
 on:
     workflow_dispatch:
         inputs:
-            ref:
-                description: 'Release branch to prepare and push to, e.g. release/4.19.0'
+            branch:
+                description: 'Branch to prepare and commit to, release/* or hotfix/*, e.g. release/4.19.0'
                 required: true
                 type: string
             version:
@@ -33,9 +33,9 @@ on:
                 default: ''
 
 # Two preparations of the same branch would both commit on top of the same checkout, and the second
-# push would be refused. One group per branch makes the second wait for the first.
+# commit would be refused as not a fast-forward. One group per branch makes the second wait for the first.
 concurrency:
-    group: ${{ github.workflow }}-${{ inputs.ref }}
+    group: ${{ github.workflow }}-${{ inputs.branch }}
 
 permissions:
     contents: read
@@ -45,18 +45,33 @@ jobs:
         # pup runs on PHP, which ubuntu-24.04 ships.
         runs-on: ubuntu-24.04
         permissions:
-            contents: write # the action pushes the preparation to the branch
+            contents: write # the action commits the preparation to the branch
         steps:
+            # Only a release or hotfix branch is prepared: the job has write access, and a dispatch
+            # by hand with the wrong branch would commit a version bump to it.
+            -   name: Only release and hotfix branches
+                env:
+                    BRANCH: ${{ inputs.branch }}
+                run: |
+                    case "$BRANCH" in
+                        release/*|hotfix/*) ;;
+                        *)
+                            echo "::error::branch must start with release/ or hotfix/, got '$BRANCH'."
+                            exit 1
+                            ;;
+                    esac
+
             -   uses: actions/checkout@v7
                 with:
-                    ref: ${{ inputs.ref }}
-                    # The action pushes with its own token, so the checkout keeps no credentials for a
+                    ref: ${{ inputs.branch }}
+                    # The action commits through the API with its own token, so the checkout keeps no credentials for a
                     # later step to find.
                     persist-credentials: false
 
-            # Pinned to a commit until plugin-toolbox publishes its v1 tag; switch to @v1 then.
-            -   uses: stellarwp/plugin-toolbox/.github/actions/release-prep@2b6a48cdf8dffd44b2fe6c847f11033ffdc83fb6
+            # Pinned to the plugin-toolbox commit that shipped the action (the merge of its PR #7).
+            # Switch to @v1 once plugin-toolbox publishes a release.
+            -   uses: stellarwp/plugin-toolbox/.github/actions/release-prep@c66337bd5c9e1d51cb8ba27aef7dfa3c752c0089
                 with:
-                    ref: ${{ inputs.ref }}
+                    branch: ${{ inputs.branch }}
                     version: ${{ inputs.version }}
                     date: ${{ inputs.date }}
