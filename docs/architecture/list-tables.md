@@ -269,8 +269,14 @@ the server.
 
 A screen opts in by passing a `screen` config to `ListTablePage` (`{key, defaults}`, kept next to the
 screen in a `listTableScreen.ts` file). Without one the view lives in memory only, which is what an
-add-on page that never heard of the prop still gets. The code is in `ListTable/state/` (pure
-functions) and `ListTable/hooks/useListTableUrlState.ts` and `useListTableLayoutPreferences.ts`.
+add-on page that never heard of the prop still gets. The one exception: a standalone page without a
+`screen` config applies the filter parameters it recognizes in the address (bare legacy names such as
+`?donor=12`, and `give-` names) to its first view and first request, and never writes them back. The
+code is in `ListTable/state/` and `ListTable/hooks/useListTableUrlState.ts` and
+`useListTableLayoutPreferences.ts`. Most of `state/` is pure functions; three modules are not:
+`listTableHistory` (the `history` entry, the address and the tab's `sessionStorage`), `layoutApi` (the
+layout route and the printed bootstrap) and `layoutWriteQueue` (the page view's write queue and its
+error notice).
 
 ### One view object, two projections
 
@@ -283,12 +289,15 @@ page, sort, filters or columns. Two things are derived from it:
 `assembleView` builds the view from, in order of precedence: the screen defaults
 (`resolveScreenDefaults`, from the server column schema plus the config's `hiddenFields`,
 `visibleFields`, `perPage` and `density`, default `balanced`), then the stored layout, then the
-address, then the tab's search. Page size is in both projections; the address wins.
+address, then the tab's search. Page size is in both projections; the address wins. On back and
+forward to an entry that names no page size, the page size of the user's layout is used (the layout
+hook exposes it as `layoutPerPage`).
 
-Every change records where it came from (`ViewChangeOrigin`): a `user` change adds a history entry, a
-`correction` (an invalid address, a page past the last one after records were removed) replaces it,
-`history` (back and forward) writes nothing, and `reset` behaves like a user change in the address.
-Only a `user` change to the layout, or a reset, is stored.
+Every change records where it came from (`ViewChangeOrigin`): a `user` change adds a history entry
+only when the address query or the search changes, a `correction` (an invalid address, a page past
+the last one after records were removed) replaces it, `history` (back and forward) writes nothing, and
+`reset` behaves like a user change in the address. A layout-only change (columns, density) adds no
+entry, so Back does not undo it. Only a `user` change to the layout, or a reset, is stored.
 
 ### The address
 
@@ -315,7 +324,9 @@ Only a `user` change to the layout, or a reset, is stored.
   own name for `select`, `campaignselect`, `formselect` and `hidden` filters (`?campaignId=4`). Those
   are read with the same rules when the `give-` form is missing (the prefixed one wins), and the
   address is then rewritten with `replaceState`, so no history entry is added. A bare `search` is
-  never read: it is only removed.
+  never read: it is only removed. A standalone page without a `screen` config reads the same
+  recognized filter parameters (bare and `give-` names) for its first view and first request, but
+  never rewrites the address and ignores the page, sort and page size.
 - **Other parameters are kept as they are,** in their order. The writer replaces only the screen's
   own keys (`viewQueryKeys`) and the legacy names it read.
 - **Length limit.** The writer keeps the whole address under 2000 characters by dropping filter
@@ -360,26 +371,32 @@ multisite network keeps a separate record on each site.
   known screen (404), the screen's view capability (403). It only ever reads or writes the signed-in
   user's own record. `ListTableLayoutValidator` accepts version `1`, at most 50 column ids matching
   `[A-Za-z0-9_-]{1,64}`, one of the three densities, and a page size from 1 to 100.
-- **Writes** wait one second after the last change and run one after another. The exception is the
-  send on `pagehide`: it goes out at once with `keepalive` and skips the queue, so it can overtake an
-  older write that is still in flight. A failed write keeps the change on screen and shows one notice per page
-  view; the next write sends the whole record again.
+- **Writes** wait one second after the last change and run one after another. The queue and the
+  once-per-page-view error notice live in `state/layoutWriteQueue.ts`, outside React, so a remounted
+  table shares them. A change is staged in the commit phase, so a `pagehide` right after it already
+  sends it. The exception to the order is the send on `pagehide`: it goes out at once with
+  `keepalive` and skips the queue, so it can overtake an older write that is still in flight. A
+  failed write keeps the change on screen and shows one notice per page view; the next write sends
+  the whole record again.
 - **Locked columns.** The identifying column (the title column, or `id` when there is none) cannot
   be hidden, and the legacy row-actions column, when a screen uses one, cannot be hidden and stays
-  last (`fieldRules.ts`).
+  last (`fieldRules.ts`). A column shown again, or one a stored order does not name, goes before the
+  first column that comes after it in the default order (`fieldOrder.ts`, shared by both cases).
 
 ### Embedded tables
 
 A table inside another page (the campaign details "Forms" tab, the subscription details "Donations"
 tab) passes `contentMode`. With `contentMode` the address and the tab state are never read or written
-(`urlScreenKey()` returns nothing), because the host page owns the address. Its layout is still
+(`readInitialUrlState()` reads nothing and the URL hook writes nothing), because the host page owns
+the address. Its layout is still
 stored under its own key (`campaign-forms`, `subscription-donations`), separate from the standalone
 screen it reuses.
 
 ### The first request already carries the view
 
-`ListTablePage` resolves the defaults, applies the stored layout and reads the address and the tab's
-search inside a `useState` initializer, before the first render. So the first list request is
+`ListTablePage` resolves the defaults inside a `useState` initializer, before the first render, and
+calls `readInitialLayout` (the stored layout) and `readInitialUrlState` (the address and the tab's
+search). The shell holds no storage or address code itself. So the first list request is
 already the URL's view, and there is no request for the default view followed by a second one. The
 stored layout reaches the page the same way: `PrintListTableLayouts` (on `admin_enqueue_scripts`,
 priority 6, right after the `givewp-list-table` handle is registered at 5) prints

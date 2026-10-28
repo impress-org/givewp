@@ -11,9 +11,9 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 |:--|:--|
 | `ListTablePage/` | The page shell: `ListTablePageHeader` (title, test-mode switch, stat tiles), notices, and the list. `SwitchToLegacyViewButton` for the screens with a legacy view. `types.ts` holds the public types. |
 | `DataViewsListTable/` | Stock `<DataViews>` with Give's tokens. No data fetching. |
-| `adapters/` | Pure functions from the screens' settings to DataViews fields, default filters and actions, and from the view to the request parameters. Jest tests sit next to them. |
+| `adapters/` | Pure functions from the screens' settings to DataViews fields, default filters and actions, and from the view to the request parameters, plus the page size rule (`snapPerPage`) and the shared "Period" filter group (`periodFilterGroup`). Jest tests sit next to them. |
 | `hooks/` | `useListTableView` (the view and where its last change came from), `useListTableUrlState` (the view in the address, the search in the tab), `useListTableLayoutPreferences` (stores the layout, and Reset view), `useListTableSelection`, `useListTableQuery` (SWR + `apiFetch`), `useListTableActions` (the DataViews actions and the dialogs they open), `useListTableActionNotices`, and `useListActionSubmit` for a confirm modal or dialog. |
-| `state/` | Pure view state functions, with Jest tests next to them: `types.ts` (the `ListTableScreen` config and the closed list of screen keys), `screenDefaults` (a screen's defaults from its config and the column schema), `viewQuery` (reads and writes the `give-` URL parameters), `storedLayout` (the stored layout record), `assembleView`, `fieldRules` (locked and pinned columns), `listTableHistory` (`history` and the tab's search copy) and `layoutApi` (the layout route and the printed bootstrap). |
+| `state/` | View state, with Jest tests next to it. Pure functions: `types.ts` (the `ListTableScreen` config and the closed list of screen keys), `screenDefaults` (a screen's defaults from its config and the column schema), `viewQuery` (reads and writes the `give-` URL parameters), `storedLayout` (the stored layout record), `assembleView`, `fieldOrder` (a column's default position, the pinned column last) and `fieldRules` (locked and pinned columns). Not pure, because they talk to the browser or the route: `listTableHistory` (`history`, the address and the tab's search copy), `layoutApi` (the layout route and the printed bootstrap) and `layoutWriteQueue` (the ordered layout writes and the once-per-page-view error notice). |
 | `ListTableViewReset/` | The "Reset view" button next to the stock view options, with its confirmation. |
 | `actions/` | `runListAction`: runs an action, reports it, clears the selection when everything succeeded, reloads. Every action and dialog goes through it. |
 | `rowActions/` | Ready-made actions: `trashRowActions` (Edit, Restore, Trash, Delete permanently) and `setStatusRowAction`. |
@@ -63,7 +63,7 @@ What the prop turns on:
 
 | | No `screen` | `screen` on a standalone page | `screen` with `contentMode` |
 |:--|:--|:--|:--|
-| Page, page size, sort and filters in the URL (`give-` parameters) | No | Yes | No |
+| Page, page size, sort and filters in the URL (`give-` parameters) | Recognized filter parameters (bare legacy names and `give-` names) apply to the first view and first request; never written | Yes | No |
 | Search term kept in the tab (history entry and `sessionStorage`) | No | Yes | No |
 | Columns, order, density and page size stored per user | No | Yes | Yes |
 | Reset view | Yes, for this page view only | Yes | Yes |
