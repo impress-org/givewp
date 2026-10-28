@@ -1,4 +1,4 @@
 significance: patch
 type: security
-entry: Added additional validation to the donor default user role setting.
+entry: Added additional validation to the donor default user role setting. (CVE-2026-118193)
 timestamp: 2026-10-27T20:35:35.000Z
