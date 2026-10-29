@@ -18,6 +18,7 @@ import {resolveScreenDefaults} from '../state/screenDefaults';
 import type {ViewQueryContext} from '../state/types';
 import useListTableView from '../hooks/useListTableView';
 import useListTableUrlState, {readInitialUrlState} from '../hooks/useListTableUrlState';
+import useListTableLayoutPreferences, {readInitialLayout} from '../hooks/useListTableLayoutPreferences';
 import useListTableSelection from '../hooks/useListTableSelection';
 import useListTableQuery from '../hooks/useListTableQuery';
 import useListTableActionNotices from '../hooks/useListTableActionNotices';
@@ -67,7 +68,7 @@ export const ShowConfirmModalContext = createContext(
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
  *
- * @since TBD Render the list through `@wordpress/dataviews`; accept typed row actions; keep the view in the URL.
+ * @since TBD Render the list through `@wordpress/dataviews`; accept typed row actions; keep the view in the URL; store the layout.
  * @since 2.24.0
  */
 const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
@@ -119,23 +120,39 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                 siteTestMode: Boolean(paymentMode),
             };
 
-            return {defaults, context, urlState: readInitialUrlState(screen, contentMode, context)};
+            return {
+                defaults,
+                context,
+                layout: readInitialLayout(screen, defaults),
+                urlState: readInitialUrlState(screen, contentMode, context),
+            };
         });
 
         const {view, origin, onChangeView, replaceView, hasActiveFilters, clearFilters} = useListTableView(() =>
             assembleView({
                 defaults: start.defaults,
+                layout: start.layout,
                 query: start.urlState?.query,
                 search: start.urlState?.search,
             })
         );
 
+        // Also returns `resetLayout` and `isDefaultLayout`, for the "Reset view" button.
+        const {layoutPerPage} = useListTableLayoutPreferences({
+            screen,
+            defaults: start.defaults,
+            initialLayout: start.layout,
+            view,
+            origin,
+            replaceView,
+        });
         useListTableUrlState({
             screen,
             contentMode,
             context: start.context,
             defaults: start.defaults,
             initial: start.urlState,
+            layoutPerPage,
             view,
             origin,
             replaceView,
