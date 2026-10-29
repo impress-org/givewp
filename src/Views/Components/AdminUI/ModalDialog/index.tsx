@@ -1,4 +1,4 @@
-import {MouseEventHandler, useCallback, useEffect} from 'react';
+import {HTMLAttributes, MouseEventHandler, useCallback, useEffect} from 'react';
 import {createPortal} from 'react-dom';
 import {__} from '@wordpress/i18n';
 import {useConstrainedTabbing, useFocusOnMount, useFocusReturn, useMergeRefs} from '@wordpress/compose';
@@ -18,7 +18,18 @@ export interface ModalProps {
 }
 
 /**
- * @since TBD Move focus into the dialog when it opens and keep Tab inside it.
+ * The dialog box. It mounts only while the modal is open, so each opening records the element that had
+ * focus, takes focus, and gives it back on close. The return hook comes first, so it records the
+ * focused element before the dialog takes focus.
+ */
+function DialogBox(props: HTMLAttributes<HTMLDivElement>) {
+    const ref = useMergeRefs([useFocusReturn(), useFocusOnMount(true), useConstrainedTabbing()]);
+
+    return <div ref={ref} {...props} />;
+}
+
+/**
+ * @since TBD Move focus into the dialog when it opens, keep Tab inside it, and return it on close.
  */
 export default function Modal({
     title,
@@ -31,10 +42,6 @@ export default function Modal({
     showCloseIcon = true,
     wrapperClassName = '',
 }: ModalProps) {
-    // Focus goes into the dialog when it opens and back to what had it when it closes. The return hook
-    // comes first, so it records the focused element before the dialog takes focus.
-    const dialogRef = useMergeRefs([useFocusReturn(), useFocusOnMount(true), useConstrainedTabbing()]);
-
     // ESC key closes modal, but only while it is open
     const closeModal = useCallback(
         (e) => {
@@ -69,14 +76,7 @@ export default function Modal({
 
     return createPortal(
         <div className={`givewp-modal-wrapper ${wrapperClassName}`}>
-            <div
-                ref={dialogRef}
-                role="dialog"
-                aria-modal="true"
-                aria-label={title}
-                tabIndex={-1}
-                className="givewp-modal-dialog"
-            >
+            <DialogBox role="dialog" aria-modal="true" aria-label={title} tabIndex={-1} className="givewp-modal-dialog">
                 <div className={`givewp-modal-dialog-content`}>
                     {showHeader ? (
                         <div className="givewp-modal-header">
@@ -109,7 +109,7 @@ export default function Modal({
 
                     <div className="givewp-modal-content">{children}</div>
                 </div>
-            </div>
+            </DialogBox>
         </div>,
         insertInto ? document.querySelector(insertInto) : document.body
     );
