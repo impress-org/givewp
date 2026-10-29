@@ -442,8 +442,14 @@ function giveStripeSetUpWebhooks( nonce, account = null ) {
 		formData.append( 'account', account );
 	}
 
+	let requestStatus = 0;
+
 	fetch( window.ajaxurl, { method: 'POST', credentials: 'same-origin', body: formData } )
-		.then( ( response ) => response.json() )
+		.then( ( response ) => {
+			requestStatus = response.status;
+
+			return response.json();
+		} )
 		.then( ( response ) => {
 			if ( ! response.success ) {
 				throw new Error( 'Webhook setup request failed.' );
@@ -451,7 +457,7 @@ function giveStripeSetUpWebhooks( nonce, account = null ) {
 
 			return response.data;
 		} )
-		.catch( () => giveStripeManualWebhookSetupContent() )
+		.catch( () => giveStripeManualWebhookSetupContent( requestStatus ) )
 		.then( ( result ) => {
 			/* The admin closed the loading modal, so do not open it again. */
 			if ( ! document.querySelector( '.mfp-wrap' ) ) {
@@ -501,18 +507,25 @@ function giveStripeSetWebhookButtonsDisabled( disabled ) {
 /**
  * The manual setup steps, for when the setup request itself fails.
  *
- * @since TBD
+ * @since TBD Say why the request failed, so the admin can report the cause.
+ *
+ * @param {number} failedRequestStatus HTTP status of the failed request; 0 when it never answered.
  *
  * @return {{level: string, title: string, body: string, retry: boolean}} Modal content.
  */
-function giveStripeManualWebhookSetupContent() {
+function giveStripeManualWebhookSetupContent( failedRequestStatus = 0 ) {
 	const element = document.getElementById( 'give-stripe-connected' );
+	const reason = 404 === failedRequestStatus
+		? __( 'The setup request could not find this account in the current mode. Reload the page and try again.', 'give' )
+		: 403 === failedRequestStatus
+			? __( 'The setup request was not allowed for your user. Reload the page and log in again.', 'give' )
+			: __( 'The setup request did not get an answer from WordPress. Check your connection and try again.', 'give' );
 
 	if ( null === element ) {
 		return {
 			level: 'error',
 			title: __( 'We could not set up your Stripe webhook automatically.', 'give' ),
-			body: '',
+			body: `<span class="give-field-description">${ reason }</span>`,
 			retry: true,
 		};
 	}
@@ -520,7 +533,7 @@ function giveStripeManualWebhookSetupContent() {
 	return {
 		level: 'error',
 		title: element.getAttribute( 'data-title' ),
-		body: `<span>${ element.getAttribute( 'data-first-detail' ) }</span><span class="give-field-description">${ element.getAttribute( 'data-second-detail' ) }</span>`,
+		body: `<span>${ element.getAttribute( 'data-first-detail' ) }</span><span class="give-field-description">${ reason }</span><span class="give-field-description">${ element.getAttribute( 'data-second-detail' ) }</span>`,
 		retry: true,
 	};
 }

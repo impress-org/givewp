@@ -71,6 +71,15 @@ final class EnsureWebhookEndpointsController
 
         if ($slug) {
             if (!isset($accounts[$slug])) {
+                WebhookLogger::warning(
+                    'Stripe webhook setup was asked for an account that does not hold a key for this mode.',
+                    [
+                        'account' => $slug,
+                        'mode' => $mode,
+                        'available_accounts' => array_keys($accounts),
+                    ]
+                );
+
                 wp_send_json_error(null, 404);
             }
 

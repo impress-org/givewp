@@ -97,6 +97,14 @@ function post(operation, nonce, formData = new FormData()) {
 }
 
 /**
+ * How many status refreshes have started. A response that belongs to an older refresh is dropped, so a
+ * slow first read cannot overwrite the state a newer read already applied.
+ *
+ * @since TBD
+ */
+let statusRefreshCount = 0;
+
+/**
  * Reads the webhook state of every account with one request.
  *
  * @since TBD
@@ -108,13 +116,25 @@ function refreshStatuses() {
         return;
     }
 
+    const refresh = ++statusRefreshCount;
+
     fields.forEach((field) => setState(field, 'loading'));
 
     post('status', fields[0].getAttribute('data-manage-nonce'))
         .then(({ states }) => {
+            if (refresh !== statusRefreshCount) {
+                return;
+            }
+
             fields.forEach((field) => setState(field, states[field.getAttribute('data-account')] || 'unavailable'));
         })
-        .catch(() => fields.forEach((field) => setState(field, 'error')));
+        .catch(() => {
+            if (refresh !== statusRefreshCount) {
+                return;
+            }
+
+            fields.forEach((field) => setState(field, 'error'));
+        });
 }
 
 /**
