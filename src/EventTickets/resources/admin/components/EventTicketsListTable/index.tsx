@@ -6,6 +6,7 @@ import styles from './EventTicketsListTable.module.scss';
 import {GiveEventTickets} from './types';
 import CreateEventModal from '../CreateEventModal';
 import Feedback from '../../feedback';
+import listTableScreen from './listTableScreen';
 
 declare global {
     interface Window {
@@ -49,7 +50,7 @@ const ListTableBlankSlate = () => {
 /**
  * EventTicketsListTable
  *
- * @since TBD Pass the actions as data; Delete serves both the row menu and the selection bar.
+ * @since TBD Pass the actions as data and the screen config; Delete serves both the row menu and the selection bar.
  * @since 3.20.0 Add wrapper class for the EventTicketsListTable
  * @since 3.6.0
  */
@@ -65,6 +66,7 @@ export default function EventTicketsListTable() {
                 filterSettings={filters}
                 rowActions={eventTicketsRowActions}
                 listTableBlankSlate={ListTableBlankSlate()}
+                screen={listTableScreen}
             >
                 <CreateEventModal />
             </ListTablePage>
