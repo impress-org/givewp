@@ -309,7 +309,10 @@ entry, so Back does not undo it. Only a `user` change to the layout, or a reset,
   `s`, `post_type`) itself, and the details pages that embed a list use `page`, `tab` and `id`.
 - **Only what differs from the defaults is written.** A view equal to the defaults leaves the
   address bare. Test mode is written only when it differs from the site's payment mode, so a link
-  without it follows the site.
+  without it follows the site. **Known limit:** a filter that starts with a default value cannot be
+  shown as cleared, because an empty value is not written. Clearing such a filter leaves the address
+  bare (and adds no history entry if nothing else changed), and a reload or a shared link brings the
+  default back. No core filter has a default value today.
 - **Only ids and enumerated values.** Each value must match `[A-Za-z0-9_-]{1,64}` and be one the
   screen offers (a sortable column, a filter option, a page size in `PER_PAGE_SIZES`, an id for a
   campaign or form filter). Anything else is dropped, the result is marked `corrected`, and the
