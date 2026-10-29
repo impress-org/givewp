@@ -51,6 +51,66 @@ function nextQuery(parameters: Record<string, string>, options: HistoryWriteOpti
     });
 }
 
+/**
+ * The session storage key of the search copy for a screen at the current address (without the hash).
+ * The query is normalized, because WordPress core rewrites the address on load and may encode a character
+ * such as a comma that was written plain.
+ */
+const searchCopyKey = (screen: ListTableScreenKey) =>
+    `give-list-search:${screen}:${window.location.pathname}?${new URLSearchParams(window.location.search)}`;
+
+/**
+ * Keeps a copy of the tab's search in session storage, which also lives only as long as the tab.
+ * WordPress core's admin canonical-URL script runs `history.replaceState(null, …)` on every admin
+ * page load, so after a reload `history.state` is empty and this copy is what restores the search.
+ * Blocked storage only loses the copy.
+ */
+function writeSearchCopy({screen, search}: ListTableTabState) {
+    try {
+        if (search) {
+            window.sessionStorage.setItem(searchCopyKey(screen), search);
+        } else {
+            window.sessionStorage.removeItem(searchCopyKey(screen));
+        }
+    } catch {
+        // Storage is blocked or full: history.state still holds the search.
+    }
+}
+
+/**
+ * Makes the session copy hold the search of the entry the admin moved to with back or forward. Without
+ * this, a reload on that entry would bring back the search of the entry they came from.
+ *
+ * @since TBD
+ */
+export function rememberSearch(tabState: ListTableTabState) {
+    writeSearchCopy(tabState);
+}
+
+/**
+ * Whether this page load is a reload or a back/forward move, the only loads that may restore the copy.
+ * A fresh visit to the same address (a menu link, a typed address) must open without the old search.
+ * Where the browser does not say, the copy is allowed, as before.
+ */
+function isReloadOrHistoryMove(): boolean {
+    const [navigation] = window.performance?.getEntriesByType?.('navigation') ?? [];
+    const type = (navigation as PerformanceNavigationTiming | undefined)?.type;
+
+    return type === undefined || type === 'reload' || type === 'back_forward';
+}
+
+function readSearchCopy(screen: ListTableScreenKey): string | null {
+    if (!isReloadOrHistoryMove()) {
+        return null;
+    }
+
+    try {
+        return window.sessionStorage.getItem(searchCopyKey(screen));
+    } catch {
+        return null;
+    }
+}
+
 function write(
     method: 'pushState' | 'replaceState',
     parameters: Record<string, string>,
@@ -61,6 +121,7 @@ function write(
     const state: ListTableHistoryState = {...currentState(), giveListTable: tabState};
 
     window.history[method](state, '', `${pathname}${nextQuery(parameters, options)}${hash}`);
+    writeSearchCopy(tabState);
 }
 
 /**
@@ -73,23 +134,21 @@ export function readQuery(): URLSearchParams {
 }
 
 /**
- * The list table state of the current history entry, when it belongs to this screen.
+ * The list table state of the current history entry, when it belongs to this screen. When the entry's
+ * state was cleared (a reload in the WordPress admin), the tab's session copy for this address is used.
  *
  * @since TBD
  */
 export function readTabState(screen: ListTableScreenKey): ListTableTabState | undefined {
     const tabState = currentState().giveListTable;
 
-    return tabState?.screen === screen && typeof tabState.search === 'string' ? tabState : undefined;
-}
+    if (tabState?.screen === screen && typeof tabState.search === 'string') {
+        return tabState;
+    }
 
-/**
- * Whether the address already holds exactly these parameters, with nothing to remove.
- *
- * @since TBD
- */
-export function isCurrentQuery(parameters: Record<string, string>, options: HistoryWriteOptions): boolean {
-    return nextQuery(parameters, options) === window.location.search;
+    const search = readSearchCopy(screen);
+
+    return search ? {screen, search} : undefined;
 }
 
 /**

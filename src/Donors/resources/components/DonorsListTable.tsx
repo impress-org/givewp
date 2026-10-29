@@ -8,6 +8,7 @@ import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
 import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
 import filterByOptions from '../constants/filterByOptions';
+import listTableScreen from './listTableScreen';
 
 declare global {
     interface Window {
@@ -26,7 +27,7 @@ declare global {
 
 const API = new ListTableApi(window.GiveDonors);
 
-const donorsFilters: Array<FilterConfig> = [
+export const donorsFilters: Array<FilterConfig> = [
     {
         name: 'campaignId',
         type: 'campaignselect',
@@ -109,7 +110,7 @@ const statsConfig: Record<string, StatConfig> = {
 };
 
 /**
- * @since TBD Pass the actions as data.
+ * @since TBD Pass the actions as data and the screen config.
  */
 export default function DonorsListTable() {
     return (
@@ -123,6 +124,7 @@ export default function DonorsListTable() {
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={recommendation}
             statsConfig={statsConfig}
+            screen={listTableScreen}
         >
             <SwitchToLegacyViewButton api={API} />
         </ListTablePage>

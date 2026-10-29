@@ -16,6 +16,8 @@ import AddCampaignFormModal from './AddCampaignFormModal';
 import DefaultFormNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DefaultFormNotice';
 import apiFetch from '@wordpress/api-fetch';
 import {CampaignEntity} from '@givewp/campaigns/admin/components/types';
+import type {ListTableScreen} from '@givewp/components/ListTable/state/types';
+import donationFormsListTableScreen from './listTableScreen';
 
 declare global {
     interface Window {
@@ -77,7 +79,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const isCampaignDetailsPage = urlParams.get('id') && 'give-campaigns' === urlParams.get('page');
 const campaignId = urlParams.get('id');
 
-const donationFormsFilters: Array<FilterConfig> = [
+export const donationFormsFilters: Array<FilterConfig> = [
     {
         name: 'status',
         type: 'select',
@@ -178,9 +180,9 @@ const ListTableBlankSlate = (
 );
 
 /**
- * @since TBD Pass the actions as data; Trash, Delete and Edit author or status move from bulk actions into them.
+ * @since TBD Pass the actions as data; Trash, Delete and Edit author or status move from bulk actions into them. Take the screen config: the standalone list uses its own, an embedded list only the one it is given.
  */
-export default function DonationFormsListTable({entity}: {entity?: CampaignEntity}) {
+export default function DonationFormsListTable({entity, screen}: {entity?: CampaignEntity; screen?: ListTableScreen}) {
     const [state, setState] = useState<OnboardingStateProps>({
         showFeatureNoticeDialog: false,
         showDefaultFormTooltip: window.GiveDonationForms.showDefaultFormTooltip,
@@ -218,6 +220,7 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
                 columnFilters={columnFilters}
                 banner={Onboarding}
                 contentMode={isCampaignDetailsPage}
+                screen={screen ?? (isCampaignDetailsPage ? undefined : donationFormsListTableScreen)}
             >
                 {isCampaignDetailsPage ? (
                     <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>

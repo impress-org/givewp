@@ -13,6 +13,7 @@ import ProductRecommendations from '@givewp/components/ListTable/ProductRecommen
 import {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
 import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
 import filterByOptions from '../constants/filterByOptions';
+import listTableScreen from './listTableScreen';
 
 declare global {
     interface Window {
@@ -35,7 +36,7 @@ declare global {
 
 const API = new ListTableApi(window.GiveDonations);
 
-const filters: Array<FilterConfig> = [
+export const filters: Array<FilterConfig> = [
     {
         name: 'campaignId',
         type: 'campaignselect',
@@ -199,7 +200,7 @@ const statsConfig: Record<string, StatConfig> = {
 };
 
 /**
- * @since TBD Pass the actions as data, and the add-ons' bulk actions (the shared list page no longer reads them).
+ * @since TBD Pass the actions as data, the screen config, and the add-ons' bulk actions (the shared list page no longer reads them).
  * @since 4.10.0 Update button class names and add aria attributes.
  * @since 2.24.0
  */
@@ -218,6 +219,7 @@ export default function DonationsListTable() {
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={rotatingRecommendation}
             statsConfig={statsConfig}
+            screen={listTableScreen}
         >
             <SwitchToLegacyViewButton
                 api={API}

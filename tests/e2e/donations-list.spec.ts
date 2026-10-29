@@ -5,6 +5,7 @@ import {failedCalls, watchRestCalls} from './utils/rest';
 import {createStandaloneForm} from './utils/standalone-form';
 import {wp} from './utils/wp-cli';
 import {applyFilter, expectListMounts, listRows, listTable, rowById, selectionBar} from './utils/list-table';
+import {adminInNewBrowser, deleteUser, isLayoutWrite, resetLayout, signInNewUser} from './utils/user';
 
 /**
  * The Donations list: which form a donation went to, and filtering the list by it.
@@ -19,6 +20,7 @@ import {applyFilter, expectListMounts, listRows, listTable, rowById, selectionBa
  * on a fresh install and on a developer site full of other donations.
  */
 const DONATIONS_LIST = 'post_type=give_forms&page=give-payment-history';
+const LIST_REQUEST = /admin\/donations\?/;
 
 test.describe('Donations list', () => {
     test('renders through the list engine without errors', async ({page, admin}) => {
@@ -299,10 +301,216 @@ test.describe('Donations list behavior', () => {
 });
 
 /**
+ * The layout (columns, density, page size) is stored per user per screen on the server, so it follows
+ * the admin to another browser and does not reach anyone else. The record's rules are covered by
+ * PHPUnit and the merge with the defaults by Jest.
+ */
+test.describe('Donations list layout', () => {
+    test.beforeEach(async ({requestUtils}) => {
+        createDonation((await createCampaignWithForm(requestUtils)).formId);
+        await resetLayout(requestUtils, 'donations');
+    });
+
+    test.afterEach(async ({requestUtils}) => {
+        await resetLayout(requestUtils, 'donations');
+    });
+
+    test('follows the admin to a second browser and not to a second user', async ({
+        page,
+        admin,
+        browser,
+        requestUtils,
+    }) => {
+        await visitDonations(page, admin);
+
+        const stored = page.waitForResponse(
+            (response) => response.url().includes('list-table-layouts/donations') && isLayoutWrite(response.request())
+        );
+        await listTable(page).getByRole('button', {name: 'View options'}).click();
+        await page.getByRole('radio', {name: 'Compact', exact: true}).click();
+        await page.keyboard.press('Escape');
+        expect((await stored).ok()).toBe(true);
+        await expect(page.locator('.dataviews-view-table.has-compact-density')).toBeVisible();
+
+        const secondBrowser = await adminInNewBrowser(browser);
+        const samePerson = await secondBrowser.newPage();
+        await visitDonations(samePerson);
+        await expect(samePerson.locator('.dataviews-view-table.has-compact-density')).toBeVisible();
+        await secondBrowser.close();
+
+        const otherAdmin = await signInNewUser(browser, requestUtils, 'administrator');
+        await visitDonations(otherAdmin.page);
+        await expect(otherAdmin.page.locator('.dataviews-view-table')).toBeVisible();
+        await expect(otherAdmin.page.locator('.dataviews-view-table.has-compact-density')).toHaveCount(0);
+        await deleteUser(requestUtils, otherAdmin);
+    });
+
+    test('shows Payment Type by default only when recurring giving is available', async ({page, admin}) => {
+        await visitDonations(page, admin);
+
+        const recurring = await page.evaluate(() =>
+            Boolean(
+                (window as {GiveDonations?: {recurringDonationsEnabled?: boolean}}).GiveDonations
+                    ?.recurringDonationsEnabled
+            )
+        );
+        const header = page.locator('.dataviews-view-table thead th', {hasText: 'Payment Type'});
+
+        await expect(header).toHaveCount(recurring ? 1 : 0);
+    });
+});
+
+test.describe('Donations list view in the address', () => {
+    test.beforeEach(async ({requestUtils}) => {
+        createDonation((await createCampaignWithForm(requestUtils)).formId);
+        await resetLayout(requestUtils, 'donations');
+    });
+
+    test.afterEach(async ({requestUtils}) => {
+        // Page size changes are stored as the admin's layout too.
+        await resetLayout(requestUtils, 'donations');
+    });
+
+    test('opens a clean address in the default view', async ({page, admin}) => {
+        await visitDonations(page, admin);
+
+        expect(giveParameters(page)).toEqual([]);
+    });
+
+    test('keeps the view on reload, with the first request already carrying it', async ({page, admin}) => {
+        await visitDonations(page, admin);
+        await sortBy(page, 'Amount', 'Sort ascending');
+        await applyFilter(page, 'Status', 'Completed');
+
+        await expect(page).toHaveURL(/give-orderby=amount&give-order=asc/);
+        await expect(page).toHaveURL(/give-status=publish/);
+
+        const firstRequest = page.waitForRequest(LIST_REQUEST);
+        await page.reload();
+        const request = await firstRequest;
+
+        expect(request.url()).toContain('sortColumn=amount');
+        expect(request.url()).toContain('sortDirection=asc');
+        expect(request.url()).toContain('status=publish');
+        await expect(page.locator('th[aria-sort="ascending"]')).toContainText('Amount');
+
+        // DataViews keeps the filter bar folded on load unless a filter is primary; the button opens it.
+        await listTable(page).getByRole('button', {name: 'Filter', exact: true}).click();
+        await expect(chip(page, 'Status')).toContainText('Completed');
+    });
+
+    test('steps back and forward one change at a time without reloading the page', async ({page, admin}) => {
+        await visitDonations(page, admin);
+        await page.evaluate(() => Object.assign(window, {givewpSamePage: true}));
+
+        const addresses = [page.url()];
+        for (const size of ['10', '20', '50', '100', '10']) {
+            await choosePageSize(page, size);
+            await expect(page).not.toHaveURL(addresses[addresses.length - 1]);
+            addresses.push(page.url());
+        }
+
+        for (let step = addresses.length - 2; step >= 0; step--) {
+            await page.goBack();
+            await expect(page).toHaveURL(addresses[step]);
+        }
+
+        for (let step = 1; step < addresses.length; step++) {
+            await page.goForward();
+            await expect(page).toHaveURL(addresses[step]);
+        }
+
+        await expect(page).toHaveURL(/give-per-page=10/);
+        expect(await page.evaluate(() => 'givewpSamePage' in window), 'Back and forward should not reload').toBe(true);
+    });
+
+    test('never writes the search to the address, and a new page opens without it', async ({page, admin, context}) => {
+        await visitDonations(page, admin);
+        await search(page, 'Eve');
+
+        expect(page.url()).not.toContain('Eve');
+
+        const other = await context.newPage();
+        await other.goto(page.url());
+        await expect(listRows(other).first()).toBeVisible({timeout: 15_000});
+        await expect(listTable(other).getByRole('searchbox')).toHaveValue('');
+        await other.close();
+    });
+
+    test('keeps the search on reload of the same tab', async ({page, admin}) => {
+        // Core's admin canonical-URL script clears history.state on load; the tab's session copy restores it.
+        await visitDonations(page, admin);
+        await search(page, 'Eve');
+
+        await page.reload();
+        await expect(listTable(page).getByRole('searchbox')).toHaveValue('Eve');
+    });
+
+    test('rewrites a legacy donor link to the prefixed parameter without a new history entry', async ({
+        page,
+        admin,
+        requestUtils,
+    }) => {
+        const donationId = createDonation((await createCampaignWithForm(requestUtils)).formId);
+        const {donorId} = await requestUtils.rest({path: `/givewp/v3/donations/${donationId}`});
+
+        await page.goto('/wp-admin/');
+        const historyLength = await page.evaluate(() => history.length);
+
+        await admin.visitAdminPage('admin.php', `page=give-payment-history&donor=${donorId}`);
+        await expect(listRows(page).first()).toBeVisible({timeout: 15_000});
+
+        await expect(page).toHaveURL(new RegExp(`[?&]give-donor=${donorId}(&|$)`));
+        expect(new URL(page.url()).searchParams.has('donor')).toBe(false);
+        expect(await page.evaluate(() => history.length)).toBe(historyLength + 1);
+    });
+
+    test('writes test mode only when it differs from the site mode', async ({page, admin}) => {
+        await visitDonations(page, admin);
+
+        const toggle = page.getByRole('switch', {name: 'View Test Donations'});
+        const siteTestMode = (await toggle.getAttribute('aria-checked')) === 'true';
+
+        expect(page.url()).not.toContain('give-test-mode');
+
+        await toggle.click();
+        await expect(page).toHaveURL(new RegExp(`give-test-mode=${siteTestMode ? '0' : '1'}`));
+
+        await toggle.click();
+        await expect(page).not.toHaveURL(/give-test-mode/);
+    });
+
+    test('a user without access to the screen gets the capability error and no list requests', async ({
+        browser,
+        requestUtils,
+    }) => {
+        const subscriber = await signInNewUser(browser, requestUtils, 'subscriber');
+        const listRequests: string[] = [];
+        subscriber.page.on('request', (request) => {
+            if (/admin\/donations|list-table-layouts/.test(request.url())) {
+                listRequests.push(request.url());
+            }
+        });
+
+        await subscriber.page.goto(`/wp-admin/edit.php?${DONATIONS_LIST}&give-status=publish&give-paged=2`);
+
+        await expect(subscriber.page.locator('body')).toContainText('Sorry, you are not allowed to access this page.');
+        await expect(listTable(subscriber.page)).toHaveCount(0);
+        expect(listRequests).toEqual([]);
+
+        await deleteUser(requestUtils, subscriber);
+    });
+});
+
+/**
  * Opens the list and waits for its rows, so the filters are mounted by the time a test uses them.
  */
-async function visitDonations(page: Page, admin): Promise<void> {
-    await admin.visitAdminPage('edit.php', DONATIONS_LIST);
+async function visitDonations(page: Page, admin?): Promise<void> {
+    if (admin) {
+        await admin.visitAdminPage('edit.php', DONATIONS_LIST);
+    } else {
+        await page.goto(`/wp-admin/edit.php?${DONATIONS_LIST}`);
+    }
     await expect(page.getByRole('heading', {level: 1, name: 'Donations'})).toBeVisible({timeout: 15_000});
     await expect(listRows(page).first()).toBeVisible({timeout: 15_000});
 }
@@ -318,4 +526,25 @@ async function sortBy(page: Page, column: string, direction: 'Sort ascending' | 
 
 function chip(page: Page, filter: string) {
     return listTable(page).locator('.dataviews-filters__summary-chip', {hasText: new RegExp(`^${filter}`)});
+}
+
+/**
+ * The `give-` parameters in the page's address.
+ */
+function giveParameters(page: Page): string[] {
+    return Array.from(new URL(page.url()).searchParams.keys()).filter((key) => key.startsWith('give-'));
+}
+
+async function search(page: Page, term: string): Promise<void> {
+    const searched = page.waitForRequest(
+        (request) => LIST_REQUEST.test(request.url()) && request.url().includes(`search=${term}`)
+    );
+    await listTable(page).getByRole('searchbox').fill(term);
+    await searched;
+}
+
+async function choosePageSize(page: Page, size: string): Promise<void> {
+    await listTable(page).getByRole('button', {name: 'View options'}).click();
+    await page.getByRole('radio', {name: size, exact: true}).click();
+    await page.keyboard.press('Escape');
 }

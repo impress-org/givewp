@@ -1,6 +1,6 @@
 import {useEffect, useLayoutEffect, useRef} from 'react';
 import {assembleView} from '../state/assembleView';
-import {isCurrentQuery, onPopState, pushEntry, readQuery, readTabState, replaceEntry} from '../state/listTableHistory';
+import {onPopState, pushEntry, readQuery, readTabState, rememberSearch, replaceEntry} from '../state/listTableHistory';
 import {parseViewQuery, serializeViewQuery, viewQueryKeys} from '../state/viewQuery';
 import type {
     ListTableScreen,
@@ -125,7 +125,9 @@ export default function useListTableUrlState({
     const owned = viewQueryKeys(context);
     const tabState = (key: ListTableScreenKey, target: ListTableView) => ({screen: key, search: target.search ?? ''});
 
-    // On load: rewrite an address that was corrected, used legacy names, or is not in canonical form.
+    // On load: write the view into this entry (a corrected address, legacy names, the canonical form) and
+    // stamp it with the tab state. WordPress clears the state of the entry on every admin load, and an entry
+    // without its own state would take the search of a later entry at the same address.
     useEffect(() => {
         if (!screenKey) {
             return;
@@ -134,9 +136,7 @@ export default function useListTableUrlState({
         const parameters = serializeViewQuery(view, context);
         const options = {owned, legacyKeys: initial?.legacyKeys ?? []};
 
-        if (initial?.corrected || !isCurrentQuery(parameters, options)) {
-            replaceEntry(parameters, options, tabState(screenKey, view));
-        }
+        replaceEntry(parameters, options, tabState(screenKey, view));
     }, []);
 
     useEffect(() => {
@@ -170,7 +170,9 @@ export default function useListTableUrlState({
         return onPopState(() => {
             const {fields, layout} = currentView.current;
             const {query} = parseViewQuery(readQuery(), context);
+            const search = readTabState(screenKey)?.search ?? '';
 
+            rememberSearch({screen: screenKey, search});
             replaceView(
                 assembleView({
                     defaults,
@@ -181,7 +183,7 @@ export default function useListTableUrlState({
                         perPage: currentLayoutPerPage.current,
                     },
                     query,
-                    search: readTabState(screenKey)?.search ?? '',
+                    search,
                 }),
                 'history'
             );
