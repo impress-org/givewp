@@ -963,17 +963,19 @@ a.give-stripe-connect-temp-dismiss:active {
             &::-webkit-details-marker {
                 display: none;
             }
+        }
+    }
 
-            &::after {
-                content: '';
-                width: 6px;
-                height: 6px;
-                margin-left: 6px;
-                border-right: 2px solid currentColor;
-                border-bottom: 2px solid currentColor;
-                transform: rotate(45deg);
-                transition: transform 0.15s ease;
-            }
+    &__edit {
+        summary::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            margin-left: 6px;
+            border-right: 2px solid currentColor;
+            border-bottom: 2px solid currentColor;
+            transform: rotate(45deg);
+            transition: transform 0.15s ease;
         }
 
         &[open] summary::after {
