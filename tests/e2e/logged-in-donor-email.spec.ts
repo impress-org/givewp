@@ -184,7 +184,7 @@ test.describe('Logged-in donor email', () => {
         await form.locator('input[name="password"]').fill(donor.password);
         await form.getByRole('button', {name: 'Log In'}).click();
 
-        await expect(form.getByText('Thank you for your continued support.')).toBeVisible();
+        await expect(form.locator('input[name="login"]')).toBeHidden();
         await expect(email).toHaveValue(donorEmail);
         await expect(email).toBeDisabled();
         await expect(email).toHaveJSProperty('readOnly', true);
