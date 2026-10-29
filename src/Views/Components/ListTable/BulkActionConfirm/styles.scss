@@ -1,0 +1,28 @@
+.givewp-bulk-action-confirm {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-4);
+
+    &__message > :first-child {
+        margin-top: 0;
+    }
+
+    &__list {
+        margin: 0;
+        padding: 0;
+        max-height: 16rem;
+        overflow-y: auto;
+        list-style: none;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: var(--givewp-spacing-2);
+        margin-bottom: var(--givewp-spacing-2);
+    }
+
+    &__buttons {
+        margin-top: var(--givewp-spacing-2);
+    }
+}

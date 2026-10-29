@@ -1,457 +1,306 @@
-import {createContext, useRef, useState, forwardRef, useImperativeHandle} from 'react';
-import {__} from '@wordpress/i18n';
-import {A11yDialog} from 'react-a11y-dialog';
-import A11yDialogInstance from 'a11y-dialog';
-import {GiveIcon} from '@givewp/components';
-import {ListTable} from '../ListTable';
-import Pagination from '../Pagination';
-import {Filter, getInitialFilterState} from '../Filters';
-import useDebounce from '../hooks/useDebounce';
-import {useResetPage} from '../hooks/useResetPage';
+import {createContext, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState} from 'react';
+import {__, sprintf} from '@wordpress/i18n';
+import type {Field} from '@wordpress/dataviews';
+import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notifications';
 import ListTableApi from '../api';
+import DataViewsListTable from '../DataViewsListTable';
+import ListTableEmptyState from '../EmptyStates';
+import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
+import useLegacyRowActionsField from '../LegacyRowActions/useLegacyRowActionsField';
+import {columnsToFields, titleFieldId, visibleFieldIds} from '../adapters/columnsToFields';
+import {filterSettingsToFields, TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
+import {loadEntityElements} from '../adapters/loadEntityElements';
+import {scopeFromFilterSettings, viewFromInitialState} from '../adapters/viewFromInitialState';
+import {PER_PAGE_SIZES, viewFilterValue, viewToParameters, withToggleFilter} from '../adapters/viewToParameters';
+import {getItemName} from '../adapters/getItemName';
+import useListTableView from '../hooks/useListTableView';
+import useListTableSelection from '../hooks/useListTableSelection';
+import useListTableQuery from '../hooks/useListTableQuery';
+import useListTableActionNotices from '../hooks/useListTableActionNotices';
+import useListTableActions from '../hooks/useListTableActions';
+import ListTablePageHeader from './ListTablePageHeader';
+import LegacyConfirmModal, {LegacyConfirmRequest} from './LegacyConfirmModal';
+import type {
+    Column,
+    LegacyRowActions as LegacyRowActionsRender,
+    ListTableItem,
+    ListTablePageProps,
+    ListTablePageRef,
+    ListTableResponse,
+    ListTableRowAction,
+} from './types';
 import styles from './ListTablePage.module.scss';
-import cx from 'classnames';
-import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
-import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
-import DeleteIcon from '@givewp/components/ListTable/ListTablePage/DeleteIcon';
-import ListTableStats, { StatConfig } from '../ListTableStats/ListTableStats';
-import FilterBy from '../FilterBy';
+import './styles.scss';
 
-export interface ListTablePageProps {
-    //required
-    title: string;
-    apiSettings: {apiRoot; apiNonce; table};
+export type {
+    BulkActionsConfig,
+    BulkActionsConfigWithoutAction,
+    Column,
+    ColumnFilterConfig,
+    FilterByGroupedOptions,
+    FilterConfig,
+    LegacyRowActionArgs,
+    LegacyRowActions,
+    ListTableActionDialogProps,
+    ListTableItem,
+    ListTablePageProps,
+    ListTableParameters,
+    ListTablePageRef,
+    ListTableRowAction,
+} from './types';
 
-    //optional
-    bulkActions?: Array<BulkActionsConfig> | null;
-    pluralName?: string;
-    singleName?: string;
-    children?: JSX.Element | JSX.Element[] | null;
-    rowActions?: JSX.Element | JSX.Element[] | Function | null;
-    filterSettings?;
-    align?: 'start' | 'center' | 'end';
-    paymentMode?: boolean;
-    listTableBlankSlate: JSX.Element;
-    productRecommendation?: JSX.Element;
-    columnFilters?: Array<ColumnFilterConfig>;
-    banner?: () => JSX.Element;
-    contentMode?: boolean;
-    perPage?: number;
-    statsConfig?: Record<string, StatConfig>;
-}
-
-interface FilterConfigBase {
-    // required
-    name: string;
-
-    // optional
-    ariaLabel?: string;
-    inlineSize?: string;
-    text?: string;
-}
-
-interface FilterConfigWithSimpleOptions extends FilterConfigBase {
-    type: 'select' | 'campaignselect' | 'formselect' | 'search' | 'checkbox' | 'hidden';
-    options?: Array<{text: string; value: string}>;
-}
-
-export interface FilterByGroupedOptions {
-    id: string;
-    apiParam: string;
-    name: string;
-    type: 'checkbox' | 'radio' | 'toggle';
-    options: Array<{text: string; value: string}>;
-    defaultValue?: string | string[];
-    isVisible?: (values: Record<string, string[]>) => boolean;
-    showTitle?: boolean;
-}
-
-interface FilterConfigWithGroupedOptions extends FilterConfigBase {
-    type: 'filterby';
-    groupedOptions?: Array<FilterByGroupedOptions>;
-}
-
-export type FilterConfig = FilterConfigWithSimpleOptions | FilterConfigWithGroupedOptions;
-
-export interface ColumnFilterConfig {
-    column: string;
-    filter: Function;
-}
-
-interface BulkActionsConfigBase {
-    //required
-    label: string;
-    value: string | number;
-    confirm: (
-        selected: Array<string | number>,
-        names?: Array<string>,
-        isOpen?: boolean,
-        setOpen?: (isOpen?: boolean) => void
-    ) => JSX.Element | JSX.Element[] | string;
-
-    //optional
-    isVisible?: (data: any, parameters: any) => boolean;
-    isIdSelectable?: (id: string, data: any) => boolean;
-    type?: 'normal' | 'warning' | 'danger' | 'custom';
-}
-
-// Makes the "action" property required for the standard types
-interface BulkActionsConfigWithAction extends BulkActionsConfigBase {
-    type: 'normal' | 'warning' | 'danger';
-    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
-}
-
-// Makes the "action" property required for the undefined type
-interface BulkActionsConfigWithoutType extends BulkActionsConfigBase {
-    type?: undefined;
-    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
-}
-
-// Makes the "action" property forbidden for the custom type
-export interface BulkActionsConfigWithoutAction extends BulkActionsConfigBase {
-    type: 'custom';
-}
-
-export type BulkActionsConfig =
-    | BulkActionsConfigWithAction
-    | BulkActionsConfigWithoutType
-    | BulkActionsConfigWithoutAction;
-
+/**
+ * Opens the confirm modal for a legacy row action.
+ *
+ * @since TBD Opens the list engine's confirm modal.
+ */
 export const ShowConfirmModalContext = createContext(
     (label, confirm, action, type = null, confirmButtonText = __('Confirm', 'give')) => {}
 );
-export const CheckboxContext = createContext(null);
 
-export interface ListTablePageRef {
-    refresh: () => Promise<any>;
-}
-
-const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
-    title,
-    apiSettings,
-    bulkActions = null,
-    filterSettings = [],
-    singleName = __('item', 'give'),
-    pluralName = __('items', 'give'),
-    rowActions = null,
-    children = null,
-    align = 'start',
-    paymentMode,
-    listTableBlankSlate,
-    productRecommendation,
-    columnFilters = [],
-    banner,
-    contentMode,
-    perPage = 30,
-    statsConfig,
-}: ListTablePageProps, ref) => {
-    const [page, setPage] = useState<number>(1);
-    const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
-    const [isOpen, setOpen] = useState(false);
-    const [modalContent, setModalContent] = useState<{
-        confirm;
-        action?;
-        label;
-        confirmButtonText?: string;
-        type?: 'normal' | 'warning' | 'danger' | 'custom';
-    }>({
-        confirm: (selected) => {},
-        action: (selected) => {},
-        label: '',
-        confirmButtonText: '',
-    });
-    const [selectedAction, setSelectedAction] = useState<string>('');
-    const [selectedIds, setSelectedIds] = useState([]);
-    const [selectedNames, setSelectedNames] = useState([]);
-    const dialog = useRef() as {current: A11yDialogInstance};
-    const checkboxRefs = useRef([]);
-    const [sortField, setSortField] = useState<{sortColumn: string; sortDirection: string}>({
-        sortColumn: 'id',
-        sortDirection: 'desc',
-    });
-    const [testMode, setTestMode] = useState(paymentMode);
-
-    const {sortColumn, sortDirection} = sortField;
-    const locale = navigator.language || navigator.languages[0];
-    const testModeFilter = filterSettings.find((filter) => filter.name === 'toggle');
-
-    const parameters = {
-        page,
-        perPage,
-        sortColumn,
-        sortDirection,
-        locale,
-        testMode,
-        ...filters,
-    };
-
-    const archiveApi = useRef(new ListTableApi(apiSettings)).current;
-
-    const {data, error, isValidating, mutate} = archiveApi.useListTable(parameters);
-    const {data: statsData, error: statsError, isValidating: statsIsValidating, mutate: mutateStats} = statsConfig ? archiveApi.useStats(testMode) : {data: null, error: null, isValidating: false, mutate: async () => {}};
-
-    useResetPage(data, page, setPage, filters);
-
-    useImperativeHandle(ref, () => ({
-        refresh: async () => {
-           await mutate();
-           statsConfig && await mutateStats();
-        }
-    }), [mutate, mutateStats, statsConfig]);
-
-    const handleFilterChange = (name, value) => {
-        setFilters((prevState) => {
-            if (!value || (Array.isArray(value) && value.length === 0)) {
-                const {[name]: _, ...rest} = prevState as Record<string, string[]>;
-                return rest;
-            }
-            return {...prevState, [name]: value};
-        });
-    };
-
-    const handleDebouncedFilterChange = useDebounce(handleFilterChange);
-
-    const showConfirmActionModal = (
-        label,
-        confirm,
-        action,
-        type?: 'normal' | 'warning' | 'danger' | 'custom' | null,
-        confirmButtonText?: string
+/**
+ * The page shell every admin list screen renders through: the Give page header and stats, and the
+ * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
+ * as before the engine change, so every screen and add-on keeps rendering without changes.
+ *
+ * @since TBD Render the list through `@wordpress/dataviews`; accept typed row actions.
+ * @since 2.24.0
+ */
+const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
+    (
+        {
+            title,
+            apiSettings,
+            bulkActions = null,
+            filterSettings = [],
+            singleName = __('item', 'give'),
+            pluralName = __('items', 'give'),
+            rowActions = null,
+            children = null,
+            paymentMode,
+            listTableBlankSlate,
+            productRecommendation,
+            columnFilters = [],
+            banner,
+            contentMode = false,
+            perPage = 30,
+            statsConfig,
+        }: ListTablePageProps,
+        ref
     ) => {
-        setModalContent({label, confirm, action, type, confirmButtonText});
-        dialog.current.show();
-    };
+        const columns = apiSettings.table.columns as Column[];
+        const legacyRowActions = typeof rowActions === 'function' ? (rowActions as LegacyRowActionsRender) : null;
+        const typedRowActions = Array.isArray(rowActions) ? (rowActions as ListTableRowAction[]) : null;
+        const testModeFilter = filterSettings.find((filter) => filter.name === 'toggle');
+        const locale = navigator.language || navigator.languages[0];
 
-    const openBulkActionModal = (event) => {
-        event.preventDefault();
+        // Read once: some screens' header modals rewrite `apiSettings.apiRoot` while they render.
+        const [apiRoot] = useState(apiSettings.apiRoot);
+        const [listTableApi] = useState(() => new ListTableApi(apiSettings));
+        const [urlSearch] = useState(() => new URLSearchParams(window.location.search));
+        const [scope] = useState(() => scopeFromFilterSettings(filterSettings, contentMode, urlSearch));
+        const [legacyConfirm, setLegacyConfirm] = useState<LegacyConfirmRequest | null>(null);
 
-        if (window.GiveDonations && window.GiveDonations.addonsBulkActions) {
-            bulkActions = [...bulkActions, ...window.GiveDonations.addonsBulkActions];
-        }
+        const {view, onChangeView, hasActiveFilters, clearFilters} = useListTableView(() => {
+            const titleField = titleFieldId(columns);
+            const fields = [
+                ...visibleFieldIds(columns, titleField),
+                ...(legacyRowActions ? [LEGACY_ROW_ACTIONS_FIELD] : []),
+            ];
 
-        const bulkAction = bulkActions.find((config) => selectedAction === config.value);
+            const initialView = viewFromInitialState(
+                filterSettings,
+                {perPage, fields, titleField, contentMode},
+                urlSearch
+            );
 
-        if (!bulkAction) return;
-
-        const selected = [];
-        const names = [];
-        const selectedRefs = checkboxRefs.current.filter((checkbox) => {
-            const isSelectable = bulkAction?.isIdSelectable?.(checkbox.dataset.id, data) ?? true;
-            return checkbox.checked && isSelectable;
+            return testModeFilter && paymentMode ? withToggleFilter(initialView, TEST_MODE_FILTER, true) : initialView;
         });
-        selectedRefs.forEach((checkbox) => {
-            selected.push(checkbox.dataset.id);
-            names.push(checkbox.dataset.name);
-        });
-        setSelectedIds(selected);
-        setSelectedNames(names);
-        if (selected.length) {
-            setModalContent({...bulkAction});
-            if ('custom' === bulkAction.type) {
-                setOpen(true);
-                bulkAction?.confirm(selected, names, isOpen, setOpen);
-            } else {
-                dialog.current.show();
-            }
-        }
-    };
+        // A screen with the test-mode toggle keeps test mode in the view, so it shows as a chip.
+        const testMode = testModeFilter ? viewFilterValue(view, TEST_MODE_FILTER) === true : paymentMode;
+        const setTestMode = (isOn: boolean) => onChangeView(withToggleFilter(view, TEST_MODE_FILTER, isOn));
+        const {selection, onChangeSelection} = useListTableSelection(view);
+        const clearSelection = useCallback(() => onChangeSelection([]), [onChangeSelection]);
+        const report = useListTableActionNotices(singleName, pluralName);
 
-    const setSortDirectionForColumn = (column, direction) => {
-        setSortField((previousState) => {
-            return {
-                ...previousState,
-                sortColumn: column,
-                sortDirection: direction,
-            };
-        });
-    };
-
-    const showPagination = () => (
-        <Pagination
-            currentPage={page}
-            totalPages={data ? data.totalPages : 1}
-            disabled={!data}
-            totalItems={data ? parseInt(data.totalItems) : -1}
-            setPage={setPage}
-            singleName={__('result', 'give')}
-            pluralName={__('results', 'give')}
-        />
-    );
-
-    const PageActions = ({PageActionsTop}: {PageActionsTop?: boolean}) => {
-        return (
-            <div className={cx(styles.pageActions, {[styles.alignEnd]: !bulkActions})}>
-                {PageActionsTop ? (
-                    <BulkActionSelect
-                        selectedState={[selectedAction, setSelectedAction]}
-                        parameters={parameters}
-                        data={data}
-                        bulkActions={bulkActions}
-                        showModal={openBulkActionModal}
-                    />
-            ) : (
-                    <>
-                        {page && setPage && showPagination()}
-                    </>
-                )}
-            </div>
+        const parameters = useMemo(
+            () => viewToParameters(view, filterSettings, scope, {locale, testMode}),
+            [view, filterSettings, scope, locale, testMode]
         );
-    };
 
-    const TestModeFilter = () => (
-        <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} checked={testMode} />
-    );
+        const {
+            data,
+            error,
+            isLoading,
+            refresh: refreshList,
+        } = useListTableQuery<ListTableResponse>(apiRoot, parameters);
+        const {data: stats, refresh: refreshStats} = useListTableQuery<Record<string, number>>(
+            statsConfig ? `${apiRoot}/stats` : null,
+            {testMode}
+        );
 
-    const TestModeBadge = () => <span className={styles.testModeBadge}>{testModeFilter?.text}</span>;
+        const refresh = useCallback(async () => {
+            await Promise.all([refreshList(), statsConfig && refreshStats()]);
+        }, [refreshList, refreshStats, statsConfig]);
 
-    const SearchSection = () => (
-        <section role="search" className={styles.searchContainer}>
-            <div className={styles.flexRow}>
-                <PageActions PageActionsTop />
-            </div>
-            <div className={styles.flexRow}>
-                {filterSettings.map((filter) => (
-                    filter.type === 'filterby' ? (
-                        <FilterBy
-                            key={filter.name}
-                            groupedOptions={filter.groupedOptions}
-                            onChange={handleFilterChange}
-                            values={filters}
-                        />
-                    ) : (
-                        <Filter
-                            key={filter.name}
-                            value={filters[filter.name]}
-                            filter={filter}
-                            onChange={handleFilterChange}
-                            debouncedOnChange={handleDebouncedFilterChange}
-                        />
-                    )
-                ))}
-            </div>
-        </section>
-    );
+        useImperativeHandle(ref, () => ({refresh}), [refresh]);
 
-    return (
-        <>
-            <article className={styles.page}>
-                {!contentMode && (
-                    <>
-                        <header className={styles.pageHeader}>
-                            <div className={styles.flexRow}>
-                                <GiveIcon size={'2.25rem'} />
-                                <h1 className={styles.pageTitle}>{title}</h1>
-                                {testModeFilter && testMode && <TestModeBadge />}
-                            </div>
-                            {children && <div className={styles.flexRow}>{children}</div>}
-                        </header>
+        // After records are removed, the current page can be past the last one.
+        useEffect(() => {
+            if (data && data.totalPages > 0 && view.page > data.totalPages) {
+                onChangeView({...view, page: data.totalPages});
+            }
+        }, [data]);
 
-                        <div className={cx('wp-header-end', 'hidden')} />
+        const legacyRowActionsField = useLegacyRowActionsField(legacyRowActions, {
+            data,
+            parameters,
+            listTableApi,
+            report,
+            refresh,
+        });
 
-                        {banner && <section role="banner">{banner()}</section>}
-                        {testModeFilter && (
-                            <div className={styles.filtersRow}>
-                                <TestModeFilter />
-                            </div>
+        const filters = useMemo(
+            () => filterSettingsToFields(filterSettings, view, {contentMode, loadEntityElements}),
+            [filterSettings, view, contentMode]
+        );
+
+        const fields = useMemo<Field<ListTableItem>[]>(
+            () => [
+                ...columnsToFields(columns, columnFilters, data),
+                ...(legacyRowActionsField ? [legacyRowActionsField] : []),
+                ...filters.fields,
+            ],
+            [columns, columnFilters, data, legacyRowActionsField, filters]
+        );
+
+        const {actions, actionDialog, closeActionDialog, customAction, setCustomActionOpen} = useListTableActions({
+            rowActions: typedRowActions,
+            bulkActions,
+            data,
+            parameters,
+            selection,
+            pluralName,
+            report,
+            refresh,
+            clearSelection,
+        });
+
+        const showConfirmModal = useCallback(
+            (label, confirm, action, type = null, confirmButtonText = __('Confirm', 'give')) =>
+                setLegacyConfirm({label, confirm, action, type, confirmButtonText}),
+            []
+        );
+
+        return (
+            <ShowConfirmModalContext.Provider value={showConfirmModal}>
+                <article className={styles.page}>
+                    {!contentMode && (
+                        <ListTablePageHeader
+                            title={title}
+                            banner={banner}
+                            testModeFilter={testModeFilter}
+                            testMode={testMode}
+                            onChangeTestMode={setTestMode}
+                            statsConfig={statsConfig}
+                            stats={stats}
+                        >
+                            {children}
+                        </ListTablePageHeader>
+                    )}
+
+                    <div className={styles.pageContent}>
+                        {contentMode && children}
+                        <NotificationPlaceholder type="notice" />
+                        {productRecommendation && (
+                            <table className="givewp-list-table-recommendation">
+                                <tbody>{productRecommendation}</tbody>
+                            </table>
                         )}
-                        {statsConfig && !statsIsValidating && <ListTableStats config={statsConfig} values={statsData} />}
-                    </>
+                        <DataViewsListTable
+                            view={view}
+                            onChangeView={onChangeView}
+                            fields={fields}
+                            actions={actions}
+                            data={error ? [] : data?.items ?? []}
+                            paginationInfo={{
+                                totalItems: Number(data?.totalItems ?? 0),
+                                totalPages: data?.totalPages ?? 0,
+                            }}
+                            isLoading={isLoading}
+                            selection={selection}
+                            onChangeSelection={onChangeSelection}
+                            empty={
+                                error ? (
+                                    <ListTableEmptyState
+                                        isError
+                                        message={sprintf(
+                                            /* translators: %s: record type, plural (for example "donations") */
+                                            __('There was a problem retrieving the %s.', 'give'),
+                                            pluralName
+                                        )}
+                                        actionLabel={__('Try again', 'give')}
+                                        onAction={refresh}
+                                    />
+                                ) : hasActiveFilters ? (
+                                    <ListTableEmptyState
+                                        message={sprintf(
+                                            /* translators: %s: record type, plural (for example "donations") */
+                                            __('No %s match your search or filters.', 'give'),
+                                            pluralName
+                                        )}
+                                        actionLabel={__('Clear filters', 'give')}
+                                        onAction={clearFilters}
+                                    />
+                                ) : (
+                                    listTableBlankSlate
+                                )
+                            }
+                            perPageSizes={PER_PAGE_SIZES}
+                            search={filters.searchParam !== null}
+                            searchLabel={
+                                filterSettings.find((filter) => filter.name === filters.searchParam)?.text ??
+                                __('Search', 'give')
+                            }
+                        />
+                    </div>
+                </article>
+
+                {/* Details pages that hold a list in a tab already show snackbars. */}
+                {!contentMode && <NotificationPlaceholder type="snackbar" />}
+
+                {legacyConfirm && (
+                    <LegacyConfirmModal
+                        request={legacyConfirm}
+                        onClose={() => setLegacyConfirm(null)}
+                        report={report}
+                        refresh={refresh}
+                    />
                 )}
 
-                <div className={styles.pageContent}>
-                    <SearchSection />
-                    {contentMode && children ? <>{children}</> : <></>}
-                    <CheckboxContext.Provider value={checkboxRefs}>
-                        <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
-                            <ListTable
-                                apiSettings={apiSettings}
-                                sortField={sortField}
-                                setSortDirectionForColumn={setSortDirectionForColumn}
-                                singleName={singleName}
-                                pluralName={pluralName}
-                                title={title}
-                                rowActions={rowActions}
-                                parameters={parameters}
-                                data={data}
-                                error={error}
-                                isLoading={isValidating}
-                                align={align}
-                                testMode={testMode}
-                                listTableBlankSlate={listTableBlankSlate}
-                                productRecommendation={productRecommendation}
-                                columnFilters={columnFilters}
-                                includeBulkActionsCheckbox={bulkActions?.length > 0}
-                            />
-                        </ShowConfirmModalContext.Provider>
-                    </CheckboxContext.Provider>
-                    <PageActions />
-                </div>
-            </article>
-            <A11yDialog
-                id="giveListTableModal"
-                dialogRef={(instance) => (dialog.current = instance)}
-                title={
-                    <>
-                        {modalContent?.type === 'danger' && <DeleteIcon />}
-                        {modalContent?.label}
-                    </>
-                }
-                titleId={styles.modalTitle}
-                classNames={{
-                    container: styles.container,
-                    overlay: styles.overlay,
-                    dialog: cx(styles.dialog, {
-                        [styles.warning]: modalContent?.type === 'warning',
-                        [styles.danger]: modalContent?.type === 'danger',
-                    }),
-                    closeButton: 'hidden',
-                }}
-            >
-                <div className={styles.modalContent}>
-                    {modalContent?.confirm(selectedIds, selectedNames, isOpen, setOpen) || null}
-                </div>
-                <div className={styles.gutter}>
-                    <button id={styles.cancel} onClick={(event) => dialog.current?.hide()}>
-                        {__('Cancel', 'give')}
-                    </button>
-                    <button
-                        id={styles.confirm}
-                        onClick={async (event) => {
-                            dialog.current?.hide();
-                            try {
-                                await modalContent.action(selectedIds);
-                                await mutate();
-                                await mutateStats();
-                            } catch (error) {
-                                console.error('Bulk action error:', error);
+                {actionDialog && (
+                    <actionDialog.rowAction.Dialog
+                        items={actionDialog.items}
+                        onClose={closeActionDialog}
+                        refresh={refresh}
+                        report={report}
+                        clearSelection={clearSelection}
+                    />
+                )}
 
-                                // Create a user-friendly error message
-                                let errorMessage = __('An error occurred while performing this action.', 'give');
-
-                                if (error.message && error.message.includes('permission')) {
-                                    errorMessage = __('You don\'t have permission to perform this action.', 'give');
-                                } else if (error.message && error.message.includes('403')) {
-                                    errorMessage = __('Access denied. You don\'t have permission to perform this action.', 'give');
-                                } else if (error.message) {
-                                    // Try to extract a meaningful message from the error
-                                    const match = error.message.match(/You don't have permission[^"]*|You don&#039;t have permission[^"]*/i);
-                                    if (match) {
-                                        errorMessage = match[0].replace(/&#039;/g, "'");
-                                    }
-                                }
-
-                                // Show error as a notice/alert
-                                alert(errorMessage);
-                            }
-                        }}
-                    >
-                        {modalContent?.confirmButtonText ?? __('Confirm', 'give')}
-                    </button>
-                </div>
-            </A11yDialog>
-        </>
-    );
-});
+                {/* A closed custom dialog stays mounted, as with the old table: its buttons close it mid-click. */}
+                {customAction &&
+                    customAction.config.confirm(
+                        customAction.items.map((item) => String(item.id)),
+                        customAction.items.map(getItemName),
+                        customAction.isOpen,
+                        (isOpen = false) => setCustomActionOpen(isOpen),
+                        {refresh, clearSelection}
+                    )}
+            </ShowConfirmModalContext.Provider>
+        );
+    }
+);
 
 ListTablePage.displayName = 'ListTablePage';
 

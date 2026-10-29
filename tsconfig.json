@@ -76,5 +76,9 @@
     "include": [
         "./src/**/*",
         "./globals.d.ts"
+    ],
+    "exclude": [
+        "./src/**/*.test.ts",
+        "./src/**/*.test.tsx"
     ]
 }

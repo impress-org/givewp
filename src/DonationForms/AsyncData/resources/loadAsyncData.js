@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * This function fetch the async data from the server and set the values to the proper elements in the DOM.
      *
+     * @since TBD Show the "Achieved" pill to screen readers too once the goal is reached.
      * @since 3.16.0
      */
     const loadFormData = (
@@ -109,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (!!goalAchievedElement && response.data.percentComplete >= 100) {
                         goalAchievedElement.style.opacity = '1';
+                        goalAchievedElement.removeAttribute('aria-hidden');
                     }
 
                     if (isPlaceholder(donationsElement)) {

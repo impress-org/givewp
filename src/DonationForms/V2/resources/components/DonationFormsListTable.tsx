@@ -1,11 +1,13 @@
 import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
-import {DonationFormsRowActions} from './DonationFormsRowActions';
+import {useDonationFormsRowActions} from './DonationFormsRowActions';
+import UpgradedFormTooltip from './UpgradedFormTooltip';
 import Onboarding, {OnboardingContext, OnboardingStateProps} from './Onboarding';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
-import {BulkActionsConfig, ColumnFilterConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
-import Select from '@givewp/components/ListTable/Select';
+import formStyles from './DonationFormsListTable.module.scss';
+import {ColumnFilterConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import {Interweave} from 'interweave';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
@@ -122,21 +124,21 @@ const columnFilters: Array<ColumnFilterConfig> = [
         column: 'title',
         filter: (item) => {
             const CubeTooltip = () => (
-                <div className={styles.tooltipContainer}>
+                <div className={formStyles.tooltipContainer}>
                     <CubeIcon />
-                    <div className={styles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
+                    <div className={formStyles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
                 </div>
             );
 
             return (
                 <>
-                    <div className={styles.titleContainer}>
-                        <div className={styles.migratedForm}>
+                    <div className={formStyles.titleContainer}>
+                        <div className={formStyles.migratedForm}>
                             {item?.v3form && window?.GiveDonationForms?.isOptionBasedFormEditorEnabled && <CubeTooltip />}
-                            <Interweave attributes={{className: 'interweave'}} content={item?.title} />
+                            <Interweave attributes={{className: 'interweave'}} content={String(item?.title ?? '')} />
                         </div>
                         {item?.isDefaultCampaignForm && (
-                            <div className={`${styles.defaultFormPill} givewp-default-form-pill`}>{__('Default')}</div>
+                            <div className={`${formStyles.defaultFormPill} givewp-default-form-pill`}>{__('Default', 'give')}</div>
                         )}
                     </div>
                 </>
@@ -148,25 +150,10 @@ const columnFilters: Array<ColumnFilterConfig> = [
         filter: (item, column) => {
             if (window.GiveDonationForms.showUpgradedTooltip && item?.status_raw === 'upgraded') {
                 return (
-                    <div className={styles.upgradedForm}>
-                        <div className={styles.tooltipContainer}>
-                            <div className={styles.tooltip}>
-                                {__(
-                                    'The name of this form is already associated with an upgraded form. You can safely delete this form',
-                                    'give'
-                                )}
-                                .
-                                <div
-                                    className={styles.link}
-                                    onClick={(e) => {
-                                        e.currentTarget.parentElement.remove();
-                                        fetch(window.GiveDonationForms.tooltipActionUrl, {method: 'POST'});
-                                    }}
-                                >
-                                    {__('Got it', 'give')}
-                                </div>
-                            </div>
-                        </div>
+                    <div className={formStyles.upgradedForm}>
+                        <UpgradedFormTooltip
+                            onDismiss={() => fetch(window.GiveDonationForms.tooltipActionUrl, {method: 'POST'})}
+                        />
                         <InterweaveSSR column={column} item={item} />
                     </div>
                 );
@@ -174,114 +161,6 @@ const columnFilters: Array<ColumnFilterConfig> = [
 
             return <InterweaveSSR column={column} item={item} />;
         },
-    },
-];
-
-const donationFormsBulkActions: Array<BulkActionsConfig> = [
-    {
-        label: __('Edit', 'give'),
-        value: 'edit',
-        action: async (selected) => {
-            const authorSelect = document.getElementById('giveDonationFormsTableSetAuthor') as HTMLSelectElement;
-            const author = authorSelect.value;
-            const statusSelect = document.getElementById('giveDonationFormsTableSetStatus') as HTMLSelectElement;
-            const status = statusSelect.value;
-            if (!(author || status)) {
-                return {errors: [], successes: []};
-            }
-            const editParams = {
-                ids: selected.join(','),
-                author,
-                status,
-            };
-            return await API.fetchWithArgs('/edit', editParams, 'UPDATE');
-        },
-        confirm: (selected, names) => (
-            <>
-                <p>{__('  Below are the donation forms to be edited.', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((id, index) => (
-                        <li key={id}>
-                            <Interweave content={names[index]} />
-                        </li>
-                    ))}
-                </ul>
-                <div className={styles.flexRow}>
-                    <label htmlFor="giveDonationFormsTableSetAuthor">{__('Set form author', 'give')}</label>
-                    <Select id="giveDonationFormsTableSetAuthor" style={{paddingInlineEnd: '2rem'}}>
-                        <option value="">{__('Keep current author', 'give')}</option>
-                        {window.GiveDonationForms.authors.map((author) => (
-                            <option key={author.id} value={author.id}>
-                                {author.name}
-                            </option>
-                        ))}
-                    </Select>
-                </div>
-                <div className={styles.flexRow}>
-                    <label htmlFor="giveDonationFormsTableSetStatus">{__('Set form status', 'give')}</label>
-                    <Select id="giveDonationFormsTableSetStatus" style={{paddingInlineEnd: '2rem'}}>
-                        <option value="">{__('Keep current status')}</option>
-                        <option value="publish">{__('Published', 'give')}</option>
-                        <option value="private">{__('Private', 'give')}</option>
-                        <option value="pending">{__('Pending Review', 'give')}</option>
-                        <option value="draft">{__('Draft', 'give')}</option>
-                    </Select>
-                </div>
-            </>
-        ),
-    },
-    {
-        label: __('Delete', 'give'),
-        value: 'delete',
-        type: 'danger',
-        isVisible: (data, parameters) => parameters.status === 'trash' || !data?.trash,
-        action: async (selected) => {
-            try {
-                return await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
-            } catch (error) {
-                const errorData = JSON.parse(error.message.replace('Error: ', ''));
-                alert(errorData.message);
-            }
-        },
-        confirm: (selected, names) => (
-            <div>
-                <p>{__('Really delete the following donation forms?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((id, index) => (
-                        <li key={id}>
-                            <Interweave content={names[index]} />
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        ),
-    },
-    {
-        label: __('Trash', 'give'),
-        value: 'trash',
-        type: 'danger',
-        isVisible: (data, parameters) => parameters.status !== 'trash' && data?.trash,
-        isIdSelectable: (id, data) => !(typeof data?.defaultForm === 'number') || data.defaultForm !== Number(id),
-        action: async (selected) => {
-            try {
-                return await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE');
-            } catch (error) {
-                const errorData = JSON.parse(error.message.replace('Error: ', ''));
-                alert(errorData.message);
-            }
-        },
-        confirm: (selected, names) => (
-            <div>
-                <p>{__('Are you sure you want to trash the following donation forms?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((id, index) => (
-                        <li key={id}>
-                            <Interweave content={names[index]} />
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        ),
     },
 ];
 
@@ -298,6 +177,9 @@ const ListTableBlankSlate = (
     />
 );
 
+/**
+ * @since TBD Pass the actions as data; Trash, Delete and Edit author or status move from bulk actions into them.
+ */
 export default function DonationFormsListTable({entity}: {entity?: CampaignEntity}) {
     const [state, setState] = useState<OnboardingStateProps>({
         showFeatureNoticeDialog: false,
@@ -318,6 +200,7 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
         });
     };
 
+    const rowActions = useDonationFormsRowActions(entity, Boolean(isCampaignDetailsPage));
     const [isOpen, setOpen] = useState<boolean>(false);
     const openModal = () => setOpen(true);
     const closeModal = () => setOpen(false);
@@ -328,18 +211,7 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
                 title={__('Donation Forms', 'give')}
                 singleName={__('donation form', 'give')}
                 pluralName={__('donation forms', 'give')}
-                rowActions={({data, item, removeRow, addRow, setUpdateErrors, parameters}) => {
-                    return DonationFormsRowActions({
-                        data,
-                        item,
-                        removeRow,
-                        addRow,
-                        setUpdateErrors,
-                        parameters,
-                        entity,
-                    });
-                }}
-                bulkActions={donationFormsBulkActions}
+                rowActions={rowActions}
                 apiSettings={window.GiveDonationForms}
                 filterSettings={donationFormsFilters}
                 listTableBlankSlate={ListTableBlankSlate}
@@ -378,12 +250,11 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
                             {__('Add form', 'give')}
                         </a>
                         {window.GiveDonationForms.isOptionBasedFormEditorEnabled && (
-                            <button
+                            <SwitchToLegacyViewButton
+                                api={API}
                                 className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
-                                onClick={showLegacyDonationForms}
-                            >
-                                {__('Switch to Legacy View', 'give')}
-                            </button>
+                                onSwitched={() => (window.location.href = '/wp-admin/edit.php?post_type=give_forms')}
+                            />
                         )}
                     </>
                 )}
@@ -395,7 +266,3 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
     );
 }
 
-const showLegacyDonationForms = async (event) => {
-    await API.fetchWithArgs('/view', {isLegacy: 1});
-    window.location.href = '/wp-admin/edit.php?post_type=give_forms';
-};
