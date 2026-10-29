@@ -22,10 +22,39 @@ Two consequences:
 | Account added (Connect, or manual keys from the give-stripe add-on) | The settings page reloads with `stripe_account=connected`. The modal shows a loader and calls the AJAX action. | Yes |
 | **Set up webhooks** button (Stripe settings, Webhooks group) | Runs the same AJAX action and shows the same modal. | Yes |
 | Hourly cron `givewp_stripe_webhook_health_check` | Lists the endpoints of every account and emails the site administrator when one has a problem. | No |
+| **Webhook Status** field of each account (Manage Accounts) | Page load reads every account's state (AJAX `status`, no write). The status button runs setup for that one account. **Edit** opens the endpoint modal. | Button and modal actions: yes. Page load: no |
 | Account disconnected (AJAX `disconnect_stripe_account`) | Deletes this site's endpoint from the account, then removes the account from Give. | Yes (delete) |
 
 The AJAX action `givewp_stripe_ensure_webhook_endpoints` is registered only on `wp_ajax_`, checks a
 nonce, and requires `manage_give_settings`.
+
+### Manage Accounts page
+
+Each account card on the global Stripe settings page (not the per-form page) has a **Webhook Status**
+field. `AccountManagerSettingField::getWebhookStatusMarkup()` renders it in a loading state, and
+`webhook-endpoints.js` asks `ManageWebhookEndpointsController` for the state of every account with one
+`status` request. That request lists the endpoints of each account on Stripe, so each page view makes
+one request per account.
+
+| State | Button | Starts |
+|:--|:--|:--|
+| `healthy` | Active | Reads the states again |
+| `missing`, `disabled`, `missing_events` | Set up webhook, Enable webhook, Add missing events | `EnsureWebhookEndpointsController` with the `account` field, so only that account is set up |
+| `error` | Check again | Reads the states again |
+| `unavailable` (no key for the current mode) | No key for this mode, disabled | Nothing |
+
+**Edit** opens a modal with the endpoints of the account (`WebhookEndpointsModalView`): URL, enabled
+state, how many required events it sends, mode, creation time, a form to change URL, status and required
+events, a delete button, and a form to add an endpoint. Events outside `WebhookTarget::REQUIRED_EVENTS`
+are not shown and are kept on save. An endpoint that sends `*` shows every event checked and its event
+list is not changed. A new endpoint gets the required events checked, `EnsureWebhookEndpoint::API_VERSION`
+and the description `GiveWP`. API version, description and metadata are not shown.
+
+`ManageWebhookEndpointsController` (`givewp_stripe_manage_webhook_endpoints`, own nonce,
+`manage_give_settings`) takes `operation` = `status`, `list`, `create`, `update` or `delete`, plus
+`account` and `endpoint_id`. The account must be one that `GetStripeAccountsForMode` returns for the
+current mode. The last three operations return the refreshed modal HTML with a success or error notice,
+and the state for the status button. Changes are logged at info level, failures at warning level.
 
 ### Disconnecting an account
 
@@ -174,7 +203,10 @@ which endpoints GiveWP created or deleted is therefore not kept by default.
 - `src/PaymentGateways/Stripe/Webhooks/` — `WebhookTarget`, `WebhookSetupNotice`,
   `WebhookHealthMonitor`, `WebhookLogger`
 - `src/PaymentGateways/Stripe/Webhooks/Controllers/EnsureWebhookEndpointsController.php` — the setup
-  AJAX action
+  AJAX action (every account, or one with `account`)
+- `src/PaymentGateways/Stripe/Webhooks/Controllers/ManageWebhookEndpointsController.php` and
+  `WebhookEndpointsModalView.php` — the Webhook Status field and the endpoint modal
+- `src/PaymentGateways/resources/js/stripe-account-manager/webhook-endpoints.js` — status button, modal
 - `src/PaymentGateways/Stripe/Controllers/DisconnectStripeAccountController.php` — calls
   `DeleteSiteWebhookEndpoint` before removing the account
 - `src/PaymentGateways/Stripe/Webhooks/ValueObjects/`, `DataTransferObjects/`, `Exceptions/`,

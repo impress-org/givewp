@@ -7,6 +7,7 @@ import { __, sprintf } from '@wordpress/i18n'
 
 import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/set-default-account-action'
 import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/disconnect-stripe-account-action'
+import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/webhook-endpoints.js'
 import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/customize-stripe-account-validation'
 
 window.addEventListener( 'DOMContentLoaded', function() {
@@ -163,7 +164,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		}
 
 		event.preventDefault();
-		giveStripeSetUpWebhooks( button.getAttribute( 'data-nonce' ) );
+		giveStripeSetUpWebhooks( button.getAttribute( 'data-nonce' ), button.getAttribute( 'data-account' ) );
 	} );
 
 	if ( null !== checkoutTypes ) {
@@ -414,9 +415,10 @@ let giveStripeWebhookSetupRunning = false;
  *
  * @since TBD
  *
- * @param {string} nonce Nonce for the webhook setup request.
+ * @param {string}      nonce   Nonce for the webhook setup request.
+ * @param {string|null} account Slug of the only account to set up; every account when empty.
  */
-function giveStripeSetUpWebhooks( nonce ) {
+function giveStripeSetUpWebhooks( nonce, account = null ) {
 	/* A second request while one is running could create a second endpoint. */
 	if ( giveStripeWebhookSetupRunning ) {
 		return;
@@ -436,6 +438,10 @@ function giveStripeSetUpWebhooks( nonce ) {
 	formData.append( 'action', 'givewp_stripe_ensure_webhook_endpoints' );
 	formData.append( '_ajax_nonce', nonce );
 
+	if ( account ) {
+		formData.append( 'account', account );
+	}
+
 	fetch( window.ajaxurl, { method: 'POST', credentials: 'same-origin', body: formData } )
 		.then( ( response ) => response.json() )
 		.then( ( response ) => {
@@ -453,7 +459,7 @@ function giveStripeSetUpWebhooks( nonce ) {
 			}
 
 			const retryButton = result.retry ?
-				`<button type="button" class="button give-stripe-webhook-retry-button" data-nonce="${ nonce }">${ __( 'Try again', 'give' ) }</button>` :
+				`<button type="button" class="button give-stripe-webhook-retry-button" data-nonce="${ nonce }" data-account="${ account || '' }">${ __( 'Try again', 'give' ) }</button>` :
 				'';
 			const modalConfig = {
 				modalContent: {
@@ -473,6 +479,7 @@ function giveStripeSetUpWebhooks( nonce ) {
 		.finally( () => {
 			giveStripeWebhookSetupRunning = false;
 			giveStripeSetWebhookButtonsDisabled( false );
+			window.dispatchEvent( new CustomEvent( 'givewp-stripe-webhook-setup-finished' ) );
 		} );
 }
 

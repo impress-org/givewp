@@ -419,6 +419,7 @@ a.give-stripe-connect-temp-dismiss:active {
 }
 
 .give-stripe-disconnect-account-btn,
+.give-stripe-webhook-edit-btn,
 .give-stripe-edit-statement-descriptor-btn{
     font-size: 16px;
     color: #9ea3a8;
@@ -745,5 +746,201 @@ a.give-stripe-connect-temp-dismiss:active {
                 margin: 0 0 25px;
             }
         }
+    }
+}
+
+
+// --------------------------------
+// Webhook Status field
+// --------------------------------
+.give-stripe-webhook-status .give-stripe-account-actions {
+    flex-wrap: nowrap;
+}
+
+.give-stripe-webhook-edit {
+    white-space: nowrap;
+
+    a {
+        margin-left: 10px;
+    }
+}
+
+.give-stripe-webhook-status-button {
+    border: 0;
+    border-radius: 4px;
+    margin-top: 3px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #fff;
+    background: #2271b1;
+    cursor: pointer;
+
+    &:disabled {
+        background: #a7aaad;
+        cursor: default;
+    }
+
+    [data-state='healthy'] > .give-stripe-account-actions > & {
+        background: #69b868;
+    }
+
+    [data-state='error'] > .give-stripe-account-actions > & {
+        background: #d63638;
+    }
+}
+
+// --------------------------------
+// Webhook endpoints modal
+// --------------------------------
+.give-stripe-webhook-modal .give-modal {
+    max-width: 720px;
+}
+
+.give-stripe-webhooks {
+    font-size: 14px;
+    font-weight: 400;
+
+    &__notice {
+        margin: 0 0 12px;
+        padding: 8px 12px;
+        border-left: 4px solid #2271b1;
+        background: #f0f6fc;
+
+        &--success {
+            border-color: #00a32a;
+            background: #edfaef;
+        }
+
+        &--error {
+            border-color: #d63638;
+            background: #fcf0f1;
+        }
+
+        &--warning {
+            border-color: #dba617;
+            background: #fcf9e8;
+        }
+    }
+
+    &__summary {
+        margin: 0 0 12px;
+        color: #4a5568;
+    }
+
+    &__list {
+        margin: 0 0 16px;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__item {
+        margin: 0 0 12px;
+        padding: 12px;
+        border: 1px solid #dcdcde;
+        border-radius: 4px;
+
+        &--site {
+            border-color: #2271b1;
+        }
+    }
+
+    &__head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 8px;
+    }
+
+    &__url {
+        font-weight: 600;
+        word-break: break-all;
+    }
+
+    &__badge {
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        background: #dcdcde;
+
+        &--enabled {
+            background: #c6e8c9;
+        }
+
+        &--disabled {
+            background: #f4c4c5;
+        }
+
+        &--site {
+            background: #c5d9ed;
+        }
+    }
+
+    &__details {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        gap: 4px 16px;
+        margin: 0 0 8px;
+
+        dt {
+            color: #4a5568;
+        }
+
+        dd {
+            margin: 0;
+        }
+    }
+
+    &__missing {
+        display: block;
+        color: #b32d2e;
+    }
+
+    &__edit,
+    &__create {
+        margin: 0 0 8px;
+
+        summary {
+            cursor: pointer;
+        }
+    }
+
+    &__form {
+        display: grid;
+        gap: 10px;
+        margin-top: 10px;
+
+        label span {
+            display: block;
+            margin: 0 0 2px;
+        }
+
+        input[type='url'] {
+            width: 100%;
+        }
+
+        button {
+            justify-self: start;
+        }
+    }
+
+    &__events {
+        display: grid;
+        gap: 4px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+
+        label {
+            display: block;
+        }
+    }
+
+    &__delete {
+        margin: 0;
     }
 }

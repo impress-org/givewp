@@ -7,6 +7,7 @@
 namespace Give\PaymentGateways\Stripe\Webhooks\Actions;
 
 use Give\PaymentGateways\Stripe\Models\AccountDetail;
+use Give\PaymentGateways\Stripe\Webhooks\DataTransferObjects\WebhookEndpointDto;
 use Give\PaymentGateways\Stripe\Webhooks\Exceptions\WebhookEndpointException;
 use Give\PaymentGateways\Stripe\Webhooks\ValueObjects\WebhookHealthStatus;
 use Give\PaymentGateways\Stripe\Webhooks\WebhookTarget;
@@ -46,7 +47,19 @@ final class CheckWebhookEndpointHealth
      */
     public function __invoke(AccountDetail $account, string $mode): WebhookHealthStatus
     {
-        $endpoint = $this->target->findIn(($this->listEndpoints)($account, $mode));
+        return $this->fromEndpoints(($this->listEndpoints)($account, $mode));
+    }
+
+    /**
+     * The health of an account whose endpoints are already listed, so no second request is needed.
+     *
+     * @since TBD
+     *
+     * @param WebhookEndpointDto[] $endpoints
+     */
+    public function fromEndpoints(array $endpoints): WebhookHealthStatus
+    {
+        $endpoint = $this->target->findIn($endpoints);
 
         if (!$endpoint) {
             return WebhookHealthStatus::MISSING();

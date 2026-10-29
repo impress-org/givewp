@@ -15,7 +15,8 @@ use Give\PaymentGateways\Stripe\Webhooks\WebhookSetupNotice;
 use Throwable;
 
 /**
- * Sets up the webhook endpoint of every Stripe account for the current mode and answers with the modal content.
+ * Sets up the webhook endpoint of every Stripe account for the current mode, or of the one account named in the
+ * "account" field, and answers with the modal content.
  *
  * @since TBD
  */
@@ -63,9 +64,20 @@ final class EnsureWebhookEndpointsController
         }
 
         $mode = give_is_test_mode() ? 'test' : 'live';
+        $accounts = ($this->getAccounts)($mode);
         $results = [];
 
-        foreach (($this->getAccounts)($mode) as $account) {
+        $slug = isset($_POST['account']) && is_string($_POST['account']) ? sanitize_text_field(wp_unslash($_POST['account'])) : '';
+
+        if ($slug) {
+            if (!isset($accounts[$slug])) {
+                wp_send_json_error(null, 404);
+            }
+
+            $accounts = [$slug => $accounts[$slug]];
+        }
+
+        foreach ($accounts as $account) {
             try {
                 $status = ($this->ensureEndpoint)($account, $mode);
                 $message = '';
