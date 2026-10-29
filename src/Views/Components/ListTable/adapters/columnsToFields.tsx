@@ -68,16 +68,6 @@ export function columnsToFields(
 }
 
 /**
- * Ids of the columns shown by default, in server order. The title field is left out because
- * DataViews shows it in its own leading column.
- *
- * @since TBD
- */
-export function visibleFieldIds(columns: Column[], titleField?: string): string[] {
-    return columns.filter((column) => column.visible !== false && column.id !== titleField).map((column) => column.id);
-}
-
-/**
  * The column that names a row. DataViews shows it first and uses it to label the row checkbox.
  * Same order of preference as the old table's checkbox labels.
  *

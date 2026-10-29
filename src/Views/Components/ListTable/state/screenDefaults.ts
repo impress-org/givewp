@@ -8,7 +8,7 @@ import type {ListTableScreen, ScreenDefaults} from './types';
  *
  * @since TBD
  */
-export const ID_FIELD = 'id';
+const ID_FIELD = 'id';
 
 /**
  * What the page adds to the screen config: its `perPage` prop, the legacy row-actions field when the
