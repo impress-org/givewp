@@ -138,7 +138,8 @@ The output is built with `wp_json_encode`. The list still fetches its rows throu
 list's search, so the term is never written to the address, a stored layout, or the server outside
 the list request itself. It is kept only in the tab's `history.state` and a `sessionStorage` copy,
 both of which die with the tab. A tab that this page opens itself starts with a copy of its
-`sessionStorage`, so it can restore the term when it opens the same address. The address carries ids
+`sessionStorage`, but the copy is only read on a reload or a back/forward load, so a new tab does not
+use it. The address carries ids
 and enumerated values only. See
 [list-tables.md](list-tables.md#view-state).
 

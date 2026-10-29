@@ -340,9 +340,9 @@ entry, so Back does not undo it. Only a `user` change to the layout, or a reset,
 The search can be a donor's name or email, so it never goes in the address, a bookmark, a shared
 link or the stored layout. It lives in the tab's history entry (`history.state.giveListTable`, keys
 belonging to others are kept), so reload, back and forward in that tab restore it and a new tab
-usually opens without it. A tab that the page opens itself (`window.open`, or a link without
-`noopener`) starts with a copy of this tab's `sessionStorage`, so it can restore the search when it
-opens the same address.
+opens without it. A tab that the page opens itself (`window.open`, or a link without `noopener`)
+starts with a copy of this tab's `sessionStorage`, but the copy is only read on a reload or a
+back/forward load, not on a fresh visit, so a new tab does not use it.
 
 **WordPress clears `history.state` on every admin page load.** Core's admin canonical-URL script
 runs `history.replaceState(null, …)` after the page loads, so after a reload the entry's state is
@@ -372,9 +372,10 @@ multisite network keeps a separate record on each site.
   record.
 - **The route** is `givewp/v3/list-table-layouts/<screen>` (GET, PUT, DELETE): signed in (401), a
   known screen (404), the screen's view capability (403). It only ever reads or writes the signed-in
-  user's own record. `ListTableLayoutValidator` accepts version `1`, at most 50 column ids matching
-  `[A-Za-z0-9_-]{1,64}`, one of the three densities, and a page size from 1 to 100.
-- **Writes** wait one second after the last change and run one after another. The queue and the
+  user's own record. `ListTableLayoutValidator` accepts version `1`, at most 50 column ids in `visibility`
+  and at most 50 in `order` (each limit on its own), every id matching `[A-Za-z0-9_-]{1,64}`, one of the three densities, and a page size from 1 to 100.
+- **Writes** for an ordinary layout change wait one second after the last change; a reset sends at
+  once. All writes run one after another. The queue and the
   once-per-page-view error notice live in `state/layoutWriteQueue.ts`, outside React, so a remounted
   table shares them. A change is staged in the commit phase, so a `pagehide` right after it already
   sends it. The exception to the order is the send on `pagehide`: it goes out at once with
