@@ -47,20 +47,6 @@ jobs:
         permissions:
             contents: write # the action commits the preparation to the branch
         steps:
-            # Only a release or hotfix branch is prepared: the job has write access, and a dispatch
-            # by hand with the wrong branch would commit a version bump to it.
-            -   name: Only release and hotfix branches
-                env:
-                    BRANCH: ${{ inputs.branch }}
-                run: |
-                    case "$BRANCH" in
-                        release/*|hotfix/*) ;;
-                        *)
-                            echo "::error::branch must start with release/ or hotfix/, got '$BRANCH'."
-                            exit 1
-                            ;;
-                    esac
-
             -   uses: actions/checkout@v7
                 with:
                     ref: ${{ inputs.branch }}
@@ -68,9 +54,14 @@ jobs:
                     # later step to find.
                     persist-credentials: false
 
-            # Pinned to the plugin-toolbox commit that shipped the action (the merge of its PR #7).
-            # Switch to @v1 once plugin-toolbox publishes a release.
-            -   uses: stellarwp/plugin-toolbox/.github/actions/release-prep@c66337bd5c9e1d51cb8ba27aef7dfa3c752c0089
+            # The action refuses a branch outside release/, hotfix/ and bucket/ (its branch-prefixes
+            # default) before it changes anything: the job has write access, and a dispatch by hand with
+            # the wrong branch would commit a version bump to it. To accept other prefixes, pass them to
+            # the action as a JSON array, e.g. `branch-prefixes: '["release/", "rc/"]'`; see the action's
+            # README (its "Branches it refuses" section).
+            # Pinned to the plugin-toolbox commit that merged that check (its PR #8). Switch to @v1 once
+            # plugin-toolbox publishes a release.
+            -   uses: stellarwp/plugin-toolbox/.github/actions/release-prep@cf4fb51f0114341c7cf509d58e802adadb5fdf15
                 with:
                     branch: ${{ inputs.branch }}
                     version: ${{ inputs.version }}
