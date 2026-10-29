@@ -3,6 +3,11 @@
 namespace Give\Framework\ListTable;
 
 use Give\Framework\ListTable\Actions\RegisterListTableAssets;
+use Give\Framework\ListTable\Layouts\ListTableLayoutController;
+use Give\Framework\ListTable\Layouts\ListTableLayoutStore;
+use Give\Framework\ListTable\Layouts\ListTableLayoutValidator;
+use Give\Framework\ListTable\Layouts\ListTableScreens;
+use Give\Framework\ListTable\Layouts\PrintListTableLayouts;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -16,6 +21,9 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
+        give()->singleton(ListTableScreens::class);
+        give()->singleton(ListTableLayoutStore::class);
+        give()->singleton(ListTableLayoutValidator::class);
     }
 
     /**
@@ -26,5 +34,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot()
     {
         Hooks::addAction('admin_enqueue_scripts', RegisterListTableAssets::class, '__invoke', 5);
+        Hooks::addAction('admin_enqueue_scripts', PrintListTableLayouts::class, '__invoke', 6);
+        Hooks::addAction('rest_api_init', ListTableLayoutController::class, 'registerRoutes');
     }
 }
