@@ -803,46 +803,72 @@ a.give-stripe-connect-temp-dismiss:active {
     font-weight: 400;
 
     &__notice {
-        margin: 0 0 12px;
-        padding: 8px 12px;
-        border-left: 4px solid #2271b1;
-        background: #f0f6fc;
+        margin: 0 0 var(--givewp-spacing-3, 12px);
+        padding: var(--givewp-spacing-2, 8px) var(--givewp-spacing-3, 12px);
+        border-left: 4px solid var(--givewp-blue-500, #0b72d9);
+        background: var(--givewp-blue-25, #f2f9ff);
 
         &--success {
-            border-color: #00a32a;
-            background: #edfaef;
+            border-color: var(--givewp-green-500, #459948);
+            background: var(--givewp-green-25, #f2fff3);
         }
 
         &--error {
-            border-color: #d63638;
-            background: #fcf0f1;
+            border-color: var(--givewp-red-500, #d92d0b);
+            background: var(--givewp-red-25, #fff4f2);
         }
 
         &--warning {
-            border-color: #dba617;
-            background: #fcf9e8;
+            border-color: var(--givewp-yellow-500, #d9b60b);
+            background: var(--givewp-yellow-25, #fffdf2);
+        }
+
+        &--busy {
+            border-color: var(--givewp-blue-500, #0b72d9);
+            background: var(--givewp-blue-25, #f2f9ff);
+        }
+    }
+
+    &__banner {
+        margin: 0 0 var(--givewp-spacing-3, 12px);
+        padding: var(--givewp-spacing-2, 8px) var(--givewp-spacing-3, 12px);
+        border-left: 4px solid var(--givewp-yellow-500, #d9b60b);
+        background: var(--givewp-yellow-25, #fffdf2);
+
+        strong {
+            display: block;
+            margin: 0 0 2px;
+        }
+
+        code {
+            word-break: break-all;
         }
     }
 
     &__summary {
-        margin: 0 0 12px;
-        color: #4a5568;
+        margin: 0 0 var(--givewp-spacing-3, 12px);
+        color: var(--givewp-neutral-500, #4b5563);
+    }
+
+    &__empty {
+        margin: 0 0 var(--givewp-spacing-3, 12px);
+        color: var(--givewp-neutral-500, #4b5563);
     }
 
     &__list {
-        margin: 0 0 16px;
+        margin: 0 0 var(--givewp-spacing-4, 16px);
         padding: 0;
         list-style: none;
     }
 
     &__item {
-        margin: 0 0 12px;
-        padding: 12px;
-        border: 1px solid #dcdcde;
+        margin: 0 0 var(--givewp-spacing-3, 12px);
+        padding: var(--givewp-spacing-3, 12px);
+        border: 1px solid var(--givewp-neutral-100, #dcdcde);
         border-radius: 4px;
 
         &--site {
-            border-color: #2271b1;
+            border-color: var(--givewp-blue-500, #0b72d9);
         }
     }
 
@@ -850,8 +876,8 @@ a.give-stripe-connect-temp-dismiss:active {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: 8px;
-        margin: 0 0 8px;
+        gap: var(--givewp-spacing-2, 8px);
+        margin: 0 0 var(--givewp-spacing-2, 8px);
     }
 
     &__url {
@@ -860,34 +886,58 @@ a.give-stripe-connect-temp-dismiss:active {
     }
 
     &__badge {
-        padding: 2px 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 2px var(--givewp-spacing-2, 8px);
         border-radius: 10px;
         font-size: 11px;
         font-weight: 600;
         text-transform: uppercase;
-        background: #dcdcde;
+        color: var(--givewp-neutral-700, #1f2937);
+        background: var(--givewp-neutral-100, #dcdcde);
+
+        &::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--givewp-neutral-400, #8c8c8c);
+        }
 
         &--enabled {
-            background: #c6e8c9;
+            background: var(--givewp-green-100, #cef2cf);
+
+            &::before {
+                background: var(--givewp-green-600, #2d802f);
+            }
         }
 
         &--disabled {
-            background: #f4c4c5;
+            background: var(--givewp-red-50, #ffdfd9);
+
+            &::before {
+                background: var(--givewp-red-600, #a62308);
+            }
         }
 
         &--site {
-            background: #c5d9ed;
+            background: var(--givewp-blue-50, #d9ecff);
+
+            &::before {
+                background: var(--givewp-blue-600, #0857a6);
+            }
         }
     }
 
     &__details {
         display: grid;
         grid-template-columns: max-content 1fr;
-        gap: 4px 16px;
-        margin: 0 0 8px;
+        gap: 4px var(--givewp-spacing-4, 16px);
+        margin: 0 0 var(--givewp-spacing-2, 8px);
 
         dt {
-            color: #4a5568;
+            color: var(--givewp-neutral-500, #4b5563);
         }
 
         dd {
@@ -897,22 +947,44 @@ a.give-stripe-connect-temp-dismiss:active {
 
     &__missing {
         display: block;
-        color: #b32d2e;
+        color: var(--givewp-red-600, #a62308);
     }
 
     &__edit,
     &__create {
-        margin: 0 0 8px;
+        margin: 0 0 var(--givewp-spacing-2, 8px);
 
         summary {
+            display: inline-flex;
+            align-items: center;
             cursor: pointer;
+            list-style: none;
+
+            &::-webkit-details-marker {
+                display: none;
+            }
+
+            &::after {
+                content: '';
+                width: 6px;
+                height: 6px;
+                margin-left: 6px;
+                border-right: 2px solid currentColor;
+                border-bottom: 2px solid currentColor;
+                transform: rotate(45deg);
+                transition: transform 0.15s ease;
+            }
+        }
+
+        &[open] summary::after {
+            transform: rotate(225deg);
         }
     }
 
     &__form {
         display: grid;
-        gap: 10px;
-        margin-top: 10px;
+        gap: var(--givewp-spacing-3, 12px);
+        margin-top: var(--givewp-spacing-3, 12px);
 
         label span {
             display: block;
@@ -930,17 +1002,92 @@ a.give-stripe-connect-temp-dismiss:active {
 
     &__events {
         display: grid;
-        gap: 4px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--givewp-spacing-2, 8px) var(--givewp-spacing-4, 16px);
         margin: 0;
         padding: 0;
         border: 0;
 
-        label {
-            display: block;
+        legend {
+            grid-column: 1 / -1;
         }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        code {
+            font-size: 12px;
+        }
+
+        &[disabled] {
+            opacity: 0.65;
+        }
+    }
+
+    &__events-hint {
+        margin: 0;
+        font-size: 12px;
+        color: var(--givewp-neutral-500, #4b5563);
     }
 
     &__delete {
         margin: 0;
+        padding-top: var(--givewp-spacing-2, 8px);
+        border-top: 1px solid var(--givewp-neutral-100, #dcdcde);
+    }
+
+    &__delete-confirm {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--givewp-spacing-2, 8px);
+
+        &-label {
+            color: var(--givewp-neutral-700, #1f2937);
+        }
+    }
+
+    &__delete-confirm-button {
+        padding: 2px 10px;
+        border: 1px solid var(--givewp-red-500, #d92d0b);
+        border-radius: 3px;
+        color: var(--givewp-shades-white, #fff);
+        background: var(--givewp-red-500, #d92d0b);
+        cursor: pointer;
+
+        &:hover {
+            background: var(--givewp-red-600, #a62308);
+        }
+    }
+
+    &__delete-cancel-button {
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--givewp-neutral-500, #4b5563);
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    button.is-busy::after {
+        content: '';
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-left: 6px;
+        border: 2px solid currentColor;
+        border-top-color: transparent;
+        border-radius: 50%;
+        vertical-align: middle;
+        animation: give-stripe-webhooks-busy 0.8s linear infinite;
+    }
+}
+
+@keyframes give-stripe-webhooks-busy {
+    to {
+        transform: rotate(360deg);
     }
 }

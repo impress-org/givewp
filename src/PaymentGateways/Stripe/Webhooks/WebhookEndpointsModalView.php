@@ -38,10 +38,23 @@ final class WebhookEndpointsModalView
      */
     public function render(array $endpoints, string $mode, array $notice = []): string
     {
+        $hasSiteEndpoint = false;
+
+        foreach ($endpoints as $endpoint) {
+            if ($this->target->matches($endpoint->url)) {
+                $hasSiteEndpoint = true;
+                break;
+            }
+        }
+
         ob_start();
         ?>
         <div class="give-stripe-webhooks">
             <?php echo $this->notice($notice); ?>
+
+            <?php if ($endpoints && !$hasSiteEndpoint) : ?>
+                <?php echo $this->siteEndpointBanner(); ?>
+            <?php endif; ?>
 
             <p class="give-stripe-webhooks__summary">
                 <?php
@@ -58,6 +71,7 @@ final class WebhookEndpointsModalView
             <?php if (!$endpoints) : ?>
                 <p class="give-stripe-webhooks__empty">
                     <?php esc_html_e('This account has no webhook endpoints.', 'give'); ?>
+                    <?php esc_html_e('GiveWP needs an endpoint pointing to this site to receive donation notifications.', 'give'); ?>
                 </p>
             <?php endif; ?>
 
@@ -67,7 +81,7 @@ final class WebhookEndpointsModalView
                 <?php endforeach; ?>
             </ul>
 
-            <?php echo $this->createForm(count($endpoints)); ?>
+            <?php echo $this->createForm(count($endpoints), !$endpoints); ?>
         </div>
         <?php
 
@@ -93,6 +107,27 @@ final class WebhookEndpointsModalView
     }
 
     /**
+     * The warning shown when the account has endpoints but none of them sends events to this site.
+     *
+     * @since TBD
+     */
+    private function siteEndpointBanner(): string
+    {
+        return sprintf(
+            '<div class="give-stripe-webhooks__banner give-stripe-webhooks__banner--warning"><strong>%s</strong>%s</div>',
+            esc_html__('No endpoint sends events to this site.', 'give'),
+            wp_kses_post(sprintf(
+                /* translators: %s: The webhook listener URL of this site. */
+                __(
+                    'GiveWP cannot receive donation notifications until one does. Endpoints should point to <code>%s</code>.',
+                    'give'
+                ),
+                esc_html($this->target->url())
+            ))
+        );
+    }
+
+    /**
      * @since TBD
      */
     private function endpoint(WebhookEndpointDto $endpoint): string
@@ -103,7 +138,8 @@ final class WebhookEndpointsModalView
 
         ob_start();
         ?>
-        <li class="give-stripe-webhooks__item<?php echo $isSite ? ' give-stripe-webhooks__item--site' : ''; ?>">
+        <li class="give-stripe-webhooks__item<?php echo $isSite ? ' give-stripe-webhooks__item--site' : ''; ?>"
+            data-endpoint-id="<?php echo esc_attr($endpoint->id); ?>">
             <div class="give-stripe-webhooks__head">
                 <span class="give-stripe-webhooks__url"><?php echo esc_html($endpoint->url); ?></span>
                 <?php if ($isSite) : ?>
@@ -183,9 +219,15 @@ final class WebhookEndpointsModalView
     }
 
     /**
+     * The form to add an endpoint. On an account without endpoints the form is expanded, because there is
+     * nothing to list and adding one is the only useful action.
+     *
      * @since TBD
+     *
+     * @param int  $endpointCount
+     * @param bool $expanded Whether the form renders without its collapsed summary.
      */
-    private function createForm(int $endpointCount): string
+    private function createForm(int $endpointCount, bool $expanded = false): string
     {
         if ($endpointCount >= WebhookTarget::MAX_ENDPOINTS_PER_ACCOUNT) {
             return sprintf(
@@ -197,21 +239,41 @@ final class WebhookEndpointsModalView
             );
         }
 
+        $submitLabel = $expanded ? __('Add your first endpoint', 'give') : __('Add endpoint', 'give');
+
+        if ($expanded) {
+            return sprintf(
+                '<div class="give-stripe-webhooks__create give-stripe-webhooks__create--open">%s</div>',
+                $this->createFormBody($submitLabel)
+            );
+        }
+
+        return sprintf(
+            '<details class="give-stripe-webhooks__create"><summary class="button">%s</summary>%s</details>',
+            esc_html__('Add endpoint', 'give'),
+            $this->createFormBody(__('Add endpoint', 'give'))
+        );
+    }
+
+    /**
+     * @since TBD
+     *
+     * @param string $submitLabel
+     */
+    private function createFormBody(string $submitLabel): string
+    {
         ob_start();
         ?>
-        <details class="give-stripe-webhooks__create">
-            <summary class="button"><?php esc_html_e('Add endpoint', 'give'); ?></summary>
-            <form class="give-stripe-webhooks__form" data-webhook-operation="create">
-                <label>
-                    <span><?php esc_html_e('URL', 'give'); ?></span>
-                    <input type="url" name="url" value="<?php echo esc_attr($this->target->url()); ?>" required>
-                </label>
-                <?php echo $this->eventFields(WebhookTarget::REQUIRED_EVENTS); ?>
-                <button type="submit" class="button button-primary">
-                    <?php esc_html_e('Add endpoint', 'give'); ?>
-                </button>
-            </form>
-        </details>
+        <form class="give-stripe-webhooks__form" data-webhook-operation="create">
+            <label>
+                <span><?php esc_html_e('URL', 'give'); ?></span>
+                <input type="url" name="url" value="<?php echo esc_attr($this->target->url()); ?>" required>
+            </label>
+            <?php echo $this->eventFields(WebhookTarget::REQUIRED_EVENTS); ?>
+            <button type="submit" class="button button-primary">
+                <?php echo esc_html($submitLabel); ?>
+            </button>
+        </form>
         <?php
 
         return (string)ob_get_clean();
@@ -240,8 +302,13 @@ final class WebhookEndpointsModalView
                 </label>
             <?php endforeach; ?>
         </fieldset>
-        <?php
+        <?php if ($all) : ?>
+            <p class="give-stripe-webhooks__events-hint">
+                <?php esc_html_e('This endpoint sends every Stripe event. GiveWP does not change its event list.', 'give'); ?>
+            </p>
+        <?php endif; ?>
 
+        <?php
         return (string)ob_get_clean();
     }
 }

@@ -101,3 +101,6 @@ addons/
 
 # Plugin Check baseline, downloaded by .github/plugin-check/fetch-baseline.sh for local runs.
 /.github/plugin-check/baseline.json
+
+# Superpowers spec files
+docs/superpowers/
