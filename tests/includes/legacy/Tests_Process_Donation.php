@@ -36,6 +36,29 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 		}
 	}
 
+	public function test_logged_in_donor_email_field_renders_disabled_with_hidden_value() {
+		$form = Give_Helper_Form::create_multilevel_form();
+		$user_id = self::factory()->user->create( [ 'role' => 'subscriber', 'user_email' => 'wp@example.org' ] );
+		$legacy_donor = new Give_Donor();
+		$legacy_donor->create( [
+			'user_id' => $user_id,
+			'email' => 'primary@example.org',
+			'name' => 'Primary Donor',
+		] );
+		wp_set_current_user( $user_id );
+
+		try {
+			ob_start();
+			give_user_info_fields( $form->ID );
+			$html = ob_get_clean();
+
+			$this->assertStringContainsString( 'readonly="readonly" disabled="disabled"', $html );
+			$this->assertStringContainsString( '<input type="hidden" name="give_email" value="primary@example.org" />', $html );
+		} finally {
+			wp_set_current_user( 0 );
+		}
+	}
+
 	public function test_logged_in_user_without_donor_requires_wordpress_email() {
 		$user_id = self::factory()->user->create( [ 'role' => 'subscriber', 'user_email' => 'wp@example.org' ] );
 		wp_set_current_user( $user_id );

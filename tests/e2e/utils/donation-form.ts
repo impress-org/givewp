@@ -61,8 +61,8 @@ export async function payWithTestGateway(form: FrameLocator): Promise<void> {
  * The rows are read back off the donation that was just written, so reaching them is what makes a
  * passing donation test proof the donation was recorded rather than only that the request returned.
  */
-export async function expectReceipt(form: FrameLocator, total: string): Promise<void> {
-    await expect(form.locator('.details-row--email-address')).toContainText(DONOR.email, {timeout: 30_000});
+export async function expectReceipt(form: FrameLocator, total: string, email: string = DONOR.email): Promise<void> {
+    await expect(form.locator('.details-row--email-address')).toContainText(email, {timeout: 30_000});
     await expect(form.locator('.details-row--payment-status')).toContainText('Completed');
     await expect(form.locator('.details-row--donation-total')).toContainText(total);
 }

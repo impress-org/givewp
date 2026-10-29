@@ -997,10 +997,15 @@ function give_user_info_fields( $form_id ) {
                 value="<?php
                 echo esc_html($email); ?>"
                 <?php
-                echo(is_user_logged_in() ? ' readonly="readonly" ' : ''); ?>
+                echo(is_user_logged_in() ? ' readonly="readonly" disabled="disabled" ' : ''); ?>
                 <?php
                 echo(give_field_is_required('give_email', $form_id) ? ' required aria-required="true" ' : ''); ?>
             />
+            <?php
+            if (is_user_logged_in()) : ?>
+                <input type="hidden" name="give_email" value="<?php echo esc_attr($email); ?>" />
+            <?php
+            endif; ?>
 
         </p>
 
