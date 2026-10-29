@@ -44,4 +44,23 @@ describe('ModalDialog focus', () => {
 
         expect(document.activeElement).toBe(trigger);
     });
+
+    it('returns focus to the element that opened it each time, when the same dialog is opened from two places', async () => {
+        const other = document.createElement('button');
+        document.body.appendChild(other);
+
+        await render(false);
+        trigger.focus();
+        await render(true);
+        await render(false);
+
+        expect(document.activeElement).toBe(trigger);
+
+        other.focus();
+        await render(true);
+        await render(false);
+
+        expect(document.activeElement).toBe(other);
+        other.remove();
+    });
 });
