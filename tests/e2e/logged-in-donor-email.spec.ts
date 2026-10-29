@@ -1,5 +1,6 @@
 import {expect, test} from '@wordpress/e2e-test-utils-playwright';
 import {createCampaignWithForm} from './utils/campaign';
+import {editForm, section} from './utils/form';
 import {createLegacyForm} from './utils/legacy-form';
 import {createDonorAccount, deleteDonorAccount, DonorAccount} from './utils/donor';
 import {logInAsDonor} from './utils/donor-dashboard';
@@ -158,5 +159,34 @@ test.describe('Logged-in donor email', () => {
         await expect(receipt).toBeVisible({timeout: 30_000});
         await expect(receipt).toContainText(donorEmail);
         await expect(receipt).toContainText('Complete');
+    });
+    test('locks the email field in place after an inline login, without a reload', async ({page, requestUtils}) => {
+        const {formId} = await createCampaignWithForm(requestUtils);
+
+        await editForm(requestUtils, formId, (form) => {
+            section(form, "Who's Giving Today?").innerBlocks.unshift({
+                name: 'givewp/login',
+                attributes: {required: true, loginRedirect: false},
+                innerBlocks: [],
+            });
+        });
+
+        await page.goto(`/?post_type=give_forms&p=${formId}`);
+
+        const form = donationForm(page);
+        await waitForForm(form);
+        await form.getByRole('button', {name: 'Donate now'}).click();
+
+        const email = form.getByLabel('Email Address');
+        await expect(email).toBeEditable();
+
+        await form.locator('input[name="login"]').fill(donor.username);
+        await form.locator('input[name="password"]').fill(donor.password);
+        await form.getByRole('button', {name: 'Log In'}).click();
+
+        await expect(form.getByText('Thank you for your continued support.')).toBeVisible();
+        await expect(email).toHaveValue(donorEmail);
+        await expect(email).toBeDisabled();
+        await expect(email).toHaveJSProperty('readOnly', true);
     });
 });

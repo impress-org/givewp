@@ -7,6 +7,7 @@ import postData from '@givewp/forms/app/utilities/postData';
 import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrlData';
 import navigateTop from '@givewp/forms/app/utilities/navigateTop';
 import {setAuthToken} from '@givewp/forms/app/utilities/authToken';
+import {DONOR_AUTHENTICATED_EVENT} from '@givewp/forms/app/utilities/donorAuthenticatedEvent';
 import FieldError from '../layouts/FieldError';
 import styles from '../styles.module.scss';
 
@@ -165,6 +166,8 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
              * validate and donate request instead.
              */
             setAuthToken(responseData.authToken);
+
+            document.dispatchEvent(new Event(DONOR_AUTHENTICATED_EVENT));
 
             success();
         } else {
