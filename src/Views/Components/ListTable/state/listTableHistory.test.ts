@@ -150,6 +150,26 @@ describe('listTableHistory search copy', () => {
         expect(readTabState('donations')).toEqual(tabState('smith'));
     });
 
+    describe.each([
+        ['reload', true],
+        ['back_forward', true],
+        ['navigate', false],
+    ])('on a %s load', (type, restores) => {
+        it(`${restores ? 'restores' : 'does not restore'} the copy`, () => {
+            // jsdom has no navigation timing, so the browser's answer is supplied here.
+            Object.defineProperty(window.performance, 'getEntriesByType', {
+                configurable: true,
+                value: () => [{type}],
+            });
+            pushEntry({'give-status': 'failed'}, options, tabState('smith'));
+            window.history.replaceState(null, '', window.location.href);
+
+            expect(readTabState('donations')).toEqual(restores ? tabState('smith') : undefined);
+
+            delete (window.performance as Partial<Performance>).getEntriesByType;
+        });
+    });
+
     it('reads no search in a new tab with no copy', () => {
         expect(readTabState('donations')).toBeUndefined();
     });

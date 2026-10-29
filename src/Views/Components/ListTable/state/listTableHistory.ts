@@ -87,7 +87,23 @@ export function rememberSearch(tabState: ListTableTabState) {
     writeSearchCopy(tabState);
 }
 
+/**
+ * Whether this page load is a reload or a back/forward move, the only loads that may restore the copy.
+ * A fresh visit to the same address (a menu link, a typed address) must open without the old search.
+ * Where the browser does not say, the copy is allowed, as before.
+ */
+function isReloadOrHistoryMove(): boolean {
+    const [navigation] = window.performance?.getEntriesByType?.('navigation') ?? [];
+    const type = (navigation as PerformanceNavigationTiming | undefined)?.type;
+
+    return type === undefined || type === 'reload' || type === 'back_forward';
+}
+
 function readSearchCopy(screen: ListTableScreenKey): string | null {
+    if (!isReloadOrHistoryMove()) {
+        return null;
+    }
+
     try {
         return window.sessionStorage.getItem(searchCopyKey(screen));
     } catch {
