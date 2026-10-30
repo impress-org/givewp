@@ -63,6 +63,22 @@ After it runs, continue from step 4 above. It works the same for a `hotfix/x.y.z
 3. Draft a new GitHub release using the version as the tag and title, with the target branch set to `master`. Generate release notes, double-check everything, and publish.
 4. Monitor the release GitHub Action and the Slack notifications — publishing the release kicks off the deploy to WordPress.org and pushes the pot file to the [translations server](https://translations.stellarwp.com/).
 
+## Publishing from the release dashboard
+
+The NX1 release dashboard runs the publishing steps above in one GitHub Action, [Deploy to WordPress.org from the release dashboard](.github/workflows/release-dashboard-deploy.yml), dispatched on the release branch. It merges the release branch into `master` and `master` back into `develop`, publishes the GitHub release with the version as tag and title and GitHub's generated notes, then builds, deploys to WordPress.org, attaches the zip and announces on Slack, the same steps as the release Action. The merges and the publish run through the shared [release-merge action](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/release-merge) in stellarwp/plugin-toolbox.
+
+To run it by hand once the release branch is prepared:
+
+```bash
+gh workflow run release-dashboard-deploy.yml -f release_name=4.16.0 -f version=4.16.0
+```
+
+* `release_name` is the part after `release/` in the branch name; `version` becomes the tag.
+* A version already released, a tag without a release, or a pre-release such as `4.16.0-beta.1` is refused before anything is merged.
+* A merge conflict fails the run with nothing published. Resolve it on the branch named in the log (`master` or `develop`), push, and run it again: the merges already done are kept.
+* Running it again after a later failure is safe: the merges find nothing to do and the existing release is kept. The deploy to WordPress.org and the Slack announcement run again.
+* The release it publishes does not start the release Action, so the deploy happens once.
+
 ## Hotfixes
 
 For urgent fixes that can't wait for the normal release cycle, branch off `master` instead of `develop` (`hotfix/x.y.z`). The rest of the process is the same — run `composer run release:prep`, review, merge to `master`, and publish. Afterwards, merge `master` back into `develop` so the fix isn't lost in the next release.
