@@ -32,7 +32,7 @@ class DonationRepository
      */
     public $notes;
 
-/**
+    /**
      * @since 2.21.0
      */
     public function __construct()

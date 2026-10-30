@@ -136,6 +136,15 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						break;
 
 					case 'other':
+						/*
+						 * Delete this batch's donations table rows, which no hook keeps in step with the post
+						 * deletes below. They go first and are scoped to the batch: the next run finds its IDs
+						 * from the surviving posts, so it can only finish a delete that stopped on the posts.
+						 */
+						if ( ! \Give\Donations\Storage\DonationStorageFlag::get()->isPosts() ) {
+							$sql[] = "DELETE FROM {$wpdb->prefix}give_donations WHERE id IN ($ids)";
+						}
+
 						// Delete main entries of forms and donations exists in posts table.
 						$sql[] = "DELETE FROM {$wpdb->posts} WHERE id IN ($ids)";
 
@@ -144,10 +153,6 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 						// Delete all the meta rows of donation exists in donation meta table.
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_donationmeta";
-
-						// Delete this batch's donations table rows, which no hook keeps in step with the
-						// post deletes above. Scoped to the batch so a stopped run leaves the two in step.
-						$sql[] = "DELETE FROM {$wpdb->prefix}give_donations WHERE id IN ($ids)";
 
 						// Delete all the Give related sequential ordering entries for donations.
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_sequential_ordering WHERE payment_id IN ($ids)";
@@ -194,6 +199,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 							'_give_table_check',              // Database table check - prevents table recreation
 							'give_temp_reset_ids',            // Temporary reset data used by this class
 							'give_settings',                  // Plugin settings - preserve to avoid pages recreation
+							'give_donation_storage',          // Donation storage flag - its migration never runs again
 						];
 
 						// Create SQL placeholder string for the essential options list
