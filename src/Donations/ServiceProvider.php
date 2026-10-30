@@ -29,11 +29,16 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationNotesRepository;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\Repositories\DonationTableRepository;
+use Give\Donations\Storage\DonationStorageDriftCheck;
+use Give\Donations\Storage\DonationStorageDriftCommand;
+use Give\Donations\Storage\DonationStorageFlag;
 use Give\Donations\Storage\DonationTableSync;
 use Give\Donations\Storage\SyncPostsWritesToDonationTable;
 use Give\Framework\Migrations\MigrationsRegister;
+use Give\Framework\Support\Facades\ActionScheduler\AsBackgroundJobs;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
+use WP_CLI;
 
 class ServiceProvider implements ServiceProviderInterface
 {
@@ -68,6 +73,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->bootListeners();
         $this->bootLegacyListeners();
         $this->bootDonationTableSync();
+        $this->bootDonationStorageDriftCheck();
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
         $this->loadDonationAdminOptions();
@@ -101,6 +107,30 @@ class ServiceProvider implements ServiceProviderInterface
             foreach (['added', 'updated', 'deleted'] as $event) {
                 Hooks::addAction("{$event}_{$metaType}_meta", SyncPostsWritesToDonationTable::class, 'onMetaChange', 10, 2);
             }
+        }
+    }
+
+    /**
+     * A daily Action Scheduler action compares the two storages once the table is in use. The
+     * check is a few aggregate queries over every donation, so it runs in its own background
+     * request rather than on a visitor's.
+     *
+     * @since TBD
+     */
+    private function bootDonationStorageDriftCheck()
+    {
+        Hooks::addAction('givewp_donation_storage_drift_check', DonationStorageDriftCheck::class, 'run');
+
+        add_action('action_scheduler_init', static function () {
+            if (DonationStorageFlag::get()->isPosts()) {
+                return;
+            }
+
+            AsBackgroundJobs::scheduleRecurringAction(time() + DAY_IN_SECONDS, DAY_IN_SECONDS, 'givewp_donation_storage_drift_check', [], 'givewp_donation_storage');
+        });
+
+        if (defined('WP_CLI') && WP_CLI) {
+            WP_CLI::add_command('give check-donation-storage', give()->make(DonationStorageDriftCommand::class));
         }
     }
 
