@@ -22,6 +22,9 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
  *
  * dbDelta() does not reliably parse GENERATED ALWAYS AS, so this is a raw CREATE TABLE.
  *
+ * Once the table exists the storage flag moves from posts to syncing, which switches the
+ * dual-write on. Reads stay on posts until a site migrates and switches.
+ *
  * @since TBD
  */
 class CreateDonationsTable extends Migration
@@ -134,6 +137,14 @@ class CreateDonationsTable extends Migration
         } catch (DatabaseQueryException $exception) {
             // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- the previous exception cannot be escaped
             throw new DatabaseMigrationException(esc_html("An error occurred while creating the {$table} table"), 0, $exception);
+        }
+
+        // The table exists, so from here every donation write is mirrored into it. A site that is
+        // already past syncing keeps its state. Option name and values are spelled out here rather
+        // than read from DonationStorageFlag: a migration must keep working as it was written even
+        // after the production classes move on.
+        if (get_option('give_donation_storage', 'posts') === 'posts') {
+            update_option('give_donation_storage', 'syncing');
         }
     }
 }

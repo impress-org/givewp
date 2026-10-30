@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
+use Give\Donations\Properties\BillingAddress;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationStatus;
@@ -411,5 +412,166 @@ final class TestDonationRepository extends TestCase
             ->value('post_status');
 
         $this->assertEquals(DonationStatus::COMPLETE, $postStatus);
+    }
+
+    /**
+     * Clearing an optional field on the model must clear it in storage. Before, update() skipped
+     * keys the model had no value for, so the old meta row survived and the field came back on
+     * the next load.
+     *
+     * @since TBD
+     */
+    public function testUpdateRemovesMetaForOptionalFieldsClearedOnTheModel()
+    {
+        $donation = $this->donationWithEveryOptionalField();
+        $this->assertSame(10, $this->optionalMetaCount($donation->id));
+
+        $donation->feeAmountRecovered = null;
+        $donation->company = null;
+        $donation->honorific = null;
+        $donation->comment = null;
+        $donation->billingAddress = null;
+        $donation->save();
+
+        $this->assertSame(0, $this->optionalMetaCount($donation->id));
+
+        $reloaded = Donation::find($donation->id);
+        $this->assertNull($reloaded->feeAmountRecovered);
+        $this->assertNull($reloaded->company);
+        $this->assertNull($reloaded->comment);
+        $this->assertNull($reloaded->honorific);
+        $this->assertNull($reloaded->billingAddress->country);
+    }
+
+    /**
+     * An update that touches something else leaves every optional field exactly as it was.
+     *
+     * @since TBD
+     */
+    public function testUpdateKeepsOptionalFieldsThatWereNotCleared()
+    {
+        $donation = $this->donationWithEveryOptionalField();
+
+        $donation->status = DonationStatus::REFUNDED();
+        $donation->save();
+
+        $this->assertSame(10, $this->optionalMetaCount($donation->id));
+
+        $reloaded = Donation::find($donation->id);
+        $this->assertSame('refunded', $reloaded->status->getValue());
+        $this->assertSame(250, (int)$reloaded->feeAmountRecovered->formatToMinorAmount());
+        $this->assertSame('Analytical Engines', $reloaded->company);
+        $this->assertSame('Dr', $reloaded->honorific);
+        $this->assertSame('Keep it up', $reloaded->comment);
+        $this->assertSame('GB', $reloaded->billingAddress->country);
+        $this->assertSame('1 Main St', $reloaded->billingAddress->address1);
+    }
+
+    /**
+     * Only the ten optional keys are ever removed. The keys the engine relies on and the
+     * subscription keys are untouched by an update that clears everything optional.
+     *
+     * @since TBD
+     */
+    public function testUpdateNeverRemovesRequiredOrSubscriptionMeta()
+    {
+        $donation = $this->donationWithEveryOptionalField();
+        give()->payment_meta->update_meta($donation->id, DonationMetaKeys::SUBSCRIPTION_ID, 42);
+        give()->payment_meta->update_meta($donation->id, DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION, 1);
+        give()->payment_meta->update_meta($donation->id, DonationMetaKeys::IS_RECURRING, 1);
+        $before = $this->metaKeys($donation->id);
+
+        $donation->feeAmountRecovered = null;
+        $donation->company = null;
+        $donation->honorific = null;
+        $donation->comment = null;
+        $donation->billingAddress = null;
+        $donation->save();
+
+        $removed = array_diff($before, $this->metaKeys($donation->id));
+        sort($removed);
+        $this->assertSame($this->optionalMetaKeys(), $removed);
+    }
+
+    /**
+     * Inserting without optional fields writes no meta rows for them, as before.
+     *
+     * @since TBD
+     */
+    public function testInsertWritesNoMetaForAbsentOptionalFields()
+    {
+        $donation = Donation::factory()->create([
+            'company' => null,
+            'comment' => null,
+        ]);
+
+        $this->assertSame(0, $this->optionalMetaCount($donation->id));
+        $this->assertNull(Donation::find($donation->id)->feeAmountRecovered);
+    }
+
+    /**
+     * @since TBD
+     */
+    private function donationWithEveryOptionalField(): Donation
+    {
+        return Donation::factory()->create([
+            'amount' => new Money(5000, 'USD'),
+            'feeAmountRecovered' => new Money(250, 'USD'),
+            'company' => 'Analytical Engines',
+            'honorific' => 'Dr',
+            'comment' => 'Keep it up',
+            'billingAddress' => BillingAddress::fromArray([
+                'address1' => '1 Main St',
+                'address2' => 'Suite 2',
+                'city' => 'London',
+                'state' => 'LDN',
+                'zip' => 'N1',
+                'country' => 'GB',
+            ]),
+        ]);
+    }
+
+    /**
+     * @since TBD
+     */
+    private function optionalMetaKeys(): array
+    {
+        $keys = [
+            DonationMetaKeys::FEE_AMOUNT_RECOVERED,
+            DonationMetaKeys::COMPANY,
+            DonationMetaKeys::COMMENT,
+            DonationMetaKeys::HONORIFIC,
+            DonationMetaKeys::BILLING_ADDRESS1,
+            DonationMetaKeys::BILLING_ADDRESS2,
+            DonationMetaKeys::BILLING_CITY,
+            DonationMetaKeys::BILLING_STATE,
+            DonationMetaKeys::BILLING_ZIP,
+            DonationMetaKeys::BILLING_COUNTRY,
+        ];
+        sort($keys);
+
+        return $keys;
+    }
+
+    /**
+     * @since TBD
+     */
+    private function optionalMetaCount(int $donationId): int
+    {
+        return (int)DB::table('give_donationmeta')
+            ->where('donation_id', $donationId)
+            ->whereIn('meta_key', $this->optionalMetaKeys())
+            ->count();
+    }
+
+    /**
+     * @since TBD
+     */
+    private function metaKeys(int $donationId): array
+    {
+        return DB::get_col(DB::prepare(
+            'SELECT meta_key FROM ' . DB::prefix('give_donationmeta') . ' WHERE donation_id = %d',
+            $donationId
+        ));
     }
 }

@@ -124,10 +124,25 @@ Practically, for new work:
 Donations are stored as `give_payment` posts plus `give_donationmeta` rows. A purpose-built
 `give_donations` table now exists alongside them (`Give\Donations\Migrations\CreateDonationsTable`),
 created empty on upgrade. Nothing reads from it yet. Which storage is authoritative is recorded by
-`Give\Donations\Storage\DonationStorageFlag`, one option with three states: `posts` (the default for every
-site), `syncing` (the table is kept in step with the posts while the posts stay authoritative) and
-`table` (reads come from the table). The flag can move back from `table` to `syncing`, never to
+`Give\Donations\Storage\DonationStorageFlag`, one option with three states: `posts` (no table, nothing written), `syncing` (set by the
+migration once the table exists; every write is mirrored while the posts stay authoritative for
+reads) and `table` (reads come from the table). The flag can move back from `table` to `syncing`, never to
 `posts`.
+
+The table is kept in step with the posts storage by `Give\Donations\Storage\DonationTableSync`,
+and there is only one way a row gets there: read the donation back from posts and meta, decode
+it, upsert it. `DonationRepository::insert()`, `update()`, `trash()`, `unTrash()` and `delete()`
+call it inside their own transaction, so a failed table write rolls the donation back. Every
+other write path (`Give_Payment::save()`, `give_insert_payment()`, `give_update_payment_status()`,
+`give_delete_donation()`, the importer, add-on meta writes) is caught by
+`SyncPostsWritesToDonationTable` on `save_post_give_payment`, the `*_donation_meta` hooks and
+`delete_post`. Those listeners only queue the donation ID; the queue is flushed once at
+`shutdown`, because a legacy save fires the meta hooks thirty times for one donation. A flush
+failure is logged, never thrown, and the daily drift check exists to catch it.
+
+`DonationStatusDecoder` is the one place `post_status` is turned into the separate `status` and
+`type` columns (`give_subscription` means complete + renewal; type comes from subscription meta
+and `post_parent`). The backfill must use it too.
 
 Two things about the table are deliberate and easy to undo by accident:
 
