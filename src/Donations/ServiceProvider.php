@@ -35,6 +35,7 @@ use Give\Donations\Storage\DonationStorageFlag;
 use Give\Donations\Storage\DonationTableSync;
 use Give\Donations\Storage\SyncPostsWritesToDonationTable;
 use Give\Framework\Migrations\MigrationsRegister;
+use Give\Framework\Support\Facades\ActionScheduler\AsBackgroundJobs;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use WP_CLI;
@@ -121,11 +122,11 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('givewp_donation_storage_drift_check', DonationStorageDriftCheck::class, 'run');
 
         add_action('action_scheduler_init', static function () {
-            if (DonationStorageFlag::get()->isPosts() || as_has_scheduled_action('givewp_donation_storage_drift_check')) {
+            if (DonationStorageFlag::get()->isPosts()) {
                 return;
             }
 
-            as_schedule_recurring_action(time() + DAY_IN_SECONDS, DAY_IN_SECONDS, 'givewp_donation_storage_drift_check', [], 'givewp_donation_storage');
+            AsBackgroundJobs::scheduleRecurringAction(time() + DAY_IN_SECONDS, DAY_IN_SECONDS, 'givewp_donation_storage_drift_check', [], 'givewp_donation_storage');
         });
 
         if (defined('WP_CLI') && WP_CLI) {

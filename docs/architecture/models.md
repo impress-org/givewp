@@ -137,7 +137,8 @@ What the code does not tell you:
   repository is add-on API the day it ships.
 - **Bulk SQL on donation storage must be mirrored by hand.** A bulk `UPDATE` or `DELETE` on
   `give_donationmeta` or `wp_posts` bypasses both paths. Campaign merge, form transfer and Reset
-  Stats each carry a matching statement; a new one needs the same, plus a test in
+  Stats each carry a matching statement behind the storage flag, because the table may not exist
+  while the flag is `posts`; a new one needs the same, plus a test in
   `tests/Unit/Donations/Storage`.
 - **`post_status` is overloaded, and the model is the decoder.** `give_subscription` means
   complete plus renewal, a status the model does not know reads as pending, and the type comes

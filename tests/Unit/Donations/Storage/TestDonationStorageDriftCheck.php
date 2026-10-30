@@ -146,6 +146,74 @@ class TestDonationStorageDriftCheck extends TestCase
     }
 
     /**
+     * The model takes the type from subscription meta and never from post_status.
+     *
+     * @since TBD
+     */
+    public function testGiveSubscriptionPostsWithoutSubscriptionMetaAreNotDrift()
+    {
+        $single = Donation::factory()->create();
+        give_update_payment_status($single->id, 'give_subscription');
+
+        $flagged = Donation::factory()->create();
+        give()->payment_meta->add_meta($flagged->id, DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION, 1);
+        give_update_payment_status($flagged->id, 'give_subscription');
+
+        give(DonationTableSync::class)->flush();
+
+        $this->assertSame('single', $this->row($single->id)->type);
+        $this->assertSame('subscription', $this->row($flagged->id)->type);
+
+        $report = (new DonationStorageDriftCheck())->run();
+
+        $this->assertFalse($report['drift'], json_encode($report));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFeeCurrencyAndIdsChangedBehindTheSyncAreReported()
+    {
+        $donation = Donation::factory()->create([
+            'amount' => new Money(1000, 'USD'),
+            'feeAmountRecovered' => new Money(100, 'USD'),
+        ]);
+
+        $this->assertFalse((new DonationStorageDriftCheck())->run()['drift']);
+
+        DB::table(DonationTableRepository::TABLE)->where('id', $donation->id)->update([
+            'fee_amount_recovered' => 200,
+            'currency' => 'EUR',
+            'donor_id' => $donation->donorId + 1,
+            'campaign_id' => $donation->campaignId + 1,
+            'form_id' => $donation->formId + 1,
+            'subscription_id' => 1,
+        ]);
+
+        $report = (new DonationStorageDriftCheck())->run();
+
+        foreach (['fee', 'currency', 'donorId', 'campaignId', 'formId', 'subscriptionId'] as $field) {
+            $this->assertSame([$donation->id], $report[$field]['sampleIds'], $field);
+        }
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDriftLogKeepsTheTypeMismatches()
+    {
+        $donation = Donation::factory()->create();
+        DB::table(DonationTableRepository::TABLE)->where('id', $donation->id)->update(['type' => 'renewal']);
+
+        (new DonationStorageDriftCheck())->run();
+
+        $log = DB::table('give_log')->orderBy('id', 'DESC')->limit(1)->get();
+        $data = json_decode($log->data, true);
+
+        $this->assertSame([$donation->id], $data['context']['report']['type']['sampleIds']);
+    }
+
+    /**
      * @since TBD
      */
     public function testTypeAndModeChangedBehindTheSyncAreReported()
