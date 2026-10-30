@@ -19,6 +19,7 @@ use Give\Donations\Listeners\DonationCreated\UpdateDonorMetaWithLastDonatedCurre
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Migrations\AddIndexesToDonationMetaTable;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
+use Give\Donations\Migrations\CreateDonationsTable;
 use Give\Donations\Migrations\MoveDonationCommentToDonationMetaTable;
 use Give\Donations\Migrations\RecalculateExchangeRate;
 use Give\Donations\Migrations\SanitizeSerializedObjectPayloads;
@@ -34,10 +35,15 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
+     * @since TBD Register the give_donations table name.
      * @inheritDoc
      */
     public function register()
     {
+        global $wpdb;
+
+        $wpdb->give_donations = $wpdb->prefix . 'give_donations';
+
         give()->singleton('donations', DonationRepository::class);
         give()->singleton('donationNotes', DonationNotesRepository::class);
         give()->singleton(DonationsListTable::class, function () {
@@ -67,6 +73,7 @@ class ServiceProvider implements ServiceProviderInterface
             RecalculateExchangeRate::class,
             SanitizeSerializedObjectPayloads::class,
             AddIndexesToDonationMetaTable::class,
+            CreateDonationsTable::class,
         ]);
     }
 

@@ -119,6 +119,26 @@ Practically, for new work:
   Every write that goes through the repository is one more event the model hooks can see, which is
   how coverage improves.
 
+## Donation storage: the `give_donations` table
+
+Donations are stored as `give_payment` posts plus `give_donationmeta` rows. A purpose-built
+`give_donations` table now exists alongside them (`Give\Donations\Migrations\CreateDonationsTable`),
+created empty on upgrade. Nothing reads from it yet. Which storage is authoritative is recorded by
+`Give\Donations\Storage\DonationStorageFlag`, one option with three states: `posts` (the default for every
+site), `syncing` (the table is kept in step with the posts while the posts stay authoritative) and
+`table` (reads come from the table). The flag can move back from `table` to `syncing`, never to
+`posts`.
+
+Two things about the table are deliberate and easy to undo by accident:
+
+- `id` is the legacy post ID with no `AUTO_INCREMENT`, so the two storages never grow separate ID
+  spaces while they are kept in sync.
+- `amount_intended` and `amount_intended_base` are stored generated columns, signed because an
+  admin can edit a total below its recovered fee and legacy storage accepts that, and the covering
+  indexes end in `amount_intended_base`. Totals are answered from the index alone; the repository
+  never maintains those two values. `dbDelta()` does not parse generated columns, which is why the
+  migration is a raw `CREATE TABLE`.
+
 ## Checklist
 
 - Listening for a donation/donor/subscription event? Model hook by default; legacy hook only if you
