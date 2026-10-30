@@ -6,6 +6,7 @@ use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Donations\Repositories\DonationTableRepository;
+use Give\Donations\Storage\DonationStorageFlag;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -442,16 +443,20 @@ class CampaignRepository
                     ])
             );
 
-            // Delete campaigns to merge now that we already migrated the necessary data to the destination campaign
-            // The donations table is written with raw SQL here too, since this UPDATE bypasses the
-            // repository and the meta hooks that normally keep it in step.
-            DB::query(
-                DB::prepare("UPDATE " . DB::prefix(DonationTableRepository::TABLE) . " SET campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
-                    [
-                        $destinationCampaign->id,
-                    ])
-            );
+            /*
+             * The donations table is written with raw SQL here too, since the meta UPDATE above
+             * bypasses the repository and the meta hooks that normally keep it in step.
+             */
+            if (!DonationStorageFlag::get()->isPosts()) {
+                DB::query(
+                    DB::prepare("UPDATE " . DB::prefix(DonationTableRepository::TABLE) . " SET campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
+                        [
+                            $destinationCampaign->id,
+                        ])
+                );
+            }
 
+            // Delete campaigns to merge now that we already migrated the necessary data to the destination campaign
             DB::query("DELETE FROM " . DB::prefix('give_campaigns') . " WHERE id IN ($campaignsToMergeIdsString)");
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
