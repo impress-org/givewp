@@ -85,11 +85,13 @@ jobs:
                 run: |
                     version="${TAG#v}"
 
-                    # readme.txt entries read "= <version>: <date> =" followed by bullets until the next one.
-                    changelog=$(awk -v header="= $version:" '
+                    # readme.txt entries read "= [<version>] <date> =", a blank line, then bullets until the
+                    # next header. The blank line is skipped so the announcement starts with the first entry.
+                    changelog=$(awk -v header="= [$version]" '
                         index($0, header) == 1 { found = 1; next }
                         found && /^= / { exit }
-                        found { print }
+                        found && NF == 0 && !started { next }
+                        found { started = 1; print }
                     ' readme.txt)
 
                     # A random delimiter stops a release body that happens to contain the terminator from

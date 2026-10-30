@@ -65,6 +65,7 @@
         "copy-fonts": "rm -rf vendor/tecnickcom/tcpdf/fonts/* && cp assets/src/tcpdf-fonts/* vendor/tecnickcom/tcpdf/fonts/",
         "changelog:add": "npx --no-install changelogger add --auto-filename",
         "changelog:write": "bin/write-changelog.sh",
+        "changelog:convert": "node bin/convert-changelog-format.js",
         "release:prep": "bin/release-prep.sh",
         "release:test": "npx --no-install bats tests/bats",
         "pup": [

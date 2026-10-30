@@ -1,0 +1,68 @@
+name: Release Prep
+
+# Prepares a release branch: bumps the version in the files .puprc lists under paths.versions,
+# replaces the @since TBD / @deprecated TBD placeholders, and compiles the pending entries in
+# ./changelog into readme.txt and changelog.txt. Then it commits that to the branch through the GitHub API.
+# No pull request is opened: the change is reviewed in the release branch's own pull request.
+#
+# It does in CI what `composer run release:prep <version>` does locally, through the shared
+# release-prep action in stellarwp/plugin-toolbox: pup replace-version, pup replace-tbd, then the
+# changelogger with the stellarwp-readme strategy package.json configures.
+#
+# The NX1 release dashboard dispatches this file for the prepare step, sending `branch` and `version`.
+# Keep `date` optional: the dashboard refuses a workflow that requires an input it does not send.
+#
+# Run it by hand:
+#   gh workflow run release-prep.yml -f branch=release/4.19.0 -f version=4.19.0
+
+on:
+    workflow_dispatch:
+        inputs:
+            branch:
+                description: 'Branch to prepare and commit to, release/* or hotfix/*, e.g. release/4.19.0'
+                required: true
+                type: string
+            version:
+                description: 'Version to write, e.g. 4.19.0'
+                required: true
+                type: string
+            date:
+                description: 'Changelog date (YYYY-MM-DD). Empty or "today" writes today, in UTC'
+                required: false
+                type: string
+                default: ''
+
+# Two preparations of the same branch would both commit on top of the same checkout, and the second
+# commit would be refused as not a fast-forward. One group per branch makes the second wait for the first.
+concurrency:
+    group: ${{ github.workflow }}-${{ inputs.branch }}
+
+permissions:
+    contents: read
+
+jobs:
+    prepare:
+        # pup runs on PHP, which ubuntu-24.04 ships.
+        runs-on: ubuntu-24.04
+        permissions:
+            contents: write # the action commits the preparation to the branch
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    ref: ${{ inputs.branch }}
+                    # The action commits through the API with its own token, so the checkout keeps no credentials for a
+                    # later step to find.
+                    persist-credentials: false
+
+            # The action refuses a branch outside release/, hotfix/ and bucket/ (its branch-prefixes
+            # default) before it changes anything: the job has write access, and a dispatch by hand with
+            # the wrong branch would commit a version bump to it. To accept other prefixes, pass them to
+            # the action as a JSON array, e.g. `branch-prefixes: '["release/", "rc/"]'`; see the action's
+            # README (its "Branches it refuses" section).
+            # Pinned to the plugin-toolbox commit that merged that check (its PR #8). Switch to @v1 once
+            # plugin-toolbox publishes a release.
+            -   uses: stellarwp/plugin-toolbox/.github/actions/release-prep@cf4fb51f0114341c7cf509d58e802adadb5fdf15
+                with:
+                    branch: ${{ inputs.branch }}
+                    version: ${{ inputs.version }}
+                    date: ${{ inputs.date }}
