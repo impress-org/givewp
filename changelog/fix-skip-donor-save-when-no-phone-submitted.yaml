@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Prevented a no-op donor save (and re-validation) on every returning
+  donation when the submitted form did not include a phone number.
+timestamp: 2026-08-30T00:00:00.000Z
