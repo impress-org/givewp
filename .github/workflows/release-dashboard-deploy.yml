@@ -70,7 +70,7 @@ jobs:
             # publishes a release.
             -   name: Merge the release and publish it on GitHub
                 id: release
-                uses: stellarwp/plugin-toolbox/.github/actions/release-merge@2e083ba5ea857c20e8e2d687212482569064f8a1
+                uses: stellarwp/plugin-toolbox/.github/actions/release-merge@4779f4c5d3d10a113cc7559293c78ea934524c8c
                 with:
                     branch: release/${{ inputs.release_name }}
                     version: ${{ inputs.version }}
