@@ -65,6 +65,7 @@ class DonationTableSync
 
         if (!$this->flushScheduled) {
             $this->flushScheduled = true;
+            // Priority 0: before shutdown handlers that may close the database connection or the object cache.
             add_action('shutdown', [$this, 'flush'], 0);
         }
     }
