@@ -1,0 +1,4 @@
+significance: patch
+type: fixed
+entry: Made the date range picker placeholders, weekday headers, and selected date format translatable and locale-aware on the Reports and Logs admin pages.
+timestamp: 2026-07-19T00:00:00.000Z
