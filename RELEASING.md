@@ -70,10 +70,10 @@ The NX1 release dashboard runs the publishing steps above in one GitHub Action, 
 To run it by hand once the release branch is prepared:
 
 ```bash
-gh workflow run release-dashboard-deploy.yml -f release_name=4.16.0 -f version=4.16.0
+gh workflow run release-dashboard-deploy.yml -f branch=release/4.16.0 -f version=4.16.0
 ```
 
-* `release_name` is the part after `release/` in the branch name; `version` becomes the tag.
+* `branch` is the release branch to merge; `version` becomes the tag and has to be the version the branch's files hold.
 * A version already released, a tag without a release, or a pre-release such as `4.16.0-beta.1` is refused before anything is merged.
 * A merge conflict fails the run with nothing published. Resolve it on the branch named in the log (`master` or `develop`), push, and run it again: the merges already done are kept.
 * Running it again after a later failure is safe: the merges find nothing to do and the existing release is kept. The deploy to WordPress.org and the Slack announcement run again.

@@ -16,15 +16,15 @@ name: Deploy to WordPress.org from the release dashboard
 # A merge conflict fails the run before anything is published, with a MERGE_CONFLICT line the dashboard
 # reads; resolve it on the branch named, push, and run the step again.
 #
-# The dashboard dispatches this file on the release branch, sending `release_name`, `version` and
+# The dashboard dispatches this file on the release branch, sending `branch`, `version` and
 # `production`. Run it by hand:
-#   gh workflow run release-dashboard-deploy.yml -f release_name=4.19.0 -f version=4.19.0
+#   gh workflow run release-dashboard-deploy.yml -f branch=release/4.19.0 -f version=4.19.0
 
 on:
     workflow_dispatch:
         inputs:
-            release_name:
-                description: 'Release name, the part after release/ in the branch, e.g. 4.19.0'
+            branch:
+                description: 'Release branch to merge, e.g. release/4.19.0'
                 required: true
                 type: string
             version:
@@ -70,9 +70,9 @@ jobs:
             # publishes a release.
             -   name: Merge the release and publish it on GitHub
                 id: release
-                uses: stellarwp/plugin-toolbox/.github/actions/release-merge@4779f4c5d3d10a113cc7559293c78ea934524c8c
+                uses: stellarwp/plugin-toolbox/.github/actions/release-merge@d2cf03aa21cafe0472b95b70e058bd1e2fb30e98
                 with:
-                    branch: release/${{ inputs.release_name }}
+                    branch: ${{ inputs.branch }}
                     version: ${{ inputs.version }}
                     base-branch: master
 
