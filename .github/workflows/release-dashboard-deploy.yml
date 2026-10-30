@@ -1,0 +1,170 @@
+name: Deploy to WordPress.org from the release dashboard
+
+# The deploy step the NX1 release dashboard dispatches for a release of GiveWP. It does what publishing
+# a GitHub release by hand does today, in one run: merges the release branch into master and master
+# back into develop, publishes the GitHub release for the version, then runs the same steps as
+# release.yml: build with pup, generate the pot file, deploy to WordPress.org, attach the zip to the
+# release and announce it on Slack.
+#
+# release.yml stays the path for a release published by hand on GitHub. A release this workflow
+# publishes does not start release.yml: GitHub does not run workflows for events caused by a workflow's
+# own GITHUB_TOKEN, so a release is never deployed twice.
+#
+# The merges and the publish run through the shared release-merge action in stellarwp/plugin-toolbox.
+# Every one of its steps is safe to run again after a late failure: a branch that already holds the
+# release merges as a no-op and an existing release is skipped, so a failed deploy is retried as it is.
+# A merge conflict fails the run before anything is published, with a MERGE_CONFLICT line the dashboard
+# reads; resolve it on the branch named, push, and run the step again.
+#
+# The dashboard dispatches this file on the release branch, sending `branch`, `version` and
+# `production`. Run it by hand:
+#   gh workflow run release-dashboard-deploy.yml -f branch=release/4.19.0 -f version=4.19.0
+
+on:
+    workflow_dispatch:
+        inputs:
+            branch:
+                description: 'Release branch to merge, e.g. release/4.19.0'
+                required: true
+                type: string
+            version:
+                description: 'Version being released, e.g. 4.19.0. Becomes the tag and the title of the GitHub release'
+                required: true
+                type: string
+            production:
+                description: 'Sent by the release dashboard for the deploy step. Not read here: this workflow always builds for production'
+                required: false
+                type: string
+                default: 'true'
+
+# One deploy at a time, shared with release.yml: both write to the same WordPress.org SVN, and two
+# releases prepared with the same version would otherwise merge side by side. Run one after the other,
+# the second finds the tag published and the release-merge action refuses it before merging.
+concurrency:
+    group: deploy-wordpress-org
+    cancel-in-progress: false
+
+jobs:
+    tests:
+        uses: ./.github/workflows/wordpress.yml
+
+    release:
+        name: Merge and release
+        runs-on: blacksmith-4vcpu-ubuntu-2404
+        # The same gate as release.yml. The environment's branch policy has to allow the release/*
+        # branches the dashboard dispatches on, or the job is refused before it starts.
+        environment: live
+        needs: tests
+        permissions:
+            contents: write # the action pushes the merges and publishes the release; the zip is attached to it
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v7
+                with:
+                    # The action fetches the branches it merges and pushes them with the token it is given,
+                    # so the checkout keeps no credentials in .git/config for the third-party actions below.
+                    persist-credentials: false
+
+            # Leaves the checkout on master at the merged commit, so everything below builds the release
+            # from it. Pinned to a commit of stellarwp/plugin-toolbox#10; switch to @v1 once plugin-toolbox
+            # publishes a release.
+            -   name: Merge the release and publish it on GitHub
+                id: release
+                uses: stellarwp/plugin-toolbox/.github/actions/release-merge@b066fe625594441f52fc114c1d3accffa0132861
+                with:
+                    branch: ${{ inputs.branch }}
+                    version: ${{ inputs.version }}
+                    base-branch: master
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 7.4
+                    extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+                    coverage: none
+
+            -   uses: actions/setup-node@v7
+                with:
+                    node-version-file: .nvmrc
+
+            # The build steps live in .puprc, the same ones the zip workflow runs, so a release and a
+            # production zip are built the same way.
+            -   name: Build the plugin
+                run: composer -- pup build
+
+                # In order to run this WordPress also needs to be installed
+            -   name: Generate pot file
+                run: |
+                    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+                    chmod +x wp-cli.phar
+                    mv wp-cli.phar /usr/local/bin/wp
+                    php -d xdebug.mode=off "$(which wp)" i18n make-pot ${{github.workspace}} ${{github.workspace}}/languages/give.pot --exclude="$(cat .distignore | tr "\n" "," | sed 's/,$/ /' | tr " " "\n"),src/**/*.js,*.js.map,blocks/**/*.js"
+
+            # A release that touches many files makes wp.org take longer than SVN's default 10 minute
+            # wait to finish the commit, and the client gives up with E175012 even though the upload is done.
+            -   name: Raise the SVN timeout
+                run: |
+                    mkdir -p ~/.subversion
+                    printf '[global]\nhttp-timeout = 3600\n' >> ~/.subversion/servers
+
+            -   name: WordPress Plugin Deploy
+                id: deploy
+                uses: 10up/action-wordpress-plugin-deploy@stable
+                with:
+                    generate-zip: true
+                env:
+                    SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+                    SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+                    SLUG: give
+
+            # actions/upload-release-asset is archived and unmaintained. The GitHub CLI is preinstalled
+            # on the runner and does the same job against the release the action published above.
+            -   name: Upload release asset
+                env:
+                    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    # The version is the tag. It reaches the shell as data rather than as part of the command,
+                    # since this job holds contents: write.
+                    TAG: ${{ steps.release.outputs.version }}
+                run: gh release upload "$TAG" "${{ github.workspace }}/give.zip" --clobber
+
+            # The release body is GitHub's generated pull request list. The changelog people actually read
+            # is the readme.txt entry for this version, so lead with that and keep the pull requests after.
+            # The body is read from the release the action published, since no release event carries it here.
+            -   name: Build the release announcement
+                id: announcement
+                env:
+                    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    REPO: ${{ github.event.repository.name }}
+                    TAG: ${{ steps.release.outputs.version }}
+                    URL: ${{ steps.release.outputs.release-url }}
+                run: |
+                    version="$TAG"
+                    body=$(gh release view "$TAG" --json body --jq .body)
+
+                    # readme.txt entries read "= [<version>] <date> =", a blank line, then bullets until the
+                    # next header. The blank line is skipped so the announcement starts with the first entry.
+                    changelog=$(awk -v header="= [$version]" '
+                        index($0, header) == 1 { found = 1; next }
+                        found && /^= / { exit }
+                        found && NF == 0 && !started { next }
+                        found { started = 1; print }
+                    ' readme.txt)
+
+                    # A random delimiter stops a release body that happens to contain the terminator from
+                    # closing the heredoc early and writing step outputs of its own.
+                    delimiter=$(openssl rand -hex 16)
+
+                    {
+                        echo "text<<${delimiter}"
+                        printf '*%s %s has just been released! 🎉*\n\n%s\n%s\n\n<%s|Link to Release>\n' \
+                            "$REPO" "$version" "$changelog" "$body" "$URL"
+                        echo "${delimiter}"
+                    } >> "$GITHUB_OUTPUT"
+
+            -   name: Slack Notification
+                uses: slackapi/slack-github-action@v4.0.0
+                with:
+                    webhook: ${{ secrets.SLACK_ANNOUNCEMENT_WEBHOOK }}
+                    webhook-type: incoming-webhook
+                    payload: |
+                        text: ${{ toJSON(steps.announcement.outputs.text) }}
