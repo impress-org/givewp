@@ -4,6 +4,13 @@ on:
     release:
         types: [ released ]
 
+# One deploy at a time, shared with release-dashboard-deploy.yml: both write to the same WordPress.org
+# SVN. A release this workflow deploys was published by hand; one the dashboard deploys never reaches
+# this workflow, since it is published with a workflow's own token.
+concurrency:
+    group: deploy-wordpress-org
+    cancel-in-progress: false
+
 jobs:
     tests:
         uses: ./.github/workflows/wordpress.yml
