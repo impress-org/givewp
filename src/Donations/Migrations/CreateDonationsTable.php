@@ -100,7 +100,7 @@ class CreateDonationsTable extends Migration
             sequential_number BIGINT UNSIGNED NULL,
             purchase_key VARCHAR(64) NULL,
             email VARCHAR(255) NOT NULL,
-            honorific VARCHAR(20) NULL,
+            honorific VARCHAR(255) NULL,
             first_name VARCHAR(255) NOT NULL,
             last_name VARCHAR(255) NULL,
             phone VARCHAR(50) NULL,
