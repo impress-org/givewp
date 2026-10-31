@@ -1,0 +1,66 @@
+{
+    "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+    "meta": {
+        "title": "with sample data",
+        "description": "3 campaigns and 100 test-mode donations. Opens a few minutes slower."
+    },
+    "landingPage": "/wp-admin/edit.php?post_type=give_forms&page=give-campaigns",
+    "preferredVersions": {
+        "php": "8.3",
+        "wp": "latest"
+    },
+    "features": {
+        "networking": true
+    },
+    "steps": [
+        {
+            "step": "defineWpConfigConsts",
+            "consts": {
+                "WP_DEBUG": true,
+                "WP_DEBUG_DISPLAY": true
+            }
+        },
+        {
+            "step": "login",
+            "username": "admin"
+        },
+        {
+            "step": "installTheme",
+            "themeData": {
+                "resource": "wordpress.org/themes",
+                "slug": "kadence"
+            },
+            "options": {
+                "activate": true
+            }
+        },
+        {
+            "step": "installPlugin",
+            "pluginData": {
+                "resource": "url",
+                "url": "{{ZIP_URL}}"
+            },
+            "options": {
+                "activate": true
+            }
+        },
+        {
+            "step": "installPlugin",
+            "pluginData": {
+                "resource": "url",
+                "url": "https://github.com/impress-org/give-data-generator/releases/download/1.1.0/give-data-generator.1.1.0.zip"
+            },
+            "options": {
+                "activate": true
+            }
+        },
+        {
+            "step": "wp-cli",
+            "command": "wp eval 'give_update_option(\"test_mode\", \"enabled\");'"
+        },
+        {
+            "step": "wp-cli",
+            "command": "wp give-data donations 100 --campaigns=3"
+        }
+    ]
+}
