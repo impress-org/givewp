@@ -97,12 +97,15 @@ To run the same check on your local site:
 wp plugin install plugin-check --activate
 wp plugin check give --require=wp-content/plugins/plugin-check/cli.php \
     --format=json > plugin-check-results.txt
-.github/plugin-check/fetch-baseline.sh develop
-.github/plugin-check/ratchet.sh plugin-check-results.txt
+toolbox=$(mktemp -d) && git clone --depth 1 https://github.com/stellarwp/plugin-toolbox "$toolbox"
+scripts="$toolbox/.github/actions/plugin-check-report"
+"$scripts/fetch-baseline.sh" develop baseline.json
+PLUGIN_CHECK_BASELINE=baseline.json "$scripts/ratchet.sh" plugin-check-results.txt
 ```
 
-`fetch-baseline.sh` needs the GitHub CLI (`gh`), signed in. It downloads the baseline of the latest
-run on `develop` next to the scripts, where `ratchet.sh` reads it and git ignores it.
+The two scripts come from [plugin-toolbox](https://github.com/stellarwp/plugin-toolbox), which runs
+the check for every plugin. `fetch-baseline.sh` needs the GitHub CLI (`gh`), signed in. It downloads
+the baseline of the latest run on `develop` into `baseline.json`, which `ratchet.sh` then reads.
 
 The `--require` flag is needed: without it, WP-CLI does not know the `plugin check` command. A dev
 checkout has files the release zip leaves out (tests, dotfiles, docs), so some `plugin_repo`

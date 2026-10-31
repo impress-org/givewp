@@ -98,6 +98,3 @@ addons/
 
 # claude
 .claude/worktrees
-
-# Plugin Check baseline, downloaded by .github/plugin-check/fetch-baseline.sh for local runs.
-/.github/plugin-check/baseline.json
