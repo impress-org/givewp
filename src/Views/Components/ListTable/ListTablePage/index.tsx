@@ -7,7 +7,7 @@ import DataViewsListTable from '../DataViewsListTable';
 import ListTableEmptyState from '../EmptyStates';
 import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
 import useLegacyRowActionsField from '../LegacyRowActions/useLegacyRowActionsField';
-import {columnsToFields, titleFieldId, visibleFieldIds} from '../adapters/columnsToFields';
+import {columnsToFields, isTitleColumnVisible, titleFieldId, visibleFieldIds} from '../adapters/columnsToFields';
 import {filterSettingsToFields, TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
 import {loadEntityElements} from '../adapters/loadEntityElements';
 import {scopeFromFilterSettings, viewFromInitialState} from '../adapters/viewFromInitialState';
@@ -110,7 +110,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
 
             const initialView = viewFromInitialState(
                 filterSettings,
-                {perPage, fields, titleField, contentMode},
+                {perPage, fields, titleField, showTitle: isTitleColumnVisible(columns, titleField), contentMode},
                 urlSearch
             );
 
