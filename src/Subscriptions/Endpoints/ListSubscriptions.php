@@ -77,10 +77,11 @@ class ListSubscriptions extends Endpoint
                         'type' => 'array',
                         'required' => false,
                         'default' => [],
+                        'maxItems' => 50,
                         'items' => [
                             'type' => 'integer',
                         ],
-                        'description' => 'Filter subscriptions by one or more campaign IDs. A 0 is ignored.',
+                        'description' => 'Filter subscriptions by one or more campaign IDs, at most 50. A 0 is ignored.',
                     ],
                     'end' => [
                         'type' => 'string',

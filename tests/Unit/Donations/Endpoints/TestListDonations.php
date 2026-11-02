@@ -807,6 +807,16 @@ class TestListDonations extends TestCase
 
     /**
      * @since TBD
+     */
+    public function testFiftyFormIdsAreAccepted()
+    {
+        $response = $this->dispatch(['formId' => implode(',', range(1001, 1050))]);
+
+        $this->assertSame(200, $response->get_status());
+    }
+
+    /**
+     * @since TBD
      *
      * @dataProvider invalidParamsProvider
      */
@@ -829,6 +839,8 @@ class TestListDonations extends TestCase
             'none inside a list' => [['campaignId' => 'none,1']],
             'non-numeric form' => [['formId' => 'abc']],
             'unknown donation type' => [['donationType' => 'x']],
+            'fifty-one campaigns' => [['campaignId' => implode(',', range(1001, 1051))]],
+            'fifty-one forms' => [['formId' => implode(',', range(1001, 1051))]],
         ];
     }
 

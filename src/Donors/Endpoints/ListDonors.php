@@ -75,10 +75,11 @@ class ListDonors extends Endpoint
                         'type' => 'array',
                         'required' => false,
                         'default' => [],
+                        'maxItems' => 50,
                         'items' => [
                             'type' => 'integer',
                         ],
-                        'description' => 'Filter donors by one or more campaign IDs. A 0 is ignored.',
+                        'description' => 'Filter donors by one or more campaign IDs, at most 50. A 0 is ignored.',
                     ],
                     'donorType' => [
                         'type' => 'string',

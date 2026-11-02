@@ -217,6 +217,19 @@ class TestListDonors extends TestCase
 
     /**
      * @since TBD
+     */
+    public function testFiftyCampaignIdsAreAccepted()
+    {
+        wp_set_current_user($this->factory()->user->create(['role' => 'administrator']));
+
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, '/give-api/v2/admin/donors');
+        $request->set_query_params(['campaignId' => implode(',', range(1001, 1050))]);
+
+        $this->assertSame(200, rest_do_request($request)->get_status());
+    }
+
+    /**
+     * @since TBD
      *
      * @dataProvider invalidParamsProvider
      */
@@ -240,6 +253,7 @@ class TestListDonors extends TestCase
         return [
             'non-numeric campaign' => [['campaignId' => 'abc']],
             'non-numeric campaign in a list' => [['campaignId' => '1,abc']],
+            'fifty-one campaigns' => [['campaignId' => implode(',', range(1001, 1051))]],
             'unknown donor type' => [['donorType' => 'x']],
         ];
     }

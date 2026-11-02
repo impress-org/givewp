@@ -49,7 +49,7 @@ class ListDonations extends Endpoint
     /**
      * @inheritDoc
      *
-     * @since TBD Accept a comma list of campaign IDs and a list of form IDs, and add the donationType parameter.
+     * @since TBD Accept a comma list of campaign IDs and a list of form IDs (at most 50 each), and add the donationType parameter.
      * @since 4.19.0 Add formId parameter and accept "none" for campaignId
      * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      * @since 3.4.0
@@ -82,17 +82,18 @@ class ListDonations extends Endpoint
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
-                        'pattern' => '^(none|\\d*|\\d+(,\\d+)+)$',
-                        'description' => 'Filter donations by campaign ID or a comma-separated list of campaign IDs, or "none" for donations that have no campaign.',
+                        'pattern' => '^(none|\\d*|\\d+(,\\d+){1,49})$',
+                        'description' => 'Filter donations by campaign ID or a comma-separated list of up to 50 campaign IDs, or "none" for donations that have no campaign.',
                     ],
                     'formId' => [
                         'type' => 'array',
                         'required' => false,
                         'default' => [],
+                        'maxItems' => 50,
                         'items' => [
                             'type' => 'integer',
                         ],
-                        'description' => 'Filter donations by one or more form IDs.',
+                        'description' => 'Filter donations by one or more form IDs. At most 50.',
                     ],
                     'donationType' => [
                         'type' => 'string',
