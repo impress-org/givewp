@@ -40,8 +40,6 @@ on:
 concurrency:
     group: deploy-wordpress-org
     cancel-in-progress: false
-    # Keeps every waiting run; the default keeps one and cancels it when another arrives.
-    queue: max
 
 jobs:
     tests:
