@@ -1,7 +1,7 @@
 <?php if (!defined('ABSPATH')) { exit; } ?>
 <?php
 /**
- * @since TBD Escape output, including translated strings, and replace short echo tags with escaped echo.
+ * @since 4.19.1 Escape output, including translated strings, and replace short echo tags with escaped echo.
  */
 ?>
 <div class="form_grid_options_wrap inner-panel">

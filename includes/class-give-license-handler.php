@@ -798,7 +798,7 @@ if ( ! class_exists('Give_License') ) :
 		 * @param $plugin
 		 *
 		 * @return string
-		 * @since TBD Escape output.
+		 * @since 4.19.1 Escape output.
 		 * @since 4.19.0 show add-ons covered by a Liquid Web license as licensed
 		 * @since 2.5.0
 		 */
@@ -879,7 +879,7 @@ if ( ! class_exists('Give_License') ) :
 		 * @param array $license
 		 *
 		 * @return string
-		 * @since TBD Escape output.
+		 * @since 4.19.1 Escape output.
 		 * @since 2.5.0
 		 */
 		private static function html_by_license( $license ) {
@@ -943,7 +943,7 @@ if ( ! class_exists('Give_License') ) :
 		 * @param array $plugin
 		 *
 		 * @return string
-		 * @since TBD Escape output and use gmdate() instead of date(), and add translators comments.
+		 * @since 4.19.1 Escape output and use gmdate() instead of date(), and add translators comments.
 		 * @since 2.5.0
 		 */
 		private static function html_license_row( $license, $plugin = [] ) {
@@ -1112,7 +1112,7 @@ if ( ! class_exists('Give_License') ) :
 		 * @param array $plugin
 		 *
 		 * @return string
-		 * @since TBD Escape output.
+		 * @since 4.19.1 Escape output.
 		 * @since 2.5.0
 		 */
 		public static function html_plugin_row( $plugin ) {
@@ -1183,7 +1183,7 @@ if ( ! class_exists('Give_License') ) :
 		 * Get refresh license status
 		 *
 		 * @return mixed|void
-		 * @since TBD Use gmdate() instead of date().
+		 * @since 4.19.1 Use gmdate() instead of date().
 		 * @since 2.5.0
 		 */
 		public static function refresh_license_status() {

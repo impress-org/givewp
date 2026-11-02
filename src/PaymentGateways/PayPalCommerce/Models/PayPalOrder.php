@@ -131,7 +131,7 @@ class PayPalOrder
     /**
      * Validate order given in array format.
      *
-     * @since TBD Escape exception message. Add translators comments.
+     * @since 4.19.1 Escape exception message. Add translators comments.
      * @since 2.9.0
      *
      * @param array $array

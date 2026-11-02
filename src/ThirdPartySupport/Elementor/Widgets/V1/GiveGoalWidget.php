@@ -164,7 +164,7 @@ class GiveGoalWidget extends Widget_Base
      *
      * Written in PHP and used to generate the final HTML.
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access protected
      */

@@ -21,7 +21,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 4.13.1 commented out the setFeatureFlagNotificationCounter method and added a filter to set the count to 0
      * @since 3.6.0
      * @inheritDoc

@@ -16,7 +16,7 @@ class Give_Settings_Recurring_Donations_Core extends Give_Settings_Page
     /**
      * Give_Settings_Recurring_Donations constructor.
      *
-     * @since TBD Number the placeholders and add translators comments.
+     * @since 4.19.1 Number the placeholders and add translators comments.
      */
     public function __construct()
     {

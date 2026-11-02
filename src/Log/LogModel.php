@@ -108,7 +108,7 @@ class LogModel
     /**
      * Set log date
      *
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      *
      * @param string $date
      */
@@ -225,7 +225,7 @@ class LogModel
     }
 
     /**
-     * @since TBD Store array and object values as JSON.
+     * @since 4.19.1 Store array and object values as JSON.
      *
      * @param string $key
      * @param mixed  $value
@@ -242,7 +242,7 @@ class LogModel
      * Add supplemental information to existing log.
      * Supplemental data will be added as a context with a key prefixed with the current timestamp.
      *
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      *
      * @param string $key
      * @param string $value
@@ -278,7 +278,7 @@ class LogModel
     /**
      * Save log record
      *
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      */
     public function save()
     {

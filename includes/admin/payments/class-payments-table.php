@@ -152,7 +152,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	/**
 	 * Add donation search filter.
 	 *
-	 * @since TBD Escape output, including translated strings, and use gmdate() instead of date().
+	 * @since 4.19.1 Escape output, including translated strings, and use gmdate() instead of date().
 	 *
 	 * @return void
 	 */
@@ -252,7 +252,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @param string $text     Label for the search box.
 	 * @param string $input_id ID of the search box.
 	 *
-	 * @since  TBD Escape output, including translated strings.
+	 * @since  4.19.1 Escape output, including translated strings.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -473,7 +473,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @param string       $column_name The name of the column.
 	 *
 	 * @access public
-	 * @since TBD Add translators comments.
+	 * @since 4.19.1 Add translators comments.
 	 * @since  4.19.0 Say No campaign when the donation has no campaign.
 	 * @since  1.0
      * @since 4.3.0 show campaign name instead of the form name
@@ -601,7 +601,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 *
 	 * @param object $payment Payment Data.
 	 *
-	 * @since TBD Add translators comments.
+	 * @since 4.19.1 Add translators comments.
 	 * @since 1.6
 	 *
 	 * @return array $actions
@@ -966,7 +966,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Retrieve all the data for all the payments.
 	 *
 	 * @access public
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since  1.0
 	 *
 	 * @return array  objects in array containing all the data for the payments

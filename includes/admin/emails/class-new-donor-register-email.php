@@ -127,7 +127,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		/**
 		 * email preview header.
 		 *
-		 * @since TBD Escape output, unslash and sanitize the request values, and return '' instead of null, so later give_email_preview_header callbacks get a string.
+		 * @since 4.19.1 Escape output, unslash and sanitize the request values, and return '' instead of null, so later give_email_preview_header callbacks get a string.
 		 * @since  2.0
 		 * @access public
 		 *

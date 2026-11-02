@@ -393,7 +393,7 @@ class Give_Stripe_Customer {
 	/**
 	 * This function is used to attach source to the customer, if not exists.
 	 *
-	 * @since TBD Read the payment mode through a sanitizing helper.
+	 * @since 4.19.1 Read the payment mode through a sanitizing helper.
 	 * @since  2.1
 	 * @since 2.11.0 Use Give_Stripe_Customer::doesSourceFingerPrintMatch function to verify source finger print
 	 * @access public

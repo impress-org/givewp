@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Note: only for internal use
  *
- * @since TBD Add translators comments. Check that the upload error is set and sanitize the file name.
+ * @since 4.19.1 Add translators comments. Check that the upload error is set and sanitize the file name.
  * @since 4.16.6 Use Plugin_Upgrader to install/update the add-on, replacing unreliable
  *            filename-based pre-existing checks and post-install detection.
  * @since 2.5.0
@@ -206,7 +206,7 @@ add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
  *
  * Note: only for internal use
  *
- * @since TBD Add translators comments. Check that the add-on is set before reading it.
+ * @since 4.19.1 Add translators comments. Check that the add-on is set before reading it.
  * @since 4.16.7 Redirect unified license keys (LWSW-) to the Unified License Manager, when it is available.
  * @since 2.5.0
  */
@@ -403,7 +403,7 @@ add_action( 'wp_ajax_give_get_license_info', 'give_get_license_info_handler' );
  *
  * Note: only for internal use
  *
- * @since TBD Check that the plugin is set before reading it.
+ * @since 4.19.1 Check that the plugin is set before reading it.
  * @since 4.16.6 Guard against empty or invalid plugin paths that previously bypassed
  *            the nonce and capability checks.
  * @since 2.5.0
@@ -478,7 +478,7 @@ add_action( 'wp_ajax_give_activate_addon', 'give_activate_addon_handler' );
  *
  * Note: only for internal use
  *
- * @since TBD Check that the license fields are set before reading them.
+ * @since 4.19.1 Check that the license fields are set before reading them.
  * @since 2.5.0
  */
 function give_deactivate_license_handler() {
@@ -555,7 +555,7 @@ add_action( 'wp_ajax_give_deactivate_license', 'give_deactivate_license_handler'
  *
  * Note: only for internal use
  *
- * @since TBD Use gmdate() instead of date(), and add translators comments.
+ * @since 4.19.1 Use gmdate() instead of date(), and add translators comments.
  * @since 2.5.0
  */
 function give_refresh_all_licenses_handler() {
@@ -671,7 +671,7 @@ add_filter( 'pre_set_site_transient_update_plugins', 'give_check_addon_updates',
  * @param string $file
  * @param array  $plugin
  *
- * @since TBD Escape output, and add translators comments.
+ * @since 4.19.1 Escape output, and add translators comments.
  * @since 2.5.0
  */
 function give_show_update_notification_on_multisite( $file, $plugin ) {
@@ -758,7 +758,7 @@ add_action( 'after_plugin_row', 'give_show_update_notification_on_multisite', 10
  * @param $file
  * @param $plugin
  *
- * @since TBD Escape output, and add translators comments.
+ * @since 4.19.1 Escape output, and add translators comments.
  * @since 2.5.0
  * @since 2.10.2 update condition to verify givewp addons
  */

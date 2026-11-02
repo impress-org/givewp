@@ -405,7 +405,7 @@ class Form
      *
      * Note: it will render style on basis on selected form template.
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.7.0
      */
     public function renderFormOnSingleDonationFormPage()

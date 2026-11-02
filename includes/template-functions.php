@@ -278,7 +278,7 @@ function give_get_theme_template_dir_name() {
 /**
  * Adds Give Version to the <head> tag
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.0
  * @return void
  */
@@ -438,7 +438,7 @@ if ( ! function_exists( 'give_output_content_wrapper_end' ) ) {
 /**
  * Single Give Form
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 if ( ! function_exists( 'give_left_sidebar_pre_wrap' ) ) {
 	function give_left_sidebar_pre_wrap() {

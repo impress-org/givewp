@@ -22,7 +22,7 @@ abstract class Enum implements EnumInterface
     /**
      * ValueObject constructor.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      *
      * @param mixed $value
      */
@@ -100,7 +100,7 @@ abstract class Enum implements EnumInterface
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      *
      * @param string $name
      * @param array  $args

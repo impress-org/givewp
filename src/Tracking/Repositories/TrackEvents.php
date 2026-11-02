@@ -96,7 +96,7 @@ class TrackEvents
     /**
      * Get request time.
      *
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 2.10.0
      *
      * @return false|string

@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give Payment Processing Message
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 ?>
 <div id="give-payment-processing">

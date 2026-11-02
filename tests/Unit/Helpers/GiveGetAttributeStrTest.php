@@ -5,12 +5,12 @@ namespace Give\Tests\Unit\Helpers;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 class GiveGetAttributeStrTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testEscapesEveryAttributeValue(): void
     {
@@ -27,7 +27,7 @@ class GiveGetAttributeStrTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDropsAnInvalidAttributeName(): void
     {
@@ -40,7 +40,7 @@ class GiveGetAttributeStrTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testTooltipLabelIsEscapedInAriaLabel(): void
     {

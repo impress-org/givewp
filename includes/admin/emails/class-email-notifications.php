@@ -238,7 +238,7 @@ class Give_Email_Notifications {
 	/**
 	 * Displays the email preview
 	 *
-	 * @since  TBD Escape output. Unslash and sanitize the request values.
+	 * @since  4.19.1 Escape output. Unslash and sanitize the request values.
 	 * @since  2.0
 	 * @access public
 	 * @return bool|null
@@ -321,7 +321,7 @@ class Give_Email_Notifications {
 	/**
 	 * Add header to donation receipt email preview
 	 *
-	 * @since   TBD Escape output.
+	 * @since   4.19.1 Escape output.
 	 * @since   2.0
 	 * @since 4.16.6 Re-check capability/nonce here, since this callback is also reachable via a direct action dispatch that bypasses the check normally done in preview_email().
 	 * @access  public
@@ -388,7 +388,7 @@ class Give_Email_Notifications {
 	/**
 	 * Displays the email preview
 	 *
-	 * @since TBD Use a safe redirect, and unslash and sanitize the request values.
+	 * @since 4.19.1 Use a safe redirect, and unslash and sanitize the request values.
 	 * @since  2.0
 	 * @access public
 	 * @return bool|null
