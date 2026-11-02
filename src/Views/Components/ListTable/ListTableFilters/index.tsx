@@ -203,19 +203,13 @@ export default function ListTableFilters({
 
         switch (declaration.kind) {
             case 'options': {
-                const {text, fullText, accessibleName} = filterChipText(declaration, chipValue, {
+                const {text, accessibleName} = filterChipText(declaration, chipValue, {
                     labelOf: (value) => optionLabel(declaration, statuses, value),
                     formatDate: formatSiteDate,
                 });
 
                 return (
-                    <FilterChip
-                        {...chip}
-                        text={text}
-                        fullText={fullText}
-                        accessibleName={accessibleName}
-                        hasValue={hasValue}
-                    >
+                    <FilterChip {...chip} text={text} accessibleName={accessibleName} hasValue={hasValue}>
                         {() => (
                             <OptionsFilterControl
                                 label={declaration.label}
@@ -244,19 +238,13 @@ export default function ListTableFilters({
                     />
                 );
             case 'date': {
-                const {text, fullText, accessibleName} = filterChipText(declaration, chipValue, {
+                const {text, accessibleName} = filterChipText(declaration, chipValue, {
                     labelOf: () => '',
                     formatDate: formatSiteDate,
                 });
 
                 return (
-                    <FilterChip
-                        {...chip}
-                        text={text}
-                        fullText={fullText}
-                        accessibleName={accessibleName}
-                        hasValue={hasValue}
-                    >
+                    <FilterChip {...chip} text={text} accessibleName={accessibleName} hasValue={hasValue}>
                         {(close) => (
                             <DateRangeFilterControl
                                 label={declaration.label}

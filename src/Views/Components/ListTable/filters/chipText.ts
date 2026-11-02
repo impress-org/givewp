@@ -48,9 +48,9 @@ function dateText(value: string, formatDate: (ymd: string) => string): string {
 }
 
 /**
- * The chip text of a filter. `text` is what the chip shows; `fullText` lists every label and is the
- * tooltip; `accessibleName` starts with `text`, so the spoken name holds the visible words, and then
- * lists the labels when the chip shows only a count. When every label is a numbered fallback such as
+ * The chip text of a filter. `text` is what the chip shows; `fullText` is the filter name with every
+ * label; `accessibleName` (the chip's name and tooltip) starts with `text`, so the spoken name holds
+ * the visible words, and then lists the labels when the chip shows only a count. When every label is a numbered fallback such as
  * "Donor #123", the filter name is not repeated in front of it.
  *
  * @since TBD Leave out the filter name when every label is a numbered fallback.
