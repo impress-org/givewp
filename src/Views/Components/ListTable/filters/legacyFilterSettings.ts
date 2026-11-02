@@ -1,6 +1,7 @@
 import type {Filter} from '@wordpress/dataviews';
 import {__} from '@wordpress/i18n';
-import {filterFieldId} from '../adapters/viewToParameters';
+import {NONE_VALUE} from './filterKinds';
+import {filterFieldId} from './viewFilterValue';
 import type {FilterConfig, TestModeToggle} from '../ListTablePage/types';
 import type {FilterDeclaration, FilterOption} from './types';
 
@@ -50,7 +51,7 @@ function declarationOf(filter: FilterConfig): FilterDeclaration | undefined {
         case 'campaignselect':
         case 'formselect': {
             const isCampaign = filter.type === 'campaignselect';
-            const allowNone = (filter.options ?? []).some((option) => option.value === 'none');
+            const allowNone = (filter.options ?? []).some((option) => option.value === NONE_VALUE);
 
             return {
                 kind: 'entity',
