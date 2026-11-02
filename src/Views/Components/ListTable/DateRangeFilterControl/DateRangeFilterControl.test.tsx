@@ -142,4 +142,22 @@ describe('DateRangeFilterControl', () => {
 
         expect(inputLabeled('End date').value).toBe('2024-03-15');
     });
+
+    it('clears a half-typed date when a preset is reset to nothing', async () => {
+        await render({preset: '30'});
+        await type(inputLabeled('Start date'), '2024-03-01');
+
+        await render(undefined);
+
+        expect(inputLabeled('Start date').value).toBe('');
+    });
+
+    it('clears a half-typed date when one preset is replaced by another', async () => {
+        await render({preset: '30'});
+        await type(inputLabeled('Start date'), '2024-03-01');
+
+        await render({preset: '90'});
+
+        expect(inputLabeled('Start date').value).toBe('');
+    });
 });
