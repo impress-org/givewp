@@ -1,5 +1,5 @@
 <?php if (!defined('ABSPATH')) { exit; } ?>
-<?php /** @since TBD Escape output and replace short echo tags with escaped echo. */ ?>
+<?php /** @since 4.19.1 Escape output and replace short echo tags with escaped echo. */ ?>
 :root {
     --give-primary-color: <?php echo sanitize_hex_color($primaryColor) ?? ''; ?>;
     --give-header-background-image: url("<?php echo esc_url_raw($headerBackgroundImage); ?>");

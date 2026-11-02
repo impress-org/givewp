@@ -7,14 +7,14 @@ use Give_Tools_Recount_Income;
 use ReflectionMethod;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 final class BatchToolOptionsTest extends TestCase
 {
     private const KEY = 'give_temp_batch_tool_options_test';
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -26,7 +26,7 @@ final class BatchToolOptionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -36,7 +36,7 @@ final class BatchToolOptionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testArrayIsStoredAsJsonWithoutAutoloadAndReadBack(): void
     {
@@ -54,7 +54,7 @@ final class BatchToolOptionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testNumericStringIsDecodedLikeBefore(): void
     {
@@ -67,7 +67,7 @@ final class BatchToolOptionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testMissingAndDeletedOptionsReturnFalse(): void
     {
@@ -83,7 +83,7 @@ final class BatchToolOptionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function call(object $object, string $method, ...$args)
     {

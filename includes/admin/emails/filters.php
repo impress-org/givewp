@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Add extra row actions to email notification table.
  *
- * @since TBD Add translators comments.
+ * @since 4.19.1 Add translators comments.
  * @since 2.0
  *
  * @param array                   $row_actions

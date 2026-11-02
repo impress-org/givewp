@@ -302,7 +302,7 @@ class Give_Batch_Export extends Give_Export {
 	/**
 	 * Perform the export.
 	 *
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @access public
 	 * @since  1.5
 	 * @return void

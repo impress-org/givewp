@@ -23,7 +23,7 @@ class BuildEmailPreview
     }
 
     /**
-     * @since TBD Sanitize the preview message before it's rendered into the email body.
+     * @since 4.19.1 Sanitize the preview message before it's rendered into the email body.
      *
      * @param string $emailHeader
      * @return string

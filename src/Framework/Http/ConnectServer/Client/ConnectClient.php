@@ -104,7 +104,7 @@ class ConnectClient
     }
 
     /**
-     * @since TBD Escape exception message. Add translators comments.
+     * @since 4.19.1 Escape exception message. Add translators comments.
      * @since 2.25.0
      *
      * @param array|WP_Error $response

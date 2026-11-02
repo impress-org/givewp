@@ -14,7 +14,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class UpdateSubscriptionStatus
 {
     /**
-     * @since TBD Number the placeholders and add translators comments.
+     * @since 4.19.1 Number the placeholders and add translators comments.
      * @since 4.16.0 Add note to subscription
      * @since 3.6.0
      *

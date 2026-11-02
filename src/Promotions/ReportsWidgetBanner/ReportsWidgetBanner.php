@@ -52,7 +52,7 @@ class ReportsWidgetBanner extends SaleBanners
     }
 
     /**
-     * @since TBD Sanitize the request URI.
+     * @since 4.19.1 Sanitize the request URI.
      * @since 3.13.0
      */
     public static function isShowing(): bool
