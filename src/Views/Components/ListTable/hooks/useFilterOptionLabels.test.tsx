@@ -12,9 +12,12 @@ const mockedFetch = apiFetch as unknown as jest.Mock;
 
 let root: Root;
 let labelFor: (value: string) => string | undefined;
+// What the last render saw for id 2, so a missed re-render shows up.
+let renderedTwo: string | undefined;
 
 function Harness({values}: {values: string[]}) {
     labelFor = useFilterOptionLabels('campaign', 'donations', values);
+    renderedTwo = labelFor('2');
 
     return null;
 }
@@ -68,6 +71,47 @@ describe('useFilterOptionLabels', () => {
 
         expect(mockedFetch).toHaveBeenCalledTimes(1);
         expect(labelFor('9')).toBeUndefined();
+    });
+
+    it('splits more than 50 unknown ids into requests of at most 50', async () => {
+        const ids = Array.from({length: 51}, (_, index) => String(index + 1));
+        mockedFetch.mockImplementation(({path}: {path: string}) => {
+            const asked = Array.from(decodeURIComponent(path).matchAll(/include\[\d+\]=(\d+)/g)).map((m) => m[1]);
+
+            return Promise.resolve({options: asked.map((value) => ({value, label: `L${value}`})), hasMore: false});
+        });
+
+        await render(ids);
+        await flush();
+
+        const counts = paths().map((path) => (path.match(/include\[/g) ?? []).length);
+        expect(counts.sort()).toEqual([1, 50]);
+        expect(labelFor('1')).toBe('L1');
+        expect(labelFor('51')).toBe('L51');
+    });
+
+    it('returns a new lookup function when the cache fills', async () => {
+        let resolve!: (page: {options: {value: string; label: string}[]; hasMore: boolean}) => void;
+        mockedFetch.mockReturnValue(new Promise((res) => (resolve = res)));
+        await render(['2']);
+        const before = labelFor;
+
+        await act(async () => resolve({options: [{value: '2', label: 'Two'}], hasMore: false}));
+
+        expect(labelFor).not.toBe(before);
+        expect(labelFor('2')).toBe('Two');
+    });
+
+    it('still shows a label that arrives after the values changed', async () => {
+        let resolve!: (page: {options: {value: string; label: string}[]; hasMore: boolean}) => void;
+        mockedFetch.mockReturnValue(new Promise((res) => (resolve = res)));
+        rememberLabels('campaign', [{value: '1', label: 'One'}]);
+
+        await render(['2']);
+        await render(['1']);
+        await act(async () => resolve({options: [{value: '2', label: 'Two'}], hasMore: false}));
+
+        expect(renderedTwo).toBe('Two');
     });
 
     it('does not request the none value', async () => {
