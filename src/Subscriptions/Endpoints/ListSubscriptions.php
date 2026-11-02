@@ -32,6 +32,7 @@ class ListSubscriptions extends Endpoint
     /**
      * @inheritDoc
      *
+     * @since TBD Accept a list of campaign IDs.
      * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      */
     public function registerRoute()
@@ -73,9 +74,13 @@ class ListSubscriptions extends Endpoint
                         'format' => 'date-time'
                     ],
                     'campaignId' => [
-                        'type' => 'integer',
+                        'type' => 'array',
                         'required' => false,
-                        'default' => 0
+                        'default' => [],
+                        'items' => [
+                            'type' => 'integer',
+                        ],
+                        'description' => 'Filter subscriptions by one or more campaign IDs. A 0 is ignored.',
                     ],
                     'end' => [
                         'type' => 'string',
@@ -218,6 +223,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
+     * @since TBD Accept several campaign IDs.
      * @since 4.18.0 Filter payment mode in WHERE instead of HAVING so the database can use indexes
      * @since 4.12.0 Add "status" where condition
      * @since 4.11.0 fix search by donor name or email
@@ -233,7 +239,7 @@ class ListSubscriptions extends Endpoint
         $search = $this->request->get_param('search');
         $start = $this->request->get_param('start');
         $end = $this->request->get_param('end');
-        $campaignId = $this->request->get_param('campaignId');
+        $campaignIds = array_values(array_filter(array_map('intval', (array)$this->request->get_param('campaignId'))));
         $testMode = $this->request->get_param('testMode');
         $status = $this->request->get_param('status');
 
@@ -267,20 +273,20 @@ class ListSubscriptions extends Endpoint
             $query->where('created', $end, '<=');
         }
 
-        if ($campaignId) {
+        if ($campaignIds) {
             $query
-                ->whereIn('id', static function (QueryBuilder $builder) use ($campaignId) {
+                ->whereIn('id', static function (QueryBuilder $builder) use ($campaignIds) {
                     $builder
                         ->from('give_donationmeta')
                         ->distinct()
                         ->select('meta_value')
                         ->where('meta_key', DonationMetaKeys::SUBSCRIPTION_ID)
-                        ->whereIn('donation_id', static function (QueryBuilder $builder) use ($campaignId) {
+                        ->whereIn('donation_id', static function (QueryBuilder $builder) use ($campaignIds) {
                             $builder
                                 ->from('give_donationmeta')
                                 ->select('donation_id')
                                 ->where('meta_key', DonationMetaKeys::CAMPAIGN_ID)
-                                ->where('meta_value', $campaignId);
+                                ->whereIn('meta_value', $campaignIds);
                         });
                 });
         }
