@@ -30,7 +30,7 @@ class HandleGatewayPaymentCommand
     /**
      * Handle gateway command
      *
-     * @since TBD Unslash and sanitize the referer URL.
+     * @since 4.19.1 Unslash and sanitize the referer URL.
      * @since 3.0.0 Handle PaymentPending command
      * @since 2.29.0 Handle PaymentRefunded command
      * @since 2.27.0 return responses

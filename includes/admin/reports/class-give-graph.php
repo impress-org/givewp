@@ -149,7 +149,7 @@ class Give_Graph {
 	/**
 	 * Load the graphing library script
 	 *
-	 * @since TBD Set explicit versions on the enqueued assets.
+	 * @since 4.19.1 Set explicit versions on the enqueued assets.
 	 * @since 1.0
 	 */
 	public function load_scripts() {
@@ -174,7 +174,7 @@ class Give_Graph {
 	 * Build the graph and return it as a string
 	 *
 	 * @var array
-	 * @since TBD Escape output.
+	 * @since 4.19.1 Escape output.
 	 * @since 1.0
 	 * @return string
 	 */
@@ -323,7 +323,7 @@ endforeach;
 	/**
 	 * Output the final graph
 	 *
-	 * @since TBD Escape output.
+	 * @since 4.19.1 Escape output.
 	 * @since 1.0
 	 */
 	public function display() {

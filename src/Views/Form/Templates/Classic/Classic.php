@@ -68,7 +68,7 @@ class Classic extends Template implements Hookable, Scriptable
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @inheritDoc
      */
     public function loadHooks()
@@ -220,7 +220,7 @@ class Classic extends Template implements Hookable, Scriptable
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @inheritDoc
      */
     public function renderLoadingView($formId = null)
@@ -241,7 +241,7 @@ class Classic extends Template implements Hookable, Scriptable
     /**
      * Render donation form header
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.19.0 use trinary operator instead of Coalesce operator to make code php 5.6 compatible.
      *
      * @param  int  $formId
@@ -267,7 +267,7 @@ class Classic extends Template implements Hookable, Scriptable
     /**
      * Render donation amount heading
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      */
     public function renderDonationAmountHeading()
     {
@@ -281,7 +281,7 @@ class Classic extends Template implements Hookable, Scriptable
     /**
      * Render the SVG icon definitions.
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @void
      */
     public function renderIconDefinitions()
@@ -377,7 +377,7 @@ class Classic extends Template implements Hookable, Scriptable
     /**
      * Load file
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      *
      * @param  string  $file
      * @param  array  $args

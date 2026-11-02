@@ -48,7 +48,7 @@ class Give_Donor_Stats {
 	/**
 	 *  Get total donated amount
 	 *
-	 * @since TBD Prepare SQL with placeholders.
+	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since  2.2.0
 	 * @access public
 	 *

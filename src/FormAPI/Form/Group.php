@@ -65,7 +65,7 @@ class Group extends Field
     /**
      * Get sub fields.
      *
-     * @since TBD Escape exception message. Add translators comments.
+     * @since 4.19.1 Escape exception message. Add translators comments.
      * @since 2.7.0
      *
      * @param string $fieldId

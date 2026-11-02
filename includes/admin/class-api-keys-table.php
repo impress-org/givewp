@@ -222,7 +222,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	/**
 	 * Generate the table navigation above or below the table
 	 *
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @since  3.1.0
 	 * @access protected
 	 *
@@ -253,7 +253,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * Display the key generation form
 	 *
 	 * @access public
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @since  1.1
 	 *
 	 * @param  string $which

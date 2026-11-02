@@ -249,7 +249,7 @@ function give_get_email_tags() {
 /**
  * Get a formatted HTML list of all available email tags
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.0
  *
  * @return string

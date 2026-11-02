@@ -7,12 +7,12 @@ use Give_Addon_Activation_Banner;
 use ReflectionClass;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 class TestAddonActivationBanner extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -22,7 +22,7 @@ class TestAddonActivationBanner extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -32,7 +32,7 @@ class TestAddonActivationBanner extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDismissLinkWithoutNonceSavesNothing()
     {
@@ -45,7 +45,7 @@ class TestAddonActivationBanner extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDismissLinkWithInvalidNonceSavesNothing()
     {
@@ -58,7 +58,7 @@ class TestAddonActivationBanner extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDismissLinkWithValidNonceSavesTheDismissal()
     {
@@ -72,7 +72,7 @@ class TestAddonActivationBanner extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function setRequest($nonce)
     {
@@ -87,7 +87,7 @@ class TestAddonActivationBanner extends TestCase
     /**
      * Builds the banner without its constructor, which only runs on the Plugins screen.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     private function makeBanner(int $userId): Give_Addon_Activation_Banner
     {

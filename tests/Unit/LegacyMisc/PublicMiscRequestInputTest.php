@@ -8,19 +8,19 @@ use Give\Tests\TestCase;
  * Checks that unslashing and sanitizing request input in the public legacy includes
  * did not change how valid requests behave.
  *
- * @since TBD
+ * @since 4.19.1
  */
 final class PublicMiscRequestInputTest extends TestCase
 {
     /**
      * The $_SERVER values from before the test, so changes made here do not reach later tests.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     private array $serverBackup = [];
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -30,7 +30,7 @@ final class PublicMiscRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -44,7 +44,7 @@ final class PublicMiscRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetIpReturnsTheFirstForwardedAddress(): void
     {
@@ -56,7 +56,7 @@ final class PublicMiscRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetIpFallsBackToTheRemoteAddress(): void
     {
@@ -67,7 +67,7 @@ final class PublicMiscRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testAdminMessagesKeyReadsTheUrlMessages(): void
     {
@@ -78,7 +78,7 @@ final class PublicMiscRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testAdminPostIdReadsTheRequestedPost(): void
     {
@@ -88,7 +88,7 @@ final class PublicMiscRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testRecentlyActivatedAddonsRecordsTheSelectedPlugins(): void
     {
@@ -103,7 +103,7 @@ final class PublicMiscRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testRecentlyActivatedAddonsRecordsASinglePlugin(): void
     {
@@ -117,7 +117,7 @@ final class PublicMiscRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testIsHostDetectsFlywheelFromTheServerName(): void
     {
@@ -127,7 +127,7 @@ final class PublicMiscRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testIsAddNewFormPageReadsTheRequestUri(): void
     {

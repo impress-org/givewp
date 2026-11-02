@@ -212,7 +212,7 @@ class GiveMultiFormGoalWidget extends Widget_Base
      *
      * Written in PHP and used to generate the final HTML.
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @access protected
      */
     protected function render()

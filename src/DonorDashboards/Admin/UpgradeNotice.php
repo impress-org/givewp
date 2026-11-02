@@ -43,7 +43,7 @@ class UpgradeNotice
     /**
      * Render notice output
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.10.0
      * @return void
      *

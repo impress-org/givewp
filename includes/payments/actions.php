@@ -447,7 +447,7 @@ if ( give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
  * Will add/update when user add click on the checkout page.
  * The status of the donation doest not matter as it get change when user had made the payment successfully.
  *
- * @since TBD Unslash the page URL and store it with esc_url_raw().
+ * @since 4.19.1 Unslash the page URL and store it with esc_url_raw().
  * @since 1.8.13
  *
  * @param int $payment_id Payment id for which the meta value should be updated.

@@ -9,14 +9,14 @@ use Give\Uninstall\Actions\DeleteGiveOptions;
 /**
  * Covers the option cleanup of the uninstall script.
  *
- * @since TBD
+ * @since 4.19.1
  */
 class DeleteGiveOptionsTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function giveOptionNames(): array
     {
@@ -37,7 +37,7 @@ class DeleteGiveOptionsTest extends TestCase
     /**
      * Options of other plugins. Several have "give" in the name, one is the name from issue #8323.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     private function otherOptionNames(): array
     {
@@ -53,7 +53,7 @@ class DeleteGiveOptionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testItDeletesTheOptionsOfGiveWPAndLeavesTheOptionsOfOtherPlugins()
     {
@@ -75,7 +75,7 @@ class DeleteGiveOptionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testItDeletesTheGiveSettingsOption()
     {
@@ -87,7 +87,7 @@ class DeleteGiveOptionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testUnderscoreInThePrefixIsNotAWildcard()
     {
@@ -102,7 +102,7 @@ class DeleteGiveOptionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testItReturnsAnEmptyListWhenThereIsNothingToDelete()
     {
@@ -112,7 +112,7 @@ class DeleteGiveOptionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testTheLikePatternsStartWithAGiveWPPrefix()
     {

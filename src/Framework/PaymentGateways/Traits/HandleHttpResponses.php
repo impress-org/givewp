@@ -85,7 +85,7 @@ trait HandleHttpResponses
     /**
      * This checks the server headers for 'application/json' to determine if it should respond with json.
      *
-     * @since TBD Unslash and sanitize the headers.
+     * @since 4.19.1 Unslash and sanitize the headers.
      * @since 2.32.0
      *
      * @return bool

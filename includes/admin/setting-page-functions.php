@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get current setting tab.
  *
- * @since TBD Unslash and sanitize the tab name.
+ * @since 4.19.1 Unslash and sanitize the tab name.
  * @since  1.8
  * @return string
  */
@@ -36,7 +36,7 @@ function give_get_current_setting_tab() {
 /**
  * Get current setting section.
  *
- * @since TBD Unslash and sanitize the section name.
+ * @since 4.19.1 Unslash and sanitize the section name.
  * @since  1.8
  * @return string
  */
@@ -64,7 +64,7 @@ function give_get_current_setting_section() {
 /**
  * Get current setting page.
  *
- * @since TBD Unslash and sanitize the page name.
+ * @since 4.19.1 Unslash and sanitize the page name.
  * @since  1.8
  * @return string
  */
