@@ -1,0 +1,12 @@
+.givewp-list-table-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--givewp-spacing-2);
+    padding-block: var(--givewp-spacing-2);
+
+    &__test-mode-text {
+        padding-inline: var(--givewp-spacing-3);
+        font-size: var(--givewp-font-size-paragraph-md);
+    }
+}
