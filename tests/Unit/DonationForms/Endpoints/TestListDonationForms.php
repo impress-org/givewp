@@ -336,6 +336,35 @@ class TestListDonationForms extends TestCase
     /**
      * @since TBD
      */
+    public function testRejectsCampaignSentAsAnArray()
+    {
+        wp_set_current_user($this->factory()->user->create(['role' => 'administrator']));
+
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, '/give-api/v2/admin/forms');
+        $request->set_query_params(['campaign' => ['1']]);
+        $response = rest_do_request($request);
+
+        $this->assertSame(400, $response->get_status());
+        $this->assertSame('rest_invalid_param', $response->get_data()['code']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testCampaignValidatorRejectsAnArrayAndKeepsTheStringRule()
+    {
+        $endpoint = new ListDonationForms();
+
+        $this->assertFalse($endpoint->validateCampaignListSize(['1']));
+        $this->assertFalse($endpoint->validateCampaignListSize(implode(',', range(1, 51))));
+        $this->assertTrue($endpoint->validateCampaignListSize(implode(',', range(1, 50))));
+        $this->assertTrue($endpoint->validateCampaignListSize(''));
+        $this->assertTrue($endpoint->validateCampaignListSize('abc'));
+    }
+
+    /**
+     * @since TBD
+     */
     public function testCampaignListWithOneJunkItemUsesOnlyTheValidId()
     {
         $campaign = Campaign::factory()->create();

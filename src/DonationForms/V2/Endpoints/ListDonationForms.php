@@ -279,7 +279,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
-     * Rejects a campaign list of more than 50 items. Any other value is accepted, as it always was.
+     * Rejects an array and a campaign list of more than 50 items. Any other value is accepted, as it always was.
      *
      * @since TBD
      *
@@ -289,7 +289,15 @@ class ListDonationForms extends Endpoint
      */
     public function validateCampaignListSize($value): bool
     {
-        return ! is_string($value) || count(explode(',', $value)) <= 50;
+        if (is_array($value) || is_object($value)) {
+            return false;
+        }
+
+        if (! is_string($value)) {
+            return true;
+        }
+
+        return count(explode(',', $value)) <= 50;
     }
 
     /**
