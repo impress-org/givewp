@@ -45,7 +45,7 @@ export default function BulkEditDonationFormsDialog({
     };
 
     return (
-        <Modal title={label} onRequestClose={onClose}>
+        <Modal title={label} onRequestClose={() => !isBusy && onClose()}>
             <BulkActionConfirm
                 message={
                     <>
