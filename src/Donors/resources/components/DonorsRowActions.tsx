@@ -33,7 +33,7 @@ function DeleteDonorsDialog({items, onClose, onDelete, ...context}: DeleteDonors
         submit({run: () => onDelete(ids, deleteDonationsAndRecords), ids, label: deleteLabel, onDone: onClose});
 
     return (
-        <Modal title={__('Delete donors', 'give')} onRequestClose={onClose}>
+        <Modal title={__('Delete donors', 'give')} onRequestClose={() => !isBusy && onClose()}>
             <BulkActionConfirm
                 message={
                     <>
