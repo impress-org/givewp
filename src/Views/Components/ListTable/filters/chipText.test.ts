@@ -36,7 +36,8 @@ describe('filterChipText', () => {
         [status, undefined, helpers, 'Status'],
         [status, [], helpers, 'Status'],
         [status, ['active', 'draft'], helpers, 'Status: Active, Draft'],
-        [donor, '123', noLabel, 'Donor: Donor #123'],
+        [donor, '123', noLabel, 'Donor #123'],
+        [donor, '123', {...helpers, labelOf: () => 'Jane Doe'}, 'Donor: Jane Doe'],
         [date, '30', helpers, 'Donation date: Last 30 days'],
         [date, '2026-09-01_2026-09-15', helpers, 'Donation date: 1 Sep 2026 – 15 Sep 2026'],
         [date, '2026-09-01_', helpers, 'Donation date: on or after 1 Sep 2026'],
@@ -51,6 +52,12 @@ describe('filterChipText', () => {
             fullText: 'Status: Active, Inactive, Archived, Draft',
             accessibleName: 'Status: 4 selected. Active, Inactive, Archived, Draft',
         }));
+
+    it('keeps the filter name before a label that only shares its first letters', () =>
+        expect(filterChipText(donor, '123', {...helpers, labelOf: () => 'Donovan'}).text).toBe('Donor: Donovan'));
+
+    it('drops the filter name when every value is a numbered label', () =>
+        expect(filterChipText({...donor, multiple: true}, ['1', '2'], noLabel).text).toBe('Donor #1, Donor #2'));
 
     it('falls back to a numbered label for an entity without a name', () =>
         expect(fallbackLabel(donor, '123')).toBe('Donor #123'));

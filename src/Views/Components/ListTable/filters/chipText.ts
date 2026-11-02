@@ -50,8 +50,10 @@ function dateText(value: string, formatDate: (ymd: string) => string): string {
 /**
  * The chip text of a filter. `text` is what the chip shows; `fullText` lists every label and is the
  * tooltip; `accessibleName` starts with `text`, so the spoken name holds the visible words, and then
- * lists the labels when the chip shows only a count.
+ * lists the labels when the chip shows only a count. When every label is a numbered fallback such as
+ * "Donor #123", the filter name is not repeated in front of it.
  *
+ * @since TBD Leave out the filter name when every label is a numbered fallback.
  * @since TBD Add the accessible name, which starts with the chip text.
  * @since TBD
  */
@@ -79,7 +81,11 @@ export function filterChipText(
     const list = labels.join(', ');
 
     if (labels.length <= MAX_CHIP_LABELS) {
-        return same(withLabel(list));
+        // "Donor #123" already names the filter, so "Donor: Donor #123" would say it twice.
+        const fallbackStart = fallbackLabel(declaration, '');
+        const allFallback = labels.every((label) => label.startsWith(fallbackStart));
+
+        return same(allFallback ? list : withLabel(list));
     }
 
     /* translators: %d: number of selected values. */
