@@ -433,6 +433,7 @@ a.give-stripe-connect-temp-dismiss:active {
 }
 
 .give-stripe-disconnect-account-btn,
+.give-stripe-webhook-edit-btn,
 .give-stripe-edit-statement-descriptor-btn{
     font-size: 16px;
     color: #9ea3a8;
@@ -759,5 +760,350 @@ a.give-stripe-connect-temp-dismiss:active {
                 margin: 0 0 25px;
             }
         }
+    }
+}
+
+
+// --------------------------------
+// Webhook Status field
+// --------------------------------
+.give-stripe-webhook-status .give-stripe-account-actions {
+    flex-wrap: nowrap;
+}
+
+.give-stripe-webhook-edit {
+    white-space: nowrap;
+
+    a {
+        margin-left: 10px;
+    }
+}
+
+.give-stripe-webhook-status-button {
+    border: 0;
+    border-radius: 4px;
+    margin-top: 3px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #fff;
+    background: #2271b1;
+    cursor: pointer;
+
+    &:disabled {
+        background: #a7aaad;
+        cursor: default;
+    }
+
+    [data-state='healthy'] > .give-stripe-account-actions > & {
+        background: #69b868;
+    }
+
+    [data-state='error'] > .give-stripe-account-actions > & {
+        background: #d63638;
+    }
+}
+
+// --------------------------------
+// Webhook endpoints modal
+// --------------------------------
+.give-stripe-webhook-modal .give-modal {
+    max-width: 720px;
+}
+
+.give-stripe-webhooks {
+    font-size: 14px;
+    font-weight: 400;
+
+    &__notice {
+        margin: 0 0 var(--givewp-spacing-3, 12px);
+        padding: var(--givewp-spacing-2, 8px) var(--givewp-spacing-3, 12px);
+        border-left: 4px solid var(--givewp-blue-500, #0b72d9);
+        background: var(--givewp-blue-25, #f2f9ff);
+
+        &--success {
+            border-color: var(--givewp-green-500, #459948);
+            background: var(--givewp-green-25, #f2fff3);
+        }
+
+        &--error {
+            border-color: var(--givewp-red-500, #d92d0b);
+            background: var(--givewp-red-25, #fff4f2);
+        }
+
+        &--warning {
+            border-color: var(--givewp-yellow-500, #d9b60b);
+            background: var(--givewp-yellow-25, #fffdf2);
+        }
+
+        &--busy {
+            border-color: var(--givewp-blue-500, #0b72d9);
+            background: var(--givewp-blue-25, #f2f9ff);
+        }
+    }
+
+    &__banner {
+        margin: 0 0 var(--givewp-spacing-3, 12px);
+        padding: var(--givewp-spacing-2, 8px) var(--givewp-spacing-3, 12px);
+        border-left: 4px solid var(--givewp-yellow-500, #d9b60b);
+        background: var(--givewp-yellow-25, #fffdf2);
+
+        strong {
+            display: block;
+            margin: 0 0 2px;
+        }
+
+        code {
+            word-break: break-all;
+        }
+    }
+
+    &__summary {
+        margin: 0 0 var(--givewp-spacing-3, 12px);
+        color: var(--givewp-neutral-500, #4b5563);
+    }
+
+    &__empty {
+        margin: 0 0 var(--givewp-spacing-3, 12px);
+        color: var(--givewp-neutral-500, #4b5563);
+    }
+
+    &__list {
+        margin: 0 0 var(--givewp-spacing-4, 16px);
+        padding: 0;
+        list-style: none;
+    }
+
+    &__item {
+        margin: 0 0 var(--givewp-spacing-3, 12px);
+        padding: var(--givewp-spacing-3, 12px);
+        border: 1px solid var(--givewp-neutral-100, #dcdcde);
+        border-radius: 4px;
+
+        &--site {
+            border-color: var(--givewp-blue-500, #0b72d9);
+        }
+    }
+
+    &__head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--givewp-spacing-2, 8px);
+        margin: 0 0 var(--givewp-spacing-2, 8px);
+    }
+
+    &__url {
+        font-weight: 600;
+        word-break: break-all;
+    }
+
+    &__badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 2px var(--givewp-spacing-2, 8px);
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: var(--givewp-neutral-700, #1f2937);
+        background: var(--givewp-neutral-100, #dcdcde);
+
+        &::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--givewp-neutral-400, #8c8c8c);
+        }
+
+        &--enabled {
+            background: var(--givewp-green-100, #cef2cf);
+
+            &::before {
+                background: var(--givewp-green-600, #2d802f);
+            }
+        }
+
+        &--disabled {
+            background: var(--givewp-red-50, #ffdfd9);
+
+            &::before {
+                background: var(--givewp-red-600, #a62308);
+            }
+        }
+
+        &--site {
+            background: var(--givewp-blue-50, #d9ecff);
+
+            &::before {
+                background: var(--givewp-blue-600, #0857a6);
+            }
+        }
+    }
+
+    &__details {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        gap: 4px var(--givewp-spacing-4, 16px);
+        margin: 0 0 var(--givewp-spacing-2, 8px);
+
+        dt {
+            color: var(--givewp-neutral-500, #4b5563);
+        }
+
+        dd {
+            margin: 0;
+        }
+    }
+
+    &__missing {
+        display: block;
+        color: var(--givewp-red-600, #a62308);
+    }
+
+    &__edit,
+    &__create {
+        margin: 0 0 var(--givewp-spacing-2, 8px);
+
+        summary {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            list-style: none;
+
+            &::-webkit-details-marker {
+                display: none;
+            }
+        }
+    }
+
+    &__edit {
+        summary::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            margin-left: 6px;
+            border-right: 2px solid currentColor;
+            border-bottom: 2px solid currentColor;
+            transform: rotate(45deg);
+            transition: transform 0.15s ease;
+        }
+
+        &[open] summary::after {
+            transform: rotate(225deg);
+        }
+    }
+
+    &__form {
+        display: grid;
+        gap: var(--givewp-spacing-3, 12px);
+        margin-top: var(--givewp-spacing-3, 12px);
+
+        label span {
+            display: block;
+            margin: 0 0 2px;
+        }
+
+        input[type='url'] {
+            width: 100%;
+        }
+
+        button {
+            justify-self: start;
+        }
+    }
+
+    &__events {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--givewp-spacing-2, 8px) var(--givewp-spacing-4, 16px);
+        margin: 0;
+        padding: 0;
+        border: 0;
+
+        legend {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        code {
+            font-size: 12px;
+        }
+
+        &[disabled] {
+            opacity: 0.65;
+        }
+    }
+
+    &__events-hint {
+        margin: 0;
+        font-size: 12px;
+        color: var(--givewp-neutral-500, #4b5563);
+    }
+
+    &__delete {
+        margin: 0;
+        padding-top: var(--givewp-spacing-2, 8px);
+        border-top: 1px solid var(--givewp-neutral-100, #dcdcde);
+    }
+
+    &__delete-confirm {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--givewp-spacing-2, 8px);
+
+        &-label {
+            color: var(--givewp-neutral-700, #1f2937);
+        }
+    }
+
+    &__delete-confirm-button {
+        padding: 2px 10px;
+        border: 1px solid var(--givewp-red-500, #d92d0b);
+        border-radius: 3px;
+        color: var(--givewp-shades-white, #fff);
+        background: var(--givewp-red-500, #d92d0b);
+        cursor: pointer;
+
+        &:hover {
+            background: var(--givewp-red-600, #a62308);
+        }
+    }
+
+    &__delete-cancel-button {
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--givewp-neutral-500, #4b5563);
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    button.is-busy::after {
+        content: '';
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-left: 6px;
+        border: 2px solid currentColor;
+        border-top-color: transparent;
+        border-radius: 50%;
+        vertical-align: middle;
+        animation: give-stripe-webhooks-busy 0.8s linear infinite;
+    }
+}
+
+@keyframes give-stripe-webhooks-busy {
+    to {
+        transform: rotate(360deg);
     }
 }

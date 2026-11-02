@@ -7,6 +7,7 @@ import { __, sprintf } from '@wordpress/i18n'
 
 import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/set-default-account-action'
 import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/disconnect-stripe-account-action'
+import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/webhook-endpoints.js'
 import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/customize-stripe-account-validation'
 
 window.addEventListener( 'DOMContentLoaded', function() {
