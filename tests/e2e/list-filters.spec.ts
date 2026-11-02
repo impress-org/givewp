@@ -94,14 +94,22 @@ async function setTestMode(page: Page, isOn: boolean): Promise<void> {
     await reloaded;
 }
 
+let siteToday: string | undefined;
+
 /**
- * `YYYY-MM-DD` of a day in the month before today, in the browser's calendar.
+ * `YYYY-MM-DD` of a day in the month before today, in the site's calendar. The seeded `createdAt` and
+ * the list's day bounds are in the site's time zone, so the browser's clock must not choose the month.
  */
 function dayOfLastMonth(day: number): string {
-    const today = new Date();
-    const date = new Date(today.getFullYear(), today.getMonth() - 1, day);
+    siteToday ??= wp('eval', 'echo wp_date("Y-m-d");');
 
-    return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(day).padStart(2, '0')].join('-');
+    const [year, month] = siteToday.split('-').map(Number);
+    // `month` is 1-based, so `month - 2` is last month in the 0-based Date API. Only the year and month are read.
+    const date = new Date(Date.UTC(year, month - 2, 1));
+
+    return [date.getUTCFullYear(), String(date.getUTCMonth() + 1).padStart(2, '0'), String(day).padStart(2, '0')].join(
+        '-'
+    );
 }
 
 test.describe('Shared list filters', () => {
