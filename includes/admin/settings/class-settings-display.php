@@ -37,7 +37,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 		/**
 		 * Get settings array.
 		 *
-		 * @since TBD Add translators comments.
+		 * @since 4.19.1 Add translators comments.
 		 * @since  1.8
 		 * @return array
 		 */

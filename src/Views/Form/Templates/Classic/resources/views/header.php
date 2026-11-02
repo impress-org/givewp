@@ -1,6 +1,6 @@
 <?php
 /**
- * @since TBD Escape output, replace short echo tags with escaped echo, number the placeholders, and add translators comments.
+ * @since 4.19.1 Escape output, replace short echo tags with escaped echo, number the placeholders, and add translators comments.
  *
  * @var string $title
  * @var string $description

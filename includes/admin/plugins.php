@@ -250,7 +250,7 @@ add_filter( 'all_plugins', 'give_prepare_filter_addons' );
  * @param array $data Array of plugin metadata.
  * @param array $response An array of metadata about the available plugin update.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 2.1
  */
 function give_in_plugin_update_message( $data, $response ) {
@@ -399,7 +399,7 @@ add_action( 'admin_head', 'give_plugin_notice_css' );
  * Renders the Give Deactivation Survey Form.
  * Note: only for internal use
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 4.10.0 Updated the icon path to the new build directory.
  * @since 2.2
  */
@@ -540,7 +540,7 @@ add_action( 'wp_ajax_give_deactivation_popup', 'give_deactivation_popup' );
  * Ajax callback after the deactivation survey form has been submitted.
  * Note: only for internal use
  *
- * @since TBD Check that the form data is set before reading it.
+ * @since 4.19.1 Check that the form data is set before reading it.
  * @since 2.2
  */
 function give_deactivation_form_submit() {

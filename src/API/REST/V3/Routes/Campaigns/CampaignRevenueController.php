@@ -64,7 +64,7 @@ class CampaignRevenueController extends WP_REST_Controller
     }
 
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 4.13.1
      * @throws Exception
      */
@@ -121,7 +121,7 @@ class CampaignRevenueController extends WP_REST_Controller
     }
 
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 4.13.1
      */
     public function getDatesFromRange(DateTimeInterface $startDate, DateTimeInterface $endDate, string $groupBy): array

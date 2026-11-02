@@ -594,7 +594,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get allowed email tags for current email notification.
 		 *
-		 * @since  TBD Escape output.
+		 * @since  4.19.1 Escape output.
 		 * @since  2.0
 		 * @access private
 		 *
@@ -846,7 +846,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Decode preview email template tags.
 		 *
-		 * @since TBD Use gmdate() instead of date().
+		 * @since 4.19.1 Use gmdate() instead of date().
 		 * @since 2.14.0 display payment sequential number as id
 		 * @since 2.0
 		 *

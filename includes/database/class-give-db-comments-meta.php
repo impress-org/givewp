@@ -77,7 +77,7 @@ class Give_DB_Comment_Meta extends Give_DB_Meta {
 	/**
 	 * Delete all comment meta
 	 *
-	 * @since TBD Use the registered table name from $wpdb.
+	 * @since 4.19.1 Use the registered table name from $wpdb.
 	 * @since  2.3.0
 	 * @access public
 	 *

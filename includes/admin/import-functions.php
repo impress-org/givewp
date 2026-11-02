@@ -214,7 +214,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = [] ) {
 /**
  * Give get user details if not then create a user. Used in Import Donation CSV.
  *
- * @since TBD Use gmdate() instead of date(), and add translators comments.
+ * @since 4.19.1 Use gmdate() instead of date(), and add translators comments.
  * @since 1.8.13
  *
  * @param $data
@@ -1110,7 +1110,7 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
 /**
  * Record payment notes that is being imported from CSV.
  *
- * @since TBD Add translators comments.
+ * @since 4.19.1 Add translators comments.
  * @since  1.8.13
  *
  * @param  int $payment_id The ID number of the payment.

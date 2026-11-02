@@ -210,7 +210,7 @@ class DonateController
     }
 
     /**
-     * @since TBD Escape exception message. Add translators comments.
+     * @since 4.19.1 Escape exception message. Add translators comments.
      *
      * @throws PaymentGatewayException
      */

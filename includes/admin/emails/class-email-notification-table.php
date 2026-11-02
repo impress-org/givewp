@@ -76,7 +76,7 @@ class Give_Email_Notification_Table extends WP_List_Table {
 	/**
 	 * Get name column.
 	 *
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @since  2.0
 	 * @access public
 	 *
@@ -104,7 +104,7 @@ class Give_Email_Notification_Table extends WP_List_Table {
 	/**
 	 * Get recipient column.
 	 *
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @since  2.0
 	 * @access public
 	 *
@@ -301,7 +301,7 @@ class Give_Email_Notification_Table extends WP_List_Table {
 	/**
 	 * Message to be displayed when there are no items
 	 *
-	 * @since  TBD Escape translated output.
+	 * @since  4.19.1 Escape translated output.
 	 * @since  2.0
 	 * @access public
 	 */

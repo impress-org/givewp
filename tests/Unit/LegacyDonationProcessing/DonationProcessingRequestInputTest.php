@@ -11,7 +11,7 @@ use WPDieException;
  * Runs donations through the legacy processing code (give_process_donation_form() and its helpers)
  * to check that unslashing and sanitizing request input did not change how valid requests behave.
  *
- * @since TBD
+ * @since 4.19.1
  */
 final class DonationProcessingRequestInputTest extends TestCase
 {
@@ -20,12 +20,12 @@ final class DonationProcessingRequestInputTest extends TestCase
     /**
      * The $_SERVER values from before the test, so changes made here do not reach later tests.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     private array $serverBackup = [];
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -49,7 +49,7 @@ final class DonationProcessingRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -66,7 +66,7 @@ final class DonationProcessingRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function createFormId(): int
     {
@@ -85,7 +85,7 @@ final class DonationProcessingRequestInputTest extends TestCase
     /**
      * Stops the legacy flow where it would normally end the request (give_die() returns in tests).
      *
-     * @since TBD
+     * @since 4.19.1
      */
     private function stopAt(string $hook): void
     {
@@ -98,7 +98,7 @@ final class DonationProcessingRequestInputTest extends TestCase
     /**
      * Slashed the way WordPress slashes superglobals before plugins read them.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     private function validPost(int $formId, array $extra = []): array
     {
@@ -115,7 +115,7 @@ final class DonationProcessingRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testAjaxValidationPassesWithExtraGatewayFields(): void
     {
@@ -143,7 +143,7 @@ final class DonationProcessingRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonationReachesTheGatewayWithUnslashedDonorData(): void
     {
@@ -177,7 +177,7 @@ final class DonationProcessingRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonationWithABadNonceIsRejected(): void
     {
@@ -200,7 +200,7 @@ final class DonationProcessingRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testSpamCheckReadsTheUserAgent(): void
     {
@@ -215,7 +215,7 @@ final class DonationProcessingRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testChosenGatewayIsReadFromTheRequest(): void
     {
@@ -231,7 +231,7 @@ final class DonationProcessingRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testOfflineGatewayStaysAvailableOnTheNewFormScreen(): void
     {
@@ -244,7 +244,7 @@ final class DonationProcessingRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonationLevelsMinAndMaxAreSavedFromSlashedPostData(): void
     {

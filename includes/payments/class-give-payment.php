@@ -640,7 +640,7 @@ final class Give_Payment {
     /**
      * Create the base of a payment.
      *
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 4.16.7.2       Sanitize first, last, and title name values before storing donor meta.
      * @since  1.5
      * @access private
@@ -810,7 +810,7 @@ final class Give_Payment {
      *
      * Once items have been set, an update is needed to save them to the database.
      *
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 4.16.7.2 Sanitize first and last name values when saving billing meta.
      * @access public
      *

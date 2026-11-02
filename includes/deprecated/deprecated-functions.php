@@ -32,7 +32,7 @@ add_action( 'give_init', '_give_load_deprecated_global_params' );
 /**
  * Checks if Guest checkout is enabled for a particular donation form
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.4.1
  *
@@ -53,7 +53,7 @@ function give_no_guest_checkout( $form_id ) {
 /**
  * Default Log Views
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8
  * @return array $views Log Views
@@ -76,7 +76,7 @@ function give_log_default_views() {
 /**
  * Donation form validate agree to "Terms and Conditions".
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
@@ -92,7 +92,7 @@ function give_purchase_form_validate_agree_to_terms() {
 /**
  * Donation Form Validate Logged In User.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
@@ -108,7 +108,7 @@ function give_purchase_form_validate_logged_in_user() {
 /**
  * Donation Form Validate Logged In User.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
@@ -124,7 +124,7 @@ function give_purchase_form_validate_gateway() {
 /**
  * Donation Form Validate Fields.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
@@ -140,7 +140,7 @@ function give_purchase_form_validate_fields() {
 /**
  * Validates the credit card info.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
@@ -156,7 +156,7 @@ function give_purchase_form_validate_cc() {
 /**
  * Validates the credit card info.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
@@ -173,7 +173,7 @@ function give_get_purchase_cc_info() {
 /**
  * Validates the credit card info.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  *
@@ -192,7 +192,7 @@ function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 /**
  * Donation form validate user login.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
@@ -208,7 +208,7 @@ function give_purchase_form_validate_user_login() {
 /**
  * Donation Form Validate Guest User
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
@@ -224,7 +224,7 @@ function give_purchase_form_validate_guest_user() {
 /**
  * Donate Form Validate New User
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  */
@@ -241,7 +241,7 @@ function give_purchase_form_validate_new_user() {
 /**
  * Get Donation Form User
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  *
@@ -261,7 +261,7 @@ function give_get_purchase_form_user( $valid_data = [] ) {
  *
  * Renders the button on the Checkout.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.0
  * @deprecated 1.8.8
  *
@@ -279,7 +279,7 @@ function give_checkout_button_purchase( $form_id ) {
 /**
  * Get the donor ID associated with a payment.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since 1.0
  *
  * @param int $payment_id Payment ID.
@@ -297,7 +297,7 @@ function give_get_payment_customer_id( $payment_id ) {
 /**
  * Get Total Donations.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since  1.0
  *
  * @return int $count Total sales.
@@ -316,7 +316,7 @@ function give_get_total_sales() {
  * Returns total number of donations a donor has made.
  *
  * @access      public
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since       1.0
  *
  * @param       int|string $user The ID or email of the donor.
@@ -337,7 +337,7 @@ function give_count_purchases_of_customer( $user = null ) {
  * Retrieves the donation count and the total amount spent for a specific user.
  *
  * @access      public
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since       1.0
  *
  * @param       int|string $user The ID or email of the donor to retrieve stats for.
@@ -357,7 +357,7 @@ function give_get_purchase_stats_by_user( $user = '' ) {
  *
  * Retrieves a list of all donations by a specific user.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since  1.0
  *
  * @param int    $user   User ID or email address
@@ -382,7 +382,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
  * Checks to see if a user has donated to at least one form.
  *
  * @access      public
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since       1.0
  *
  * @param       int $user_id The ID of the user to check.
@@ -400,7 +400,7 @@ function give_has_purchases( $user_id = null ) {
  * Counts the total number of donors.
  *
  * @access        public
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since         1.0
  *
  * @return        int The total number of donors.
@@ -415,7 +415,7 @@ function give_count_total_customers() {
  * Calculates the total amount spent by a user.
  *
  * @access      public
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since       1.0
  *
  * @param       int|string $user The ID or email of the donor.
@@ -432,7 +432,7 @@ function give_purchase_total_of_user( $user = null ) {
 /**
  * Deletes a Donation
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since  1.0
  *
  * @param  int  $payment_id      Payment ID (default: 0).
@@ -455,7 +455,7 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
  * Undoes a donation, including the decrease of donations and earning stats.
  * Used for when refunding or deleting a donation.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since  1.0
  *
  * @param  int|bool $form_id    Form ID (default: false).
@@ -474,7 +474,7 @@ function give_undo_purchase( $form_id, $payment_id ) {
 /**
  * Trigger a Donation Deletion.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since 1.0
  *
  * @param array $data Arguments passed.
@@ -491,7 +491,7 @@ function give_trigger_purchase_delete( $data ) {
 /**
  * Increases the donation total count of a donation form.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since 1.0
  *
  * @param int $form_id  Give Form ID
@@ -511,7 +511,7 @@ function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
  *
  * Stores log information for a donation.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since 1.0
  *
  * @param int         $give_form_id Give Form ID.
@@ -533,7 +533,7 @@ function give_record_sale_in_log( $give_form_id, $payment_id, $price_id = false,
  * Prints all stored errors. Ensures errors show up on the appropriate form;
  * For use during donation process. If errors exist, they are returned.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since 1.0
  * @uses  give_get_errors()
  * @uses  give_clear_errors()
@@ -553,7 +553,7 @@ function give_print_errors( $form_id ) {
  *
  * Helper function to easily output an error message properly wrapped; used commonly with shortcodes
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since      1.3
  *
  * @param string $message  Message to store with the error.
@@ -574,7 +574,7 @@ function give_output_error( $message, $echo = true, $error_id = 'warning' ) {
  *
  * Retrieves the donation summary.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since       1.0
  *
  * @param array $purchase_data
@@ -631,7 +631,7 @@ function give_admin_notices_disabled( $payment_id = 0 ) {
  *
  * @param array $payment_data Payment Data.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since 1.8.14
  *
  * @return string
@@ -849,7 +849,7 @@ function give_get_donor_donation_comments( $donor_id, $comment_args = [], $searc
 /**
  * Converts a PHP date format for use in JavaScript.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since 2.2.0
  * @deprecated 2.3.0
  *
@@ -894,7 +894,7 @@ function give_convert_php_date_format_to_js( $php_format ) {
 /**
  * Get localized date format for use in JavaScript.
  *
- * @since TBD Stop collecting a debug backtrace for the notice.
+ * @since 4.19.1 Stop collecting a debug backtrace for the notice.
  * @since 2.2.0
  * @deprecated 2.3.0
  *
@@ -909,7 +909,7 @@ function give_get_localized_date_format_to_js() {
 /**
  * Get donor latest comment
  *
- * @since TBD Document why the query is safe.
+ * @since 4.19.1 Document why the query is safe.
  * @since 2.2.0
  * @deprecated 2.3.0
  *
@@ -1025,7 +1025,7 @@ function give_email_tag_receipt_id( $tag_args ) {
 /**
  * Check site host
  *
- * @since TBD Unslash and sanitize the server name.
+ * @since 4.19.1 Unslash and sanitize the server name.
  * @since 1.0
  *
  * @param bool /string $host The host to check

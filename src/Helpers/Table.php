@@ -29,7 +29,7 @@ class Table
     /**
      * Check if the given table exists
      *
-     * @since TBD Remove the quotes around the %s placeholder.
+     * @since 4.19.1 Remove the quotes around the %s placeholder.
      * @since  2.9.0
      * @access public
      *

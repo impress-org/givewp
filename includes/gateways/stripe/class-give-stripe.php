@@ -53,7 +53,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		/**
 		 * This function is used to include the related Stripe core files.
 		 *
-		 * @since TBD Add translators comments.
+		 * @since 4.19.1 Add translators comments.
 		 * @since 4.0.0 prevented loading translation when using get_plugin_data to avoid _load_textdomain_just_in_time error
 		 * @since  2.5.0
 		 * @since 2.11.0 Stripe sdk loading logic has been removed because

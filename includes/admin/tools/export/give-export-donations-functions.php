@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Return of meta keys for a donation form.
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  *
  * @see http://wordpress.stackexchange.com/questions/58834/echo-all-meta-keys-of-a-custom-post-type
  */
@@ -240,7 +240,7 @@ add_filter( 'give_ajax_form_search_args', 'give_export_donation_form_search_args
 /**
  * Add Donation standard fields in export donation page
  *
- * @since TBD Escape translated output.
+ * @since 4.19.1 Escape translated output.
  * @since 3.12.1 add Donor Phone Number to donor fields.
  * @since 2.1
  */
@@ -556,7 +556,7 @@ add_action( 'give_export_donation_fields', 'give_export_donation_standard_fields
 /**
  * Add Donation Custom fields in export donation page
  *
- * @since TBD Escape translated output.
+ * @since 4.19.1 Escape translated output.
  * @since 2.1
  */
 function give_export_donation_custom_fields() {
@@ -582,7 +582,7 @@ add_action( 'give_export_donation_fields', 'give_export_donation_custom_fields',
 /**
  * Add Donation hidden fields in export donation page
  *
- * @since TBD Escape translated output.
+ * @since 4.19.1 Escape translated output.
  * @since 2.1
  */
 function give_export_donation_hidden_fields() {

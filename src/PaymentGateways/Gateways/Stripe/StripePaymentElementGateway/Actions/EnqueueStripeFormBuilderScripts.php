@@ -13,7 +13,7 @@ class EnqueueStripeFormBuilderScripts
     /**
      * Enqueues the Stripe scripts and styles for the Form Builder.
      *
-     * @since TBD Set an explicit version on the script and style.
+     * @since 4.19.1 Set an explicit version on the script and style.
      *
      * @return void
      */

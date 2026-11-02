@@ -123,7 +123,7 @@ class DonorStatisticsQuery extends QueryBuilder
 
 
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 4.5.0 update to account for exchange rate
      * @since 4.4.0
      */
@@ -149,7 +149,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 4.5.0 update to account for exchange rate
      * @since 4.4.0
      */
