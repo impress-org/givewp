@@ -1,6 +1,7 @@
 import type {ListTableParameters} from '../ListTablePage/types';
 import type {View} from '@wordpress/dataviews';
 import {dayBounds, parseDateToken, resolveDateRange} from './dateRange';
+import {NONE_VALUE} from './filterKinds';
 import type {DateFilterDeclaration, FilterDeclaration, FilterValue, OptionsFilterDeclaration} from './types';
 import {viewFilterValue} from './viewFilterValue';
 
@@ -71,8 +72,8 @@ export function filterRequestParameters(
         }
 
         // "No campaign" is sent as the text `none`, not as a list.
-        const isNone = Array.isArray(value) && value[0] === 'none';
+        const isNone = Array.isArray(value) && value[0] === NONE_VALUE;
 
-        return {...parameters, [declaration.parameter]: isNone ? 'none' : value};
+        return {...parameters, [declaration.parameter]: isNone ? NONE_VALUE : value};
     }, {});
 }

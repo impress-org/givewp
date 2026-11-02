@@ -2,6 +2,7 @@ import {__} from '@wordpress/i18n';
 import EntityFilterControl from '../EntityFilterControl';
 import FilterChip from '../FilterChip';
 import {filterChipText} from '../filters/chipText';
+import {NONE_VALUE} from '../filters/filterKinds';
 import {formatSiteDate} from '../filters/siteDate';
 import type {EntityFilterDeclaration, FilterOption} from '../filters/types';
 import useFilterOptionLabels from '../hooks/useFilterOptionLabels';
@@ -13,7 +14,7 @@ import type {ListTableScreenKey} from '../state/types';
  *
  * @since TBD
  */
-export const NONE_VALUE = 'none';
+export {NONE_VALUE} from '../filters/filterKinds';
 
 const noneOption = (): FilterOption => ({value: NONE_VALUE, label: __('No campaign', 'give')});
 

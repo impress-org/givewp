@@ -2,6 +2,7 @@ import type {Filter} from '@wordpress/dataviews';
 import type {FilterByGroupedOptions, FilterConfig} from '../ListTablePage/types';
 import {hasTestModeToggle, TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
 import {filterFieldId, isApplied, snapPerPage} from '../adapters/viewToParameters';
+import {isBarFilter} from '../filters/filterKinds';
 import {parseFilterValue, serializeFilterValue} from '../filters/filterValue';
 import type {BarFilterDeclaration, FilterDeclaration, StatusVocabularyEntry} from '../filters/types';
 import type {ListTableView, ParseResult, ViewQuery, ViewQueryContext} from './types';
@@ -195,9 +196,6 @@ export function declarationUrlParameter(
         },
     };
 }
-
-const isBarFilter = (declaration: FilterDeclaration): declaration is BarFilterDeclaration =>
-    declaration.kind !== 'search';
 
 /**
  * The screen's filter parameters: from the declarations when it has them, else from the filter

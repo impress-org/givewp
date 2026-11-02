@@ -7,6 +7,7 @@ import DataViewsListTable from '../DataViewsListTable';
 import ListTableEmptyState from '../EmptyStates';
 import ListTableFilters from '../ListTableFilters';
 import ListTableSearch from '../ListTableSearch';
+import {isBarFilter} from '../filters/filterKinds';
 import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
 import useLegacyRowActionsField from '../LegacyRowActions/useLegacyRowActionsField';
 import {columnsToFields, titleFieldId} from '../adapters/columnsToFields';
@@ -71,9 +72,6 @@ export type {
 
 const isSearch = (declaration: FilterDeclaration): declaration is SearchFilterDeclaration =>
     declaration.kind === 'search';
-
-const isBarFilter = (declaration: FilterDeclaration): declaration is BarFilterDeclaration =>
-    declaration.kind !== 'search';
 
 /**
  * Opens the confirm modal for a legacy row action.
