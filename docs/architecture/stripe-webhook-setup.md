@@ -46,9 +46,22 @@ one request per account.
 **Edit** opens a modal with the endpoints of the account (`WebhookEndpointsModalView`): URL, enabled
 state, how many required events it sends, mode, creation time, a form to change URL, status and required
 events, a delete button, and a form to add an endpoint. Events outside `WebhookTarget::REQUIRED_EVENTS`
-are not shown and are kept on save. An endpoint that sends `*` shows every event checked and its event
-list is not changed. A new endpoint gets the required events checked, `EnsureWebhookEndpoint::API_VERSION`
+are not shown and are kept on save. An endpoint that sends `*` shows every event checked with a hint that
+GiveWP does not change its event list, and its event list is not changed. A new endpoint gets the required
+events checked, `EnsureWebhookEndpoint::API_VERSION`
 and the description `GiveWP`. API version, description and metadata are not shown.
+
+The modal also shows a warning notice when the account has endpoints and none of them sends events to
+this site's listener URL, and with zero endpoints the add form renders expanded with an
+"Add your first endpoint" button.
+
+The modal JS (`webhook-endpoints.js`) locks the content while an operation runs (all buttons disabled,
+`aria-busy`, a spinner on the submit button, a busy notice), opens one form at a time, and moves the
+keyboard focus to the notice after every content swap. A failed request never wipes the list: the JS
+prepends an error notice, reopens the form the operation came from, and puts the submitted values back
+into it — the refreshed markup holds what Stripe has stored, not what the admin typed. Delete runs
+through a two-step inline confirm built from the form's `data-confirm` attribute; Cancel, Escape, or a
+click outside reverts it.
 
 `ManageWebhookEndpointsController` (`givewp_stripe_manage_webhook_endpoints`, own nonce,
 `manage_give_settings`) takes `operation` = `status`, `list`, `create`, `update` or `delete`, plus
