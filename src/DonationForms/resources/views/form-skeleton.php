@@ -5,7 +5,7 @@
  * the form-skeleton directory. The bars are decorative, so the whole sketch is hidden from
  * assistive tech and the element that embeds it carries the loading announcement.
  *
- * @since TBD Replace short echo tags with escaped echo.
+ * @since 4.19.1 Replace short echo tags with escaped echo.
  * @since 4.17.0
  *
  * @var string     $design   One of classic, multi-step, two-panel-steps.

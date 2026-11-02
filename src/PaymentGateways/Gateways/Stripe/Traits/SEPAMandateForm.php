@@ -7,7 +7,7 @@ trait SEPAMandateForm
     use FormFieldMarkup;
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      */
     public function getMandateFormHTML(int $form_id, array $args): string
     {

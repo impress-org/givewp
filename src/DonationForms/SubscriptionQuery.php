@@ -37,7 +37,7 @@ class SubscriptionQuery extends QueryBuilder
     }
 
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 3.12.0
      */
     public function between($startDate, $endDate)

@@ -1,6 +1,6 @@
 <?php
 /**
- * @since TBD Escape output, replace short echo tags with escaped echo, and do not pass a variable to the translation function.
+ * @since 4.19.1 Escape output, replace short echo tags with escaped echo, and do not pass a variable to the translation function.
  */
 
 use Give\Helpers\Form\Template;

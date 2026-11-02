@@ -237,7 +237,7 @@ function give_send_to_gateway( $gateway, $payment_data ) {
  * Determines the currently selected donation payment gateway.
  *
  * @access public
- * @since  TBD Unslash and sanitize the requested form ID and payment mode.
+ * @since  4.19.1 Unslash and sanitize the requested form ID and payment mode.
  * @since  1.0
  *
  * @param  int $form_id The ID of the Form

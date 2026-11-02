@@ -793,7 +793,7 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Output metabox settings.
 	 *
-	 * @since TBD Escape output.
+	 * @since 4.19.1 Escape output.
 	 * @since 1.8
 	 *
 	 * @return void
@@ -897,7 +897,7 @@ class Give_MetaBox_Form_Data {
 	 * @param object $post Post Object.
 	 *
 	 * @access public
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @since  2.1.0
 	 *
 	 * @return void
@@ -954,7 +954,7 @@ class Give_MetaBox_Form_Data {
 	 * @param int        $post_id Post ID.
 	 * @param int|object $post    Post Object.
 	 *
-	 * @since TBD Unslash and sanitize the request values.
+	 * @since 4.19.1 Unslash and sanitize the request values.
 	 * @since 1.8
 	 *
 	 * @return void
@@ -1104,7 +1104,7 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Save form template setting handler
 	 *
-	 * @since TBD Check that the request values are set.
+	 * @since 4.19.1 Check that the request values are set.
 	 * @since 4.19.0.1 Sanitize colour-picker settings as hex colours when saving.
 	 * @since 4.16.2 Normalize file field values as URLs when saving form template settings.
 	 *

@@ -4,7 +4,7 @@ namespace Give\Donations\Actions;
 
 class GeneratePurchaseKey {
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 2.19.6
      *
      * @param string $email

@@ -78,7 +78,7 @@ class Max implements ValidationRule, ValidatesOnFrontEnd
     /**
      * @inheritDoc
      *
-     * @since TBD Number the placeholders and add translators comments.
+     * @since 4.19.1 Number the placeholders and add translators comments.
      * @since 4.19.0.2 Compare the amount as parsed into Money in the submitted currency.
      * @since 4.16.8 Skip amounts the admin configured on the form, and report exceeding the maximum instead of
      *            repeating the minimum wording.
@@ -90,6 +90,7 @@ class Max implements ValidationRule, ValidatesOnFrontEnd
             $value = $this->parseAmount((string)$value, $this->submittedCurrency($values));
 
             if ($value === null) {
+                /* translators: %s: Field label */
                 $fail(sprintf(__('%s must be a valid amount', 'give'), '{field}'));
 
                 return;

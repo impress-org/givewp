@@ -124,7 +124,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 		/**
 		 * Print the HTML for core setting exporter.
 		 *
-		 * @since TBD Escape output, including translated strings.
+		 * @since 4.19.1 Escape output, including translated strings.
 		 * @since 2.1
 		 */
 		public function html() {

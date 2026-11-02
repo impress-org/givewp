@@ -79,7 +79,7 @@ class Give_Subscriptions_DB extends Give_DB
      *
      * @access  public
      *
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 4.11.0 add campaign_id column
      * @since   1.0
      */
@@ -230,7 +230,7 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Retrieve all subscriptions for a donor.
      *
-     * @since TBD Allowlist the order direction and document why the query is safe.
+     * @since 4.19.1 Allowlist the order direction and document why the query is safe.
      * @since   1.0
      *
      * @param array $args
@@ -299,7 +299,7 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Count the total number of subscriptions in the database.
      *
-     * @since TBD Only group by a column of the subscriptions table.
+     * @since 4.19.1 Only group by a column of the subscriptions table.
      *
      * @param array $args
      *
@@ -348,7 +348,7 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Create the table.
      *
-     * @since TBD Prepare the SHOW TABLES query.
+     * @since 4.19.1 Prepare the SHOW TABLES query.
      *
      * @access  public
      * @since   1.0
@@ -393,7 +393,7 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Get Renewing Subscriptions
      *
-     * @since TBD Use gmdate() instead of date(), and document why the query is safe.
+     * @since 4.19.1 Use gmdate() instead of date(), and document why the query is safe.
      *
      * @param string $period
      *
@@ -437,7 +437,7 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Get expiring subscriptions.
      *
-     * @since TBD Use gmdate() instead of date(), and document why the query is safe.
+     * @since 4.19.1 Use gmdate() instead of date(), and document why the query is safe.
      *
      * @param string $period
      *
@@ -499,7 +499,7 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Build the query args for subscriptions.
      *
-     * @since TBD Escape values in the WHERE clause.
+     * @since 4.19.1 Escape values in the WHERE clause.
      *
      * @param array $args
      *
@@ -625,7 +625,7 @@ class Give_Subscriptions_DB extends Give_DB
     }
 
     /**
-     * @since TBD Prepare the donor name search.
+     * @since 4.19.1 Prepare the donor name search.
      * @since 2.26.0 Replace deprecated get_page_by_title() with give_get_page_by_title().
      *
      * @param $args
@@ -690,7 +690,7 @@ class Give_Subscriptions_DB extends Give_DB
     }
 
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      *
      * @param $args
      *
@@ -719,7 +719,7 @@ class Give_Subscriptions_DB extends Give_DB
     }
 
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      *
      * @param $args
      *

@@ -59,7 +59,7 @@ class AddPaymentModeToSubscriptionTable extends Migration
     /**
      * Add payment mode column to subscription table.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.24.0
      *
      * @return void
@@ -86,7 +86,7 @@ class AddPaymentModeToSubscriptionTable extends Migration
     /**
      * Process payment mode for existing subscriptions.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.24.0
      *
      * @return void

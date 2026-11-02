@@ -131,7 +131,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since TBD Set explicit versions on the enqueued assets.
+     * @since 4.19.1 Set explicit versions on the enqueued assets.
      * @since 4.1.0 Added custom form styles
      * @since 3.0.0
      */
@@ -315,7 +315,7 @@ class DonationFormViewModel
      *
      * @since 4.16.7 Isolate the printed assets from anything enqueued after the form has been prepared
      * @since 4.14.3 Escape HTML attributes for classNames property
-     * @since TBD Escape output and replace short echo tags with escaped echo.
+     * @since 4.19.1 Escape output and replace short echo tags with escaped echo.
      * @since 3.20.0 Adds class for form design
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
@@ -470,7 +470,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since TBD Set explicit versions on the enqueued assets.
+     * @since 4.19.1 Set explicit versions on the enqueued assets.
      * @since 3.0.0 Set script translations
      * @since 3.0.0
      */

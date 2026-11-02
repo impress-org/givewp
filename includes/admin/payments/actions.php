@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
  *
  * Process the payment details edit
  *
- * @since TBD Escape output, use gmdate() instead of date(), and unslash and sanitize the comment.
+ * @since 4.19.1 Escape output, use gmdate() instead of date(), and unslash and sanitize the comment.
  * @since 2.27.0 Change to save comment to donations meta table
  * @since  1.0
  *
@@ -367,7 +367,7 @@ add_action( 'give_update_payment_details', 'give_update_payment_details' );
 /**
  * Trigger a Donation Deletion.
  *
- * @since TBD Escape output. Use a safe redirect.
+ * @since 4.19.1 Escape output. Use a safe redirect.
  * @since 1.0
  *
  * @param array $data Arguments passed.
@@ -394,7 +394,7 @@ add_action( 'give_delete_payment', 'give_trigger_donation_delete' );
 /**
  * AJAX Store Donation Note
  *
- * @since TBD Escape output. Unslash and sanitize the request input.
+ * @since 4.19.1 Escape output. Unslash and sanitize the request input.
  * @since 2.25.3 Add nonce check.
  */
 function give_ajax_store_payment_note() {
@@ -451,7 +451,7 @@ add_action( 'wp_ajax_give_insert_payment_note', 'give_ajax_store_payment_note' )
 /**
  * Triggers a donation note deletion without ajax
  *
- * @since TBD Escape output. Use a safe redirect.
+ * @since 4.19.1 Escape output. Use a safe redirect.
  * @since 1.0
  *
  * @param array $data Arguments passed
@@ -480,7 +480,7 @@ add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );
 /**
  * Delete a payment note deletion with ajax
  *
- * @since TBD Escape output. Sanitize the request input.
+ * @since 4.19.1 Escape output. Sanitize the request input.
  * @since 2.25.3 Add nonce check.
  * @since 1.0
  *

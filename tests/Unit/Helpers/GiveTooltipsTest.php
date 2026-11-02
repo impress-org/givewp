@@ -5,12 +5,12 @@ namespace Give\Tests\Unit\Helpers;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 class GiveTooltipsTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testPrintRenderHelpEchoesRenderHelpOutput(): void
     {
@@ -22,7 +22,7 @@ class GiveTooltipsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testRenderHelpDoesNotDoubleEscapeAnAlreadyEscapedLabel(): void
     {
