@@ -2788,3 +2788,97 @@ function give_get_page_by_title(string $page_title, string $output = OBJECT, str
 
     return get_post($pages[0], $output);
 }
+
+/**
+ * Check whether a role can be given to new donor accounts.
+ *
+ * A role is safe when it exists and holds none of the capabilities that grant site
+ * administration, content editing, or access to GiveWP data.
+ *
+ * @since TBD
+ *
+ * @param mixed $role
+ */
+function give_is_donor_safe_user_role($role): bool
+{
+    if (!is_string($role) || '' === $role) {
+        return false;
+    }
+
+    $wpRole = wp_roles()->get_role($role);
+
+    if (!$wpRole) {
+        return false;
+    }
+
+    $privilegedCaps = [
+        // WordPress privileged caps
+        'manage_options',
+        'promote_users',
+        'edit_users',
+        'delete_users',
+        'create_users',
+        'edit_others_posts',
+        'delete_others_posts',
+        'edit_pages',
+        'edit_others_pages',
+        'publish_pages',
+        'delete_pages',
+        'edit_posts',
+        'upload_files',
+        'unfiltered_html',
+        'unfiltered_upload',
+        'list_users',
+        'import',
+        'export',
+        'edit_files',
+        'update_core',
+        'activate_plugins',
+        'install_plugins',
+        'edit_plugins',
+        'update_plugins',
+        'delete_plugins',
+        'switch_themes',
+        'install_themes',
+        'edit_themes',
+        'update_themes',
+        'delete_themes',
+        'edit_theme_options',
+        // GiveWP privileged caps - access to sensitive donor/payment data
+        'view_give_reports',
+        'export_give_reports',
+        'manage_give_settings',
+        'view_give_sensitive_data',
+        'edit_give_payments',
+        'edit_give_forms',
+        'view_give_payments',
+        'view_give_forms',
+    ];
+
+    foreach ($privilegedCaps as $cap) {
+        if (!empty($wpRole->capabilities[$cap])) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Get the role given to new donor accounts.
+ *
+ * Falls back to the GiveWP Donor role, or Subscriber when that role is missing, if the
+ * stored setting is not a safe donor role.
+ *
+ * @since TBD
+ */
+function give_get_donor_default_user_role(): string
+{
+    $role = give_get_option('donor_default_user_role', 'give_donor');
+
+    if (give_is_donor_safe_user_role($role)) {
+        return $role;
+    }
+
+    return wp_roles()->is_role('give_donor') ? 'give_donor' : 'subscriber';
+}
