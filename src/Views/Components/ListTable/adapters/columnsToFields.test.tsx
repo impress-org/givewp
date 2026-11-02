@@ -31,6 +31,12 @@ describe('columnsToFields', () => {
         expect(columnsToFields(columns).map((field) => field.enableHiding)).toEqual([true, false, true, true]);
     });
 
+    it('lets a title column the server hides be shown again', () => {
+        const hidden = columns.map((column) => (column.id === 'title' ? {...column, visible: false} : column));
+
+        expect(columnsToFields(hidden).map((field) => field.enableHiding)).toEqual([true, true, true, true]);
+    });
+
     it('returns the plain text of an HTML cell as the value', () => {
         const [, title] = columnsToFields(columns);
 

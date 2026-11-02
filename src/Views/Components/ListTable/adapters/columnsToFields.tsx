@@ -45,6 +45,7 @@ export function columnsToFields(
     data?: ListTableResponse
 ): Field<ListTableItem>[] {
     const titleField = titleFieldId(columns);
+    const isTitleHidden = !isTitleColumnVisible(columns, titleField);
 
     return columns.map((column) => {
         const columnFilter = columnFilters.find((definition) => definition.column === column.id);
@@ -54,7 +55,8 @@ export function columnsToFields(
             label: column.label,
             enableSorting: column.sortable,
             // DataViews shows the title field in its own leading column, which "Hide column" cannot remove.
-            enableHiding: column.id !== titleField,
+            // A title the server starts hidden stays hideable, so the "Show" control works.
+            enableHiding: column.id !== titleField || isTitleHidden,
             filterBy: false,
             getValue: ({item}) => cellText(item[column.id]),
             render: ({item}) => (
