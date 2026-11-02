@@ -8,10 +8,12 @@ import type {FilterDeclaration} from '@givewp/components/ListTable/filters/types
  * every donation is one-time. Test mode is the page's switch, not a filter.
  *
  * The search hint follows `ListDonations`: digits match the donation ID exactly, text with `@`
- * matches the email from the start, other text matches the first or last name from the start.
+ * matches the email from the start, other text matches the first or last name from the start. So a
+ * full name, or an email without the `@`, finds nothing, and the hint says so in plain words.
  *
  * Call it at module level or memoize the result: a new array on every render recomputes what depends on it.
  *
+ * @since TBD Say that a name matches the first or the last name and that an email needs the @ sign.
  * @since TBD
  */
 export function donationFilters({
@@ -86,7 +88,7 @@ export function donationFilters({
         id: 'search',
         label: __('Search donations', 'give'),
         hint: __(
-            'Searches donor first name, last name, email or donation ID. Names and emails match from the start; an ID matches exactly.',
+            'Searches donor first name, last name, email or donation ID. A name matches from the start of the first or the last name. An email needs the @ sign and matches from the start. An ID matches exactly.',
             'give'
         ),
         parameter: 'search',

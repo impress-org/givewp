@@ -88,7 +88,7 @@ describe('donationFilters', () => {
             kind: 'search',
             id: 'search',
             label: 'Search donations',
-            hint: 'Searches donor first name, last name, email or donation ID. Names and emails match from the start; an ID matches exactly.',
+            hint: 'Searches donor first name, last name, email or donation ID. A name matches from the start of the first or the last name. An email needs the @ sign and matches from the start. An ID matches exactly.',
             parameter: 'search',
         });
     });
