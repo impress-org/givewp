@@ -308,7 +308,10 @@ and no shared code has a branch for one screen. The types are in `ListTable/filt
 filter" and Reset, from `FilterChip`, `OptionsFilterControl`, `EntityFilterControl` and
 `DateRangeFilterControl`. `ListTableSearch` is the labeled search box with its hint, announced with
 the field. A chip lists up to three names and then says how many are chosen ("Status: 4 selected");
-the full list is its tooltip and accessible name.
+its accessible name starts with the visible text and then lists the names ("Status: 4 selected.
+Active, Pending, Draft, Archived"), so a voice command that says the visible words still finds it.
+The tooltip shows the same text: newer `@wordpress/components` Tooltips add the tooltip as a
+description when it differs from the name, which would read the list twice.
 
 - **Reset shows only when the filters differ from the screen's defaults.** The defaults are no
   filters, plus test mode on a site in test mode, plus, on a screen that still passes the old
@@ -318,6 +321,10 @@ the full list is its tooltip and accessible name.
 - **The date range** counts in whole days in the site's time zone. A preset is kept as a preset and
   worked out again from the site's day, so "Last 30 days" in a bookmark still means the last 30 days.
   An end day before the start day is explained and cannot be applied.
+- **The result count is announced.** `ResultCountStatus` is one visually hidden polite status region
+  in the shell. After the admin changes the filters, the search, the sort or the page, and the list
+  settles, it says how many records match ("12 donations found"). It says nothing on the first load,
+  nothing while loading, and adds no request.
 
 ### Why the filter bar is Give's
 
