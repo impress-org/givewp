@@ -34,7 +34,13 @@ function urlValue(search: URLSearchParams, name: string): string | undefined {
  */
 export function viewFromInitialState(
     filterSettings: FilterConfig[],
-    defaults: {perPage?: number; fields: string[]; titleField?: string; contentMode?: boolean},
+    defaults: {
+        perPage?: number;
+        fields: string[];
+        titleField?: string;
+        showTitle?: boolean;
+        contentMode?: boolean;
+    },
     search: URLSearchParams
 ): View {
     const filters: Filter[] = [];
@@ -93,6 +99,7 @@ export function viewFromInitialState(
         filters,
         fields: defaults.fields,
         titleField: defaults.titleField,
+        ...(defaults.showTitle === false ? {showTitle: false} : {}),
         layout: {},
     };
 }

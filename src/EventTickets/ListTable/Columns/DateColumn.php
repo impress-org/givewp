@@ -14,8 +14,10 @@ use Give\Framework\ListTable\ModelColumn;
  */
 class DateColumn extends ModelColumn
 {
-
-    protected $sortColumn = 'startDateTime';
+    /**
+     * @since TBD Sort by the start_datetime database column; startDateTime is the model property and failed the query.
+     */
+    protected $sortColumn = 'start_datetime';
 
     /**
      * @since 2.24.0
