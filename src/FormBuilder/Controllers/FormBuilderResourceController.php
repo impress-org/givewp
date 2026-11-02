@@ -46,7 +46,7 @@ class FormBuilderResourceController
     /**
      * Update the form builder
      *
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 3.0.0
      *
      * @return WP_Error|WP_HTTP_Response|WP_REST_Response
@@ -124,7 +124,7 @@ class FormBuilderResourceController
     }
 
     /**
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 3.0.0
      *
      * @return WP_Error|void

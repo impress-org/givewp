@@ -9,12 +9,12 @@ use Give\MigrationLog\MigrationLogModel;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 class LogContextJsonTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testLogContextStoresArraysAsJson()
     {
@@ -30,7 +30,7 @@ class LogContextJsonTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testMigrationLogErrorStoresArraysAsJson()
     {
@@ -41,7 +41,7 @@ class LogContextJsonTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testSpamContextMessageHoldsRequestAndResponseAsJson()
     {

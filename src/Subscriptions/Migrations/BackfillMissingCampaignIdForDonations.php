@@ -64,7 +64,7 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @inheritDoc
      * @throws DatabaseMigrationException
      */
@@ -332,7 +332,7 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
     /**
      * Bulk insert meta data while avoiding duplicates
      *
-     * @since TBD Document why the query is safe.
+     * @since 4.19.1 Document why the query is safe.
      * @since 4.3.2
      */
     private function bulkInsertMeta(array $metaInserts): void

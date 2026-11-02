@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Enabled & disable notification
  *
- * @since TBD Check that the status is set.
+ * @since 4.19.1 Check that the status is set.
  * @since 2.0
  * @since 4.15.4 Add nonce verification.
  */

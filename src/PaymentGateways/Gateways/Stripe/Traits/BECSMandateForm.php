@@ -10,7 +10,7 @@ trait BECSMandateForm
     use FormFieldMarkup;
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      */
     public function getMandateFormHTML( $form_id, $args ) {
         ob_start();

@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 /**
- * @since TBD Escape output and replace short echo tags with escaped echo.
+ * @since 4.19.1 Escape output and replace short echo tags with escaped echo.
  * @since 4.0.0
  *
  * @var array    $attributes

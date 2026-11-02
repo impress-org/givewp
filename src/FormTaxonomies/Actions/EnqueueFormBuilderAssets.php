@@ -25,7 +25,7 @@ class EnqueueFormBuilderAssets
     }
 
     /**
-     * @since TBD Set explicit versions on the enqueued assets.
+     * @since 4.19.1 Set explicit versions on the enqueued assets.
      * @since 4.10.0 use formTaxonomySettings.css instead of style-formTaxonomySettings.css
      * @since 3.16.0
      */

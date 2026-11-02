@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Load wp editor by ajax.
  *
- * @since TBD Unslash and sanitize the request input.
+ * @since 4.19.1 Unslash and sanitize the request input.
  * @since 1.8
  */
 function give_load_wp_editor() {
@@ -47,7 +47,7 @@ add_action( 'wp_ajax_give_load_wp_editor', 'give_load_wp_editor' );
 /**
  * Redirect admin to clean url give admin pages.
  *
- * @since TBD Use a safe redirect. Unslash and sanitize the page name.
+ * @since 4.19.1 Use a safe redirect. Unslash and sanitize the page name.
  * @since 2.25.2 Removed _wpnonce from list of removed args.
  * @since      1.8
  *
@@ -104,7 +104,7 @@ add_action( 'admin_init', 'give_redirect_to_clean_url_admin_pages' );
  *
  * This code is used with AJAX call to hide outdated PHP notice for a short period of time
  *
- * @since TBD Verify the nonce.
+ * @since 4.19.1 Verify the nonce.
  * @since 1.8.9
  * @return void
  */
@@ -139,7 +139,7 @@ add_action( 'wp_ajax_give_hide_outdated_php_notice', 'give_hide_outdated_php_not
 /**
  * Register admin notices.
  *
- * @since TBD Use gmdate() instead of date(), show the number in the singular bulk action notices, add translators comments and unslash and sanitize the bulk action.
+ * @since 4.19.1 Use gmdate() instead of date(), show the number in the singular bulk action notices, add translators comments and unslash and sanitize the bulk action.
  * @since 2.25.2 Add nonce check for bulk action.
  * @since      1.8.9
  */
@@ -598,7 +598,7 @@ add_action( 'admin_notices', '_give_register_admin_notices', - 1 );
 /**
  * Display admin bar when active.
  *
- * @since TBD Unslash and sanitize the test mode value.
+ * @since 4.19.1 Unslash and sanitize the test mode value.
  *
  * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
  *
@@ -661,7 +661,7 @@ add_action( 'admin_head', '_give_test_mode_notice_admin_bar_css' );
 /**
  * Add Link to Import page in from donation archive and donation single page
  *
- * @since TBD Escape output, including translated strings. Check the page param before use.
+ * @since 4.19.1 Escape output, including translated strings. Check the page param before use.
  * @since 1.8.13
  */
 function give_import_page_link_callback() {
@@ -721,7 +721,7 @@ function give_maybe_safe_unserialize($data)
  * Load donation import ajax callback
  * Fire when importing from CSV start
  *
- * @since TBD Add translators comments. Unslash and validate the request input.
+ * @since 4.19.1 Add translators comments. Unslash and validate the request input.
  * @since 4.11.0 Updated error handling to display errors in the import page.
  * @since 3.5.0 Extract safe unserialize logic to a function and use it in other places.
  * @since 2.25.3 Append nonce to response url.
@@ -870,7 +870,7 @@ add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
 /**
  * Load subscription import ajax callback
  *
- * @since TBD Add translators comments. Unslash and validate the request input.
+ * @since 4.19.1 Add translators comments. Unslash and validate the request input.
  * @since 4.11.0
  */
 function give_subscription_import_callback() {
@@ -995,7 +995,7 @@ add_action( 'wp_ajax_give_subscription_import', 'give_subscription_import_callba
  * Load core settings import ajax callback
  * Fire when importing from JSON start
  *
- * @since TBD Unslash the request input.
+ * @since 4.19.1 Unslash the request input.
  * @since 4.19.0.1 Require a valid JSON array before replacing the stored settings.
  * @since  1.8.17
  */
@@ -1149,7 +1149,7 @@ add_action( 'user_profile_update_errors', 'give_validate_user_profile', 10, 3 );
 /**
  * Show Donor Information on User Profile Page.
  *
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings.
  * @since 2.0
  *
  * @param object $user User Object.
@@ -1473,7 +1473,7 @@ add_action( 'give_donor_personal_address_label', 'give_donor_personal_address_la
  * Update Donor Information when User Profile is updated from admin.
  * Note: for internal use only.
  *
- * @since TBD Check that the name fields are set before reading them.
+ * @since 4.19.1 Check that the name fields are set before reading them.
  * @since  2.0
  *
  * @param int $user_id

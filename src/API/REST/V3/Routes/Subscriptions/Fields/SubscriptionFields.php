@@ -17,7 +17,7 @@ class SubscriptionFields
     /**
      * Process field values for special data types before setting them on the subscription model.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.8.0
      */
     public static function processValue(string $key, $value)

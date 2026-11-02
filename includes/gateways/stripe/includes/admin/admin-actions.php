@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Disconnects user from the Give Stripe Connected App.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 function give_stripe_connect_deauthorize() {
 	$get_vars = give_clean( $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only notice params; they only decide which admin notice to show and save nothing.
@@ -85,7 +85,7 @@ add_action( 'give_view_donation_details_totals_after', 'give_stripe_opt_refund',
 /**
  * Process refund in Stripe.
  *
- * @since  TBD Escape output. Add translators comments.
+ * @since  4.19.1 Escape output. Add translators comments.
  * @since  2.5.0
  * @access public
  *
@@ -299,7 +299,7 @@ add_action( 'admin_notices', 'give_stripe_show_connect_banner' );
 /**
  * Register Currency related admin notices.
  *
- * @since TBD Add translators comments.
+ * @since 4.19.1 Add translators comments.
  * @since 2.6.1
  *
  * @return void
@@ -365,7 +365,7 @@ add_action( 'admin_notices', 'give_stripe_show_currency_notice' );
  * @param  int  $donationId  Donation ID.
  *
  * @return void
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 2.7.0
  *
  */

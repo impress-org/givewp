@@ -2,7 +2,7 @@
 /**
  * Admin View: System Info
  *
- * @since TBD Escape output, including translated strings, and use wpdb::db_server_info() to read the database server version. Print the TLS rating without a translation call and add translators comments. Unslash and sanitize the server software value.
+ * @since 4.19.1 Escape output, including translated strings, and use wpdb::db_server_info() to read the database server version. Print the TLS rating without a translation call and add translators comments. Unslash and sanitize the server software value.
  */
 
 use Give\Framework\Migrations\MigrationsRunner;

@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Renders the reports page contents.
  *
- * @since TBD Escape output. Unslash and sanitize the tab request value.
+ * @since 4.19.1 Escape output. Unslash and sanitize the tab request value.
  * @since 1.0
  * @return void
  */
@@ -137,7 +137,7 @@ function give_reports_default_views() {
  *
  * @param string $default Default view to use.
  *
- * @since TBD Unslash and sanitize the view request value.
+ * @since 4.19.1 Unslash and sanitize the view request value.
  * @since 1.0
  * @return string $view Report View
  */
@@ -159,7 +159,7 @@ function give_get_reporting_view( $default = 'earnings' ) {
 /**
  * Renders the Reports page
  *
- * @since TBD Escape output. Unslash and sanitize the tab request value.
+ * @since 4.19.1 Escape output. Unslash and sanitize the tab request value.
  * @since 1.0
  * @return void
  */
@@ -193,7 +193,7 @@ add_action( 'give_reports_tab_reports', 'give_reports_tab_reports' );
 /**
  * Renders the Reports Page Views Drop Downs
  *
- * @since TBD Escape output. Unslash and sanitize the view request value.
+ * @since 4.19.1 Escape output. Unslash and sanitize the view request value.
  * @since 1.0
  * @return void
  */
@@ -310,7 +310,7 @@ add_action( 'give_reports_view_gateways', 'give_reports_gateways_table' );
 /**
  * Renders the Reports Earnings Graphs
  *
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings.
  * @since 3.22.1 added permissions check
  * @since 1.0
  * @return void
@@ -334,7 +334,7 @@ add_action( 'give_reports_view_earnings', 'give_reports_earnings' );
 /**
  * Retrieves estimated monthly earnings and sales
  *
- * @since TBD Use gmdate() instead of date().
+ * @since 4.19.1 Use gmdate() instead of date().
  * @since 1.0
  * @return array
  */

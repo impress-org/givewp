@@ -1,5 +1,5 @@
 <?php
-/** @since TBD Escape output. */
+/** @since 4.19.1 Escape output. */
 
 use Give\Helpers\Form\Template;
 use Give\Views\Form\Templates\Sequoia\Sequoia;

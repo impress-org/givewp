@@ -39,7 +39,7 @@ class ServiceProvider implements GiveServiceProvider
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @inheritDoc
      */
     public function boot()
@@ -64,7 +64,7 @@ class ServiceProvider implements GiveServiceProvider
     /**
      * Load addons service providers for TestData
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      */
     private function loadAddonsServiceProviders()
     {

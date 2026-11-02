@@ -5,12 +5,12 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 // Reports page markup
 // #reports-app is replaced by React app
 //
-// @since TBD Escape translated output.
+// @since 4.19.1 Escape translated output.
 ?>
 <div id="reports-app">
     <div class="wrap give-settings-page">

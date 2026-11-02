@@ -2,7 +2,7 @@
 <?php
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 ?>
-<?php /** @since TBD Escape output. */ ?>
+<?php /** @since 4.19.1 Escape output. */ ?>
 <tr class="give-export-donors">
     <td scope="row" class="row-title">
         <h3>

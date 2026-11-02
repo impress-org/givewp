@@ -2,7 +2,7 @@
 /**
  * Admin View: Import Donations
  *
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

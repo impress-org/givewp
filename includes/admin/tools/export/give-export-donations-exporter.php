@@ -81,7 +81,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	/**
 	 * Set the properties specific to the export.
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since 2.1
 	 *
 	 * @param array $request The Form Data passed into the batch processing.
@@ -319,7 +319,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 *
 	 * @access public
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
      * @since 3.12.1 add donor phone.
 	 * @since  2.1
 	 *

@@ -102,7 +102,7 @@ trait HasFormOptions
     /**
      * Query campaigns with forms
      *
-     * @since TBD Send caught exceptions to the GiveWP log.
+     * @since 4.19.1 Send caught exceptions to the GiveWP log.
      * @since 4.7.0
      */
     public function getCampaignsWithForms(): array

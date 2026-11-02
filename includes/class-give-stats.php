@@ -139,7 +139,7 @@ class Give_Stats {
 	 *
 	 * Converts a date to a timestamp.
 	 *
-	 * @since  TBD Use gmdate() instead of date().
+	 * @since  4.19.1 Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -452,7 +452,7 @@ class Give_Stats {
 	 *
 	 * Modifies the WHERE flag for payment counts.
 	 *
-	 * @since  TBD Use gmdate() instead of date().
+	 * @since  4.19.1 Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -501,7 +501,7 @@ class Give_Stats {
 	 *
 	 * Modifies the WHERE flag for payment queries.
 	 *
-	 * @since  TBD Use gmdate() instead of date().
+	 * @since  4.19.1 Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *

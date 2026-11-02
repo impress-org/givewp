@@ -73,7 +73,7 @@ class Give_Donation_Form_Grid_Block {
 	/**
 	 * Register block
 	 *
-	 * @since TBD Changed the 'Donate' button text color default to #2B642C and the progress bar color default to #438D45 to meet color contrast requirements.
+	 * @since 4.19.1 Changed the 'Donate' button text color default to #2B642C and the progress bar color default to #438D45 to meet color contrast requirements.
 	 *
 	 * @access public
 	 */

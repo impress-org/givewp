@@ -258,7 +258,7 @@ class Give_Recurring_Subscriber extends Give_Donor {
 	 *
 	 * Calculate a new expiration date
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 *
 	 * @param int    $form_id Donation Form ID.
 	 * @param null   $price_id Price ID.

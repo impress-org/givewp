@@ -212,7 +212,7 @@ add_action('wpmu_new_blog', 'give_on_create_blog', 10, 6);
 /**
  * Drop Give's custom tables when a mu site is deleted.
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 3.4.0 updated implementation to query all give_* tables
  * @since  1.4.3
  *

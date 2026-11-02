@@ -32,7 +32,7 @@ class DonorsExport extends Give_Batch_Export
     protected $donationFormId;
 
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      *
      * @inheritdoc
      */

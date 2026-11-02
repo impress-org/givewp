@@ -13,7 +13,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 /**
  * Covers the queries of the donor wall shortcode.
  *
- * @since TBD
+ * @since 4.19.1
  */
 class DonorWallTest extends TestCase
 {
@@ -41,7 +41,7 @@ class DonorWallTest extends TestCase
     private $grace;
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -57,7 +57,7 @@ class DonorWallTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function donate(Donor $donor, string $firstName, string $lastName, DonationForm $form, int $cents, bool $withComment, string $date): Donation
     {
@@ -75,7 +75,7 @@ class DonorWallTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function render(string $atts = ''): string
     {
@@ -83,7 +83,7 @@ class DonorWallTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testShowsAllDonorsByDefault()
     {
@@ -94,7 +94,7 @@ class DonorWallTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testFilterByFormId()
     {
@@ -110,7 +110,7 @@ class DonorWallTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testFilterByMoreThanOneFormId()
     {
@@ -121,7 +121,7 @@ class DonorWallTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testFilterByDonorIds()
     {
@@ -137,7 +137,7 @@ class DonorWallTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testOnlyComments()
     {
@@ -149,7 +149,7 @@ class DonorWallTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testOrderByDate()
     {
@@ -161,7 +161,7 @@ class DonorWallTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testOrderByDonationAmount()
     {
@@ -173,7 +173,7 @@ class DonorWallTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonorsPerPageLimitsTheResult()
     {
@@ -186,7 +186,7 @@ class DonorWallTest extends TestCase
     /**
      * An order value outside the allowlist falls back to DESC instead of reaching the SQL.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testInvalidOrderFallsBackToDefault()
     {
