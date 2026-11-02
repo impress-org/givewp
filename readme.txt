@@ -273,7 +273,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 4.19.1.1: November 2nd, 2026 =
+= 4.19.1.1: November 3th, 2026 =
 * Security: Added additional validation to the donor default user role setting. (CVE-2026-118193)
 * Security: Improved validation of donor email on donation forms.
 
