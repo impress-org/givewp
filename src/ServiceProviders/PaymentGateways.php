@@ -27,6 +27,7 @@ use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
 use Give\PaymentGateways\PaypalSettingPage;
 use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
 use Give\PaymentGateways\Stripe\Admin\CreditCardSettingField;
+use Give\PaymentGateways\Stripe\Admin\WebhookSettingsFields;
 use Give\PaymentGateways\Stripe\ApplicationFee;
 use Give\PaymentGateways\Stripe\Controllers\DisconnectStripeAccountController;
 use Give\PaymentGateways\Stripe\Controllers\GetStripeAccountDetailsController;
@@ -37,6 +38,7 @@ use Give\PaymentGateways\Stripe\DonationFormSettingPage;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
 use Give\PaymentGateways\Stripe\Webhooks\Controllers\EnsureWebhookEndpointsController;
 use Give\PaymentGateways\Stripe\Webhooks\Controllers\ManageWebhookEndpointsController;
+use Give\PaymentGateways\Stripe\Webhooks\WebhookHealthMonitor;
 
 /**
  * Class PaymentGateways
@@ -214,7 +216,7 @@ class PaymentGateways implements ServiceProvider
     }
 
     /**
-     * Register the hooks that set up Stripe webhook endpoints.
+     * Register the hooks that set up Stripe webhook endpoints and check their health.
      *
      * @since TBD
      */
@@ -228,6 +230,14 @@ class PaymentGateways implements ServiceProvider
             'wp_ajax_' . ManageWebhookEndpointsController::ACTION,
             ManageWebhookEndpointsController::class
         );
+        Hooks::addFilter('give_get_settings_gateways', WebhookSettingsFields::class, 'addFields', 11);
+        Hooks::addAction(
+            'give_admin_field_' . WebhookSettingsFields::SETUP_FIELD_TYPE,
+            WebhookSettingsFields::class,
+            'renderSetupField'
+        );
+        Hooks::addAction('admin_init', WebhookHealthMonitor::class, 'schedule');
+        Hooks::addAction(WebhookHealthMonitor::CRON_HOOK, WebhookHealthMonitor::class);
     }
 
     /**

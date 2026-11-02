@@ -99,6 +99,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Register groups of a section.
 		 *
+		 * @since  TBD Add the Webhooks group.
 		 * @since  2.6.0
 		 * @access public
 		 *
@@ -109,6 +110,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			$groups = [
 				'accounts'    => __( 'Manage Accounts', 'give' ),
 				'general'     => __( 'General Settings', 'give' ),
+				'webhooks'    => __( 'Webhooks', 'give' ),
 				'credit-card' => __( 'Credit Card', 'give' ),
 				'checkout'    => __( 'Stripe Checkout', 'give' ),
 				'sepa'        => __( 'SEPA Direct Debit', 'give' ),
@@ -139,6 +141,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 *
 		 * @param array $settings List of setting fields.
 		 *
+		 * @since  TBD Move the Stripe Webhooks field to the Webhooks group.
 		 * @since  2.5.0
 		 * @access public
 		 *
@@ -186,14 +189,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					$settings = apply_filters( 'give_stripe_add_configuration_fields', $settings );
 
 					$settings['general'][] = [
-						'name'          => esc_html__( 'Stripe Webhooks', 'give' ),
-						'desc'          => '',
-						'wrapper_class' => 'give-stripe-webhooks-tr',
-						'id'            => 'stripe_webhooks',
-						'type'          => 'stripe_webhooks',
-					];
-
-					$settings['general'][] = [
 						'name' => esc_html__( 'Collect Billing Details', 'give' ),
 						'desc' => esc_html__( 'This option enables the billing details section for Stripe, requiring the donor\'s address to complete the donation. These fields are not required by Stripe to process the transaction, but you may have the need to collect the data.', 'give' ),
 						'id'   => 'stripe_collect_billing',
@@ -231,6 +226,24 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					// Stripe Admin Settings - Footer.
 					$settings['general'][] = [
 						'id'   => 'give_title_stripe_general',
+						'type' => 'sectionend',
+					];
+
+					$settings['webhooks'][] = [
+						'id'   => 'give_title_stripe_webhooks',
+						'type' => 'title',
+					];
+
+					$settings['webhooks'][] = [
+						'name'          => esc_html__( 'Stripe Webhooks', 'give' ),
+						'desc'          => '',
+						'wrapper_class' => 'give-stripe-webhooks-tr',
+						'id'            => 'stripe_webhooks',
+						'type'          => 'stripe_webhooks',
+					];
+
+					$settings['webhooks'][] = [
+						'id'   => 'give_title_stripe_webhooks',
 						'type' => 'sectionend',
 					];
 
