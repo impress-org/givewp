@@ -1,4 +1,4 @@
-import {useEffect, useId, useState} from 'react';
+import {useCallback, useEffect, useId, useRef, useState} from 'react';
 import {SearchControl} from '@wordpress/components';
 import {useDebounce} from '@wordpress/compose';
 import './styles.scss';
@@ -28,9 +28,25 @@ const DEBOUNCE_MS = 300;
 export default function ListTableSearch({label, hint, value, onChange}: ListTableSearchProps) {
     const [text, setText] = useState(value);
     const hintId = useId();
-    const reportChange = useDebounce(onChange, DEBOUNCE_MS);
+    // The debounced call must keep a stable identity, or a parent re-render would cancel a pending search.
+    const onChangeRef = useRef(onChange);
+    const lastReported = useRef(value);
+    onChangeRef.current = onChange;
 
+    const report = useCallback((term: string) => {
+        lastReported.current = term;
+        onChangeRef.current(term);
+    }, []);
+    const reportChange = useDebounce(report, DEBOUNCE_MS);
+
+    // Follow the view only when it holds a term other than the one we last reported, so a late echo
+    // of an older term does not overwrite newer typing.
     useEffect(() => {
+        if (value === lastReported.current) {
+            return;
+        }
+
+        lastReported.current = value;
         setText(value);
     }, [value]);
 

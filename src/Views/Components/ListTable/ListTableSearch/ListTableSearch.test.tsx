@@ -93,4 +93,30 @@ describe('ListTableSearch', () => {
         expect(input().hasAttribute('aria-describedby')).toBe(false);
         expect(container.querySelector('.givewp-list-table-search__hint')).toBeNull();
     });
+
+    it('still reports the term when the parent passes a new callback mid-delay', async () => {
+        const first = jest.fn();
+        const second = jest.fn();
+
+        await render({onChange: first});
+        await type('jo');
+        await act(() => jest.advanceTimersByTime(100));
+        await render({onChange: second});
+        await act(() => jest.advanceTimersByTime(500));
+
+        expect(first).not.toHaveBeenCalled();
+        expect(second).toHaveBeenCalledTimes(1);
+        expect(second).toHaveBeenCalledWith('jo');
+    });
+
+    it('keeps newer typing when the parent echoes an older reported term', async () => {
+        await render();
+        await type('joe');
+        await act(() => jest.advanceTimersByTime(500));
+        await type('joey');
+
+        await render({value: 'joe'});
+
+        expect(input().value).toBe('joey');
+    });
 });
