@@ -3,6 +3,7 @@
 namespace Give\Framework\ListTable\Actions;
 
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
+use Give\Helpers\Language;
 
 /**
  * Registers the shared list table chunk that every admin list screen loads.
@@ -32,5 +33,8 @@ class RegisterListTableAssets
             $asset['version'],
             true
         );
+
+        // The shared chunk holds the list table's own strings, and WordPress looks translations up by handle.
+        Language::setScriptTranslations(self::HANDLE);
     }
 }
