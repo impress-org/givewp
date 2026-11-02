@@ -11,10 +11,10 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 |:--|:--|
 | `ListTablePage/` | The page shell: `ListTablePageHeader` (title, test-mode switch, stat tiles), notices, and the list. `SwitchToLegacyViewButton` for the screens with a legacy view. `types.ts` holds the public types. |
 | `DataViewsListTable/` | Stock `<DataViews>` with Give's tokens. No data fetching. |
-| `adapters/` | Pure functions from the screens' settings to DataViews fields, default filters and actions, and from the view to the request parameters, plus the page size rule (`snapPerPage`). Jest tests sit next to them. |
+| `adapters/` | Pure functions from the columns and actions to DataViews fields and actions, and from the view to the request parameters (`viewToParameters`), plus the page size rule (`snapPerPage`). Jest tests sit next to them. |
 | `hooks/` | `useListTableView` (the view and where its last change came from), `useListTableUrlState` (the view in the address, the search in the tab), `useListTableLayoutPreferences` (stores the layout, and Reset view), `useListTableSelection`, `useListTableQuery` (SWR + `apiFetch`), `useListTableActions` (the DataViews actions and the dialogs they open), `useListTableActionNotices`, and `useListActionSubmit` for a confirm modal or dialog. |
 | `state/` | View state, with Jest tests next to it. Pure functions: `types.ts` (the `ListTableScreen` config and the closed list of screen keys), `screenDefaults` (a screen's defaults from its config and the column schema), `viewQuery` (reads and writes the `give-` URL parameters), `storedLayout` (the stored layout record), `assembleView`, `fieldOrder` (a column's default position, the pinned column last) and `fieldRules` (locked and pinned columns). Not pure, because they talk to the browser or the route: `listTableHistory` (`history`, the address and the tab's search copy), `layoutApi` (the layout route and the printed bootstrap) and `layoutWriteQueue` (the ordered layout writes and the once-per-page-view error notice). |
-| `filters/` | The filter model, pure functions: declaration types, value text, date ranges, chip text, request parameters, and the option route client. |
+| `filters/` | The filter model, pure functions: declaration types, value text, date ranges, chip text, exclusive values, request parameters, the option route client, and the deprecated `filterSettingsToDeclarations` adapter (`legacyFilterSettings.ts`). |
 | `ListTableFilters/` | The filter bar: primary filters, "Add filter", chips, the test-mode chip and Reset, read from a screen's `filters` declaration. Built from the `ListTableSearch`, `FilterChip`, `OptionsFilterControl`, `DateRangeFilterControl` and `EntityFilterControl` molecules. |
 | `ListTableViewReset/` | The "Reset view" button next to the stock view options, with its confirmation. |
 | `actions/` | `runListAction`: runs an action, reports it, clears the selection when everything succeeded, reloads. Every action and dialog goes through it. |
@@ -22,7 +22,7 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `BulkActionConfirm/` | Body of a confirm modal: message, affected records, Cancel / Confirm. |
 | `SetStatusDialog/` | One "Set status" action for screens whose endpoint has `/setStatus`. |
 | `EmptyStates/` | One component for "No … match your search or filters" with Clear filters, and for the failed request with Try again. |
-| `AsyncEntitySelect/` | The campaign and form entities that filter options and the campaign picker load from. |
+| `AsyncEntitySelect/` | The campaign and form entities the "Assign campaign" picker loads from. |
 | `LegacyRowActions/` | Renders an old row-actions function in its own column (`useLegacyRowActionsField`). |
 | `api.ts` | `ListTableApi.fetchWithArgs`, for a list endpoint's actions. |
 
@@ -36,10 +36,10 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `singleName`, `pluralName` | `string`, lowercase, translated | No | `'item'`, `'items'` |
 | `rowActions` | `ListTableRowAction[]`, or a legacy render function | No | `null` |
 | `bulkActions` | `BulkActionsConfig[]` (legacy shape, still supported) | No | `null` |
-| `filters` | `FilterDeclaration[]`: the entity's filter declaration. Shows Give's labeled search and filter bar in place of the DataViews ones; `filterSettings` is then not read | No | — |
+| `filters` | `FilterDeclaration[]`: the entity's filter declaration, shown as Give's labeled search and filter bar (see below) | No | — |
 | `scope` | `Record<string, string \| number>`: fixed request parameters set by the host page (never a chip, never reset) | No | — |
-| `testModeToggle` | `{label, ariaLabel}`: the header test-mode switch and its chip, with `filters` | No | — |
-| `filterSettings` | `FilterConfig[]` (older shape; screens move to `filters`) | No | `[]` |
+| `testModeToggle` | `{label, ariaLabel}`: the header test-mode switch and its chip | No | — |
+| `filterSettings` | **Deprecated.** `FilterConfig[]`, kept so add-ons that pass it keep working. Mapped onto declarations; read only without `filters`. The `filterby` type is skipped | No | `[]` |
 | `columnFilters` | `{column, filter(item, column, data)}[]` to render a column yourself | No | `[]` |
 | `statsConfig` | `Record<string, StatConfig>` for the stat tiles (`/stats` endpoint) | No | — |
 | `paymentMode` | `boolean`, initial test mode | No | — |
@@ -49,6 +49,35 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `banner`, `productRecommendation`, `children` | as before | No | — |
 
 The `ref` exposes `refresh()`, which reloads the rows and the stat tiles.
+
+## Filters: the `filters` prop
+
+A screen declares its filters once, in a `filters.ts` file next to it, and passes the list as
+`filters`:
+
+```ts
+export const donationsFilters: FilterDeclaration[] = [
+    {kind: 'entity', id: 'campaign', label: __('Campaign', 'give'), isPrimary: true, source: 'campaign',
+        multiple: true, parameter: 'campaignId', allowNone: true, legacyUrlKey: 'campaignId'},
+    {kind: 'options', id: 'status', label: __('Status', 'give'), isPrimary: true, multiple: true,
+        options: 'statuses', parameter: 'status', exclusiveValues: ['trash']},
+    {kind: 'date', id: 'date', label: __('Donation date', 'give'), parameters: {start: 'start', end: 'end'}},
+    {kind: 'search', id: 'search', label: __('Search donations', 'give'), hint: __('Searches …', 'give'),
+        parameter: 'search'},
+];
+```
+
+- Kinds: `options` (a fixed list, or `'statuses'` for the server's vocabulary in
+  `apiSettings.table.statuses`), `entity` (campaigns, forms or donors searched on the server), `date`
+  (presets and a day range) and `search` (the labeled search box; its `hint` must say what is searched
+  and how it matches).
+- `isPrimary` filters are always shown; the others are in "Add filter". `whenEmpty`,
+  `exclusiveValues`, `allowNone` and `legacyUrlKey` are described in
+  [docs/architecture/list-tables.md](../../../../docs/architecture/list-tables.md#filters).
+- Build the list at module level, not inside the component, so it keeps one identity.
+- Reset shows only when the filters differ from the screen's defaults (test mode on a test site).
+- An add-on that still passes `filterSettings` gets them mapped by `filterSettingsToDeclarations()`.
+  Move to `filters` when you can.
 
 ## View state: the `screen` prop
 
