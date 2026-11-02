@@ -19,8 +19,8 @@ name: Deploy to WordPress.org from the release dashboard
 # run the step again.
 #
 # The dashboard dispatches this file on the release branch, sending `branch` and `version`. Run it
-# by hand:
-#   gh workflow run release-dashboard-deploy.yml -f branch=release/4.19.0 -f version=4.19.0
+# by hand on that branch too (the first step refuses a run started elsewhere):
+#   gh workflow run release-dashboard-deploy.yml --ref release/4.19.0 -f branch=release/4.19.0 -f version=4.19.0
 
 on:
     workflow_dispatch:
@@ -55,6 +55,17 @@ jobs:
         permissions:
             contents: write # the action pushes the merges and publishes the release; the zip is attached to it
         steps:
+            # The environment's branch policy protects the branch the run was started on, not the input,
+            # so the two have to be the same branch for the policy to cover what is merged and published.
+            -   name: Check that the run is on the release branch it merges
+                env:
+                    BRANCH: ${{ inputs.branch }}
+                run: |
+                    if [ "$BRANCH" != "$GITHUB_REF_NAME" ]; then
+                        echo "::error::This run is on '$GITHUB_REF_NAME' but was asked to release '$BRANCH'. Start it on the release branch (the dashboard does; by hand, pass --ref)."
+                        exit 1
+                    fi
+
             -   name: Checkout code
                 uses: actions/checkout@v7
                 with:
@@ -67,7 +78,7 @@ jobs:
             # once plugin-toolbox publishes a release.
             -   name: Merge the release into master and master back into develop
                 id: merge
-                uses: stellarwp/plugin-toolbox/.github/actions/release-merge@879516b3c55523e2c6e80f33c26e21f7f1e4ce13
+                uses: stellarwp/plugin-toolbox/.github/actions/release-merge@e6cee726ff651bee3058247b09d57c0b8a49c88f
                 with:
                     branch: ${{ inputs.branch }}
                     version: ${{ inputs.version }}
@@ -118,7 +129,7 @@ jobs:
             # attached before it is public. Published last, so a failed build or deploy leaves no release.
             -   name: Publish the GitHub release
                 id: release
-                uses: stellarwp/plugin-toolbox/.github/actions/release-publish@879516b3c55523e2c6e80f33c26e21f7f1e4ce13
+                uses: stellarwp/plugin-toolbox/.github/actions/release-publish@e6cee726ff651bee3058247b09d57c0b8a49c88f
                 with:
                     version: ${{ inputs.version }}
                     target: ${{ steps.merge.outputs.base-sha }}
