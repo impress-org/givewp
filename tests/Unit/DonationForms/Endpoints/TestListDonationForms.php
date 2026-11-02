@@ -306,6 +306,66 @@ class TestListDonationForms extends TestCase
     /**
      * @since TBD
      *
+     * @dataProvider ignoredCampaignValuesProvider
+     */
+    public function testIgnoredCampaignValuesStayAcceptedAndUnfiltered(string $value)
+    {
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, '/give-api/v2/admin/forms');
+        $request->set_query_params(['campaign' => $value]);
+        wp_set_current_user($this->factory()->user->create(['role' => 'administrator']));
+        $response = rest_do_request($request);
+
+        $this->assertSame(200, $response->get_status());
+        $this->assertSame(count($this->donationForms), $response->get_data()['totalItems']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function ignoredCampaignValuesProvider(): array
+    {
+        return [
+            'letters' => ['abc'],
+            'negative' => ['-1'],
+            'trailing space' => ['12 '],
+            'empty' => [''],
+            'zero' => ['0'],
+        ];
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testCampaignListWithOneJunkItemUsesOnlyTheValidId()
+    {
+        $campaign = Campaign::factory()->create();
+
+        $response = $this->listForms(['campaign' => $campaign->id . ',x']);
+
+        $this->assertListedIds([$campaign->defaultFormId], $response);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testNoneAndSingleCampaignIdKeepTheirResult()
+    {
+        $campaign = Campaign::factory()->create();
+        give(CampaignRepository::class)->addCampaignForm($campaign, $this->donationForms[0]->id);
+
+        $this->assertListedIds(
+            array_slice(array_column($this->donationForms, 'id'), 1),
+            $this->listForms(['campaign' => 'none'])
+        );
+        $this->assertListedIds(
+            [$this->donationForms[0]->id, $campaign->defaultFormId],
+            $this->listForms(['campaign' => (string)$campaign->id])
+        );
+    }
+
+    /**
+     * @since TBD
+     *
      * @dataProvider listLimitProvider
      */
     public function testListArgsAcceptFiftyAndRejectFiftyOne(string $param, $fifty, $fiftyOne)

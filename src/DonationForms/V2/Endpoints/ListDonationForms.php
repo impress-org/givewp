@@ -127,7 +127,7 @@ class ListDonationForms extends Endpoint
                     'campaign' => [
                         'type' => 'string',
                         'required' => false,
-                        'pattern' => '^(none|\\d*|\\d+(,\\d+){1,49})$',
+                        'validate_callback' => [$this, 'validateCampaignListSize'],
                         'description' => 'A campaign id, a comma-separated list of up to 50 campaign ids, "none" for standalone forms, or empty for all forms.',
                     ],
                     'start' => [
@@ -276,6 +276,20 @@ class ListDonationForms extends Endpoint
         $query = $this->getWhereConditions($query);
 
         return $query->count();
+    }
+
+    /**
+     * Rejects a campaign list of more than 50 items. Any other value is accepted, as it always was.
+     *
+     * @since TBD
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public function validateCampaignListSize($value): bool
+    {
+        return ! is_string($value) || count(explode(',', $value)) <= 50;
     }
 
     /**
