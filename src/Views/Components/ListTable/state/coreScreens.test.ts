@@ -1,6 +1,7 @@
 import {readdirSync, readFileSync, statSync} from 'fs';
 import {join, relative, resolve} from 'path';
 import type {FilterConfig} from '../ListTablePage/types';
+import type {FilterDeclaration} from '../filters/types';
 import {resolveScreenDefaults} from './screenDefaults';
 import {LIST_TABLE_SCREEN_KEYS} from './types';
 import type {ListTableScreen, ViewQueryContext} from './types';
@@ -27,7 +28,7 @@ function stubWindowData() {
     });
 }
 
-type ScreenModule = {filters: FilterConfig[]; screen: ListTableScreen};
+type ScreenModule = {filters?: FilterConfig[]; declarations?: FilterDeclaration[]; screen: ListTableScreen};
 
 /**
  * The real filter settings and screen config of every standalone core screen.
@@ -50,23 +51,26 @@ function standaloneScreens(): ScreenModule[] {
             screen: require('@givewp/src/Subscriptions/resources/components/listTableScreen').default,
         },
         {
-            filters: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable').filters,
+            declarations: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable/filters')
+                .campaignFilters,
             screen: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable/listTableScreen').default,
         },
         {
-            filters: require('@givewp/src/DonationForms/V2/resources/components/DonationFormsListTable')
-                .donationFormsFilters,
+            declarations: require('@givewp/src/DonationForms/V2/resources/components/filters').donationFormFilters({
+                withCampaign: true,
+            }),
             screen: require('@givewp/src/DonationForms/V2/resources/components/listTableScreen').default,
         },
     ];
     /* eslint-enable @typescript-eslint/no-var-requires */
 }
 
-function contextOf({filters, screen}: ScreenModule): ViewQueryContext {
+function contextOf({filters = [], declarations, screen}: ScreenModule): ViewQueryContext {
     const columns = [{id: 'id', label: 'ID', sortable: true, visible: true}];
 
     return {
         filterSettings: filters,
+        filters: declarations,
         sortableFields: ['id'],
         defaults: resolveScreenDefaults(screen, columns, undefined, {filters: []}),
         siteTestMode: false,
