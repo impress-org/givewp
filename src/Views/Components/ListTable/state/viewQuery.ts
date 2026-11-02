@@ -2,6 +2,8 @@ import type {Filter} from '@wordpress/dataviews';
 import type {FilterByGroupedOptions, FilterConfig} from '../ListTablePage/types';
 import {hasTestModeToggle, TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
 import {filterFieldId, isApplied, snapPerPage} from '../adapters/viewToParameters';
+import {parseFilterValue, serializeFilterValue} from '../filters/filterValue';
+import type {BarFilterDeclaration, FilterDeclaration, StatusVocabularyEntry} from '../filters/types';
 import type {ListTableView, ParseResult, ViewQuery, ViewQueryContext} from './types';
 
 /**
@@ -35,8 +37,10 @@ type ReadResult = {filter?: Filter; corrected: boolean};
 
 /**
  * How one filter maps to one URL parameter.
+ *
+ * @since TBD
  */
-type FilterParameter = {
+export type FilterParameter = {
     key: string;
     /** The bare name links used before the `give-` prefix. */
     legacyKey?: string;
@@ -160,7 +164,51 @@ function parametersOf(filter: FilterConfig): FilterParameter[] {
     }
 }
 
-const filterParameters = (context: ViewQueryContext) => context.filterSettings.flatMap(parametersOf);
+/**
+ * The URL parameter of a declared filter: `give-<id>`, read and written with the declaration's own
+ * text rules. A list kind is `isAny` in the view, a single kind `is`.
+ *
+ * @since TBD
+ */
+export function declarationUrlParameter(
+    declaration: BarFilterDeclaration,
+    statuses: StatusVocabularyEntry[]
+): FilterParameter {
+    const field = filterFieldId(declaration.id);
+    const operator = declaration.kind !== 'date' && declaration.multiple ? 'isAny' : 'is';
+
+    return {
+        key: parameterName(declaration.id),
+        legacyKey: declaration.legacyUrlKey,
+        field,
+        read: (raw) => {
+            const {value, corrected} = parseFilterValue(declaration, raw, {statuses});
+
+            return value === undefined ? {corrected: true} : {filter: {field, operator, value}, corrected};
+        },
+        write: (value) => {
+            if (typeof value === 'string') {
+                return serializeFilterValue(declaration, value);
+            }
+
+            return Array.isArray(value) ? serializeFilterValue(declaration, value.map(String)) : undefined;
+        },
+    };
+}
+
+const isBarFilter = (declaration: FilterDeclaration): declaration is BarFilterDeclaration =>
+    declaration.kind !== 'search';
+
+/**
+ * The screen's filter parameters: from the declarations when it has them, else from the filter
+ * settings (deprecated path, kept until every screen declares its filters).
+ */
+const filterParameters = (context: ViewQueryContext): FilterParameter[] =>
+    context.filters
+        ? context.filters
+              .filter(isBarFilter)
+              .map((declaration) => declarationUrlParameter(declaration, context.statuses ?? []))
+        : context.filterSettings.flatMap(parametersOf);
 
 /**
  * Every `give-` parameter the screen reads and writes, in the order they are written.
