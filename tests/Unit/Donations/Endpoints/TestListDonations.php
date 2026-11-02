@@ -8,6 +8,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\Donations\Endpoints\ListDonations;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
@@ -743,8 +744,16 @@ class TestListDonations extends TestCase
 
         DB::table('give_donationmeta')
             ->where('donation_id', $withoutMeta->id)
-            ->where('meta_key', '_give_subscription_id')
+            ->where('meta_key', DonationMetaKeys::SUBSCRIPTION_ID)
             ->delete();
+
+        $this->assertSame(
+            0,
+            DB::table('give_donationmeta')
+                ->where('donation_id', $withoutMeta->id)
+                ->where('meta_key', DonationMetaKeys::SUBSCRIPTION_ID)
+                ->count()
+        );
 
         $response = $this->listDonations(['donationType' => 'one-time']);
 
