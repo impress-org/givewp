@@ -3,9 +3,14 @@
  * Prints the gzip size of the JavaScript each admin list screen loads: its own entry plus the
  * shared list table chunk. Compare a branch with a baseline saved from `develop`.
  *
- * Usage (after `npm run build`):
- *   node bin/list-table-bundle-size.mjs --save=baseline.json   # on develop
- *   node bin/list-table-bundle-size.mjs --baseline=baseline.json  # on the branch
+ * This script does not exist on `develop`. Copy it outside the checkout before switching branches.
+ *
+ * Usage (after `npm run build`, from the repository root):
+ *   cp bin/list-table-bundle-size.mjs /tmp/                       # on the branch
+ *   git switch develop && npm run build
+ *   node /tmp/list-table-bundle-size.mjs --save=/tmp/baseline.json # on develop
+ *   git switch - && npm run build
+ *   node bin/list-table-bundle-size.mjs --baseline=/tmp/baseline.json  # on the branch
  *
  * @since TBD
  */
@@ -26,6 +31,12 @@ const SCREENS = {
     Subscriptions: 'build/assets/dist/js/give-admin-subscriptions.js',
     'Subscription details': 'build/subscriptionDetails.js',
     'Event Tickets': 'build/assets/dist/js/give-admin-event-tickets.js',
+};
+
+// Bundles that `develop` loads on a screen and the branch no longer does. They count in a saved
+// baseline only: Campaign details used to enqueue the Donation Forms list bundle for its Forms tab.
+const BASELINE_ONLY = {
+    'Campaign details': ['build/assets/dist/js/give-admin-donation-forms.js'],
 };
 
 const args = Object.fromEntries(
@@ -55,8 +66,9 @@ const sharedSize = gzipSize(SHARED_CHUNK) ?? 0;
 const baseline = args.baseline ? JSON.parse(readFileSync(args.baseline, 'utf8')) : null;
 
 const rows = Object.entries(SCREENS).map(([screen, entry]) => {
+    const extra = args.save ? (BASELINE_ONLY[screen] ?? []).reduce((sum, file) => sum + (gzipSize(file) ?? 0), 0) : 0;
     const own = gzipSize(entry);
-    const total = own === null ? null : own + sharedSize;
+    const total = own === null ? null : own + extra + sharedSize;
     const before = baseline?.[screen]?.total ?? null;
     const delta = before === null || total === null ? null : total - before;
 

@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Fixed an error when sorting the Event Tickets list by start date.
+timestamp: 2026-10-22T17:40:00.000Z
