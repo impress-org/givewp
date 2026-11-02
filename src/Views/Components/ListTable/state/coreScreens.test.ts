@@ -39,7 +39,7 @@ function standaloneScreens(): ScreenModule[] {
     /* eslint-disable @typescript-eslint/no-var-requires */
     return [
         {
-            filters: require('@givewp/src/Donations/resources/components/DonationsListTable').filters,
+            declarations: require('@givewp/src/Donations/resources/components/filters').donationsFilters,
             screen: require('@givewp/src/Donations/resources/components/listTableScreen').default,
         },
         {
