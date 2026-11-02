@@ -1,4 +1,4 @@
-import {createContext, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState} from 'react';
+import {createContext, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
 import type {Field, View} from '@wordpress/dataviews';
 import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notifications';
@@ -261,6 +261,12 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const searchDeclaration = declarations?.find(isSearch);
         // An added filter that holds no value yet is still something Reset removes.
         const canReset = hasActiveFilters || (view.filters ?? []).some((filter) => !filter.isLocked);
+        const searchBoxRef = useRef<HTMLDivElement>(null);
+        // The control that was clicked (Reset, Clear filters) goes away, so keyboard focus moves to the search box.
+        const resetFilters = useCallback(() => {
+            clearFilters();
+            searchBoxRef.current?.querySelector('input')?.focus();
+        }, [clearFilters]);
 
         const fields = useMemo<Field<ListTableItem>[]>(
             () =>
@@ -355,7 +361,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                                             pluralName
                                         )}
                                         actionLabel={__('Clear filters', 'give')}
-                                        onAction={clearFilters}
+                                        onAction={declarations ? resetFilters : clearFilters}
                                     />
                                 ) : (
                                     listTableBlankSlate
@@ -371,12 +377,14 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                             onResetLayout={resetLayout}
                             searchBox={
                                 searchDeclaration && (
-                                    <ListTableSearch
-                                        label={searchDeclaration.label}
-                                        hint={searchDeclaration.hint}
-                                        value={view.search ?? ''}
-                                        onChange={(term) => onChangeView({...view, search: term})}
-                                    />
+                                    <div ref={searchBoxRef}>
+                                        <ListTableSearch
+                                            label={searchDeclaration.label}
+                                            hint={searchDeclaration.hint}
+                                            value={view.search ?? ''}
+                                            onChange={(term) => onChangeView({...view, search: term})}
+                                        />
+                                    </div>
                                 )
                             }
                             filterBar={
@@ -395,7 +403,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                                             }
                                         }
                                         canReset={canReset}
-                                        onReset={clearFilters}
+                                        onReset={resetFilters}
                                     />
                                 )
                             }

@@ -204,6 +204,16 @@ describe('ListTablePage with filter declarations', () => {
         expect(lastRequest()).not.toHaveProperty('status');
     });
 
+    it('reset moves keyboard focus to the search box, as the Reset button goes away', async () => {
+        window.history.replaceState(null, '', `${PATH}?page=give-forms&give-status=pending`);
+        await render();
+        const box = await renderSlot(lastTable().searchBox);
+
+        await act(async () => filterBar().props.onReset());
+
+        expect(document.activeElement).toBe(box.querySelector('input'));
+    });
+
     it('can reset a secondary filter added from "Add filter" that has no value yet', async () => {
         await render();
         await act(async () =>
