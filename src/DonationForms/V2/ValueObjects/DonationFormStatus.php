@@ -2,9 +2,11 @@
 
 namespace Give\DonationForms\V2\ValueObjects;
 
+use Give\Framework\ListTable\StatusVocabulary;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
+ * @since TBD Add vocabulary().
  * @since 2.24.0
  *
  * @method static DonationFormStatus PENDING()
@@ -54,5 +56,13 @@ class DonationFormStatus extends Enum
     public function label(): string
     {
         return self::labels()[ $this->getValue() ];
+    }
+
+    /**
+     * @since TBD
+     */
+    public static function vocabulary(): StatusVocabulary
+    {
+        return new StatusVocabulary(self::labels(), [self::PUBLISHED, self::PENDING, self::DRAFT, self::TRASH, self::UPGRADED]);
     }
 }
