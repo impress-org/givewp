@@ -8,14 +8,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.19.1.1
  */
 class DonorDefaultUserRoleTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.1.1
      */
     public function testSafeRolesAreAccepted()
     {
@@ -24,7 +24,7 @@ class DonorDefaultUserRoleTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1.1
      */
     public function testPrivilegedAndUnknownRolesAreRejected()
     {
@@ -34,7 +34,7 @@ class DonorDefaultUserRoleTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1.1
      */
     public function testStoredPrivilegedRoleFallsBackToDonorRole()
     {
@@ -45,7 +45,7 @@ class DonorDefaultUserRoleTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1.1
      */
     public function testStoredSafeRoleIsKept()
     {
@@ -55,7 +55,7 @@ class DonorDefaultUserRoleTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1.1
      */
     public function testCustomRoleWithAdminCapabilityIsRejected()
     {
@@ -67,7 +67,7 @@ class DonorDefaultUserRoleTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1.1
      */
     public function testNewDonorUserNeverGetsPrivilegedRole()
     {

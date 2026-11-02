@@ -2,7 +2,7 @@
 /**
  * Logged-in donor email validation rule.
  *
- * @since TBD
+ * @since 4.19.1.1
  */
 
 namespace Give\DonationForms\Rules;

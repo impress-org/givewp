@@ -2,7 +2,7 @@ const UPDATE_DEFAULT_VALUES = 'update_default_values';
 const SET_DONOR_AUTHENTICATED = 'set_donor_authenticated';
 
 /**
- * @since TBD Add the set_donor_authenticated action.
+ * @since 4.19.1.1 Add the set_donor_authenticated action.
  * @since 3.0.0
  */
 export default function reducer(state, action) {
@@ -41,7 +41,7 @@ export function setFormDefaultValues(values: object) {
 /**
  * Records that the inline login signed the donor in, and the email the server will require.
  *
- * @since TBD
+ * @since 4.19.1.1
  *
  * @param email The donor's primary email returned by the login request.
  */

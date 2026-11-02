@@ -13,7 +13,7 @@ class GetOrCreateDonor
     public $donorCreated = false;
 
     /**
-     * @since TBD Do not append submitted donation email to existing donor additional emails.
+     * @since 4.19.1.1 Do not append submitted donation email to existing donor additional emails.
      * @since 3.9.0 Add support to "phone" property
      * @since 3.2.0
      *

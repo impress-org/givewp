@@ -1176,7 +1176,7 @@ function give_donation_form_validate_guest_user() {
  * @param array $user_data User Data.
  *
  * @access  private
- * @since TBD Only give new users a safe donor role.
+ * @since 4.19.1.1 Only give new users a safe donor role.
  * @since 4.19.1 Use gmdate() instead of date().
  * @since   1.0
  *

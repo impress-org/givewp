@@ -2795,7 +2795,7 @@ function give_get_page_by_title(string $page_title, string $output = OBJECT, str
  * A role is safe when it exists and holds none of the capabilities that grant site
  * administration, content editing, or access to GiveWP data.
  *
- * @since TBD
+ * @since 4.19.1.1
  *
  * @param mixed $role
  */
@@ -2870,7 +2870,7 @@ function give_is_donor_safe_user_role($role): bool
  * Falls back to the GiveWP Donor role, or Subscriber when that role is missing, if the
  * stored setting is not a safe donor role.
  *
- * @since TBD
+ * @since 4.19.1.1
  */
 function give_get_donor_default_user_role(): string
 {

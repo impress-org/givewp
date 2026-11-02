@@ -11,7 +11,7 @@ use Give\Donors\Models\Donor;
 class CreateUserFromDonor
 {
     /**
-     * @since TBD Only give new users a safe donor role.
+     * @since 4.19.1.1 Only give new users a safe donor role.
      * @since 4.19.1 Escape exception message.
      */
     public function __invoke(Donor $donor): Donor

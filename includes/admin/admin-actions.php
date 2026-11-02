@@ -995,7 +995,7 @@ add_action( 'wp_ajax_give_subscription_import', 'give_subscription_import_callba
  * Load core settings import ajax callback
  * Fire when importing from JSON start
  *
- * @since TBD Reject an imported donor default user role that is not a safe donor role.
+ * @since 4.19.1.1 Reject an imported donor default user role that is not a safe donor role.
  * @since 4.19.1 Unslash the request input.
  * @since 4.19.0.1 Require a valid JSON array before replacing the stored settings.
  * @since  1.8.17
@@ -1207,7 +1207,7 @@ function give_get_user_roles() {
  * to prevent security issues if the default donor role setting is misconfigured.
  * Only basic subscriber-level roles should be available for donor registration.
  *
- * @since TBD Use give_is_donor_safe_user_role() for the privilege check.
+ * @since 4.19.1.1 Use give_is_donor_safe_user_role() for the privilege check.
  * @since 4.14.0
  * @return array
  */

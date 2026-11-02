@@ -10,7 +10,7 @@ import {useDonationFormState, useDonationFormStateDispatch} from '@givewp/forms/
  *
  * This mounts data to the window object, so it can be accessed by form designs and add-ons
  *
- * @since TBD Add useDonationFormState and useDonationFormStateDispatch.
+ * @since 4.19.1.1 Add useDonationFormState and useDonationFormStateDispatch.
  * @since 3.0.0
  */
 export default function mountWindowData(): void {

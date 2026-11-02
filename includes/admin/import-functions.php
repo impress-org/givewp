@@ -214,7 +214,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = [] ) {
 /**
  * Give get user details if not then create a user. Used in Import Donation CSV.
  *
- * @since TBD Read the donor role through give_get_donor_default_user_role().
+ * @since 4.19.1.1 Read the donor role through give_get_donor_default_user_role().
  * @since 4.19.1 Use gmdate() instead of date(), and add translators comments.
  * @since 1.8.13
  *

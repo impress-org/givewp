@@ -438,7 +438,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
         }
 
         /**
-         * @since TBD Only accept safe donor roles.
+         * @since 4.19.1.1 Only accept safe donor roles.
          */
         public function sanitize_option_donor_default_user_role($value)
         {

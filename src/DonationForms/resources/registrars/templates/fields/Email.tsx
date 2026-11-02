@@ -3,7 +3,7 @@ import {FieldHasDescriptionProps} from '@givewp/forms/propTypes';
 import autoCompleteAttr from '@givewp/forms/registrars/templates/fields/utils/autoCompleteAttr';
 
 /**
- * @since TBD Lock the field when the donor is logged in, including after the inline login.
+ * @since 4.19.1.1 Lock the field when the donor is logged in, including after the inline login.
  * @since 4.3.0 Add autoComplete support
  */
 export default function Email({
