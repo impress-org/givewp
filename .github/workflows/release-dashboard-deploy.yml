@@ -2,19 +2,21 @@ name: Deploy to WordPress.org from the release dashboard
 
 # The deploy step the NX1 release dashboard dispatches for a release of GiveWP. It does what publishing
 # a GitHub release by hand does today, in one run: merges the release branch into master and master
-# back into develop, publishes the GitHub release for the version, then runs the same steps as
-# release.yml: build with pup, generate the pot file, deploy to WordPress.org, attach the zip to the
-# release and announce it on Slack.
+# back into develop, then runs the same steps as release.yml (build with pup, generate the pot file,
+# deploy to WordPress.org), publishes the GitHub release for the version at the merged commit with
+# the zip attached, and announces it on Slack.
 #
 # release.yml stays the path for a release published by hand on GitHub. A release this workflow
 # publishes does not start release.yml: GitHub does not run workflows for events caused by a workflow's
 # own GITHUB_TOKEN, so a release is never deployed twice.
 #
-# The merges and the publish run through the shared release-merge action in stellarwp/plugin-toolbox.
-# Every one of its steps is safe to run again after a late failure: a branch that already holds the
-# release merges as a no-op and an existing release is skipped, so a failed deploy is retried as it is.
-# A merge conflict fails the run before anything is published, with a MERGE_CONFLICT line the dashboard
-# reads; resolve it on the branch named, push, and run the step again.
+# The merges run through the shared release-merge action in stellarwp/plugin-toolbox and the release
+# through its release-publish action, after the build, so the release is only public once the zip is
+# on it and a failed build or deploy leaves no release behind. Every step is safe to run again after a
+# late failure: a branch that already holds the release merges as a no-op and an existing release is
+# skipped, so a failed deploy is retried as it is. A merge conflict fails the run before anything is
+# published, with a MERGE_CONFLICT line the dashboard reads; resolve it on the branch named, push, and
+# run the step again.
 #
 # The dashboard dispatches this file on the release branch, sending `branch`, `version` and
 # `production`. Run it by hand:
@@ -66,11 +68,11 @@ jobs:
                     persist-credentials: false
 
             # Leaves the checkout on master at the merged commit, so everything below builds the release
-            # from it. Pinned to a commit of stellarwp/plugin-toolbox#10; switch to @v1 once plugin-toolbox
-            # publishes a release.
-            -   name: Merge the release and publish it on GitHub
-                id: release
-                uses: stellarwp/plugin-toolbox/.github/actions/release-merge@b066fe625594441f52fc114c1d3accffa0132861
+            # from it. Pinned to a commit of stellarwp/plugin-toolbox#16 (stacked on #10); switch to @v1
+            # once plugin-toolbox publishes a release.
+            -   name: Merge the release into master and master back into develop
+                id: merge
+                uses: stellarwp/plugin-toolbox/.github/actions/release-merge@657eb50441e68b14961a7b35d9124b3423ddc3b1
                 with:
                     branch: ${{ inputs.branch }}
                     version: ${{ inputs.version }}
@@ -117,25 +119,26 @@ jobs:
                     SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
                     SLUG: give
 
-            # actions/upload-release-asset is archived and unmaintained. The GitHub CLI is preinstalled
-            # on the runner and does the same job against the release the action published above.
-            -   name: Upload release asset
-                env:
-                    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                    # The version is the tag. It reaches the shell as data rather than as part of the command,
-                    # since this job holds contents: write.
-                    TAG: ${{ steps.release.outputs.version }}
-                run: gh release upload "$TAG" "${{ github.workspace }}/give.zip" --clobber
+            # The GitHub release, at the commit the merge left master on, with the zip the deploy built
+            # attached before it is public. Published last, so a failed build or deploy leaves no release.
+            -   name: Publish the GitHub release
+                id: release
+                uses: stellarwp/plugin-toolbox/.github/actions/release-publish@657eb50441e68b14961a7b35d9124b3423ddc3b1
+                with:
+                    version: ${{ inputs.version }}
+                    target: ${{ steps.merge.outputs.base-sha }}
+                    files: |
+                        give.zip
 
             # The release body is GitHub's generated pull request list. The changelog people actually read
             # is the readme.txt entry for this version, so lead with that and keep the pull requests after.
-            # The body is read from the release the action published, since no release event carries it here.
+            # The body is read from the release just published, since no release event carries it here.
             -   name: Build the release announcement
                 id: announcement
                 env:
                     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                     REPO: ${{ github.event.repository.name }}
-                    TAG: ${{ steps.release.outputs.version }}
+                    TAG: ${{ inputs.version }}
                     URL: ${{ steps.release.outputs.release-url }}
                 run: |
                     version="$TAG"
