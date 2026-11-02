@@ -88,6 +88,7 @@ const statsConfig: Record<string, StatConfig> = {
 };
 
 /**
+ * @since TBD Name one record "donor", as the result count says it.
  * @since TBD Use the shared filter declarations in place of the "Filter by" settings.
  * @since TBD Pass the actions as data and the screen config.
  */
@@ -95,7 +96,7 @@ export default function DonorsListTable() {
     return (
         <ListTablePage
             title={__('Donors', 'give')}
-            singleName={__('donors', 'give')}
+            singleName={__('donor', 'give')}
             pluralName={__('donors', 'give')}
             rowActions={donorsRowActions}
             apiSettings={window.GiveDonors}
