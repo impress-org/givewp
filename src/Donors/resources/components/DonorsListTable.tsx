@@ -1,14 +1,13 @@
 import {__} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
 import {donorsRowActions} from './DonorsRowActions';
-import {FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import './style.scss';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
 import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
-import filterByOptions from '../constants/filterByOptions';
 import listTableScreen from './listTableScreen';
+import {donorsFilters} from './filters';
 
 declare global {
     interface Window {
@@ -26,27 +25,6 @@ declare global {
 }
 
 const API = new ListTableApi(window.GiveDonors);
-
-export const donorsFilters: Array<FilterConfig> = [
-    {
-        name: 'campaignId',
-        type: 'campaignselect',
-        text: __('All Campaigns', 'give'),
-        ariaLabel: __('Filter donors by campaign', 'give'),
-        options: window.GiveDonors.forms,
-    },
-    {
-        name: 'search',
-        type: 'search',
-        text: __('Name, Email, or Donor ID', 'give'),
-        ariaLabel: __('Search donors', 'give'),
-    },
-    {
-        name: 'filterBy',
-        type: 'filterby',
-        groupedOptions: filterByOptions,
-    }
-];
 
 /**
  * Displays a blank slate for the Donors table.
@@ -110,6 +88,7 @@ const statsConfig: Record<string, StatConfig> = {
 };
 
 /**
+ * @since TBD Use the shared filter declarations in place of the "Filter by" settings.
  * @since TBD Pass the actions as data and the screen config.
  */
 export default function DonorsListTable() {
@@ -120,7 +99,7 @@ export default function DonorsListTable() {
             pluralName={__('donors', 'give')}
             rowActions={donorsRowActions}
             apiSettings={window.GiveDonors}
-            filterSettings={donorsFilters}
+            filters={donorsFilters}
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={recommendation}
             statsConfig={statsConfig}

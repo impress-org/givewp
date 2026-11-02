@@ -43,7 +43,7 @@ function standaloneScreens(): ScreenModule[] {
             screen: require('@givewp/src/Donations/resources/components/listTableScreen').default,
         },
         {
-            filters: require('@givewp/src/Donors/resources/components/DonorsListTable').donorsFilters,
+            declarations: require('@givewp/src/Donors/resources/components/filters').donorsFilters,
             screen: require('@givewp/src/Donors/resources/components/listTableScreen').default,
         },
         {
