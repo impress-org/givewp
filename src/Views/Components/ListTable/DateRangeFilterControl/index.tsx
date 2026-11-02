@@ -33,13 +33,15 @@ const customDays = (value?: DateRangeValue) => {
  * @since TBD
  */
 export default function DateRangeFilterControl({label, value, formatDate, onChange}: DateRangeFilterControlProps) {
-    const [start, setStart] = useState(customDays(value).start);
-    const [end, setEnd] = useState(customDays(value).end);
+    const days = customDays(value);
+    const [start, setStart] = useState(days.start);
+    const [end, setEnd] = useState(days.end);
 
+    // Depend on the days, not the value object: a parent may build an equal object on every render.
     useEffect(() => {
-        setStart(customDays(value).start);
-        setEnd(customDays(value).end);
-    }, [value]);
+        setStart(days.start);
+        setEnd(days.end);
+    }, [days.start, days.end]);
 
     const invalid = isEndBeforeStart(start, end);
     const chosenPreset = value && 'preset' in value ? value.preset : undefined;

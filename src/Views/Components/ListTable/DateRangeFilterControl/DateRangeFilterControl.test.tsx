@@ -133,4 +133,13 @@ describe('DateRangeFilterControl', () => {
         expect(container.textContent).toContain('<2024-03-15>');
         expect(inputLabeled('Start date').value).toBe('2024-03-01');
     });
+
+    it('keeps a half-typed date when the parent passes an equal but new value object', async () => {
+        await render({start: '2024-03-01'});
+        await type(inputLabeled('End date'), '2024-03-15');
+
+        await render({start: '2024-03-01'});
+
+        expect(inputLabeled('End date').value).toBe('2024-03-15');
+    });
 });
