@@ -1,7 +1,10 @@
 import type {Page, Response} from '@playwright/test';
 import {Admin, expect, RequestUtils, test} from '@wordpress/e2e-test-utils-playwright';
-import {addFilter, chip, filterBar, listRows, listTable, popover, rowById, rowWithText} from './utils/list-table';
+import {addFilter, chip, filterBar, listRows, listTable, popover, rowById} from './utils/list-table';
+import {createCampaignWithForm} from './utils/campaign';
+import {createDonation} from './utils/donation';
 import {resetLayout} from './utils/user';
+import {wp} from './utils/wp-cli';
 
 /**
  * The shared list filters: the filter bar, its chips, "Add filter", the date range, the labeled
@@ -11,10 +14,10 @@ import {resetLayout} from './utils/user';
  * cover is the whole loop in a browser: a click in the bar reaching the endpoint with the right
  * parameters, and the endpoint answering with the rows the admin expects.
  *
- * Nothing here hard-codes a count or a name from one site. Expected counts come from the v3 REST
- * API, which does not share the list endpoints' filter code, and the names searched for are taken
- * from records the site already has. A test whose records the site does not have is skipped and
- * says why. No test runs a bulk action or any action that opens a browser dialog.
+ * Each test creates the records it needs (a campaign, a donation by "Eve Explorer", a dated live
+ * donation, a draft campaign), so it proves something on a clean site, and it never hard-codes a
+ * count: expected counts come from the v3 REST API, which does not share the list endpoints' filter
+ * code. No test runs a bulk action or any action that opens a browser dialog.
  */
 const DONATIONS = 'post_type=give_forms&page=give-payment-history';
 const DONORS = 'post_type=give_forms&page=give-donors';
@@ -27,17 +30,11 @@ const CAMPAIGNS_REQUEST = /givewp\/v3\/campaigns\/list-table\?/;
 const FORMS_REQUEST = /give-api\/v2\/admin\/forms\?/;
 const OPTIONS_REQUEST = /list-table-filter-options\//;
 
-type V3Donation = {
-    id: number;
-    createdAt: string;
-    status: string;
-    mode: string;
-    donorId: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-};
-type V3Donor = {id: number; name: string};
+// The names `createDonation` gives its donor.
+const SEEDED_FIRST_NAME = 'Eve';
+const SEEDED_LAST_NAME = 'Explorer';
+
+type V3Donation = {id: number; createdAt: string; status: string};
 type V3Campaign = {id: number; status: string};
 
 /**
@@ -173,12 +170,14 @@ test.describe('Shared list filters', () => {
             await expect(popover(page).getByRole('checkbox', {checked: true})).toHaveCount(1);
         });
 
-        test('"No campaign" cannot be combined with a campaign', async ({page, admin}) => {
+        test('"No campaign" cannot be combined with a campaign', async ({page, admin, requestUtils}) => {
+            const {title} = await createCampaignWithForm(requestUtils);
+
             await visit(page, admin, DONATIONS);
             await chip(page, 'Campaign').click();
+            await popover(page).getByRole('searchbox').fill(title);
 
-            const campaign = popover(page).getByRole('checkbox').nth(1);
-            await expect(campaign).toBeVisible({timeout: 15_000});
+            const campaign = popover(page).getByRole('checkbox', {name: title, exact: true});
             await campaign.check();
 
             const none = nextListRequest(
@@ -198,9 +197,8 @@ test.describe('Shared list filters', () => {
             admin,
             requestUtils,
         }) => {
-            const donors = await allRecords<V3Donor>(requestUtils, '/givewp/v3/donors', {});
-            const donor = donors.find((record) => /^\p{L}{3,}/u.test(record.name ?? ''));
-            test.skip(!donor, 'The site has no donor with a name to search for.');
+            // A donation of its own makes sure the site has a donor (and an email) to search past.
+            createDonation((await createCampaignWithForm(requestUtils)).formId);
 
             const urls: string[] = [];
             page.on('request', (request) => {
@@ -212,7 +210,7 @@ test.describe('Shared list filters', () => {
             await visit(page, admin, DONATIONS);
             await addFilter(page, 'Donor');
 
-            const term = donor!.name.slice(0, 3);
+            const term = SEEDED_FIRST_NAME;
             const searched = page.waitForResponse(
                 (response) => OPTIONS_REQUEST.test(response.url()) && response.url().includes('search=')
             );
@@ -241,12 +239,20 @@ test.describe('Shared list filters', () => {
         }) => {
             const start = dayOfLastMonth(1);
             const end = dayOfLastMonth(15);
+            // One live donation inside the range and one just after it, so the count proves something on
+            // an empty site too. The dates are in the site's time zone.
+            const {formId} = await createCampaignWithForm(requestUtils);
+            createDonation(formId, {mode: 'live', createdAt: `${dayOfLastMonth(5)} 12:00:00`});
+            createDonation(formId, {mode: 'live', createdAt: `${dayOfLastMonth(16)} 00:30:00`});
+
             const live = await allRecords<V3Donation>(requestUtils, '/givewp/v3/donations', {
                 mode: 'live',
                 status: 'any',
                 anonymousDonations: 'include',
             });
-            // The list leaves trashed donations out unless Trash is chosen.
+            // The list leaves trashed donations out unless Trash is chosen. `createdAt` is the site's
+            // local time, as is `post_date`, which the list compares with the chosen days; both sides use
+            // the same day strings, so the browser's time zone does not change the result.
             const expected = live.filter(
                 (donation) =>
                     donation.status !== 'trash' &&
@@ -268,6 +274,7 @@ test.describe('Shared list filters', () => {
 
             expect(url.searchParams.get('start')).toBe(`${start}T00:00:00`);
             expect(url.searchParams.get('end')).toBe(`${end}T23:59:59`);
+            expect(expected).toBeGreaterThanOrEqual(1);
             expect(Number(((await response.json()) as {totalItems: number | string}).totalItems)).toBe(expected);
             await expect(page).toHaveURL(new RegExp(`give-date=${start}_${end}(&|$)`));
         });
@@ -316,28 +323,12 @@ test.describe('Shared list filters', () => {
         });
 
         test('search matches a name from its start, not from its middle', async ({page, admin, requestUtils}) => {
-            const live = await allRecords<V3Donation>(requestUtils, '/givewp/v3/donations', {
-                mode: 'live',
-                status: 'any',
-                anonymousDonations: 'include',
-                // Without it the v3 route shortens last names to an initial.
-                includeSensitiveData: true,
-            });
-            const donation = live.find((record) => {
-                const last = record.lastName ?? '';
-                const middle = last.slice(1, 4).toLowerCase();
-                const startsWithMiddle = [record.firstName, last, record.email].some((value) =>
-                    (value ?? '').toLowerCase().startsWith(middle)
-                );
+            // A test donation by "Eve Explorer": "Exp" starts the last name, "xpl" starts no name or email.
+            const donation = createDonation((await createCampaignWithForm(requestUtils)).formId);
+            const last = SEEDED_LAST_NAME;
 
-                return record.status !== 'trash' && /^\p{L}{4,}$/u.test(last) && !startsWithMiddle;
-            });
-            test.skip(!donation, 'The site has no live donation with a last name to search for.');
-
-            const last = donation!.lastName;
-
-            await visit(page, admin, `${DONATIONS}&give-test-mode=0`);
-            await setTestMode(page, false);
+            await visit(page, admin, `${DONATIONS}&give-test-mode=1`);
+            await setTestMode(page, true);
 
             const search = page.getByLabel('Search donations');
             const prefix = last.slice(0, 3);
@@ -348,7 +339,7 @@ test.describe('Shared list filters', () => {
             );
             await search.fill(prefix);
             await byPrefix;
-            await expect(rowById(page, donation!.id)).toBeVisible();
+            await expect(rowById(page, donation)).toBeVisible();
 
             const middle = last.slice(1, 4);
             const byMiddle = nextListRequest(
@@ -358,7 +349,7 @@ test.describe('Shared list filters', () => {
             );
             await search.fill(middle);
             await byMiddle;
-            await expect(rowById(page, donation!.id)).toHaveCount(0);
+            await expect(rowById(page, donation)).toHaveCount(0);
 
             // The search term never goes in the address.
             expect(page.url()).not.toContain(`search=${middle}`);
@@ -385,6 +376,14 @@ test.describe('Shared list filters', () => {
         });
 
         test('Draft shows only the draft campaigns, all of them', async ({page, admin, requestUtils}) => {
+            // A draft of its own, so the filter has a row to show on an empty site too.
+            const {campaignId} = await createCampaignWithForm(requestUtils);
+            // The REST route cannot set a campaign back to draft, so this goes through the model.
+            wp(
+                'eval',
+                `$campaign = \\Give\\Campaigns\\Models\\Campaign::find(${campaignId}); $campaign->status = \\Give\\Campaigns\\ValueObjects\\CampaignStatus::DRAFT(); $campaign->save();`
+            );
+
             const drafts = await allRecords<V3Campaign>(requestUtils, '/givewp/v3/campaigns', {status: ['draft']});
 
             await visit(page, admin, CAMPAIGNS);
@@ -399,11 +398,8 @@ test.describe('Shared list filters', () => {
             const response = await filtered;
             await page.keyboard.press('Escape');
 
+            expect(drafts.map((draft) => draft.id)).toContain(campaignId);
             expect(Number(((await response.json()) as {totalItems: number | string}).totalItems)).toBe(drafts.length);
-
-            if (drafts.length === 0) {
-                return;
-            }
 
             const rows = listRows(page);
             await expect(rows.first()).toBeVisible();
@@ -421,10 +417,8 @@ test.describe('Shared list filters', () => {
         });
 
         test('has no Campaign filter, and Reset keeps the campaign rows', async ({page, admin, requestUtils}) => {
-            const campaigns = await allRecords<V3Campaign>(requestUtils, '/givewp/v3/campaigns', {status: ['active']});
-            test.skip(campaigns.length === 0, 'The site has no active campaign.');
-
-            const query = `${CAMPAIGNS}&id=${campaigns[0].id}&tab=forms`;
+            const {campaignId} = await createCampaignWithForm(requestUtils);
+            const query = `${CAMPAIGNS}&id=${campaignId}&tab=forms`;
             const first = nextListRequest(page, FORMS_REQUEST);
             await visit(page, admin, query);
             const initial = Number(((await (await first).json()) as {totalItems: number | string}).totalItems);
@@ -442,7 +436,7 @@ test.describe('Shared list filters', () => {
             await chip(page, 'Status').click();
             const trashed = nextListRequest(page, FORMS_REQUEST, (url) => url.searchParams.get('status') === 'trash');
             await popover(page).getByRole('checkbox', {name: 'Trash', exact: true}).check();
-            expect(new URL((await trashed).url()).searchParams.get('campaignId')).toBe(String(campaigns[0].id));
+            expect(new URL((await trashed).url()).searchParams.get('campaignId')).toBe(String(campaignId));
             await page.keyboard.press('Escape');
 
             // The list may answer Reset from its cache, so the rows are what is checked, not a new request.
@@ -460,9 +454,8 @@ test.describe('Shared list filters', () => {
         });
 
         test('search matches a name anywhere, as the hint says', async ({page, admin, requestUtils}) => {
-            const donors = await allRecords<V3Donor>(requestUtils, '/givewp/v3/donors', {});
-            const donor = donors.find((record) => /^\p{L}{6,}/u.test(record.name ?? ''));
-            test.skip(!donor, 'The site has no donor with a name to search for.');
+            const donationId = createDonation((await createCampaignWithForm(requestUtils)).formId);
+            const {donorId} = await requestUtils.rest<{donorId: number}>({path: `/givewp/v3/donations/${donationId}`});
 
             await visit(page, admin, DONORS);
 
@@ -470,13 +463,12 @@ test.describe('Shared list filters', () => {
             await expect(search).toHaveAccessibleDescription(/anywhere/);
 
             // Letters from the middle of the name, not its start.
-            const middle = donor!.name.slice(1, 6);
+            const middle = SEEDED_LAST_NAME.slice(1, 6);
             const searched = nextListRequest(page, DONORS_REQUEST, (url) => url.searchParams.get('search') === middle);
             await search.fill(middle);
             const items = ((await (await searched).json()) as {items: Array<{id: number | string}>}).items;
 
-            expect(items.map((item) => Number(item.id))).toContain(donor!.id);
-            await expect(rowWithText(page, donor!.name).first()).toBeVisible();
+            expect(items.map((item) => Number(item.id))).toContain(donorId);
         });
     });
 

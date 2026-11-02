@@ -1,7 +1,8 @@
 import {wp} from './wp-cli';
 
 /**
- * Records a completed test donation to `formId` and returns its id.
+ * Records a completed donation to `formId` and returns its id. It is a test donation made now,
+ * unless `mode` or `createdAt` (`YYYY-MM-DD HH:MM:SS` in the site's time zone) say otherwise.
  *
  * The admin screens that list and edit donations need donations to look at, and driving the donate
  * flow for each one would spend most of a spec on the thing `donation-forms.spec.ts` already covers.
@@ -10,7 +11,12 @@ import {wp} from './wp-cli';
  * uses for what has no route. The model writes the revenue row the way a real donation does, so
  * the list endpoints see it.
  */
-export function createDonation(formId: number): number {
+export function createDonation(
+    formId: number,
+    {mode = 'test', createdAt}: {mode?: 'test' | 'live'; createdAt?: string} = {}
+): number {
+    const createdAtArgument = createdAt ? `'createdAt' => new \\DateTime('${createdAt}', wp_timezone()),` : '';
+
     const id = wp(
         'eval',
         `$donor = \\Give\\Donors\\Models\\Donor::create([
@@ -20,7 +26,8 @@ export function createDonation(formId: number): number {
         $donation = \\Give\\Donations\\Models\\Donation::create([
             'type' => \\Give\\Donations\\ValueObjects\\DonationType::SINGLE(),
             'status' => \\Give\\Donations\\ValueObjects\\DonationStatus::COMPLETE(),
-            'mode' => \\Give\\Donations\\ValueObjects\\DonationMode::TEST(),
+            'mode' => new \\Give\\Donations\\ValueObjects\\DonationMode('${mode}'),
+            ${createdAtArgument}
             'gatewayId' => 'manual',
             'amount' => \\Give\\Framework\\Support\\ValueObjects\\Money::fromDecimal('12.00', 'USD'),
             'donorId' => $donor->id,
