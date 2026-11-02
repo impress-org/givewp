@@ -1,10 +1,17 @@
-import {expect, test} from '@wordpress/e2e-test-utils-playwright';
+import {expect, FrameLocator, Locator, RequestUtils, test} from '@wordpress/e2e-test-utils-playwright';
 import {createCampaignWithForm} from './utils/campaign';
 import {editForm, section} from './utils/form';
 import {createLegacyForm} from './utils/legacy-form';
 import {createDonorAccount, deleteDonorAccount, DonorAccount} from './utils/donor';
 import {logInAsDonor} from './utils/donor-dashboard';
-import {DONOR, donationForm, expectReceipt, payWithTestGateway, waitForForm} from './utils/donation-form';
+import {
+    DONOR,
+    donationForm,
+    expectReceipt,
+    fillDonorDetails,
+    payWithTestGateway,
+    waitForForm,
+} from './utils/donation-form';
 import {captureOffsiteRedirect, enableTestOffsiteGateway, TEST_OFFSITE_GATEWAY} from './utils/offsite-gateway';
 
 /**
@@ -160,16 +167,13 @@ test.describe('Logged-in donor email', () => {
         await expect(receipt).toContainText(donorEmail);
         await expect(receipt).toContainText('Complete');
     });
-    test('locks the email field in place after an inline login, without a reload', async ({page, requestUtils}) => {
-        const {formId} = await createCampaignWithForm(requestUtils);
 
-        await editForm(requestUtils, formId, (form) => {
-            section(form, "Who's Giving Today?").innerBlocks.unshift({
-                name: 'givewp/login',
-                attributes: {required: true, loginRedirect: false},
-                innerBlocks: [],
-            });
-        });
+    test('locks the email field after an inline login and submits the donor primary email', async ({
+        page,
+        requestUtils,
+    }) => {
+        const {formId} = await createCampaignWithForm(requestUtils);
+        await addLoginBlock(requestUtils, formId, "Who's Giving Today?");
 
         await page.goto(`/?post_type=give_forms&p=${formId}`);
 
@@ -180,13 +184,99 @@ test.describe('Logged-in donor email', () => {
         const email = form.getByLabel('Email Address');
         await expect(email).toBeEditable();
 
-        await form.locator('input[name="login"]').fill(donor.username);
-        await form.locator('input[name="password"]').fill(donor.password);
-        await form.getByRole('button', {name: 'Log In'}).click();
+        await logInOnForm(form, donor);
 
-        await expect(form.locator('input[name="login"]')).toBeHidden();
-        await expect(email).toHaveValue(donorEmail);
-        await expect(email).toBeDisabled();
-        await expect(email).toHaveJSProperty('readOnly', true);
+        await expectLockedEmail(email, donorEmail);
+
+        await form.getByLabel('First name').fill(DONOR.firstName);
+        await form.getByLabel('Last name').fill(DONOR.lastName);
+        await form.getByRole('button', {name: 'Continue'}).click();
+
+        await payWithTestGateway(form);
+        await form.getByRole('button', {name: 'Donate now'}).click();
+
+        await expectReceipt(form, '$10.00', donorEmail);
+    });
+
+    test('locks the email field on a later step than the inline login', async ({page, requestUtils}) => {
+        const {formId} = await createCampaignWithForm(requestUtils);
+        await addLoginBlock(requestUtils, formId, 'How much would you like to donate today?');
+
+        await page.goto(`/?post_type=give_forms&p=${formId}`);
+
+        const form = donationForm(page);
+        await waitForForm(form);
+
+        await logInOnForm(form, donor);
+        await form.getByRole('button', {name: 'Donate now'}).click();
+
+        await expectLockedEmail(form.getByLabel('Email Address'), donorEmail);
+
+        await form.getByLabel('First name').fill(DONOR.firstName);
+        await form.getByLabel('Last name').fill(DONOR.lastName);
+        await form.getByRole('button', {name: 'Continue'}).click();
+
+        await payWithTestGateway(form);
+        await form.getByRole('button', {name: 'Donate now'}).click();
+
+        await expectReceipt(form, '$10.00', donorEmail);
+    });
+
+    test('replaces a typed email on an earlier step after the inline login', async ({page, requestUtils}) => {
+        const {formId} = await createCampaignWithForm(requestUtils);
+        await addLoginBlock(requestUtils, formId, 'Payment Details');
+
+        await page.goto(`/?post_type=give_forms&p=${formId}`);
+
+        const form = donationForm(page);
+        await waitForForm(form);
+        await form.getByRole('button', {name: 'Donate now'}).click();
+
+        await fillDonorDetails(form);
+        await form.getByRole('button', {name: 'Continue'}).click();
+
+        await logInOnForm(form, donor);
+
+        /*
+         * The donor step stays mounted while hidden and keeps its own values. Going back shows
+         * whether it picked up the login, and continuing again sends those values forward.
+         */
+        await form.locator('.givewp-donation-form__steps-header-previous-button').click();
+
+        await expectLockedEmail(form.getByLabel('Email Address'), donorEmail);
+
+        await form.getByRole('button', {name: 'Continue'}).click();
+
+        await payWithTestGateway(form);
+        await form.getByRole('button', {name: 'Donate now'}).click();
+
+        await expectReceipt(form, '$10.00', donorEmail);
     });
 });
+
+/**
+ * Puts a required login block at the top of the named section, which decides the step it shows on.
+ */
+async function addLoginBlock(requestUtils: RequestUtils, formId: number, sectionTitle: string): Promise<void> {
+    await editForm(requestUtils, formId, (form) => {
+        section(form, sectionTitle).innerBlocks.unshift({
+            name: 'givewp/login',
+            attributes: {required: true, loginRedirect: false},
+            innerBlocks: [],
+        });
+    });
+}
+
+async function logInOnForm(form: FrameLocator, account: DonorAccount): Promise<void> {
+    await form.locator('input[name="login"]').fill(account.username);
+    await form.locator('input[name="password"]').fill(account.password);
+    await form.getByRole('button', {name: 'Log In'}).click();
+
+    await expect(form.locator('input[name="login"]')).toBeHidden();
+}
+
+async function expectLockedEmail(email: Locator, value: string): Promise<void> {
+    await expect(email).toHaveValue(value);
+    await expect(email).toBeDisabled();
+    await expect(email).toHaveJSProperty('readOnly', true);
+}

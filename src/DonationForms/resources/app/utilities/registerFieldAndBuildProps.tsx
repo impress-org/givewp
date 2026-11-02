@@ -20,13 +20,10 @@ export default function registerFieldAndBuildProps(
     const validationOptions = buildRegisterValidationOptions(field.validationRules);
 
     const baseInputProps = register(field.name, validationOptions);
-    const isReadOnly = (field as any).isReadOnly || (field as any).readOnly;
 
     const inputProps = {
         ...baseInputProps,
         'aria-required': !!field.validationRules?.required ? 'true' : undefined,
-        readOnly: isReadOnly || undefined,
-        disabled: isReadOnly || undefined,
     };
 
     return {

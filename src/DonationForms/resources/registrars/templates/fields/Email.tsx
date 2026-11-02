@@ -1,10 +1,9 @@
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {FieldHasDescriptionProps} from '@givewp/forms/propTypes';
 import autoCompleteAttr from '@givewp/forms/registrars/templates/fields/utils/autoCompleteAttr';
-import {DONOR_AUTHENTICATED_EVENT} from '@givewp/forms/app/utilities/donorAuthenticatedEvent';
 
 /**
- * @since TBD Lock the field when the inline login signs the donor in.
+ * @since TBD Lock the field when the donor is logged in, including after the inline login.
  * @since 4.3.0 Add autoComplete support
  */
 export default function Email({
@@ -14,19 +13,25 @@ export default function Email({
     placeholder,
     fieldError,
     inputProps,
+    readOnly,
 }: FieldHasDescriptionProps) {
     const autoComplete = autoCompleteAttr(inputProps?.name);
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
-    const [isLockedByLogin, setIsLockedByLogin] = useState(false);
-    const isReadOnly = Boolean((inputProps as {readOnly?: boolean})?.readOnly);
+    const {useDonationFormState, useFormContext} = window.givewp.form.hooks;
+    const {isDonorAuthenticated, donorEmail} = useDonationFormState();
+    const {getValues, setValue} = useFormContext();
+    const isLocked = readOnly || isDonorAuthenticated;
 
+    /*
+     * On a multi-step form the login block can be on a later step than this field. Earlier steps
+     * stay mounted with their own values, so without this a donor who goes back would see, and
+     * carry forward, the email typed before logging in.
+     */
     useEffect(() => {
-        const lock = () => setIsLockedByLogin(true);
-
-        document.addEventListener(DONOR_AUTHENTICATED_EVENT, lock);
-
-        return () => document.removeEventListener(DONOR_AUTHENTICATED_EVENT, lock);
-    }, []);
+        if (isDonorAuthenticated && donorEmail && getValues(inputProps.name) !== donorEmail) {
+            setValue(inputProps.name, donorEmail);
+        }
+    }, [isDonorAuthenticated, donorEmail]);
 
     return (
         <label className={fieldError && 'givewp-field-error-label'}>
@@ -37,8 +42,8 @@ export default function Email({
                 aria-invalid={fieldError ? 'true' : 'false'}
                 placeholder={placeholder}
                 {...inputProps}
-                readOnly={isReadOnly || isLockedByLogin || undefined}
-                disabled={isReadOnly || isLockedByLogin || undefined}
+                readOnly={isLocked || undefined}
+                disabled={isLocked || undefined}
                 autoComplete={autoComplete}
             />
 
