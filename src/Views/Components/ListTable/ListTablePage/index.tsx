@@ -7,6 +7,7 @@ import DataViewsListTable from '../DataViewsListTable';
 import ListTableEmptyState from '../EmptyStates';
 import ListTableFilters from '../ListTableFilters';
 import ListTableSearch from '../ListTableSearch';
+import ResultCountStatus from '../ResultCountStatus';
 import {isBarFilter} from '../filters/filterKinds';
 import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
 import useLegacyRowActionsField from '../LegacyRowActions/useLegacyRowActionsField';
@@ -87,6 +88,7 @@ export const ShowConfirmModalContext = createContext(
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
  *
+ * @since TBD Announce the result count to screen readers after the admin changes the view.
  * @since TBD With `filters`, show Reset only when the filters differ from the screen defaults, and reset to those defaults.
  * @since TBD Accept filter declarations (`filters`), a fixed `scope` and `testModeToggle`; with `filters`, render Give's filter bar and labeled search.
  * @since TBD Render the list through `@wordpress/dataviews`; accept typed row actions; keep the view in the URL; store and reset the layout.
@@ -416,6 +418,13 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                                     />
                                 )
                             }
+                        />
+                        <ResultCountStatus
+                            requestKey={requestKey}
+                            isLoading={isLoading}
+                            totalItems={error || !data ? undefined : Number(data.totalItems ?? 0)}
+                            singleName={singleName}
+                            pluralName={pluralName}
                         />
                     </div>
                 </article>
