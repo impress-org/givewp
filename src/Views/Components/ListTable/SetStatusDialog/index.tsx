@@ -39,7 +39,7 @@ export default function SetStatusDialog({
     const onConfirm = () => submit({run: () => onSetStatus(ids, status), ids, label, onDone: onClose});
 
     return (
-        <Modal title={label} onRequestClose={onClose}>
+        <Modal title={label} onRequestClose={() => !isBusy && onClose()}>
             <BulkActionConfirm
                 message={
                     <>
