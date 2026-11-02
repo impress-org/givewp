@@ -3,6 +3,9 @@ import type {FilterByGroupedOptions, FilterConfig, FilterValues, ListTableParame
 import {filterRequestParameters} from '../filters/requestParameters';
 import {siteToday} from '../filters/siteDate';
 import type {FilterDeclaration} from '../filters/types';
+import {filterFieldId, isApplied, viewFilterValue} from '../filters/viewFilterValue';
+
+export {filterFieldId, isApplied, viewFilterValue} from '../filters/viewFilterValue';
 
 /**
  * @since TBD
@@ -33,25 +36,6 @@ export function snapPerPage(perPage: number | undefined, fallback: number = DEFA
 }
 
 /**
- * Filter fields get their own id space, so a filter never collides with a column of the same name
- * (Donations has both a `status` column and a `status` filter).
- *
- * @since TBD
- */
-export function filterFieldId(id: string): string {
-    return `filter-${id}`;
-}
-
-/**
- * The value of a filter in the view, or undefined when the filter is not applied.
- *
- * @since TBD
- */
-export function viewFilterValue(view: View, id: string): unknown {
-    return view.filters?.find((filter) => filter.field === filterFieldId(id))?.value;
-}
-
-/**
  * The view with a yes/no filter turned on or off. Test mode is one: on, it shows as a chip.
  *
  * @since TBD
@@ -68,15 +52,6 @@ export function withToggleFilter(view: View, id: string, isOn: boolean): View {
  */
 export function filterByGroups(filterSettings: FilterConfig[]): FilterByGroupedOptions[] {
     return filterSettings.flatMap((filter) => (filter.type === 'filterby' ? filter.groupedOptions ?? [] : []));
-}
-
-/**
- * Whether a search or filter value narrows the rows: not empty, not null and not an empty list.
- *
- * @since TBD
- */
-export function isApplied(value: unknown): boolean {
-    return value !== undefined && value !== null && value !== '' && !(Array.isArray(value) && value.length === 0);
 }
 
 const isEmpty = (value: unknown) => !isApplied(value);

@@ -1,5 +1,5 @@
 import type {Filter, View} from '@wordpress/dataviews';
-import {isApplied} from '../adapters/viewToParameters';
+import {isApplied} from '../filters/viewFilterValue';
 
 /**
  * One filter as plain text, so two filter lists can be compared whatever their order. A list value

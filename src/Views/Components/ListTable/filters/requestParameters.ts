@@ -1,8 +1,8 @@
-import {viewFilterValue} from '../adapters/viewToParameters';
 import type {ListTableParameters} from '../ListTablePage/types';
 import type {View} from '@wordpress/dataviews';
 import {dayBounds, parseDateToken, resolveDateRange} from './dateRange';
 import type {DateFilterDeclaration, FilterDeclaration, FilterValue, OptionsFilterDeclaration} from './types';
+import {viewFilterValue} from './viewFilterValue';
 
 /**
  * The value a declaration holds in the view, or undefined when it holds nothing.
