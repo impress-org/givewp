@@ -1,6 +1,6 @@
-import type {Locator, Page, Response} from '@playwright/test';
+import type {Page, Response} from '@playwright/test';
 import {Admin, expect, RequestUtils, test} from '@wordpress/e2e-test-utils-playwright';
-import {listRows, listTable, rowById, rowWithText} from './utils/list-table';
+import {addFilter, chip, filterBar, listRows, listTable, popover, rowById, rowWithText} from './utils/list-table';
 import {resetLayout} from './utils/user';
 
 /**
@@ -76,26 +76,6 @@ async function visit(page: Page, admin: Admin, query: string): Promise<void> {
     await expect(listTable(page).locator('.dataviews-view-table, .dataviews-no-results').first()).toBeVisible({
         timeout: 20_000,
     });
-}
-
-const filterBar = (page: Page): Locator => page.getByRole('group', {name: 'Filters', exact: true});
-
-/**
- * The chip of a filter, found by the text it starts with ("Status", "Status: Pending").
- */
-const chip = (page: Page, label: string): Locator =>
-    filterBar(page).locator('.givewp-filter-chip__toggle', {hasText: new RegExp(`^${label}`)});
-
-/**
- * The open popover of a chip.
- */
-const popover = (page: Page): Locator => page.locator('.givewp-filter-chip__content');
-
-async function addFilter(page: Page, label: string): Promise<void> {
-    await filterBar(page).getByRole('button', {name: 'Add filter'}).click();
-    await page.getByRole('menuitem', {name: label, exact: true}).click();
-    // A filter added from "Add filter" opens its popover at once.
-    await expect(popover(page)).toBeVisible();
 }
 
 /**
