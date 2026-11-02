@@ -116,17 +116,22 @@ test.describe('Donations list', () => {
         createDonation((await createCampaignWithForm(requestUtils)).formId);
 
         // The REST API pages at 100, so more than that proves the filter reads every page.
-        wp(
+        const ids = wp(
             'eval',
-            `for ($i = 1; $i <= 101; $i++) { wp_insert_post(['post_type' => 'give_forms', 'post_status' => 'publish', 'post_title' => sprintf('${prefix} %03d', $i)]); }`
+            `$ids = []; for ($i = 1; $i <= 101; $i++) { $ids[] = wp_insert_post(['post_type' => 'give_forms', 'post_status' => 'publish', 'post_title' => sprintf('${prefix} %03d', $i)]); } echo implode(' ', $ids);`
         );
 
-        await visitDonations(page, admin);
+        try {
+            await visitDonations(page, admin);
 
-        // Picking the 101st form is the proof: the option is only there if the second page loaded.
-        const filtered = page.waitForResponse((response) => response.url().includes('formId='));
-        await applyFilter(page, 'Form', `${prefix} 101`);
-        await filtered;
+            // Picking the 101st form is the proof: the option is only there if the second page loaded.
+            const filtered = page.waitForResponse((response) => response.url().includes('formId='));
+            await applyFilter(page, 'Form', `${prefix} 101`);
+            await filtered;
+        } finally {
+            // The forms would pile up on a developer's site and push newer forms past the filter's option cap.
+            wp('post', 'delete', ...ids.split(' '), '--force');
+        }
     });
 
     test('opens the form filter without adding a horizontal scrollbar at a narrow width', async ({
