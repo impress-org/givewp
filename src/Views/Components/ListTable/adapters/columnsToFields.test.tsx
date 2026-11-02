@@ -1,6 +1,12 @@
 import {createRoot} from 'react-dom/client';
 import {act} from 'react';
-import {cellText, columnsToFields, titleFieldId} from './columnsToFields';
+import {
+    cellText,
+    columnsToFields,
+    isTitleColumnVisible,
+    keepInteractiveClicksInCell,
+    titleFieldId,
+} from './columnsToFields';
 import type {Column} from '../ListTablePage/types';
 
 (globalThis as {IS_REACT_ACT_ENVIRONMENT?: boolean}).IS_REACT_ACT_ENVIRONMENT = true;
@@ -19,6 +25,10 @@ describe('columnsToFields', () => {
         expect(fields.map((field) => field.id)).toEqual(['id', 'title', 'goal', 'createdAt']);
         expect(fields.map((field) => field.enableSorting)).toEqual([true, true, false, true]);
         expect(fields.every((field) => field.filterBy === false)).toBe(true);
+    });
+
+    it('keeps the title field out of the "Hide column" menu', () => {
+        expect(columnsToFields(columns).map((field) => field.enableHiding)).toEqual([true, false, true, true]);
     });
 
     it('returns the plain text of an HTML cell as the value', () => {
@@ -58,5 +68,34 @@ describe('cellText', () => {
         expect(cellText(12)).toBe('12');
         expect(cellText(null)).toBe('');
         expect(cellText(undefined)).toBe('');
+    });
+});
+
+describe('isTitleColumnVisible', () => {
+    it('is false only when the server hides the title column', () => {
+        expect(isTitleColumnVisible(columns, 'title')).toBe(true);
+        expect(isTitleColumnVisible([{id: 'title', label: 'Title', sortable: true, visible: false}], 'title')).toBe(
+            false
+        );
+        expect(isTitleColumnVisible([{id: 'id', label: 'ID', sortable: true}], undefined)).toBe(true);
+    });
+});
+
+describe('keepInteractiveClicksInCell', () => {
+    it.each(['a', 'button', 'input', 'select', 'textarea'])('stops a click on a %s from reaching the row', (tag) => {
+        const element = document.createElement(tag);
+        const stopPropagation = jest.fn();
+
+        keepInteractiveClicksInCell({target: element, stopPropagation} as any);
+
+        expect(stopPropagation).toHaveBeenCalled();
+    });
+
+    it('lets a click on plain text reach the row', () => {
+        const stopPropagation = jest.fn();
+
+        keepInteractiveClicksInCell({target: document.createElement('span'), stopPropagation} as any);
+
+        expect(stopPropagation).not.toHaveBeenCalled();
     });
 });

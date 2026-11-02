@@ -1,5 +1,6 @@
 import type {Filter} from '@wordpress/dataviews';
 import type {Column} from '../ListTablePage/types';
+import {isTitleColumnVisible} from '../adapters/columnsToFields';
 import {snapPerPage} from '../adapters/viewToParameters';
 import type {ListTableScreen, ScreenDefaults} from './types';
 
@@ -46,6 +47,7 @@ export function resolveScreenDefaults(
         perPage: snapPerPage(perPage ?? options.perPage),
         sort: {field: ID_FIELD, direction: 'desc'},
         titleField,
+        ...(isTitleColumnVisible(columns, titleField) ? {} : {showTitle: false}),
         lockedFields,
         pinnedLast: options.pinnedField,
         filters: options.filters ?? [],

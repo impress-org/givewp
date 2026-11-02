@@ -78,6 +78,8 @@ export interface ScreenDefaults {
     perPage: number;
     sort: Required<ListTableView>['sort'];
     titleField?: string;
+    /** Set to false when the server schema hides the title column; absent otherwise. */
+    showTitle?: false;
     /** Fields that can never be hidden. */
     lockedFields: string[];
     /** A field that always stays last. */
