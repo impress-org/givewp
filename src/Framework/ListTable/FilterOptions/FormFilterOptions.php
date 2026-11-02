@@ -62,8 +62,11 @@ class FormFilterOptions extends AbstractFilterOptionSource
     {
         $title = parent::optionLabel($label, $row);
 
-        return $row->post_status === 'draft'
-            ? sprintf(__('%s (Draft)', 'give'), $title)
-            : $title;
+        if ($row->post_status !== 'draft') {
+            return $title;
+        }
+
+        /* translators: %s: form title. */
+        return sprintf(__('%s (Draft)', 'give'), $title);
     }
 }
