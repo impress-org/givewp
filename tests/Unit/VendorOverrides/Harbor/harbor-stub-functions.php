@@ -12,6 +12,9 @@ use Give\Tests\Unit\VendorOverrides\Harbor\HarborStubs;
  * Per-test return values are controlled via HarborStubs.
  */
 
+/**
+ * @since TBD also true for the slugs in HarborStubs::$activeProducts
+ */
 function lw_harbor_is_product_license_active(string $product): bool
 {
     return HarborStubs::$productActive || in_array($product, HarborStubs::$activeProducts, true);

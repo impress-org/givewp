@@ -76,7 +76,7 @@ class LicenseRepository
      * A Nexcess Plugin Stack license holds only the stack product, not Give, so it
      * counts too. Its paid features always include Give's.
      *
-     * @unreleased count an active Nexcess Plugin Stack license
+     * @since TBD count an active Nexcess Plugin Stack license
      * @since 4.15.0 add support for Harbor unified licenses
      * @since 4.3.0
      */

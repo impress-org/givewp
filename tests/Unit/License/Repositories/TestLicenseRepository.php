@@ -25,6 +25,7 @@ class TestLicenseRepository extends TestCase
     protected LicenseRepository $repository;
 
     /**
+     * @since TBD reset the Harbor stubs
      * @since 4.3.0
      */
     public function setUp(): void
@@ -37,7 +38,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since TBD
      */
     public function tearDown(): void
     {
@@ -47,7 +48,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since TBD
      */
     public function testHasActiveLicensesReturnsTrueWhenPluginStackLicenseIsActive(): void
     {
@@ -58,7 +59,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since TBD
      */
     public function testHasActiveLicensesReturnsFalseWhenOnlyAnotherBrandIsActive(): void
     {
