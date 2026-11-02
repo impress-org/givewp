@@ -14,7 +14,7 @@ use Give\Tests\Unit\VendorOverrides\Harbor\HarborStubs;
 
 function lw_harbor_is_product_license_active(string $product): bool
 {
-    return HarborStubs::$productActive;
+    return HarborStubs::$productActive || in_array($product, HarborStubs::$activeProducts, true);
 }
 
 function lw_harbor_is_feature_available(string $slug): bool

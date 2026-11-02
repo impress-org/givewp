@@ -8,6 +8,7 @@ use Give\License\ValueObjects\LicenseOptionKeys;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\License\TestTraits\HasLicenseData;
+use Give\Tests\Unit\VendorOverrides\Harbor\HarborStubs;
 
 /**
  * @since 4.3.0
@@ -30,7 +31,40 @@ class TestLicenseRepository extends TestCase
     {
         parent::setUp();
 
+        HarborStubs::reset();
+
         $this->repository = new LicenseRepository();
+    }
+
+    /**
+     * @unreleased
+     */
+    public function tearDown(): void
+    {
+        HarborStubs::reset();
+
+        parent::tearDown();
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testHasActiveLicensesReturnsTrueWhenPluginStackLicenseIsActive(): void
+    {
+        HarborStubs::$activeProducts = ['nexcess-plugin-stack'];
+
+        $this->assertTrue($this->repository->hasActiveLicenses());
+        $this->assertSame(0.0, $this->repository->getPlatformFeePercentage());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testHasActiveLicensesReturnsFalseWhenOnlyAnotherBrandIsActive(): void
+    {
+        HarborStubs::$activeProducts = ['kadence'];
+
+        $this->assertFalse($this->repository->hasActiveLicenses());
     }
 
     /**
