@@ -54,7 +54,7 @@ class ValidateDonationFormRequest
      * after the run: before, so an earlier failed attempt in the same session cannot bleed in;
      * after, because the errors now live on the exception.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.16.7.1
      *
      * @throws DonationFormFieldErrorsException

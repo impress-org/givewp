@@ -149,7 +149,7 @@ final class Options
      * Note: if you want to add an option in template to overwrite float labels feature then instead of define it manually in template options, developer can call this function.
      * This function help to maintain backward compatibility with legacy donation form renderer.
      *
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      *
      * @return array
      */

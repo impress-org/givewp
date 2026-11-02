@@ -88,7 +88,7 @@ class Give_Cache {
 	 * Get result if cache enabled or not.
 	 *
 	 * @return bool
-	 * @since TBD Unslash and sanitize the request URI.
+	 * @since 4.19.1 Unslash and sanitize the request URI.
 	 * @since 2.6.1
 	 */
 	private function is_cache_enabled() {
@@ -150,7 +150,7 @@ class Give_Cache {
 	/**
 	 * Notices function.
 	 *
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.5
 	 * @access public
@@ -326,7 +326,7 @@ class Give_Cache {
 	 *
 	 * Note: only for internal use
 	 *
-	 * @since TBD Remove quotes around the placeholder.
+	 * @since 4.19.1 Remove quotes around the placeholder.
 	 * @since  1.8.7
 	 * @access public
 	 * @global wpdb $wpdb
@@ -382,7 +382,7 @@ class Give_Cache {
 	 *
 	 * Note: only for internal use
 	 *
-	 * @since TBD Remove quotes around the placeholder and the SQL field variable.
+	 * @since 4.19.1 Remove quotes around the placeholder and the SQL field variable.
 	 * @since  1.8.7
 	 * @access public
 	 *

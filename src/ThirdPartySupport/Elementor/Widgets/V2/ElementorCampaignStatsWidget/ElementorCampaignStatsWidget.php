@@ -139,7 +139,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 4.7.0
      */
     protected function render(): void

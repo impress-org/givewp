@@ -2,7 +2,7 @@
 /**
  * This template is used to display the progress of [give_totals]
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

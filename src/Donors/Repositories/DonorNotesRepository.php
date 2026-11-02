@@ -180,7 +180,7 @@ class DonorNotesRepository
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.4.0
      *
      * @return void

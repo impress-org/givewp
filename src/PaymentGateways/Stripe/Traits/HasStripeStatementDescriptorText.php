@@ -13,7 +13,7 @@ trait HasStripeStatementDescriptorText
      * Return filtered stripe statement descriptor text.
      * Check Stripe statement descriptor requirements: https://stripe.com/docs/statement-descriptors#requirements
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.19.0
      *
      * @param string $statementDescriptor

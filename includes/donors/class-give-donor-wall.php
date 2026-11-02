@@ -381,7 +381,7 @@ class Give_Donor_Wall {
     /**
      * Get donation data.
      *
-     * @since TBD Document why the query is safe.
+     * @since 4.19.1 Document why the query is safe.
      * @since 4.18.0     Read meta values as stored instead of unserializing them, and read the donor
      *                comment from the fetched rows instead of a per-donation meta lookup.
      * @since 4.16.7.2       Restrict unserialize to prevent object instantiation.
@@ -452,7 +452,7 @@ class Give_Donor_Wall {
 	/**
 	 * Get donation list for specific query
 	 *
-     * @since TBD Document why the query is safe.
+     * @since 4.19.1 Document why the query is safe.
      * @since 3.17.2 fix - filter by only_comments attr
 	 * @since 2.3.0
 	 *
@@ -566,7 +566,7 @@ class Give_Donor_Wall {
 	/**
 	 * Get donor comments
 	 *
-	 * @since TBD Document why the query is safe.
+	 * @since 4.19.1 Document why the query is safe.
 	 * @since 2.3.0
 	 *
 	 * @param array $donations_data

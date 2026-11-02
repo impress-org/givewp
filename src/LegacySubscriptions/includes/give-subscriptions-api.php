@@ -58,7 +58,7 @@ class Give_Subscriptions_API extends Give_API {
 	 * Safely gets the status from the URL
 	 *
 	 * @access private
-	 * @since TBD Add translators comments.
+	 * @since 4.19.1 Add translators comments.
 	 * @since  2.4.3
 	 * @author Topher
 	 */
@@ -121,7 +121,7 @@ class Give_Subscriptions_API extends Give_API {
 	/**
 	 * Add Subscribers Endpoint
 	 *
-	 * @since TBD Add translators comments.
+	 * @since 4.19.1 Add translators comments.
 	 *
 	 * @param $data
 	 * @param $query_mode

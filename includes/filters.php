@@ -78,7 +78,7 @@ add_action( 'update_option_give_settings', 'give_set_settings_with_disable_prefi
  * It will build Akismet query string and call Akismet API.
  * Akismet response return 'true' for spam donation.
  *
- * @since TBD Unslash and sanitize the request input. Write the Akismet log data as JSON.
+ * @since 4.19.1 Unslash and sanitize the request input. Write the Akismet log data as JSON.
  * @since 1.8.14
  *
  * @param $spam

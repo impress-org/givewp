@@ -12,7 +12,7 @@ use Give\Framework\Receipts\Properties\ReceiptDetail;
 class AddEventTicketsToDonationConfirmationPageEventTicketDetails
 {
     /**
-     * @since TBD Number the placeholders and add translators comments.
+     * @since 4.19.1 Number the placeholders and add translators comments.
      * @since 3.6.0
      */
     public function __invoke(DonationReceipt $receipt): void

@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Displays a user's donation history.
  *
- * @since TBD Escape output. Unslash and sanitize the referrer.
+ * @since 4.19.1 Escape output. Unslash and sanitize the referrer.
  * @since 3.7.0 Sanitize attributes
  * @since 3.1.0 pass form id by reference in give_totals shortcode.
  * @since  1.0
@@ -135,7 +135,7 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * Show the Give donation form.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 4.3.0 Add check for 'modal' in display_style to allow v2 forms to be shown in a modal.
  * @since 3.7.0 Sanitize attributes
  * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
@@ -639,7 +639,7 @@ add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
  *
  * Shows a donation total.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 3.14.0 Replace "_give_form_earnings" form meta with $query->form($post)->sumAmount()
  * @since 3.7.0 Sanitize attributes
  * @since  2.1
@@ -851,7 +851,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
 /**
  * Displays donation forms in a grid layout.
  *
- * @since TBD Changed the progress_bar_color default to #438D45 to meet non-text color contrast requirements (WCAG 1.4.11).
+ * @since 4.19.1 Changed the progress_bar_color default to #438D45 to meet non-text color contrast requirements (WCAG 1.4.11).
  * @since 3.7.0 Sanitize attributes
  * @since  2.1.0
  *
@@ -887,7 +887,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  * @type string $display_style How the form is displayed, either in new page or modal popup.
  *                                       Default 'redirect'. Accepts 'redirect', 'modal'.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @return string|bool The markup of the form grid or false.
  */
 function give_form_grid_shortcode( $atts ) {

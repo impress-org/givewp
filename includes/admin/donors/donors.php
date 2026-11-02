@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get formatted address
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  *
@@ -113,7 +113,7 @@ function give_get_format_address( $address, $address_args = array() ) {
  *
  * Renders the donors page contents.
  *
- * @since TBD Unslash the requested view.
+ * @since 4.19.1 Unslash the requested view.
  * @since 4.13.1 add early return if showing new details page
  * @since  1.0
  * @return void
@@ -169,7 +169,7 @@ function give_donor_tabs() {
 /**
  * List table of donors.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  1.0
  * @return void
  */
@@ -216,7 +216,7 @@ function give_donors_list() {
 /**
  * Renders the donor view wrapper.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  4.16.8 Relinking donors is handled only through the nonce-protected edit action.
  * @since  1.0
  *
@@ -307,7 +307,7 @@ function give_render_donor_view( $view, $callbacks ) {
 /**
  * View a donor
  *
- * @since TBD Escape output, including translated strings. Add translators comments.
+ * @since 4.19.1 Escape output, including translated strings. Add translators comments.
  * @since 4.19.0.1 Issue the address form nonce for the displayed donor.
  * @since 4.16.4 Escaped the donor company and phone output.
  * @since 3.7.0 Add "phone" field
@@ -1043,7 +1043,7 @@ function give_donor_view( $donor ) {
 /**
  * View the notes of a donor.
  *
- * @since TBD Escape output, including translated strings. Sanitize the page number.
+ * @since 4.19.1 Escape output, including translated strings. Sanitize the page number.
  * @since 4.16.6 Escaped the donor name output in the donor notes header.
  * @since 4.6.0 Escape donor note
  * @since  1.0
@@ -1119,7 +1119,7 @@ function give_donor_notes_view( $donor ) {
 /**
  * The donor delete view.
  *
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings.
  * @since 4.16.6 Escaped the donor name output in the delete donor view.
  * @since  1.0
  *

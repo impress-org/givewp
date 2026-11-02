@@ -52,7 +52,7 @@ function give_email_template_tags( $message, $payment_data, $payment_id, $admin_
  *
  * Provides sample content for the preview email functionality within settings > email.
  *
- * @since TBD Use gmdate() instead of date().
+ * @since 4.19.1 Use gmdate() instead of date().
  * @since 1.0
  *
  * @param string $message Email message with template tags.
@@ -101,7 +101,7 @@ function give_email_preview_template_tags( $message ) {
  * Output Email Template Preview Buttons.
  *
  * @access private
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  1.0
  * @since  1.8 Field arguments param added.
  *
@@ -158,7 +158,7 @@ function give_email_preview_buttons_callback( $field ) {
  *
  * Displays a header bar with the ability to change donations to preview actual data within the preview. Will not display if
  *
- * @since TBD Unslash and sanitize the request values.
+ * @since 4.19.1 Unslash and sanitize the request values.
  * @since 2.14.0 reduce number of queries
  * @since 1.6
  */

@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Process batch exports via ajax
  *
- * @since TBD Validate and sanitize the posted form, step and file name.
+ * @since 4.19.1 Validate and sanitize the posted form, step and file name.
  * @since 2.21.0 Sanitize file name. Allow plain file name only.
  * @since 1.5
  * @return void
