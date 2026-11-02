@@ -306,7 +306,6 @@ describe('ListTablePage with filter declarations', () => {
         await render();
 
         expect(lastTable().fields.map((field) => field.id)).toEqual(['id', 'title']);
-        expect(lastTable().search).toBe(false);
     });
 
     it("the search box shows the declaration's label and hint", async () => {
@@ -441,7 +440,6 @@ describe('ListTablePage with filter declarations', () => {
         await render({filters: undefined});
 
         expect(lastTable().searchBox).toBeUndefined();
-        expect(lastTable().search).toBe(false);
         expect(filterBar().props.declarations).toEqual([]);
     });
 });
@@ -467,7 +465,6 @@ describe('ListTablePage with only the deprecated filter settings (an add-on scre
         await render(addOnProps);
 
         expect(filterBar().props.declarations.map((declaration) => declaration.id)).toEqual(['campaignId', 'state']);
-        expect(lastTable().search).toBe(false);
 
         const box = await renderSlot(lastTable().searchBox);
         const input = box.querySelector('input')!;

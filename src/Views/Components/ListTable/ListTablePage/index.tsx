@@ -380,7 +380,6 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                                 )
                             }
                             perPageSizes={PER_PAGE_SIZES}
-                            search={false}
                             isDefaultLayout={isDefaultLayout}
                             onResetLayout={resetLayout}
                             searchBox={
