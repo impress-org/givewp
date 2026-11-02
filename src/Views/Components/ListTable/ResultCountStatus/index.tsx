@@ -7,6 +7,12 @@ import {__, _n, sprintf} from '@wordpress/i18n';
 const SETTLE_DELAY = 300;
 
 /**
+ * Added to the end of a message that repeats the one before it, so screen readers read it again.
+ * Written as an escape so it is visible in review.
+ */
+const NO_BREAK_SPACE = '\u00A0';
+
+/**
  * @since TBD
  */
 export interface ResultCountStatusProps {
@@ -78,8 +84,8 @@ export default function ResultCountStatus({
 
             settledKey.current = requestKey;
             const text = resultMessage(count, single, plural);
-            // The same words twice would not be read again, so the second one gets a trailing space.
-            setMessage((previous) => (previous === text ? `${text} ` : text));
+            // The same words twice would not be read again, so the second one gets a trailing no-break space.
+            setMessage((previous) => (previous === text ? `${text}${NO_BREAK_SPACE}` : text));
         }, SETTLE_DELAY);
 
         return () => clearTimeout(timer);
