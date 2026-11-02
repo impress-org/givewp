@@ -1,5 +1,4 @@
 significance: patch
-type: fix
-entry: Resolved an issue where sites licensed through the Nexcess Plugin Stack
-  were charged the Stripe platform fee as if they had no license
+type: feature
+entry: Added support for Nexcess Plugin Stack licenses
 timestamp: 2026-11-02T16:57:21.000Z
