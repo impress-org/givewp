@@ -203,7 +203,7 @@ Two rules that fall out of the same profiling, and apply to any endpoint that fi
   `ID NOT IN (SELECT donation_id FROM give_donationmeta WHERE meta_key = '_give_payment_mode' AND
   meta_value = 'test')`, and name or email search is `ID IN (... WHERE meta_key IN (first, last)
   AND meta_value LIKE 'term%')`. A `LEFT JOIN ... WHERE meta IS NULL OR meta <> 'test'`, or a
-  `HAVING` on a joined column, forces the full join to materialise first. And group any `OR` you
+  `HAVING` on a joined column, forces the full join to materialize first. And group any `OR` you
   do write with a closure `where(function ($q) { ... })`: an ungrouped `orWhere()` binds looser
   than the preceding `AND`s and silently drops them, which is how trashed donations once leaked
   into the live list.
@@ -311,7 +311,8 @@ the field. A chip lists up to three names and then says how many are chosen ("St
 the full list is its tooltip and accessible name.
 
 - **Reset shows only when the filters differ from the screen's defaults.** The defaults are no
-  filters, plus test mode on a site in test mode. So an untouched list on a test site shows no Reset,
+  filters, plus test mode on a site in test mode, plus, on a screen that still passes the old
+  `filterSettings`, a `hidden` setting with an option on its own page. So an untouched list on a test site shows no Reset,
   and Reset puts test mode back on instead of turning it off. A search term, or a secondary filter
   added with no value yet, counts as a change. Reset never clears `scope`.
 - **The date range** counts in whole days in the site's time zone. A preset is kept as a preset and
@@ -334,15 +335,16 @@ row.
 `givewp/v3/list-table-filter-options/<source>` (`campaign`, `form` or `donor`) feeds the `entity`
 filters (`ListTableFilterOptionsController`).
 
-- **Permissions, in this order:** signed in (401); with `screen`, a known screen (404) that offers
-  this source (400) and the screen's view capability (403); without `screen`, the source's own view
-  capability (403).
+- **Permissions, in this order:** signed in (401); a known source (403 for any other); with
+  `screen`, a known screen (404) that offers this source (400) and the screen's view capability
+  (403); without `screen`, the source's own view capability (403).
 - **Parameters:** `search` (up to 100 characters; matches the start of any word of the label),
   `page` (20 options a page, at most page 10000) and `include` (up to 50 ids, whose labels are
   returned; search and page are ignored). The client asks for labels in chunks of 50.
-- **What it returns:** `{options: [{value, label}], hasMore}`. Each query selects only the id and the
-  label column, so a donor option is a name, never an email or anything else. A draft form says
-  "(Draft)".
+- **What it returns:** `{options: [{value, label}], hasMore}`. Each query selects the id and the
+  label column; the form source also selects `post_status`, only to add "(Draft)" to a draft form's
+  label. The donor query reads only the id and the name, so a donor option is never an email or
+  anything else.
 - **Cost.** A word-start match (`LIKE 'term%' OR LIKE '% term%'`) cannot use an index, so a donor or
   campaign search scans its table. It runs only while someone types, one page at a time, and the
   Donors list search already scans the same way. The contract accepts this.
