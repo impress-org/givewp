@@ -52,7 +52,7 @@ add_action( 'give_email_send_before', 'give_disable_mandrill_nl2br' );
  * This function will clear the Yoast SEO sitemap cache on update of settings
  *
  * @return void
- * @since TBD Unslash and sanitize the posted display settings before comparing them.
+ * @since 4.19.1 Unslash and sanitize the posted display settings before comparing them.
  * @since 1.8.9
  */
 function give_clear_seo_sitemap_cache_on_settings_change() {

@@ -115,7 +115,7 @@ class Give_Form_Duplicator
     /**
      * Clone meta data
      *
-     * @since TBD Prepare SQL with placeholders.
+     * @since 4.19.1 Prepare SQL with placeholders.
      * @since  2.2.0
      * @access private
      *
@@ -150,7 +150,7 @@ class Give_Form_Duplicator
     /**
      * Reset stats for cloned form
      *
-     * @since TBD Prepare SQL with placeholders.
+     * @since 4.19.1 Prepare SQL with placeholders.
      * @since  2.2.0
      * @access private
      *

@@ -82,7 +82,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @since TBD Escape output and replace short echo tags with escaped echo.
+     * @since 4.19.1 Escape output and replace short echo tags with escaped echo.
      * @since 4.1.0 add campaign colors
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
@@ -148,7 +148,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @since TBD Set explicit versions on the enqueued assets.
+     * @since 4.19.1 Set explicit versions on the enqueued assets.
      * @since 3.0.0
      */
     public function enqueueGlobalStyles(string $primaryColor, string $secondaryColor)
@@ -177,7 +177,7 @@ class DonationConfirmationReceiptViewModel
     /**
      * Loads scripts in order: [Registrars, Designs, App]
      *
-     * @since TBD Set explicit versions on the design script and the receipt styles.
+     * @since 4.19.1 Set explicit versions on the design script and the receipt styles.
      * @since 3.0.0
      *
      * @return void

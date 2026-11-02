@@ -19,7 +19,7 @@ use Give_Payment_Stats;
  * after the SQL fix, because they check the new hardening of Give_Payments_Query::get_sql(). Every
  * other test was written first and passed on the unchanged code.
  *
- * @since TBD
+ * @since 4.19.1
  */
 class LegacyPaymentFunctionsTest extends TestCase
 {
@@ -29,7 +29,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     private $campaign;
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -40,7 +40,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testTotalEarningsRecalculatesTheSumOfCompletedDonations()
     {
@@ -68,7 +68,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testEarningsByDateSumsTheDonationsOfTheMonth()
     {
@@ -81,7 +81,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testPaymentUserIdReturnsTheUserOfTheDonor()
     {
@@ -94,7 +94,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonationIdByKeyFindsTheDonationByPurchaseKey()
     {
@@ -106,7 +106,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testPurchaseIdByTransactionIdFindsTheDonationByTransactionId()
     {
@@ -118,7 +118,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testFormDonorCountCountsUniqueDonorsByDefault()
     {
@@ -134,7 +134,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testFormDonorCountIsZeroForAFormWithoutDonations()
     {
@@ -144,7 +144,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testTotalPostTypeCountAcceptsOneOrSeveralPostTypes()
     {
@@ -165,7 +165,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCountPaymentsReturnsTheCountPerStatus()
     {
@@ -180,7 +180,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCountPaymentsCanLimitTheStatuses()
     {
@@ -194,7 +194,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCountPaymentsFiltersByForm()
     {
@@ -208,7 +208,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     /**
      * Added after the fix: before it, a quote in a status broke the SQL.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCountPaymentsHandlesAStatusWithAQuote()
     {
@@ -225,7 +225,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     /**
      * Added after the fix: before it, a status given as a plain string was a fatal error on PHP 8.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCountPaymentsAcceptsAStatusGivenAsAString()
     {
@@ -239,7 +239,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCountPaymentsIgnoresAnInvalidOrder()
     {
@@ -254,7 +254,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testBestSellingReturnsTheFormWithMostSalesFirst()
     {
@@ -273,7 +273,7 @@ class LegacyPaymentFunctionsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function donation(int $cents, ?DonationStatus $status = null, ?Donor $donor = null): Donation
     {

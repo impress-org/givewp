@@ -28,7 +28,7 @@ class Query
     }
 
     /**
-     * @since TBD Return a prepared query.
+     * @since 4.19.1 Return a prepared query.
      * @since 4.14.0 Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
      * @since 3.14.0 Consider the donation mode (test or live) instead of querying both modes together
      * @return string
@@ -76,7 +76,7 @@ class Query
     }
 
     /**
-     * @since TBD Document why the query is safe.
+     * @since 4.19.1 Document why the query is safe.
      *
      * @return stdClass
      */

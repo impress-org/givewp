@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param array $args An array of form arguments.
  *
  * @return string Donation form.
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.0
  */
 function give_get_donation_form( $args = [] ) {
@@ -247,7 +247,7 @@ function give_get_donation_form( $args = [] ) {
  * @param int $form_id The form ID.
  *
  * @return string
- * @since TBD Escape output. Sanitize the posted form id.
+ * @since 4.19.1 Escape output. Sanitize the posted form id.
  * @since  1.0
  */
 function give_show_purchase_form( $form_id, $args ) {
@@ -344,7 +344,7 @@ add_action( 'give_donation_form', 'give_show_purchase_form', 10, 2 );
  * @param int $form_id The form ID.
  *
  * @return void
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since  1.4.1
  */
 function give_show_register_login_fields( $form_id ) {
@@ -401,7 +401,7 @@ add_action( 'give_donation_form_register_login_fields', 'give_show_register_logi
  * @param array $args    An array of form arguments.
  *
  * @return void
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since  1.0
  */
 function give_output_donation_amount_top( $form_id = 0, $args = [] ) {
@@ -512,7 +512,7 @@ add_action( 'give_donation_form_top', 'give_output_donation_amount_top', 10, 2 )
 /**
  * Outputs the Donation Levels in various formats such as dropdown, radios, and buttons.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since  1.0
  *
  * @param int $form_id The form ID.
@@ -684,7 +684,7 @@ function give_output_levels( $form_id ) {
  * @param array $args    An array of form arguments.
  *
  * @return string Checkout button.
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since  1.0
  */
 function give_display_checkout_button( $form_id, $args ) {
@@ -722,7 +722,7 @@ add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 
 /**
  * Display MagnificPopup Button.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 2.5.11
  *
  * @param $form_id
@@ -761,7 +761,7 @@ function give_add_button_open_form( $form_id, $args ) {
  *
  * @since 3.1.0 Add the give_user_info_fields_user_info filter
  * @since 2.25.0 add radio group to conditionally enable/disable company name field
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings.
  * @since      1.0
  *
  * @param int $form_id The form ID.
@@ -1100,7 +1100,7 @@ add_action( 'give_register_fields_before', 'give_user_info_fields' );
  * @param int $form_id The form ID.
  *
  * @return void
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings.
  * @since  1.0
  */
 function give_get_cc_form( $form_id ) {
@@ -1216,7 +1216,7 @@ add_action( 'give_cc_form', 'give_get_cc_form' );
 /**
  * Outputs the default credit card address fields.
  *
- * @since TBD Escape translated output.
+ * @since 4.19.1 Escape translated output.
  * @since 4.17.0 Escape prefilled billing address values before output.
  * @since 3.1.0 Add the give_default_cc_address_fields_user_info filter
  * @since  1.0
@@ -1467,7 +1467,7 @@ add_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
  * @param int $form_id The form ID.
  *
  * @return string
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings.
  * @since  1.0
  */
 function give_get_register_fields( $form_id ) {
@@ -1606,7 +1606,7 @@ add_action( 'give_donation_form_register_fields', 'give_get_register_fields' );
  * @param int $form_id The form ID.
  *
  * @return string
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings.
  * @since  1.0
  */
 function give_get_login_fields( $form_id ) {
@@ -1731,7 +1731,7 @@ add_action( 'give_donation_form_login_fields', 'give_get_login_fields', 10, 1 );
  * @param int $form_id The form ID.
  *
  * @return void
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since  1.0
  */
 function give_payment_mode_select( $form_id, $args ) {
@@ -1869,7 +1869,7 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select', 10, 2 );
  * @param int $form_id The form ID.
  *
  * @return bool
- * @since TBD Escape output. Add translators comments.
+ * @since 4.19.1 Escape output. Add translators comments.
  * @since  1.0
  */
 function give_terms_agreement( $form_id ) {
@@ -1956,7 +1956,7 @@ add_action( 'give_donation_form_after_cc_form', 'give_terms_agreement', 8888, 1 
  * @param int $form_id The form ID.
  *
  * @return void
- * @since TBD Escape output. Unslash and sanitize the posted total.
+ * @since 4.19.1 Escape output. Unslash and sanitize the posted total.
  * @since  1.0
  */
 function give_checkout_final_total( $form_id ) {
@@ -2020,7 +2020,7 @@ add_action( 'give_donation_form_before_submit', 'give_checkout_final_total', 999
  * @param array $args    List of arguments.
  *
  * @return void
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since  1.0
  */
 function give_checkout_submit( $form_id, $args ) {
@@ -2056,7 +2056,7 @@ add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999, 2 
  * Give Donation form submit button.
  *
  * @since 4.16.2 Escape submit button label in form markup.
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since  1.8.8
  *
  * @param int   $form_id The form ID.
@@ -2274,7 +2274,7 @@ function give_form_display_content( $form_id, $args ) {
  * @param array $args Shortcode args.
  *
  * @return void
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.0
  */
 function give_checkout_hidden_fields( $form_id, $args = [] ) {
@@ -2314,7 +2314,7 @@ function give_checkout_hidden_fields( $form_id, $args = [] ) {
  * @param string $content Content before filters.
  *
  * @return string $content Filtered content.
- * @since TBD Unslash and sanitize the payment confirmation slug.
+ * @since 4.19.1 Unslash and sanitize the payment confirmation slug.
  * @since 1.0
  */
 function give_filter_success_page_content( $content ) {
@@ -2393,7 +2393,7 @@ add_filter( 'give_donate_form', 'give_members_only_form', 10, 2 );
  * @param Give_Donate_Form $form
  *
  * @since 4.9.0 rename function - PHP 8 compatibility
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.8.17
  */
 function give_form_add_donation_hidden_field( $form_id, $args, $form ) {
@@ -2554,7 +2554,7 @@ function give_is_form_grid_page_hidden_field( $id, $args, $form ) {
  * @param array  $args     Array of additional args.
  *
  * @return string
- * @since TBD Check that the payment mode is posted before reading it.
+ * @since 4.19.1 Check that the payment mode is posted before reading it.
  * @since 2.1
  */
 function give_redirect_and_popup_form( $redirect, $args ) {

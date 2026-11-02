@@ -34,7 +34,7 @@ class UsageTrackingOnBoarding
     /**
      * Register notice.
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.10.0
      */
     public function addNotice()
@@ -62,7 +62,7 @@ class UsageTrackingOnBoarding
     /**
      * Get notice.
      *
-     * @since TBD Add a nonce to the action links.
+     * @since 4.19.1 Add a nonce to the action links.
      * @since 2.10.0
      *
      * @param bool $wrapper

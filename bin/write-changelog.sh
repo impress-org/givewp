@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 #
-# Compile pending changelog entries into readme.txt / changelog.txt using
-# @stellarwp/changelogger (and the custom legacy-format strategy).
+# Compile pending changelog entries into readme.txt / changelog.txt with
+# @stellarwp/changelogger and its stellarwp-readme strategy, which writes
+# "= [x.y.z] YYYY-MM-DD =" headers.
 #
 # Authors add entries during development with:
 #   composer run changelog:add
 # which drops a YAML file into ./changelog. This command rolls them up.
 #
-# A version is required. changelogger's own auto-versioning is NOT used: it
-# only reads bracketed "= [x.y.z]" headers, which the legacy GiveWP format
-# (= x.y.z: date =) doesn't use, so it would fall back to 0.1.0. The release
-# version is supplied explicitly (release:prep passes it through).
+# A version is required: release:prep passes the version being released, and
+# the changelog has to carry that one rather than a version the changelogger
+# would infer from the previous header.
 #
 # Usage:
 #   bin/write-changelog.sh <version> [--date <date>] [--dry-run]

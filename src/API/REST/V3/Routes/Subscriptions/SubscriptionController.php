@@ -273,7 +273,7 @@ class SubscriptionController extends WP_REST_Controller
     /**
      * Create a subscription.
      *
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
@@ -545,7 +545,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 4.13.0 added anonymousDonors and includeSensitiveData to embeddable links
      * @since 4.10.0 added embeddable links for campaign and form
      * @since 4.8.0

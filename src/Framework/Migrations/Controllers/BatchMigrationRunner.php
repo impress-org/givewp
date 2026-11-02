@@ -129,7 +129,7 @@ class BatchMigrationRunner
     /**
      * Register batch migration action
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.0.0
      *
      * @throws Exception

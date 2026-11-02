@@ -13,7 +13,7 @@ class DuplicateCampaign
     /**
      * Duplicate a campaign
      *
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 4.13.1
      */
     public function __invoke(Campaign $campaign): Campaign

@@ -37,7 +37,7 @@ class ManualMigration
     }
 
     /**
-     * @since TBD Verify the nonce and unslash params.
+     * @since 4.19.1 Verify the nonce and unslash params.
      * @since 3.19.0 sanitize params
      * @since 2.9.2
      */

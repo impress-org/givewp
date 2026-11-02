@@ -54,7 +54,7 @@ class EagerLoader
     protected $foreignAttribute;
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 3.5.0
      *

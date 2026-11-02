@@ -76,7 +76,7 @@ class MigrationsRunner
     /**
      * Run database migrations.
      *
-     * @since TBD Number the placeholders and add translators comments.
+     * @since 4.19.1 Number the placeholders and add translators comments.
      * @since      4.18.0 hold a lock so concurrent requests do not run the same migration twice
      * @since      4.0.0 add support for batch processing
      * @since      2.9.0

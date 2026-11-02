@@ -310,7 +310,7 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Get payments by group
 	 *
-	 * @since TBD Document why the query is safe.
+	 * @since 4.19.1 Document why the query is safe.
 	 * @since  1.8.17
 	 * @access public
 	 *
@@ -368,7 +368,7 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * If querying a specific date, add the proper filters.
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -827,7 +827,7 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * Note: Internal purpose only. We are developing on this fn.
 	 *
-	 * @since TBD Prepare the post status list and allowlist the order.
+	 * @since 4.19.1 Prepare the post status list and allowlist the order.
 	 * @since  1.8.18
 	 * @access public
 	 * @global $wpdb

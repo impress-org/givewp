@@ -37,7 +37,8 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Add translators comments, and drop the aria-label so the link is named by its visible text.
+     * @since TBD Drop the aria-label so the link is named by its visible text.
+     * @since 4.19.1 Add translators comments.
      * @since 4.12.0
      *
      * @inheritDoc
