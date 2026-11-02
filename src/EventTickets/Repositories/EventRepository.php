@@ -170,7 +170,7 @@ class EventRepository
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 3.6.0
      */
     private function validate(Event $event): void

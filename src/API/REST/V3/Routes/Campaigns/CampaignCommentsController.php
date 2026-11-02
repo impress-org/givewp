@@ -64,7 +64,7 @@ class CampaignCommentsController extends WP_REST_Controller
     }
 
     /**
-     * @since TBD Add the give text domain to the Anonymous string.
+     * @since 4.19.1 Add the give text domain to the Anonymous string.
      * @since 4.14.6 check campaign status to block comments on inactive campaigns for non-admins
      * @since 4.0.0
      *

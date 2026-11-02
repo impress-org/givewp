@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Renders the payment history page contents.
  *
  * @access      private
- * @since       TBD Escape output.
+ * @since       4.19.1 Escape output.
  * @since       1.0
  * @return      void
  */

@@ -329,7 +329,7 @@ class Give_Addon_Activation_Banner {
 	/**
 	 * Render single banner activation
 	 *
-	 * @since TBD Escape output. Add a nonce to the dismiss link.
+	 * @since 4.19.1 Escape output. Add a nonce to the dismiss link.
 	 * @since 2.1.0
 	 *
 	 * @param array $banner_arr Banner options.
@@ -431,7 +431,7 @@ class Give_Addon_Activation_Banner {
 	 *
 	 * This is the action that allows the user to dismiss the banner it basically sets a tag to their user meta data
 	 *
-	 * @since TBD Verify the nonce.
+	 * @since 4.19.1 Verify the nonce.
 	 * @since  1.0
 	 * @access public
 	 */

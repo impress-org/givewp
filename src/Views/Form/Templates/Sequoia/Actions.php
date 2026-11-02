@@ -245,7 +245,7 @@ class Actions
     /**
      * Add wrapper and introduction text to payment information section
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 4.16.4 Escaped the headline output.
      * @since 2.7.0
      *
@@ -282,7 +282,7 @@ class Actions
     /**
      * Start choose amount section
      *
-     * @since TBD Escape output. Add translators comments.
+     * @since 4.19.1 Escape output. Add translators comments.
      * @since 4.16.4 Escaped the donate button label output.
      * @since 2.7.0
      */
@@ -320,7 +320,7 @@ class Actions
     /**
      * Close choose amount section
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 4.16.4 Escaped the continue button label output.
      * @since 2.7.0
      */
@@ -344,7 +344,7 @@ class Actions
      *
      * Modify gateways array returned give_get_enabled_payment_gateways, before printing
      *
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      *
      * @param array $gateways Array of enabled gateways
      *

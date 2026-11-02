@@ -6,7 +6,7 @@ use Give\Tests\TestCase;
 use Give_Payment_History_Table;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 final class PaymentHistoryTableRequestInputTest extends TestCase
 {
@@ -16,7 +16,7 @@ final class PaymentHistoryTableRequestInputTest extends TestCase
     private $previousRequestUri;
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -32,7 +32,7 @@ final class PaymentHistoryTableRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -49,7 +49,7 @@ final class PaymentHistoryTableRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testPaymentsDataUnslashesAndSanitizesTheFilters(): void
     {
@@ -72,7 +72,7 @@ final class PaymentHistoryTableRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testPaymentsDataLeavesPageEmptyWhenNoneIsSent(): void
     {
@@ -90,7 +90,7 @@ final class PaymentHistoryTableRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetViewsReadsTheSanitizedStatus(): void
     {

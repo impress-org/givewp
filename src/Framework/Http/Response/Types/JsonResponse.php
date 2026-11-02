@@ -64,7 +64,7 @@ class JsonResponse extends BaseJsonResponse
     /**
      * Sets the data to be sent as JSON.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.18.0
      *
      * @param  mixed  $data

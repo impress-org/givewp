@@ -147,6 +147,27 @@ class DonateFormRouteDataTest extends TestCase
     }
 
     /**
+     * The default form has a $1 custom amount minimum and a $100 level. "0100" casts to the exempt level
+     * but is parsed as money as $0.10, below the minimum.
+     *
+     * @since 4.19.0.2
+     */
+    public function testValidatedShouldRejectAmountThatParsesBelowTheMinimum(): void
+    {
+        /** @var DonationForm $form */
+        $form = DonationForm::factory()->create();
+
+        $request = array_merge($this->donationRequestData($form, give_get_currency($form->id)), ['amount' => '0100']);
+
+        try {
+            DonateFormRouteData::fromRequest($request)->validated();
+            $this->fail('Expected a validation error for an amount that parses below the minimum.');
+        } catch (DonationFormFieldErrorsException $exception) {
+            $this->assertNotEmpty($exception->getError()->get_error_messages('amount'));
+        }
+    }
+
+    /**
      * The final submission route fires givewp_donation_form_fields_validated as a final submission,
      * which is the single point where spam-protection listeners should run the Akismet check (all
      * donation data is available and the donation is about to be processed).

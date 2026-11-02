@@ -523,7 +523,7 @@ function give_format_amount($amount, $args = [])
  *
  * Note: This function only support large number formatting from million to trillion
  *
- * @since TBD Add translators comments.
+ * @since 4.19.1 Add translators comments.
  * @since 1.6
  *
  * @use   give_get_price_thousand_separator Get thousand separator.
@@ -833,7 +833,7 @@ function give_let_to_num($size)
 /**
  * Verify nonce.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.8
  *
  * @param string $nonce       Nonce Hash.

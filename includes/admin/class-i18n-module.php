@@ -136,7 +136,7 @@ class Give_i18n_Banner {
 	 *
 	 * @return bool|string $message
 	 *
-	 * @since TBD Add translators comments.
+	 * @since 4.19.1 Add translators comments.
 	 */
 	private function promo_message() {
 		$message = false;
@@ -167,7 +167,7 @@ class Give_i18n_Banner {
 	/**
 	 * Outputs a promo box
 	 *
-	 * @since TBD Escape output, including translated strings. Add translators comments.
+	 * @since 4.19.1 Escape output, including translated strings. Add translators comments.
 	 */
 	public function promo() {
 

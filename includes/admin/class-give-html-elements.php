@@ -133,7 +133,7 @@ class Give_HTML_Elements {
 	 *
 	 * Renders an HTML Dropdown of all the Give Forms.
 	 *
-	 * @since TBD Add translators comments.
+	 * @since 4.19.1 Add translators comments.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -232,7 +232,7 @@ class Give_HTML_Elements {
 	}
 
     /**
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 4.1.0
      */
     public function campaigns_dropdown($args = [])
@@ -506,7 +506,7 @@ class Give_HTML_Elements {
 	 *
 	 * Renders an HTML Dropdown of years.
 	 *
-	 * @since  TBD Use gmdate() instead of date().
+	 * @since  4.19.1 Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -547,7 +547,7 @@ class Give_HTML_Elements {
 	 *
 	 * Renders an HTML Dropdown of months.
 	 *
-	 * @since  TBD Use gmdate() instead of date().
+	 * @since  4.19.1 Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *

@@ -3,6 +3,7 @@ namespace Give\DonationForms\Rules;
 
 
 use Closure;
+use Give\DonationForms\Rules\Concerns\ParsesAmountAsMoney;
 use Give\Vendors\StellarWP\Validation\Config;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidatesOnFrontEnd;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
@@ -11,6 +12,8 @@ use function is_numeric;
 
 class Size implements ValidationRule, ValidatesOnFrontEnd
 {
+    use ParsesAmountAsMoney;
+
     /**
      * @var numeric
      */
@@ -63,15 +66,25 @@ class Size implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
-     * @since TBD Number the placeholders and add translators comments.
+     * @since 4.19.1 Number the placeholders and add translators comments.
+     * @since 4.19.0.2 Compare the amount as parsed into Money in the submitted currency.
      * @since 3.0.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
-        $value = $this->sanitize($value);
-        
         if (is_numeric($value)) {
-            if ($value !== $this->getSize()) {
+            $value = $this->parseAmount((string)$value, $this->submittedCurrency($values));
+
+            if ($value === null) {
+                /* translators: 1: Field label, 2: Required value */
+                $fail(sprintf(__('%1$s must be exactly %2$s', 'give'), '{field}', $this->getSize()));
+
+                return;
+            }
+        }
+
+        if (is_numeric($value)) {
+            if ((float)$value !== (float)$this->getSize()) {
                 /* translators: 1: Field label, 2: Required value */
                 $fail(sprintf(__('%1$s must be exactly %2$s', 'give'), '{field}', $this->getSize()));
             }

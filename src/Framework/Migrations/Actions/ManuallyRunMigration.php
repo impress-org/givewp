@@ -14,7 +14,7 @@ class ManuallyRunMigration
     /**
      * Manually runs the migration and then marks the migration as finished if successful
      *
-     * @since TBD Log the exception class and message instead of the full dump.
+     * @since 4.19.1 Log the exception class and message instead of the full dump.
      * @since 2.9.2
      *
      * @param Migration $migration
@@ -57,7 +57,7 @@ class ManuallyRunMigration
     /**
      * Marks the migration as completed in the migration log
      *
-     * @since TBD Record the run in the migration log. The option this used to update no longer exists, so a valid run ended in a fatal error.
+     * @since 4.19.1 Record the run in the migration log. The option this used to update no longer exists, so a valid run ended in a fatal error.
      * @since 2.9.2
      *
      * @param string $migrationId

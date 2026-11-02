@@ -6,12 +6,12 @@ use Give\Tests\TestCase;
 use Give_Admin_Settings;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 final class SettingsRequestInputTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -22,7 +22,7 @@ final class SettingsRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -32,7 +32,7 @@ final class SettingsRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCurrentTabIsUnslashedAndSanitized(): void
     {
@@ -42,7 +42,7 @@ final class SettingsRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCurrentSectionAndPageAreUnslashedAndSanitized(): void
     {
@@ -54,7 +54,7 @@ final class SettingsRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testVerifyNonceAcceptsAValidSlashedNonce(): void
     {
@@ -67,7 +67,7 @@ final class SettingsRequestInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testVerifyNonceRejectsABadNonce(): void
     {

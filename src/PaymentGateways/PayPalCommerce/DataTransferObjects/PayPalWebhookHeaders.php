@@ -43,7 +43,7 @@ class PayPalWebhookHeaders
      * A strange thing here is that the headers are inconsistent between live and sandbox mode, so this also checks for
      * both forms of the headers (studly case and all caps).
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.3.2 Normalize header keys to lowercase and replace underscores with hyphens.
      * @since 2.9.0
      *

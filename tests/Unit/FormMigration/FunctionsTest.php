@@ -76,7 +76,7 @@ class FunctionsTest extends TestCase
      * The old names must keep working. _give_is_form_migrated() logs no notice, because Peer-to-Peer
      * still calls it; the other two log one each.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testOldFunctionNamesKeepWorkingAndOnlyDeprecatedOnesLogANotice()
     {

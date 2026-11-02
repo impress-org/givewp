@@ -271,7 +271,7 @@ class Give_Email_Access {
 	/**
 	 * Is this a valid token?
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since  4.16.7 Only accept non-empty string tokens.
 	 * @since  1.0
 	 * @access public
@@ -321,7 +321,7 @@ class Give_Email_Access {
 	 * @param string $email      Donor email.
 	 * @param string $verify_key The verification key.
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -353,7 +353,7 @@ class Give_Email_Access {
 	/**
 	 * Is this a valid verify key?
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since  4.18.0 Verify keys expire with the same window as access tokens.
 	 * @since  4.16.7 Only accept non-empty string tokens.
 	 * @since  1.0

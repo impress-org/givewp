@@ -6,7 +6,7 @@
  * @subpackage  Admin/Upgrades
  * @copyright   Copyright (c) 2017, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       TBD Escape output. Add translators comments.
+ * @since       4.19.1 Escape output. Add translators comments.
  * @since       1.8.12
  */
 

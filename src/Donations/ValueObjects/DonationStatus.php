@@ -5,7 +5,7 @@ namespace Give\Donations\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @since TBD Keep @deprecated off the @method lines: IDEs read it as deprecating the whole class.
+ * @since 4.19.1 Keep @deprecated off the @method lines: IDEs read it as deprecating the whole class.
  * @since 4.6.0 add trash status
  * @since 2.19.6
  *

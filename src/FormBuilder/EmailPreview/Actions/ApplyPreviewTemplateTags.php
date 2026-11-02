@@ -24,7 +24,7 @@ class ApplyPreviewTemplateTags
     }
 
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 3.0.0
      * @return array
      */

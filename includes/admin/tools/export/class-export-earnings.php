@@ -37,7 +37,7 @@ class Give_Earnings_Export extends Give_Export
      * Set the export headers
      *
      * @access public
-     * @since  TBD Use gmdate() and wp_date() instead of date().
+     * @since  4.19.1 Use gmdate() and wp_date() instead of date().
      * @since  1.6
      * @return void
      */
@@ -78,7 +78,7 @@ class Give_Earnings_Export extends Give_Export
     /**
      * Include a nonce check when authenticating
      *
-     * @since TBD Unslash and sanitize the nonce.
+     * @since 4.19.1 Unslash and sanitize the nonce.
      * @since 2.21.4
      *
      * @return bool
@@ -142,7 +142,7 @@ class Give_Earnings_Export extends Give_Export
     }
 
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 2.21.2
      *
      * @return object|null

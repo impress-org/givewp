@@ -76,7 +76,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @param string $column_name The name of the column
 	 *
 	 * @access public
-	 * @since TBD Add translators comments.
+	 * @since 4.19.1 Add translators comments.
 	 * @since  1.0
 	 *
 	 * @return string Column Name
@@ -190,7 +190,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @since  1.0
 	 * @access protected
 	 *
-	 * @since TBD Escape translated output.
+	 * @since 4.19.1 Escape translated output.
 	 *
 	 * @param string $which
 	 */
@@ -228,7 +228,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Attaches the category filter to the log views
 	 *
 	 * @access public
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @since  1.0
 	 *
 	 * @return void
@@ -246,7 +246,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Performs the donation forms query
 	 *
 	 * @access public
-	 * @since  TBD Unslash and sanitize the sort request values.
+	 * @since  4.19.1 Unslash and sanitize the sort request values.
 	 * @since  1.0
 	 *
 	 * @return void

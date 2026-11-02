@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 
 use Give\Framework\Views\View;

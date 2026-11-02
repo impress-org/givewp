@@ -3,7 +3,7 @@
  * Give Settings Page/Tab
  *
  * @package     Give
- * @since       TBD Escape output.
+ * @since       4.19.1 Escape output.
  * @since       1.8
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -57,7 +57,7 @@ if (!class_exists('Give_Settings_General')) :
         /**
          * Get settings array.
          *
-         * @since TBD Add translators comments.
+         * @since 4.19.1 Add translators comments.
          * @since 2.24.2 add auto_format_currency setting
          * @since  1.8
          *
@@ -585,7 +585,7 @@ if (!class_exists('Give_Settings_General')) :
         /**
          * Set flag to reset sequestion donation number starting point when "Sequential Starting Number" value changes
          *
-         * @since TBD Add translators comments.
+         * @since 4.19.1 Add translators comments.
          * @since  2.1
          * @access public
          *
