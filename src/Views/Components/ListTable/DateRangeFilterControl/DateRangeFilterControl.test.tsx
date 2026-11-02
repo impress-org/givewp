@@ -118,6 +118,55 @@ describe('DateRangeFilterControl', () => {
         expect(onChange).not.toHaveBeenCalled();
     });
 
+    it('links both inputs to the message while the range is wrong', async () => {
+        await render();
+
+        await type(inputLabeled('Start date'), '2024-03-10');
+        await type(inputLabeled('End date'), '2024-03-01');
+
+        const alertId = container.querySelector('[role="alert"]')?.id;
+
+        expect(alertId).toBeTruthy();
+        for (const label of ['Start date', 'End date']) {
+            expect(inputLabeled(label).getAttribute('aria-invalid')).toBe('true');
+            expect(inputLabeled(label).getAttribute('aria-describedby')).toBe(alertId);
+        }
+
+        await type(inputLabeled('End date'), '2024-03-20');
+
+        for (const label of ['Start date', 'End date']) {
+            expect(inputLabeled(label).hasAttribute('aria-invalid')).toBe(false);
+            expect(inputLabeled(label).hasAttribute('aria-describedby')).toBe(false);
+        }
+    });
+
+    it('gives each control its own message id', async () => {
+        const second = document.createElement('div');
+        document.body.appendChild(second);
+        const secondRoot = createRoot(second);
+
+        await render();
+        await act(() =>
+            secondRoot.render(<DateRangeFilterControl label="Other" formatDate={formatDate} onChange={onChange} />)
+        );
+
+        for (const host of [container, second]) {
+            const [startInput, endInput] = Array.from(host.querySelectorAll<HTMLInputElement>('input[type="date"]'));
+            await type(startInput, '2024-03-10');
+            await type(endInput, '2024-03-01');
+        }
+
+        const firstId = container.querySelector('[role="alert"]')?.id;
+        const secondId = second.querySelector('[role="alert"]')?.id;
+
+        expect(firstId).toBeTruthy();
+        expect(secondId).toBeTruthy();
+        expect(firstId).not.toBe(secondId);
+
+        await act(() => secondRoot.unmount());
+        second.remove();
+    });
+
     it('shows no message while the range is valid', async () => {
         await render();
 

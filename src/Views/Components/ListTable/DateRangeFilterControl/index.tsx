@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
+import {useInstanceId} from '@wordpress/compose';
 import {Button, __experimentalInputControl as InputControl} from '@wordpress/components';
 import {DATE_PRESETS, datePresetLabel, isEndBeforeStart} from '../filters/dateRange';
 import type {DateRangeValue} from '../filters/types';
@@ -30,6 +31,7 @@ const customDays = (value?: DateRangeValue) => {
  * The popover content of a date filter: six preset buttons, and a start and an end day with Apply.
  * An end before the start is announced and cannot be applied.
  *
+ * @since TBD Mark both days invalid and link them to the message while the end is before the start.
  * @since TBD
  */
 export default function DateRangeFilterControl({label, value, formatDate, onChange}: DateRangeFilterControlProps) {
@@ -45,6 +47,8 @@ export default function DateRangeFilterControl({label, value, formatDate, onChan
     }, [days.start, days.end, chosenPreset]);
 
     const invalid = isEndBeforeStart(start, end);
+    const errorId = `givewp-date-range-filter-control-error-${useInstanceId(DateRangeFilterControl)}`;
+    const errorProps = invalid ? {'aria-invalid': true, 'aria-describedby': errorId} : {};
 
     const apply = () => {
         if (invalid) {
@@ -98,18 +102,20 @@ export default function DateRangeFilterControl({label, value, formatDate, onChan
                     type="date"
                     label={__('Start date', 'give')}
                     value={start}
+                    {...errorProps}
                     onChange={(next?: string) => setStart(next ?? '')}
                 />
                 <InputControl
                     type="date"
                     label={__('End date', 'give')}
                     value={end}
+                    {...errorProps}
                     onChange={(next?: string) => setEnd(next ?? '')}
                 />
             </div>
             {(start || end) && !invalid && <p className="givewp-date-range-filter-control__summary">{summary()}</p>}
             {invalid && (
-                <p role="alert" className="givewp-date-range-filter-control__error">
+                <p id={errorId} role="alert" className="givewp-date-range-filter-control__error">
                     {__('The end date must be on or after the start date.', 'give')}
                 </p>
             )}
