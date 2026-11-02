@@ -27,6 +27,11 @@ describe('assembleView', () => {
         });
     });
 
+    it('hides the title column only when the defaults ask', () => {
+        expect(assembleView({defaults})).not.toHaveProperty('showTitle');
+        expect(assembleView({defaults: {...defaults, showTitle: false}}).showTitle).toBe(false);
+    });
+
     it('applies the stored layout over the defaults', () => {
         const view = assembleView({defaults, layout: {fields: ['date', 'id'], density: 'compact', perPage: 50}});
 

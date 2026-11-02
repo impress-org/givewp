@@ -51,6 +51,7 @@ export function assembleView({defaults, layout, query, search}: AssembleViewInpu
         filters: mergeFilters(defaults.filters, query),
         fields: layout?.fields ?? defaults.fields,
         titleField: defaults.titleField,
+        ...(defaults.showTitle === false ? {showTitle: false} : {}),
         layout: {density: layout?.density ?? defaults.density},
     };
 }
