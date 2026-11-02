@@ -339,7 +339,7 @@ add_filter( 'enter_title_here', 'give_change_default_title' );
  * Registers Custom Post Statuses which are used by the Payments
  *
  * @return void
- * @since TBD Add translators comments.
+ * @since 4.19.1 Add translators comments.
  * @since 1.0
  */
 function give_register_post_type_statuses() {

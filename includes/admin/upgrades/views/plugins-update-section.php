@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 /**
- * @since TBD Escape output. Add translators comments.
+ * @since 4.19.1 Escape output. Add translators comments.
  */
 /* @var Give_Updates $give_updates */
 $plugins = $give_updates->get_updates( 'plugin' );

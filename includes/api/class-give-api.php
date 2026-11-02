@@ -724,7 +724,7 @@ class Give_API {
 	 * Sets up the dates used to retrieve earnings/donations
 	 *
 	 * @access public
-	 * @since  TBD Use gmdate() instead of date().
+	 * @since  4.19.1 Use gmdate() instead of date().
 	 * @since  1.2
 	 *
 	 * @param array $args Arguments to override defaults
@@ -1167,7 +1167,7 @@ class Give_API {
 	/**
 	 * Process Get Stats API Request
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since 1.1
 	 *
 	 * @global WPDB $wpdb Used to query the database using the WordPress.
@@ -1521,7 +1521,7 @@ class Give_API {
 	 * Retrieves Recent Donations
 	 *
 	 * @access public
-	 * @since  TBD Use gmdate() instead of date().
+	 * @since  4.19.1 Use gmdate() instead of date().
 	 * @since  1.1
 	 *
 	 * @param $args array
@@ -1821,7 +1821,7 @@ class Give_API {
 	 * Output Query in either JSON/XML.
 	 * The query data is outputted as JSON by default.
 	 *
-	 * @since TBD Escape output.
+	 * @since 4.19.1 Escape output.
 	 * @since 1.1
 	 * @global WP_Query $wp_query
 	 *
@@ -1899,7 +1899,7 @@ class Give_API {
 	 * Modifies the output of profile.php to add key generation/revocation.
 	 *
 	 * @access public
-	 * @since TBD Escape translated output.
+	 * @since 4.19.1 Escape translated output.
 	 * @since  1.1
 	 *
 	 * @param object $user Current user info
@@ -1954,7 +1954,7 @@ class Give_API {
 	 * Process an API key generation/revocation
 	 *
 	 * @access public
-	 * @since TBD Escape output. Use safe redirects to the admin Tools page. Unslash and sanitize the nonce.
+	 * @since 4.19.1 Escape output. Use safe redirects to the admin Tools page. Unslash and sanitize the nonce.
 	 * @since  1.1
 	 *
 	 * @param array $args
@@ -2160,7 +2160,7 @@ class Give_API {
 	 * Generate the public key for a user
 	 *
 	 * @access private
-	 * @since  TBD Use gmdate() instead of date().
+	 * @since  4.19.1 Use gmdate() instead of date().
 	 * @since  1.1
 	 *
 	 * @param string $user_email
@@ -2178,7 +2178,7 @@ class Give_API {
 	 * Generate the secret key for a user
 	 *
 	 * @access private
-	 * @since  TBD Use gmdate() instead of date().
+	 * @since  4.19.1 Use gmdate() instead of date().
 	 * @since  1.1
 	 *
 	 * @param int $user_id

@@ -101,7 +101,7 @@ class Give_Forms_Widget extends WP_Widget {
 	 *                        before_widget, and after_widget.
 	 * @param array $instance The settings for the particular instance of the widget.
 	 *
-	 * @since TBD Escape output.
+	 * @since 4.19.1 Escape output.
 	 */
 	public function widget( $args, $instance ) {
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
@@ -163,7 +163,7 @@ class Give_Forms_Widget extends WP_Widget {
 	 *
 	 * @param array $instance Current settings.
 	 *
-	 * @since TBD Escape output, including translated strings.
+	 * @since 4.19.1 Escape output, including translated strings.
 	 */
 	public function form( $instance ) {
 		$defaults = [

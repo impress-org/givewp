@@ -994,7 +994,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @since TBD Use the give text domain and add translators comments.
+     * @since 4.19.1 Use the give text domain and add translators comments.
      * @since 3.13.0
      */
     public function getCurrencySwitcherMessage(): string

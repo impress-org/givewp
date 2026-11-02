@@ -26,7 +26,7 @@ trait NameCollision
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.32.0 add existing and incoming nodes to exception
      * @since 2.10.2
      *

@@ -27,7 +27,7 @@ class Give_Stripe_Checkout_Session {
 	 *
 	 * @param array $args List of arguments to create Checkout session.
 	 *
-	 * @since TBD Read the payment mode through a sanitizing helper.
+	 * @since 4.19.1 Read the payment mode through a sanitizing helper.
 	 * @since  2.5.5
 	 * @access public
 	 *
@@ -79,7 +79,7 @@ class Give_Stripe_Checkout_Session {
 	 *
 	 * @param int $id Checkout Session ID.
 	 *
-	 * @since TBD Read the payment mode through a sanitizing helper.
+	 * @since 4.19.1 Read the payment mode through a sanitizing helper.
 	 * @since  2.5.5
 	 * @access public
 	 *

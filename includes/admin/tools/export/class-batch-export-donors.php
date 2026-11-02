@@ -86,7 +86,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 * @param string $export_type export type.
 	 *
 	 * @return string $filename file name.
-	 * @since TBD Use gmdate() and wp_date() instead of date().
+	 * @since 4.19.1 Use gmdate() and wp_date() instead of date().
 	 * @since 2.1.0
 	 */
 	public function give_export_filename( $filename, $export_type ) {
@@ -112,7 +112,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 *
 	 * @param array $request The Form Data passed into the batch processing
 	 *
-	 * @since TBD Read the query id from the already sanitized request and unslash the posted form.
+	 * @since 4.19.1 Read the query id from the already sanitized request and unslash the posted form.
 	 * @since 1.5
 	 */
 	public function set_properties( $request ) {
@@ -209,7 +209,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 * Get donation query arguments
 	 *
 	 * @return array
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since 2.4.5
 	 */
 	private function get_donation_query_args() {
@@ -259,7 +259,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 *
 	 * @access public
 	 * @return array $data The data for the CSV file.
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since  1.0
 	 */
 	public function get_data() {

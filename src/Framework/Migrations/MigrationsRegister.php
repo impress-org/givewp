@@ -52,7 +52,7 @@ class MigrationsRegister
     /**
      * Returns a migration with the given ID
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.9.2
      *
      * @param string $id

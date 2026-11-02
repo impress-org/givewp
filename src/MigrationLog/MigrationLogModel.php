@@ -68,7 +68,7 @@ class MigrationLogModel
     /**
      * Add migration error notice
      *
-     * @since TBD Store array and object errors as JSON.
+     * @since 4.19.1 Store array and object errors as JSON.
      *
      * @param mixed $error
      *

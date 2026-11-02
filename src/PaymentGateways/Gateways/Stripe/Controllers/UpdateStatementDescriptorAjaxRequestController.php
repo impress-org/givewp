@@ -15,7 +15,7 @@ class UpdateStatementDescriptorAjaxRequestController
     use HasStripeStatementDescriptorText;
 
     /**
-     * @since TBD Verify the nonce and sanitize the request.
+     * @since 4.19.1 Verify the nonce and sanitize the request.
      * @since 2.19.0
      */
     public function __invoke()

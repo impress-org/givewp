@@ -359,7 +359,7 @@ class LogRepository
     /**
      * Get log count by column name containing value
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      *
      * @param string $columnName
      * @param string $value

@@ -21,14 +21,14 @@ use Give_Donors_Query;
  * fix, because they check the new behavior of the form filter, the allowlists and the escaping of
  * the search term. Every other test was written first and passed on the unchanged code.
  *
- * @since TBD
+ * @since 4.19.1
  */
 class LegacyDonorsQueryTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -39,7 +39,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function makeDonor(string $name, string $email): Donor
     {
@@ -54,7 +54,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function donate(Donor $donor, DonationForm $form): void
     {
@@ -66,7 +66,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      *
      * @return string[]
      */
@@ -83,7 +83,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testSearchByNameMatchesPartOfTheName()
     {
@@ -94,7 +94,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testSearchWithNamePrefixMatchesPartOfTheName()
     {
@@ -105,7 +105,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testSearchByEmailMatchesPartOfTheEmail()
     {
@@ -116,7 +116,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testSearchByNumericValueMatchesTheDonorId()
     {
@@ -127,7 +127,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testEmailArgumentMatchesOneOrManyEmails()
     {
@@ -143,7 +143,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testSingleFormFilterReturnsTheDonorsOfThatForm()
     {
@@ -160,7 +160,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testEmptyFormListDoesNotFilterDonors()
     {
@@ -175,7 +175,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testFieldsArgumentReturnsOnlyTheRequestedColumns()
     {
@@ -190,7 +190,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonationCountCompareReturnsDonorsAboveTheAmount()
     {
@@ -207,7 +207,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonationCountNotEqualOperatorReturnsDonorsWithAnotherCount()
     {
@@ -225,7 +225,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testSeveralFormsMatchTheDonorsOfAnyListedForm()
     {
@@ -250,7 +250,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testFormListDropsNonNumericIds()
     {
@@ -264,7 +264,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testNegativeFormIdDoesNotMatchTheDonorsOfTheSameFormId()
     {
@@ -277,7 +277,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testNegativeDonationCountAmountKeepsItsSign()
     {
@@ -291,7 +291,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonationAmountIsFormattedWithADecimalPoint()
     {
@@ -305,7 +305,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testUnknownFieldFallsBackToAllColumns()
     {
@@ -326,7 +326,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testInvalidCompareFallsBackToTheEqualOperator()
     {
@@ -353,7 +353,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testSearchTermWithAQuoteMatchesTheDonor()
     {
@@ -368,7 +368,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testUnderscoreAndPercentInTheSearchTermAreLiteral()
     {
@@ -382,7 +382,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testHostileSearchTermMatchesNothingAndGivesNoSqlError()
     {
@@ -399,7 +399,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetSqlIsStableAndHasNoPlaceholderHash()
     {
@@ -417,7 +417,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonorListTableUnslashesTheSearchTerm()
     {
@@ -435,7 +435,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDonorReportsTableUnslashesTheSearchTerm()
     {
@@ -450,7 +450,7 @@ class LegacyDonorsQueryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function loadListTables(): void
     {
