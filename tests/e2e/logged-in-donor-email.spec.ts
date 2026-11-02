@@ -247,6 +247,9 @@ test.describe('Logged-in donor email', () => {
 
         await form.getByRole('button', {name: 'Continue'}).click();
 
+        // The payment step mounts again, and the login block keeps its signed-in state locally.
+        await logInOnForm(form, donor);
+
         await payWithTestGateway(form);
         await form.getByRole('button', {name: 'Donate now'}).click();
 

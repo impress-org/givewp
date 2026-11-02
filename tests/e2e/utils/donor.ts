@@ -28,6 +28,7 @@ export function createDonorAccount(donorEmail?: string): DonorAccount {
         `$userId = wp_insert_user([
             'user_login' => '${username}', 'user_pass' => '${password}',
             'user_email' => '${username}@example.test', 'role' => 'give_donor',
+            'first_name' => 'Dana', 'last_name' => 'Donor',
         ]);
         if (is_wp_error($userId)) {
             WP_CLI::error($userId->get_error_message());
