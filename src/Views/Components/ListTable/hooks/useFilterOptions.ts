@@ -99,43 +99,52 @@ export default function useFilterOptions({source, screen, enabled}: UseFilterOpt
 
     const current = loaded?.key === key ? loaded : undefined;
 
+    // Loads the page after `from` and appends it. Only the newest request may write its answer.
+    const requestPage = useCallback(
+        (from: Loaded) => {
+            const request = ++latestRequest.current;
+            const nextPage = from.page + 1;
+            setIsLoadingMore(true);
+            setLoaded({...from, error: undefined});
+
+            fetchFilterOptions({source, screen, search: term, page: nextPage}).then(
+                ({options, hasMore}) => {
+                    if (request !== latestRequest.current) {
+                        return;
+                    }
+                    rememberLabels(source, options);
+                    setIsLoadingMore(false);
+                    setLoaded({key, options: [...from.options, ...options], page: nextPage, hasMore});
+                },
+                (reason: unknown) => {
+                    if (request !== latestRequest.current) {
+                        return;
+                    }
+                    setIsLoadingMore(false);
+                    setLoaded({...from, error: toError(reason)});
+                }
+            );
+        },
+        [source, screen, term, key]
+    );
+
     const loadMore = useCallback(() => {
         if (!current || current.error || !current.hasMore || isLoadingMore) {
             return;
         }
 
-        const request = ++latestRequest.current;
-        const nextPage = current.page + 1;
-        setIsLoadingMore(true);
-
-        fetchFilterOptions({source, screen, search: term, page: nextPage}).then(
-            ({options, hasMore}) => {
-                if (request !== latestRequest.current) {
-                    return;
-                }
-                rememberLabels(source, options);
-                setIsLoadingMore(false);
-                setLoaded({key, options: [...current.options, ...options], page: nextPage, hasMore});
-            },
-            (reason: unknown) => {
-                if (request !== latestRequest.current) {
-                    return;
-                }
-                setIsLoadingMore(false);
-                setLoaded({...current, error: toError(reason)});
-            }
-        );
-    }, [current, isLoadingMore, source, screen, term, key]);
+        requestPage(current);
+    }, [current, isLoadingMore, requestPage]);
 
     const retry = useCallback(() => {
         // A failed "load more" keeps its options, so retry asks for that page again.
         if (current?.error && current.options.length > 0) {
-            setLoaded({...current, error: undefined});
+            requestPage(current);
             return;
         }
 
         setAttempt((count) => count + 1);
-    }, [current]);
+    }, [current, requestPage]);
 
     return {
         options: current?.options ?? [],

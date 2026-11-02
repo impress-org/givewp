@@ -163,14 +163,60 @@ describe('useFilterOptions', () => {
         expect(knownLabel('campaign', '1')).toBe('Spring appeal');
     });
 
-    it('ignores an answer that arrives after unmount', async () => {
+    it('retry after a failed load more requests that page again and appends it', async () => {
+        mockedFetch.mockResolvedValueOnce({options: [{value: '1', label: 'A'}], hasMore: true});
+        await render(true);
+        await flush();
+
+        mockedFetch.mockRejectedValueOnce(new Error('Page 2 failed'));
+        await act(async () => latest.loadMore());
+        await flush();
+        expect(latest.error?.message).toBe('Page 2 failed');
+
+        mockedFetch.mockResolvedValueOnce({options: [{value: '2', label: 'B'}], hasMore: false});
+        await act(async () => latest.retry());
+        await flush();
+
+        expect(paths()).toEqual([`${BASE}&page=1`, `${BASE}&page=2`, `${BASE}&page=2`]);
+        expect(latest.error).toBeUndefined();
+        expect(latest.options.map((option) => option.value)).toEqual(['1', '2']);
+    });
+
+    it('a load more racing a new search never appends the old term page', async () => {
+        mockedFetch.mockResolvedValueOnce({options: [{value: '1', label: 'A1'}], hasMore: true});
+        await render(true);
+        await flush();
+
+        const oldPage2 = deferred<ReturnType<typeof page>>();
+        const newPage1 = deferred<ReturnType<typeof page>>();
+        mockedFetch.mockReturnValueOnce(oldPage2.promise).mockReturnValueOnce(newPage1.promise);
+
+        await act(async () => latest.loadMore());
+        await act(async () => latest.setSearch('b'));
+        await advance(300);
+
+        await act(async () => newPage1.resolve(page(['B1'])));
+        await act(async () => oldPage2.resolve({options: [{value: '9', label: 'A2'}], hasMore: false}));
+
+        expect(latest.options).toEqual([{value: '1', label: 'B1'}]);
+        expect(latest.isLoading).toBe(false);
+    });
+
+    it('drops an answer that arrives after unmount', async () => {
         const slow = deferred<ReturnType<typeof page>>();
         mockedFetch.mockReturnValue(slow.promise);
+        const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
         await render(true);
+        const before = latest;
         act(() => root.unmount());
-        root = createRoot(document.createElement('div'));
 
-        // No state update after unmount, so no act warning (the console check fails the test).
         await act(async () => slow.resolve(page(['Late'])));
+
+        // The unmounted hook never got the answer.
+        expect(latest).toBe(before);
+        expect(latest.options).toEqual([]);
+        expect(spy).not.toHaveBeenCalled();
+        spy.mockRestore();
+        root = createRoot(document.createElement('div'));
     });
 });
