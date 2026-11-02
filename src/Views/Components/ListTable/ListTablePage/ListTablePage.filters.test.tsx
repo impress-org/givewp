@@ -214,6 +214,15 @@ describe('ListTablePage with filter declarations', () => {
         expect(document.activeElement).toBe(box.querySelector('input'));
     });
 
+    it('gives the bar a focus fallback that focuses the search box', async () => {
+        await render();
+        const box = await renderSlot(lastTable().searchBox);
+
+        await act(async () => filterBar().props.onFocusFallback?.());
+
+        expect(document.activeElement).toBe(box.querySelector('input'));
+    });
+
     it('can reset a secondary filter added from "Add filter" that has no value yet', async () => {
         await render();
         await act(async () =>

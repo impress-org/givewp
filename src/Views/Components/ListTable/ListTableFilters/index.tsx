@@ -23,6 +23,7 @@ import EntityFilter from './EntityFilter';
 import './styles.scss';
 
 /**
+ * @since TBD Add `onFocusFallback`.
  * @since TBD
  */
 export interface ListTableFiltersProps {
@@ -38,10 +39,15 @@ export interface ListTableFiltersProps {
     testMode?: {label: string; isOn: boolean; onChange: (isOn: boolean) => void};
     canReset: boolean;
     onReset: () => void;
+    /** Takes keyboard focus when a removed chip leaves nothing in the bar to focus. */
+    onFocusFallback?: () => void;
 }
 
-/** What gets focus after a chip is removed: "Add filter", or the chip of a primary filter. */
-type FocusTarget = {addFilter: true} | {chip: string};
+/**
+ * What gets focus after a chip is removed: "Add filter", the chip of a primary filter, or, after the
+ * test-mode chip, the next control left in the bar.
+ */
+type FocusTarget = {addFilter: true} | {chip: string} | {afterTestMode: true};
 
 /**
  * The values a filter holds in the view, as a list. Empty when it holds nothing.
@@ -82,6 +88,7 @@ const isMultiple = (declaration: BarFilterDeclaration) => declaration.kind !== '
  * reads the entity's declaration and keeps every value in the view's filters (`filter-<id>`), so
  * the URL, reset and the empty state work from the same place. It has no screen-specific branches.
  *
+ * @since TBD Keep keyboard focus in the bar, or hand it to the page, when the test-mode chip is removed.
  * @since TBD
  */
 export default function ListTableFilters({
@@ -93,10 +100,12 @@ export default function ListTableFilters({
     testMode,
     canReset,
     onReset,
+    onFocusFallback,
 }: ListTableFiltersProps) {
     const [justAdded, setJustAdded] = useState<string>();
     const addFilterRef = useRef<HTMLDivElement>(null);
     const chipRefs = useRef(new Map<string, HTMLDivElement>());
+    const resetRef = useRef<HTMLButtonElement>(null);
     const pendingFocus = useRef<FocusTarget>();
 
     // A removed chip took the focus with it, so it moves once the bar has re-rendered.
@@ -108,6 +117,21 @@ export default function ListTableFilters({
         }
 
         pendingFocus.current = undefined;
+
+        if ('afterTestMode' in target) {
+            let firstChip: HTMLDivElement | undefined;
+            chipRefs.current.forEach((chip) => {
+                firstChip = firstChip ?? chip;
+            });
+            const next =
+                addFilterRef.current?.querySelector<HTMLButtonElement>('button') ??
+                resetRef.current ??
+                firstChip?.querySelector<HTMLButtonElement>('button');
+
+            next ? next.focus() : onFocusFallback?.();
+            return;
+        }
+
         const holder = 'chip' in target ? chipRefs.current.get(target.chip) : addFilterRef.current;
         holder?.querySelector<HTMLButtonElement>('button')?.focus();
     });
@@ -262,7 +286,10 @@ export default function ListTableFilters({
                         icon={closeSmall}
                         /* translators: %s: the test-mode chip text, "Test mode". */
                         label={sprintf(__('Remove %s', 'give'), testMode.label)}
-                        onClick={() => testMode.onChange(false)}
+                        onClick={() => {
+                            pendingFocus.current = {afterTestMode: true};
+                            testMode.onChange(false);
+                        }}
                     />
                 </div>
             )}
@@ -282,7 +309,12 @@ export default function ListTableFilters({
             )}
 
             {canReset && (
-                <Button variant="tertiary" className="givewp-list-table-filters__reset" onClick={onReset}>
+                <Button
+                    ref={resetRef}
+                    variant="tertiary"
+                    className="givewp-list-table-filters__reset"
+                    onClick={onReset}
+                >
                     {__('Reset', 'give')}
                 </Button>
             )}

@@ -262,11 +262,12 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         // An added filter that holds no value yet is still something Reset removes.
         const canReset = hasActiveFilters || (view.filters ?? []).some((filter) => !filter.isLocked);
         const searchBoxRef = useRef<HTMLDivElement>(null);
+        const focusSearchBox = useCallback(() => searchBoxRef.current?.querySelector('input')?.focus(), []);
         // The control that was clicked (Reset, Clear filters) goes away, so keyboard focus moves to the search box.
         const resetFilters = useCallback(() => {
             clearFilters();
-            searchBoxRef.current?.querySelector('input')?.focus();
-        }, [clearFilters]);
+            focusSearchBox();
+        }, [clearFilters, focusSearchBox]);
 
         const fields = useMemo<Field<ListTableItem>[]>(
             () =>
@@ -404,6 +405,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                                         }
                                         canReset={canReset}
                                         onReset={resetFilters}
+                                        onFocusFallback={focusSearchBox}
                                     />
                                 )
                             }
