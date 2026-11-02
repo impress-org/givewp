@@ -18,8 +18,8 @@ name: Deploy to WordPress.org from the release dashboard
 # published, with a MERGE_CONFLICT line the dashboard reads; resolve it on the branch named, push, and
 # run the step again.
 #
-# The dashboard dispatches this file on the release branch, sending `branch`, `version` and
-# `production`. Run it by hand:
+# The dashboard dispatches this file on the release branch, sending `branch` and `version`. Run it
+# by hand:
 #   gh workflow run release-dashboard-deploy.yml -f branch=release/4.19.0 -f version=4.19.0
 
 on:
@@ -33,11 +33,6 @@ on:
                 description: 'Version being released, e.g. 4.19.0. Becomes the tag and the title of the GitHub release'
                 required: true
                 type: string
-            production:
-                description: 'Sent by the release dashboard for the deploy step. Not read here: this workflow always builds for production'
-                required: false
-                type: string
-                default: 'true'
 
 # One deploy at a time, shared with release.yml: both write to the same WordPress.org SVN, and two
 # releases prepared with the same version would otherwise merge side by side. Run one after the other,
