@@ -41,6 +41,11 @@ describe('viewFromInitialState', () => {
         });
     });
 
+    it('hides the title column only when the screen asks', () => {
+        expect(viewFromInitialState([], defaults, new URLSearchParams())).not.toHaveProperty('showTitle');
+        expect(viewFromInitialState([], {...defaults, showTitle: false}, new URLSearchParams()).showTitle).toBe(false);
+    });
+
     it('uses 30 rows per page when the screen sets none', () => {
         expect(viewFromInitialState([], defaults, new URLSearchParams()).perPage).toBe(30);
     });

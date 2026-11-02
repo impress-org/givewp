@@ -53,7 +53,7 @@ export default function LegacyConfirmModal({request, onClose, report, refresh}: 
     };
 
     return (
-        <Modal title={request.label} onRequestClose={onClose}>
+        <Modal title={request.label} onRequestClose={() => !isBusy && onClose()}>
             <BulkActionConfirm
                 message={request.confirm([], [], true, onClose)}
                 confirmLabel={request.confirmButtonText ?? __('Confirm', 'give')}
