@@ -1,4 +1,5 @@
-import type {FilterByGroupedOptions, FilterConfig} from '../ListTablePage/types';
+import type {FilterConfig} from '../ListTablePage/types';
+import {filterSettingsToDeclarations} from '../filters/legacyFilterSettings';
 import type {BarFilterDeclaration, FilterDeclaration, StatusVocabularyEntry} from '../filters/types';
 import {
     declarationUrlParameter,
@@ -11,41 +12,75 @@ import {
 } from './viewQuery';
 import type {ListTableView, ScreenDefaults, ViewQueryContext} from './types';
 
-const option = (value: string) => ({value, text: value});
-
-const showTrashed: FilterByGroupedOptions = {
-    id: 'showTrashed',
-    apiParam: 'status',
-    name: 'Status',
-    type: 'toggle',
-    options: [option('trash')],
-};
-const status: FilterByGroupedOptions = {
-    id: 'status',
-    apiParam: 'status',
-    name: 'Status',
-    type: 'checkbox',
-    options: ['publish', 'pending', 'failed'].map(option),
-};
-const period: FilterByGroupedOptions = {
-    id: 'period',
-    apiParam: 'start',
-    name: 'Period',
-    type: 'radio',
-    options: ['90', '30', '7'].map(option),
-};
-
-const donationsFilters: FilterConfig[] = [
-    {name: 'campaignId', type: 'campaignselect', options: [option('none')]},
-    {name: 'formId', type: 'formselect'},
-    {name: 'search', type: 'search'},
-    {name: 'toggle', type: 'checkbox'},
-    {name: 'donor', type: 'hidden'},
-    {name: 'filterBy', type: 'filterby', groupedOptions: [showTrashed, status, period]},
+const statuses: StatusVocabularyEntry[] = [
+    {value: 'publish', label: 'Completed', filterable: true},
+    {value: 'pending', label: 'Pending', filterable: true},
+    {value: 'trash', label: 'Trash', filterable: true},
+    {value: 'processing', label: 'Processing', filterable: false},
 ];
 
-const formsFilters: FilterConfig[] = [
+// The Donations catalog row (FR-009), the screen with every kind.
+const declarations: FilterDeclaration[] = [
+    {kind: 'search', id: 'search', label: 'Search donations', hint: 'Hint', parameter: 'search'},
+    {
+        kind: 'entity',
+        id: 'campaign',
+        label: 'Campaign',
+        isPrimary: true,
+        source: 'campaign',
+        multiple: true,
+        parameter: 'campaignId',
+        allowNone: true,
+        legacyUrlKey: 'campaignId',
+    },
+    {
+        kind: 'options',
+        id: 'status',
+        label: 'Status',
+        isPrimary: true,
+        multiple: true,
+        options: 'statuses',
+        parameter: 'status',
+        exclusiveValues: ['trash'],
+    },
+    {
+        kind: 'entity',
+        id: 'form',
+        label: 'Form',
+        source: 'form',
+        multiple: true,
+        parameter: 'formId',
+        legacyUrlKey: 'formId',
+    },
+    {
+        kind: 'entity',
+        id: 'donor',
+        label: 'Donor',
+        source: 'donor',
+        multiple: false,
+        parameter: 'donor',
+        legacyUrlKey: 'donor',
+    },
+    {kind: 'date', id: 'date', label: 'Donation date', parameters: {start: 'start', end: 'end'}},
+    {
+        kind: 'options',
+        id: 'donationType',
+        label: 'Donation type',
+        multiple: false,
+        options: [
+            {value: 'one-time', label: 'One-time'},
+            {value: 'recurring', label: 'Recurring'},
+        ],
+        parameter: 'donationType',
+    },
+];
+
+const option = (value: string) => ({value, text: value});
+
+// The old filter settings of an add-on screen, mapped by the deprecated adapter.
+const legacySettings: FilterConfig[] = [
     {name: 'campaign', type: 'campaignselect', options: [option('none')]},
+    {name: 'formId', type: 'formselect'},
     {name: 'status', type: 'select', options: ['any', 'publish', 'pending', 'draft', 'trash', 'upgraded'].map(option)},
     {name: 'search', type: 'search'},
 ];
@@ -62,13 +97,19 @@ const defaults: ScreenDefaults = {
 };
 
 const donations: ViewQueryContext = {
-    filterSettings: donationsFilters,
+    filters: declarations,
+    statuses,
+    testModeToggle: true,
     sortableFields: ['id', 'amount', 'date'],
     defaults,
     siteTestMode: false,
 };
 
-const forms: ViewQueryContext = {...donations, filterSettings: formsFilters};
+const legacy: ViewQueryContext = {
+    ...donations,
+    filters: filterSettingsToDeclarations(legacySettings, false).filters,
+    testModeToggle: false,
+};
 
 const parse = (search: string, context: ViewQueryContext = donations) =>
     parseViewQuery(new URLSearchParams(search), context);
@@ -85,6 +126,12 @@ const view = (extra: Partial<ListTableView> = {}): ListTableView => ({
     ...extra,
 });
 
+const filter = (field: string, operator: 'is' | 'isAny', value: string | string[]) => ({
+    field: `filter-${field}`,
+    operator,
+    value,
+});
+
 describe('parameterName', () => {
     it.each([
         ['donor', 'give-donor'],
@@ -97,43 +144,24 @@ describe('parameterName', () => {
 });
 
 describe('viewQueryKeys', () => {
-    const screens: Array<[string, FilterConfig[]]> = [
-        ['donations', donationsFilters],
-        [
-            'donors',
-            [
-                {name: 'campaignId', type: 'campaignselect'},
-                {name: 'filterBy', type: 'filterby', groupedOptions: [period]},
-            ],
-        ],
-        [
-            'subscriptions',
-            [
-                {name: 'campaignId', type: 'campaignselect'},
-                {name: 'toggle', type: 'checkbox'},
-                {name: 'filterBy', type: 'filterby', groupedOptions: [showTrashed, status, period]},
-            ],
-        ],
-        ['campaigns', [{name: 'status', type: 'select', options: ['any', 'active', 'inactive'].map(option)}]],
-        ['donation-forms', formsFilters],
-        ['event-tickets', [{name: 'search', type: 'search'}]],
-    ];
-
-    it.each(screens)('gives unique give- names on %s', (_, filterSettings) => {
-        const keys = viewQueryKeys({...donations, filterSettings});
+    it.each([
+        ['donations', donations],
+        ['old filter settings', legacy],
+    ])('gives unique give- names on %s', (_, context) => {
+        const keys = viewQueryKeys(context);
 
         expect(new Set(keys).size).toBe(keys.length);
         keys.forEach((key) => expect(key).toMatch(/^give-[a-z0-9]+(-[a-z0-9]+)*$/));
     });
 
-    it('lists every parameter of the Donations screen', () => {
+    it('lists every parameter of the Donations screen, never the search', () => {
         expect(viewQueryKeys(donations)).toEqual([
-            'give-campaign-id',
-            'give-form-id',
-            'give-donor',
-            'give-show-trashed',
+            'give-campaign',
             'give-status',
-            'give-period',
+            'give-form',
+            'give-donor',
+            'give-date',
+            'give-donation-type',
             'give-test-mode',
             'give-orderby',
             'give-order',
@@ -143,7 +171,7 @@ describe('viewQueryKeys', () => {
     });
 
     it('has no test mode parameter on a screen without the toggle', () => {
-        expect(viewQueryKeys(forms)).not.toContain('give-test-mode');
+        expect(viewQueryKeys(legacy)).not.toContain('give-test-mode');
     });
 });
 
@@ -159,12 +187,12 @@ describe('serializeViewQuery', () => {
                 perPage: 50,
                 sort: {field: 'amount', direction: 'asc'},
                 filters: [
-                    {field: 'filter-status', operator: 'isAny', value: ['failed', 'pending']},
-                    {field: 'filter-campaignId', operator: 'is', value: 4},
-                    {field: 'filter-formId', operator: 'is', value: 9},
-                    {field: 'filter-donor', operator: 'is', value: '123'},
-                    {field: 'filter-showTrashed', operator: 'is', value: 'trash'},
-                    {field: 'filter-period', operator: 'is', value: '30'},
+                    filter('status', 'isAny', ['publish', 'pending']),
+                    filter('campaign', 'isAny', ['4']),
+                    filter('form', 'isAny', ['9']),
+                    filter('donor', 'is', '123'),
+                    filter('date', 'is', '30'),
+                    filter('donationType', 'is', 'recurring'),
                     {field: 'filter-testMode', operator: 'is', value: true},
                 ],
             }),
@@ -172,12 +200,12 @@ describe('serializeViewQuery', () => {
         );
 
         expect(Object.entries(parameters)).toEqual([
-            ['give-campaign-id', '4'],
-            ['give-form-id', '9'],
+            ['give-campaign', '4'],
+            ['give-status', 'publish,pending'],
+            ['give-form', '9'],
             ['give-donor', '123'],
-            ['give-show-trashed', '1'],
-            ['give-status', 'failed,pending'],
-            ['give-period', '30'],
+            ['give-date', '30'],
+            ['give-donation-type', 'recurring'],
             ['give-test-mode', '1'],
             ['give-orderby', 'amount'],
             ['give-order', 'asc'],
@@ -186,13 +214,10 @@ describe('serializeViewQuery', () => {
         ]);
     });
 
-    it('writes a select filter by its name', () => {
-        const parameters = serializeViewQuery(
-            view({filters: [{field: 'filter-status', operator: 'is', value: 'draft'}]}),
-            forms
-        );
-
-        expect(parameters).toEqual({'give-status': 'draft'});
+    it('writes an old select filter by its name', () => {
+        expect(serializeViewQuery(view({filters: [filter('status', 'is', 'draft')]}), legacy)).toEqual({
+            'give-status': 'draft',
+        });
     });
 
     it('writes both sort parameters when only the direction differs', () => {
@@ -204,12 +229,7 @@ describe('serializeViewQuery', () => {
 
     it('omits filters with no value', () => {
         const parameters = serializeViewQuery(
-            view({
-                filters: [
-                    {field: 'filter-status', operator: 'isAny', value: []},
-                    {field: 'filter-donor', operator: 'is', value: ''},
-                ],
-            }),
+            view({filters: [filter('status', 'isAny', []), filter('donor', 'is', '')]}),
             donations
         );
 
@@ -219,18 +239,10 @@ describe('serializeViewQuery', () => {
     it('omits a filter equal to its default', () => {
         const withDefault = {
             ...donations,
-            defaults: {
-                ...defaults,
-                filters: [{field: 'filter-status', operator: 'isAny' as const, value: ['publish']}],
-            },
+            defaults: {...defaults, filters: [filter('status', 'isAny', ['publish'])]},
         };
 
-        expect(
-            serializeViewQuery(
-                view({filters: [{field: 'filter-status', operator: 'isAny', value: ['publish']}]}),
-                withDefault
-            )
-        ).toEqual({});
+        expect(serializeViewQuery(view({filters: [filter('status', 'isAny', ['publish'])]}), withDefault)).toEqual({});
     });
 
     it('writes test mode only when it differs from the site mode', () => {
@@ -251,7 +263,7 @@ describe('serializeViewQuery', () => {
     });
 
     it('never writes test mode on a screen without the toggle', () => {
-        expect(serializeViewQuery(view(), {...forms, siteTestMode: true})).toEqual({});
+        expect(serializeViewQuery(view(), {...legacy, siteTestMode: true})).toEqual({});
     });
 
     it('never writes the search term', () => {
@@ -262,20 +274,18 @@ describe('serializeViewQuery', () => {
         const parameters = serializeViewQuery(
             view({
                 filters: [
-                    {field: 'filter-donor', operator: 'is', value: 'jane@example.com'},
-                    {field: 'filter-status', operator: 'isAny', value: ['failed', '<b>x</b>']},
+                    filter('donor', 'is', 'jane@example.com'),
+                    filter('status', 'isAny', ['pending', '<b>x</b>']),
                 ],
             }),
             donations
         );
 
-        expect(parameters).toEqual({'give-status': 'failed'});
+        expect(parameters).toEqual({'give-status': 'pending'});
     });
 
     it('ignores filters that are not this screen', () => {
-        expect(
-            serializeViewQuery(view({filters: [{field: 'filter-other', operator: 'is', value: '1'}]}), donations)
-        ).toEqual({});
+        expect(serializeViewQuery(view({filters: [filter('other', 'is', '1')]}), donations)).toEqual({});
     });
 });
 
@@ -294,11 +304,10 @@ describe('parseViewQuery', () => {
             perPage: 50,
             sort: {field: 'amount', direction: 'asc'},
             filters: [
-                {field: 'filter-campaignId', operator: 'is', value: 4},
-                {field: 'filter-donor', operator: 'is', value: '123'},
-                {field: 'filter-showTrashed', operator: 'is', value: 'trash'},
-                {field: 'filter-status', operator: 'isAny', value: ['failed', 'pending']},
-                {field: 'filter-period', operator: 'is', value: '30'},
+                filter('campaign', 'isAny', ['4']),
+                filter('status', 'isAny', ['publish', 'pending']),
+                filter('donor', 'is', '123'),
+                filter('date', 'is', '30'),
             ],
         });
         const {query, corrected} = parse(new URLSearchParams(serializeViewQuery(original, donations)).toString());
@@ -380,106 +389,35 @@ describe('parseViewQuery', () => {
         });
     });
 
-    describe('select filter', () => {
-        it('reads one of its options', () => {
-            expect(parse('give-status=draft', forms)).toMatchObject({
-                query: {filters: [{field: 'filter-status', operator: 'is', value: 'draft'}]},
+    describe('old filter settings, mapped onto declarations', () => {
+        it('reads one of the select options', () => {
+            expect(parse('give-status=draft', legacy)).toMatchObject({
+                query: {filters: [filter('status', 'is', 'draft')]},
                 corrected: false,
             });
         });
 
         it.each(['any', 'archived'])('drops the "all" option and unknown values: %p', (value) => {
-            expect(parse(`give-status=${value}`, forms)).toMatchObject({query: {filters: []}, corrected: true});
+            expect(parse(`give-status=${value}`, legacy)).toMatchObject({query: {filters: []}, corrected: true});
+        });
+
+        it('reads a campaign id and "No campaign"', () => {
+            expect(parse('give-campaign=4', legacy).query.filters).toEqual([filter('campaign', 'is', '4')]);
+            expect(parse('give-campaign=none', legacy).query.filters).toEqual([filter('campaign', 'is', 'none')]);
+        });
+
+        it.each(['0', '-3', 'abc', '04', 'none'])('drops the form value %p', (value) => {
+            expect(parse(`give-form-id=${value}`, legacy)).toMatchObject({query: {filters: []}, corrected: true});
         });
     });
 
-    describe('campaignselect and formselect filters', () => {
-        it('reads a positive integer as a number', () => {
-            expect(parse('give-campaign-id=4&give-form-id=12').query.filters).toEqual([
-                {field: 'filter-campaignId', operator: 'is', value: 4},
-                {field: 'filter-formId', operator: 'is', value: 12},
-            ]);
+    describe('an id filter', () => {
+        it('reads an id', () => {
+            expect(parse('give-donor=123').query.filters).toEqual([filter('donor', 'is', '123')]);
         });
 
-        it('reads a static option', () => {
-            expect(parse('give-campaign=none', forms).query.filters).toEqual([
-                {field: 'filter-campaign', operator: 'is', value: 'none'},
-            ]);
-        });
-
-        it.each(['0', '-3', 'abc', '04', 'none'])('drops %p where it is not allowed', (value) => {
-            expect(parse(`give-form-id=${value}`)).toMatchObject({query: {filters: []}, corrected: true});
-        });
-    });
-
-    describe('hidden filter', () => {
-        it('reads a token', () => {
-            expect(parse('give-donor=123').query.filters).toEqual([
-                {field: 'filter-donor', operator: 'is', value: '123'},
-            ]);
-        });
-
-        it.each(['jane%40example.com', 'a%20b', 'x'.repeat(65), ''])('drops %p', (value) => {
+        it.each(['jane%40example.com', 'a%20b', 'x'.repeat(65), '', 'abc'])('drops %p', (value) => {
             expect(parse(`give-donor=${value}`)).toMatchObject({query: {filters: []}, corrected: true});
-        });
-    });
-
-    describe('filterby groups', () => {
-        it('reads checkbox values', () => {
-            expect(parse('give-status=failed,pending').query.filters).toEqual([
-                {field: 'filter-status', operator: 'isAny', value: ['failed', 'pending']},
-            ]);
-        });
-
-        it('drops only the checkbox values that are not options', () => {
-            expect(parse('give-status=failed,bogus,%3Cb%3E')).toMatchObject({
-                query: {filters: [{field: 'filter-status', operator: 'isAny', value: ['failed']}]},
-                corrected: true,
-            });
-        });
-
-        it('drops repeated checkbox values', () => {
-            expect(parse('give-status=failed,failed')).toMatchObject({
-                query: {filters: [{field: 'filter-status', operator: 'isAny', value: ['failed']}]},
-                corrected: true,
-            });
-        });
-
-        it('drops a checkbox group with no valid value', () => {
-            expect(parse('give-status=bogus')).toMatchObject({query: {filters: []}, corrected: true});
-        });
-
-        it('keeps only the first radio value', () => {
-            expect(parse('give-period=30,7')).toMatchObject({
-                query: {filters: [{field: 'filter-period', operator: 'is', value: '30'}]},
-                corrected: true,
-            });
-        });
-
-        it('reads the stable period values', () => {
-            ['7', '30', '90'].forEach((days) => {
-                expect(parse(`give-period=${days}`)).toMatchObject({
-                    query: {filters: [{field: 'filter-period', operator: 'is', value: days}]},
-                    corrected: false,
-                });
-            });
-        });
-
-        it.each(['45', '2026-01-01T00:00:00.000Z', ''])('drops the period %p', (value) => {
-            expect(parse(`give-period=${encodeURIComponent(value)}`)).toMatchObject({
-                query: {filters: []},
-                corrected: true,
-            });
-        });
-
-        it('reads a toggle set to 1 as its option value', () => {
-            expect(parse('give-show-trashed=1').query.filters).toEqual([
-                {field: 'filter-showTrashed', operator: 'is', value: 'trash'},
-            ]);
-        });
-
-        it.each(['0', 'true', 'trash'])('drops a toggle set to %p', (value) => {
-            expect(parse(`give-show-trashed=${value}`)).toMatchObject({query: {filters: []}, corrected: true});
         });
     });
 
@@ -497,20 +435,20 @@ describe('parseViewQuery', () => {
         });
 
         it('is not read on a screen without the toggle', () => {
-            expect(parse('give-test-mode=1', forms)).toEqual({query: {filters: []}, corrected: false, legacyKeys: []});
+            expect(parse('give-test-mode=1', legacy)).toEqual({query: {filters: []}, corrected: false, legacyKeys: []});
         });
     });
 
     describe('legacy bare names', () => {
         it.each([
-            ['donor=123', 'donor', {field: 'filter-donor', operator: 'is', value: '123'}, donations],
-            ['campaignId=4', 'campaignId', {field: 'filter-campaignId', operator: 'is', value: 4}, donations],
-            ['formId=9', 'formId', {field: 'filter-formId', operator: 'is', value: 9}, donations],
-            ['campaign=none', 'campaign', {field: 'filter-campaign', operator: 'is', value: 'none'}, forms],
-            ['status=trash', 'status', {field: 'filter-status', operator: 'is', value: 'trash'}, forms],
-        ])('reads %p and marks it corrected', (search, legacyKey, filter, context) => {
+            ['donor=123', 'donor', filter('donor', 'is', '123'), donations],
+            ['campaignId=4', 'campaignId', filter('campaign', 'isAny', ['4']), donations],
+            ['formId=9', 'formId', filter('form', 'isAny', ['9']), donations],
+            ['campaign=none', 'campaign', filter('campaign', 'is', 'none'), legacy],
+            ['status=trash', 'status', filter('status', 'is', 'trash'), legacy],
+        ])('reads %p and marks it corrected', (search, legacyKey, expected, context) => {
             expect(parse(search, context)).toEqual({
-                query: {filters: [filter]},
+                query: {filters: [expected]},
                 corrected: true,
                 legacyKeys: [legacyKey],
             });
@@ -526,14 +464,14 @@ describe('parseViewQuery', () => {
 
         it('lets the prefixed name win', () => {
             expect(parse('donor=1&give-donor=2')).toEqual({
-                query: {filters: [{field: 'filter-donor', operator: 'is', value: '2'}]},
+                query: {filters: [filter('donor', 'is', '2')]},
                 corrected: true,
                 legacyKeys: ['donor'],
             });
         });
 
-        it('does not read bare names of filterby groups, sort or page', () => {
-            expect(parse('status=failed&paged=2&orderby=amount&order=asc')).toEqual({
+        it('does not read bare names of filters without a legacy name, sort or page', () => {
+            expect(parse('status=pending&paged=2&orderby=amount&order=asc')).toEqual({
                 query: {filters: []},
                 corrected: false,
                 legacyKeys: [],
@@ -623,76 +561,8 @@ describe('writeViewQuery', () => {
 });
 
 describe('declared filters in the URL', () => {
-    const statuses: StatusVocabularyEntry[] = [
-        {value: 'publish', label: 'Completed', filterable: true},
-        {value: 'pending', label: 'Pending', filterable: true},
-        {value: 'trash', label: 'Trash', filterable: true},
-        {value: 'processing', label: 'Processing', filterable: false},
-    ];
-
-    // The Donations catalog row (FR-009), the screen with every kind.
-    const declarations: FilterDeclaration[] = [
-        {kind: 'search', id: 'search', label: 'Search donations', hint: 'Hint', parameter: 'search'},
-        {
-            kind: 'entity',
-            id: 'campaign',
-            label: 'Campaign',
-            isPrimary: true,
-            source: 'campaign',
-            multiple: true,
-            parameter: 'campaignId',
-            allowNone: true,
-            legacyUrlKey: 'campaignId',
-        },
-        {
-            kind: 'options',
-            id: 'status',
-            label: 'Status',
-            isPrimary: true,
-            multiple: true,
-            options: 'statuses',
-            parameter: 'status',
-            exclusiveValues: ['trash'],
-        },
-        {
-            kind: 'entity',
-            id: 'form',
-            label: 'Form',
-            source: 'form',
-            multiple: true,
-            parameter: 'formId',
-            legacyUrlKey: 'formId',
-        },
-        {
-            kind: 'entity',
-            id: 'donor',
-            label: 'Donor',
-            source: 'donor',
-            multiple: false,
-            parameter: 'donor',
-            legacyUrlKey: 'donor',
-        },
-        {kind: 'date', id: 'date', label: 'Donation date', parameters: {start: 'start', end: 'end'}},
-        {
-            kind: 'options',
-            id: 'donationType',
-            label: 'Donation type',
-            multiple: false,
-            options: [
-                {value: 'one-time', label: 'One-time'},
-                {value: 'recurring', label: 'Recurring'},
-            ],
-            parameter: 'donationType',
-        },
-    ];
-
-    const declared: ViewQueryContext = {...donations, filterSettings: [], filters: declarations, statuses};
+    const declared = donations;
     const parseDeclared = (search: string) => parse(search, declared);
-    const filter = (field: string, operator: 'is' | 'isAny', value: string | string[]) => ({
-        field: `filter-${field}`,
-        operator,
-        value,
-    });
 
     it.each([
         ['campaign', filter('campaign', 'isAny', ['12', '15']), 'give-campaign', '12,15'],
@@ -771,7 +641,7 @@ describe('declared filters in the URL', () => {
     });
 
     it('names one parameter per declared filter, never the search, and never the old names', () => {
-        const keys = viewQueryKeys(declared);
+        const keys = viewQueryKeys({...declared, testModeToggle: false});
 
         expect(keys).toEqual([
             'give-campaign',

@@ -1,6 +1,5 @@
 import {useCallback, useState} from 'react';
 import type {Filter, View} from '@wordpress/dataviews';
-import {isApplied} from '../adapters/viewToParameters';
 import {withDefaultFilters} from '../state/defaultFilterState';
 import type {ListTableView} from '../state/types';
 
@@ -29,6 +28,7 @@ const queryOf = (view: View) => JSON.stringify([view.search, view.filters, view.
  * Owns the list view (page, page size, sort, search, filters, columns) for the life of the page, and
  * where its last change came from.
  *
+ * @since TBD Remove `hasActiveFilters` and `clearFilters`; Reset restores the screen defaults.
  * @since TBD Add `restoreDefaultFilters`.
  * @since TBD
  */
@@ -56,24 +56,6 @@ export default function useListTableView(initialView: ListTableView | (() => Lis
         setState({view: next, origin: nextOrigin});
     }, []);
 
-    const hasActiveFilters =
-        isApplied(view.search) || (view.filters ?? []).some((filter) => !filter.isLocked && isApplied(filter.value));
-
-    /**
-     * Clears the search term and every filter the admin can change. Sort and page size stay.
-     */
-    const clearFilters = useCallback(() => {
-        setState((previous) => ({
-            view: {
-                ...previous.view,
-                page: 1,
-                search: '',
-                filters: (previous.view.filters ?? []).filter((filter) => filter.isLocked),
-            },
-            origin: 'user',
-        }));
-    }, []);
-
     /**
      * Clears the search term and puts the filters back to the screen's defaults (test mode on a test
      * site). Locked filters, sort and page size stay.
@@ -84,5 +66,5 @@ export default function useListTableView(initialView: ListTableView | (() => Lis
         setState((previous) => ({view: withDefaultFilters(previous.view, defaultFilters), origin: 'user'}));
     }, []);
 
-    return {view, origin, onChangeView, replaceView, hasActiveFilters, clearFilters, restoreDefaultFilters};
+    return {view, origin, onChangeView, replaceView, restoreDefaultFilters};
 }

@@ -2,13 +2,12 @@ import {act, isValidElement, type ReactElement, type ReactNode} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
 import apiFetch from '@wordpress/api-fetch';
 import {SWRConfig} from 'swr';
-import {TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
-import {filterFieldId} from '../adapters/viewToParameters';
+import {filterFieldId, TEST_MODE_FILTER} from '../adapters/viewToParameters';
 import type {DataViewsListTableProps} from '../DataViewsListTable';
 import type {FilterDeclaration} from '../filters/types';
 import type {ListTableFiltersProps} from '../ListTableFilters';
 import type {ListTablePageHeaderProps} from './ListTablePageHeader';
-import type {ListTablePageProps} from './types';
+import type {FilterConfig, ListTablePageProps} from './types';
 import ListTablePage from './index';
 
 jest.mock('@wordpress/api-fetch', () => jest.fn());
@@ -438,15 +437,45 @@ describe('ListTablePage with filter declarations', () => {
         });
     });
 
-    it('without filters the old path renders unchanged', async () => {
-        await render({filters: undefined, filterSettings: [{name: 'search', type: 'search', text: 'Search'}]});
+    it('a screen with neither filters nor filter settings shows no search box and an empty bar', async () => {
+        await render({filters: undefined});
 
         expect(lastTable().searchBox).toBeUndefined();
-        expect(lastTable().filterBar).toBeUndefined();
-        expect(lastTable().search).toBe(true);
+        expect(lastTable().search).toBe(false);
+        expect(filterBar().props.declarations).toEqual([]);
+    });
+});
+
+describe('ListTablePage with only the deprecated filter settings (an add-on screen)', () => {
+    const filterSettings: FilterConfig[] = [
+        {name: 'campaignId', type: 'campaignselect', options: [{value: 'none', text: 'No campaign'}]},
+        {name: 'search', type: 'search', text: 'Search by name or ID'},
+        {
+            name: 'state',
+            type: 'select',
+            text: 'State',
+            options: [
+                {value: 'any', text: 'All'},
+                {value: 'active', text: 'Active'},
+            ],
+        },
+        {name: 'toggle', type: 'checkbox', text: 'Test Mode', ariaLabel: 'View test donations'},
+    ];
+    const addOnProps = {filters: undefined, filterSettings};
+
+    it('renders the filter bar and the labeled search box from the mapped declarations', async () => {
+        await render(addOnProps);
+
+        expect(filterBar().props.declarations.map((declaration) => declaration.id)).toEqual(['campaignId', 'state']);
+        expect(lastTable().search).toBe(false);
+
+        const box = await renderSlot(lastTable().searchBox);
+        const input = box.querySelector('input')!;
+
+        expect(box.querySelector(`label[for="${input.id}"]`)?.textContent).toBe('Search by name or ID');
     });
 
-    it('without filters an explicit scope is sent with every request, also after Clear filters', async () => {
+    it('sends an explicit scope with every request, also after Clear filters', async () => {
         await render({
             filters: undefined,
             filterSettings: [{name: 'search', type: 'search', text: 'Search'}],
@@ -470,7 +499,7 @@ describe('ListTablePage with filter declarations', () => {
         expect(listRequests().every((url) => url.searchParams.get('campaignId') === '7')).toBe(true);
     });
 
-    it('without filters an explicit scope wins over the hidden filter settings of a tab', async () => {
+    it('lets an explicit scope win over the hidden filter settings of a tab', async () => {
         await render({
             filters: undefined,
             contentMode: true,
@@ -484,15 +513,56 @@ describe('ListTablePage with filter declarations', () => {
         expect(lastRequest()).toMatchObject({campaignId: '7', donorId: '9'});
     });
 
-    it('without filters the test-mode setting still gives the header its switch', async () => {
-        await render({
-            filters: undefined,
-            filterSettings: [{name: 'toggle', type: 'checkbox', text: 'Test Mode', ariaLabel: 'View test donations'}],
-        });
+    it('gives the header its test-mode switch from the toggle setting', async () => {
+        await render(addOnProps);
 
         expect(mockRenderedHeader.mock.calls[0][0].testModeToggle).toEqual({
             label: 'Test Mode',
             ariaLabel: 'View test donations',
         });
+    });
+
+    it('sends the old parameters: the select default, a linked campaign, a chosen value and the search', async () => {
+        window.history.replaceState(null, '', `${PATH}?page=give-forms&campaignId=4`);
+
+        await render(addOnProps);
+
+        expect(lastRequest()).toMatchObject({state: 'any', campaignId: '4'});
+
+        await act(async () =>
+            lastTable().onChangeView({
+                ...lastTable().view,
+                search: 'spring',
+                filters: [
+                    ...(lastTable().view.filters ?? []),
+                    {field: filterFieldId('state'), operator: 'is', value: 'active'},
+                ],
+            })
+        );
+
+        expect(lastRequest()).toMatchObject({state: 'active', campaignId: '4', search: 'spring'});
+    });
+
+    it('sends a hidden filter of a list in a tab as fixed scope, never as a chip', async () => {
+        await render({
+            filters: undefined,
+            contentMode: true,
+            filterSettings: [{name: 'campaignId', type: 'hidden', options: [{value: '7', text: 'All Campaign Forms'}]}],
+        });
+
+        expect(lastRequest()).toMatchObject({campaignId: '7'});
+        expect(filterBar().props.declarations).toEqual([]);
+    });
+
+    it('applies a standalone hidden filter by default, and Reset keeps it', async () => {
+        await render({
+            filters: undefined,
+            filterSettings: [
+                {name: 'donor', type: 'hidden', text: 'Donor', options: [{value: '12', text: 'Donor 12'}]},
+            ],
+        });
+
+        expect(lastRequest()).toMatchObject({donor: '12'});
+        expect(filterBar().props.canReset).toBe(false);
     });
 });
