@@ -41,6 +41,7 @@ declare global {
             showDefaultFormTooltip: boolean;
             campaignUrl: string;
             newFormUrl: string;
+            adminUrl: string;
         };
     }
 }
@@ -256,7 +257,9 @@ export default function DonationFormsListTable({entity, screen}: {entity?: Campa
                             <SwitchToLegacyViewButton
                                 api={API}
                                 className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
-                                onSwitched={() => (window.location.href = '/wp-admin/edit.php?post_type=give_forms')}
+                                onSwitched={() =>
+                                    (window.location.href = `${window.GiveDonationForms.adminUrl}edit.php?post_type=give_forms`)
+                                }
                             />
                         )}
                     </>
