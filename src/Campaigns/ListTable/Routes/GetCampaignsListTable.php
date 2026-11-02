@@ -9,8 +9,10 @@ use Give\Campaigns\ListTable\Columns\RevenueColumn;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\Repositories\CampaignsDataRepository;
+use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\QueryBuilder\WhereQueryBuilder;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -37,6 +39,7 @@ class GetCampaignsListTable implements RestRoute
     protected $listTable;
 
     /**
+     * @since TBD Add the statuses, start and end parameters, and deprecate status
      * @since 4.0.0
      */
     public function registerRoute(): void
@@ -70,6 +73,30 @@ class GetCampaignsListTable implements RestRoute
                         'type' => 'string',
                         'required' => false,
                         'sanitize_callback' => 'sanitize_text_field',
+                        'description' => 'Deprecated: use "statuses". "any" hides archived campaigns and "inactive" means archived.',
+                    ],
+                    'statuses' => [
+                        'type' => 'array',
+                        'required' => false,
+                        'default' => [],
+                        'maxItems' => 50,
+                        'items' => [
+                            'type' => 'string',
+                            'enum' => array_column(CampaignStatus::vocabulary()->toArray(), 'value'),
+                        ],
+                        'description' => 'Filter campaigns by one or more stored statuses. At most 50. When set, "status" is ignored.',
+                    ],
+                    'start' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'format' => 'date-time',
+                        'description' => 'Only campaigns created on or after this date and time (site time zone).',
+                    ],
+                    'end' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'format' => 'date-time',
+                        'description' => 'Only campaigns created on or before this date and time (site time zone).',
                     ],
                     'sortColumn' => [
                         'type' => 'string',
@@ -197,28 +224,51 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
+     * @since TBD Add statuses and created date range filters, and group the search LIKEs so other filters apply to them
      * @since 4.0.0
      */
     private function getWhereConditions(QueryBuilder $query): QueryBuilder
     {
         $search = $this->request->get_param('search');
         $status = $this->request->get_param('status');
+        $statuses = array_values(array_filter((array)$this->request->get_param('statuses'), 'is_string'));
+        $start = $this->request->get_param('start');
+        $end = $this->request->get_param('end');
 
         if ($search) {
             if (ctype_digit($search)) {
                 $query->where('id', $search);
             } else {
-                $query->whereLike('campaign_title', $search);
-                $query->orWhereLike('short_desc', $search);
+                $query->where(static function (WhereQueryBuilder $builder) use ($search) {
+                    $builder
+                        ->whereLike('campaign_title', $search)
+                        ->orWhereLike('short_desc', $search);
+                });
             }
         }
 
-        if ($status === 'any') {
+        if ($statuses) {
+            $query->whereIn('status', $statuses);
+        } elseif ($status === 'any') {
+            /**
+             * @deprecated Kept for old callers of "status". Use "statuses" with the stored values instead.
+             */
             $query->where('status', 'archived', '!=');
         } elseif ($status === 'inactive') {
+            /**
+             * @deprecated Old callers send "inactive" to mean archived. Use "statuses=archived" instead.
+             */
             $query->where('status', 'archived');
         } elseif ($status) {
             $query->where('status', $status);
+        }
+
+        if ($start && $end) {
+            $query->whereBetween('date_created', $start, $end);
+        } elseif ($start) {
+            $query->where('date_created', $start, '>=');
+        } elseif ($end) {
+            $query->where('date_created', $end, '<=');
         }
 
         return $query;

@@ -40,6 +40,7 @@ class ListDonationForms extends Endpoint
     protected $defaultForm;
 
     /**
+     * @since TBD Accept a list of statuses and of campaigns, and a created date range
      * @since 4.0.0 Add campaignId parameter
      * @inheritDoc
      */
@@ -68,20 +69,25 @@ class ListDonationForms extends Endpoint
                         'minimum' => 1,
                     ],
                     'status' => [
-                        'type' => 'string',
+                        'type' => 'array',
                         'required' => false,
-                        'default' => 'any',
-                        'enum' => [
-                            'publish',
-                            'future',
-                            'draft',
-                            'pending',
-                            'trash',
-                            'auto-draft',
-                            'inherit',
-                            'any',
-                            'upgraded',
+                        'default' => ['any'],
+                        'maxItems' => 50,
+                        'items' => [
+                            'type' => 'string',
+                            'enum' => [
+                                'publish',
+                                'future',
+                                'draft',
+                                'pending',
+                                'trash',
+                                'auto-draft',
+                                'inherit',
+                                'any',
+                                'upgraded',
+                            ],
                         ],
+                        'description' => 'Filter forms by one or more statuses. At most 50. "any" means every status except trash.',
                     ],
                     'search' => [
                         'type' => 'string',
@@ -121,7 +127,20 @@ class ListDonationForms extends Endpoint
                     'campaign' => [
                         'type' => 'string',
                         'required' => false,
-                        'description' => 'A campaign id, "none" for standalone forms, or empty for all forms.',
+                        'validate_callback' => [$this, 'validateCampaignListSize'],
+                        'description' => 'A campaign id, a comma-separated list of up to 50 campaign ids, "none" for standalone forms, or empty for all forms.',
+                    ],
+                    'start' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'format' => 'date-time',
+                        'description' => 'Only forms created on or after this date and time (site time zone).',
+                    ],
+                    'end' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'format' => 'date-time',
+                        'description' => 'Only forms created on or before this date and time (site time zone).',
                     ],
                 ],
             ]
@@ -260,6 +279,29 @@ class ListDonationForms extends Endpoint
     }
 
     /**
+     * Rejects an array and a campaign list of more than 50 items. Any other value is accepted, as it always was.
+     *
+     * @since TBD
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public function validateCampaignListSize($value): bool
+    {
+        if (is_array($value) || is_object($value)) {
+            return false;
+        }
+
+        if (! is_string($value)) {
+            return true;
+        }
+
+        return count(explode(',', $value)) <= 50;
+    }
+
+    /**
+     * @since TBD Filter by several statuses and campaigns, and by created date range
      * @since 4.19.0 Add "campaign" filter: a campaign id or "none" for standalone forms; campaign id filter includes the campaign's default form
      * @since      4.0.0 Add "campaignId" support
      * @since      2.24.0
@@ -271,13 +313,24 @@ class ListDonationForms extends Endpoint
     private function getWhereConditions(QueryBuilder $query): QueryBuilder
     {
         $search = $this->request->get_param('search');
-        $status = $this->request->get_param('status');
+        $statuses = array_values(array_filter((array)$this->request->get_param('status'), 'is_string'));
+        $start = $this->request->get_param('start');
+        $end = $this->request->get_param('end');
 
-        // Status
-        if ($status === 'any') {
+        // Status: a list with "any" is today's default set
+        if (! $statuses || in_array('any', $statuses, true)) {
             $query->whereIn('post_status', ['publish', 'draft', 'pending', 'private', 'upgraded']);
         } else {
-            $query->where('post_status', $status);
+            $query->whereIn('post_status', $statuses);
+        }
+
+        // Created date
+        if ($start && $end) {
+            $query->whereBetween('post_date', $start, $end);
+        } elseif ($start) {
+            $query->where('post_date', $start, '>=');
+        } elseif ($end) {
+            $query->where('post_date', $end, '<=');
         }
 
         // Search
@@ -295,24 +348,26 @@ class ListDonationForms extends Endpoint
         }
 
         $campaign = (string)$this->request->get_param('campaign');
-        $campaignId = $this->request->get_param('campaignId') ?: (ctype_digit($campaign) ? (int)$campaign : 0);
+        $campaignIds = $this->request->get_param('campaignId')
+            ? [(int)$this->request->get_param('campaignId')]
+            : array_values(array_filter(array_map('intval', array_filter(explode(',', $campaign), 'ctype_digit'))));
 
-        // Forms attached through the campaign forms table, or the campaign's own default form
+        // Forms attached through the campaign forms table, or a campaign's own default form
         // (how Peer-to-Peer campaigns link their form)
-        if ($campaignId) {
-            $query->where(function (WhereQueryBuilder $builder) use ($campaignId) {
+        if ($campaignIds) {
+            $query->where(function (WhereQueryBuilder $builder) use ($campaignIds) {
                 $builder
-                    ->whereIn('ID', function (QueryBuilder $subQuery) use ($campaignId) {
+                    ->whereIn('ID', function (QueryBuilder $subQuery) use ($campaignIds) {
                         $subQuery
                             ->from('give_campaign_forms')
                             ->select('form_id')
-                            ->where('campaign_id', $campaignId);
+                            ->whereIn('campaign_id', $campaignIds);
                     })
-                    ->orWhereIn('ID', function (QueryBuilder $subQuery) use ($campaignId) {
+                    ->orWhereIn('ID', function (QueryBuilder $subQuery) use ($campaignIds) {
                         $subQuery
                             ->from('give_campaigns')
                             ->select('form_id')
-                            ->where('id', $campaignId);
+                            ->whereIn('id', $campaignIds);
                     });
             });
         }
