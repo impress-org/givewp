@@ -223,6 +223,25 @@ describe('ListTableFilters', () => {
         expect(chips()).toContain('Status: Processing');
     });
 
+    it('names a collapsed chip by its visible text and then every value', async () => {
+        await render({
+            initial: [
+                {field: 'filter-status', operator: 'isAny', value: ['publish', 'processing', 'pending', 'trash']},
+            ],
+        });
+
+        expect(chips()).toContain('Status: 4 selected');
+        expect(chipNamed('Status').getAttribute('aria-label')).toBe(
+            'Status: 4 selected. Completed, Processing, Pending, Trash'
+        );
+    });
+
+    it('names a chip with three values or fewer by its visible text only', async () => {
+        await render({initial: [{field: 'filter-status', operator: 'isAny', value: ['publish', 'pending']}]});
+
+        expect(chipNamed('Status').getAttribute('aria-label')).toBe('Status: Completed, Pending');
+    });
+
     it('shows "No campaign" on the chip for the none value', async () => {
         await render({initial: [{field: 'filter-campaign', operator: 'isAny', value: ['none']}]});
 

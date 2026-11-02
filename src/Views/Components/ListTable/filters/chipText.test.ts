@@ -33,42 +33,24 @@ describe('filterChipText', () => {
     it('lists three labels at most', () => expect(MAX_CHIP_LABELS).toBe(3));
 
     it.each([
-        [status, undefined, helpers, 'Status', 'Status'],
-        [status, [], helpers, 'Status', 'Status'],
-        [status, ['active', 'draft'], helpers, 'Status: Active, Draft', 'Status: Active, Draft'],
-        [
-            status,
-            ['active', 'inactive', 'archived', 'draft'],
-            helpers,
-            'Status: 4 selected',
-            'Status: Active, Inactive, Archived, Draft',
-        ],
-        [donor, '123', noLabel, 'Donor: Donor #123', 'Donor: Donor #123'],
-        [date, '30', helpers, 'Donation date: Last 30 days', 'Donation date: Last 30 days'],
-        [
-            date,
-            '2026-09-01_2026-09-15',
-            helpers,
-            'Donation date: 1 Sep 2026 – 15 Sep 2026',
-            'Donation date: 1 Sep 2026 – 15 Sep 2026',
-        ],
-        [
-            date,
-            '2026-09-01_',
-            helpers,
-            'Donation date: on or after 1 Sep 2026',
-            'Donation date: on or after 1 Sep 2026',
-        ],
-        [
-            date,
-            '_2026-09-15',
-            helpers,
-            'Donation date: on or before 15 Sep 2026',
-            'Donation date: on or before 15 Sep 2026',
-        ],
-    ])('%#: writes the chip text', (declaration, value, given, text, fullText) =>
-        expect(filterChipText(declaration, value, given)).toEqual({text, fullText})
+        [status, undefined, helpers, 'Status'],
+        [status, [], helpers, 'Status'],
+        [status, ['active', 'draft'], helpers, 'Status: Active, Draft'],
+        [donor, '123', noLabel, 'Donor: Donor #123'],
+        [date, '30', helpers, 'Donation date: Last 30 days'],
+        [date, '2026-09-01_2026-09-15', helpers, 'Donation date: 1 Sep 2026 – 15 Sep 2026'],
+        [date, '2026-09-01_', helpers, 'Donation date: on or after 1 Sep 2026'],
+        [date, '_2026-09-15', helpers, 'Donation date: on or before 15 Sep 2026'],
+    ])('%#: uses one text for the chip, the tooltip and the name', (declaration, value, given, text) =>
+        expect(filterChipText(declaration, value, given)).toEqual({text, fullText: text, accessibleName: text})
     );
+
+    it('collapses past three labels, and the name starts with the chip text and then lists them', () =>
+        expect(filterChipText(status, ['active', 'inactive', 'archived', 'draft'], helpers)).toEqual({
+            text: 'Status: 4 selected',
+            fullText: 'Status: Active, Inactive, Archived, Draft',
+            accessibleName: 'Status: 4 selected. Active, Inactive, Archived, Draft',
+        }));
 
     it('falls back to a numbered label for an entity without a name', () =>
         expect(fallbackLabel(donor, '123')).toBe('Donor #123'));

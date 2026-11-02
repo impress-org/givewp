@@ -87,7 +87,7 @@ export default function EntityFilter({
     const knownLabel = useFilterOptionLabels(declaration.source, screen, value);
     const labelOf = (item: string) => (item === NONE_VALUE ? noneOption().label : knownLabel(item) ?? '');
     const chipValue = declaration.multiple ? value : value[0];
-    const {text, fullText} = filterChipText(declaration, value.length > 0 ? chipValue : undefined, {
+    const {text, fullText, accessibleName} = filterChipText(declaration, value.length > 0 ? chipValue : undefined, {
         labelOf,
         formatDate: formatSiteDate,
     });
@@ -96,6 +96,7 @@ export default function EntityFilter({
         <FilterChip
             text={text}
             fullText={fullText}
+            accessibleName={accessibleName}
             hasValue={value.length > 0}
             canRemove={canRemove}
             removeLabel={removeLabel}

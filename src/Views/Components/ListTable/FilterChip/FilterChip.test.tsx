@@ -14,6 +14,7 @@ const render = (props: Partial<FilterChipProps> = {}) =>
             <FilterChip
                 text="Status: 2"
                 fullText="Status: Active, Pending"
+                accessibleName="Status: 2. Active, Pending"
                 hasValue
                 canRemove
                 removeLabel="Reset"
@@ -82,10 +83,10 @@ describe('FilterChip', () => {
         expect(content()).toBeNull();
     });
 
-    it('names the chip by its full text and shows it in a tooltip', async () => {
+    it('names the chip by its accessible name and shows the full text in a tooltip', async () => {
         await render();
 
-        expect(chip().getAttribute('aria-label')).toBe('Status: Active, Pending');
+        expect(chip().getAttribute('aria-label')).toBe('Status: 2. Active, Pending');
         expect(chip().textContent).toBe('Status: 2');
 
         await act(() => {

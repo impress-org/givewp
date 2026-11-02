@@ -48,42 +48,49 @@ function dateText(value: string, formatDate: (ymd: string) => string): string {
 }
 
 /**
- * The chip text of a filter. `text` is what the chip shows; `fullText` lists every label and is
- * used for the tooltip and the accessible name.
+ * The chip text of a filter. `text` is what the chip shows; `fullText` lists every label and is the
+ * tooltip; `accessibleName` starts with `text`, so the spoken name holds the visible words, and then
+ * lists the labels when the chip shows only a count.
  *
+ * @since TBD Add the accessible name, which starts with the chip text.
  * @since TBD
  */
 export function filterChipText(
     declaration: BarFilterDeclaration,
     value: FilterValue | undefined,
     helpers: {labelOf: (value: string) => string; formatDate: (ymd: string) => string}
-): {text: string; fullText: string} {
-    const none = {text: declaration.label, fullText: declaration.label};
+): {text: string; fullText: string; accessibleName: string} {
+    const same = (text: string) => ({text, fullText: text, accessibleName: text});
 
     if (value === undefined || value === '' || (Array.isArray(value) && value.length === 0)) {
-        return none;
+        return same(declaration.label);
     }
 
     /* translators: 1: filter name such as "Status", 2: the chosen values. */
     const withLabel = (values: string) => sprintf(__('%1$s: %2$s', 'give'), declaration.label, values);
 
     if (declaration.kind === 'date') {
-        const text = withLabel(dateText(String(value), helpers.formatDate));
-
-        return {text, fullText: text};
+        return same(withLabel(dateText(String(value), helpers.formatDate)));
     }
 
     const labelOf = (item: string) =>
         helpers.labelOf(item) || (declaration.kind === 'entity' ? fallbackLabel(declaration, item) : item);
     const labels = (Array.isArray(value) ? value : [value]).map(labelOf);
-    const fullText = withLabel(labels.join(', '));
+    const list = labels.join(', ');
 
     if (labels.length <= MAX_CHIP_LABELS) {
-        return {text: fullText, fullText};
+        return same(withLabel(list));
     }
 
     /* translators: %d: number of selected values. */
     const count = sprintf(_n('%d selected', '%d selected', labels.length, 'give'), labels.length);
 
-    return {text: withLabel(count), fullText};
+    const text = withLabel(count);
+
+    return {
+        text,
+        fullText: withLabel(list),
+        /* translators: 1: the chip text such as "Status: 4 selected", 2: the chosen values. */
+        accessibleName: sprintf(__('%1$s. %2$s', 'give'), text, list),
+    };
 }

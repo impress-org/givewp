@@ -4,13 +4,16 @@ import {closeSmall} from '@wordpress/icons';
 import './styles.scss';
 
 /**
+ * @since TBD Add `accessibleName`; `fullText` is now only the tooltip.
  * @since TBD
  */
 export interface FilterChipProps {
     /** Short text on the chip, like "Status: 2". */
     text: string;
-    /** The whole value. It is the accessible name and the tooltip. */
+    /** The whole value. It is the tooltip. */
     fullText: string;
+    /** The accessible name. It starts with `text`, so the spoken name holds the visible words. */
+    accessibleName: string;
     /** Marks a chip that holds a value. */
     hasValue: boolean;
     /** Shows the remove button. */
@@ -28,11 +31,13 @@ export interface FilterChipProps {
  * A filter chip: a button that opens a popover with the filter control, and an optional button that
  * removes or resets the filter. Escape closes the popover and puts focus back on the chip.
  *
+ * @since TBD Name the chip by `accessibleName` and keep `fullText` as the tooltip.
  * @since TBD
  */
 export default function FilterChip({
     text,
     fullText,
+    accessibleName,
     hasValue,
     canRemove,
     removeLabel,
@@ -62,6 +67,7 @@ export default function FilterChip({
                         ref={toggleRef}
                         className="givewp-filter-chip__toggle"
                         label={fullText}
+                        aria-label={accessibleName}
                         showTooltip
                         aria-expanded={isOpen}
                         onClick={onToggle}
