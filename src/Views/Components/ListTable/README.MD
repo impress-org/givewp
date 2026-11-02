@@ -14,6 +14,8 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `adapters/` | Pure functions from the screens' settings to DataViews fields, default filters and actions, and from the view to the request parameters, plus the page size rule (`snapPerPage`) and the shared "Period" filter group (`periodFilterGroup`). Jest tests sit next to them. |
 | `hooks/` | `useListTableView` (the view and where its last change came from), `useListTableUrlState` (the view in the address, the search in the tab), `useListTableLayoutPreferences` (stores the layout, and Reset view), `useListTableSelection`, `useListTableQuery` (SWR + `apiFetch`), `useListTableActions` (the DataViews actions and the dialogs they open), `useListTableActionNotices`, and `useListActionSubmit` for a confirm modal or dialog. |
 | `state/` | View state, with Jest tests next to it. Pure functions: `types.ts` (the `ListTableScreen` config and the closed list of screen keys), `screenDefaults` (a screen's defaults from its config and the column schema), `viewQuery` (reads and writes the `give-` URL parameters), `storedLayout` (the stored layout record), `assembleView`, `fieldOrder` (a column's default position, the pinned column last) and `fieldRules` (locked and pinned columns). Not pure, because they talk to the browser or the route: `listTableHistory` (`history`, the address and the tab's search copy), `layoutApi` (the layout route and the printed bootstrap) and `layoutWriteQueue` (the ordered layout writes and the once-per-page-view error notice). |
+| `filters/` | The filter model, pure functions: declaration types, value text, date ranges, chip text, request parameters, and the option route client. |
+| `ListTableFilters/` | The filter bar: primary filters, "Add filter", chips, the test-mode chip and Reset, read from a screen's `filters` declaration. Built from the `ListTableSearch`, `FilterChip`, `OptionsFilterControl`, `DateRangeFilterControl` and `EntityFilterControl` molecules. |
 | `ListTableViewReset/` | The "Reset view" button next to the stock view options, with its confirmation. |
 | `actions/` | `runListAction`: runs an action, reports it, clears the selection when everything succeeded, reloads. Every action and dialog goes through it. |
 | `rowActions/` | Ready-made actions: `trashRowActions` (Edit, Restore, Trash, Delete permanently) and `setStatusRowAction`. |
@@ -34,7 +36,10 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `singleName`, `pluralName` | `string`, lowercase, translated | No | `'item'`, `'items'` |
 | `rowActions` | `ListTableRowAction[]`, or a legacy render function | No | `null` |
 | `bulkActions` | `BulkActionsConfig[]` (legacy shape, still supported) | No | `null` |
-| `filterSettings` | `FilterConfig[]` | No | `[]` |
+| `filters` | `FilterDeclaration[]`: the entity's filter declaration. Shows Give's labeled search and filter bar in place of the DataViews ones; `filterSettings` is then not read | No | — |
+| `scope` | `Record<string, string \| number>`: fixed request parameters set by the host page (never a chip, never reset) | No | — |
+| `testModeToggle` | `{label, ariaLabel}`: the header test-mode switch and its chip, with `filters` | No | — |
+| `filterSettings` | `FilterConfig[]` (older shape; screens move to `filters`) | No | `[]` |
 | `columnFilters` | `{column, filter(item, column, data)}[]` to render a column yourself | No | `[]` |
 | `statsConfig` | `Record<string, StatConfig>` for the stat tiles (`/stats` endpoint) | No | — |
 | `paymentMode` | `boolean`, initial test mode | No | — |

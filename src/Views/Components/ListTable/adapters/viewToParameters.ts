@@ -1,5 +1,8 @@
 import type {View} from '@wordpress/dataviews';
 import type {FilterByGroupedOptions, FilterConfig, FilterValues, ListTableParameters} from '../ListTablePage/types';
+import {filterRequestParameters} from '../filters/requestParameters';
+import {siteToday} from '../filters/siteDate';
+import type {FilterDeclaration} from '../filters/types';
 
 /**
  * @since TBD
@@ -118,15 +121,17 @@ export function filterByValues(view: View, filterSettings: FilterConfig[], now?:
  * Builds the list endpoint's request parameters from the view. This is the only place that knows the
  * endpoints' parameter names. Empty values are left out, as the old client left them out of the URL.
  * `now` is the time "Filter by" values such as "Period" are counted from; keep it fixed per view so
- * the request URL stays the same.
+ * the request URL stays the same. With `declarations`, the filters come from them and `today` (the
+ * site's day, fixed per view) is what date presets count from; `filterSettings` is then not read.
  *
+ * @since TBD Build the filter parameters from the filter declarations when they are given.
  * @since TBD
  */
 export function viewToParameters(
     view: View,
     filterSettings: FilterConfig[],
     scope: Record<string, string | number>,
-    extra: {locale: string; testMode?: boolean; now?: Date}
+    extra: {locale: string; testMode?: boolean; now?: Date; declarations?: FilterDeclaration[]; today?: string}
 ): ListTableParameters {
     const parameters: ListTableParameters = {
         page: view.page ?? 1,
@@ -136,6 +141,12 @@ export function viewToParameters(
         locale: extra.locale,
         testMode: extra.testMode,
     };
+
+    if (extra.declarations) {
+        Object.assign(parameters, filterRequestParameters(extra.declarations, view, extra.today ?? siteToday()), scope);
+
+        return Object.fromEntries(Object.entries(parameters).filter(([, value]) => !isEmpty(value)));
+    }
 
     filterSettings.forEach((filter) => {
         switch (filter.type) {

@@ -211,14 +211,21 @@ const filterParameters = (context: ViewQueryContext): FilterParameter[] =>
         : context.filterSettings.flatMap(parametersOf);
 
 /**
+ * Whether the screen has the test-mode switch, from the context or the filter settings.
+ */
+const hasTestMode = (context: ViewQueryContext): boolean =>
+    context.testModeToggle ?? hasTestModeToggle(context.filterSettings);
+
+/**
  * Every `give-` parameter the screen reads and writes, in the order they are written.
  *
+ * @since TBD Name the declared filters when the screen has declarations.
  * @since TBD
  */
 export function viewQueryKeys(context: ViewQueryContext): string[] {
     return [
         ...filterParameters(context).map((parameter) => parameter.key),
-        ...(hasTestModeToggle(context.filterSettings) ? [TEST_MODE] : []),
+        ...(hasTestMode(context) ? [TEST_MODE] : []),
         ORDER_BY,
         ORDER,
         PAGE,
@@ -254,9 +261,7 @@ function writeTestMode(view: ListTableView, context: ViewQueryContext): Array<[s
         view.filters?.some((filter) => filter.field === filterFieldId(TEST_MODE_FILTER) && filter.value === true) ??
         false;
 
-    return hasTestModeToggle(context.filterSettings) && isOn !== context.siteTestMode
-        ? [[TEST_MODE, isOn ? TOGGLE_ON : TOGGLE_OFF]]
-        : [];
+    return hasTestMode(context) && isOn !== context.siteTestMode ? [[TEST_MODE, isOn ? TOGGLE_ON : TOGGLE_OFF]] : [];
 }
 
 /**
@@ -291,6 +296,7 @@ function writePaging(view: ListTableView, context: ViewQueryContext): Array<[str
  * The view's `give-` URL parameters. A view equal to the defaults gives none. The search term, the
  * columns and the density are never written.
  *
+ * @since TBD Write the declared filters when the screen has declarations.
  * @since TBD
  */
 export function serializeViewQuery(view: ListTableView, context: ViewQueryContext): Record<string, string> {
@@ -357,7 +363,7 @@ function readSort(params: URLSearchParams, sortableFields: string[]): {sort?: Vi
  * Reads `give-test-mode`: `1` or `0`, only on a screen with the test-mode toggle.
  */
 function readTestMode(raw: string | null, context: ViewQueryContext): {testMode?: boolean; corrected: boolean} {
-    if (raw === null || !hasTestModeToggle(context.filterSettings)) {
+    if (raw === null || !hasTestMode(context)) {
         return {corrected: false};
     }
 
@@ -402,6 +408,7 @@ function readFilters(
  * invalid parts are dropped and the result is marked `corrected`. Parameters that are not this
  * screen's are never read. A bare `search` is never read but is listed in `legacyKeys` for removal.
  *
+ * @since TBD Read the declared filters when the screen has declarations.
  * @since TBD
  */
 export function parseViewQuery(params: URLSearchParams, context: ViewQueryContext): ParseResult {

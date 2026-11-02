@@ -5,6 +5,8 @@ import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notific
 import ListTableApi from '../api';
 import DataViewsListTable from '../DataViewsListTable';
 import ListTableEmptyState from '../EmptyStates';
+import ListTableFilters from '../ListTableFilters';
+import ListTableSearch from '../ListTableSearch';
 import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
 import useLegacyRowActionsField from '../LegacyRowActions/useLegacyRowActionsField';
 import {columnsToFields, titleFieldId} from '../adapters/columnsToFields';
@@ -13,12 +15,15 @@ import {loadEntityElements} from '../adapters/loadEntityElements';
 import {defaultFilters, scopeFromFilterSettings} from '../adapters/defaultFilters';
 import {
     DEFAULT_PER_PAGE,
+    filterFieldId,
     PER_PAGE_SIZES,
     viewFilterValue,
     viewToParameters,
     withToggleFilter,
 } from '../adapters/viewToParameters';
 import {getItemName} from '../adapters/getItemName';
+import {siteToday} from '../filters/siteDate';
+import type {BarFilterDeclaration, FilterDeclaration, SearchFilterDeclaration} from '../filters/types';
 import {assembleView} from '../state/assembleView';
 import {keepPinnedLast, lockFields, placeShownFields} from '../state/fieldRules';
 import {resolveScreenDefaults} from '../state/screenDefaults';
@@ -40,6 +45,7 @@ import type {
     ListTablePageRef,
     ListTableResponse,
     ListTableRowAction,
+    TestModeToggle,
 } from './types';
 import styles from './ListTablePage.module.scss';
 import './styles.scss';
@@ -59,7 +65,14 @@ export type {
     ListTableParameters,
     ListTablePageRef,
     ListTableRowAction,
+    TestModeToggle,
 } from './types';
+
+const isSearch = (declaration: FilterDeclaration): declaration is SearchFilterDeclaration =>
+    declaration.kind === 'search';
+
+const isBarFilter = (declaration: FilterDeclaration): declaration is BarFilterDeclaration =>
+    declaration.kind !== 'search';
 
 /**
  * Opens the confirm modal for a legacy row action.
@@ -75,6 +88,7 @@ export const ShowConfirmModalContext = createContext(
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
  *
+ * @since TBD Accept filter declarations (`filters`), a fixed `scope` and `testModeToggle`; with `filters`, render Give's filter bar and labeled search.
  * @since TBD Render the list through `@wordpress/dataviews`; accept typed row actions; keep the view in the URL; store and reset the layout.
  * @since 2.24.0
  */
@@ -98,6 +112,9 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             perPage = DEFAULT_PER_PAGE,
             statsConfig,
             screen,
+            filters: declarations,
+            scope: fixedScope,
+            testModeToggle,
         }: ListTablePageProps,
         ref
     ) => {
@@ -105,12 +122,19 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const legacyRowActions = typeof rowActions === 'function' ? (rowActions as LegacyRowActionsRender) : null;
         const typedRowActions = Array.isArray(rowActions) ? (rowActions as ListTableRowAction[]) : null;
         const testModeFilter = filterSettings.find((filter) => filter.name === TEST_MODE_SETTING);
+        // With declarations the switch comes from `testModeToggle`; otherwise from the `toggle` filter setting.
+        const testModeSwitch: TestModeToggle | undefined = declarations
+            ? testModeToggle
+            : testModeFilter && {label: testModeFilter.text ?? '', ariaLabel: testModeFilter.ariaLabel ?? ''};
+        const statuses = apiSettings.table.statuses ?? [];
         const locale = navigator.language || navigator.languages[0];
 
         // Read once: some screens' header modals rewrite `apiSettings.apiRoot` while they render.
         const [apiRoot] = useState(apiSettings.apiRoot);
         const [listTableApi] = useState(() => new ListTableApi(apiSettings));
-        const [scope] = useState(() => scopeFromFilterSettings(filterSettings, contentMode));
+        const [scope] = useState(() =>
+            declarations ? fixedScope ?? {} : scopeFromFilterSettings(filterSettings, contentMode)
+        );
         const [legacyConfirm, setLegacyConfirm] = useState<LegacyConfirmRequest | null>(null);
 
         // Resolved once, before the first render, so the first list request already carries the URL's view.
@@ -118,10 +142,16 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             const defaults = resolveScreenDefaults(screen, columns, titleFieldId(columns), {
                 perPage,
                 pinnedField: legacyRowActions ? LEGACY_ROW_ACTIONS_FIELD : undefined,
-                filters: defaultFilters(filterSettings, {contentMode, testMode: Boolean(paymentMode)}),
+                filters: declarations
+                    ? // Declared filters have no defaults; only test mode is on by default, on a test site.
+                      testModeToggle && paymentMode
+                        ? [{field: filterFieldId(TEST_MODE_FILTER), operator: 'is', value: true}]
+                        : []
+                    : defaultFilters(filterSettings, {contentMode, testMode: Boolean(paymentMode)}),
             });
             const context: ViewQueryContext = {
                 filterSettings,
+                ...(declarations && {filters: declarations, statuses, testModeToggle: Boolean(testModeToggle)}),
                 sortableFields: columns.filter((column) => column.sortable).map((column) => column.id),
                 defaults,
                 siteTestMode: Boolean(paymentMode),
@@ -164,7 +194,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             replaceView,
         });
         // A screen with the test-mode toggle keeps test mode in the view, so it shows as a chip.
-        const testMode = testModeFilter ? viewFilterValue(view, TEST_MODE_FILTER) === true : paymentMode;
+        const testMode = testModeSwitch ? viewFilterValue(view, TEST_MODE_FILTER) === true : paymentMode;
         const setTestMode = (isOn: boolean) => onChangeView(withToggleFilter(view, TEST_MODE_FILTER, isOn));
         const {selection, onChangeSelection} = useListTableSelection(view);
         const clearSelection = useCallback(() => onChangeSelection([]), [onChangeSelection]);
@@ -174,9 +204,18 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         // Only what changes the request restarts the clock, not a layout change such as density or columns.
         const requestKey = JSON.stringify([view.page, view.perPage, view.sort, view.filters, view.search]);
         const requestTime = useMemo(() => new Date(), [requestKey]);
+        // Date presets count from the site's day, fixed per view in the same way.
+        const today = useMemo(() => siteToday(), [requestKey]);
         const parameters = useMemo(
-            () => viewToParameters(view, filterSettings, scope, {locale, testMode, now: requestTime}),
-            [view, filterSettings, scope, locale, testMode, requestTime]
+            () =>
+                viewToParameters(view, filterSettings, scope, {
+                    locale,
+                    testMode,
+                    now: requestTime,
+                    declarations,
+                    today,
+                }),
+            [view, filterSettings, scope, locale, testMode, requestTime, declarations, today]
         );
 
         const {
@@ -211,10 +250,17 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             refresh,
         });
 
+        // Declared filters live in Give's filter bar, so DataViews gets no filter-only fields for them.
         const filters = useMemo(
-            () => filterSettingsToFields(filterSettings, view, {contentMode, loadEntityElements}),
-            [filterSettings, view, contentMode]
+            () =>
+                declarations
+                    ? {fields: [], searchParam: null}
+                    : filterSettingsToFields(filterSettings, view, {contentMode, loadEntityElements}),
+            [declarations, filterSettings, view, contentMode]
         );
+        const searchDeclaration = declarations?.find(isSearch);
+        // An added filter that holds no value yet is still something Reset removes.
+        const canReset = hasActiveFilters || (view.filters ?? []).some((filter) => !filter.isLocked);
 
         const fields = useMemo<Field<ListTableItem>[]>(
             () =>
@@ -258,7 +304,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                         <ListTablePageHeader
                             title={title}
                             banner={banner}
-                            testModeFilter={testModeFilter}
+                            testModeToggle={testModeSwitch}
                             testMode={testMode}
                             onChangeTestMode={setTestMode}
                             statsConfig={statsConfig}
@@ -323,6 +369,36 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                             }
                             isDefaultLayout={isDefaultLayout}
                             onResetLayout={resetLayout}
+                            searchBox={
+                                searchDeclaration && (
+                                    <ListTableSearch
+                                        label={searchDeclaration.label}
+                                        hint={searchDeclaration.hint}
+                                        value={view.search ?? ''}
+                                        onChange={(term) => onChangeView({...view, search: term})}
+                                    />
+                                )
+                            }
+                            filterBar={
+                                declarations && (
+                                    <ListTableFilters
+                                        declarations={declarations.filter(isBarFilter)}
+                                        view={view}
+                                        onChangeView={onChangeView}
+                                        statuses={statuses}
+                                        screen={screen?.key}
+                                        testMode={
+                                            testModeSwitch && {
+                                                label: testModeSwitch.label,
+                                                isOn: testMode,
+                                                onChange: setTestMode,
+                                            }
+                                        }
+                                        canReset={canReset}
+                                        onReset={clearFilters}
+                                    />
+                                )
+                            }
                         />
                     </div>
                 </article>

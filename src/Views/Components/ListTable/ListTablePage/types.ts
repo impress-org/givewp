@@ -3,6 +3,7 @@ import type {RenderModalProps} from '@wordpress/dataviews';
 import type {StatConfig} from '../ListTableStats/ListTableStats';
 import type ListTableApi from '../api';
 import type {ListTableScreen} from '../state/types';
+import type {FilterDeclaration, StatusVocabularyEntry} from '../filters/types';
 
 /**
  * A column of a list table, as `ModelColumn::toArray()` sends it.
@@ -251,10 +252,30 @@ export type LegacyRowActionArgs = {
  */
 export type LegacyRowActions = (args: LegacyRowActionArgs) => ReactNode;
 
+/**
+ * The test-mode switch in the page header, and the chip that shows while it is on.
+ *
+ * @since TBD
+ */
+export type TestModeToggle = {
+    /** The chip text and the header badge, "Test mode". */
+    label: string;
+    /** The accessible name of the switch. */
+    ariaLabel: string;
+};
+
+/**
+ * @since TBD Add `filters`, `scope`, `testModeToggle` and `apiSettings.table.statuses`.
+ * @since 2.24.0
+ */
 export interface ListTablePageProps {
     //required
     title: string;
-    apiSettings: {apiRoot: string; apiNonce: string; table: {id?: string; columns: Array<object>}};
+    apiSettings: {
+        apiRoot: string;
+        apiNonce: string;
+        table: {id?: string; columns: Array<object>; statuses?: StatusVocabularyEntry[]};
+    };
 
     //optional
     bulkActions?: Array<BulkActionsConfig> | null;
@@ -281,6 +302,27 @@ export interface ListTablePageProps {
      * @since TBD
      */
     screen?: ListTableScreen;
+    /**
+     * The entity's filter declaration. When set, the page shows Give's filter bar and labeled search
+     * in place of the DataViews filter row and search, and `filterSettings` is not read.
+     *
+     * @since TBD
+     */
+    filters?: FilterDeclaration[];
+    /**
+     * Fixed request parameters set by the page the list sits on (the campaign of a campaign's "Forms"
+     * tab). Sent with every request; never a control, a chip or a URL parameter, and never reset.
+     *
+     * @since TBD
+     */
+    scope?: Record<string, string | number>;
+    /**
+     * The test-mode switch in the header and its chip. Used with `filters`; with `filterSettings` the
+     * `toggle` setting still adds it.
+     *
+     * @since TBD
+     */
+    testModeToggle?: TestModeToggle;
 }
 
 export interface ListTablePageRef {

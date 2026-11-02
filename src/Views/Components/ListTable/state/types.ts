@@ -105,7 +105,7 @@ export interface ViewQuery {
 /**
  * What the URL parser and serializer need to know about a screen.
  *
- * @since TBD Add the filter declarations and the status vocabulary.
+ * @since TBD Add the filter declarations, the status vocabulary and the test-mode switch.
  * @since TBD
  */
 export interface ViewQueryContext {
@@ -114,6 +114,8 @@ export interface ViewQueryContext {
     filters?: FilterDeclaration[];
     /** The server's status vocabulary, which checks `options: 'statuses'` values. Default none. */
     statuses?: StatusVocabularyEntry[];
+    /** The screen has the test-mode switch. Default: whether `filterSettings` holds the `toggle` setting. */
+    testModeToggle?: boolean;
     /** Ids of the columns with `sortable: true`. */
     sortableFields: string[];
     defaults: ScreenDefaults;

@@ -1,13 +1,13 @@
 import {viewFilterValue} from '../adapters/viewToParameters';
 import type {ListTableParameters} from '../ListTablePage/types';
-import type {ListTableView} from '../state/types';
+import type {View} from '@wordpress/dataviews';
 import {dayBounds, parseDateToken, resolveDateRange} from './dateRange';
 import type {DateFilterDeclaration, FilterDeclaration, FilterValue, OptionsFilterDeclaration} from './types';
 
 /**
  * The value a declaration holds in the view, or undefined when it holds nothing.
  */
-function appliedValue(view: ListTableView, id: string): FilterValue | undefined {
+function appliedValue(view: View, id: string): FilterValue | undefined {
     const value = viewFilterValue(view, id);
 
     if (typeof value === 'string') {
@@ -45,11 +45,12 @@ function emptyOptionsParameters(declaration: OptionsFilterDeclaration): ListTabl
  * site's current day, fixed per request, and is what the date presets count from. Multiple values
  * stay lists; the query hook joins them. A filter without a value adds nothing.
  *
+ * @since TBD Accept any DataViews view, as the request builder holds one.
  * @since TBD
  */
 export function filterRequestParameters(
     declarations: FilterDeclaration[],
-    view: ListTableView,
+    view: View,
     today: string
 ): ListTableParameters {
     return declarations.reduce<ListTableParameters>((parameters, declaration) => {
