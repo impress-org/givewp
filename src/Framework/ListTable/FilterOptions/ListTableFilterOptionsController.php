@@ -22,6 +22,13 @@ class ListTableFilterOptionsController
     public const MAX_INCLUDE = 50;
 
     /**
+     * The highest page asked for. A larger one would overflow the offset and give page one back.
+     *
+     * @since TBD
+     */
+    public const MAX_PAGE = 10000;
+
+    /**
      * @var ListTableScreens
      */
     private $screens;
@@ -51,6 +58,7 @@ class ListTableFilterOptionsController
     }
 
     /**
+     * @since TBD Limit `page` to MAX_PAGE.
      * @since TBD
      */
     public function registerRoutes(): void
@@ -78,6 +86,7 @@ class ListTableFilterOptionsController
                         'type' => 'integer',
                         'default' => 1,
                         'minimum' => 1,
+                        'maximum' => self::MAX_PAGE,
                     ],
                     'include' => [
                         'description' => __('Ids to return the labels of. Search and page are ignored.', 'give'),

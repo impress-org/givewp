@@ -161,6 +161,27 @@ class ListTableFilterOptionsControllerTest extends RestApiTestCase
     }
 
     /**
+     * A page past the limit would overflow the offset and give page one back.
+     *
+     * @since TBD
+     */
+    public function testAcceptsPagesUpToTenThousandAndRejectsLarger(): void
+    {
+        $this->actAs('administrator');
+
+        $response = $this->dispatch('donor', ['page' => 10000]);
+
+        $this->assertSame(200, $response->get_status());
+        $this->assertSame([], $response->get_data()['options']);
+        $this->assertErrorResponse('rest_invalid_param', $this->dispatch('donor', ['page' => 10001]), 400);
+        $this->assertErrorResponse(
+            'rest_invalid_param',
+            $this->dispatch('donor', ['page' => '9223372036854775807']),
+            400
+        );
+    }
+
+    /**
      * @since TBD
      */
     public function testRejectsAnUnknownSourceWith404(): void
