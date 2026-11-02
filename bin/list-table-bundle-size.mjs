@@ -80,7 +80,8 @@ const rows = Object.entries(SCREENS).map(([screen, entry]) => {
         before,
         delta,
         pass: delta === null ? null : delta <= BUDGET_BYTES,
-        bundlesDataViewsItself: sharedSize > 0 && containsDataViews(entry),
+        // Without the shared chunk (`develop`) a standalone run has nothing to compare; a comparison run still checks.
+        bundlesDataViewsItself: (sharedSize > 0 || Boolean(args.baseline)) && containsDataViews(entry),
     };
 });
 
