@@ -2,6 +2,8 @@ import {act, isValidElement, type ReactElement, type ReactNode} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
 import apiFetch from '@wordpress/api-fetch';
 import {SWRConfig} from 'swr';
+import {TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
+import {filterFieldId} from '../adapters/viewToParameters';
 import type {DataViewsListTableProps} from '../DataViewsListTable';
 import type {FilterDeclaration} from '../filters/types';
 import type {ListTableFiltersProps} from '../ListTableFilters';
@@ -138,6 +140,8 @@ beforeEach(() => {
     mockedFetch.mockResolvedValue({items: [], totalItems: 0, totalPages: 0});
     mockRenderedTable.mockClear();
     mockRenderedHeader.mockClear();
+    // The search term is copied to session storage; a term from an earlier test must not leak in.
+    window.sessionStorage.clear();
     window.history.replaceState(null, '', `${PATH}?page=give-forms`);
 });
 
@@ -302,6 +306,75 @@ describe('ListTablePage with filter declarations', () => {
             ariaLabel: 'Show test mode',
         });
         expect(filterBar().props.testMode).toMatchObject({label: 'Test mode', isOn: true});
+    });
+
+    describe('Reset shows only when the filters differ from the screen defaults', () => {
+        const testModeProps = {
+            testModeToggle: {label: 'Test mode', ariaLabel: 'Show test mode'},
+            paymentMode: true,
+            listTableBlankSlate: <p>No forms found</p>,
+        };
+
+        it('hides Reset on an untouched view whose default holds test mode', async () => {
+            await render(testModeProps);
+
+            expect(filterBar().props.testMode).toMatchObject({isOn: true});
+            expect(filterBar().props.canReset).toBe(false);
+        });
+
+        it('shows the blank slate, not the filtered empty state, on an untouched view', async () => {
+            await render(testModeProps);
+
+            const empty = await renderSlot(lastTable().empty);
+
+            expect(empty.textContent).toBe('No forms found');
+        });
+
+        it('shows Reset after a filter is added', async () => {
+            await render(testModeProps);
+            await act(async () =>
+                filterBar().props.onChangeView({
+                    ...lastTable().view,
+                    filters: [
+                        ...(lastTable().view.filters ?? []),
+                        {field: 'filter-status', operator: 'isAny', value: ['pending']},
+                    ],
+                })
+            );
+
+            expect(filterBar().props.canReset).toBe(true);
+        });
+
+        it('shows Reset when test mode is turned off on a test site', async () => {
+            await render(testModeProps);
+            await act(async () => filterBar().props.testMode?.onChange(false));
+
+            expect(filterBar().props.canReset).toBe(true);
+        });
+
+        it('Reset goes back to the defaults, keeps test mode on and hides Reset', async () => {
+            window.history.replaceState(null, '', `${PATH}?page=give-forms&give-status=pending`);
+            await render(testModeProps);
+
+            expect(filterBar().props.canReset).toBe(true);
+
+            await act(async () => filterBar().props.onReset());
+
+            expect(lastTable().view.filters).toEqual([
+                {field: filterFieldId(TEST_MODE_FILTER), operator: 'is', value: true},
+            ]);
+            expect(filterBar().props.canReset).toBe(false);
+            expect(filterBar().props.testMode).toMatchObject({isOn: true});
+            expect(lastRequest()).toMatchObject({testMode: 'true'});
+            expect(lastRequest()).not.toHaveProperty('status');
+        });
+
+        it('a search term is a change from the defaults', async () => {
+            await render(testModeProps);
+            await act(async () => lastTable().onChangeView({...lastTable().view, search: 'spring'}));
+
+            expect(filterBar().props.canReset).toBe(true);
+        });
     });
 
     it('without filters the old path renders unchanged', async () => {

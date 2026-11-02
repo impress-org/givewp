@@ -23,6 +23,7 @@ import {
 } from '../adapters/viewToParameters';
 import {getItemName} from '../adapters/getItemName';
 import {siteToday} from '../filters/siteDate';
+import {differsFromDefaultFilters} from '../state/defaultFilterState';
 import type {BarFilterDeclaration, FilterDeclaration, SearchFilterDeclaration} from '../filters/types';
 import {assembleView} from '../state/assembleView';
 import {keepPinnedLast, lockFields, placeShownFields} from '../state/fieldRules';
@@ -88,6 +89,7 @@ export const ShowConfirmModalContext = createContext(
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
  *
+ * @since TBD With `filters`, show Reset only when the filters differ from the screen defaults, and reset to those defaults.
  * @since TBD Accept filter declarations (`filters`), a fixed `scope` and `testModeToggle`; with `filters`, render Give's filter bar and labeled search.
  * @since TBD Render the list through `@wordpress/dataviews`; accept typed row actions; keep the view in the URL; store and reset the layout.
  * @since 2.24.0
@@ -165,14 +167,15 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             };
         });
 
-        const {view, origin, onChangeView, replaceView, hasActiveFilters, clearFilters} = useListTableView(() =>
-            assembleView({
-                defaults: start.defaults,
-                layout: start.layout,
-                query: start.urlState?.query,
-                search: start.urlState?.search,
-            })
-        );
+        const {view, origin, onChangeView, replaceView, hasActiveFilters, clearFilters, restoreDefaultFilters} =
+            useListTableView(() =>
+                assembleView({
+                    defaults: start.defaults,
+                    layout: start.layout,
+                    query: start.urlState?.query,
+                    search: start.urlState?.search,
+                })
+            );
 
         const {resetLayout, isDefaultLayout, layoutPerPage} = useListTableLayoutPreferences({
             screen,
@@ -259,15 +262,21 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             [declarations, filterSettings, view, contentMode]
         );
         const searchDeclaration = declarations?.find(isSearch);
-        // An added filter that holds no value yet is still something Reset removes.
-        const canReset = hasActiveFilters || (view.filters ?? []).some((filter) => !filter.isLocked);
+        // With declarations, Reset shows only when the view differs from the screen's defaults, so an
+        // untouched view on a test site (test mode on by default) offers no Reset, and Reset puts the
+        // defaults back instead of turning test mode off. An added filter with no value yet counts.
+        const canReset = declarations
+            ? differsFromDefaultFilters(view, start.defaults.filters)
+            : hasActiveFilters || (view.filters ?? []).some((filter) => !filter.isLocked);
         const searchBoxRef = useRef<HTMLDivElement>(null);
         const focusSearchBox = useCallback(() => searchBoxRef.current?.querySelector('input')?.focus(), []);
         // The control that was clicked (Reset, Clear filters) goes away, so keyboard focus moves to the search box.
         const resetFilters = useCallback(() => {
-            clearFilters();
+            restoreDefaultFilters(start.defaults.filters);
             focusSearchBox();
-        }, [clearFilters, focusSearchBox]);
+        }, [restoreDefaultFilters, focusSearchBox]);
+        // The filtered empty state offers "Clear filters", so it shows only when there is something to clear.
+        const isFilteredEmpty = declarations ? canReset : hasActiveFilters;
 
         const fields = useMemo<Field<ListTableItem>[]>(
             () =>
@@ -354,7 +363,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                                         actionLabel={__('Try again', 'give')}
                                         onAction={refresh}
                                     />
-                                ) : hasActiveFilters ? (
+                                ) : isFilteredEmpty ? (
                                     <ListTableEmptyState
                                         message={sprintf(
                                             /* translators: %s: record type, plural (for example "donations") */
