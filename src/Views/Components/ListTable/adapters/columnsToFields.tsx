@@ -11,7 +11,7 @@ import type {Column, ColumnFilterConfig, ListTableItem, ListTableResponse} from 
  * @since TBD
  */
 export function keepInteractiveClicksInCell(event: MouseEvent<HTMLElement>) {
-    if (!(event.target as HTMLElement).closest('a, button')) {
+    if (!(event.target as HTMLElement).closest('a, button, input, select, textarea')) {
         return;
     }
 
@@ -44,6 +44,8 @@ export function columnsToFields(
     columnFilters: ColumnFilterConfig[] = [],
     data?: ListTableResponse
 ): Field<ListTableItem>[] {
+    const titleField = titleFieldId(columns);
+
     return columns.map((column) => {
         const columnFilter = columnFilters.find((definition) => definition.column === column.id);
 
@@ -51,6 +53,8 @@ export function columnsToFields(
             id: column.id,
             label: column.label,
             enableSorting: column.sortable,
+            // DataViews shows the title field in its own leading column, which "Hide column" cannot remove.
+            enableHiding: column.id !== titleField,
             filterBy: false,
             getValue: ({item}) => cellText(item[column.id]),
             render: ({item}) => (
@@ -85,4 +89,14 @@ export function visibleFieldIds(columns: Column[], titleField?: string): string[
  */
 export function titleFieldId(columns: Column[]): string | undefined {
     return NAME_COLUMN_IDS.find((id) => columns.some((column) => column.id === id));
+}
+
+/**
+ * Whether the title column starts visible. A hidden one stays the title field, so the row checkbox
+ * keeps its label, but DataViews does not show its leading column.
+ *
+ * @since TBD
+ */
+export function isTitleColumnVisible(columns: Column[], titleField?: string): boolean {
+    return columns.find((column) => column.id === titleField)?.visible !== false;
 }
