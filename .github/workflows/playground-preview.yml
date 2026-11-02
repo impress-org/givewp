@@ -28,7 +28,7 @@ jobs:
         permissions:
             contents: read
             pull-requests: write
-        uses: stellarwp/plugin-toolbox/.github/workflows/playground-preview.yml@main
+        uses: stellarwp/plugin-toolbox/.github/workflows/playground-preview.yml@feat/playground-preview
         with:
             # GiveWP supports PHP 7.4 and up, so the vendor directory has to be built on 7.4.
             php-version: '7.4'
