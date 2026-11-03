@@ -88,6 +88,7 @@ export const ShowConfirmModalContext = createContext(
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
  *
+ * @since TBD Send an explicit `scope` also without `filters`, over the scope from `filterSettings`.
  * @since TBD Announce a cached result count only after its request has finished.
  * @since TBD After Reset, focus the search box, else a control left in the filter bar, else the bar.
  * @since TBD Announce the result count to screen readers after the admin changes the view.
@@ -136,8 +137,10 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         // Read once: some screens' header modals rewrite `apiSettings.apiRoot` while they render.
         const [apiRoot] = useState(apiSettings.apiRoot);
         const [listTableApi] = useState(() => new ListTableApi(apiSettings));
+        // An explicit `scope` is honored on both paths; without declarations it goes over the scope
+        // that a tab's hidden filter settings give.
         const [scope] = useState(() =>
-            declarations ? fixedScope ?? {} : scopeFromFilterSettings(filterSettings, contentMode)
+            declarations ? fixedScope ?? {} : {...scopeFromFilterSettings(filterSettings, contentMode), ...fixedScope}
         );
         const [legacyConfirm, setLegacyConfirm] = useState<LegacyConfirmRequest | null>(null);
 

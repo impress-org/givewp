@@ -437,6 +437,44 @@ describe('ListTablePage with filter declarations', () => {
         expect(lastTable().search).toBe(true);
     });
 
+    it('without filters an explicit scope is sent with every request, also after Clear filters', async () => {
+        await render({
+            filters: undefined,
+            filterSettings: [{name: 'search', type: 'search', text: 'Search'}],
+            scope: {campaignId: 7},
+        });
+
+        expect(lastRequest()).toMatchObject({campaignId: '7'});
+
+        await act(async () => lastTable().onChangeView({...lastTable().view, search: 'spring'}));
+
+        expect(lastRequest()).toMatchObject({campaignId: '7', search: 'spring'});
+
+        const empty = await renderSlot(lastTable().empty);
+        const clear = Array.from(empty.querySelectorAll('button')).find(
+            (button) => button.textContent === 'Clear filters'
+        );
+        await act(async () => clear?.click());
+
+        expect(lastTable().view.search).toBe('');
+        expect(listRequests().length).toBeGreaterThan(1);
+        expect(listRequests().every((url) => url.searchParams.get('campaignId') === '7')).toBe(true);
+    });
+
+    it('without filters an explicit scope wins over the hidden filter settings of a tab', async () => {
+        await render({
+            filters: undefined,
+            contentMode: true,
+            filterSettings: [
+                {name: 'campaignId', type: 'hidden', options: [{text: '', value: '3'}]},
+                {name: 'donorId', type: 'hidden', options: [{text: '', value: '9'}]},
+            ],
+            scope: {campaignId: 7},
+        });
+
+        expect(lastRequest()).toMatchObject({campaignId: '7', donorId: '9'});
+    });
+
     it('without filters the test-mode setting still gives the header its switch', async () => {
         await render({
             filters: undefined,

@@ -312,7 +312,9 @@ export interface ListTablePageProps {
     /**
      * Fixed request parameters set by the page the list sits on (the campaign of a campaign's "Forms"
      * tab). Sent with every request; never a control, a chip or a URL parameter, and never reset.
+     * Also honored without `filters`, where it goes over the scope from hidden `filterSettings`.
      *
+     * @since TBD Honored without `filters` too.
      * @since TBD
      */
     scope?: Record<string, string | number>;
