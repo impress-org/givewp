@@ -1,6 +1,6 @@
 import {createContext, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
-import type {Field} from '@wordpress/dataviews';
+import type {Field, View} from '@wordpress/dataviews';
 import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notifications';
 import ListTableApi from '../api';
 import DataViewsListTable from '../DataViewsListTable';
@@ -14,6 +14,7 @@ import {defaultFilters, scopeFromFilterSettings} from '../adapters/viewFromIniti
 import {PER_PAGE_SIZES, viewFilterValue, viewToParameters, withToggleFilter} from '../adapters/viewToParameters';
 import {getItemName} from '../adapters/getItemName';
 import {assembleView} from '../state/assembleView';
+import {keepPinnedLast, lockFields, placeShownFields} from '../state/fieldRules';
 import {resolveScreenDefaults} from '../state/screenDefaults';
 import type {ViewQueryContext} from '../state/types';
 import useListTableView from '../hooks/useListTableView';
@@ -68,7 +69,7 @@ export const ShowConfirmModalContext = createContext(
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
  *
- * @since TBD Render the list through `@wordpress/dataviews`; accept typed row actions; keep the view in the URL; store the layout.
+ * @since TBD Render the list through `@wordpress/dataviews`; accept typed row actions; keep the view in the URL; store and reset the layout.
  * @since 2.24.0
  */
 const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
@@ -137,8 +138,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             })
         );
 
-        // Also returns `resetLayout` and `isDefaultLayout`, for the "Reset view" button.
-        const {layoutPerPage} = useListTableLayoutPreferences({
+        const {resetLayout, isDefaultLayout, layoutPerPage} = useListTableLayoutPreferences({
             screen,
             defaults: start.defaults,
             initialLayout: start.layout,
@@ -211,12 +211,20 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         );
 
         const fields = useMemo<Field<ListTableItem>[]>(
-            () => [
-                ...columnsToFields(columns, columnFilters, data),
-                ...(legacyRowActionsField ? [legacyRowActionsField] : []),
-                ...filters.fields,
-            ],
+            () =>
+                lockFields(
+                    [
+                        ...columnsToFields(columns, columnFilters, data),
+                        ...(legacyRowActionsField ? [legacyRowActionsField] : []),
+                        ...filters.fields,
+                    ],
+                    start.defaults
+                ),
             [columns, columnFilters, data, legacyRowActionsField, filters]
+        );
+        const onChangeTableView = useCallback(
+            (next: View) => onChangeView(keepPinnedLast(placeShownFields(next, view, start.defaults), start.defaults)),
+            [onChangeView, view]
         );
 
         const {actions, actionDialog, closeActionDialog, customAction, setCustomActionOpen} = useListTableActions({
@@ -264,7 +272,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                         )}
                         <DataViewsListTable
                             view={view}
-                            onChangeView={onChangeView}
+                            onChangeView={onChangeTableView}
                             fields={fields}
                             actions={actions}
                             data={error ? [] : data?.items ?? []}
@@ -307,6 +315,8 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                                 filterSettings.find((filter) => filter.name === filters.searchParam)?.text ??
                                 __('Search', 'give')
                             }
+                            isDefaultLayout={isDefaultLayout}
+                            onResetLayout={resetLayout}
                         />
                     </div>
                 </article>

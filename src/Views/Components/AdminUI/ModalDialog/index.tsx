@@ -1,6 +1,7 @@
-import {MouseEventHandler, useCallback, useEffect} from 'react';
+import {HTMLAttributes, MouseEventHandler, useCallback, useEffect} from 'react';
 import {createPortal} from 'react-dom';
 import {__} from '@wordpress/i18n';
+import {useConstrainedTabbing, useFocusOnMount, useFocusReturn, useMergeRefs} from '@wordpress/compose';
 import {ExitIcon} from '@givewp/components/AdminUI/Icons';
 import './style.scss';
 
@@ -16,6 +17,20 @@ export interface ModalProps {
     wrapperClassName?: string;
 }
 
+/**
+ * The dialog box. It mounts only while the modal is open, so each opening records the element that had
+ * focus, takes focus, and gives it back on close. The return hook comes first, so it records the
+ * focused element before the dialog takes focus.
+ */
+function DialogBox(props: HTMLAttributes<HTMLDivElement>) {
+    const ref = useMergeRefs([useFocusReturn(), useFocusOnMount(true), useConstrainedTabbing()]);
+
+    return <div ref={ref} {...props} />;
+}
+
+/**
+ * @since TBD Move focus into the dialog when it opens, keep Tab inside it, and return it on close.
+ */
 export default function Modal({
     title,
     icon,
@@ -27,12 +42,15 @@ export default function Modal({
     showCloseIcon = true,
     wrapperClassName = '',
 }: ModalProps) {
-    // ESC key closes modal
-    const closeModal = useCallback((e) => {
-        if (e.keyCode === 27 && typeof handleClose === 'function') {
-            handleClose(e);
-        }
-    }, []);
+    // ESC key closes modal, but only while it is open
+    const closeModal = useCallback(
+        (e) => {
+            if (isOpen && e.keyCode === 27 && typeof handleClose === 'function') {
+                handleClose(e);
+            }
+        },
+        [isOpen, handleClose]
+    );
 
     useEffect(() => {
         document.addEventListener('keydown', closeModal, false);
@@ -40,7 +58,7 @@ export default function Modal({
         return () => {
             document.removeEventListener('keydown', closeModal, false);
         };
-    }, []);
+    }, [closeModal]);
 
     useEffect(() => {
         if (isOpen) {
@@ -58,7 +76,7 @@ export default function Modal({
 
     return createPortal(
         <div className={`givewp-modal-wrapper ${wrapperClassName}`}>
-            <div role="dialog" aria-label={title} className="givewp-modal-dialog">
+            <DialogBox role="dialog" aria-modal="true" aria-label={title} tabIndex={-1} className="givewp-modal-dialog">
                 <div className={`givewp-modal-dialog-content`}>
                     {showHeader ? (
                         <div className="givewp-modal-header">
@@ -91,9 +109,8 @@ export default function Modal({
 
                     <div className="givewp-modal-content">{children}</div>
                 </div>
-            </div>
+            </DialogBox>
         </div>,
         insertInto ? document.querySelector(insertInto) : document.body
     );
 }
-

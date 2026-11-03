@@ -47,6 +47,13 @@ export type LayoutPreferences = {
     layoutPerPage: number;
 };
 
+/**
+ * The page of the new page size that holds the row the current page starts with, so a reset does not
+ * move the admin away from the rows they were looking at.
+ */
+const pageHoldingFirstRow = (page: number, perPage: number, nextPerPage: number) =>
+    Math.floor(((page - 1) * perPage) / nextPerPage) + 1;
+
 const layoutKeyOf = ({fields, layout, perPage}: ListTableView) => JSON.stringify([fields, layout?.density, perPage]);
 
 /**
@@ -69,9 +76,12 @@ export default function useListTableLayoutPreferences({
     const screenKey = screen?.key;
     const currentView = useRef(view);
     const previousLayout = useRef(layoutKeyOf(view));
+    const previousPerPage = useRef(view.perPage);
+    // The page size the user chose for this screen. A size that only came from the address is not part of the layout.
+    const [layoutPerPage, setLayoutPerPage] = useState(initialLayout?.perPage ?? defaults.perPage);
+    const layoutPerPageRef = useRef(layoutPerPage);
     const pending = useRef<ListTableView | null>(null);
     const timer = useRef<ReturnType<typeof setTimeout>>();
-    const [layoutPerPage, setLayoutPerPage] = useState(initialLayout?.perPage ?? defaults.perPage);
 
     const send = (target: ListTableView, keepalive: boolean) => {
         if (!screenKey) {
@@ -113,20 +123,24 @@ export default function useListTableLayoutPreferences({
     useLayoutEffect(() => {
         currentView.current = view;
         flushRef.current = flush;
+        layoutPerPageRef.current = layoutPerPage;
     });
 
     // Staged in the commit phase, so a pagehide right after a change already flushes it.
     useLayoutEffect(() => {
         const layoutKey = layoutKeyOf(view);
         const changed = layoutKey !== previousLayout.current;
+        const perPageChanged = view.perPage !== previousPerPage.current;
         previousLayout.current = layoutKey;
+        previousPerPage.current = view.perPage;
 
         if (!screenKey || !changed || origin !== 'user') {
             return;
         }
 
-        setLayoutPerPage(view.perPage ?? defaults.perPage);
-        pending.current = view;
+        const nextPerPage = perPageChanged ? view.perPage ?? defaults.perPage : layoutPerPageRef.current;
+        setLayoutPerPage(nextPerPage);
+        pending.current = {...view, perPage: nextPerPage};
         clearTimeout(timer.current);
         timer.current = setTimeout(() => flushRef.current(false), WRITE_DELAY);
     }, [view]);
@@ -152,7 +166,7 @@ export default function useListTableLayoutPreferences({
             fields: defaults.fields,
             layout: {...current.layout, density: defaults.density},
             perPage: defaults.perPage,
-            page: current.perPage === defaults.perPage ? current.page : 1,
+            page: pageHoldingFirstRow(current.page ?? 1, current.perPage ?? defaults.perPage, defaults.perPage),
         };
 
         cancel();
@@ -161,5 +175,9 @@ export default function useListTableLayoutPreferences({
         send(next, false);
     }, [defaults, replaceView, screenKey]);
 
-    return {resetLayout, isDefaultLayout: showsDefaultLayout(view, defaults), layoutPerPage};
+    return {
+        resetLayout,
+        isDefaultLayout: showsDefaultLayout({...view, perPage: layoutPerPage}, defaults),
+        layoutPerPage,
+    };
 }

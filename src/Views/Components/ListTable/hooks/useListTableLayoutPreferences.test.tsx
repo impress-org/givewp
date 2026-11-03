@@ -214,6 +214,33 @@ describe('useListTableLayoutPreferences', () => {
         expect(mockedFetch).not.toHaveBeenCalled();
     });
 
+    it('does not count a page size that only came from the address as a changed layout', async () => {
+        await render({view: {...defaultView, perPage: 10}, origin: 'load', screen});
+
+        expect(latest.isDefaultLayout).toBe(true);
+    });
+
+    it('keeps an address page size out of the stored record when another part of the layout changes', async () => {
+        await render({view: {...defaultView, perPage: 10}, origin: 'load', screen});
+
+        await change({perPage: 10, fields: ['amount']});
+        await advance(1000);
+
+        expect(requests()).toEqual([
+            expect.objectContaining({method: 'PUT', data: {version: 1, visibility: {donor: false}}}),
+        ]);
+    });
+
+    it('counts a page size the user picked as part of the layout', async () => {
+        await render({view: defaultView, origin: 'load', screen});
+
+        await change({perPage: 50});
+        await advance(1000);
+
+        expect(latest.isDefaultLayout).toBe(false);
+        expect(requests()).toEqual([expect.objectContaining({method: 'PUT', data: {version: 1, perPage: 50}})]);
+    });
+
     it("follows the page size of the user's layout, starting from the stored one", async () => {
         await act(() =>
             root.render(
@@ -246,5 +273,26 @@ describe('useListTableLayoutPreferences', () => {
 
         expect(replaceView).toHaveBeenCalledWith({...defaultView, page: 2}, 'reset');
         expect(requests()).toEqual([expect.objectContaining({method: 'DELETE'})]);
+    });
+
+    it('keeps the admin on the rows they were looking at when reset changes the page size', async () => {
+        await render({view: {...defaultView, perPage: 50, page: 2, fields: ['amount']}, origin: 'load', screen});
+
+        await act(async () => latest.resetLayout());
+
+        expect(replaceView).toHaveBeenCalledWith(expect.objectContaining({perPage: 30, page: 2}), 'reset');
+    });
+
+    it('keeps the search, filters and sort on reset', async () => {
+        const query: Partial<ListTableView> = {
+            search: 'jane',
+            sort: {field: 'amount', direction: 'asc'},
+            filters: [{field: 'status', operator: 'is', value: 'publish'}],
+        };
+        await render({view: {...defaultView, ...query, layout: {density: 'compact'}}, origin: 'load', screen});
+
+        await act(async () => latest.resetLayout());
+
+        expect(replaceView).toHaveBeenCalledWith({...defaultView, ...query}, 'reset');
     });
 });
