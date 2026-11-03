@@ -297,6 +297,14 @@ describe('ListTablePage URL state', () => {
         expect(window.location.href).toBe(href);
     });
 
+    it('stamps the first entry with its own tab state, so Back never borrows the search of a later entry', async () => {
+        window.history.replaceState(null, '', `${PATH}?page=give-payment-history`);
+
+        await render();
+
+        expect(window.history.state?.giveListTable).toEqual({screen: 'donations', search: ''});
+    });
+
     it('never writes the address without a screen config, and reads only the filters it names', async () => {
         window.history.replaceState(null, '', `${PATH}?page=give-payment-history&give-paged=3&donor=58`);
         const href = window.location.href;
