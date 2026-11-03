@@ -6,7 +6,13 @@ load test_helper
 
 TMP_ENTRY="$BATS_TMPDIR/_skip"
 
+first_version() {
+    grep -m1 -oP '^= \[\K[0-9.]+(?=\])' "$REPO_ROOT/readme.txt"
+}
+
 setup() {
+    cp "$REPO_ROOT/readme.txt" "$BATS_TMPDIR/readme.bak"
+    cp "$REPO_ROOT/changelog.txt" "$BATS_TMPDIR/changelog.bak"
     # A temporary changelog entry so `write --dry-run` has something to render.
     TMP_ENTRY="$REPO_ROOT/changelog/zzz-bats-tmp.yaml"
     cat > "$TMP_ENTRY" <<'YAML'
@@ -17,6 +23,8 @@ YAML
 }
 
 teardown() {
+    cp "$BATS_TMPDIR/readme.bak" "$REPO_ROOT/readme.txt"
+    cp "$BATS_TMPDIR/changelog.bak" "$REPO_ROOT/changelog.txt"
     rm -f "$TMP_ENTRY"
     cleanup_sandbox
 }
@@ -66,4 +74,53 @@ teardown() {
     # ("= 4.19.1: October 27th, 2026 =", "* Fix: ...") would sit next to the new entries.
     run node "$BIN_DIR/convert-changelog-format.js" --check "$REPO_ROOT/readme.txt" "$REPO_ROOT/changelog.txt"
     assert_success
+}
+
+@test "re-running an existing version adds entries to its block" {
+    version="$(first_version)"
+    first_entry="$(sed -n "/^= \[$version\]/,/^= \[/p" "$REPO_ROOT/readme.txt" | grep -m1 '^\* ')"
+
+    run "$BIN_DIR/write-changelog.sh" "$version"
+    assert_success
+
+    block="$(sed -n "/^= \[$version\]/,/^= \[[^]]*\] .*/p" "$REPO_ROOT/readme.txt" | sed '1d;$d')"
+    [[ "$block" == *"$first_entry"* ]]
+    [[ "$block" == *"* Fix - Bats temporary test entry"* ]]
+    [ "$(grep -c "^= \[$version\]" "$REPO_ROOT/readme.txt")" -eq 1 ]
+}
+
+@test "--date changes the date of an existing version and keeps its entries" {
+    version="$(first_version)"
+    entries_before="$(sed -n "/^= \[$version\]/,/^= \[/p" "$REPO_ROOT/readme.txt" | grep -c '^\* ')"
+
+    run "$BIN_DIR/write-changelog.sh" "$version" --date 2031-02-03
+    assert_success
+
+    run grep -c "^= \[$version\] 2031-02-03 =$" "$REPO_ROOT/readme.txt" "$REPO_ROOT/changelog.txt"
+    assert_line "$REPO_ROOT/readme.txt:1"
+    assert_line "$REPO_ROOT/changelog.txt:1"
+    entries_after="$(sed -n "/^= \[$version\]/,/^= \[/p" "$REPO_ROOT/readme.txt" | grep -c '^\* ')"
+    [ "$entries_after" -eq $((entries_before + 1)) ]
+}
+
+@test "--date changes the date of an existing version when no entries are pending" {
+    rm -f "$TMP_ENTRY"
+    version="$(first_version)"
+
+    run "$BIN_DIR/write-changelog.sh" "$version" --date 2031-02-03
+    assert_success
+
+    run grep -c "^= \[$version\] 2031-02-03 =$" "$REPO_ROOT/readme.txt" "$REPO_ROOT/changelog.txt"
+    assert_line "$REPO_ROOT/readme.txt:1"
+    assert_line "$REPO_ROOT/changelog.txt:1"
+}
+
+@test "--date with --dry-run leaves the date of an existing version alone" {
+    version="$(first_version)"
+
+    run "$BIN_DIR/write-changelog.sh" "$version" --date 2031-02-03 --dry-run
+    assert_success
+
+    run grep -c "2031-02-03" "$REPO_ROOT/readme.txt"
+    assert_output "0"
 }
