@@ -13,7 +13,7 @@ use Give\Tests\Unit\VendorOverrides\Harbor\HarborStubs;
  */
 
 /**
- * @since TBD also true for the slugs in HarborStubs::$activeProducts
+ * @since 4.19.1.1 also true for the slugs in HarborStubs::$activeProducts
  */
 function lw_harbor_is_product_license_active(string $product): bool
 {

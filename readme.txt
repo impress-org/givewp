@@ -274,6 +274,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 = 4.19.1.1: November 3th, 2026 =
+* Feature: Added support for Nexcess Plugin Stack licenses
 * Security: Added additional validation to the donor default user role setting. (CVE-2026-118193)
 * Security: Improved validation of donor email on donation forms.
 
