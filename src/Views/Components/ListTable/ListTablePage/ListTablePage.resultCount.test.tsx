@@ -72,6 +72,9 @@ describe('ListTablePage result count announcement', () => {
     it('waits for a cached result to finish revalidating before it announces the count', async () => {
         mockListQuery = {...mockIdle, data: result(40)};
         await render();
+        await wait(1000);
+
+        expect(status()).toBe('');
 
         // A view fetched before comes back from the cache while its request is still running.
         mockListQuery = {...mockIdle, data: result(12), isValidating: true};

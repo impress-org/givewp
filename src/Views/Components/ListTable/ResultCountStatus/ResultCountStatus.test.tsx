@@ -144,6 +144,24 @@ describe('ResultCountStatus', () => {
         expect(region().textContent).toBe('12 donations found');
     });
 
+    it('says the count of a changed request that settles while the first load is still pending', async () => {
+        await render({isLoading: true});
+        await render({requestKey: 'second', isLoading: true});
+        await render({requestKey: 'second', isLoading: false, totalItems: 12});
+        await wait(300);
+
+        expect(region().textContent).toBe('12 donations found');
+    });
+
+    it('keeps the first request silent when its result comes in after a change and back', async () => {
+        await render({isLoading: true});
+        await render({requestKey: 'second', isLoading: true});
+        await render({requestKey: 'first', isLoading: false, totalItems: 40});
+        await wait(1000);
+
+        expect(region().textContent).toBe('');
+    });
+
     it('says nothing when a refresh keeps the same view', async () => {
         await render({totalItems: 40});
         await render({totalItems: 39});

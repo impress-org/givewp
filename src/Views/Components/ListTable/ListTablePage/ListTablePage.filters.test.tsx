@@ -263,6 +263,15 @@ describe('ListTablePage with filter declarations', () => {
         expect(lastRequest()).not.toHaveProperty('start');
     });
 
+    it('does not announce the result count of the page load, also with filters in the URL', async () => {
+        window.history.replaceState(null, '', `${PATH}?page=give-forms&give-status=pending&give-date=7&s=spring`);
+        mockedFetch.mockResolvedValue({items: [], totalItems: 3, totalPages: 1});
+        await render({testModeToggle: {label: 'Test mode', ariaLabel: 'Show test mode'}, paymentMode: true});
+        await act(() => new Promise((resolve) => setTimeout(resolve, 400)));
+
+        expect(container.querySelector('[role="status"]')?.textContent).toBe('');
+    });
+
     it('does not announce the result count again when a filter is added with no value yet', async () => {
         mockedFetch.mockResolvedValue({items: [], totalItems: 3, totalPages: 1});
         await render();

@@ -50,6 +50,7 @@ function resultMessage(totalItems: number, singleName: string, pluralName: strin
  * nothing while the list loads, and it adds no request. A cached result is announced only once its
  * request has finished, so the count it says is the fresh one.
  *
+ * @since TBD Keep only the page load's own request silent, set when the component mounts.
  * @since TBD Wait for a cached result to finish revalidating.
  * @since TBD
  */
@@ -62,17 +63,13 @@ export default function ResultCountStatus({
     pluralName,
 }: ResultCountStatusProps) {
     const [message, setMessage] = useState('');
-    // The request whose result was last accounted for. The first one is the page load, so it is not
-    // announced, even when it failed.
-    const settledKey = useRef<string | null>(null);
+    // The request whose result was last accounted for. It starts as the request of the page load, set
+    // when the component mounts, so only that request's result stays silent (even when it failed). A
+    // changed request that settles before it is announced.
+    const settledKey = useRef(requestKey);
 
     useEffect(() => {
         if (isLoading || isValidating) {
-            return;
-        }
-
-        if (settledKey.current === null) {
-            settledKey.current = requestKey;
             return;
         }
 
