@@ -69,4 +69,17 @@ class FilterOptionSourcesTest extends TestCase
             }
         }
     }
+
+    /**
+     * @since TBD
+     */
+    public function testUnknownSourceErrorEscapesTheSourceName(): void
+    {
+        try {
+            (new FilterOptionSources())->get('<b>x</b>');
+            $this->fail('Expected an InvalidArgumentException.');
+        } catch (\InvalidArgumentException $exception) {
+            $this->assertSame('Unknown filter option source: &lt;b&gt;x&lt;/b&gt;', $exception->getMessage());
+        }
+    }
 }

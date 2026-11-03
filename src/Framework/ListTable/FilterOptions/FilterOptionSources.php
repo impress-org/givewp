@@ -31,7 +31,7 @@ final class FilterOptionSources
                 return new DonorFilterOptions();
         }
 
-        throw new \InvalidArgumentException("Unknown filter option source: $source");
+        throw new \InvalidArgumentException(sprintf('Unknown filter option source: %s', esc_html($source)));
     }
 
     /**
