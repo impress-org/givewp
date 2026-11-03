@@ -23,6 +23,15 @@ class HarborStubs
     public static bool $productActive = false;
 
     /**
+     * Product slugs for which lw_harbor_is_product_license_active() returns true
+     * while $productActive is false.
+     *
+     * @since TBD
+     * @var string[]
+     */
+    public static array $activeProducts = [];
+
+    /**
      * Controls the return value of lw_harbor_is_feature_available().
      * Add slug strings to make the function return true for those slugs.
      *
@@ -34,11 +43,13 @@ class HarborStubs
     /**
      * Resets all stubs to their default (inactive) state.
      *
+     * @since TBD also resets $activeProducts
      * @since 4.15.0
      */
     public static function reset(): void
     {
         self::$productActive     = false;
+        self::$activeProducts    = [];
         self::$availableFeatures = [];
     }
 }
