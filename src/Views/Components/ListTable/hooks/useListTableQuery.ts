@@ -25,15 +25,17 @@ const fetchUrl = <Response>(url: string) => apiFetch<Response>({url});
  *
  * - `keepPreviousData` keeps the previous rows on screen while a new view loads.
  * - `isLoading` is true only while the rows on screen do not belong to the current view.
+ * - `isValidating` is true while any request runs, also when cached rows of the view are on screen.
  * - No refetch on window focus and no automatic retry: the list changes when the view changes or
  *   when an action calls `refresh()`; a failed request shows its error and offers a retry.
  *
+ * @since TBD Return `isValidating`.
  * @since TBD
  */
 export default function useListTableQuery<Response>(endpoint: string | null, parameters: ListTableParameters) {
     const url = endpoint ? addQueryArgs(endpoint, toQueryArgs(parameters)) : null;
 
-    const {data, error, isLoading, mutate} = useSWR<Response, Error>(url, fetchUrl, {
+    const {data, error, isLoading, isValidating, mutate} = useSWR<Response, Error>(url, fetchUrl, {
         keepPreviousData: true,
         revalidateOnFocus: false,
         shouldRetryOnError: false,
@@ -41,5 +43,5 @@ export default function useListTableQuery<Response>(endpoint: string | null, par
 
     const refresh = useCallback(() => mutate(), [mutate]);
 
-    return {data, error, isLoading, refresh};
+    return {data, error, isLoading, isValidating, refresh};
 }

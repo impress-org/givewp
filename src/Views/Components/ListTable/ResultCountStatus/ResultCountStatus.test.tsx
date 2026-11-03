@@ -116,6 +116,34 @@ describe('ResultCountStatus', () => {
         expect(region().textContent).toBe('12 donations found');
     });
 
+    it('waits while a cached result revalidates, then says the fresh count once', async () => {
+        await render({totalItems: 40});
+        await render({requestKey: 'second', isValidating: true, totalItems: 12});
+        await wait(1000);
+
+        expect(region().textContent).toBe('');
+
+        await render({requestKey: 'second', isValidating: false, totalItems: 15});
+        await wait(300);
+
+        expect(region().textContent).toBe('15 donations found');
+
+        await render({requestKey: 'second', isValidating: false, totalItems: 15});
+        await wait(1000);
+
+        expect(region().textContent).toBe('15 donations found');
+    });
+
+    it('says a cached count once when revalidation confirms it', async () => {
+        await render({totalItems: 40});
+        await render({requestKey: 'second', isValidating: true, totalItems: 12});
+        await wait(1000);
+        await render({requestKey: 'second', isValidating: false, totalItems: 12});
+        await wait(1000);
+
+        expect(region().textContent).toBe('12 donations found');
+    });
+
     it('says nothing when a refresh keeps the same view', async () => {
         await render({totalItems: 40});
         await render({totalItems: 39});

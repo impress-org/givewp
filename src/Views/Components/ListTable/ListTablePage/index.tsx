@@ -88,6 +88,7 @@ export const ShowConfirmModalContext = createContext(
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
  *
+ * @since TBD Announce a cached result count only after its request has finished.
  * @since TBD After Reset, focus the search box, else a control left in the filter bar, else the bar.
  * @since TBD Announce the result count to screen readers after the admin changes the view.
  * @since TBD With `filters`, show Reset only when the filters differ from the screen defaults, and reset to those defaults.
@@ -226,6 +227,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             data,
             error,
             isLoading,
+            isValidating,
             refresh: refreshList,
         } = useListTableQuery<ListTableResponse>(apiRoot, parameters);
         const {data: stats, refresh: refreshStats} = useListTableQuery<Record<string, number>>(
@@ -443,6 +445,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                             // The request itself, so a filter added with no value yet is not a new result.
                             requestKey={JSON.stringify(parameters)}
                             isLoading={isLoading}
+                            isValidating={isValidating}
                             totalItems={error || !data ? undefined : Number(data.totalItems ?? 0)}
                             singleName={singleName}
                             pluralName={pluralName}

@@ -13,12 +13,15 @@ const SETTLE_DELAY = 300;
 const NO_BREAK_SPACE = '\u00A0';
 
 /**
+ * @since TBD Add `isValidating`.
  * @since TBD
  */
 export interface ResultCountStatusProps {
     /** Changes when the admin changes what the list asks for: filters, search, sort or page. */
     requestKey: string;
     isLoading: boolean;
+    /** True while a request is still running, also when a cached result for the view is already shown. */
+    isValidating?: boolean;
     /** The number of matching records, or undefined while there is no answer (or it failed). */
     totalItems: number | undefined;
     /** Record type, singular, for example "donation". */
@@ -44,13 +47,16 @@ function resultMessage(totalItems: number, singleName: string, pluralName: strin
 /**
  * A visually hidden status region that tells screen reader users how many records the list shows
  * after they change the filters, the search or the page. It says nothing on the first load and
- * nothing while the list loads, and it adds no request.
+ * nothing while the list loads, and it adds no request. A cached result is announced only once its
+ * request has finished, so the count it says is the fresh one.
  *
+ * @since TBD Wait for a cached result to finish revalidating.
  * @since TBD
  */
 export default function ResultCountStatus({
     requestKey,
     isLoading,
+    isValidating = false,
     totalItems,
     singleName,
     pluralName,
@@ -61,7 +67,7 @@ export default function ResultCountStatus({
     const settledKey = useRef<string | null>(null);
 
     useEffect(() => {
-        if (isLoading) {
+        if (isLoading || isValidating) {
             return;
         }
 
@@ -82,7 +88,7 @@ export default function ResultCountStatus({
         }, SETTLE_DELAY);
 
         return () => clearTimeout(timer);
-    }, [requestKey, isLoading, totalItems, singleName, pluralName]);
+    }, [requestKey, isLoading, isValidating, totalItems, singleName, pluralName]);
 
     return (
         <div role="status" aria-live="polite" aria-atomic="true" className="screen-reader-text">
