@@ -23,6 +23,7 @@ const DEBOUNCE_MS = 300;
  * The list search box. It keeps what the admin types, reports the term after a short pause, and
  * follows the view when the term changes from outside (for example a reset).
  *
+ * @since TBD Drop a pending search when the view gets a new term from outside.
  * @since TBD
  */
 export default function ListTableSearch({label, hint, value, onChange}: ListTableSearchProps) {
@@ -40,12 +41,14 @@ export default function ListTableSearch({label, hint, value, onChange}: ListTabl
     const reportChange = useDebounce(report, DEBOUNCE_MS);
 
     // Follow the view only when it holds a term other than the one we last reported, so a late echo
-    // of an older term does not overwrite newer typing.
+    // of an older term does not overwrite newer typing. A new term from outside drops any pending
+    // search, so it cannot undo a reset.
     useEffect(() => {
         if (value === lastReported.current) {
             return;
         }
 
+        reportChange.cancel();
         lastReported.current = value;
         setText(value);
     }, [value]);

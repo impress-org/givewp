@@ -119,4 +119,16 @@ describe('ListTableSearch', () => {
 
         expect(input().value).toBe('joey');
     });
+
+    it('drops a pending search when the view gets a new term from outside', async () => {
+        await render({value: 'joe'});
+        await type('joey');
+        await act(() => jest.advanceTimersByTime(100));
+
+        await render({value: ''});
+        await act(() => jest.advanceTimersByTime(500));
+
+        expect(onChange).not.toHaveBeenCalled();
+        expect(input().value).toBe('');
+    });
 });
