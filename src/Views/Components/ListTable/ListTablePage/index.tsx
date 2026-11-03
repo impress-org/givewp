@@ -420,7 +420,8 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                             }
                         />
                         <ResultCountStatus
-                            requestKey={requestKey}
+                            // The request itself, so a filter added with no value yet is not a new result.
+                            requestKey={JSON.stringify(parameters)}
                             isLoading={isLoading}
                             totalItems={error || !data ? undefined : Number(data.totalItems ?? 0)}
                             singleName={singleName}

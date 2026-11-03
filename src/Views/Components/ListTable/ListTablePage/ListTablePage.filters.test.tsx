@@ -240,6 +240,35 @@ describe('ListTablePage with filter declarations', () => {
         expect(lastRequest()).not.toHaveProperty('start');
     });
 
+    it('does not announce the result count again when a filter is added with no value yet', async () => {
+        mockedFetch.mockResolvedValue({items: [], totalItems: 3, totalPages: 1});
+        await render();
+        const status = () => container.querySelector('[role="status"]')?.textContent;
+        await act(async () =>
+            filterBar().props.onChangeView({
+                ...lastTable().view,
+                filters: [{field: 'filter-status', operator: 'isAny', value: ['pending']}],
+            })
+        );
+        await act(() => new Promise((resolve) => setTimeout(resolve, 400)));
+
+        expect(status()).toBe('3 items found');
+
+        await act(async () =>
+            filterBar().props.onChangeView({
+                ...lastTable().view,
+                filters: [
+                    {field: 'filter-status', operator: 'isAny', value: ['pending']},
+                    {field: 'filter-date', operator: 'is', value: undefined},
+                ],
+            })
+        );
+        await act(() => new Promise((resolve) => setTimeout(resolve, 400)));
+
+        // A repeat would end with a no-break space so screen readers read it again.
+        expect(status()).toBe('3 items found');
+    });
+
     it('filter-only fields are not passed to DataViews', async () => {
         window.history.replaceState(null, '', `${PATH}?page=give-forms&give-status=pending`);
 
