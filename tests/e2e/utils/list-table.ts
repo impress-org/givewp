@@ -1,5 +1,6 @@
-import type {Locator, Page} from '@playwright/test';
-import {Admin, expect} from '@wordpress/e2e-test-utils-playwright';
+import type {Locator, Page, Response} from '@playwright/test';
+import {Admin, expect, RequestUtils, test} from '@wordpress/e2e-test-utils-playwright';
+import {wp} from './wp-cli';
 
 /**
  * Helpers for the admin list screens, which render through `@wordpress/dataviews` with Give's own
@@ -132,4 +133,112 @@ export async function expectListMounts(page: Page, admin: Admin, query: string, 
     });
     await expect(listTable(page).getByRole('alert')).toHaveCount(0);
     expect(pageErrors).toEqual([]);
+}
+
+/**
+ * Fails the test when a browser dialog (alert, confirm, prompt) opens, and dismisses it so it cannot
+ * block the run. Call it inside a `test.describe` whose tests should never open one.
+ */
+export function expectNoBrowserDialogs(): void {
+    let dialogs: string[] = [];
+
+    test.beforeEach(async ({page}) => {
+        // No test opens a browser dialog; one that shows up is a bug, and it must not block the run.
+        dialogs = [];
+        page.on('dialog', (dialog) => {
+            dialogs.push(dialog.message());
+            void dialog.dismiss();
+        });
+    });
+
+    test.afterEach(() => {
+        expect(dialogs).toEqual([]);
+    });
+}
+
+/**
+ * Opens a list screen and waits for its table or its empty state.
+ */
+export async function visitList(page: Page, admin: Admin, query: string): Promise<void> {
+    await admin.visitAdminPage('edit.php', query);
+    await expect(listTable(page).locator('.dataviews-view-table, .dataviews-no-results').first()).toBeVisible({
+        timeout: 20_000,
+    });
+}
+
+/**
+ * The list request the page sends next whose URL passes `matches`.
+ */
+export function nextListRequest(
+    page: Page,
+    endpoint: RegExp,
+    matches: (url: URL) => boolean = () => true
+): Promise<Response> {
+    return page.waitForResponse((response) => {
+        const url = new URL(response.url());
+
+        return endpoint.test(response.url()) && matches(url);
+    });
+}
+
+/**
+ * Every record of a v3 collection, page by page. The v3 donations route reports a wrong total, so
+ * this reads until a page comes back short.
+ */
+export async function allRecords<T>(
+    requestUtils: RequestUtils,
+    path: string,
+    params: Record<string, unknown>
+): Promise<T[]> {
+    const records: T[] = [];
+
+    for (let page = 1; page <= 50; page++) {
+        const batch = (await requestUtils.rest({path, params: {...params, per_page: 100, page}})) as T[];
+
+        records.push(...batch);
+
+        if (batch.length < 100) {
+            break;
+        }
+    }
+
+    return records;
+}
+
+/**
+ * Turns the Donations list's test-mode switch to `isOn` when it is not there yet, and waits for the
+ * list to reload.
+ */
+export async function setTestMode(page: Page, isOn: boolean): Promise<void> {
+    const toggle = page.getByRole('switch');
+
+    if ((await toggle.getAttribute('aria-checked')) === String(isOn)) {
+        return;
+    }
+
+    const reloaded = nextListRequest(
+        page,
+        /give-api\/v2\/admin\/donations\?/,
+        (url) => url.searchParams.get('testMode') === String(isOn)
+    );
+    await toggle.click();
+    await reloaded;
+}
+
+let siteToday: string | undefined;
+
+/**
+ * `YYYY-MM-DD` of a day in the month before today, in the site's calendar. The seeded `createdAt` and
+ * the list's day bounds are in the site's time zone, so the browser's clock must not choose the month.
+ */
+export function dayOfLastMonth(day: number): string {
+    siteToday ??= wp('eval', 'echo wp_date("Y-m-d");');
+
+    const [year, month] = siteToday.split('-').map(Number);
+    // `month` is 1-based, so `month - 2` is last month in the 0-based Date API. Only the year and month are read.
+    const date = new Date(Date.UTC(year, month - 2, 1));
+
+    return [date.getUTCFullYear(), String(date.getUTCMonth() + 1).padStart(2, '0'), String(day).padStart(2, '0')].join(
+        '-'
+    );
 }

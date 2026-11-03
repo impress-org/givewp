@@ -1,5 +1,9 @@
 import {wp} from './wp-cli';
 
+// The names `createDonation` gives its donor.
+export const SEEDED_FIRST_NAME = 'Eve';
+export const SEEDED_LAST_NAME = 'Explorer';
+
 /**
  * Records a completed donation to `formId` and returns its id. It is a test donation made now,
  * unless `mode` or `createdAt` (`YYYY-MM-DD HH:MM:SS` in the site's time zone) say otherwise.

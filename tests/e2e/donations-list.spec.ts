@@ -1,21 +1,27 @@
 import type {Page} from '@playwright/test';
 import {expect, test} from '@wordpress/e2e-test-utils-playwright';
 import {createCampaignWithForm} from './utils/campaign';
-import {createDonation} from './utils/donation';
+import {createDonation, SEEDED_FIRST_NAME, SEEDED_LAST_NAME} from './utils/donation';
 import {failedCalls, watchRestCalls} from './utils/rest';
 import {createStandaloneForm} from './utils/standalone-form';
 import {wp} from './utils/wp-cli';
 import {
     addFilter,
+    allRecords,
     applyFilter,
     chip,
+    dayOfLastMonth,
     expectListMounts,
+    expectNoBrowserDialogs,
     filterBar,
     listRows,
     listTable,
+    nextListRequest,
     popover,
     rowById,
     selectionBar,
+    setTestMode,
+    visitList,
 } from './utils/list-table';
 import {adminInNewBrowser, deleteUser, isLayoutWrite, resetLayout, signInNewUser} from './utils/user';
 
@@ -33,6 +39,10 @@ import {adminInNewBrowser, deleteUser, isLayoutWrite, resetLayout, signInNewUser
  */
 const DONATIONS_LIST = 'post_type=give_forms&page=give-payment-history';
 const LIST_REQUEST = /admin\/donations\?/;
+const DONATIONS_REQUEST = /give-api\/v2\/admin\/donations\?/;
+const OPTIONS_REQUEST = /list-table-filter-options\//;
+
+type V3Donation = {id: number; createdAt: string; status: string};
 
 test.describe('Donations list', () => {
     test('renders through the list engine without errors', async ({page, admin}) => {
@@ -517,6 +527,232 @@ test.describe('Donations list view in the address', () => {
         expect(listRequests).toEqual([]);
 
         await deleteUser(requestUtils, subscriber);
+    });
+});
+
+/**
+ * The shared list filters on Donations: the filter bar, its chips, "Add filter", the date range, the
+ * labeled search and the test-mode chip.
+ *
+ * The unit tests cover the declarations, the URL rules and the request builder. What they cannot
+ * cover is the whole loop in a browser: a click in the bar reaching the endpoint with the right
+ * parameters, and the endpoint answering with the rows the admin expects. Expected counts come from
+ * the v3 REST API, which does not share the list endpoints' filter code, never from a hard-coded
+ * number. No test runs a bulk action or any action that opens a browser dialog.
+ */
+test.describe('Donations list filters', () => {
+    expectNoBrowserDialogs();
+
+    test.beforeEach(async ({requestUtils}) => {
+        await resetLayout(requestUtils, 'donations');
+    });
+
+    test('Status takes several values and the chip collapses past three', async ({page, admin}) => {
+        await visitList(page, admin, DONATIONS_LIST);
+        await chip(page, 'Status').click();
+
+        expect(await popover(page).getByRole('checkbox').count()).toBeGreaterThan(4);
+
+        const fourNotTrash = popover(page)
+            .locator('.givewp-options-filter-control__option')
+            .filter({hasNotText: /^Trash$/});
+
+        for (let index = 0; index < 4; index++) {
+            const sent = nextListRequest(page, DONATIONS_REQUEST);
+            await fourNotTrash.nth(index).getByRole('checkbox').check();
+            await sent;
+        }
+
+        await page.keyboard.press('Escape');
+
+        await expect(chip(page, 'Status')).toHaveText('Status: 4 selected');
+        await expect(page).toHaveURL(/give-status=[a-z_-]+(,[a-z_-]+){3}(&|$)/);
+    });
+
+    test('Trash cannot be combined with another status', async ({page, admin}) => {
+        await visitList(page, admin, DONATIONS_LIST);
+        await chip(page, 'Status').click();
+
+        const first = popover(page)
+            .locator('.givewp-options-filter-control__option')
+            .filter({hasNotText: /^Trash$/})
+            .first()
+            .getByRole('checkbox');
+        await first.check();
+
+        const trashOnly = nextListRequest(page, DONATIONS_REQUEST, (url) => url.searchParams.get('status') === 'trash');
+        await popover(page).getByRole('checkbox', {name: 'Trash', exact: true}).check();
+        await trashOnly;
+
+        await expect(first).not.toBeChecked();
+        await expect(popover(page).getByRole('checkbox', {checked: true})).toHaveCount(1);
+    });
+
+    test('"No campaign" cannot be combined with a campaign', async ({page, admin, requestUtils}) => {
+        const {title} = await createCampaignWithForm(requestUtils);
+
+        await visitList(page, admin, DONATIONS_LIST);
+        await chip(page, 'Campaign').click();
+        await popover(page).getByRole('searchbox').fill(title);
+
+        const campaign = popover(page).getByRole('checkbox', {name: title, exact: true});
+        await campaign.check();
+
+        const none = nextListRequest(page, DONATIONS_REQUEST, (url) => url.searchParams.get('campaignId') === 'none');
+        await popover(page).getByRole('checkbox', {name: 'No campaign', exact: true}).check();
+        await none;
+
+        await expect(campaign).not.toBeChecked();
+        await expect(popover(page).getByRole('checkbox', {checked: true})).toHaveCount(1);
+    });
+
+    test('Donor is added from "Add filter" and found by name, with no email anywhere', async ({
+        page,
+        admin,
+        requestUtils,
+    }) => {
+        // A donation of its own makes sure the site has a donor (and an email) to search past.
+        createDonation((await createCampaignWithForm(requestUtils)).formId);
+
+        const urls: string[] = [];
+        page.on('request', (request) => {
+            if (DONATIONS_REQUEST.test(request.url()) || OPTIONS_REQUEST.test(request.url())) {
+                urls.push(request.url());
+            }
+        });
+
+        await visitList(page, admin, DONATIONS_LIST);
+        await addFilter(page, 'Donor');
+
+        const term = SEEDED_FIRST_NAME;
+        const searched = page.waitForResponse(
+            (response) => OPTIONS_REQUEST.test(response.url()) && response.url().includes('search=')
+        );
+        await popover(page).getByRole('searchbox').or(popover(page).getByRole('textbox')).first().fill(term);
+        const options = (await (await searched).json()) as {options: Array<{value: string; label: string}>};
+
+        expect(options.options.every((option) => !option.label.includes('@'))).toBe(true);
+
+        const filtered = nextListRequest(page, DONATIONS_REQUEST, (url) =>
+            /^\d+$/.test(url.searchParams.get('donor') ?? '')
+        );
+        await popover(page).getByRole('radio').first().check();
+        const donorId = new URL((await filtered).url()).searchParams.get('donor');
+
+        await page.keyboard.press('Escape');
+
+        await expect(page).toHaveURL(new RegExp(`give-donor=${donorId}(&|$)`));
+        await expect(chip(page, 'Donor:')).toBeVisible();
+        expect(urls.filter((url) => decodeURIComponent(url).includes('@'))).toEqual([]);
+    });
+
+    test('a date range from the 1st to the 15th of last month shows every donation of those days', async ({
+        page,
+        admin,
+        requestUtils,
+    }) => {
+        const start = dayOfLastMonth(1);
+        const end = dayOfLastMonth(15);
+        // One live donation inside the range and one just after it, so the count proves something on
+        // an empty site too. The dates are in the site's time zone.
+        const {formId} = await createCampaignWithForm(requestUtils);
+        createDonation(formId, {mode: 'live', createdAt: `${dayOfLastMonth(5)} 12:00:00`});
+        createDonation(formId, {mode: 'live', createdAt: `${dayOfLastMonth(16)} 00:30:00`});
+
+        const live = await allRecords<V3Donation>(requestUtils, '/givewp/v3/donations', {
+            mode: 'live',
+            status: 'any',
+            anonymousDonations: 'include',
+        });
+        // The list leaves trashed donations out unless Trash is chosen. `createdAt` is the site's
+        // local time, as is `post_date`, which the list compares with the chosen days; both sides use
+        // the same day strings, so the browser's time zone does not change the result.
+        const expected = live.filter(
+            (donation) =>
+                donation.status !== 'trash' &&
+                donation.createdAt.slice(0, 10) >= start &&
+                donation.createdAt.slice(0, 10) <= end
+        ).length;
+
+        await visitList(page, admin, `${DONATIONS_LIST}&give-test-mode=0`);
+        await setTestMode(page, false);
+        await addFilter(page, 'Donation date');
+
+        await popover(page).getByLabel('Start date').fill(start);
+        await popover(page).getByLabel('End date').fill(end);
+
+        const ranged = nextListRequest(page, DONATIONS_REQUEST, (url) => url.searchParams.has('start'));
+        await popover(page).getByRole('button', {name: 'Apply'}).click();
+        const response = await ranged;
+        const url = new URL(response.url());
+
+        expect(url.searchParams.get('start')).toBe(`${start}T00:00:00`);
+        expect(url.searchParams.get('end')).toBe(`${end}T23:59:59`);
+        expect(expected).toBeGreaterThanOrEqual(1);
+        expect(Number(((await response.json()) as {totalItems: number | string}).totalItems)).toBe(expected);
+        await expect(page).toHaveURL(new RegExp(`give-date=${start}_${end}(&|$)`));
+    });
+
+    test('"Last 30 days" shows as the date chip', async ({page, admin}) => {
+        await visitList(page, admin, DONATIONS_LIST);
+        await addFilter(page, 'Donation date');
+
+        const sent = nextListRequest(page, DONATIONS_REQUEST, (url) => url.searchParams.has('start'));
+        await popover(page).getByRole('button', {name: 'Last 30 days'}).click();
+        await sent;
+
+        await expect(chip(page, 'Donation date')).toHaveText('Donation date: Last 30 days');
+        await expect(page).toHaveURL(/give-date=30(&|$)/);
+    });
+
+    test('an end date before the start date is explained and cannot be applied', async ({page, admin}) => {
+        await visitList(page, admin, DONATIONS_LIST);
+        await addFilter(page, 'Donation date');
+
+        await popover(page).getByLabel('Start date').fill(dayOfLastMonth(15));
+        await popover(page).getByLabel('End date').fill(dayOfLastMonth(1));
+
+        await expect(popover(page).getByRole('alert')).toHaveText('The end date must be on or after the start date.');
+        await expect(popover(page).getByRole('button', {name: 'Apply'})).toBeDisabled();
+    });
+
+    test('removing the Test mode chip turns the header switch off', async ({page, admin}) => {
+        await visitList(page, admin, DONATIONS_LIST);
+        await setTestMode(page, true);
+
+        await expect(filterBar(page).getByText('Test mode', {exact: true})).toBeVisible();
+
+        const live = nextListRequest(page, DONATIONS_REQUEST, (url) => url.searchParams.get('testMode') === 'false');
+        await filterBar(page).getByRole('button', {name: 'Remove Test mode'}).click();
+        await live;
+
+        await expect(page.getByRole('switch')).toHaveAttribute('aria-checked', 'false');
+        await expect(filterBar(page).getByText('Test mode', {exact: true})).toHaveCount(0);
+    });
+
+    test('search matches a name from its start, not from its middle', async ({page, admin, requestUtils}) => {
+        // A test donation by "Eve Explorer": "Exp" starts the last name, "xpl" starts no name or email.
+        const donation = createDonation((await createCampaignWithForm(requestUtils)).formId);
+        const last = SEEDED_LAST_NAME;
+
+        await visitList(page, admin, `${DONATIONS_LIST}&give-test-mode=1`);
+        await setTestMode(page, true);
+
+        const search = page.getByLabel('Search donations');
+        const prefix = last.slice(0, 3);
+        const byPrefix = nextListRequest(page, DONATIONS_REQUEST, (url) => url.searchParams.get('search') === prefix);
+        await search.fill(prefix);
+        await byPrefix;
+        await expect(rowById(page, donation)).toBeVisible();
+
+        const middle = last.slice(1, 4);
+        const byMiddle = nextListRequest(page, DONATIONS_REQUEST, (url) => url.searchParams.get('search') === middle);
+        await search.fill(middle);
+        await byMiddle;
+        await expect(rowById(page, donation)).toHaveCount(0);
+
+        // The search term never goes in the address.
+        expect(page.url()).not.toContain(`search=${middle}`);
     });
 });
 
