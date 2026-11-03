@@ -112,8 +112,11 @@ test.describe('Campaigns list filters', () => {
     });
 
     test('Draft shows only the draft campaigns, all of them', async ({page, admin, requestUtils}) => {
-        // A draft of its own, so the filter has a row to show on an empty site too.
-        const {campaignId} = await createCampaignWithForm(requestUtils);
+        // A draft of its own, so the filter has a row to show on an empty site too. Its title holds the
+        // word "Active", so a check that read the whole row instead of the status would fail on it.
+        const {campaignId} = await createCampaignWithForm(requestUtils, {
+            title: `E2E Active draft campaign ${Date.now()}`,
+        });
         // The REST route cannot set a campaign back to draft, so this goes through the model.
         wp(
             'eval',
@@ -138,12 +141,13 @@ test.describe('Campaigns list filters', () => {
         expect(Number(((await response.json()) as {totalItems: number | string}).totalItems)).toBe(drafts.length);
 
         // The table showed the unfiltered rows before, so wait for the filtered page with assertions that
-        // retry until it re-renders: one row per draft on the page, and no row that is not a draft.
+        // retry until it re-renders: one row per draft on the page, and each row's status badge reads
+        // "Draft". Only the badge is read, so a title with a status word in it does not count.
         const perPage = Number(new URL(response.url()).searchParams.get('perPage'));
         const rows = listRows(page);
-        await expect(rows).toHaveCount(Math.min(drafts.length, perPage));
-        await expect(rows.filter({hasNotText: 'Draft'})).toHaveCount(0);
-        await expect(rows.filter({hasText: /\b(Active|Inactive|Archived)\b/})).toHaveCount(0);
+        const onPage = Math.min(drafts.length, perPage);
+        await expect(rows).toHaveCount(onPage);
+        await expect(rows.locator('.statusBadge')).toHaveText(Array(onPage).fill('Draft'));
     });
 });
 
