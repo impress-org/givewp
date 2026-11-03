@@ -7,7 +7,7 @@ import type {ListTableDensity, ListTableView, ScreenDefaults, StoredLayout, View
  *
  * @since TBD
  */
-export const DENSITIES: ListTableDensity[] = ['compact', 'balanced', 'comfortable'];
+const DENSITIES: ListTableDensity[] = ['compact', 'balanced', 'comfortable'];
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
     typeof value === 'object' && value !== null && !Array.isArray(value);

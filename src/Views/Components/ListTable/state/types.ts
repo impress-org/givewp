@@ -2,7 +2,7 @@ import type {Density, Filter, ViewTable} from '@wordpress/dataviews';
 import type {FilterConfig} from '../ListTablePage/types';
 
 /**
- * The view of a list table. Spec 1 always renders the DataViews table layout.
+ * The view of a list table. The list always renders the DataViews table layout.
  *
  * @since TBD
  */
@@ -56,13 +56,6 @@ export interface ListTableScreen {
         visibleFields?: string[];
     };
 }
-
-/**
- * What is shown: the part of the view kept in the URL.
- *
- * @since TBD
- */
-export type ViewQueryPart = Pick<ListTableView, 'page' | 'perPage' | 'sort' | 'filters'>;
 
 /**
  * How it is shown: the part of the view kept in the stored layout.

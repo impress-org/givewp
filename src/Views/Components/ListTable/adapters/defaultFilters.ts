@@ -1,6 +1,6 @@
 import type {Filter} from '@wordpress/dataviews';
 import type {FilterConfig} from '../ListTablePage/types';
-import {TEST_MODE_FILTER} from './filterSettingsToFields';
+import {hasTestModeToggle, TEST_MODE_FILTER} from './filterSettingsToFields';
 import {filterFieldId} from './viewToParameters';
 
 /**
@@ -41,7 +41,7 @@ export function defaultFilters(
         }
     });
 
-    if (testMode && filterSettings.some((filter) => filter.name === 'toggle')) {
+    if (testMode && hasTestModeToggle(filterSettings)) {
         filters.push({field: filterFieldId(TEST_MODE_FILTER), operator: 'is', value: true});
     }
 

@@ -1,5 +1,5 @@
 import type {FilterConfig} from '../ListTablePage/types';
-import {defaultFilters, scopeFromFilterSettings} from './viewFromInitialState';
+import {defaultFilters, scopeFromFilterSettings} from './defaultFilters';
 import {filterFieldId} from './viewToParameters';
 
 const filters: FilterConfig[] = [
