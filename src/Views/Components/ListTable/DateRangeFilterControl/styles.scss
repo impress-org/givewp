@@ -27,7 +27,9 @@
         }
 
         // The chosen preset uses the same blue as a chip that holds a value.
-        &[aria-pressed='true'] {
+        // The hover rule repeats these values because the stock pressed button turns dark on hover.
+        &[aria-pressed='true'],
+        &[aria-pressed='true']:hover:not(:disabled) {
             border-color: var(--givewp-blue-400);
             background: var(--givewp-blue-50);
             color: var(--givewp-blue-700);
