@@ -551,7 +551,8 @@ test.describe('Donations list filters', () => {
         await visitList(page, admin, DONATIONS_LIST);
         await chip(page, 'Status').click();
 
-        expect(await popover(page).getByRole('checkbox').count()).toBeGreaterThan(4);
+        // More than four options: the fifth one shows. This retries while the popover renders.
+        await expect(popover(page).getByRole('checkbox').nth(4)).toBeVisible();
 
         const fourNotTrash = popover(page)
             .locator('.givewp-options-filter-control__option')
