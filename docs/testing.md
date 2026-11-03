@@ -128,8 +128,9 @@ slow test with a worse failure message.
 
 **One spec file per screen**, named for the screen, holding everything that screen is covered for:
 `campaigns.spec.ts`, `donation-details.spec.ts`, `donation-forms.spec.ts`, `donations-list.spec.ts`,
-`donor-dashboard.spec.ts`, `form-builder.spec.ts`, `forms-list.spec.ts`, `legacy-donation-forms.spec.ts`,
-`reports.spec.ts`, `tools-logs.spec.ts`, `tools-migrations.spec.ts`.
+`donor-dashboard.spec.ts`, `donors-list.spec.ts`, `form-builder.spec.ts`, `forms-list.spec.ts`,
+`legacy-donation-forms.spec.ts`, `reports.spec.ts`, `tools-logs.spec.ts`, `tools-migrations.spec.ts`.
+The shared list filters follow the same rule: each screen's filter tests sit in that screen's file.
 
 A v3 donation form is two screens, not one: the form builder that edits it in wp-admin and the
 form itself on the front end. They share a subject and nothing else - different apps, different
@@ -158,7 +159,8 @@ is a post with protected meta, and GiveWP's settings are one option. `utils/dona
 completed test donation the same way, because the REST route that creates one wants a donor and no
 route creates a donor; the list and details specs use it so they do not drive the donate flow for each
 donation they need. `utils/async-select.ts` picks an option from the admin's searchable dropdowns,
-whose options carry no `role=option`. WP-CLI runs in the wp-env this
+whose options carry no `role=option`. `utils/list-table.ts` finds the rows, chips and popovers of the
+admin list screens and holds the list filter helpers their specs share. WP-CLI runs in the wp-env this
 checkout started, so those fixtures assume `WP_BASE_URL` points at it. Assert on that traffic rather than on
 rendered records: a wrong route, a missing nonce, or a response shape the client no longer unwraps
 all produce a page that builds and mounts cleanly and then shows nothing.
@@ -338,7 +340,8 @@ specs see all of it. Each `tests/e2e/addon-<slug>.spec.ts` adds what they cannot
 really is active, so a failed download cannot pass as a green run, and that its own admin screen
 still mounts. `addon-recurring.spec.ts` also takes a subscription on a form with no campaign,
 because Recurring reaches core's campaign lookup on that path and a standalone form is where an
-empty lookup would show.
+empty lookup would show. It also holds the Subscriptions list filter test, which skips unless Give
+Recurring is active.
 
 ### Add-ons come from their release zips, not from source
 
