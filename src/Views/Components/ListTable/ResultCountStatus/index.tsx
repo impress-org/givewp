@@ -58,8 +58,6 @@ export default function ResultCountStatus({
     const [message, setMessage] = useState('');
     // The request whose result was last accounted for. The first one is the page load, so it is not announced.
     const settledKey = useRef<string | null>(null);
-    const latest = useRef({totalItems, singleName, pluralName});
-    latest.current = {totalItems, singleName, pluralName};
 
     useEffect(() => {
         if (isLoading || totalItems === undefined) {
@@ -76,20 +74,14 @@ export default function ResultCountStatus({
         }
 
         const timer = setTimeout(() => {
-            const {totalItems: count, singleName: single, pluralName: plural} = latest.current;
-
-            if (count === undefined) {
-                return;
-            }
-
             settledKey.current = requestKey;
-            const text = resultMessage(count, single, plural);
+            const text = resultMessage(totalItems, singleName, pluralName);
             // The same words twice would not be read again, so the second one gets a trailing no-break space.
             setMessage((previous) => (previous === text ? `${text}${NO_BREAK_SPACE}` : text));
         }, SETTLE_DELAY);
 
         return () => clearTimeout(timer);
-    }, [requestKey, isLoading, totalItems]);
+    }, [requestKey, isLoading, totalItems, singleName, pluralName]);
 
     return (
         <div role="status" aria-live="polite" aria-atomic="true" className="screen-reader-text">
