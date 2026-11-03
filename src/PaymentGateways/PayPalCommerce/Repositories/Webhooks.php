@@ -112,7 +112,7 @@ class Webhooks
      *
      * @see https://developer.paypal.com/docs/api/webhooks/v1/#webhooks_post
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 2.32.0 Use PayPal client for rest api calls.
      * @since 2.9.0

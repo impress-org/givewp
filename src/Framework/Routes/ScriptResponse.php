@@ -74,7 +74,7 @@ class ScriptResponse
     }
 
     /**
-     * @since TBD Sanitize the If-None-Match header.
+     * @since 4.19.1 Sanitize the If-None-Match header.
      * @since 4.17.0
      *
      * @param array $request Request data handed to the localize callable.

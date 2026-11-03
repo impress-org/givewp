@@ -8,14 +8,14 @@ use WPDieException;
 /**
  * Covers the nonce on the "Undo Importing" link of the core settings importer.
  *
- * @since TBD
+ * @since 4.19.1
  *
  * @covers \Give_Import_Core_Settings::import_success
  */
 final class TestCoreSettingsImportUndo extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -30,7 +30,7 @@ final class TestCoreSettingsImportUndo extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -40,7 +40,7 @@ final class TestCoreSettingsImportUndo extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testUndoWithoutNonceDoesNotRevertTheSettings(): void
     {
@@ -62,7 +62,7 @@ final class TestCoreSettingsImportUndo extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testUndoWithValidNonceRevertsTheSettings(): void
     {
@@ -79,7 +79,7 @@ final class TestCoreSettingsImportUndo extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testUndoLinkCarriesTheNonce(): void
     {

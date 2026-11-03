@@ -21,7 +21,7 @@ class CreditCardSettingField
     /**
      * Render Stripe account manager setting field.
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.13.0
      *
      * @param array $field
@@ -63,7 +63,7 @@ class CreditCardSettingField
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.13.0
      */
     private function getRadioButtons($field, $value)

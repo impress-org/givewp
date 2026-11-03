@@ -78,7 +78,7 @@ class FileUploadValidator
     }
 
     /**
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 2.14.0
      */
     private function validateUploadTypes()
@@ -108,7 +108,7 @@ class FileUploadValidator
     }
 
     /**
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 2.14.0
      * @since 2.16.0 File size unit update to bytes from mega bytes in logic to get precise result.
      */

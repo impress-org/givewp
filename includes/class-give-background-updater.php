@@ -147,7 +147,7 @@ class Give_Background_Updater extends WPBackgroundProcess
     /**
      * Is queue empty
      *
-     * @since TBD Use the options table and column names directly in the query.
+     * @since 4.19.1 Use the options table and column names directly in the query.
      * @since 2.4.5
      *
      * @return bool
@@ -175,7 +175,7 @@ class Give_Background_Updater extends WPBackgroundProcess
     /**
      * Get batch
      *
-     * @since TBD Use the options table and column names directly in the query.
+     * @since 4.19.1 Use the options table and column names directly in the query.
      * @since 2.4.5
      *
      * @return stdClass Return the first batch from the queue
@@ -304,7 +304,7 @@ class Give_Background_Updater extends WPBackgroundProcess
      * in the next pass through. Or, return false to remove the
      * item from the queue.
      *
-     * @since TBD Write the log data as JSON.
+     * @since 4.19.1 Write the log data as JSON.
      *
      * @param array $update Update info
      *

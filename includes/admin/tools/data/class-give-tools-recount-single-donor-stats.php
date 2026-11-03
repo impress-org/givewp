@@ -283,7 +283,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 	/**
 	 * Given a key, get the information from the Database Directly
 	 *
-	 * @since TBD Use the options API.
+	 * @since 4.19.1 Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name
@@ -308,7 +308,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 	/**
 	 * Give a key, store the value
 	 *
-	 * @since TBD Use the options API.
+	 * @since 4.19.1 Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key   The option_name
@@ -325,7 +325,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 	/**
 	 * Delete an option
 	 *
-	 * @since TBD Use the options API.
+	 * @since 4.19.1 Use the options API.
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name to delete

@@ -10,14 +10,14 @@ use WPDieException;
 
 /**
  * @since 3.16.2
- * @since TBD Send the form builder nonce and log in as an admin, and cover the refused requests.
+ * @since 4.19.1 Send the form builder nonce and log in as an admin, and cover the refused requests.
  */
 class ServiceProviderTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function setUp(): void
     {
@@ -30,7 +30,7 @@ class ServiceProviderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -41,7 +41,7 @@ class ServiceProviderTest extends TestCase
 
     /**
      * @since 3.16.2
-     * @since TBD Send the form builder nonce and log in as an admin.
+     * @since 4.19.1 Send the form builder nonce and log in as an admin.
      */
     public function testItDismissesTheAdditionalPaymentGatewaysNotice()
     {
@@ -57,7 +57,7 @@ class ServiceProviderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testItDismissesTheGoalNotice()
     {
@@ -71,7 +71,7 @@ class ServiceProviderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testItCompletesTheTour()
     {
@@ -86,7 +86,7 @@ class ServiceProviderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      *
      * @dataProvider formNoticeProvider
      */
@@ -103,7 +103,7 @@ class ServiceProviderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      *
      * @dataProvider handlerProvider
      */
@@ -117,7 +117,7 @@ class ServiceProviderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      *
      * @dataProvider handlerProvider
      */
@@ -132,7 +132,7 @@ class ServiceProviderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      *
      * @dataProvider handlerProvider
      */
@@ -147,7 +147,7 @@ class ServiceProviderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function formNoticeProvider(): array
     {
@@ -158,7 +158,7 @@ class ServiceProviderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function handlerProvider(): array
     {
@@ -174,7 +174,7 @@ class ServiceProviderTest extends TestCase
     /**
      * Fires the handler and expects it to stop with the "-1" response.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     private function assertRefused(string $action): void
     {
@@ -187,7 +187,7 @@ class ServiceProviderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function assertNothingWasSaved(int $userId): void
     {

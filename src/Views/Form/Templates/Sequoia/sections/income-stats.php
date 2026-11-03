@@ -1,10 +1,10 @@
 <?php
-/** @since TBD Escape output. */
+/** @since 4.19.1 Escape output. */
 
 /**
  * @var int $formId
  *
- * @since TBD Escape translated output.
+ * @since 4.19.1 Escape translated output.
  */
 
 use Give\DonationForms\DonationQuery;

@@ -19,14 +19,14 @@ use Give_Subscriptions_DB;
  * hardening of generate_where_clause(), count() and get_subscriptions(). Every other test was
  * written first and passed on the unchanged code.
  *
- * @since TBD
+ * @since 4.19.1
  */
 class SubscriptionsDBTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function db(): Give_Subscriptions_DB
     {
@@ -34,7 +34,7 @@ class SubscriptionsDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     private function createSubscription(
         string $status,
@@ -56,7 +56,7 @@ class SubscriptionsDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      *
      * @param Give_Subscription[] $subscriptions
      *
@@ -74,7 +74,7 @@ class SubscriptionsDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testStatusAsStringAndAsArray()
     {
@@ -90,7 +90,7 @@ class SubscriptionsDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testProfileIdAsStringAndAsArray()
     {
@@ -106,7 +106,7 @@ class SubscriptionsDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testTransactionIdAsStringAndAsArray()
     {
@@ -122,7 +122,7 @@ class SubscriptionsDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testSearchByTransactionIdAndProfileId()
     {
@@ -139,7 +139,7 @@ class SubscriptionsDBTest extends TestCase
     /**
      * A value with a quote used to work in the search, because the search escaped it.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testSearchByTransactionIdWithAQuote()
     {
@@ -151,7 +151,7 @@ class SubscriptionsDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testSearchByDonorName()
     {
@@ -167,7 +167,7 @@ class SubscriptionsDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testOrderAscendingAndDescending()
     {
@@ -186,7 +186,7 @@ class SubscriptionsDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCountWithoutAndWithGroupBy()
     {
@@ -203,7 +203,7 @@ class SubscriptionsDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGenerateWhereClauseForNormalInput()
     {
@@ -222,7 +222,7 @@ class SubscriptionsDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGenerateWhereClauseForSingleStringValues()
     {
@@ -243,7 +243,7 @@ class SubscriptionsDBTest extends TestCase
     /**
      * Hardening test: before the fix a quote in a profile id broke the SQL.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testProfileIdWithAQuoteDoesNotBreakTheQuery()
     {
@@ -262,7 +262,7 @@ class SubscriptionsDBTest extends TestCase
     /**
      * Hardening test: before the fix a quote in a transaction id broke the SQL.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testTransactionIdWithAQuoteDoesNotBreakTheQuery()
     {
@@ -280,7 +280,7 @@ class SubscriptionsDBTest extends TestCase
     /**
      * Hardening test: before the fix a quote in a status broke the SQL.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testStatusWithAQuoteDoesNotBreakTheQuery()
     {
@@ -294,7 +294,7 @@ class SubscriptionsDBTest extends TestCase
     /**
      * Hardening test: an unknown groupBy value is ignored, so the count is a plain number.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testCountIgnoresAGroupByThatIsNotAColumn()
     {
@@ -309,7 +309,7 @@ class SubscriptionsDBTest extends TestCase
     /**
      * Hardening test: an order value that is not ASC or DESC falls back to DESC.
      *
-     * @since TBD
+     * @since 4.19.1
      */
     public function testOrderThatIsNotAscOrDescFallsBackToDescending()
     {
@@ -325,7 +325,7 @@ class SubscriptionsDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetRenewingAndExpiringSubscriptionsRun()
     {
@@ -340,7 +340,7 @@ class SubscriptionsDBTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testPaymentExistsFindsAKnownTransactionId()
     {

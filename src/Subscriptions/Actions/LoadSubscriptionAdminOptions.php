@@ -16,7 +16,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class LoadSubscriptionAdminOptions
 {
     /**
-     * @since TBD Set an explicit version on the options script.
+     * @since 4.19.1 Set an explicit version on the options script.
      */
     public function __invoke()
     {

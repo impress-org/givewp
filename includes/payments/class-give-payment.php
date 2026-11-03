@@ -640,7 +640,7 @@ final class Give_Payment {
     /**
      * Create the base of a payment.
      *
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 4.16.7.2       Sanitize first, last, and title name values before storing donor meta.
      * @since  1.5
      * @access private
@@ -723,11 +723,6 @@ final class Give_Payment {
 
 			if ( did_action( 'give_pre_process_donation' ) && is_user_logged_in() ) {
 				$donor = new Give_Donor( get_current_user_id(), true );
-
-				// Donor is logged in but used a different email to purchase with so assign to their donor record.
-				if ( ! empty( $donor->id ) && $this->email !== $donor->email ) {
-					$donor->add_email( $this->email );
-				}
 			}
 
 			if ( empty( $donor->id ) ) {
@@ -810,7 +805,7 @@ final class Give_Payment {
      *
      * Once items have been set, an update is needed to save them to the database.
      *
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 4.16.7.2 Sanitize first and last name values when saving billing meta.
      * @access public
      *

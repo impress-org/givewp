@@ -72,7 +72,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Add donors search filter.
 	 *
-	 * @since TBD Escape output, including translated strings, and use gmdate() instead of date().
+	 * @since 4.19.1 Escape output, including translated strings, and use gmdate() instead of date().
 	 * @since 3.5.0 Escape search query string.
 	 * @since 2.4.0
 	 * @return void
@@ -336,7 +336,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 *
 	 * @param array $donor Donor Data.
 	 *
-	 * @since TBD Add translators comments.
+	 * @since 4.19.1 Add translators comments.
 	 * @since  1.7
 	 * @access public
 	 *
@@ -370,7 +370,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * Retrieves the search query string.
 	 *
 	 * @access public
-     * @since TBD Unslash the search term. Give_Donors_Query escapes it.
+     * @since 4.19.1 Unslash the search term. Give_Donors_Query escapes it.
      * @since 3.5.0 Remove escape function
 	 * @since  1.0
 	 *
@@ -494,7 +494,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Get donor query.
 	 *
-     * @since TBD Do not escape the search term here. Give_Donors_Query escapes it. Unslash and sanitize the sort and page values.
+     * @since 4.19.1 Do not escape the search term here. Give_Donors_Query escapes it. Unslash and sanitize the sort and page values.
      * @since 3.5.0 Escape search query string.
 	 * @since  1.8.1
 	 * @access public
@@ -544,7 +544,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 *
 	 * @param object $item The current item.
 	 *
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @since  1.8.17
 	 * @access public
 	 */
@@ -557,7 +557,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Display the final donor table
 	 *
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @since  1.8.17
 	 * @access public
 	 */

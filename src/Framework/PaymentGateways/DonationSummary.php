@@ -67,7 +67,7 @@ class DonationSummary
     }
 
     /**
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 2.19.0
      *
      * @return string

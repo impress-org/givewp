@@ -10,14 +10,14 @@ use Give_Cache_Setting;
 /**
  * Covers the SQL queries of Give_Cache and Give_Cache_Setting.
  *
- * @since TBD
+ * @since 4.19.1
  */
 class GiveCacheQueriesTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetOptionsLikeWithFieldsReturnsNamesAndUnserializedValues(): void
     {
@@ -41,7 +41,7 @@ class GiveCacheQueriesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetOptionsLikeWithoutFieldsReturnsOnlyNames(): void
     {
@@ -52,7 +52,7 @@ class GiveCacheQueriesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testDeleteAllExpiredWithForceRemovesEveryCacheOption(): void
     {
@@ -65,7 +65,7 @@ class GiveCacheQueriesTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testSettingsAreLoadedFromTheDatabaseForTheListedOptionIds(): void
     {
