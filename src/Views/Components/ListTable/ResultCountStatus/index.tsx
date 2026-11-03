@@ -56,11 +56,12 @@ export default function ResultCountStatus({
     pluralName,
 }: ResultCountStatusProps) {
     const [message, setMessage] = useState('');
-    // The request whose result was last accounted for. The first one is the page load, so it is not announced.
+    // The request whose result was last accounted for. The first one is the page load, so it is not
+    // announced, even when it failed.
     const settledKey = useRef<string | null>(null);
 
     useEffect(() => {
-        if (isLoading || totalItems === undefined) {
+        if (isLoading) {
             return;
         }
 
@@ -69,7 +70,7 @@ export default function ResultCountStatus({
             return;
         }
 
-        if (settledKey.current === requestKey) {
+        if (totalItems === undefined || settledKey.current === requestKey) {
             return;
         }
 

@@ -106,6 +106,16 @@ describe('ResultCountStatus', () => {
         expect(region().textContent).not.toBe(first);
     });
 
+    it('says the count after a change when the first load failed', async () => {
+        await render({isLoading: true});
+        await render({isLoading: false, totalItems: undefined});
+        await render({requestKey: 'second', isLoading: true});
+        await render({requestKey: 'second', isLoading: false, totalItems: 12});
+        await wait(300);
+
+        expect(region().textContent).toBe('12 donations found');
+    });
+
     it('says nothing when a refresh keeps the same view', async () => {
         await render({totalItems: 40});
         await render({totalItems: 39});
