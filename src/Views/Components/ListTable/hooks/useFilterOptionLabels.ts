@@ -1,5 +1,12 @@
-import {useCallback, useEffect, useRef, useState} from 'react';
-import {claimUnknownValues, knownLabel, releaseValues, rememberLabels} from '../filters/labelCache';
+import {useCallback, useEffect, useSyncExternalStore} from 'react';
+import {
+    claimUnknownValues,
+    knownLabel,
+    labelsVersion,
+    releaseValues,
+    rememberLabels,
+    subscribeToLabels,
+} from '../filters/labelCache';
 import {fetchFilterOptions} from '../filters/filterOptionsApi';
 import type {FilterEntitySource} from '../filters/types';
 import type {ListTableScreenKey} from '../state/types';
@@ -15,7 +22,8 @@ const chunk = <T>(items: T[], size: number): T[][] =>
 
 /**
  * Finds the labels of selected ids, so a chip can show a name for an id that is not loaded. An id
- * with no known label is requested once. Returns a lookup that gives the label, or undefined.
+ * with no known label is requested once. Returns a lookup that gives the label, or undefined. The
+ * component renders again whenever the source gets a new label, whoever asked for it.
  *
  * @since TBD
  */
@@ -24,18 +32,10 @@ export default function useFilterOptionLabels(
     screen: ListTableScreenKey | undefined,
     values: string[]
 ): (value: string) => string | undefined {
-    const [version, setVersion] = useState(0);
-    const mounted = useRef(true);
+    const getVersion = useCallback(() => labelsVersion(source), [source]);
+    const version = useSyncExternalStore(subscribeToLabels, getVersion);
     // Depend on the text of the ids, not on the array, which is new on every render.
     const key = values.join(',');
-
-    useEffect(() => {
-        mounted.current = true;
-
-        return () => {
-            mounted.current = false;
-        };
-    }, []);
 
     useEffect(() => {
         const wanted = key === '' ? [] : key.split(',').filter((value) => value !== NONE_VALUE);
@@ -43,11 +43,8 @@ export default function useFilterOptionLabels(
         // Each chunk is claimed and released on its own, so a failed one can be asked for again.
         chunk(claimUnknownValues(source, wanted), MAX_INCLUDE).forEach((missing) => {
             fetchFilterOptions({source, screen, include: missing})
-                .then(({options}) => {
-                    rememberLabels(source, options);
-                    // Refresh even if the ids changed meanwhile: the answer may be shown by the new ones.
-                    mounted.current && setVersion((count) => count + 1);
-                })
+                // Every consumer of this source renders again, even if its ids changed meanwhile.
+                .then(({options}) => rememberLabels(source, options))
                 .catch(() => releaseValues(source, missing));
         });
     }, [source, screen, key]);

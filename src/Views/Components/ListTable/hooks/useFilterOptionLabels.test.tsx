@@ -22,6 +22,31 @@ function Harness({values}: {values: string[]}) {
     return null;
 }
 
+// Two chips for the same source, mounted side by side.
+let firstLabel: string | undefined;
+let secondLabel: string | undefined;
+
+function FirstChip({values}: {values: string[]}) {
+    firstLabel = useFilterOptionLabels('campaign', 'donations', values)('2');
+
+    return null;
+}
+
+function SecondChip({values}: {values: string[]}) {
+    secondLabel = useFilterOptionLabels('campaign', 'donations', values)('2');
+
+    return null;
+}
+
+function Pair({values}: {values: string[]}) {
+    return (
+        <>
+            <FirstChip values={values} />
+            <SecondChip values={values} />
+        </>
+    );
+}
+
 const render = (values: string[]) => act(async () => root.render(<Harness values={values} />));
 const flush = () => act(async () => {});
 const paths = () => mockedFetch.mock.calls.map(([options]) => decodeURIComponent(options.path));
@@ -112,6 +137,32 @@ describe('useFilterOptionLabels', () => {
         await act(async () => resolve({options: [{value: '2', label: 'Two'}], hasMore: false}));
 
         expect(renderedTwo).toBe('Two');
+    });
+
+    it('every consumer of a source shows a label that one of them requested', async () => {
+        let resolve!: (page: {options: {value: string; label: string}[]; hasMore: boolean}) => void;
+        mockedFetch.mockReturnValue(new Promise((res) => (resolve = res)));
+
+        await act(async () => root.render(<Pair values={['2']} />));
+        await act(async () => resolve({options: [{value: '2', label: 'Two'}], hasMore: false}));
+
+        expect(mockedFetch).toHaveBeenCalledTimes(1);
+        expect(firstLabel).toBe('Two');
+        expect(secondLabel).toBe('Two');
+    });
+
+    it('a label remembered elsewhere updates a mounted consumer', async () => {
+        let resolve!: (page: {options: {value: string; label: string}[]; hasMore: boolean}) => void;
+        mockedFetch.mockReturnValue(new Promise((res) => (resolve = res)));
+        await render(['2']);
+        const before = labelFor;
+
+        // As the options list does when its page loads.
+        await act(async () => rememberLabels('campaign', [{value: '2', label: 'Two'}]));
+
+        expect(renderedTwo).toBe('Two');
+        expect(labelFor).not.toBe(before);
+        await act(async () => resolve({options: [], hasMore: false}));
     });
 
     it('does not request the none value', async () => {

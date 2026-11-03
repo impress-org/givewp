@@ -2,16 +2,54 @@ import type {FilterEntitySource, FilterOption} from './types';
 
 const labels = new Map<string, string>();
 const requested = new Set<string>();
+/** Goes up each time a source gets a new or changed label. */
+const versions = new Map<FilterEntitySource, number>();
+const listeners = new Set<() => void>();
 
 const keyOf = (source: FilterEntitySource, value: string) => `${source}:${value}`;
 
 /**
  * Keeps the labels of options that were loaded, so a chip can name an id that is not in the list.
+ * Tells every subscriber when a label is new or changed.
  *
  * @since TBD
  */
 export function rememberLabels(source: FilterEntitySource, options: FilterOption[]): void {
-    options.forEach((option) => labels.set(keyOf(source, option.value), option.label));
+    let changed = false;
+    options.forEach((option) => {
+        const key = keyOf(source, option.value);
+        if (labels.get(key) !== option.label) {
+            labels.set(key, option.label);
+            changed = true;
+        }
+    });
+
+    if (changed) {
+        versions.set(source, labelsVersion(source) + 1);
+        listeners.forEach((listener) => listener());
+    }
+}
+
+/**
+ * Calls the listener each time a label is added or changed. Returns a function that stops it.
+ *
+ * @since TBD
+ */
+export function subscribeToLabels(listener: () => void): () => void {
+    listeners.add(listener);
+
+    return () => {
+        listeners.delete(listener);
+    };
+}
+
+/**
+ * A number that changes each time the labels of a source change.
+ *
+ * @since TBD
+ */
+export function labelsVersion(source: FilterEntitySource): number {
+    return versions.get(source) ?? 0;
 }
 
 /**
@@ -54,4 +92,5 @@ export function releaseValues(source: FilterEntitySource, values: string[]): voi
 export function resetLabelCache(): void {
     labels.clear();
     requested.clear();
+    versions.clear();
 }
