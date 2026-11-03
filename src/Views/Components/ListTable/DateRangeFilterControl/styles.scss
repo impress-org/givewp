@@ -4,14 +4,40 @@
     gap: var(--givewp-spacing-3);
     font-size: var(--givewp-font-size-paragraph-md);
 
+    min-inline-size: 18rem;
+
+    // Equal-width cells so the six presets line up as a 3 x 2 grid.
     &__presets {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--givewp-spacing-1);
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--givewp-spacing-2);
+    }
+
+    &__preset.components-button {
+        justify-content: center;
+        border: 1px solid var(--givewp-neutral-300);
+        border-radius: 2px;
+        background: var(--givewp-neutral-25);
+        color: var(--givewp-neutral-700);
+        white-space: nowrap;
+
+        &:hover:not(:disabled) {
+            border-color: var(--givewp-blue-400);
+            color: var(--givewp-blue-700);
+        }
+
+        // The chosen preset uses the same blue as a chip that holds a value.
+        &[aria-pressed='true'] {
+            border-color: var(--givewp-blue-400);
+            background: var(--givewp-blue-50);
+            color: var(--givewp-blue-700);
+            font-weight: 600;
+        }
     }
 
     &__days {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: var(--givewp-spacing-3);
     }
 
