@@ -53,6 +53,7 @@ function dateText(value: string, formatDate: (ymd: string) => string): string {
  * the visible words, and then lists the labels when the chip shows only a count. When every label is a numbered fallback such as
  * "Donor #123", the filter name is not repeated in front of it.
  *
+ * @since TBD Tell a numbered fallback by its whole label, so a translation may put the id first.
  * @since TBD Leave out the filter name when every label is a numbered fallback.
  * @since TBD Add the accessible name, which starts with the chip text.
  * @since TBD
@@ -77,13 +78,17 @@ export function filterChipText(
 
     const labelOf = (item: string) =>
         helpers.labelOf(item) || (declaration.kind === 'entity' ? fallbackLabel(declaration, item) : item);
-    const labels = (Array.isArray(value) ? value : [value]).map(labelOf);
+    const items = Array.isArray(value) ? value : [value];
+    const labels = items.map(labelOf);
     const list = labels.join(', ');
 
     if (labels.length <= MAX_CHIP_LABELS) {
-        // "Donor #123" already names the filter, so "Donor: Donor #123" would say it twice.
-        const fallbackStart = fallbackLabel(declaration, '');
-        const allFallback = labels.every((label) => label.startsWith(fallbackStart));
+        // "Donor #123" already names the filter, so "Donor: Donor #123" would say it twice. A label is a
+        // fallback only when it is the whole numbered label of its own value, in whatever word order
+        // the translation uses.
+        const allFallback =
+            declaration.kind === 'entity' &&
+            items.every((item, index) => labels[index] === fallbackLabel(declaration, item));
 
         return same(allFallback ? list : withLabel(list));
     }

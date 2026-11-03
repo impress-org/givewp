@@ -1,3 +1,4 @@
+import {resetLocaleData, setLocaleData} from '@wordpress/i18n';
 import {MAX_CHIP_LABELS, fallbackLabel, filterChipText} from './chipText';
 import type {DateFilterDeclaration, EntityFilterDeclaration, OptionsFilterDeclaration} from './types';
 
@@ -61,4 +62,28 @@ describe('filterChipText', () => {
 
     it('falls back to a numbered label for an entity without a name', () =>
         expect(fallbackLabel(donor, '123')).toBe('Donor #123'));
+
+    describe('when a translation puts the record id first', () => {
+        beforeEach(() => setLocaleData({'%1$s #%2$s': ['#%2$s %1$s']}, 'give'));
+        afterEach(() => resetLocaleData(undefined, 'give'));
+
+        it('drops the filter name in front of a numbered label', () =>
+            expect(filterChipText(donor, '123', noLabel).text).toBe('#123 Donor'));
+
+        it('drops it for several numbered labels too', () =>
+            expect(filterChipText({...donor, multiple: true}, ['1', '2'], noLabel).text).toBe('#1 Donor, #2 Donor'));
+    });
+
+    it('keeps the filter name before a real name that starts like a numbered label', () =>
+        expect(filterChipText(donor, '123', {...helpers, labelOf: () => 'Donor #5 Smith'}).text).toBe(
+            'Donor: Donor #5 Smith'
+        ));
+
+    it('keeps the filter name when one value has a name and another is numbered', () =>
+        expect(
+            filterChipText({...donor, multiple: true}, ['1', '2'], {
+                ...helpers,
+                labelOf: (item: string) => (item === '1' ? 'Jane Doe' : ''),
+            }).text
+        ).toBe('Donor: Jane Doe, Donor #2'));
 });
