@@ -274,18 +274,28 @@ and the action checks the unzipped `give` folder. Every category runs, except th
 (in `performance`). They boot WordPress with a scratch table prefix, GiveWP's custom tables do not
 exist under it, and the whole run dies with `Error: Database Query` (SOFT-4567).
 
-The workflow has three jobs:
+The workflow is a short caller of the shared one in
+[stellarwp/plugin-toolbox](https://github.com/stellarwp/plugin-toolbox/blob/main/.github/workflows/plugin-check.yml),
+so the build, the check, the comment and the baseline logic are the same for every plugin. What is
+GiveWP's own is in the caller's `with:`: the plugin folder `give`, the runner, the webpack cache
+path and the excluded checks. The toolbox's
+[plugin-check-report README](https://github.com/stellarwp/plugin-toolbox/blob/main/.github/actions/plugin-check-report/README.md)
+describes every input, and how the comparison and the baseline work. The caller uses `@main`, so a
+change merged in the toolbox reaches the next GiveWP run.
+
+The shared workflow has three jobs. They show in GiveWP as `plugin-check / Plugin Check start`,
+`plugin-check / Plugin Check run` and `plugin-check / Plugin Check`:
 
 - **Plugin Check start** posts the "in progress" comment.
 - **Plugin Check run** builds the zip and runs the action. It has a read-only token, because it runs
   a third-party action. The action also tries to post its own comment, and with this token that
-  fails (the log shows "Failed to post PR comment"), so the only comment is ours.
+  fails (the log shows "Failed to post PR comment"), so the only comment is the shared workflow's.
 - **Plugin Check** (the check to watch) compares the results with the baseline and replaces the
   comment with the result.
 
 GiveWP still has known problems, fixed ticket by ticket, and the action fails on any error. So the
-last job counts instead: `.github/plugin-check/ratchet.sh` counts errors and warnings per rule code
-and compares them with a baseline:
+last job counts instead: it counts errors and warnings per rule code and compares them with a
+baseline:
 
 - a rule with more errors than the baseline fails the check;
 - a rule with more warnings only gets a notice;
@@ -297,7 +307,7 @@ the same text. The full results are in the `plugin-check-report` artifact (the r
 `baseline.json`).
 
 **Where the baseline comes from.** No baseline is committed. Every run uploads a `baseline.json`
-made from its own results, and later runs download it with `.github/plugin-check/fetch-baseline.sh`:
+made from its own results, and later runs download it:
 
 - A **pull request** compares with the branch it goes into: the run for its base commit, waited for
   (up to 20 minutes) when it is still going. For a stacked pull request this is the run of the pull
@@ -326,8 +336,8 @@ add rules and raise counts with no code change. A pull request whose target's la
 older release then fails on the new rules. Run the workflow on the target branch to give it a
 baseline from the new release, then re-run the pull request's check.
 
-Once every error count is zero, remove the first and last jobs and `continue-on-error` from the run
-job. The action then fails on any error and posts its own comment.
+Once every error count is zero, add `mode: strict` to the caller's `with:`. The check then fails on
+any error, with no baseline.
 
 ## Add-on smoke tests in CI
 
