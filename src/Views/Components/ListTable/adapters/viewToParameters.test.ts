@@ -136,6 +136,52 @@ describe('viewToParameters', () => {
     it('caps the page size at 100', () => {
         expect(viewToParameters(view({perPage: 500}), [], {}, {locale: 'en-US'})).toMatchObject({perPage: 100});
     });
+
+    describe('a group with toApiValue', () => {
+        const periodFilters: FilterConfig[] = [
+            {
+                name: 'filterBy',
+                type: 'filterby',
+                groupedOptions: [
+                    {
+                        id: 'period',
+                        apiParam: 'start',
+                        name: 'Period',
+                        type: 'radio',
+                        options: [{text: 'Last 30 days', value: '30'}],
+                        toApiValue: (days, now) => new Date(now.getTime() - Number(days) * 86_400_000).toISOString(),
+                        isVisible: (values) => values.start?.[0] === '30',
+                    },
+                ],
+            },
+        ];
+        const now = new Date('2026-10-28T12:00:00.000Z');
+
+        it('sends the API value made from the option value and the given time', () => {
+            const parameters = viewToParameters(
+                view({filters: [is('period', '30')]}),
+                periodFilters,
+                {},
+                {
+                    locale: 'en-US',
+                    now,
+                }
+            );
+
+            expect(parameters.start).toEqual(['2026-09-28T12:00:00.000Z']);
+        });
+
+        it('gives the same parameters for the same view and time', () => {
+            const build = () =>
+                viewToParameters(view({filters: [is('period', '30')]}), periodFilters, {}, {locale: 'en-US', now});
+
+            expect(build()).toEqual(build());
+        });
+
+        it('keeps the option values for the isVisible rules and chips', () => {
+            expect(filterByValues(view({filters: [is('period', '30')]}), periodFilters)).toEqual({start: ['30']});
+        });
+    });
 });
 
 describe('filterByValues', () => {

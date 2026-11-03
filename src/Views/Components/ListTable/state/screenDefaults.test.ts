@@ -22,6 +22,14 @@ describe('resolveScreenDefaults', () => {
         expect(defaults.titleField).toBe('donor');
     });
 
+    it('hides the title column only when the server schema hides it', () => {
+        expect(resolveScreenDefaults(screen, columns, 'donor')).not.toHaveProperty('showTitle');
+
+        const hidden = columns.map((column) => (column.id === 'donor' ? {...column, visible: false} : column));
+
+        expect(resolveScreenDefaults(screen, hidden, 'donor').showTitle).toBe(false);
+    });
+
     it('uses the shared defaults: 30 per page, balanced, newest first, no filters', () => {
         const defaults = resolveScreenDefaults(screen, columns, 'donor');
 
