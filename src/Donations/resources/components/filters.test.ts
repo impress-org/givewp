@@ -135,6 +135,12 @@ describe('donationFilters', () => {
 });
 
 describe('donationsFilters (module level)', () => {
+    const original = window.GiveDonations;
+
+    afterEach(() => {
+        window.GiveDonations = original;
+    });
+
     const load = (recurringDonationsEnabled: boolean): FilterDeclaration[] => {
         let declarations: FilterDeclaration[] = [];
 

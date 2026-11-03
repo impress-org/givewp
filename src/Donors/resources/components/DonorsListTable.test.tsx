@@ -18,6 +18,13 @@ jest.mock('@givewp/components/ListTable/ProductRecommendations', () => () => nul
 jest.mock('./DonorsRowActions', () => ({donorsRowActions: () => null}));
 
 describe('DonorsListTable', () => {
+    const original = window.GiveDonors;
+
+    afterEach(() => {
+        window.GiveDonors = original;
+        mockPageProps.mockClear();
+    });
+
     it('names one record "donor" and many "donors", as the result count says them', async () => {
         window.GiveDonors = {
             apiNonce: '',
