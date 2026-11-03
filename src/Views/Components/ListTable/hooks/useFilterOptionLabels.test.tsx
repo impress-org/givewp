@@ -165,6 +165,74 @@ describe('useFilterOptionLabels', () => {
         await act(async () => resolve({options: [], hasMore: false}));
     });
 
+    describe('after a failed request', () => {
+        const advance = (ms: number) => act(async () => jest.advanceTimersByTime(ms));
+
+        beforeEach(() => jest.useFakeTimers());
+        afterEach(() => jest.useRealTimers());
+
+        it('asks again after a short wait and shows the label', async () => {
+            mockedFetch
+                .mockRejectedValueOnce(new Error('Offline'))
+                .mockResolvedValueOnce({options: [{value: '2', label: 'Two'}], hasMore: false});
+
+            await render(['2']);
+            await flush();
+            expect(mockedFetch).toHaveBeenCalledTimes(1);
+            expect(renderedTwo).toBeUndefined();
+
+            await advance(999);
+            expect(mockedFetch).toHaveBeenCalledTimes(1);
+            await advance(1);
+            await flush();
+
+            expect(mockedFetch).toHaveBeenCalledTimes(2);
+            expect(renderedTwo).toBe('Two');
+        });
+
+        it('gives up quietly after two more tries', async () => {
+            mockedFetch.mockRejectedValue(new Error('Offline'));
+
+            await render(['2']);
+            await flush();
+            await advance(1000);
+            await flush();
+            await advance(3000);
+            await flush();
+            expect(mockedFetch).toHaveBeenCalledTimes(3);
+
+            await advance(60000);
+            await flush();
+
+            expect(mockedFetch).toHaveBeenCalledTimes(3);
+            expect(renderedTwo).toBeUndefined();
+        });
+
+        it('does not ask again after unmount', async () => {
+            mockedFetch.mockRejectedValue(new Error('Offline'));
+
+            await render(['2']);
+            await flush();
+            act(() => root.unmount());
+            await advance(10000);
+
+            expect(mockedFetch).toHaveBeenCalledTimes(1);
+            root = createRoot(document.createElement('div'));
+        });
+
+        it('does not retry ids that are no longer selected', async () => {
+            mockedFetch.mockRejectedValueOnce(new Error('Offline'));
+            rememberLabels('campaign', [{value: '1', label: 'One'}]);
+
+            await render(['2']);
+            await flush();
+            await render(['1']);
+            await advance(10000);
+
+            expect(mockedFetch).toHaveBeenCalledTimes(1);
+        });
+    });
+
     it('does not request the none value', async () => {
         await render(['none']);
         await flush();
