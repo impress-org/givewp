@@ -17,12 +17,15 @@ use Give\Framework\FieldsAPI\Properties\DonationForm\CurrencySwitcherSetting;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @since 3.0.0
  */
 class DonateFormRouteDataTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testFinalSubmissionRejectsNonPrimaryEmail(): void
     {
         $userId = self::factory()->user->create(['role' => 'subscriber']);
