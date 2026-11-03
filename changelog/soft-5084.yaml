@@ -1,0 +1,4 @@
+significance: minor
+type: feature
+entry: Every donation created, edited, trashed, restored or deleted is now mirrored into the new donations storage table, whichever way it was saved.
+timestamp: 2026-10-20T16:00:00.000Z

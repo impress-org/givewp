@@ -1,0 +1,4 @@
+significance: minor
+type: feature
+entry: Added a dedicated donations storage table that is created empty on upgrade, in preparation for faster donation screens and reports.
+timestamp: 2026-10-20T15:00:00.000Z

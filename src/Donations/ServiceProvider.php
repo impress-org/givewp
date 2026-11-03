@@ -19,6 +19,7 @@ use Give\Donations\Listeners\DonationCreated\UpdateDonorMetaWithLastDonatedCurre
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Migrations\AddIndexesToDonationMetaTable;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
+use Give\Donations\Migrations\CreateDonationsTable;
 use Give\Donations\Migrations\MoveDonationCommentToDonationMetaTable;
 use Give\Donations\Migrations\RecalculateExchangeRate;
 use Give\Donations\Migrations\SanitizeSerializedObjectPayloads;
@@ -27,18 +28,34 @@ use Give\Donations\Migrations\UnserializeTitlePrefix;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationNotesRepository;
 use Give\Donations\Repositories\DonationRepository;
+use Give\Donations\Repositories\DonationTableRepository;
+use Give\Donations\Storage\DonationStorageDriftCheck;
+use Give\Donations\Storage\DonationStorageDriftCommand;
+use Give\Donations\Storage\DonationStorageFlag;
+use Give\Donations\Storage\DonationTableSync;
+use Give\Donations\Storage\SyncPostsWritesToDonationTable;
 use Give\Framework\Migrations\MigrationsRegister;
+use Give\Framework\Support\Facades\ActionScheduler\AsBackgroundJobs;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
+use WP_CLI;
 
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
+     * @since TBD Register the give_donations table name.
      * @inheritDoc
      */
     public function register()
     {
+        global $wpdb;
+
+        $wpdb->give_donations = $wpdb->prefix . DonationTableRepository::TABLE;
+
         give()->singleton('donations', DonationRepository::class);
+        give()->singleton(DonationTableRepository::class);
+        give()->singleton(DonationTableSync::class);
+        give()->singleton(SyncPostsWritesToDonationTable::class);
         give()->singleton('donationNotes', DonationNotesRepository::class);
         give()->singleton(DonationsListTable::class, function () {
             $listTable = new DonationsListTable();
@@ -55,6 +72,8 @@ class ServiceProvider implements ServiceProviderInterface
     {
         $this->bootListeners();
         $this->bootLegacyListeners();
+        $this->bootDonationTableSync();
+        $this->bootDonationStorageDriftCheck();
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
         $this->loadDonationAdminOptions();
@@ -67,7 +86,52 @@ class ServiceProvider implements ServiceProviderInterface
             RecalculateExchangeRate::class,
             SanitizeSerializedObjectPayloads::class,
             AddIndexesToDonationMetaTable::class,
+            CreateDonationsTable::class,
         ]);
+    }
+
+    /**
+     * Legacy hooks on purpose: these are the only hooks that see Give_Payment::save(),
+     * give_insert_payment(), give_update_payment_status(), give_delete_donation() and add-on meta
+     * writes. The repository syncs its own writes inside its transaction. Both meta types are
+     * hooked because sites that never ran the 2.2 meta rename still fire *_payment_meta.
+     *
+     * @since TBD
+     */
+    private function bootDonationTableSync()
+    {
+        Hooks::addAction('save_post_give_payment', SyncPostsWritesToDonationTable::class, 'onSavePost');
+        Hooks::addAction('delete_post', SyncPostsWritesToDonationTable::class, 'onDeletePost');
+
+        foreach (['donation', 'payment'] as $metaType) {
+            foreach (['added', 'updated', 'deleted'] as $event) {
+                Hooks::addAction("{$event}_{$metaType}_meta", SyncPostsWritesToDonationTable::class, 'onMetaChange', 10, 2);
+            }
+        }
+    }
+
+    /**
+     * A daily Action Scheduler action compares the two storages once the table is in use. The
+     * check is a few aggregate queries over every donation, so it runs in its own background
+     * request rather than on a visitor's.
+     *
+     * @since TBD
+     */
+    private function bootDonationStorageDriftCheck()
+    {
+        Hooks::addAction('givewp_donation_storage_drift_check', DonationStorageDriftCheck::class, 'run');
+
+        add_action('action_scheduler_init', static function () {
+            if (DonationStorageFlag::get()->isPosts()) {
+                return;
+            }
+
+            AsBackgroundJobs::scheduleRecurringAction(time() + DAY_IN_SECONDS, DAY_IN_SECONDS, 'givewp_donation_storage_drift_check', [], 'givewp_donation_storage');
+        });
+
+        if (defined('WP_CLI') && WP_CLI) {
+            WP_CLI::add_command('give check-donation-storage', give()->make(DonationStorageDriftCommand::class));
+        }
     }
 
     /**
