@@ -137,13 +137,13 @@ test.describe('Campaigns list filters', () => {
         expect(drafts.map((draft) => draft.id)).toContain(campaignId);
         expect(Number(((await response.json()) as {totalItems: number | string}).totalItems)).toBe(drafts.length);
 
+        // The table showed the unfiltered rows before, so wait for the filtered page with assertions that
+        // retry until it re-renders: one row per draft on the page, and no row that is not a draft.
+        const perPage = Number(new URL(response.url()).searchParams.get('perPage'));
         const rows = listRows(page);
-        await expect(rows.first()).toBeVisible();
-
-        for (const row of await rows.all()) {
-            await expect(row).toContainText('Draft');
-            await expect(row).not.toContainText(/\b(Active|Inactive|Archived)\b/);
-        }
+        await expect(rows).toHaveCount(Math.min(drafts.length, perPage));
+        await expect(rows.filter({hasNotText: 'Draft'})).toHaveCount(0);
+        await expect(rows.filter({hasText: /\b(Active|Inactive|Archived)\b/})).toHaveCount(0);
     });
 });
 
@@ -164,6 +164,8 @@ test.describe('Campaign Forms tab filters', () => {
         await visitList(page, admin, query);
         const initial = Number(((await (await first).json()) as {totalItems: number | string}).totalItems);
 
+        // The bar is mounted once its Status chip shows, so the checks below do not pass on an empty bar.
+        await expect(chip(page, 'Status')).toBeVisible();
         await expect(chip(page, 'Campaign')).toHaveCount(0);
 
         const addFilterButton = filterBar(page).getByRole('button', {name: 'Add filter'});
