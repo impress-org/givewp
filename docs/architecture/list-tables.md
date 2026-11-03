@@ -31,7 +31,7 @@ if (empty($showLegacy)) {
 }
 ```
 
-Two consequences worth internalising:
+Two consequences worth internalizing:
 
 - **A bug report about "the donations page" is ambiguous** until you know which UI the reporter is
   on. The fix location is completely different, and neither implementation shares code with the
@@ -224,9 +224,11 @@ table.
 
 Every list screen renders through `ListTablePage`, which hands the rows to `@wordpress/dataviews`. The
 screen's settings stay the same shape (columns from `ModelColumn::toArray()`, filter settings, bulk
-actions); small pure functions in `ListTable/adapters/` turn them into DataViews fields, view and
-actions, and turn the view back into the endpoint's request parameters (`viewToParameters` is the
-only place that knows those names). Sorting, filtering, searching and paging stay on the server.
+actions); small pure functions in `ListTable/adapters/` turn them into DataViews fields, default
+filters and actions, and turn the view back into the endpoint's request parameters
+(`viewToParameters` is the only place that knows those names). The view itself is assembled in
+`ListTable/state/` (see [View state](#view-state)). Sorting, filtering, searching and paging stay on
+the server.
 
 - **Stock behavior inside the list.** Toolbar, filter chips, row menu, selection bar, loading state
   and pagination are DataViews' own, as WordPress core uses them. Give adds the page header, stat
@@ -263,6 +265,163 @@ only place that knows those names). Sorting, filtering, searching and paging sta
 - **No preloaded rows.** The list fetches its own first page; do not localize rows into the page (see
   [pii.md](pii.md)).
 
+## View state
+
+A screen opts in by passing a `screen` config to `ListTablePage` (`{key, defaults}`, kept next to the
+screen in a `listTableScreen.ts` file). Without one the view lives in memory only, which is what an
+add-on page that never heard of the prop still gets. The one exception: a standalone page without a
+`screen` config applies the filter parameters it recognizes in the address (bare legacy names such as
+`?donor=12`, and `give-` names) to its first view and first request, and never writes them back. The
+code is in `ListTable/state/` and `ListTable/hooks/useListTableUrlState.ts` and
+`useListTableLayoutPreferences.ts`. Most of `state/` is pure functions; three modules are not:
+`listTableHistory` (the `history` entry, the address and the tab's `sessionStorage`), `layoutApi` (the
+layout route and the printed bootstrap) and `layoutWriteQueue` (the page view's write queue and its
+error notice).
+
+### One view object, two projections
+
+There is one DataViews view per page, owned by `useListTableView`. Nothing else holds a copy of the
+page, sort, filters or columns. Two things are derived from it:
+
+- **What is shown** (page, page size, sort, filters, test mode) is written to the address.
+- **How it is shown** (visible columns and their order, density, page size) is stored per user.
+
+`assembleView` builds the view from, in order of precedence: the screen defaults
+(`resolveScreenDefaults`, from the server column schema plus the config's `hiddenFields`,
+`visibleFields`, `perPage` and `density`, default `balanced`), then the stored layout, then the
+address, then the tab's search. Page size is in both projections; the address wins. On back and
+forward to an entry that names no page size, the page size of the user's layout is used (the layout
+hook exposes it as `layoutPerPage`).
+
+Every change records where it came from (`ViewChangeOrigin`): a `user` change adds a history entry
+only when the address query or the search changes, a `correction` (an invalid address, a page past
+the last one after records were removed) replaces it, `history` (back and forward) writes nothing, and
+`reset` behaves like a user change in the address. A layout-only change (columns, density) adds no
+entry, so Back does not undo it. Only a `user` change to the layout, or a reset, is stored.
+
+### The address
+
+`viewQuery.ts` is the only code that knows the parameter names.
+
+- **Every written parameter has the `give-` prefix**, in kebab case: `give-paged`, `give-per-page`,
+  `give-orderby`, `give-order`, `give-test-mode`, and one per filter (`parameterName()`, for example
+  `give-campaign-id` for `campaignId`). The WordPress admin uses the bare names (`page`, `paged`,
+  `s`, `post_type`) itself, and the details pages that embed a list use `page`, `tab` and `id`.
+- **Only what differs from the defaults is written.** A view equal to the defaults leaves the
+  address bare. Test mode is written only when it differs from the site's payment mode, so a link
+  without it follows the site. **Known limit:** a filter that starts with a default value cannot be
+  shown as cleared, because an empty value is not written. Clearing such a filter leaves the address
+  bare (and adds no history entry if nothing else changed), and a reload or a shared link brings the
+  default back. No core filter has a default value today.
+- **Only ids and enumerated values.** Each value must match `[A-Za-z0-9_-]{1,64}` and be one the
+  screen offers (a sortable column, a filter option, a page size in `PER_PAGE_SIZES`, an id for a
+  campaign or form filter). Anything else is dropped, the result is marked `corrected`, and the
+  address is replaced. **The exception is a hidden filter** (such as `donor`): it has no list of
+  offered values, so it accepts any token that matches the pattern, and `give-donor=Jane` is applied
+  as typed. The app itself only writes ids there; the address is not a privacy boundary for what a
+  person types into it by hand. Nothing read from the address is rendered as markup. "Filter by" options whose
+  real value is a moment in time keep a stable option value (`7`, `30`, `90` for "Period") and turn
+  it into the request value with `toApiValue`, fixed per view so the request does not change on
+  every render.
+- **Legacy bare names are read on load and rewritten.** Links made before the prefix used the filter's
+  own name for `select`, `campaignselect`, `formselect` and `hidden` filters (`?campaignId=4`). Those
+  are read with the same rules when the `give-` form is missing (the prefixed one wins), and the
+  address is then rewritten with `replaceState`, so no history entry is added. A bare `search` is
+  never read: it is only removed. A standalone page without a `screen` config reads the same
+  recognized filter parameters (bare and `give-` names) for its first view and first request, but
+  never rewrites the address and ignores the page, sort and page size.
+- **Other parameters are kept as they are,** in their order. The writer replaces only the screen's
+  own keys (`viewQueryKeys`) and the legacy names it read.
+- **Length limit.** The writer keeps the whole address under 2000 characters by dropping filter
+  values from the end.
+
+### The search term stays in the tab
+
+The search can be a donor's name or email, so it never goes in the address, a bookmark, a shared
+link or the stored layout. It lives in the tab's history entry (`history.state.giveListTable`, keys
+belonging to others are kept), so reload, back and forward in that tab restore it and a new tab
+opens without it. A tab that the page opens itself (`window.open`, or a link without `noopener`)
+starts with a copy of this tab's `sessionStorage`, but the copy is only read on a reload or a
+back/forward load, not on a fresh visit, so a new tab does not use it.
+
+**WordPress clears `history.state` on every admin page load.** Core's admin canonical-URL script
+runs `history.replaceState(null, …)` after the page loads, so after a reload the entry's state is
+gone. `listTableHistory.ts` therefore also writes the term to `sessionStorage`, keyed by screen and
+address (`give-list-search:<screen>:<path and query>`), and reads that copy only when the entry has
+no state for the screen. `sessionStorage` belongs to the tab and dies with it, so the term still
+never outlives the tab. Blocked storage only loses the copy.
+
+A search-only change within 1.5 seconds of the previous one replaces the history entry instead of
+adding one (`SEARCH_COLLAPSE_MS`), so one typed term is one entry.
+
+### The stored layout
+
+`src/Framework/ListTable/Layouts/` stores one record per user, per screen, per site: a user option
+named `give_list_table_layout_<screen>`, which WordPress prefixes with the site's table prefix, so a
+multisite network keeps a separate record on each site.
+
+- **The screens are a closed list.** `ListTableScreens` maps each key to the permission of the admin
+  page that shows it (an embedded table uses its host details page's). There is no filter. The
+  client's `LIST_TABLE_SCREEN_KEYS` in `state/types.ts` must hold the same keys, and
+  `screenKeys.test.ts` checks it. Shared code in `ListTable/` never names a key;
+  `coreScreens.test.ts` checks that too.
+- **The record holds only differences from the defaults** (`toStoredLayout`): the visibility of the
+  columns the user changed, the full order only when it differs, density and page size only when
+  they differ. A column the user never touched keeps following its default, so a later change to the
+  server schema or the config still reaches that user. A layout equal to the defaults deletes the
+  record.
+- **The route** is `givewp/v3/list-table-layouts/<screen>` (GET, PUT, DELETE): signed in (401), a
+  known screen (404), the screen's view capability (403). It only ever reads or writes the signed-in
+  user's own record. `ListTableLayoutValidator` accepts version `1`, at most 50 column ids in `visibility`
+  and at most 50 in `order` (each limit on its own), every id matching `[A-Za-z0-9_-]{1,64}`, one of the three densities, and a page size from 1 to 100.
+- **Writes** for an ordinary layout change wait one second after the last change; a reset sends at
+  once. All writes run one after another. The queue and the
+  once-per-page-view error notice live in `state/layoutWriteQueue.ts`, outside React, so a remounted
+  table shares them. A change is staged in the commit phase, so a `pagehide` right after it already
+  sends it. The exception to the order is the send on `pagehide`: it goes out at once with
+  `keepalive` and skips the queue, so it can overtake an older write that is still in flight. A
+  failed write keeps the change on screen and shows one notice per page view; the next write sends
+  the whole record again.
+- **Locked columns.** The identifying column (the title column, or `id` when there is none) cannot
+  be hidden, and the legacy row-actions column, when a screen uses one, cannot be hidden and stays
+  last (`fieldRules.ts`). A column shown again, or one a stored order does not name, goes before the
+  first column that comes after it in the default order (`fieldOrder.ts`, shared by both cases).
+
+### Embedded tables
+
+A table inside another page (the campaign details "Forms" tab, the subscription details "Donations"
+tab) passes `contentMode`. With `contentMode` the address and the tab state are never read or written
+(`readInitialUrlState()` reads nothing and the URL hook writes nothing), because the host page owns
+the address. Its layout is still
+stored under its own key (`campaign-forms`, `subscription-donations`), separate from the standalone
+screen it reuses.
+
+### The first request already carries the view
+
+`ListTablePage` resolves the defaults inside a `useState` initializer, before the first render, and
+calls `readInitialLayout` (the stored layout) and `readInitialUrlState` (the address and the tab's
+search). The shell holds no storage or address code itself. So the first list request is
+already the URL's view, and there is no request for the default view followed by a second one. The
+stored layout reaches the page the same way: `PrintListTableLayouts` (on `admin_enqueue_scripts`,
+priority 6, right after the `givewp-list-table` handle is registered at 5) prints
+`window.GiveListTableLayouts = {path, layouts}` with `wp_add_inline_script(…, 'before')`. Only the
+signed-in user's own records for the screens they can open are printed, each validated again, and
+WordPress prints inline data only with its handle, so it appears only on list pages. See
+[pii.md](pii.md) for why this is allowed.
+
+### Reset view
+
+`ListTableViewReset` is a button next to the stock view options, shown only while the layout
+differs from the defaults. After a confirmation it puts the columns, density and page size back to
+the defaults and deletes the stored record. Filters, sort and search stay. When the page size
+changes, the page becomes the one that holds the row the current page starts with (page 3 of 50 rows
+becomes page 4 of 30), and that change adds a history entry like any other. Without a `screen`
+config it still resets the layout for the current page view; nothing is stored.
+
+- **[Judgement]** The closed screen list means an add-on's own list page cannot keep its view in
+  the URL or store a layout. Opening the list to add-ons (a filter on the PHP list and a way to
+  register the client key) is a product decision, not something to add as part of a screen change.
+
 ## Checklist for a new column
 
 - Does it need data beyond what the model already loaded? → extend the endpoint's bulk fetch and
@@ -280,5 +439,6 @@ only place that knows those names). Sorting, filtering, searching and paging sta
   `ListTableData` concerns
 - `src/Views/Components/ListTable/` — the React side ([README](../../src/Views/Components/ListTable/README.MD))
 - `src/Framework/ListTable/Actions/RegisterListTableAssets.php` — the shared `givewp-list-table` script handle
+- `src/Framework/ListTable/Layouts/` — the stored layout: screens, store, validator, route and the printed bootstrap
 - `src/Framework/ListTable/Views/GoalProgress.php` — the goal cell the Campaigns and Donation Forms lists share
 - `src/Framework/QueryBuilder/` — what the endpoints build queries with ([README](../../src/Framework/QueryBuilder/README.md))

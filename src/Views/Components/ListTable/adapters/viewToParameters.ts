@@ -7,14 +7,26 @@ import type {FilterByGroupedOptions, FilterConfig, FilterValues, ListTableParame
 export const PER_PAGE_SIZES = [10, 20, 30, 50, 100];
 
 /**
- * The list endpoints accept any page size; the client keeps it to the largest offered size.
+ * The page size used when neither the screen nor the page sets one.
  *
  * @since TBD
  */
-export function clampPerPage(perPage: number | undefined): number {
-    const size = Math.round(Number(perPage)) || 30;
+export const DEFAULT_PER_PAGE = 30;
 
-    return Math.min(Math.max(size, 1), PER_PAGE_SIZES[PER_PAGE_SIZES.length - 1]);
+/**
+ * The nearest offered page size. On a tie the smaller size wins. A value that is not a number gives
+ * the fallback. Every page size goes through this rule, so the view only ever holds an offered size.
+ *
+ * @since TBD
+ */
+export function snapPerPage(perPage: number | undefined, fallback: number = DEFAULT_PER_PAGE): number {
+    if (typeof perPage !== 'number' || !Number.isFinite(perPage)) {
+        return fallback;
+    }
+
+    return PER_PAGE_SIZES.reduce((nearest, size) =>
+        Math.abs(size - perPage) < Math.abs(nearest - perPage) ? size : nearest
+    );
 }
 
 /**
@@ -55,19 +67,28 @@ export function filterByGroups(filterSettings: FilterConfig[]): FilterByGroupedO
     return filterSettings.flatMap((filter) => (filter.type === 'filterby' ? filter.groupedOptions ?? [] : []));
 }
 
-const isEmpty = (value: unknown) =>
-    value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0);
+/**
+ * Whether a search or filter value narrows the rows: not empty, not null and not an empty list.
+ *
+ * @since TBD
+ */
+export function isApplied(value: unknown): boolean {
+    return value !== undefined && value !== null && value !== '' && !(Array.isArray(value) && value.length === 0);
+}
+
+const isEmpty = (value: unknown) => !isApplied(value);
 
 /**
  * The applied "Filter by" values keyed by API parameter, as the groups' `isVisible` rules read them.
  * Groups that share a parameter (Donations "Show trashed" and the status list) add to one array.
- * A group that is hidden by the current values is left out.
+ * A group that is hidden by the current values is left out. With `now`, each group's `toApiValue`
+ * turns the values into what the endpoint receives; `isVisible` always reads the option values.
  *
  * @since TBD
  */
-export function filterByValues(view: View, filterSettings: FilterConfig[]): FilterValues {
+export function filterByValues(view: View, filterSettings: FilterConfig[], now?: Date): FilterValues {
     const groups = filterByGroups(filterSettings);
-    const valuesOf = (included: FilterByGroupedOptions[]) =>
+    const valuesOf = (included: FilterByGroupedOptions[], toApi: boolean) =>
         included.reduce<FilterValues>((values, group) => {
             const value = viewFilterValue(view, group.id);
 
@@ -75,17 +96,29 @@ export function filterByValues(view: View, filterSettings: FilterConfig[]): Filt
                 return values;
             }
 
-            return {...values, [group.apiParam]: [...(values[group.apiParam] ?? []), ...[].concat(value).map(String)]};
+            const optionValues: string[] = [].concat(value).map(String);
+            const {toApiValue} = group;
+            const sent =
+                toApi && now && toApiValue
+                    ? optionValues.map((optionValue) => toApiValue(optionValue, now))
+                    : optionValues;
+
+            return {...values, [group.apiParam]: [...(values[group.apiParam] ?? []), ...sent]};
         }, {});
 
-    const allValues = valuesOf(groups);
+    const allValues = valuesOf(groups, false);
 
-    return valuesOf(groups.filter((group) => !group.isVisible || group.isVisible(allValues)));
+    return valuesOf(
+        groups.filter((group) => !group.isVisible || group.isVisible(allValues)),
+        true
+    );
 }
 
 /**
  * Builds the list endpoint's request parameters from the view. This is the only place that knows the
  * endpoints' parameter names. Empty values are left out, as the old client left them out of the URL.
+ * `now` is the time "Filter by" values such as "Period" are counted from; keep it fixed per view so
+ * the request URL stays the same.
  *
  * @since TBD
  */
@@ -93,11 +126,11 @@ export function viewToParameters(
     view: View,
     filterSettings: FilterConfig[],
     scope: Record<string, string | number>,
-    extra: {locale: string; testMode?: boolean}
+    extra: {locale: string; testMode?: boolean; now?: Date}
 ): ListTableParameters {
     const parameters: ListTableParameters = {
         page: view.page ?? 1,
-        perPage: clampPerPage(view.perPage),
+        perPage: snapPerPage(view.perPage),
         sortColumn: view.sort?.field ?? 'id',
         sortDirection: view.sort?.direction ?? 'desc',
         locale: extra.locale,
@@ -120,7 +153,7 @@ export function viewToParameters(
         }
     });
 
-    Object.assign(parameters, filterByValues(view, filterSettings), scope);
+    Object.assign(parameters, filterByValues(view, filterSettings, extra.now ?? new Date()), scope);
 
     return Object.fromEntries(Object.entries(parameters).filter(([, value]) => !isEmpty(value)));
 }

@@ -1,6 +1,6 @@
 import type {View} from '@wordpress/dataviews';
 import type {FilterConfig} from '../ListTablePage/types';
-import {clampPerPage, filterByValues, filterFieldId, viewToParameters} from './viewToParameters';
+import {filterByValues, filterFieldId, isApplied, snapPerPage, viewToParameters} from './viewToParameters';
 
 const donationFilters: FilterConfig[] = [
     {name: 'campaignId', type: 'campaignselect', options: [{value: 'none', text: 'No campaign'}]},
@@ -136,6 +136,52 @@ describe('viewToParameters', () => {
     it('caps the page size at 100', () => {
         expect(viewToParameters(view({perPage: 500}), [], {}, {locale: 'en-US'})).toMatchObject({perPage: 100});
     });
+
+    describe('a group with toApiValue', () => {
+        const periodFilters: FilterConfig[] = [
+            {
+                name: 'filterBy',
+                type: 'filterby',
+                groupedOptions: [
+                    {
+                        id: 'period',
+                        apiParam: 'start',
+                        name: 'Period',
+                        type: 'radio',
+                        options: [{text: 'Last 30 days', value: '30'}],
+                        toApiValue: (days, now) => new Date(now.getTime() - Number(days) * 86_400_000).toISOString(),
+                        isVisible: (values) => values.start?.[0] === '30',
+                    },
+                ],
+            },
+        ];
+        const now = new Date('2026-10-28T12:00:00.000Z');
+
+        it('sends the API value made from the option value and the given time', () => {
+            const parameters = viewToParameters(
+                view({filters: [is('period', '30')]}),
+                periodFilters,
+                {},
+                {
+                    locale: 'en-US',
+                    now,
+                }
+            );
+
+            expect(parameters.start).toEqual(['2026-09-28T12:00:00.000Z']);
+        });
+
+        it('gives the same parameters for the same view and time', () => {
+            const build = () =>
+                viewToParameters(view({filters: [is('period', '30')]}), periodFilters, {}, {locale: 'en-US', now});
+
+            expect(build()).toEqual(build());
+        });
+
+        it('keeps the option values for the isVisible rules and chips', () => {
+            expect(filterByValues(view({filters: [is('period', '30')]}), periodFilters)).toEqual({start: ['30']});
+        });
+    });
 });
 
 describe('filterByValues', () => {
@@ -163,12 +209,41 @@ describe('filterByValues', () => {
     });
 });
 
-describe('clampPerPage', () => {
-    it('keeps the page size between 1 and 100, 30 when missing', () => {
-        expect(clampPerPage(undefined)).toBe(30);
-        expect(clampPerPage(0)).toBe(30);
-        expect(clampPerPage(-4)).toBe(1);
-        expect(clampPerPage(250)).toBe(100);
-        expect(clampPerPage(20)).toBe(20);
+describe('snapPerPage', () => {
+    it.each([
+        [10, 10],
+        [30, 30],
+        [1, 10],
+        [24, 20],
+        [26, 30],
+        [45, 50],
+        [80, 100],
+        [500, 100],
+    ])('snaps %p to %p', (input, expected) => {
+        expect(snapPerPage(input)).toBe(expected);
+    });
+
+    it('picks the smaller size on a tie', () => {
+        expect(snapPerPage(25)).toBe(20);
+    });
+
+    it('falls back to the given default when the size is not a number', () => {
+        expect(snapPerPage(Number.NaN, 50)).toBe(50);
+        expect(snapPerPage(undefined)).toBe(30);
+    });
+
+    it('sends the nearest offered page size in the request', () => {
+        expect(viewToParameters({type: 'table', perPage: 25}, [], {}, {locale: 'en'}).perPage).toBe(20);
+        expect(viewToParameters({type: 'table'}, [], {}, {locale: 'en'}).perPage).toBe(30);
+    });
+});
+
+describe('isApplied', () => {
+    it.each([[undefined], [null], [''], [[]]])('treats %p as not applied', (value) => {
+        expect(isApplied(value)).toBe(false);
+    });
+
+    it.each([[0], [false], ['trash'], [['publish']]])('treats %p as applied', (value) => {
+        expect(isApplied(value)).toBe(true);
     });
 });
