@@ -95,7 +95,7 @@ export default function useFilterOptions({source, screen, enabled}: UseFilterOpt
         return () => {
             latestRequest.current++;
         };
-    }, [enabled, key]);
+    }, [enabled, key, source, screen, term]);
 
     const current = loaded?.key === key ? loaded : undefined;
 
