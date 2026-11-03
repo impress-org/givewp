@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {type Ref, useEffect, useRef, useState} from 'react';
 import {Button, DropdownMenu} from '@wordpress/components';
 import type {Filter} from '@wordpress/dataviews';
 import {__, sprintf} from '@wordpress/i18n';
@@ -23,6 +23,7 @@ import EntityFilter from './EntityFilter';
 import './styles.scss';
 
 /**
+ * @since TBD Add `containerRef`.
  * @since TBD Add `onFocusFallback`.
  * @since TBD
  */
@@ -41,6 +42,8 @@ export interface ListTableFiltersProps {
     onReset: () => void;
     /** Takes keyboard focus when a removed chip leaves nothing in the bar to focus. */
     onFocusFallback?: () => void;
+    /** The bar's element. It can take focus from code, for when no control is left to focus. */
+    containerRef?: Ref<HTMLDivElement>;
 }
 
 /**
@@ -88,6 +91,7 @@ const isMultiple = (declaration: BarFilterDeclaration) => declaration.kind !== '
  * reads the entity's declaration and keeps every value in the view's filters (`filter-<id>`), so
  * the URL, reset and the empty state work from the same place. It has no screen-specific branches.
  *
+ * @since TBD Let the page focus the bar itself (`containerRef`, `tabIndex={-1}`).
  * @since TBD Keep keyboard focus in the bar, or hand it to the page, when the test-mode chip is removed.
  * @since TBD
  */
@@ -101,6 +105,7 @@ export default function ListTableFilters({
     canReset,
     onReset,
     onFocusFallback,
+    containerRef,
 }: ListTableFiltersProps) {
     const [justAdded, setJustAdded] = useState<string>();
     const addFilterRef = useRef<HTMLDivElement>(null);
@@ -271,7 +276,13 @@ export default function ListTableFilters({
     };
 
     return (
-        <div className="givewp-list-table-filters" role="group" aria-label={__('Filters', 'give')}>
+        <div
+            ref={containerRef}
+            className="givewp-list-table-filters"
+            role="group"
+            aria-label={__('Filters', 'give')}
+            tabIndex={-1}
+        >
             {shown.map((declaration) => (
                 <div
                     key={declaration.id}

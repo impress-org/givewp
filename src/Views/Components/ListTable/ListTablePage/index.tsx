@@ -88,6 +88,7 @@ export const ShowConfirmModalContext = createContext(
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
  *
+ * @since TBD After Reset, focus the search box, else a control left in the filter bar, else the bar.
  * @since TBD Announce the result count to screen readers after the admin changes the view.
  * @since TBD With `filters`, show Reset only when the filters differ from the screen defaults, and reset to those defaults.
  * @since TBD Accept filter declarations (`filters`), a fixed `scope` and `testModeToggle`; with `filters`, render Give's filter bar and labeled search.
@@ -269,12 +270,30 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             ? differsFromDefaultFilters(view, start.defaults.filters)
             : hasActiveFilters || (view.filters ?? []).some((filter) => !filter.isLocked);
         const searchBoxRef = useRef<HTMLDivElement>(null);
-        const focusSearchBox = useCallback(() => searchBoxRef.current?.querySelector('input')?.focus(), []);
-        // The control that was clicked (Reset, Clear filters) goes away, so keyboard focus moves to the search box.
+        const filterBarRef = useRef<HTMLDivElement>(null);
+        // The search box, or, when it is not shown (during a bulk selection, or on a screen without a
+        // search), the first control left in the filter bar, or else the bar itself.
+        const focusFilterArea = useCallback(() => {
+            const bar = filterBarRef.current;
+            const target =
+                searchBoxRef.current?.querySelector('input') ??
+                bar?.querySelector<HTMLElement>('button:not(:disabled)') ??
+                bar;
+
+            target?.focus();
+        }, []);
+        // The control that was clicked (Reset, Clear filters) goes away, so keyboard focus moves once the
+        // page has re-rendered without it.
+        const [focusRequest, setFocusRequest] = useState(0);
+        useEffect(() => {
+            if (focusRequest > 0) {
+                focusFilterArea();
+            }
+        }, [focusRequest, focusFilterArea]);
         const resetFilters = useCallback(() => {
             restoreDefaultFilters(start.defaults.filters);
-            focusSearchBox();
-        }, [restoreDefaultFilters, focusSearchBox]);
+            setFocusRequest((count) => count + 1);
+        }, [restoreDefaultFilters, start.defaults.filters]);
         // The filtered empty state offers "Clear filters", so it shows only when there is something to clear.
         const isFilteredEmpty = declarations ? canReset : hasActiveFilters;
 
@@ -414,7 +433,8 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                                         }
                                         canReset={canReset}
                                         onReset={resetFilters}
-                                        onFocusFallback={focusSearchBox}
+                                        onFocusFallback={focusFilterArea}
+                                        containerRef={filterBarRef}
                                     />
                                 )
                             }

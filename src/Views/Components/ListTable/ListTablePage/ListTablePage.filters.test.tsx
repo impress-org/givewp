@@ -227,6 +227,29 @@ describe('ListTablePage with filter declarations', () => {
         expect(document.activeElement).toBe(box.querySelector('input'));
     });
 
+    it('reset moves keyboard focus to a control left in the bar when the search box is hidden', async () => {
+        // During a bulk selection the table shows no search box, but the filter bar stays.
+        window.history.replaceState(null, '', `${PATH}?page=give-forms&give-status=pending`);
+        await render();
+        const bar = await renderSlot(lastTable().filterBar);
+
+        await act(async () => filterBar().props.onReset());
+
+        expect(document.activeElement).toBe(bar.querySelector('button'));
+        expect(document.activeElement?.textContent).not.toBe('Reset');
+    });
+
+    it('the focus fallback focuses the bar itself when the search box is hidden', async () => {
+        await render();
+        const bar = await renderSlot(lastTable().filterBar);
+        bar.querySelectorAll('button').forEach((button) => button.remove());
+
+        await act(async () => filterBar().props.onFocusFallback?.());
+
+        expect(document.activeElement).toBe(bar.querySelector('[role="group"]'));
+        expect(document.activeElement?.getAttribute('aria-label')).toBe('Filters');
+    });
+
     it('can reset a secondary filter added from "Add filter" that has no value yet', async () => {
         await render();
         await act(async () =>
