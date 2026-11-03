@@ -1,4 +1,4 @@
-import {act} from 'react';
+import {act, startTransition, Suspense, useState} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
 import ListTableSearch from './index';
 
@@ -107,6 +107,39 @@ describe('ListTableSearch', () => {
         expect(first).not.toHaveBeenCalled();
         expect(second).toHaveBeenCalledTimes(1);
         expect(second).toHaveBeenCalledWith('jo');
+    });
+
+    it('reports with the committed callback when a render with a new callback is thrown away', async () => {
+        const first = jest.fn();
+        const second = jest.fn();
+        const never = new Promise<void>(() => {});
+        let update: (next: {callback: () => void; suspend: boolean}) => void = () => {};
+
+        const Gate = ({suspend}: {suspend: boolean}) => {
+            if (suspend) {
+                throw never;
+            }
+            return null;
+        };
+        const Parent = () => {
+            const [state, setState] = useState({callback: first, suspend: false});
+            update = setState;
+            return (
+                <Suspense fallback={null}>
+                    <ListTableSearch label="Search donors" hint="" value="" onChange={state.callback} />
+                    <Gate suspend={state.suspend} />
+                </Suspense>
+            );
+        };
+
+        await act(() => root.render(<Parent />));
+        await type('jo');
+        // A transition that suspends keeps the old screen, so React throws this render away.
+        await act(() => startTransition(() => update({callback: second, suspend: true})));
+        await act(() => jest.advanceTimersByTime(500));
+
+        expect(second).not.toHaveBeenCalled();
+        expect(first).toHaveBeenCalledWith('jo');
     });
 
     it('keeps newer typing when the parent echoes an older reported term', async () => {

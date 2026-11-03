@@ -23,6 +23,7 @@ const DEBOUNCE_MS = 300;
  * The list search box. It keeps what the admin types, reports the term after a short pause, and
  * follows the view when the term changes from outside (for example a reset).
  *
+ * @since TBD Keep the latest callback in an effect, not during render.
  * @since TBD Drop a pending search when the view gets a new term from outside.
  * @since TBD
  */
@@ -32,7 +33,11 @@ export default function ListTableSearch({label, hint, value, onChange}: ListTabl
     // The debounced call must keep a stable identity, or a parent re-render would cancel a pending search.
     const onChangeRef = useRef(onChange);
     const lastReported = useRef(value);
-    onChangeRef.current = onChange;
+
+    // Synced after each commit, so a pending report never calls a callback from a render React discarded.
+    useEffect(() => {
+        onChangeRef.current = onChange;
+    });
 
     const report = useCallback((term: string) => {
         lastReported.current = term;
