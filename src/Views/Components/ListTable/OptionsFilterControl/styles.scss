@@ -1,0 +1,12 @@
+.givewp-options-filter-control {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-2);
+    max-block-size: 20rem;
+    overflow-y: auto;
+    font-size: var(--givewp-font-size-paragraph-md);
+
+    &__option {
+        margin: 0;
+    }
+}

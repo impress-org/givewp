@@ -1,0 +1,19 @@
+.givewp-list-table-search {
+    min-inline-size: 16rem;
+
+    // `base-control__label` is the label of the bundled components. WordPress 6.9 renders an
+    // `input-control__label` styled by a triple-class 11px rule that is added after this file, so this
+    // selector needs four classes to win.
+    & &__control .components-base-control__label,
+    & &__control .components-input-control__label.components-input-control__label {
+        color: var(--givewp-neutral-700);
+        font-size: var(--givewp-font-size-paragraph-md);
+    }
+
+    // Never smaller than the label: the hint is what tells the admin how search matches.
+    &__hint {
+        margin: var(--givewp-spacing-1) 0 0;
+        color: var(--givewp-neutral-500);
+        font-size: var(--givewp-font-size-paragraph-md);
+    }
+}
