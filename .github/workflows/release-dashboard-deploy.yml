@@ -53,7 +53,7 @@ jobs:
         environment: live
         needs: tests
         permissions:
-            contents: write # the action pushes the merges and publishes the release; the zip is attached to it
+            contents: write # the action writes the merges and publishes the release; the zip is attached to it
         steps:
             # The environment's branch policy protects the branch the run was started on, not the input,
             # so the two have to be the same branch for the policy to cover what is merged and published.
@@ -66,23 +66,25 @@ jobs:
                         exit 1
                     fi
 
-            -   name: Checkout code
-                uses: actions/checkout@v7
-                with:
-                    # The action fetches the branches it merges and pushes them with the token it is given,
-                    # so the checkout keeps no credentials in .git/config for the third-party actions below.
-                    persist-credentials: false
-
-            # Leaves the checkout on master at the merged commit, so everything below builds the release
-            # from it. Pinned to a commit of stellarwp/plugin-toolbox#16 (stacked on #10); switch to @v1
-            # once plugin-toolbox publishes a release.
+            # The merges go through the GitHub API, so no checkout is needed before this step. Pinned to a
+            # commit of stellarwp/plugin-toolbox#16 (stacked on #10); switch to @v1 once plugin-toolbox
+            # publishes a release.
             -   name: Merge the release into master and master back into develop
                 id: merge
-                uses: stellarwp/plugin-toolbox/.github/actions/release-merge@e6cee726ff651bee3058247b09d57c0b8a49c88f
+                uses: stellarwp/plugin-toolbox/.github/actions/release-merge@356cf3ea58216dbe2c3529f53657172522419664
                 with:
                     branch: ${{ inputs.branch }}
                     version: ${{ inputs.version }}
                     base-branch: master
+
+            # The merged commit on master, the one the release is published at: everything below builds
+            # the release from it.
+            -   name: Checkout code
+                uses: actions/checkout@v7
+                with:
+                    ref: ${{ steps.merge.outputs.base-sha }}
+                    # Nothing below needs git credentials; the third-party actions find none in .git/config.
+                    persist-credentials: false
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
@@ -129,7 +131,7 @@ jobs:
             # attached before it is public. Published last, so a failed build or deploy leaves no release.
             -   name: Publish the GitHub release
                 id: release
-                uses: stellarwp/plugin-toolbox/.github/actions/release-publish@e6cee726ff651bee3058247b09d57c0b8a49c88f
+                uses: stellarwp/plugin-toolbox/.github/actions/release-publish@356cf3ea58216dbe2c3529f53657172522419664
                 with:
                     version: ${{ inputs.version }}
                     target: ${{ steps.merge.outputs.base-sha }}
