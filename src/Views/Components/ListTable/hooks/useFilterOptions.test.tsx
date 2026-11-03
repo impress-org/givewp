@@ -222,6 +222,26 @@ describe('useFilterOptions', () => {
         expect(latest.isLoading).toBe(false);
     });
 
+    it('reopening with the same search loads a fresh page 1 and blocks load more until then', async () => {
+        mockedFetch.mockResolvedValueOnce({options: [{value: '1', label: 'Old'}], hasMore: true});
+        await render(true);
+        await flush();
+
+        await render(false);
+        const fresh = deferred<ReturnType<typeof page>>();
+        mockedFetch.mockReturnValueOnce(fresh.promise);
+        await render(true);
+
+        expect(latest.isLoading).toBe(true);
+        await act(async () => latest.loadMore());
+        expect(paths()).toEqual([`${BASE}&page=1`, `${BASE}&page=1`]);
+
+        await act(async () => fresh.resolve({options: [{value: '1', label: 'New'}], hasMore: true}));
+
+        expect(latest.isLoading).toBe(false);
+        expect(latest.options).toEqual([{value: '1', label: 'New'}]);
+    });
+
     it('drops an answer that arrives after unmount', async () => {
         const slow = deferred<ReturnType<typeof page>>();
         mockedFetch.mockReturnValue(slow.promise);

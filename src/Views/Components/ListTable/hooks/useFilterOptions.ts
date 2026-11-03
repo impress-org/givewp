@@ -79,6 +79,9 @@ export default function useFilterOptions({source, screen, enabled}: UseFilterOpt
 
         const request = ++latestRequest.current;
         setIsLoadingMore(false);
+        // Drop the last result, even with the same key (a reopen): until page 1 answers the hook is
+        // loading, and load more cannot append to the old pages.
+        setLoaded(undefined);
 
         fetchFilterOptions({source, screen, search: term, page: 1}).then(
             ({options, hasMore}) => {
