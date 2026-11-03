@@ -13,7 +13,7 @@ class GetOrCreateDonor
     public $donorCreated = false;
 
     /**
-     * @since TBD Link an existing donor matched by email to the logged-in user when the email is the user's account email
+     * @since TBD Link a donor matched by email to the logged-in user when it is the user's account email
      * @since 4.19.1.1 Do not append submitted donation email to existing donor additional emails.
      * @since 3.9.0 Add support to "phone" property
      * @since 3.2.0
