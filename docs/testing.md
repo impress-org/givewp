@@ -243,20 +243,31 @@ Every pull request gets a "WordPress Playground Preview" comment from
 running the pull request's build, logged in and opened on the Campaigns screen. The preview is rebuilt
 on every push, and the build takes several minutes.
 
+The workflow is a short caller of the shared one in
+[stellarwp/plugin-toolbox](https://github.com/stellarwp/plugin-toolbox/blob/main/.github/workflows/playground-preview.yml).
 The zip is the same dev build the packaging bot makes: the shared StellarWP `zip.yml` workflow
 builds it with pup and puts it in the public zip bucket, and the links' blueprint points at that
 file through the same `evnt.is/test-zip` link the bot posts to Slack. Nothing is hosted anywhere
 new, and a branch the bot already packaged is not built twice. Pull requests from forks get no
-preview, because they cannot see the bucket credentials.
+preview, because they cannot see the bucket credentials. The caller passes the bucket secrets one by
+one, because `secrets: inherit` does not work across organizations. The toolbox's
+[playground-preview README](https://github.com/stellarwp/plugin-toolbox/blob/main/.github/actions/playground-preview/README.md)
+describes every input and the blueprint rules. The caller uses `@main`, so a change merged in the
+toolbox reaches the next GiveWP run.
 
 While the zip builds, the same comment says "building", so the links of an older push are never left
 on the pull request. If the build fails, it says "failed" with a link to the run. When the build is
-done, the comment is a short list with icons, like the zip comment in Kadence Blocks: a heading with the
-commit, a time badge, and three links: an empty site, a site with sample data, and the zip. The
-sample-data link also installs the
+done, the comment is a short list with icons: a heading with the commit, a time badge, and three
+links: an empty site, a site with sample data, and the zip.
+
+The two sites are two blueprint files in `.github/playground/`, one link each. The caller lists them
+in `blueprints:`, `{{ZIP_URL}}` in each file becomes the link to the pull request's zip, and
+`meta.title` is the link's label. `blueprint-sample-data.json` also installs the
 [Give Data Generator](https://github.com/impress-org/give-data-generator) release and runs
 `wp give-data donations 100 --campaigns=3` before opening, with the site switched to test mode so
-the Donations and Donors screens show what it made. It takes a few minutes longer to open.
+the Donations and Donors screens show what it made. It takes a few minutes longer to open. To
+change what a preview does, edit these files; to try one, paste its JSON, with `{{ZIP_URL}}`
+replaced by a zip link, into the [Playground blueprint editor](https://playground.wordpress.net/).
 
 `.wordpress-org/blueprints/blueprint.json` is the same blueprint pointed at the WordPress.org
 release. It gives the plugin page its Live Preview button.
