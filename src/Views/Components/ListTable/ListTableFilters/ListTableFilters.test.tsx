@@ -159,6 +159,36 @@ describe('ListTableFilters', () => {
         expect(checkboxNamed('Card')).toBeDefined();
     });
 
+    it('opens an added filter only once, not again when its chip comes back later', async () => {
+        const renderView = (filters: Filter[]) =>
+            act(() =>
+                root.render(
+                    <ListTableFilters
+                        declarations={[status, paymentType]}
+                        view={{...baseView, filters}}
+                        onChangeView={onChangeView}
+                        statuses={statuses}
+                        canReset={false}
+                        onReset={onReset}
+                    />
+                )
+            );
+        await renderView([]);
+        await click(addFilterButton());
+        await click(menuItems().find((item) => item.textContent === 'Payment type'));
+        await renderView([{field: 'filter-paymentType', operator: 'isAny', value: undefined}]);
+
+        expect(popover()).not.toBeNull();
+
+        await click(chipNamed('Payment type'));
+        // Reset takes the chip away; browser Back brings it back with a value.
+        await renderView([]);
+        await renderView([{field: 'filter-paymentType', operator: 'isAny', value: ['card']}]);
+
+        expect(chips()).toContain('Payment type: Card');
+        expect(popover()).toBeNull();
+    });
+
     it('clearing a secondary filter keeps its chip with no value', async () => {
         await render({initial: [{field: 'filter-paymentType', operator: 'isAny', value: ['card']}]});
 

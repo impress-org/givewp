@@ -108,6 +108,14 @@ export default function ListTableFilters({
     const resetRef = useRef<HTMLButtonElement>(null);
     const pendingFocus = useRef<FocusTarget>();
 
+    // The added chip opened on mount (child effects run first), so a chip that comes back later, after
+    // Reset and browser Back, does not open by itself.
+    useEffect(() => {
+        if (justAdded && chipRefs.current.has(justAdded)) {
+            setJustAdded(undefined);
+        }
+    });
+
     // A removed chip took the focus with it, so it moves once the bar has re-rendered.
     useEffect(() => {
         const target = pendingFocus.current;
