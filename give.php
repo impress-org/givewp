@@ -6,7 +6,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 4.19.1
+ * Version: 4.19.1.1
  * Requires at least: 6.9
  * Requires PHP: 7.4
  * Text Domain: give
@@ -280,7 +280,7 @@ final class Give
     /**
      * Init Give when WordPress Initializes.
      *
-     * @since TBD Fire `give_before_init`. The old `before_give_init` still fires, without a deprecation notice.
+     * @since 4.19.1 Fire `give_before_init`. The old `before_give_init` still fires, without a deprecation notice.
      * @since 3.19.0 Move the loading of the `give` textdomain to the `init` action hook.
      * @since 1.8.9
      */
@@ -292,7 +292,7 @@ final class Give
          * Not deprecated yet: add-ons hook it to register their service providers, and a deprecation
          * notice would fire on every request. Deprecate it once the add-ons use `give_before_init`.
          *
-         * @since TBD Kept for add-ons; `give_before_init` fires right after it.
+         * @since 4.19.1 Kept for add-ons; `give_before_init` fires right after it.
          * @since 1.8.9
          */
         do_action('before_give_init'); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- kept for add-ons that hook it to register their service providers; deprecate once they move to give_before_init.
@@ -300,7 +300,7 @@ final class Give
         /**
          * Fires before the Give core is initialized.
          *
-         * @since TBD Replaces `before_give_init`.
+         * @since 4.19.1 Replaces `before_give_init`.
          */
         do_action('give_before_init');
 
@@ -369,7 +369,7 @@ final class Give
     /**
      * Load all the service providers to bootstrap the various parts of the application.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.8.0
      */
     private function loadServiceProviders()
@@ -439,7 +439,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '4.19.1');
+            define('GIVE_VERSION', '4.19.1.1');
         }
 
         // Plugin Root File.
@@ -495,7 +495,7 @@ final class Give
     /**
      * Display compatibility notice for Give 2.5.0 and Recurring 1.8.13 when Stripe premium is not active.
      *
-      * @since TBD Add translators comments.
+      * @since 4.19.1 Add translators comments.
      * @since 2.5.0
      *
      * @return void
