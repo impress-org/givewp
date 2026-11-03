@@ -13,7 +13,7 @@ const render = (props: Partial<FilterChipProps> = {}) =>
         root.render(
             <FilterChip
                 text="Status: 2"
-                fullText="Status: Active, Pending"
+                accessibleName="Status: 2. Active, Pending"
                 hasValue
                 canRemove
                 removeLabel="Reset"
@@ -82,10 +82,10 @@ describe('FilterChip', () => {
         expect(content()).toBeNull();
     });
 
-    it('names the chip by its full text and shows it in a tooltip', async () => {
+    it('shows the accessible name in the tooltip, so the name and the tooltip are one text', async () => {
         await render();
 
-        expect(chip().getAttribute('aria-label')).toBe('Status: Active, Pending');
+        expect(chip().getAttribute('aria-label')).toBe('Status: 2. Active, Pending');
         expect(chip().textContent).toBe('Status: 2');
 
         await act(() => {
@@ -93,7 +93,9 @@ describe('FilterChip', () => {
         });
         await act(() => jest.advanceTimersByTime(1000));
 
-        expect(document.querySelector('.components-tooltip')?.textContent).toBe('Status: Active, Pending');
+        // Newer Tooltips add the tooltip text as a description when it differs from the name, which
+        // would read the list twice.
+        expect(document.querySelector('.components-tooltip')?.textContent).toBe('Status: 2. Active, Pending');
     });
 
     it('has a remove button named removeLabel that calls onRemove', async () => {

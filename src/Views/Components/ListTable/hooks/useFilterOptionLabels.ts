@@ -8,11 +8,11 @@ import {
     subscribeToLabels,
 } from '../filters/labelCache';
 import {fetchFilterOptions} from '../filters/filterOptionsApi';
+import {NONE_VALUE} from '../filters/filterKinds';
 import type {FilterEntitySource} from '../filters/types';
 import type {ListTableScreenKey} from '../state/types';
 
 /** The exclusive "none" choice is not a record, so it has nothing to look up. */
-const NONE_VALUE = 'none';
 
 /** The most ids the route accepts in one `include` request. */
 const MAX_INCLUDE = 50;

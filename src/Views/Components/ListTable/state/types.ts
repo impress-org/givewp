@@ -1,5 +1,6 @@
 import type {Density, Filter, ViewTable} from '@wordpress/dataviews';
 import type {FilterConfig} from '../ListTablePage/types';
+import type {FilterDeclaration, StatusVocabularyEntry} from '../filters/types';
 
 /**
  * The view of a list table. The list always renders the DataViews table layout.
@@ -104,10 +105,17 @@ export interface ViewQuery {
 /**
  * What the URL parser and serializer need to know about a screen.
  *
+ * @since TBD Add the filter declarations, the status vocabulary and the test-mode switch.
  * @since TBD
  */
 export interface ViewQueryContext {
     filterSettings: FilterConfig[];
+    /** The screen's filter declarations. When set, the filter parameters come from them, not from `filterSettings`. */
+    filters?: FilterDeclaration[];
+    /** The server's status vocabulary, which checks `options: 'statuses'` values. Default none. */
+    statuses?: StatusVocabularyEntry[];
+    /** The screen has the test-mode switch. Default: whether `filterSettings` holds the `toggle` setting. */
+    testModeToggle?: boolean;
     /** Ids of the columns with `sortable: true`. */
     sortableFields: string[];
     defaults: ScreenDefaults;

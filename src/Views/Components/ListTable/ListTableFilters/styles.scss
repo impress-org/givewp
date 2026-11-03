@@ -1,0 +1,14 @@
+.givewp-list-table-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--givewp-spacing-2);
+    // Lines up with the DataViews toolbar above it.
+    padding-block: 0 var(--givewp-spacing-4);
+    padding-inline: var(--givewp-spacing-12);
+
+    &__test-mode-text {
+        padding-inline: var(--givewp-spacing-3);
+        font-size: var(--givewp-font-size-paragraph-md);
+    }
+}

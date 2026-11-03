@@ -2,6 +2,9 @@ import type {Filter} from '@wordpress/dataviews';
 import type {FilterByGroupedOptions, FilterConfig} from '../ListTablePage/types';
 import {hasTestModeToggle, TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
 import {filterFieldId, isApplied, snapPerPage} from '../adapters/viewToParameters';
+import {isBarFilter} from '../filters/filterKinds';
+import {parseFilterValue, serializeFilterValue} from '../filters/filterValue';
+import type {BarFilterDeclaration, FilterDeclaration, StatusVocabularyEntry} from '../filters/types';
 import type {ListTableView, ParseResult, ViewQuery, ViewQueryContext} from './types';
 
 /**
@@ -35,8 +38,10 @@ type ReadResult = {filter?: Filter; corrected: boolean};
 
 /**
  * How one filter maps to one URL parameter.
+ *
+ * @since TBD
  */
-type FilterParameter = {
+export type FilterParameter = {
     key: string;
     /** The bare name links used before the `give-` prefix. */
     legacyKey?: string;
@@ -160,17 +165,65 @@ function parametersOf(filter: FilterConfig): FilterParameter[] {
     }
 }
 
-const filterParameters = (context: ViewQueryContext) => context.filterSettings.flatMap(parametersOf);
+/**
+ * The URL parameter of a declared filter: `give-<id>`, read and written with the declaration's own
+ * text rules. A list kind is `isAny` in the view, a single kind `is`.
+ *
+ * @since TBD
+ */
+export function declarationUrlParameter(
+    declaration: BarFilterDeclaration,
+    statuses: StatusVocabularyEntry[]
+): FilterParameter {
+    const field = filterFieldId(declaration.id);
+    const operator = declaration.kind !== 'date' && declaration.multiple ? 'isAny' : 'is';
+
+    return {
+        key: parameterName(declaration.id),
+        legacyKey: declaration.legacyUrlKey,
+        field,
+        read: (raw) => {
+            const {value, corrected} = parseFilterValue(declaration, raw, {statuses});
+
+            return value === undefined ? {corrected: true} : {filter: {field, operator, value}, corrected};
+        },
+        write: (value) => {
+            if (typeof value === 'string') {
+                return serializeFilterValue(declaration, value);
+            }
+
+            return Array.isArray(value) ? serializeFilterValue(declaration, value.map(String)) : undefined;
+        },
+    };
+}
+
+/**
+ * The screen's filter parameters: from the declarations when it has them, else from the filter
+ * settings (deprecated path, kept until every screen declares its filters).
+ */
+const filterParameters = (context: ViewQueryContext): FilterParameter[] =>
+    context.filters
+        ? context.filters
+              .filter(isBarFilter)
+              .map((declaration) => declarationUrlParameter(declaration, context.statuses ?? []))
+        : context.filterSettings.flatMap(parametersOf);
+
+/**
+ * Whether the screen has the test-mode switch, from the context or the filter settings.
+ */
+const hasTestMode = (context: ViewQueryContext): boolean =>
+    context.testModeToggle ?? hasTestModeToggle(context.filterSettings);
 
 /**
  * Every `give-` parameter the screen reads and writes, in the order they are written.
  *
+ * @since TBD Name the declared filters when the screen has declarations.
  * @since TBD
  */
 export function viewQueryKeys(context: ViewQueryContext): string[] {
     return [
         ...filterParameters(context).map((parameter) => parameter.key),
-        ...(hasTestModeToggle(context.filterSettings) ? [TEST_MODE] : []),
+        ...(hasTestMode(context) ? [TEST_MODE] : []),
         ORDER_BY,
         ORDER,
         PAGE,
@@ -206,9 +259,7 @@ function writeTestMode(view: ListTableView, context: ViewQueryContext): Array<[s
         view.filters?.some((filter) => filter.field === filterFieldId(TEST_MODE_FILTER) && filter.value === true) ??
         false;
 
-    return hasTestModeToggle(context.filterSettings) && isOn !== context.siteTestMode
-        ? [[TEST_MODE, isOn ? TOGGLE_ON : TOGGLE_OFF]]
-        : [];
+    return hasTestMode(context) && isOn !== context.siteTestMode ? [[TEST_MODE, isOn ? TOGGLE_ON : TOGGLE_OFF]] : [];
 }
 
 /**
@@ -243,6 +294,7 @@ function writePaging(view: ListTableView, context: ViewQueryContext): Array<[str
  * The view's `give-` URL parameters. A view equal to the defaults gives none. The search term, the
  * columns and the density are never written.
  *
+ * @since TBD Write the declared filters when the screen has declarations.
  * @since TBD
  */
 export function serializeViewQuery(view: ListTableView, context: ViewQueryContext): Record<string, string> {
@@ -309,7 +361,7 @@ function readSort(params: URLSearchParams, sortableFields: string[]): {sort?: Vi
  * Reads `give-test-mode`: `1` or `0`, only on a screen with the test-mode toggle.
  */
 function readTestMode(raw: string | null, context: ViewQueryContext): {testMode?: boolean; corrected: boolean} {
-    if (raw === null || !hasTestModeToggle(context.filterSettings)) {
+    if (raw === null || !hasTestMode(context)) {
         return {corrected: false};
     }
 
@@ -354,6 +406,7 @@ function readFilters(
  * invalid parts are dropped and the result is marked `corrected`. Parameters that are not this
  * screen's are never read. A bare `search` is never read but is listed in `legacyKeys` for removal.
  *
+ * @since TBD Read the declared filters when the screen has declarations.
  * @since TBD
  */
 export function parseViewQuery(params: URLSearchParams, context: ViewQueryContext): ParseResult {
