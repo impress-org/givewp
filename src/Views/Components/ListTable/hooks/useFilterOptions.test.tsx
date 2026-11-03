@@ -124,6 +124,26 @@ describe('useFilterOptions', () => {
         expect(latest.options).toEqual([{value: '1', label: 'Small'}]);
     });
 
+    it('an older answer never replaces a newer label in the cache', async () => {
+        mockedFetch.mockResolvedValueOnce(page([]));
+        await render(true);
+        await flush();
+
+        const slow = deferred<ReturnType<typeof page>>();
+        const fast = deferred<ReturnType<typeof page>>();
+        mockedFetch.mockReturnValueOnce(slow.promise).mockReturnValueOnce(fast.promise);
+
+        await act(async () => latest.setSearch('s'));
+        await advance(300);
+        await act(async () => latest.setSearch('sm'));
+        await advance(300);
+
+        await act(async () => fast.resolve(page(['New name'])));
+        await act(async () => slow.resolve(page(['Old name'])));
+
+        expect(knownLabel('campaign', '1')).toBe('New name');
+    });
+
     it('a failed load exposes error and retry requests again', async () => {
         mockedFetch.mockRejectedValueOnce(new Error('Nope'));
         await render(true);

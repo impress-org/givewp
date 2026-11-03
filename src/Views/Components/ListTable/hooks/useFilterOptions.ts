@@ -82,8 +82,12 @@ export default function useFilterOptions({source, screen, enabled}: UseFilterOpt
 
         fetchFilterOptions({source, screen, search: term, page: 1}).then(
             ({options, hasMore}) => {
+                // A stale answer must not overwrite newer labels either.
+                if (request !== latestRequest.current) {
+                    return;
+                }
                 rememberLabels(source, options);
-                request === latestRequest.current && setLoaded({key, options, page: 1, hasMore});
+                setLoaded({key, options, page: 1, hasMore});
             },
             (reason: unknown) => {
                 request === latestRequest.current &&
