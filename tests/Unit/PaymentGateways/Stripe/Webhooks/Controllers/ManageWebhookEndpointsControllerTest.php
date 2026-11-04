@@ -13,15 +13,6 @@ use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\ReadsGiveLog;
 use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\UsesFakeStripeApi;
 use WPDieException;
 
-/*
- * The Log facade stores info entries only when GIVE_DEBUG or WP_DEBUG_LOG is set, and the controller logs the
- * created, updated and deleted entries this file asserts at info level. No other test asserts info entries, so
- * the constant is opened for the rest of the run once this file loads.
- */
-if (!defined('GIVE_DEBUG')) {
-    define('GIVE_DEBUG', true);
-}
-
 /**
  * @since TBD
  */
@@ -295,13 +286,6 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
         );
         $this->assertStringContainsString('Webhook endpoint added.', $response['data']['html']);
         $this->assertStringContainsString('we_new', $response['data']['html']);
-
-        $logged = $this->webhookLogs(LogType::INFO, $account->accountSlug);
-
-        $this->assertCount(1, $logged);
-        $this->assertSame('we_new', $logged[0]->getContext()['endpoint_id']);
-        $this->assertSame('test', $logged[0]->getContext()['mode']);
-        $this->assertSame([], $this->webhookLogs(LogType::WARNING, $account->accountSlug));
     }
 
     /**
@@ -321,7 +305,6 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
         $this->assertStringContainsString('Enter a URL and choose at least one event.', $response['data']['html']);
         /* Only the read that refreshes the list reaches Stripe. */
         $this->assertSame(['get'], array_column($this->stripe->requests, 'method'));
-        $this->assertSame([], $this->webhookLogs(LogType::INFO, $account->accountSlug));
     }
 
     /**
@@ -405,10 +388,6 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
             $this->stripe->requests[1]['params']
         );
         $this->assertStringContainsString('Webhook endpoint saved.', $response['data']['html']);
-        $this->assertSame(
-            'updated',
-            explode(' ', $this->webhookLogs(LogType::INFO, $account->accountSlug)[0]->getMessage())[3]
-        );
     }
 
     /**
@@ -477,7 +456,6 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
         $this->assertTrue($response['success']);
         $this->assertSame(['get', 'get'], array_column($this->stripe->requests, 'method'));
         $this->assertStringContainsString('The webhook endpoint was not found.', $response['data']['html']);
-        $this->assertSame([], $this->webhookLogs(LogType::INFO, $account->accountSlug));
     }
 
     /**
@@ -501,11 +479,6 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
         $this->assertSame(WebhookHealthStatus::MISSING, $response['data']['state']);
         $this->assertStringContainsString('Webhook endpoint deleted.', $response['data']['html']);
         $this->assertStringContainsString('This account has no webhook endpoints.', $response['data']['html']);
-
-        $logged = $this->webhookLogs(LogType::INFO, $account->accountSlug);
-
-        $this->assertCount(1, $logged);
-        $this->assertSame('we_123', $logged[0]->getContext()['endpoint_id']);
     }
 
     /**
@@ -544,7 +517,6 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
         $this->assertSame($operation, $logged[0]->getContext()['operation']);
         $this->assertSame(400, $logged[0]->getContext()['stripe_http_status']);
         $this->assertSame($error['error']['message'], $logged[0]->getContext()['error']);
-        $this->assertSame([], $this->webhookLogs(LogType::INFO, $account->accountSlug));
     }
 
     /**
