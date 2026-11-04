@@ -48,7 +48,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     /**
      * @since TBD
      */
-    public function testItDeletesTheSiteEndpointInBothModesBeforeRemovingTheAccount(): void
+    public function testItDeletesTheSiteEndpointInBothModesAfterRemovingTheAccount(): void
     {
         $account = $this->makeAccount();
         $other = $this->makeAccount(['account_slug' => 'acct_other']);
@@ -59,9 +59,16 @@ final class DisconnectStripeAccountControllerTest extends TestCase
             $this->stripe->queue(200, ['id' => 'we_123', 'object' => 'webhook_endpoint', 'deleted' => true]);
         }
 
+        /* A slow Stripe request must not keep the account connected, so it is removed before Stripe is called. */
+        $requestsWhenRemoved = null;
+        add_action('update_option_give_settings', function () use (&$requestsWhenRemoved) {
+            $requestsWhenRemoved = count($this->stripe->requests);
+        });
+
         $response = $this->callController($account->accountSlug);
 
         $this->assertTrue($response['success']);
+        $this->assertSame(0, $requestsWhenRemoved);
         $this->assertSame(['get', 'delete', 'get', 'delete'], array_column($this->stripe->requests, 'method'));
         $this->assertSame('Bearer ' . $account->testSecretKey, $this->stripe->header(1, 'Authorization'));
         $this->assertSame('Bearer ' . $account->liveSecretKey, $this->stripe->header(3, 'Authorization'));
