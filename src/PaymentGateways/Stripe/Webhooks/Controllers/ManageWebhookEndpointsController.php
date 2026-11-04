@@ -157,6 +157,7 @@ final class ManageWebhookEndpointsController
                     )),
                 ]),
                 'state' => self::STATE_ERROR,
+                'changed' => 'success' === ($notice['level'] ?? null),
             ]);
         }
 
