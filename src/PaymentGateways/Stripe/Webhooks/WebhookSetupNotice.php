@@ -67,6 +67,7 @@ final class WebhookSetupNotice
         }
 
         $modeLabel = 'live' === $mode ? esc_html__('live mode', 'give') : esc_html__('test mode', 'give');
+        $otherModeLabel = 'live' === $mode ? esc_html__('test mode', 'give') : esc_html__('live mode', 'give');
 
         return [
             'level' => $failed ? 'warning' : 'success',
@@ -74,14 +75,22 @@ final class WebhookSetupNotice
                 esc_html__('You are connected, but the Stripe webhook needs your attention.', 'give') :
                 esc_html__('You are connected! Your Stripe webhook is set up.', 'give'),
             'body' => sprintf(
-                '<span>%1$s</span><ul class="give-stripe-webhook-results">%2$s</ul>',
+                '<span>%1$s</span><ul class="give-stripe-webhook-results">%2$s</ul><span class="give-field-description">%3$s</span>',
                 sprintf(
                     /* translators: 1: "live mode" or "test mode". 2: Webhook endpoint URL. */
                     esc_html__('Webhook endpoint for %1$s: %2$s', 'give'),
                     $modeLabel,
                     '<code>' . esc_html($this->target->url()) . '</code>'
                 ),
-                $items
+                $items,
+                /* A setup run covers the mode the site is in, so a test-mode site never writes to a live account. */
+                sprintf(
+                    /* translators: 1: "live mode" or "test mode". 2: The other mode. 3: Stripe settings page URL. */
+                    __('This set up %1$s only. After you switch the site to %2$s, click <strong>Set up webhooks</strong> on the <a href="%3$s">Stripe Webhooks settings page</a>.', 'give'),
+                    $modeLabel,
+                    $otherModeLabel,
+                    esc_url($this->webhookSettingsUrl())
+                )
             ),
             'retry' => (bool)$failed,
         ];
@@ -149,16 +158,22 @@ final class WebhookSetupNotice
             sprintf(
                 /* translators: %s: Stripe settings page URL. */
                 __('You can also click <strong>Try again</strong> now, or later click <strong>Set up webhooks</strong> on the <a href="%s">Stripe Webhooks settings page</a>.', 'give'),
-                esc_url(
-                    admin_url(
-                        'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings&group=webhooks'
-                    )
-                )
+                esc_url($this->webhookSettingsUrl())
             ),
             esc_html__(
                 'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.',
                 'give'
             )
+        );
+    }
+
+    /**
+     * @since TBD
+     */
+    private function webhookSettingsUrl(): string
+    {
+        return admin_url(
+            'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings&group=webhooks'
         );
     }
 }
