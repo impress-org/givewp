@@ -135,6 +135,49 @@ final class WebhookHealthMonitorTest extends TestCase
     /**
      * @since TBD
      */
+    public function testItKeepsTheLastEmailWhenALaterCheckIsSkipped(): void
+    {
+        $this->stripe->queue(200, $this->listBody([]));
+        $this->stripe->queue(429, $this->errorBody('invalid_request_error', 'Too many requests.'));
+        $this->stripe->queue(200, $this->listBody([]));
+
+        give(WebhookHealthMonitor::class)();
+        give(WebhookHealthMonitor::class)();
+        $notifiedAfterSkip = get_option(self::NOTIFIED_OPTION);
+        give(WebhookHealthMonitor::class)();
+
+        $this->assertCount(1, $this->emails);
+        $this->assertSame('test', $notifiedAfterSkip['mode'] ?? null);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testItDoesNotEmailAgainWhenOneOfTwoAccountsIsSkipped(): void
+    {
+        $first = $this->makeAccount(['account_slug' => 'acct_first', 'account_name' => 'First account']);
+        $second = $this->makeAccount(['account_slug' => 'acct_second', 'account_name' => 'Second account']);
+        give_update_option('_give_stripe_get_all_accounts', [
+            $first->accountSlug => $first->toArray(),
+            $second->accountSlug => $second->toArray(),
+        ]);
+        $this->stripe->queue(200, $this->listBody([]));
+        $this->stripe->queue(200, $this->listBody([]));
+        $this->stripe->queue(429, $this->errorBody('invalid_request_error', 'Too many requests.'));
+        $this->stripe->queue(200, $this->listBody([]));
+
+        give(WebhookHealthMonitor::class)();
+        give(WebhookHealthMonitor::class)();
+
+        $this->assertCount(1, $this->emails);
+        $this->assertSame(['first', 'second'], array_map(static function (string $problem) {
+            return strtolower(explode(' ', $problem)[0]);
+        }, get_option(self::NOTIFIED_OPTION)['problems']));
+    }
+
+    /**
+     * @since TBD
+     */
     public function testItEmailsTheErrorStripeReturnsForARejectedKey(): void
     {
         $account = $this->makeAccount();
@@ -192,7 +235,7 @@ final class WebhookHealthMonitorTest extends TestCase
 
         $this->assertFalse($notifiedAfterFailure);
         $this->assertCount(2, $this->emails);
-        $this->assertIsString(get_option(self::NOTIFIED_OPTION));
+        $this->assertSame('test', get_option(self::NOTIFIED_OPTION)['mode']);
         $this->assertCount(1, $this->webhookLogs(LogType::ERROR));
     }
 

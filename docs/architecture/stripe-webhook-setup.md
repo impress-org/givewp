@@ -179,11 +179,13 @@ every account for the current mode and sends one email listing the accounts with
   otherwise. That is the address WordPress sends fatal error emails to.
 - The setting `stripe_webhook_health_email` (Stripe settings, Webhooks group) turns the email off.
   It defaults to `enabled`.
-- The option `givewp_stripe_webhook_health_notified` stores a fingerprint of the problems in the
+- The option `givewp_stripe_webhook_health_notified` stores the mode and the problem lines of the
   last email, so the same problems are not emailed every hour. It is stored only after `wp_mail()`
-  succeeds, and deleted when a run finds no problems.
-- A connection error or a 429 produces no problem line, because it says nothing about the endpoint.
-  The next run checks again. Other Stripe errors, such as a rejected token, are reported.
+  succeeds, and deleted when a run checks every account and finds no problems.
+- A connection error or a 429 skips the account, because it says nothing about the endpoint. A run
+  that skipped an account leaves the stored problems as they are and sends an email only when it
+  found a problem the last email did not list. Other Stripe errors, such as a rejected token, are
+  reported.
 
 ## Logging
 
