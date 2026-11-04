@@ -70,7 +70,7 @@ function give_validate_gravatar( $id_or_email ) {
 		}
 	} elseif ( is_object( $id_or_email ) ) {
 		// No avatar for pingbacks or trackbacks
-		$allowed_comment_types = apply_filters( 'get_avatar_comment_types', array( 'comment' ) );
+		$allowed_comment_types = apply_filters( 'get_avatar_comment_types', array( 'comment' ) ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WordPress core filter, copied from get_avatar() so Give skips the same comment types.
 		if ( ! empty( $id_or_email->comment_type ) && ! in_array( $id_or_email->comment_type, (array) $allowed_comment_types ) ) {
 			return false;
 		}

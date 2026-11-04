@@ -47,6 +47,7 @@ class PayPalStandardToDonationsMigrationGlobalBanner
     /**
      * Render the banner.
      *
+     * @since TBD Return a double-quoted string instead of a heredoc.
      * @since 2.33.0
      */
     public function getModalScript(): string
@@ -90,8 +91,7 @@ class PayPalStandardToDonationsMigrationGlobalBanner
             )
         );
 
-        return <<<EOT
-            const givePayPalStandardToDonationsMigrationGlobalBanner = () => {
+        return "            const givePayPalStandardToDonationsMigrationGlobalBanner = () => {
                 const dismissModalAjaxRequest = async () => {
                     const formData = new FormData();
                     formData.append('give-action', 'dismiss_notices');
@@ -113,8 +113,8 @@ class PayPalStandardToDonationsMigrationGlobalBanner
                     },
                     modalContent: {
                         body: `
-                        	<h2 class="give-modal__title">$modalTitle</h2>
-                            <div class="give-modal__description">
+                        	<h2 class=\"give-modal__title\">$modalTitle</h2>
+                            <div class=\"give-modal__description\">
                                 <strong>$modalSubHeading</strong>
                                 <p>$modalDescription</p>
                             </div>
@@ -144,8 +144,7 @@ class PayPalStandardToDonationsMigrationGlobalBanner
                 } ).render();
             };
 
-            givePayPalStandardToDonationsMigrationGlobalBanner();
-EOT;
+            givePayPalStandardToDonationsMigrationGlobalBanner();";
     }
 
     /**

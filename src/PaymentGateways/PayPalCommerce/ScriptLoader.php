@@ -89,6 +89,7 @@ class ScriptLoader
     /**
      * Load admin scripts
      *
+     * @since TBD Use a double-quoted string instead of a heredoc for the inline script.
      * @since 4.19.1 Add translators comments. Send nonces with the PayPal onboarding requests.
      * @since 3.13.0 Add new "keepWebhooksAfterDisconnect" string
      * @since 2.9.0
@@ -160,8 +161,7 @@ class ScriptLoader
             ]
         );
 
-        $script = <<<EOT
-                function giveSandboxPayPalOnBoardedCallback(authCode, sharedId){
+        $script = "                function giveSandboxPayPalOnBoardedCallback(authCode, sharedId){
                     givePayPalOnBoardedCallback('sandbox', authCode, sharedId);
                 }
 
@@ -186,8 +186,7 @@ class ScriptLoader
                             const paypalErrorQuickHelp = document.getElementById('give-paypal-onboarding-trouble-notice');
                             paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
                         });
-                }
-EOT;
+                }";
 
         wp_add_inline_script(
             'give-paypal-partner-js',

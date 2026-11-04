@@ -1129,6 +1129,7 @@ class Give_Donor {
 	/**
 	 * Sanitize the data for update/create
 	 *
+	 * @since  TBD Use wp_strip_all_tags() instead of strip_tags() for notes.
 	 * @since  1.0
 	 * @access private
 	 *
@@ -1154,7 +1155,7 @@ class Give_Donor {
 					if ( 'email' == $key ) {
 						$data[ $key ] = sanitize_email( $data[ $key ] );
 					} elseif ( 'notes' == $key ) {
-						$data[ $key ] = strip_tags( $data[ $key ] );
+						$data[ $key ] = wp_strip_all_tags( $data[ $key ] );
 					} else {
 						$data[ $key ] = sanitize_text_field( $data[ $key ] );
 					}
