@@ -32,7 +32,7 @@ final class CreateWebhookEndpoint
      * @param string[]             $enabledEvents Event types, or ["*"] for all.
      * @param array<string,string> $metadata
      *
-     * @return WebhookEndpointDto The only response that carries the signing secret.
+     * @return WebhookEndpointDto The created endpoint, without the signing secret that Stripe returns only here.
      *
      * @throws WebhookEndpointException
      */

@@ -17,7 +17,7 @@ final class CreateWebhookEndpointTest extends TestCase
     /**
      * @since TBD
      */
-    public function testItCreatesTheEndpointOnTheConnectedAccountAndReturnsTheSecret(): void
+    public function testItCreatesTheEndpointOnTheConnectedAccountAndLeavesOutTheSecret(): void
     {
         $url = 'https://example.com/?give-listener=stripe';
         $events = ['payment_intent.succeeded', 'charge.refunded'];
