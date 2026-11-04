@@ -73,6 +73,38 @@ class DateFormatterTest extends TestCase
     }
 
     /**
+     * The word between the date and the time goes through translation, so a site in another
+     * language does not show the English "at".
+     *
+     * @since TBD
+     */
+    public function testTheDateTimeSeparatorIsTranslatable(): void
+    {
+        update_option('date_format', 'Y-m-d');
+        update_option('time_format', 'H:i');
+        update_option('timezone_string', 'UTC');
+
+        $translate = static function ($translation, $text, $context, $domain) {
+            if ($domain === 'give' && $text === '%1$s at %2$s') {
+                return '%1$s à %2$s';
+            }
+
+            return $translation;
+        };
+
+        add_filter('gettext_with_context', $translate, 10, 4);
+
+        try {
+            $this->assertSame(
+                '2025-11-29 à 19:16',
+                DateFormatter::dateTime(new DateTimeImmutable('2025-11-29 19:16:00', new DateTimeZone('UTC')))
+            );
+        } finally {
+            remove_filter('gettext_with_context', $translate, 10);
+        }
+    }
+
+    /**
      * @since TBD
      */
     public function testDateOnlyUsesTheDateFormat(): void

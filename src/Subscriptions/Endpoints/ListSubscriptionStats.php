@@ -78,7 +78,7 @@ class ListSubscriptionStats extends Endpoint
 
         foreach ($values as $key => $value) {
             $formatted[$key] = in_array($key, $moneyKeys, true)
-                ? MoneyFormatter::fromDecimal((string)$value)
+                ? MoneyFormatter::fromDecimal($value)
                 : number_format_i18n($value);
         }
 

@@ -4,7 +4,6 @@ namespace Give\Framework\ListTable\Formatting;
 
 use DateTimeInterface;
 use Give\Framework\ListTable\Views\Placeholder;
-use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
  * The one way list tables write dates. It uses the date and time formats and the timezone of the site.
@@ -14,6 +13,9 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 final class DateFormatter
 {
     /**
+     * Writes the date and the time with a translatable word between them, so the text is in one
+     * language on every site. In English it reads "October 29, 2026 at 10:35 pm".
+     *
      * @since TBD
      */
     public static function dateTime(?DateTimeInterface $date): string
@@ -22,7 +24,15 @@ final class DateFormatter
             return Placeholder::dash(__('No date', 'give'));
         }
 
-        return Temporal::getFormattedDateTimeUsingTimeZoneAndFormatSettings($date);
+        $timestamp = $date->getTimestamp();
+        $timezone = wp_timezone();
+
+        return sprintf(
+            /* translators: 1: a formatted date, 2: a formatted time. */
+            _x('%1$s at %2$s', 'date and time', 'give'),
+            wp_date(get_option('date_format'), $timestamp, $timezone),
+            wp_date(get_option('time_format'), $timestamp, $timezone)
+        );
     }
 
     /**

@@ -80,6 +80,41 @@ class MoneyFormatterTest extends TestCase
     }
 
     /**
+     * A float total, like a SUM() from the database, reads the same as its decimal string.
+     *
+     * @since TBD
+     */
+    public function testFromDecimalAcceptsFloats(): void
+    {
+        $this->assertSame('$12.50', MoneyFormatter::fromDecimal(12.5));
+        $this->assertSame('$1,234.50', MoneyFormatter::fromDecimal(1234.5));
+        $this->assertSame('$0.30', MoneyFormatter::fromDecimal(0.1 + 0.2));
+        $this->assertSame('¥1,000', MoneyFormatter::fromDecimal(1000.4, 'JPY'));
+    }
+
+    /**
+     * On PHP 7.4, casting a float to a string follows LC_NUMERIC, so a comma locale writes "12,5".
+     * The formatter must not depend on that.
+     *
+     * @since TBD
+     */
+    public function testFromDecimalWithFloatIgnoresTheNumericLocale(): void
+    {
+        $previous = setlocale(LC_NUMERIC, '0');
+        $commaLocale = setlocale(LC_NUMERIC, 'de_DE.UTF-8', 'de_DE.utf8', 'de_DE', 'pt_BR.UTF-8', 'pt_BR.utf8', 'fr_FR.UTF-8');
+
+        if ($commaLocale === false) {
+            $this->markTestSkipped('No locale with a comma decimal point is installed.');
+        }
+
+        try {
+            $this->assertSame('$1,234.50', MoneyFormatter::fromDecimal(1234.5));
+        } finally {
+            setlocale(LC_NUMERIC, $previous);
+        }
+    }
+
+    /**
      * @since TBD
      */
     public function testMissingAmountIsTheDash(): void
