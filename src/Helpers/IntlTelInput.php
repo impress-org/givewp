@@ -15,27 +15,30 @@ class IntlTelInput
     private const VERSION = '21.2.4';
 
     /**
+     * @since TBD Serve the file from the plugin's build folder instead of the jsDelivr CDN.
      * @since 3.9.0
      */
     public static function getCssUrl(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.2.4/build/css/intlTelInput.css';
+        return GIVE_PLUGIN_URL . 'build/assets/dist/css/intl-tel-input.css';
     }
 
     /**
+     * @since TBD Serve the file from the plugin's build folder instead of the jsDelivr CDN.
      * @since 3.9.0
      */
     public static function getScriptUrl(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.2.4/build/js/intlTelInput.min.js';
+        return GIVE_PLUGIN_URL . 'build/assets/dist/js/intl-tel-input/intlTelInput.min.js';
     }
 
     /**
+     * @since TBD Serve the file from the plugin's build folder instead of the jsDelivr CDN.
      * @since 3.9.0
      */
     public static function getUtilsScriptUrl(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.2.4/build/js/utils.js';
+        return GIVE_PLUGIN_URL . 'build/assets/dist/js/intl-tel-input/utils.js';
     }
 
     /**

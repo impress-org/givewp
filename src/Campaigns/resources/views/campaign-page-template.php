@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * @since TBD Rename $template_html to $give_template_html so the template variable has the Give prefix.
  * @since 4.19.1 Escape output.
  */
 
@@ -10,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-$template_html = do_blocks(View::load('Campaigns.campaign-page-content'));
+$give_template_html = do_blocks(View::load('Campaigns.campaign-page-content'));
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -24,7 +25,7 @@ $template_html = do_blocks(View::load('Campaigns.campaign-page-content'));
 
 <?php
 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- outputs the complete page document built from escaped blocks via do_blocks().
-echo $template_html; ?>
+echo $give_template_html; ?>
 
 <?php wp_footer(); ?>
 </body>

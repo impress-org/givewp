@@ -200,7 +200,7 @@ class ServiceProvider implements ServiceProviderInterface
          * @since 3.0.0
          */
         Route::get('donation-form-view', static function (array $request) {
-            ini_set('display_errors', 0);
+            ini_set('display_errors', 0); // phpcs:ignore Squiz.PHP.DiscouragedFunctions.Discouraged -- keeps PHP warnings out of the HTML document this route prints into the donation form iframe; it only changes this request.
             $routeData = DonationFormViewRouteData::fromRequest($request);
 
             if ($locale = $request['locale'] ?? '') {
@@ -215,7 +215,7 @@ class ServiceProvider implements ServiceProviderInterface
          * @since 3.0.0
          */
         Route::get('donation-confirmation-receipt-view', static function (array $request) {
-            ini_set('display_errors', 0);
+            ini_set('display_errors', 0); // phpcs:ignore Squiz.PHP.DiscouragedFunctions.Discouraged -- keeps PHP warnings out of the HTML document this route prints into the donation form iframe; it only changes this request.
             $routeData = DonationConfirmationReceiptViewRouteData::fromRequest($request);
 
             if ($locale = $request['locale'] ?? '') {
@@ -230,7 +230,7 @@ class ServiceProvider implements ServiceProviderInterface
          * @since 3.0.0
          */
         Route::post('donation-form-view-preview', static function () {
-            ini_set('display_errors', 0);
+            ini_set('display_errors', 0); // phpcs:ignore Squiz.PHP.DiscouragedFunctions.Discouraged -- keeps PHP warnings out of the HTML document this route prints into the donation form iframe; it only changes this request.
             $requestData = (new SanitizeDonationFormPreviewRequest())($_REQUEST); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- preview request from the form builder; the action only unslashes. The form id is cast to int, settings and blocks are parsed from JSON into typed objects, and the preview renders them without saving anything.
             $routeData = DonationFormPreviewRouteData::fromRequest($requestData);
 

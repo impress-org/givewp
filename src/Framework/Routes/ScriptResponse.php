@@ -101,6 +101,7 @@ class ScriptResponse
 
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- writes a JavaScript response body (Content-Type: application/javascript), not HTML; $prologue is built with wp_json_encode().
         echo $prologue;
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile -- streams a JavaScript file from the plugin's own build/ folder in chunks; WP_Filesystem has no streaming read and can ask for FTP credentials on the front end.
         readfile($this->file);
         exit;
     }

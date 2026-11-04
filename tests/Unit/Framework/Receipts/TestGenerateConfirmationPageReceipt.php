@@ -400,4 +400,45 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             $receipt->additionalDetails->toArray()
         );
     }
+
+    /**
+     * @since TBD
+     */
+    public function testFieldValueAndLabelCanBeFilteredByFieldName(): void
+    {
+        $field = Text::make('favoriteColor')
+            ->label('Your favorite color:')
+            ->defaultValue('Blue')
+            ->metaKey('_favorite_color')
+            ->showInReceipt();
+
+        add_action('givewp_donation_form_schema', static function (\Give\Framework\FieldsAPI\DonationForm $form) use ($field) {
+            $form->insertAfter('email', $field);
+        });
+
+        add_filter('givewp_donation_confirmation_page_field_value_for_favoriteColor', static function () {
+            return 'Green';
+        });
+
+        add_filter('givewp_donation_confirmation_page_field_label_for_favoriteColor', static function () {
+            return 'Color:';
+        });
+
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create();
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'formId' => $donationForm->id,
+        ]);
+
+        give_update_payment_meta($donation->id, '_favorite_color', 'Blue');
+
+        $receipt = (new GenerateConfirmationPageReceipt())(new DonationReceipt($donation));
+
+        $expected = new ReceiptDetailCollection();
+        $expected->addDetail(new ReceiptDetail('Color:', 'Green'));
+
+        $this->assertContains($expected->toArray()[0], $receipt->additionalDetails->toArray());
+    }
 }
