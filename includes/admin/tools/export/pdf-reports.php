@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param string $data Data.
  *
+ * @since  TBD Use wp_strip_all_tags() for the category and tag text.
  * @since  4.19.1 Escape output, use gmdate() instead of date(), and unslash and sanitize the nonce.
  * @since  1.0
  *
@@ -148,14 +149,14 @@ function give_generate_pdf( $data ) {
 			$categories = [];
 			if ( $categories_enabled ) {
 				$categories = get_the_term_list( $form->ID, 'give_forms_category', '', ', ', '' );
-				$categories = ! is_wp_error( $categories ) ? strip_tags( $categories ) : '';
+				$categories = ! is_wp_error( $categories ) ? wp_strip_all_tags( $categories ) : '';
 			}
 
 			// Display Tags Data only, if user has opted for it.
 			$tags = [];
 			if ( $tags_enabled ) {
 				$tags = get_the_term_list( $form->ID, 'give_forms_tag', '', ', ', '' );
-				$tags = ! is_wp_error( $tags ) ? strip_tags( $tags ) : '';
+				$tags = ! is_wp_error( $tags ) ? wp_strip_all_tags( $tags ) : '';
 			}
 
 			$sales    = $donation_stats->get_sales( $form->ID, 'this_year' );

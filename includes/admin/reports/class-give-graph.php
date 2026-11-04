@@ -75,6 +75,7 @@ class Give_Graph {
 	/**
 	 * Get things started
 	 *
+	 * @since TBD Use wp_rand() for the graph id.
 	 * @since 1.0
 	 *
 	 * @param array $_data
@@ -85,7 +86,7 @@ class Give_Graph {
 		$this->data = $_data;
 
 		// Generate unique ID
-		$this->id = md5( rand() );
+		$this->id = md5( wp_rand() );
 
 		// Setup default options;
 		$this->options = apply_filters(

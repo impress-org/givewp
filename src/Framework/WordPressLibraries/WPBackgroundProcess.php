@@ -146,13 +146,15 @@ abstract class WPBackgroundProcess extends WPAsyncRequest
      * Generates a unique key based on microtime. Queue items are
      * given a unique key so that they can be merged upon save.
      *
+     * @since TBD Use wp_rand() instead of rand().
+     *
      * @param int $length Length.
      *
      * @return string
      */
     protected function generate_key($length = 64)
     {
-        $unique = md5(microtime() . rand());
+        $unique = md5(microtime() . wp_rand());
         $prepend = $this->identifier . '_batch_';
 
         return substr($prepend . $unique, 0, $length);
@@ -249,6 +251,7 @@ abstract class WPBackgroundProcess extends WPAsyncRequest
         $this->start_time = time(); // Set start time of current process.
 
         $lock_duration = (property_exists($this, 'queue_lock_time')) ? $this->queue_lock_time : 60; // 1 minute
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- runtime name is <identifier>_queue_lock_time (wp_give_db_updater_queue_lock_time for Give_Background_Updater); the identifier also names the stored queue rows and the cron event, so it cannot change.
         $lock_duration = apply_filters($this->identifier . '_queue_lock_time', $lock_duration);
 
         set_site_transient($this->identifier . '_process_lock', microtime(), $lock_duration);
@@ -380,6 +383,7 @@ abstract class WPBackgroundProcess extends WPAsyncRequest
             $return = true;
         }
 
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- runtime name is <identifier>_memory_exceeded (wp_give_db_updater_memory_exceeded for Give_Background_Updater); the identifier also names the stored queue rows and the cron event, so it cannot change.
         return apply_filters($this->identifier . '_memory_exceeded', $return);
     }
 
@@ -415,6 +419,7 @@ abstract class WPBackgroundProcess extends WPAsyncRequest
      */
     protected function time_exceeded()
     {
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- runtime name is <identifier>_default_time_limit (wp_give_db_updater_default_time_limit for Give_Background_Updater); the identifier also names the stored queue rows and the cron event, so it cannot change.
         $finish = $this->start_time + apply_filters($this->identifier . '_default_time_limit', 20); // 20 seconds
         $return = false;
 
@@ -422,6 +427,7 @@ abstract class WPBackgroundProcess extends WPAsyncRequest
             $return = true;
         }
 
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- runtime name is <identifier>_time_exceeded (wp_give_db_updater_time_exceeded for Give_Background_Updater); the identifier also names the stored queue rows and the cron event, so it cannot change.
         return apply_filters($this->identifier . '_time_exceeded', $return);
     }
 
@@ -448,9 +454,11 @@ abstract class WPBackgroundProcess extends WPAsyncRequest
      */
     public function schedule_cron_healthcheck($schedules)
     {
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- runtime name is <identifier>_cron_interval (wp_give_db_updater_cron_interval for Give_Background_Updater); the identifier also names the stored queue rows and the cron event, so it cannot change.
         $interval = apply_filters($this->identifier . '_cron_interval', 5);
 
         if (property_exists($this, 'cron_interval')) {
+            // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- runtime name is <identifier>_cron_interval (wp_give_db_updater_cron_interval for Give_Background_Updater); the identifier also names the stored queue rows and the cron event, so it cannot change.
             $interval = apply_filters($this->identifier . '_cron_interval', $this->cron_interval_identifier);
         }
 

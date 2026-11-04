@@ -1,0 +1,6 @@
+significance: patch
+type: fix
+entry: Fixed the Legacy Reports tab on the Reports page, which linked to a
+  hardcoded local development URL instead of this site's admin. Import, export,
+  reports, background update and WP-CLI code now passes Plugin Check.
+timestamp: 2026-11-04T21:37:38.933Z
