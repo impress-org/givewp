@@ -13,7 +13,9 @@ Two consequences:
 - Every request goes through one of the endpoint actions (list, create, update, delete). No other
   code calls `WebhookEndpoint` directly.
 - A setup run covers the mode the site is in (test or live) and no other. A test-mode site does not
-  create endpoints on a live Stripe account. Disconnecting is the exception: it deletes in both modes.
+  create endpoints on a live Stripe account, such as the production account a staging copy still holds
+  the live token of. The setup modal says which mode it set up and that the other mode needs **Set up
+  webhooks** after the switch. Disconnecting is the exception: it deletes in both modes.
 
 ## Where it runs
 
@@ -80,7 +82,15 @@ needs no hook. Code that calls `give_stripe_disconnect_account()` directly skips
 
 For each mode where the account holds a key, it lists the endpoints, deletes each one whose URL
 matches this site's listener URL, and leaves every other endpoint alone. A 404 on delete counts as
-deleted. The result per mode is `deleted`, `nothing_matched` or `failed`.
+deleted. The result per mode is `deleted`, `nothing_matched`, `kept` or `failed`.
+
+Two saved records can belong to one Stripe account: the legacy manual-key migration stores
+`account_1` with an empty `account_id`, and a later Connect registration of the same account is saved
+under its own slug. Before deleting a site endpoint, the action lists the endpoints of every other
+saved record that holds a key for the mode and keeps any endpoint one of them also lists, because an
+endpoint id is unique to its Stripe account. Two records with known, different `account_id` values
+are told apart without a request. The same known `account_id`, or another record whose endpoints
+cannot be read, keeps every endpoint of this site (`kept`).
 
 A Stripe failure never stops the disconnect. A revoked OAuth token, a restricted key without write
 access and a network error are logged with `give_record_gateway_error()` as `Stripe Webhook
