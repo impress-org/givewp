@@ -432,6 +432,30 @@ function showOperationError(form, formData, operation) {
 }
 
 /**
+ * Shows the notices of an operation whose list could not be read again. The rest of the content stays as
+ * it is, so the form keeps the values the admin submitted.
+ *
+ * @since TBD
+ *
+ * @param {string}           notices The notices as HTML.
+ * @param {HTMLElement|null} form    The form that started the operation.
+ */
+function showNoticesOnly(notices, form) {
+    const container = document.querySelector('.give-stripe-webhooks-content');
+
+    setBusy(false);
+    setSubmitBusy(form, false);
+
+    if (!container) {
+        return;
+    }
+
+    removeNotices(container);
+    container.prepend(document.createRange().createContextualFragment(notices));
+    focusNotice(container);
+}
+
+/**
  * Sends the operation of a modal form, then shows the refreshed list and updates the status button.
  * A failed request keeps the list and the form values; the error path decides where the notice goes.
  *
@@ -452,11 +476,17 @@ function runOperation(operation, formData = new FormData(), form = null) {
     formData.append('account', field.getAttribute('data-account'));
 
     return post(operation, field.getAttribute('data-manage-nonce'), formData)
-        .then(({ html, state }) => {
+        .then(({ html, notices, state }) => {
             /* The status button belongs to the account, so it is updated even after its modal closed. */
             setState(field, state);
 
             if (modal !== modalCount) {
+                return;
+            }
+
+            if ('string' === typeof notices) {
+                showNoticesOnly(notices, form);
+
                 return;
             }
 
