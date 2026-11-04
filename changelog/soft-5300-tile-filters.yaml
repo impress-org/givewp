@@ -1,0 +1,4 @@
+significance: minor
+type: enhancement
+entry: The Donations and Donors stat tiles can now be clicked to filter the list by donation type or donor type, and they show a pressed state.
+timestamp: 2026-11-05T02:10:00.000Z

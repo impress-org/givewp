@@ -92,6 +92,7 @@ export const ShowConfirmModalContext = createContext(
  * @since TBD Keep the stat tiles mounted with a status, and name their region by the screen.
  * @since TBD Send an explicit `scope` also without `filters`, over the scope from `filterSettings`.
  * @since TBD Announce a cached result count only after its request has finished.
+ * @since TBD Let the stat tiles toggle the single-choice option filters the screen declares.
  * @since TBD After Reset, focus the search box, else a control left in the filter bar, else the bar.
  * @since TBD Announce the result count to screen readers after the admin changes the view.
  * @since TBD Do not send the browser locale with list requests.
@@ -208,6 +209,15 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         });
         // A screen with the test-mode toggle keeps test mode in the view, so it shows as a chip.
         const testMode = testModeSwitch ? viewFilterValue(view, TEST_MODE_FILTER) === true : paymentMode;
+        // Only a single-choice list can be set by a tile.
+        const tileFilterIds = useMemo(
+            () =>
+                declarations
+                    .filter((declaration) => declaration.kind === 'options' && !declaration.multiple)
+                    .map((declaration) => declaration.id),
+            [declarations]
+        );
+
         const setTestMode = (isOn: boolean) => onChangeView(withToggleFilter(view, TEST_MODE_FILTER, isOn));
         const {selection, onChangeSelection} = useListTableSelection(view);
         const clearSelection = useCallback(() => onChangeSelection([]), [onChangeSelection]);
@@ -344,6 +354,9 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                             statsConfig={statsConfig}
                             stats={stats}
                             statsStatus={statsStatus}
+                            filters={view.filters}
+                            availableFilterIds={tileFilterIds}
+                            onChangeFilters={(filters) => onChangeView({...view, filters, page: 1})}
                         >
                             {children}
                         </ListTablePageHeader>
