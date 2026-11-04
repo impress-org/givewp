@@ -8,6 +8,7 @@ import ListTableEmptyState from '../EmptyStates';
 import ListTableFilters from '../ListTableFilters';
 import ListTableNoticeArea from '../ListTableNoticeArea';
 import ListTableSearch from '../ListTableSearch';
+import ListTableViewMenu from '../ListTableViewMenu';
 import ResultCountStatus from '../ResultCountStatus';
 import {isBarFilter} from '../filters/filterKinds';
 import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
@@ -44,6 +45,7 @@ import useNarrowLayout from '../hooks/useNarrowLayout';
 import {fromNarrowView, resolveFieldRoles, toNarrowView} from '../layout/narrowView';
 import ListTablePageHeader from './ListTablePageHeader';
 import LegacyConfirmModal, {LegacyConfirmRequest} from './LegacyConfirmModal';
+import switchToLegacyView from './switchToLegacyView';
 import type {
     Column,
     LegacyRowActions as LegacyRowActionsRender,
@@ -64,6 +66,7 @@ export type {
     FilterConfig,
     LegacyRowActionArgs,
     LegacyRowActions,
+    LegacyViewSwitch,
     ListTableActionDialogProps,
     ListTableItem,
     ListTablePageProps,
@@ -91,6 +94,7 @@ export const ShowConfirmModalContext = createContext(
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
  *
+ * @since TBD Add `legacyView`: "Switch to Legacy View" in the list's "More view options" menu.
  * @since TBD At 782 px and below, show the records as cards built from the screen's field roles.
  * @since TBD Keep the stat tiles mounted with a status, and name their region by the screen.
  * @since TBD Send an explicit `scope` also without `filters`, over the scope from `filterSettings`.
@@ -130,6 +134,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             filters: declaredFilters,
             scope: fixedScope,
             testModeToggle,
+            legacyView,
         }: ListTablePageProps,
         ref
     ) => {
@@ -408,6 +413,16 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                             view={displayView}
                             onChangeView={onChangeDisplayView}
                             layoutMode={isNarrow ? 'narrow' : 'wide'}
+                            viewMenu={
+                                <ListTableViewMenu
+                                    legacyView={
+                                        legacyView && {
+                                            ariaLabel: legacyView.ariaLabel,
+                                            onSelect: () => switchToLegacyView(listTableApi, legacyView.onSwitched),
+                                        }
+                                    }
+                                />
+                            }
                             fields={fields}
                             actions={actions}
                             data={error ? [] : data?.items ?? []}

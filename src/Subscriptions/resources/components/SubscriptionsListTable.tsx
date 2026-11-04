@@ -1,10 +1,8 @@
 import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
-import ListTableApi from '@givewp/components/ListTable/api';
-import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import {subscriptionsRowActions} from './SubscriptionsRowActions';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
-import { StatConfig } from '@givewp/components/ListTable/ListTablePage';
+import {StatConfig} from '@givewp/components/ListTable/ListTablePage';
 import listTableScreen from './listTableScreen';
 import {subscriptionFilters} from './filters';
 
@@ -21,8 +19,6 @@ declare global {
         };
     }
 }
-
-const API = new ListTableApi(window.GiveSubscriptions);
 
 /**
  * Displays a blank slate for the Subscriptions table.
@@ -55,8 +51,8 @@ const ListTableBlankSlate = (
  * @since 4.12.0
  */
 const statsConfig: Record<string, StatConfig> = {
-    totalContributions: { label: __('Total Contributions', 'give')},
-    activeSubscriptions: { label: __('Active Subscriptions', 'give')},
+    totalContributions: {label: __('Total Contributions', 'give')},
+    activeSubscriptions: {label: __('Active Subscriptions', 'give')},
 };
 
 /**
@@ -65,6 +61,7 @@ const statsConfig: Record<string, StatConfig> = {
 const testModeToggle = {label: __('Test', 'give'), ariaLabel: __('View Test Subscriptions', 'give')};
 
 /**
+ * @since TBD Offer "Switch to Legacy View" in the list's view menu, not in the header.
  * @since TBD Use the shared filter declarations and the test-mode switch in place of the "Filter by" settings.
  * @since TBD Pass the actions as data and the screen config.
  */
@@ -82,9 +79,7 @@ export default function SubscriptionsListTable() {
             paymentMode={!!window.GiveSubscriptions.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
             screen={listTableScreen}
-        >
-            <SwitchToLegacyViewButton api={API} />
-        </ListTablePage>
+            legacyView={{}}
+        />
     );
 }
-

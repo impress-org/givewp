@@ -1,12 +1,11 @@
 import {__} from '@wordpress/i18n';
-import {ListTableApi, ListTablePage} from '@givewp/components';
+import {ListTablePage} from '@givewp/components';
 import {donorsRowActions} from './DonorsRowActions';
-import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import './style.scss';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import type {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
 import type {ListTableRecommendations} from '@givewp/components/ListTable/notices/types';
-import { StatConfig } from '@givewp/components/ListTable/ListTablePage';
+import {StatConfig} from '@givewp/components/ListTable/ListTablePage';
 import listTableScreen from './listTableScreen';
 import {donorsFilters} from './filters';
 
@@ -24,8 +23,6 @@ declare global {
         };
     }
 }
-
-const API = new ListTableApi(window.GiveDonors);
 
 /**
  * Displays a blank slate for the Donors table.
@@ -100,12 +97,13 @@ const statsConfig: Record<string, StatConfig> = {
         filter: {filterId: 'donorType', value: 'subscriber'},
         upgrade: !window.GiveDonors.recurringDonationsEnabled && {
             href: 'https://docs.givewp.com/subscribers-stat',
-            tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
-        }
+            tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give'),
+        },
     },
 };
 
 /**
+ * @since TBD Offer "Switch to Legacy View" in the list's view menu, not in the header.
  * @since TBD Pass the recommendation as data for the notice area.
  * @since TBD Name one record "donor", as the result count says it.
  * @since TBD Use the shared filter declarations in place of the "Filter by" settings.
@@ -124,9 +122,7 @@ export default function DonorsListTable() {
             recommendations={recommendations}
             statsConfig={statsConfig}
             screen={listTableScreen}
-        >
-            <SwitchToLegacyViewButton api={API} />
-        </ListTablePage>
+            legacyView={{}}
+        />
     );
 }
-

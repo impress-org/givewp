@@ -1,13 +1,12 @@
 import {useState} from 'react';
 import {__} from '@wordpress/i18n';
-import {ListTableApi, ListTablePage} from '@givewp/components';
+import {ListTablePage} from '@givewp/components';
 import {useDonationFormsRowActions} from './DonationFormsRowActions';
 import UpgradedFormTooltip from './UpgradedFormTooltip';
 import Onboarding, {OnboardingContext, OnboardingStateProps} from './Onboarding';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import formStyles from './DonationFormsListTable.module.scss';
 import {ColumnFilterConfig} from '@givewp/components/ListTable/ListTablePage';
-import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import {Interweave} from 'interweave';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
@@ -48,8 +47,6 @@ declare global {
     }
 }
 
-const API = new ListTableApi(window.GiveDonationForms);
-
 /**
  * Built once: a new array on every render would recompute everything that depends on it.
  */
@@ -74,11 +71,15 @@ const columnFilters: Array<ColumnFilterConfig> = [
                 <>
                     <div className={formStyles.titleContainer}>
                         <div className={formStyles.migratedForm}>
-                            {item?.v3form && window?.GiveDonationForms?.isOptionBasedFormEditorEnabled && <CubeTooltip />}
+                            {item?.v3form && window?.GiveDonationForms?.isOptionBasedFormEditorEnabled && (
+                                <CubeTooltip />
+                            )}
                             <Interweave attributes={{className: 'interweave'}} content={String(item?.title ?? '')} />
                         </div>
                         {item?.isDefaultCampaignForm && (
-                            <div className={`${formStyles.defaultFormPill} givewp-default-form-pill`}>{__('Default', 'give')}</div>
+                            <div className={`${formStyles.defaultFormPill} givewp-default-form-pill`}>
+                                {__('Default', 'give')}
+                            </div>
                         )}
                     </div>
                 </>
@@ -118,6 +119,7 @@ const ListTableBlankSlate = (
 );
 
 /**
+ * @since TBD Offer "Switch to Legacy View" in the list's view menu, not in the header.
  * @since TBD Show the default form notice above the list, not as a floating tooltip.
  * @since TBD Take the campaign as a prop: it fixes the request's campaign and replaces the Campaign filter, in place of reading the address.
  * @since TBD Pass the filter declaration in place of the filter settings.
@@ -190,6 +192,14 @@ export default function DonationFormsListTable({
                 notices={notices}
                 contentMode={isCampaignDetailsPage}
                 screen={screen ?? (isCampaignDetailsPage ? undefined : donationFormsListTableScreen)}
+                legacyView={
+                    window.GiveDonationForms.isOptionBasedFormEditorEnabled && !isCampaignDetailsPage
+                        ? {
+                              onSwitched: () =>
+                                  (window.location.href = `${window.GiveDonationForms.adminUrl}edit.php?post_type=give_forms`),
+                          }
+                        : undefined
+                }
             >
                 {isCampaignDetailsPage ? (
                     <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
@@ -217,23 +227,11 @@ export default function DonationFormsListTable({
                         )}
                     </div>
                 ) : (
-                    <>
-                        <a href={window.GiveDonationForms.newFormUrl} className={`button button-primary ${styles.button}`}>
-                            {__('Add form', 'give')}
-                        </a>
-                        {window.GiveDonationForms.isOptionBasedFormEditorEnabled && (
-                            <SwitchToLegacyViewButton
-                                api={API}
-                                className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
-                                onSwitched={() =>
-                                    (window.location.href = `${window.GiveDonationForms.adminUrl}edit.php?post_type=give_forms`)
-                                }
-                            />
-                        )}
-                    </>
+                    <a href={window.GiveDonationForms.newFormUrl} className={`button button-primary ${styles.button}`}>
+                        {__('Add form', 'give')}
+                    </a>
                 )}
             </ListTablePage>
         </OnboardingContext.Provider>
     );
 }
-
