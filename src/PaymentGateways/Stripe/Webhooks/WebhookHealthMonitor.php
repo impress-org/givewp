@@ -79,17 +79,30 @@ final class WebhookHealthMonitor
 
         $mode = give_is_test_mode() ? 'test' : 'live';
         $problems = [];
+        $skipped = false;
 
         foreach (($this->getAccounts)($mode) as $account) {
             $problem = $this->problemOf($account, $mode);
 
-            if ($problem) {
+            if (null === $problem) {
+                $skipped = true;
+            } elseif ('' !== $problem) {
                 $problems[] = $problem;
             }
         }
 
+        $notified = get_option(self::NOTIFIED_OPTION);
+        $notifiedProblems = is_array($notified) && $mode === ($notified['mode'] ?? null) ?
+            (array)($notified['problems'] ?? []) :
+            [];
+
+        /* A skipped account may still have the problem the last email listed, so only a new problem counts. */
+        if ($skipped && !array_diff($problems, $notifiedProblems)) {
+            return;
+        }
+
         if (!$problems) {
-            if (get_option(self::NOTIFIED_OPTION)) {
+            if ($notified) {
                 WebhookLogger::info('Stripe webhook health problems are resolved.', ['mode' => $mode]);
             }
 
@@ -98,9 +111,9 @@ final class WebhookHealthMonitor
             return;
         }
 
-        $fingerprint = md5(wp_json_encode([$mode, $problems]));
+        $current = ['mode' => $mode, 'problems' => $problems];
 
-        if (get_option(self::NOTIFIED_OPTION) === $fingerprint) {
+        if ($notified === $current) {
             return;
         }
 
@@ -116,16 +129,17 @@ final class WebhookHealthMonitor
             return;
         }
 
-        update_option(self::NOTIFIED_OPTION, $fingerprint, false);
+        update_option(self::NOTIFIED_OPTION, $current, false);
         WebhookLogger::info('Stripe webhook health email sent.', ['mode' => $mode, 'recipient' => $this->recipient()]);
     }
 
     /**
-     * A line describing what is wrong with the account, or an empty string when nothing is.
+     * A line describing what is wrong with the account, an empty string when nothing is, or null when the
+     * check was skipped.
      *
      * @since TBD
      */
-    private function problemOf(AccountDetail $account, string $mode): string
+    private function problemOf(AccountDetail $account, string $mode): ?string
     {
         try {
             $status = ($this->checkHealth)($account, $mode);
@@ -143,7 +157,7 @@ final class WebhookHealthMonitor
                     )
                 );
 
-                return '';
+                return null;
             }
 
             return sprintf(
