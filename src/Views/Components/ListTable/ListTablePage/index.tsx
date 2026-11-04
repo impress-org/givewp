@@ -89,6 +89,7 @@ export const ShowConfirmModalContext = createContext(
  * @since TBD Announce a cached result count only after its request has finished.
  * @since TBD After Reset, focus the search box, else a control left in the filter bar, else the bar.
  * @since TBD Announce the result count to screen readers after the admin changes the view.
+ * @since TBD Do not send the browser locale with list requests.
  * @since TBD One filter path: the deprecated `filterSettings` are mapped onto filter declarations, and the DataViews filter row and search are gone.
  * @since TBD With `filters`, show Reset only when the filters differ from the screen defaults, and reset to those defaults.
  * @since TBD Accept filter declarations (`filters`), a fixed `scope` and `testModeToggle`; with `filters`, render Give's filter bar and labeled search.
@@ -131,7 +132,6 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const declarations = declaredFilters ?? legacy?.filters ?? [];
         const testModeSwitch = testModeToggle ?? legacy?.testModeToggle;
         const statuses = apiSettings.table.statuses ?? [];
-        const locale = navigator.language || navigator.languages[0];
 
         // Read once: some screens' header modals rewrite `apiSettings.apiRoot` while they render.
         const [apiRoot] = useState(apiSettings.apiRoot);
@@ -211,8 +211,8 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const requestKey = JSON.stringify([view.page, view.perPage, view.sort, view.filters, view.search]);
         const today = useMemo(() => siteToday(), [requestKey]);
         const parameters = useMemo(
-            () => viewToParameters(view, declarations, scope, {locale, testMode, today}),
-            [view, declarations, scope, locale, testMode, today]
+            () => viewToParameters(view, declarations, scope, {testMode, today}),
+            [view, declarations, scope, testMode, today]
         );
 
         const {

@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Give\Donors\ListTable\Columns;
 
 use Give\Donors\Models\Donor;
+use DateTimeInterface;
+use Give\Framework\ListTable\ColumnKind;
+use Give\Framework\ListTable\Formatting\DateFormatter;
 use Give\Framework\ListTable\ModelColumn;
 use Give\Framework\Support\Facades\DateTime\Temporal;
-use Give\Helpers\Date;
 
 /**
  * @since 2.24.0
@@ -16,6 +18,14 @@ use Give\Helpers\Date;
  */
 class LatestDonationColumn extends ModelColumn
 {
+    /**
+     * The latest donation date by donor id, so the raw value reuses the query of the cell.
+     *
+     * @since TBD
+     *
+     * @var array<int, DateTimeInterface|null>
+     */
+    private $latestDates = [];
 
     /**
      * @since 2.24.0
@@ -38,6 +48,7 @@ class LatestDonationColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Format with the shared date formatter; no donations show the dash.
      * @since 4.13.0 updated date format
      * @since 2.24.0
      *
@@ -47,12 +58,44 @@ class LatestDonationColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $latestDonation = give()->donors->getDonorLatestDonationDate($model->id);
+        return DateFormatter::dateTime($this->latestDate($model));
+    }
 
-        if (!$latestDonation) {
-            return '-';
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::DATE;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @param Donor $model
+     */
+    public function getRawValue($model)
+    {
+        return DateFormatter::iso($this->latestDate($model));
+    }
+
+    /**
+     * Finds the latest donation date once per donor.
+     *
+     * @since TBD
+     */
+    private function latestDate(Donor $donor): ?DateTimeInterface
+    {
+        if (!array_key_exists($donor->id, $this->latestDates)) {
+            $latestDonation = give()->donors->getDonorLatestDonationDate($donor->id);
+
+            $this->latestDates[$donor->id] = $latestDonation ? Temporal::toDateTime($latestDonation) : null;
         }
 
-        return Temporal::getFormattedDateTimeUsingTimeZoneAndFormatSettings(Temporal::toDateTime($latestDonation));
+        return $this->latestDates[$donor->id];
     }
 }

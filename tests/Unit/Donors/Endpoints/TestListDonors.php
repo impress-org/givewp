@@ -322,8 +322,18 @@ class TestListDonors extends TestCase
         $expectedItems = [];
         foreach ( $donors as $donor ) {
             $expectedItem = [];
+            $expectedRawValues = [];
             foreach ( $columns as $column ) {
                 $expectedItem[$column::getId()] = $column->getCellValue($donor, 'en-US');
+                $rawValue = $column->getRawValue($donor);
+
+                if ($rawValue !== null) {
+                    $expectedRawValues[$column::getId()] = $rawValue;
+                }
+            }
+
+            if ($expectedRawValues) {
+                $expectedItem['rawValues'] = $expectedRawValues;
             }
             $expectedItems[] = $expectedItem;
         }

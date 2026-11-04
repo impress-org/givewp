@@ -54,4 +54,18 @@ final class DateFormatter
     {
         return $date === null || $date->getTimestamp() <= 0;
     }
+
+    /**
+     * The unformatted date for a row's "rawValues" key: an ISO 8601 string in UTC, or null when there is no date.
+     *
+     * @since TBD
+     */
+    public static function iso(?DateTimeInterface $date): ?string
+    {
+        if (self::isMissing($date)) {
+            return null;
+        }
+
+        return gmdate('Y-m-d\TH:i:s\Z', $date->getTimestamp());
+    }
 }

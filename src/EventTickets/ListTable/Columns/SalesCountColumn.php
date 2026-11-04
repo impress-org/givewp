@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Give\EventTickets\ListTable\Columns;
 
 use Give\EventTickets\Models\Event;
+use Give\Framework\ListTable\ColumnKind;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -14,6 +15,14 @@ use Give\Framework\ListTable\ModelColumn;
  */
 class SalesCountColumn extends ModelColumn
 {
+    /**
+     * The sold ticket count by event id, so the raw value reuses the query of the cell.
+     *
+     * @since TBD
+     *
+     * @var array<int, int>
+     */
+    private $soldCounts = [];
     /**
      * @inheritDoc
      *
@@ -37,6 +46,7 @@ class SalesCountColumn extends ModelColumn
     /**
      * @inheritDoc
      *
+     * @since TBD Read the sold count through a per-event memo.
      * @since 4.19.1 Add translators comments.
      * @since 3.6.0
      *
@@ -44,7 +54,7 @@ class SalesCountColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $soldTicketsCount = $model->eventTickets()->count() ?? 0;
+        $soldTicketsCount = $this->soldCount($model);
         $capacity = array_reduce($model->ticketTypes()->getAll() ?? [], function (int $carry, $ticketType) {
             return $carry + $ticketType->capacity;
         }, 0);
@@ -55,5 +65,41 @@ class SalesCountColumn extends ModelColumn
             $soldTicketsCount,
             $capacity
         );
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::COUNT;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @param Event $model
+     */
+    public function getRawValue($model)
+    {
+        return $this->soldCount($model);
+    }
+
+    /**
+     * Counts the sold tickets once per event.
+     *
+     * @since TBD
+     */
+    private function soldCount(Event $event): int
+    {
+        if (!isset($this->soldCounts[$event->id])) {
+            $this->soldCounts[$event->id] = (int) ($event->eventTickets()->count() ?? 0);
+        }
+
+        return $this->soldCounts[$event->id];
     }
 }
