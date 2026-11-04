@@ -139,6 +139,71 @@ final class DeleteSiteWebhookEndpointTest extends TestCase
     /**
      * @since TBD
      */
+    public function testItKeepsAnEndpointThatAnotherSavedRecordOfTheSameStripeAccountLists(): void
+    {
+        $manual = $this->makeAccount(['account_slug' => 'account_1', 'account_id' => '', 'live_secret_key' => '']);
+        $connect = $this->makeAccount(['account_slug' => 'acct_shared', 'account_id' => 'acct_shared']);
+        $shared = $this->siteEndpoint('we_shared');
+        $this->stripe->queue(200, $this->listBody([$shared]));
+        $this->stripe->queue(200, $this->listBody([$shared]));
+
+        $result = (give(DeleteSiteWebhookEndpoint::class))($manual, [$connect]);
+
+        $this->assertSame(['test' => DeleteSiteWebhookEndpoint::KEPT], $result);
+        $this->assertSame(['get', 'get'], array_column($this->stripe->requests, 'method'));
+        $this->assertSame('Bearer ' . $connect->testSecretKey, $this->stripe->header(1, 'Authorization'));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testItDeletesWithoutAskingStripeWhenTheOtherRecordIsAnotherKnownAccount(): void
+    {
+        $account = $this->makeAccount(['live_secret_key' => '']);
+        $other = $this->makeAccount(['account_slug' => 'acct_other', 'account_id' => 'acct_other']);
+        $this->stripe->queue(200, $this->listBody([$this->siteEndpoint()]));
+        $this->stripe->queue(200, ['id' => 'we_123', 'object' => 'webhook_endpoint', 'deleted' => true]);
+
+        $result = (give(DeleteSiteWebhookEndpoint::class))($account, [$other]);
+
+        $this->assertSame(['test' => DeleteSiteWebhookEndpoint::DELETED], $result);
+        $this->assertSame(['get', 'delete'], array_column($this->stripe->requests, 'method'));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testItKeepsEveryEndpointWhenTheOtherRecordHasTheSameAccountId(): void
+    {
+        $account = $this->makeAccount(['live_secret_key' => '']);
+        $duplicate = $this->makeAccount(['account_slug' => 'acct_duplicate', 'account_id' => $account->accountId]);
+        $this->stripe->queue(200, $this->listBody([$this->siteEndpoint()]));
+
+        $result = (give(DeleteSiteWebhookEndpoint::class))($account, [$duplicate]);
+
+        $this->assertSame(['test' => DeleteSiteWebhookEndpoint::KEPT], $result);
+        $this->assertSame(['get'], array_column($this->stripe->requests, 'method'));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testItKeepsTheEndpointWhenAnotherRecordCannotBeChecked(): void
+    {
+        $manual = $this->makeAccount(['account_slug' => 'account_1', 'account_id' => '', 'live_secret_key' => '']);
+        $other = $this->makeAccount(['account_slug' => 'acct_other', 'account_id' => 'acct_other']);
+        $this->stripe->queue(200, $this->listBody([$this->siteEndpoint()]));
+        $this->stripe->queue(401, $this->errorBody('authentication_error', 'Invalid API Key provided.'));
+
+        $result = (give(DeleteSiteWebhookEndpoint::class))($manual, [$other]);
+
+        $this->assertSame(['test' => DeleteSiteWebhookEndpoint::KEPT], $result);
+        $this->assertSame(['get', 'get'], array_column($this->stripe->requests, 'method'));
+    }
+
+    /**
+     * @since TBD
+     */
     private function siteEndpoint(string $id = 'we_123'): array
     {
         return $this->endpointBody([
