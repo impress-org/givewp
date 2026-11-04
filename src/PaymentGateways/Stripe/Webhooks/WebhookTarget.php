@@ -41,6 +41,11 @@ final class WebhookTarget
     ];
 
     private const LISTENER_ARG = 'give-listener';
+
+    /**
+     * Ports a URL may name or leave out without changing the endpoint it points at.
+     */
+    private const DEFAULT_PORTS = ['https' => 443, 'http' => 80];
     private const LISTENER_VALUE = 'stripe';
 
     /**
@@ -68,8 +73,8 @@ final class WebhookTarget
     /**
      * Whether a webhook endpoint URL delivers to this site's Stripe listener.
      *
-     * The scheme and a trailing slash are ignored, and both the home URL and the site URL count, because the
-     * settings page told admins to use the site URL before this class existed.
+     * The scheme, a trailing slash and the default port of the scheme are ignored, and both the home URL and
+     * the site URL count, because the settings page told admins to use the site URL before this class existed.
      *
      * @since TBD
      */
@@ -166,7 +171,10 @@ final class WebhookTarget
             return '';
         }
 
-        $host = strtolower($parts['host']) . (isset($parts['port']) ? ':' . $parts['port'] : '');
+        $scheme = strtolower($parts['scheme'] ?? '');
+        $isDefaultPort = isset($parts['port']) && (self::DEFAULT_PORTS[$scheme] ?? null) === (int)$parts['port'];
+        $port = isset($parts['port']) && !$isDefaultPort ? ':' . $parts['port'] : '';
+        $host = strtolower($parts['host']) . $port;
         $path = untrailingslashit($parts['path'] ?? '');
 
         return $host . $path . '?' . self::LISTENER_ARG . '=' . self::LISTENER_VALUE;
