@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Emails now use wp_strip_all_tags() and wp_rand() in place of strip_tags()
+  and rand(), so plain text emails no longer show leftover style or script text.
+timestamp: 2026-11-04T18:06:51.322Z

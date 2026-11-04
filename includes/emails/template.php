@@ -52,6 +52,7 @@ function give_email_template_tags( $message, $payment_data, $payment_id, $admin_
  *
  * Provides sample content for the preview email functionality within settings > email.
  *
+ * @since TBD Use wp_rand() instead of rand().
  * @since 4.19.1 Use gmdate() instead of date().
  * @since 1.0
  *
@@ -63,7 +64,7 @@ function give_email_preview_template_tags( $message ) {
 
 	$user             = wp_get_current_user();
 	$gateway          = 'PayPal';
-	$donation_id      = rand( 1, 100 );
+	$donation_id      = wp_rand( 1, 100 );
 	$receipt_link     = give_get_receipt_link( $donation_id );
 	$receipt_link_url = give_get_receipt_url( $donation_id );
 	$price            = give_currency_filter(

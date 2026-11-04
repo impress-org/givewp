@@ -974,4 +974,20 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertStringNotContainsString( '{meta_donation_key subkey}', $content );
 		$this->assertSame( '{meta_donation_key subkey}', strtr( $content, $placeholders ) );
 	}
+
+	/**
+	 * The preview {payment_id} tag must be a sample number from 1 to 100.
+	 *
+	 * @since TBD
+	 */
+	public function test_give_email_preview_template_tags_payment_id_is_in_range() {
+		$message = give_email_preview_template_tags( '{payment_id}' );
+
+		$this->assertMatchesRegularExpression( '/^<p>\d+<\/p>\s*$/', $message );
+
+		$payment_id = (int) wp_strip_all_tags( $message );
+
+		$this->assertGreaterThanOrEqual( 1, $payment_id );
+		$this->assertLessThanOrEqual( 100, $payment_id );
+	}
 }

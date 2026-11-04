@@ -696,6 +696,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Send preview email.
 		 *
+		 * @since TBD Use wp_strip_all_tags() for plain text emails.
 		 * @since  2.0
 		 * @since 2.15.0 Preview email recipient is now the current user.
 		 * @access public
@@ -731,7 +732,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			if ( 'text/plain' === $content_type ) {
 				Give()->emails->__set( 'html', false );
 				Give()->emails->__set( 'template', 'none' );
-				$message = strip_tags( $message );
+				$message = wp_strip_all_tags( $message );
 			}
 
 			if ( Give_Email_Notification_Util::can_use_form_email_options( $this, $form_id ) ) {
@@ -758,6 +759,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *    4. donor_id
 		 *    5. for third party email tags you can pass necessary param along above parameters other value replace by empty string.
 		 *
+		 * @since TBD Use wp_strip_all_tags() for plain text emails.
 		 * @since  2.0
 		 * @access public
 		 *
@@ -820,7 +822,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			if ( 'text/plain' === $content_type ) {
 				Give()->emails->__set( 'html', false );
 				Give()->emails->__set( 'template', 'none' );
-				$message = strip_tags( $message );
+				$message = wp_strip_all_tags( $message );
 			}
 
 			if ( Give_Email_Notification_Util::can_use_form_email_options( $this, $form_id ) ) {
@@ -846,6 +848,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Decode preview email template tags.
 		 *
+		 * @since TBD Use wp_rand() instead of rand().
 		 * @since 4.19.1 Use gmdate() instead of date().
 		 * @since 2.14.0 display payment sequential number as id
 		 * @since 2.0
@@ -903,7 +906,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'amount'                  => $payment_id ? give_email_tag_amount( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
 					'price'                   => $payment_id ? give_email_tag_price( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
 					'payment_method'          => $payment_id ? give_email_tag_payment_method( array( 'payment_id' => $payment_id ) ) : __( 'PayPal', 'give' ),
-					'payment_id'              => $payment_id ? $payment->number : rand( 2000, 2050 ),
+					'payment_id'              => $payment_id ? $payment->number : wp_rand( 2000, 2050 ),
 					'receipt_link_url'        => $receipt_link_url,
 					'receipt_link'            => $receipt_link,
 					'date'                    => $payment_id ? gmdate( give_date_format(), strtotime( $payment->date ) ) : gmdate( give_date_format(), current_time( 'timestamp' ) ),
