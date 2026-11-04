@@ -231,7 +231,7 @@ export type LegacyRowActions = (args: LegacyRowActionArgs) => ReactNode;
  * @since TBD
  */
 export type TestModeToggle = {
-    /** The header badge text, "Test mode". */
+    /** The header badge text, "Test". */
     label: string;
     /** The accessible name of the switch. */
     ariaLabel: string;
