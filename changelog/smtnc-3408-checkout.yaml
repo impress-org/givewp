@@ -1,0 +1,6 @@
+significance: patch
+type: fix
+entry: Donation checkout name and login fields now use wp_strip_all_tags() in
+  place of strip_tags(), and two PayPal admin scripts use plain strings in place
+  of heredoc syntax.
+timestamp: 2026-11-04T19:12:18.476Z
