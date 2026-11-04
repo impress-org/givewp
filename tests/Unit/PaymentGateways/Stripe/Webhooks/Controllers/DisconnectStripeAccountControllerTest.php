@@ -51,7 +51,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     public function testItDeletesTheSiteEndpointInBothModesAfterRemovingTheAccount(): void
     {
         $account = $this->makeAccount();
-        $other = $this->makeAccount(['account_slug' => 'acct_other']);
+        $other = $this->makeAccount(['account_slug' => 'acct_other', 'account_id' => 'acct_other']);
         $this->saveAccounts($account, $other);
 
         foreach (['test', 'live'] as $mode) {
@@ -130,9 +130,43 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     /**
      * @since TBD
      */
+    public function testItWarnsWhenTheSavedRecordIsNull(): void
+    {
+        $slug = 'acct_null';
+        give_update_option('_give_stripe_get_all_accounts', [$slug => null]);
+
+        $response = $this->callController($slug);
+
+        $this->assertTrue($response['success']);
+        $this->assertStringContainsString((new WebhookTarget())->url(), $response['data']['webhookWarning']);
+        $this->assertSame([], $this->stripe->requests);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testItKeepsTheEndpointWhenAnotherSavedRecordOfTheSameStripeAccountUsesIt(): void
+    {
+        $manual = $this->makeAccount(['account_slug' => 'account_1', 'account_id' => '', 'live_secret_key' => '']);
+        $connect = $this->makeAccount(['account_slug' => 'acct_shared', 'account_id' => 'acct_shared']);
+        $this->saveAccounts($manual, $connect);
+        $this->stripe->queue(200, $this->listBody([$this->siteEndpoint()]));
+        $this->stripe->queue(200, $this->listBody([$this->siteEndpoint()]));
+
+        $response = $this->callController($manual->accountSlug);
+
+        $this->assertTrue($response['success']);
+        $this->assertArrayNotHasKey('data', $response);
+        $this->assertSame(['get', 'get'], array_column($this->stripe->requests, 'method'));
+        $this->assertSame([$connect->accountSlug], array_keys(give_stripe_get_all_accounts()));
+    }
+
+    /**
+     * @since TBD
+     */
     public function testItDoesNotWarnWhenNoAccountIsSavedUnderTheSlug(): void
     {
-        $other = $this->makeAccount(['account_slug' => 'acct_other']);
+        $other = $this->makeAccount(['account_slug' => 'acct_other', 'account_id' => 'acct_other']);
         $this->saveAccounts($other);
 
         $response = $this->callController('acct_missing');
