@@ -21,7 +21,7 @@
  *
  * @internal
  */
-class GoogleChartApi
+class GoogleChartApi // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound -- vendored Google Chart library; class names stay as upstream and are loaded by name.
 {
 	/**
 	 * Google Chart API base url.
@@ -213,6 +213,7 @@ class GoogleChartApi
 		try {
 			return (string) $this->getImage();
 		} catch (Exception $e) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error -- upstream library reports a failed chart request this way; the message is escaped and this is not debug output.
 			trigger_error(esc_html($e->getMessage()), E_USER_ERROR);
 		}
 	}

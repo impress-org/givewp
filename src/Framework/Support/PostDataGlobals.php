@@ -70,6 +70,7 @@ final class PostDataGlobals
     {
         foreach (self::$globalNames as $globalName) {
             if (array_key_exists($globalName, $snapshot)) {
+                // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- restores the WordPress core globals that setup_postdata() writes (id, authordata, page and so on); the names are fixed by core.
                 $GLOBALS[$globalName] = $snapshot[$globalName];
             } else {
                 unset($GLOBALS[$globalName]);

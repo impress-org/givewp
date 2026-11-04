@@ -205,7 +205,7 @@ add_action( 'give_pre_process_give_forms_meta', 'give_set_donation_levels_max_mi
  *
  * @param int $payment_id
  */
-function _give_save_donor_billing_address( $payment_id ) {
+function _give_save_donor_billing_address( $payment_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- give_complete_donation callback registered below by this name; add-ons may remove it by name.
 	$donor_id = absint( give_get_payment_donor_id( $payment_id ) );
 
 	// Bailout

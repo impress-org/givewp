@@ -1,5 +1,5 @@
 <?php
-class Array2XML {
+class Array2XML { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound -- vendored Array2XML library used for the legacy API XML output; class name stays as upstream.
 
     private static $xml = null;
 	private static $encoding = 'UTF-8';

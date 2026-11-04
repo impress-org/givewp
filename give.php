@@ -11,6 +11,8 @@
  * Requires PHP: 7.4
  * Text Domain: give
  * Domain Path: /languages
+ * License: GPLv3 or later
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  *
  * Give is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

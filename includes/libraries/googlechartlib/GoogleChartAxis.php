@@ -13,7 +13,7 @@
 /**
  * An Axis.
  */
-class GoogleChartAxis
+class GoogleChartAxis // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound -- vendored Google Chart library; class names stay as upstream and are loaded by name.
 {
 	const ALIGN_LEFT = -1;
 	const ALIGN_CENTER = 0;
