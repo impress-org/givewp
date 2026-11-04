@@ -84,8 +84,10 @@ deleted. The result per mode is `deleted`, `nothing_matched` or `failed`.
 
 A Stripe failure never stops the disconnect. A revoked OAuth token, a restricted key without write
 access and a network error are logged with `give_record_gateway_error()` as `Stripe Webhook
-Disconnect`, and the account is removed anyway. The AJAX response is still a success and the admin
-sees no message. The endpoint then stays on Stripe.
+Disconnect`, and the account is removed anyway. The AJAX response is still a success, and its
+`webhookWarning` field tells the admin to delete the endpoint in the Stripe Dashboard. The settings page
+shows that warning in a modal and reloads when the modal closes. The endpoint stays on Stripe until the
+admin deletes it.
 
 ## What setup decides
 
