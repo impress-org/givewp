@@ -459,8 +459,18 @@ class TestListDonationForms extends TestCase
         $expectedItems = [];
         foreach ( $donationForms as $donationForm ) {
             $expectedItem = [];
+            $expectedRawValues = [];
             foreach ( $columns as $column ) {
                 $expectedItem[$column::getId()] = $column->getCellValue($donationForm, 'en-US');
+                $rawValue = $column->getRawValue($donationForm);
+
+                if ($rawValue !== null) {
+                    $expectedRawValues[$column::getId()] = $rawValue;
+                }
+            }
+
+            if ($expectedRawValues) {
+                $expectedItem['rawValues'] = $expectedRawValues;
             }
             $expectedItem['name'] = $donationForm->title;
             $expectedItem['edit'] = add_query_arg(['locale' => Language::getLocale()],

@@ -4,7 +4,10 @@ namespace Give\Campaigns\ListTable\Columns;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignsDataRepository;
+use Give\Framework\ListTable\ColumnKind;
+use Give\Framework\ListTable\Formatting\MoneyFormatter;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * @since 4.0.0
@@ -31,6 +34,7 @@ class RevenueColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Format with the shared money formatter.
      * @since 4.0.0
      *
      * @param Campaign $model
@@ -42,7 +46,7 @@ class RevenueColumn extends ModelColumn
          */
         $campaignsData = $this->getListTableData();
 
-        $revenue = give_currency_filter(give_format_amount($campaignsData->getRevenue($model)));
+        $revenue = MoneyFormatter::fromDecimal($campaignsData->getRevenue($model));
 
         return sprintf(
             '<a class="column-earnings-value" href="%s" aria-label="%s">%s</a>',
@@ -55,5 +59,34 @@ class RevenueColumn extends ModelColumn
                 $this
             )
         );
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::MONEY;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @param Campaign $model
+     *
+     * @return array{amount: string, currency: string}
+     */
+    public function getRawValue($model)
+    {
+        /**
+         * @var CampaignsDataRepository $campaignsData
+         */
+        $campaignsData = $this->getListTableData();
+
+        return MoneyFormatter::raw(Money::fromDecimal($campaignsData->getRevenue($model), give_get_currency()));
     }
 }
