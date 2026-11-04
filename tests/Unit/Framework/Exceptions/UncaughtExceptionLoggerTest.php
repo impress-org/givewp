@@ -10,6 +10,17 @@ use PHPUnit\Framework\MockObject\MockBuilder;
 
 class UncaughtExceptionLoggerTest extends TestCase
 {
+    /**
+     * @since TBD
+     */
+    public function tearDown(): void
+    {
+        /* mock() binds the mock in the container for the rest of the process, so later tests in the same worker would log through it. */
+        give()->singleton(Log::class);
+
+        parent::tearDown();
+    }
+
     public function testShouldLogException()
     {
         $logger = new UncaughtExceptionLogger();
