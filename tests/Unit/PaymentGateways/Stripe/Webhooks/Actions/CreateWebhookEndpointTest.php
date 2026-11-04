@@ -36,7 +36,7 @@ final class CreateWebhookEndpointTest extends TestCase
         $endpoint = (new CreateWebhookEndpoint())($account, 'test', $url, $events, '2019-05-16', 'GiveWP', $metadata);
 
         $this->assertSame('we_new', $endpoint->id);
-        $this->assertSame('whsec_created', $endpoint->secret);
+        $this->assertFalse(property_exists($endpoint, 'secret'));
         $this->assertSame($events, $endpoint->enabledEvents);
         $this->assertSame($metadata, $endpoint->metadata);
 

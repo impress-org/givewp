@@ -41,7 +41,6 @@ final class ListWebhookEndpointsTest extends TestCase
         $this->assertSame($second['status'], $endpoints[1]->status);
         $this->assertSame($second['metadata'], $endpoints[1]->metadata);
         $this->assertSame($first['enabled_events'], $endpoints[0]->enabledEvents);
-        $this->assertNull($endpoints[0]->secret);
 
         $this->assertCount(2, $this->stripe->requests);
         $this->assertSame('get', $this->stripe->requests[0]['method']);

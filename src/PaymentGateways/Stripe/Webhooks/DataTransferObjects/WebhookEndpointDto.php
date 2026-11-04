@@ -72,13 +72,6 @@ final class WebhookEndpointDto
     public $application;
 
     /**
-     * The signing secret. Stripe returns it only in the response to the create request.
-     *
-     * @var string|null
-     */
-    public $secret;
-
-    /**
      * @since TBD
      */
     public static function fromStripeObject(WebhookEndpoint $endpoint): self
@@ -95,7 +88,6 @@ final class WebhookEndpointDto
         $self->livemode = $endpoint->livemode;
         $self->created = $endpoint->created;
         $self->application = $endpoint->application;
-        $self->secret = $endpoint->secret ?? null;
 
         return $self;
     }
