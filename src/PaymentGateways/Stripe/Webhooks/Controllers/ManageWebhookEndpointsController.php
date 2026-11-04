@@ -274,11 +274,12 @@ final class ManageWebhookEndpointsController
             return $this->notice('error', __('Choose at least one event.', 'give'));
         }
 
-        ($this->updateEndpoint)($account, $mode, $endpointId, [
-            'url' => $url,
-            'disabled' => 'disabled' === $this->input('status'),
-            'enabled_events' => array_values($events),
-        ]);
+        /* The form sends the URL on every save; leaving an unchanged one out keeps it exactly as Stripe stored it. */
+        $changes = $url !== $existing->url ? ['url' => $url] : [];
+        $changes['disabled'] = 'disabled' === $this->input('status');
+        $changes['enabled_events'] = array_values($events);
+
+        ($this->updateEndpoint)($account, $mode, $endpointId, $changes);
 
         $this->logChange('updated', $account, $mode, $endpointId);
 
@@ -334,11 +335,15 @@ final class ManageWebhookEndpointsController
     }
 
     /**
+     * Read without input(), because sanitize_text_field() deletes percent-encoded octets such as "%2B".
+     *
      * @since TBD
      */
     private function url(): string
     {
-        return esc_url_raw($this->input('url'));
+        $url = isset($_POST['url']) && is_string($_POST['url']) ? trim(wp_unslash($_POST['url'])) : '';
+
+        return esc_url_raw($url, ['https', 'http']);
     }
 
     /**

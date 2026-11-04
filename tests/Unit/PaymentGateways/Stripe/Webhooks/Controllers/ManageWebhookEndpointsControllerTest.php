@@ -393,6 +393,52 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     /**
      * @since TBD
      */
+    public function testCreateSendsAPercentEncodedUrlAsPosted(): void
+    {
+        $account = $this->makeAccount();
+        $this->saveAccounts($account);
+        $url = 'https://hooks.example.com/x?token=a%2Bb%3D&give-listener=stripe';
+        $this->stripe->queue(200, $this->listBody([]));
+        $this->stripe->queue(200, $this->endpointBody(['id' => 'we_new', 'url' => $url]));
+        $this->stripe->queue(200, $this->listBody([$this->endpointBody(['id' => 'we_new', 'url' => $url])]));
+
+        $this->callController('create', [
+            'account' => $account->accountSlug,
+            'url' => $url,
+            'events' => ['charge.refunded'],
+        ]);
+
+        $this->assertSame($url, $this->stripe->requests[1]['params']['url']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testUpdateDoesNotSendAnUnchangedUrl(): void
+    {
+        $account = $this->makeAccount();
+        $this->saveAccounts($account);
+        $url = 'https://hooks.example.com/x?token=a%2Bb%3D';
+        $existing = $this->endpointBody(['id' => 'we_other', 'url' => $url]);
+        $this->stripe->queue(200, $this->listBody([$existing]));
+        $this->stripe->queue(200, $this->endpointBody(['id' => 'we_other', 'url' => $url, 'status' => 'disabled']));
+        $this->stripe->queue(200, $this->listBody([$existing]));
+
+        $this->callController('update', [
+            'account' => $account->accountSlug,
+            'endpoint_id' => 'we_other',
+            'url' => $url,
+            'status' => 'disabled',
+            'events' => ['charge.refunded'],
+        ]);
+
+        $this->assertSame('post', $this->stripe->requests[1]['method']);
+        $this->assertArrayNotHasKey('url', $this->stripe->requests[1]['params']);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testUpdateEnablesTheEndpointWhenTheStatusIsNotDisabled(): void
     {
         $account = $this->makeAccount();
