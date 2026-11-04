@@ -44,14 +44,18 @@
     // only gutter, and the search and the filters line up with the banner.
     .dataviews__view-actions,
     .dataviews-filters__container,
-    .dataviews-footer,
     .dataviews-loading,
     .dataviews-no-results {
         padding-inline: 0;
     }
 
-    // The table keeps a small inset of its own, so the row borders and the row hover background do not
-    // touch the edge of the container. The search and the filter bar have none, and start at the edge.
+    // The table and its footer keep a small inset of their own, so the row borders and the row hover
+    // background do not touch the edge of the container. The search and the filter bar have none, and
+    // start at the edge.
+    .dataviews-footer {
+        padding-inline: var(--givewp-spacing-4);
+    }
+
     .dataviews-view-table tr th:first-child,
     .dataviews-view-table tr td:first-child {
         padding-inline-start: var(--givewp-spacing-4);
