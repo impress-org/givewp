@@ -41,7 +41,7 @@
     // The page's white container already pads everything inside it, the banner included. DataViews
     // adds its own 48px at the sides of the toolbar, the footer and the outer table cells, which
     // pushed the list in from the banner above it. Take that padding out so the container is the
-    // only gutter, and the search, the filters and the first column line up with the banner.
+    // only gutter, and the search and the filters line up with the banner.
     .dataviews__view-actions,
     .dataviews-filters__container,
     .dataviews-footer,
@@ -50,14 +50,16 @@
         padding-inline: 0;
     }
 
+    // The table keeps a small inset of its own, so the row borders and the row hover background do not
+    // touch the edge of the container. The search and the filter bar have none, and start at the edge.
     .dataviews-view-table tr th:first-child,
     .dataviews-view-table tr td:first-child {
-        padding-inline-start: 0;
+        padding-inline-start: var(--givewp-spacing-4);
     }
 
     .dataviews-view-table tr th:last-child,
     .dataviews-view-table tr td:last-child {
-        padding-inline-end: 0;
+        padding-inline-end: var(--givewp-spacing-4);
     }
 }
 
