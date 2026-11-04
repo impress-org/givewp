@@ -6,6 +6,7 @@ use Give\PaymentGateways\Stripe\DataTransferObjects\DisconnectStripeAccountDto;
 use Give\PaymentGateways\Stripe\Models\AccountDetail;
 use Give\PaymentGateways\Stripe\Webhooks\Actions\DeleteSiteWebhookEndpoint;
 use Give\PaymentGateways\Stripe\Webhooks\WebhookLogger;
+use Give\PaymentGateways\Stripe\Webhooks\WebhookTarget;
 use Throwable;
 
 /**
@@ -22,11 +23,17 @@ class DisconnectStripeAccountController
     private $deleteSiteWebhookEndpoint;
 
     /**
+     * @var WebhookTarget
+     */
+    private $target;
+
+    /**
      * @since TBD
      */
-    public function __construct(DeleteSiteWebhookEndpoint $deleteSiteWebhookEndpoint)
+    public function __construct(DeleteSiteWebhookEndpoint $deleteSiteWebhookEndpoint, WebhookTarget $target)
     {
         $this->deleteSiteWebhookEndpoint = $deleteSiteWebhookEndpoint;
+        $this->target = $target;
     }
 
     /**
@@ -46,11 +53,9 @@ class DisconnectStripeAccountController
 
         give_stripe_disconnect_account($requestedData->accountSlug);
 
-        if ($account) {
-            $this->deleteWebhookEndpoints($account);
-        }
+        $deleted = !$account || $this->deleteWebhookEndpoints($account);
 
-        wp_send_json_success();
+        wp_send_json_success($deleted ? null : ['webhookWarning' => $this->cleanupWarning()]);
     }
 
     /**
@@ -111,16 +116,39 @@ class DisconnectStripeAccountController
      * @since TBD
      *
      * @param AccountDetail $account The account that was just removed, with its key.
+     *
+     * @return bool Whether no endpoint of this site is left on the account.
      */
-    private function deleteWebhookEndpoints(AccountDetail $account): void
+    private function deleteWebhookEndpoints(AccountDetail $account): bool
     {
         try {
-            ($this->deleteSiteWebhookEndpoint)($account);
+            $results = ($this->deleteSiteWebhookEndpoint)($account);
         } catch (Throwable $exception) {
             WebhookLogger::warning(
                 'Stripe webhook endpoint was not deleted on disconnect.',
                 array_merge(['account' => $account->accountSlug], WebhookLogger::failureContext($exception))
             );
+
+            return false;
         }
+
+        return !in_array(DeleteSiteWebhookEndpoint::FAILED, $results, true);
+    }
+
+    /**
+     * The message the settings page shows when the endpoint may still be on the account.
+     *
+     * @since TBD
+     */
+    private function cleanupWarning(): string
+    {
+        return sprintf(
+            /* translators: %s: Webhook endpoint URL of this site. */
+            __(
+                'The account is disconnected, but GiveWP could not delete its webhook endpoint for this site. Delete the endpoint for %s in the Webhooks section of your Stripe Dashboard.',
+                'give'
+            ),
+            $this->target->url()
+        );
     }
 }

@@ -3,6 +3,7 @@
  *
  * This will be used to disconnect any Stripe account from the list
  *
+ * @since TBD Show a warning before the reload when the webhook endpoint could not be deleted.
  * @since 2.13.0
  */
 import { __ } from '@wordpress/i18n'
@@ -34,9 +35,30 @@ window.addEventListener('DOMContentLoaded', function () {
                     fetch(button.getAttribute('href'))
                         .then((response) => response.json())
                         .then((response) => {
-                            if (response.success) {
-                                window.location.reload();
+                            if (!response.success) {
+                                return;
                             }
+
+                            const warning = response.data && response.data.webhookWarning;
+
+                            if (!warning) {
+                                window.location.reload();
+
+                                return;
+                            }
+
+                            const desc = document.createElement('span');
+                            desc.textContent = warning;
+
+                            new Give.modal.GiveWarningAlert({
+                                modalContent: {
+                                    title: __('Stripe account disconnected', 'give'),
+                                    desc: desc.outerHTML,
+                                },
+                                callbacks: {
+                                    close: () => window.location.reload(),
+                                },
+                            }).render();
                         });
                 },
             }).render();
