@@ -144,7 +144,7 @@ final class WebhookSetupNotice
                 __('Add the endpoint yourself: visit the <a href="%1$s" target="_blank">Webhooks section of your Stripe Dashboard</a>, click <strong>Add endpoint</strong> and paste %2$s. See our <a href="%3$s" target="_blank">documentation</a> for the events to select.', 'give'),
                 esc_url('https://dashboard.stripe.com/webhooks'),
                 '<code>' . esc_html($this->target->url()) . '</code>',
-                esc_url('http://docs.givewp.com/stripe-webhooks')
+                esc_url('https://docs.nexcess.com/software/give/setting-up-webhooks/')
             ),
             sprintf(
                 /* translators: %s: Stripe settings page URL. */
