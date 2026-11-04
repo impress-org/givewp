@@ -36,6 +36,14 @@ const getBusyMessages = () => ({
 let openField = null;
 
 /**
+ * How many times a modal has been opened. A response that belongs to an earlier modal is dropped, so a
+ * request started for one account cannot fill the modal of another.
+ *
+ * @since TBD
+ */
+let modalCount = 0;
+
+/**
  * @since TBD
  *
  * @param {string} text Plain text.
@@ -435,6 +443,7 @@ function showOperationError(form, formData, operation) {
  */
 function runOperation(operation, formData = new FormData(), form = null) {
     const field = openField;
+    const modal = modalCount;
 
     if (!field) {
         return Promise.resolve();
@@ -444,8 +453,14 @@ function runOperation(operation, formData = new FormData(), form = null) {
 
     return post(operation, field.getAttribute('data-manage-nonce'), formData)
         .then(({ html, state }) => {
-            const container = showContent(html);
+            /* The status button belongs to the account, so it is updated even after its modal closed. */
             setState(field, state);
+
+            if (modal !== modalCount) {
+                return;
+            }
+
+            const container = showContent(html);
             setBusy(false);
 
             const failedNotice = container && container.querySelector('.give-stripe-webhooks__notice--error');
@@ -465,6 +480,10 @@ function runOperation(operation, formData = new FormData(), form = null) {
             focusNotice(container);
         })
         .catch(() => {
+            if (modal !== modalCount) {
+                return;
+            }
+
             setBusy(false);
             setSubmitBusy(form, false);
 
@@ -485,6 +504,7 @@ function runOperation(operation, formData = new FormData(), form = null) {
  */
 function openModal(field) {
     openField = field;
+    modalCount++;
 
     new Give.modal.GiveNoticeAlert({
         mainClass: 'give-stripe-webhook-modal',
