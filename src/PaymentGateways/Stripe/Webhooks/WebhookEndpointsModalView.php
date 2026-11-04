@@ -89,6 +89,20 @@ final class WebhookEndpointsModalView
     }
 
     /**
+     * The notices alone, for a response that leaves the rest of the modal as it is.
+     *
+     * @since TBD
+     *
+     * @param array<int, array{level: string, message: string}> $notices In display order; empty ones are skipped.
+     *
+     * @return string The notices as HTML.
+     */
+    public function notices(array $notices): string
+    {
+        return implode('', array_map([$this, 'notice'], $notices));
+    }
+
+    /**
      * @since TBD
      *
      * @param array{level: string, message: string} $notice
