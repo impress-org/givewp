@@ -85,11 +85,11 @@ final class WebhookSetupNotice
                 $items,
                 /* A setup run covers the mode the site is in, so a test-mode site never writes to a live account. */
                 wp_kses_post(sprintf(
-                    /* translators: 1: "live mode" or "test mode". 2: The other mode. 3: Documentation URL. */
-                    __('This set up %1$s only. Before you switch the site to %2$s, add its endpoint as our <a href="%3$s" target="_blank">documentation</a> describes.', 'give'),
+                    /* translators: 1: "live mode" or "test mode". 2: The other mode. 3: Stripe settings page URL. */
+                    __('This set up %1$s only. After you switch the site to %2$s, click <strong>Set up webhooks</strong> on the <a href="%3$s">Stripe Webhooks settings page</a>.', 'give'),
                     $modeLabel,
                     $otherModeLabel,
-                    esc_url('https://docs.nexcess.com/software/give/setting-up-webhooks/')
+                    esc_url($this->webhookSettingsUrl())
                 ))
             ),
             'retry' => (bool)$failed,
@@ -155,11 +155,25 @@ final class WebhookSetupNotice
                 '<code>' . esc_html($this->target->url()) . '</code>',
                 esc_url('https://docs.nexcess.com/software/give/setting-up-webhooks/')
             )),
-            wp_kses_post(__('You can also click <strong>Try again</strong> now.', 'give')),
+            wp_kses_post(sprintf(
+                /* translators: %s: Stripe settings page URL. */
+                __('You can also click <strong>Try again</strong> now, or later click <strong>Set up webhooks</strong> on the <a href="%s">Stripe Webhooks settings page</a>.', 'give'),
+                esc_url($this->webhookSettingsUrl())
+            )),
             esc_html__(
                 'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.',
                 'give'
             )
+        );
+    }
+
+    /**
+     * @since TBD
+     */
+    private function webhookSettingsUrl(): string
+    {
+        return admin_url(
+            'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings&group=webhooks'
         );
     }
 }
