@@ -516,6 +516,28 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     /**
      * @since TBD
      */
+    public function testUpdateAsksForAValidUrlBeforeCallingStripe(): void
+    {
+        $account = $this->makeAccount();
+        $this->saveAccounts($account);
+        $this->stripe->queue(200, $this->listBody([$this->endpointBody(['id' => 'we_site'])]));
+
+        $response = $this->callController('update', [
+            'account' => $account->accountSlug,
+            'endpoint_id' => 'we_site',
+            'url' => '',
+            'status' => 'enabled',
+            'events' => ['charge.refunded'],
+        ]);
+
+        $this->assertStringContainsString('Enter a valid URL.', $response['data']['html']);
+        $this->assertStringNotContainsString('was not found', $response['data']['html']);
+        $this->assertSame(['get'], array_column($this->stripe->requests, 'method'));
+    }
+
+    /**
+     * @since TBD
+     */
     public function testUpdateEnablesTheEndpointWhenTheStatusIsNotDisabled(): void
     {
         $account = $this->makeAccount();
