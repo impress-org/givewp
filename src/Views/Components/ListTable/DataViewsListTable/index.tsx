@@ -43,6 +43,7 @@ const getItemId = (item: ListTableItem) => String(item.id);
  * the place of the stock search and filter row.
  *
  * @since TBD Always render the `searchBox` and `filterBar` slots; no stock search or filter row.
+ * @since TBD Show the view options on the filter bar's row instead of next to the search box.
  * @since TBD Render the `searchBox` and `filterBar` slots in place of the stock search and filters.
  * @since TBD
  */
@@ -66,18 +67,22 @@ function ListTableLayout({
                     <DataViews.BulkActionToolbar />
                 </HStack>
             ) : (
-                <HStack alignment="top" justify="space-between" className="dataviews__view-actions" spacing={1}>
-                    <HStack justify="start" expanded={false} className="dataviews__search">
+                <HStack alignment="top" justify="start" className="dataviews__view-actions" spacing={1}>
+                    <HStack justify="start" className="dataviews__search">
                         {searchBox}
                     </HStack>
-                    <HStack spacing={1} expanded={false} style={{flexShrink: 0}}>
+                </HStack>
+            )}
+            <div className="givewp-list-table__filter-row">
+                {filterBar}
+                {!hasSelection && (
+                    <HStack spacing={1} expanded={false} className="givewp-list-table__view-controls">
                         <DataViews.LayoutSwitcher />
                         <DataViews.ViewConfig />
                         {onResetLayout && <ListTableViewReset isDefault={isDefaultLayout} onConfirm={onResetLayout} />}
                     </HStack>
-                </HStack>
-            )}
-            {filterBar}
+                )}
+            </div>
             <DataViews.Layout />
             <DataViews.Footer />
         </>
