@@ -258,8 +258,18 @@ class TestListSubscriptions extends TestCase
         $expectedItems = [];
         foreach ( $subscriptions as $subscription ) {
             $expectedItem = [];
+            $expectedRawValues = [];
             foreach ( $columns as $column ) {
                 $expectedItem[$column::getId()] = $column->getCellValue($subscription, 'en-US');
+                $rawValue = $column->getRawValue($subscription);
+
+                if ($rawValue !== null) {
+                    $expectedRawValues[$column::getId()] = $rawValue;
+                }
+            }
+
+            if ($expectedRawValues) {
+                $expectedItem['rawValues'] = $expectedRawValues;
             }
             $expectedItems[] = $expectedItem;
         }

@@ -81,4 +81,23 @@ final class MoneyFormatter
 
         return number_format($amount, $currencies->subunitFor(new Currency($currency)), '.', '');
     }
+
+    /**
+     * The unformatted amount for a row's "rawValues" key: ['amount' => '1331.28', 'currency' => 'USD'].
+     *
+     * @since TBD
+     *
+     * @return array{amount: string, currency: string}|null
+     */
+    public static function raw(?Money $amount): ?array
+    {
+        if ($amount === null) {
+            return null;
+        }
+
+        return [
+            'amount' => $amount->formatToDecimal(),
+            'currency' => $amount->getCurrency()->getCode(),
+        ];
+    }
 }

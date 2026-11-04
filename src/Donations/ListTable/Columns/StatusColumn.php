@@ -6,6 +6,7 @@ namespace Give\Donations\ListTable\Columns;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\ListTable\ColumnKind;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -58,5 +59,15 @@ class StatusColumn extends ModelColumn
             $status->getValue(),
             $status->label()
         );
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::STATUS;
     }
 }

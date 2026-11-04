@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Give\Subscriptions\ListTable\Columns;
 
+use Give\Framework\ListTable\ColumnKind;
 use Give\Framework\ListTable\ModelColumn;
 use Give\Subscriptions\Models\Subscription;
 
@@ -111,5 +112,15 @@ class StatusColumn extends ModelColumn
                 $extra['text']
             ) : ''
         );
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::STATUS;
     }
 }
