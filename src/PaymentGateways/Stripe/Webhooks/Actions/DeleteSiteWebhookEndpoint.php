@@ -24,6 +24,7 @@ final class DeleteSiteWebhookEndpoint
 {
     public const DELETED = 'deleted';
     public const NOTHING_MATCHED = 'nothing_matched';
+    public const KEPT = 'kept';
     public const FAILED = 'failed';
 
     /**
@@ -60,9 +61,12 @@ final class DeleteSiteWebhookEndpoint
      *
      * @since TBD
      *
-     * @return array<string, string> "test" and "live" mapped to DELETED, NOTHING_MATCHED or FAILED
+     * @param AccountDetail   $account           The account being disconnected.
+     * @param AccountDetail[] $remainingAccounts The accounts still saved. An endpoint one of them also uses is kept.
+     *
+     * @return array<string, string> "test" and "live" mapped to DELETED, NOTHING_MATCHED, KEPT or FAILED
      */
-    public function __invoke(AccountDetail $account): array
+    public function __invoke(AccountDetail $account, array $remainingAccounts = []): array
     {
         $results = [];
 
@@ -71,7 +75,7 @@ final class DeleteSiteWebhookEndpoint
                 continue;
             }
 
-            $results[$mode] = $this->deleteInMode($account, $mode);
+            $results[$mode] = $this->deleteInMode($account, $mode, $remainingAccounts);
         }
 
         return $results;
@@ -80,17 +84,43 @@ final class DeleteSiteWebhookEndpoint
     /**
      * @since TBD
      *
-     * @param string $mode "live" or "test"
+     * @param string          $mode              "live" or "test"
+     * @param AccountDetail[] $remainingAccounts The accounts still saved.
      *
-     * @return string DELETED, NOTHING_MATCHED or FAILED
+     * @return string DELETED, NOTHING_MATCHED, KEPT or FAILED
      */
-    private function deleteInMode(AccountDetail $account, string $mode): string
+    private function deleteInMode(AccountDetail $account, string $mode, array $remainingAccounts): string
     {
         try {
             $endpoints = ($this->listEndpoints)($account, $mode);
             $deleted = false;
+            $kept = false;
+            $usedByOthers = false;
 
             while ($endpoint = $this->target->findIn($endpoints)) {
+                $endpoints = array_values(
+                    array_filter($endpoints, static function ($other) use ($endpoint) {
+                        return $other->id !== $endpoint->id;
+                    })
+                );
+
+                $usedByOthers = false === $usedByOthers ?
+                    $this->endpointIdsUsedByOthers($account, $remainingAccounts, $mode) :
+                    $usedByOthers;
+
+                if (null === $usedByOthers || in_array($endpoint->id, $usedByOthers, true)) {
+                    $kept = true;
+
+                    WebhookLogger::info('Stripe webhook endpoint kept on disconnect: another saved account uses it.', [
+                        'account' => $account->accountSlug,
+                        'account_type' => $account->type,
+                        'mode' => $mode,
+                        'endpoint_id' => $endpoint->id,
+                    ]);
+
+                    continue;
+                }
+
                 $this->delete($account, $mode, $endpoint->id);
                 $deleted = true;
 
@@ -100,15 +130,13 @@ final class DeleteSiteWebhookEndpoint
                     'mode' => $mode,
                     'endpoint_id' => $endpoint->id,
                 ]);
-
-                $endpoints = array_values(
-                    array_filter($endpoints, static function ($other) use ($endpoint) {
-                        return $other->id !== $endpoint->id;
-                    })
-                );
             }
 
-            return $deleted ? self::DELETED : self::NOTHING_MATCHED;
+            if ($deleted) {
+                return self::DELETED;
+            }
+
+            return $kept ? self::KEPT : self::NOTHING_MATCHED;
         } catch (Throwable $exception) {
             WebhookLogger::warning(
                 'Stripe webhook endpoint was not deleted on disconnect.',
@@ -120,6 +148,57 @@ final class DeleteSiteWebhookEndpoint
 
             return self::FAILED;
         }
+    }
+
+    /**
+     * The ids of the endpoints that the other saved accounts list in the mode, or null when every endpoint
+     * must be kept. Two saved records can belong to one Stripe account, such as manual keys saved before
+     * the same account was connected through GiveWP Connect, and an endpoint id is unique to its Stripe
+     * account, so an id another record lists is an endpoint that record still receives events through.
+     *
+     * @since TBD
+     *
+     * @param AccountDetail   $account           The account being disconnected.
+     * @param AccountDetail[] $remainingAccounts The accounts still saved.
+     * @param string          $mode              "live" or "test".
+     *
+     * @return string[]|null Endpoint ids to keep, or null to keep every endpoint of this site.
+     */
+    private function endpointIdsUsedByOthers(AccountDetail $account, array $remainingAccounts, string $mode): ?array
+    {
+        $ids = [];
+
+        foreach ($remainingAccounts as $other) {
+            $key = 'live' === $mode ? $other->liveSecretKey : $other->testSecretKey;
+
+            if (!$key || $other->accountSlug === $account->accountSlug) {
+                continue;
+            }
+
+            if ($account->accountId && $other->accountId) {
+                if ($account->accountId === $other->accountId) {
+                    return null;
+                }
+
+                continue;
+            }
+
+            try {
+                $ids = array_merge($ids, array_column(($this->listEndpoints)($other, $mode), 'id'));
+            } catch (Throwable $exception) {
+                WebhookLogger::warning(
+                    'Stripe webhook endpoint kept on disconnect: another saved account could not be checked.',
+                    array_merge(
+                        ['account' => $other->accountSlug, 'account_type' => $other->type, 'mode' => $mode],
+                        WebhookLogger::failureContext($exception)
+                    )
+                );
+
+                return null;
+            }
+        }
+
+        return $ids;
     }
 
     /**
