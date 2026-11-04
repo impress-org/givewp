@@ -29,10 +29,17 @@ final class MoneyFormatter
 
         $code = $amount->getCurrency()->getCode();
 
-        return give_currency_filter(
-            give_format_amount($amount->formatToDecimal(), ['currency' => $code]),
+        // Format the size of the amount, then put the minus sign in front. Give's own helpers drop the sign
+        // or put it after the currency symbol, depending on the amount.
+        $decimal = $amount->formatToDecimal();
+        $isNegative = strpos($decimal, '-') === 0;
+
+        $text = give_currency_filter(
+            give_format_amount(ltrim($decimal, '-'), ['currency' => $code]),
             ['currency_code' => $code, 'decode_currency' => true]
         );
+
+        return $isNegative ? '-' . $text : $text;
     }
 
     /**

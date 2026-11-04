@@ -93,6 +93,15 @@ class MoneyFormatterTest extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testNegativeAmountsKeepTheirSign(): void
+    {
+        $this->assertSame('-$12.50', MoneyFormatter::fromDecimal(-12.5));
+        $this->assertSame('-$1,234.50', MoneyFormatter::fromDecimal('-1234.50'));
+    }
+
+    /**
      * On PHP 7.4, casting a float to a string follows LC_NUMERIC, so a comma locale writes "12,5".
      * The formatter must not depend on that.
      *
