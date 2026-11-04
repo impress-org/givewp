@@ -660,6 +660,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Stripe Webhook field.
 		 *
+		 * @since TBD Link to the webhook setup documentation on docs.nexcess.com.
 		 * @since 4.19.1 Escape output, including translated strings.
 		 * @since 2.5.0
 		 *
@@ -707,7 +708,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							echo wp_kses_post( sprintf(
 								/* translators: 1. Documentation on webhook setup. */
 								__( 'See our <a href="%1$s" target="_blank">documentation</a> for more information.', 'give' ),
-								esc_url( 'http://docs.givewp.com/stripe-webhooks' )
+								esc_url( 'https://docs.nexcess.com/software/give/setting-up-webhooks/' )
 							) );
 							?>
 						</p>
