@@ -964,6 +964,8 @@ function give_email_tag_payment_id( $tag_args ) {
  *
  * Output the donation form name, and the donation level (if applicable).
  *
+ * @since TBD Use wp_strip_all_tags() instead of strip_tags().
+ *
  * @param array $tag_args
  *
  * @return string $form_title
@@ -978,7 +980,7 @@ function give_email_tag_donation( $tag_args ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
 			$level_title         = give_has_variable_prices( give_get_payment_form_id( $tag_args['payment_id'] ) );
 			$separator           = $level_title ? '-' : '';
-			$donation_form_title = strip_tags(
+			$donation_form_title = wp_strip_all_tags(
 				give_check_variable(
 					give_get_donation_form_title(
 						$tag_args['payment_id'],
