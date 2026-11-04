@@ -9,7 +9,7 @@
     // Equal-width cells so the six presets line up as a 3 x 2 grid.
     &__presets {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: var(--givewp-spacing-2);
     }
 
@@ -19,7 +19,11 @@
         border-radius: 2px;
         background: var(--givewp-neutral-25);
         color: var(--givewp-neutral-700);
-        white-space: nowrap;
+        // A long translated label wraps inside its column instead of widening the popover.
+        block-size: auto;
+        min-block-size: 2.25rem;
+        white-space: normal;
+        text-align: center;
 
         &:hover:not(:disabled) {
             border-color: var(--givewp-blue-400);
