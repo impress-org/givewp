@@ -23,6 +23,7 @@ final class WebhookTargetTest extends TestCase
         $expected = set_url_scheme(trailingslashit(home_url()) . '?give-listener=stripe', 'https');
 
         $this->assertSame($expected, (new WebhookTarget())->url());
+        $this->assertSame([$expected], (new WebhookTarget())->urls());
     }
 
     /**
@@ -143,6 +144,10 @@ final class WebhookTargetTest extends TestCase
         $target = new WebhookTarget();
 
         $this->assertSame(set_url_scheme($root . '/?give-listener=stripe', 'https'), $target->url());
+        $this->assertSame(
+            [$target->url(), set_url_scheme($root . '/wp/?give-listener=stripe', 'https')],
+            $target->urls()
+        );
         $this->assertTrue($target->matches($root . '/?give-listener=stripe'));
         $this->assertTrue($target->matches($root . '/wp/?give-listener=stripe'));
         $this->assertFalse($target->matches($root . '/blog/?give-listener=stripe'));

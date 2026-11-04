@@ -54,6 +54,18 @@ final class WebhookTarget
     }
 
     /**
+     * Every listener URL that matches() accepts: the one url() returns, then the site URL's when it differs.
+     *
+     * @since TBD
+     *
+     * @return string[] HTTPS listener URLs, without duplicates.
+     */
+    public function urls(): array
+    {
+        return array_values(array_unique([$this->url(), $this->listenerUrl(site_url())]));
+    }
+
+    /**
      * Whether a webhook endpoint URL delivers to this site's Stripe listener.
      *
      * The scheme and a trailing slash are ignored, and both the home URL and the site URL count, because the
@@ -69,8 +81,8 @@ final class WebhookTarget
             return false;
         }
 
-        foreach (array_unique([$this->baseUrl(), site_url()]) as $baseUrl) {
-            if ($candidate === $this->normalize($this->listenerUrl($baseUrl))) {
+        foreach ($this->urls() as $listenerUrl) {
+            if ($candidate === $this->normalize($listenerUrl)) {
                 return true;
             }
         }
