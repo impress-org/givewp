@@ -437,14 +437,22 @@ function showOperationError(form, formData, operation) {
  *
  * @since TBD
  *
- * @param {string}           notices The notices as HTML.
- * @param {HTMLElement|null} form    The form that started the operation.
+ * @param {string}           notices   The notices as HTML.
+ * @param {HTMLElement|null} form      The form that started the operation.
+ * @param {string}           operation "create", "update" or "delete".
+ * @param {boolean}          changed   Whether Stripe applied the operation.
  */
-function showNoticesOnly(notices, form) {
+function showNoticesOnly(notices, form, operation, changed) {
     const container = document.querySelector('.give-stripe-webhooks-content');
 
     setBusy(false);
     setSubmitBusy(form, false);
+
+    /* The endpoint was added, and the form that added it is still on screen, so a second click would add it again. */
+    if (changed && 'create' === operation && form) {
+        form.setAttribute('data-created', 'true');
+        form.querySelectorAll('button[type="submit"]').forEach((button) => (button.disabled = true));
+    }
 
     if (!container) {
         return;
@@ -476,7 +484,7 @@ function runOperation(operation, formData = new FormData(), form = null) {
     formData.append('account', field.getAttribute('data-account'));
 
     return post(operation, field.getAttribute('data-manage-nonce'), formData)
-        .then(({ html, notices, state }) => {
+        .then(({ html, notices, state, changed }) => {
             /* The status button belongs to the account, so it is updated even after its modal closed. */
             setState(field, state);
 
@@ -485,7 +493,7 @@ function runOperation(operation, formData = new FormData(), form = null) {
             }
 
             if ('string' === typeof notices) {
-                showNoticesOnly(notices, form);
+                showNoticesOnly(notices, form, operation, changed);
 
                 return;
             }
@@ -677,6 +685,11 @@ window.addEventListener('DOMContentLoaded', function () {
         }
 
         event.preventDefault();
+
+        /* setBusy() of a later operation enables every button again, so the submit is refused here as well. */
+        if (form.hasAttribute('data-created')) {
+            return;
+        }
 
         const operation = form.getAttribute('data-webhook-operation');
 
