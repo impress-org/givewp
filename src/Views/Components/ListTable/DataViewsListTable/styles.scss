@@ -28,6 +28,16 @@
         flex-shrink: 0;
     }
 
+    // The DataViews wrapper scrolls sideways as a whole when the table is wider than the screen. Pin the
+    // rows around the table to the start edge, so the search, the filters, the settings button and the
+    // pagination stay in view while only the table moves.
+    .dataviews__view-actions,
+    &__filter-row,
+    .dataviews-footer {
+        position: sticky;
+        inset-inline-start: 0;
+    }
+
     // The page's white container already pads everything inside it, the banner included. DataViews
     // adds its own 48px at the sides of the toolbar, the footer and the outer table cells, which
     // pushed the list in from the banner above it. Take that padding out so the container is the
