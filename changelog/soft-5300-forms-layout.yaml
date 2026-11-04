@@ -1,0 +1,4 @@
+significance: minor
+type: enhancement
+entry: Empty values in the list screens now show a labeled dash, long campaign names in the Donation Forms list are shortened, and the Default pill stays next to the form title.
+timestamp: 2026-11-05T00:05:00.000Z

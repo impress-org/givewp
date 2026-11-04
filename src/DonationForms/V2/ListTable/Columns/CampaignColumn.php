@@ -8,6 +8,7 @@ use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Framework\ListTable\Views\TruncatedText;
 
 /**
  * @since 4.19.0
@@ -42,6 +43,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Clamp long campaign names to two lines.
      * @since TBD Drop the aria-label so the link is named by its visible text.
      * @since 4.19.0
      *
@@ -61,13 +63,16 @@ class CampaignColumn extends ModelColumn
 
         /* Only core campaigns have a page under give-campaigns. Add-ons link their own through the cell filter. */
         if (CampaignType::CORE !== $campaign->type) {
-            return esc_html($campaign->title);
+            return TruncatedText::render(esc_html($campaign->title), $campaign->title);
         }
 
-        return sprintf(
-            '<a href="%s" class="campaignLink">%s</a>',
-            admin_url("edit.php?post_type=give_forms&page=give-campaigns&id={$campaign->id}&tab=overview&action=edit"),
-            esc_html($campaign->title)
+        return TruncatedText::render(
+            sprintf(
+                '<a href="%s" class="campaignLink">%s</a>',
+                admin_url("edit.php?post_type=give_forms&page=give-campaigns&id={$campaign->id}&tab=overview&action=edit"),
+                esc_html($campaign->title)
+            ),
+            $campaign->title
         );
     }
 }
