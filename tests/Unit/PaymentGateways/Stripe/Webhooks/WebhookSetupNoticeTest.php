@@ -67,7 +67,7 @@ final class WebhookSetupNoticeTest extends TestCase
 
         $this->assertSame('error', $notice['level']);
         $this->assertStringContainsString('dashboard.stripe.com/webhooks', $notice['body']);
-        $this->assertStringContainsString('group=webhooks', $notice['body']);
+        $this->assertStringContainsString('setting-up-webhooks', $notice['body']);
     }
 
     /**
