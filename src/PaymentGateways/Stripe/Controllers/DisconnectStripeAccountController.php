@@ -30,7 +30,7 @@ class DisconnectStripeAccountController
     }
 
     /**
-     * @since TBD Delete this site's webhook endpoint from the Stripe account before removing the account.
+     * @since TBD Delete this site's webhook endpoint from the Stripe account after removing the account.
      * @since 2.13.0
      */
     public function __invoke()
@@ -42,9 +42,13 @@ class DisconnectStripeAccountController
 
         $this->securityCheck($requestedData->accountSlug);
 
-        $this->deleteWebhookEndpoints($requestedData->accountSlug);
+        $account = $this->savedAccount($requestedData->accountSlug);
 
         give_stripe_disconnect_account($requestedData->accountSlug);
+
+        if ($account) {
+            $this->deleteWebhookEndpoints($account);
+        }
 
         wp_send_json_success();
     }
@@ -72,27 +76,50 @@ class DisconnectStripeAccountController
     }
 
     /**
-     * Runs before the account is removed because the request needs the account's key. A failure is logged and
-     * does not stop the disconnect.
+     * The saved account, read before it is removed because deleting its webhook endpoint needs its key.
      *
      * @since TBD
      *
-     * @param string $accountSlug
+     * @param string $accountSlug Slug of the saved Stripe account being disconnected.
+     *
+     * @return AccountDetail|null The account, or null when no account is saved under the slug.
      */
-    private function deleteWebhookEndpoints($accountSlug)
+    private function savedAccount(string $accountSlug): ?AccountDetail
     {
         $accounts = give_stripe_get_all_accounts();
 
         if (!isset($accounts[$accountSlug]) || !is_array($accounts[$accountSlug])) {
-            return;
+            return null;
         }
 
         try {
-            ($this->deleteSiteWebhookEndpoint)(AccountDetail::fromArray($accounts[$accountSlug]));
+            return AccountDetail::fromArray($accounts[$accountSlug]);
         } catch (Throwable $exception) {
             WebhookLogger::warning(
                 'Stripe webhook endpoint was not deleted on disconnect.',
                 array_merge(['account' => $accountSlug], WebhookLogger::failureContext($exception))
+            );
+
+            return null;
+        }
+    }
+
+    /**
+     * Runs after the account is removed, so a slow or failing Stripe request cannot leave the account
+     * connected. A failure is logged and the disconnect still answers with success.
+     *
+     * @since TBD
+     *
+     * @param AccountDetail $account The account that was just removed, with its key.
+     */
+    private function deleteWebhookEndpoints(AccountDetail $account): void
+    {
+        try {
+            ($this->deleteSiteWebhookEndpoint)($account);
+        } catch (Throwable $exception) {
+            WebhookLogger::warning(
+                'Stripe webhook endpoint was not deleted on disconnect.',
+                array_merge(['account' => $account->accountSlug], WebhookLogger::failureContext($exception))
             );
         }
     }
