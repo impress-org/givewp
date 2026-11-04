@@ -50,7 +50,7 @@ class DisconnectStripeAccountController
         $this->securityCheck($requestedData->accountSlug);
 
         $accounts = give_stripe_get_all_accounts();
-        $isSaved = isset($accounts[$requestedData->accountSlug]);
+        $isSaved = array_key_exists($requestedData->accountSlug, $accounts);
         $account = $isSaved ?
             $this->accountFrom($accounts[$requestedData->accountSlug], $requestedData->accountSlug) :
             null;
@@ -58,7 +58,7 @@ class DisconnectStripeAccountController
         give_stripe_disconnect_account($requestedData->accountSlug);
 
         /* A saved record that cannot be read may still have an endpoint on Stripe, so it counts as a failed delete. */
-        $deleted = !$isSaved || ($account && $this->deleteWebhookEndpoints($account));
+        $deleted = !$isSaved || ($account && $this->deleteWebhookEndpoints($account, $this->remainingAccounts()));
 
         wp_send_json_success($deleted ? null : ['webhookWarning' => $this->cleanupWarning()]);
     }
@@ -115,14 +115,15 @@ class DisconnectStripeAccountController
      *
      * @since TBD
      *
-     * @param AccountDetail $account The account that was just removed, with its key.
+     * @param AccountDetail   $account           The account that was just removed, with its key.
+     * @param AccountDetail[] $remainingAccounts The accounts still saved; an endpoint one of them uses is kept.
      *
-     * @return bool Whether no endpoint of this site is left on the account.
+     * @return bool Whether nothing is left on the account that the admin has to delete.
      */
-    private function deleteWebhookEndpoints(AccountDetail $account): bool
+    private function deleteWebhookEndpoints(AccountDetail $account, array $remainingAccounts): bool
     {
         try {
-            $results = ($this->deleteSiteWebhookEndpoint)($account);
+            $results = ($this->deleteSiteWebhookEndpoint)($account, $remainingAccounts);
         } catch (Throwable $exception) {
             WebhookLogger::warning(
                 'Stripe webhook endpoint was not deleted on disconnect.',
@@ -133,6 +134,29 @@ class DisconnectStripeAccountController
         }
 
         return !in_array(DeleteSiteWebhookEndpoint::FAILED, $results, true);
+    }
+
+    /**
+     * The accounts still saved after the removal. A record that cannot be read holds no usable key, so it
+     * is left out.
+     *
+     * @since TBD
+     *
+     * @return AccountDetail[]
+     */
+    private function remainingAccounts(): array
+    {
+        $accounts = [];
+
+        foreach (give_stripe_get_all_accounts() as $record) {
+            try {
+                $accounts[] = AccountDetail::fromArray(is_array($record) ? $record : []);
+            } catch (Throwable $exception) {
+                continue;
+            }
+        }
+
+        return $accounts;
     }
 
     /**
@@ -148,7 +172,7 @@ class DisconnectStripeAccountController
             return sprintf(
                 /* translators: %s: Webhook endpoint URL of this site. */
                 __(
-                    'The account is disconnected, but GiveWP could not delete its webhook endpoint for this site. Delete the endpoint for %s in the Webhooks section of your Stripe Dashboard.',
+                    'The account is disconnected, but GiveWP could not delete its webhook endpoint for this site. In the Webhooks section of your Stripe Dashboard, delete every endpoint for %s.',
                     'give'
                 ),
                 $urls[0]
@@ -158,7 +182,7 @@ class DisconnectStripeAccountController
         return sprintf(
             /* translators: 1: Webhook endpoint URL from the home URL. 2: Webhook endpoint URL from the site URL. */
             __(
-                'The account is disconnected, but GiveWP could not delete its webhook endpoint for this site. Delete the endpoint for %1$s or %2$s in the Webhooks section of your Stripe Dashboard.',
+                'The account is disconnected, but GiveWP could not delete its webhook endpoint for this site. In the Webhooks section of your Stripe Dashboard, check both %1$s and %2$s, and delete every endpoint for either one.',
                 'give'
             ),
             $urls[0],
