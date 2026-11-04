@@ -114,6 +114,57 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     /**
      * @since TBD
      */
+    public function testItWarnsWhenTheSavedAccountCannotBeRead(): void
+    {
+        $slug = 'acct_broken';
+        give_update_option('_give_stripe_get_all_accounts', [$slug => ['account_slug' => $slug]]);
+
+        $response = $this->callController($slug);
+
+        $this->assertTrue($response['success']);
+        $this->assertStringContainsString((new WebhookTarget())->url(), $response['data']['webhookWarning']);
+        $this->assertSame([], $this->stripe->requests);
+        $this->assertSame([], give_stripe_get_all_accounts());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testItDoesNotWarnWhenNoAccountIsSavedUnderTheSlug(): void
+    {
+        $other = $this->makeAccount(['account_slug' => 'acct_other']);
+        $this->saveAccounts($other);
+
+        $response = $this->callController('acct_missing');
+
+        $this->assertTrue($response['success']);
+        $this->assertArrayNotHasKey('data', $response);
+        $this->assertSame([], $this->stripe->requests);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testItNamesBothListenerUrlsWhenTheSiteUrlDiffers(): void
+    {
+        update_option('siteurl', untrailingslashit(home_url()) . '/wp');
+        $account = $this->makeAccount();
+        $this->saveAccounts($account);
+        $this->stripe->queue(401, $this->errorBody('authentication_error', 'Invalid API Key provided.'));
+        $this->stripe->queue(401, $this->errorBody('authentication_error', 'Invalid API Key provided.'));
+
+        $response = $this->callController($account->accountSlug);
+
+        $urls = (new WebhookTarget())->urls();
+        $this->assertCount(2, $urls);
+        foreach ($urls as $url) {
+            $this->assertStringContainsString($url, $response['data']['webhookWarning']);
+        }
+    }
+
+    /**
+     * @since TBD
+     */
     public function testItDoesNotCallStripeWhenTheNonceIsInvalid(): void
     {
         $account = $this->makeAccount();
