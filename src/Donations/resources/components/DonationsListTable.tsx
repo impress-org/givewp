@@ -162,7 +162,7 @@ const statsConfig: Record<string, StatConfig> = {
 };
 
 /**
- * The test-mode switch in the header and its "Test mode" chip.
+ * The test-mode switch in the header and the "Test" badge next to the title.
  */
 const testModeToggle = {label: __('Test', 'give'), ariaLabel: __('View Test Donations', 'give')};
 
