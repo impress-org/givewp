@@ -151,6 +151,7 @@ final class Give_Shortcode_Button {
 			 *
 			 * @since 1.0
 			 */
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the name is the registered shortcode tag plus _condition (give_form_condition, donation_history_condition, add-on tags); add-ons filter these names, so they cannot be renamed.
 			if ( apply_filters( sanitize_title( $shortcode ) . '_condition', true ) ) {
 
 				$shortcodes[ $shortcode ] = sprintf(
