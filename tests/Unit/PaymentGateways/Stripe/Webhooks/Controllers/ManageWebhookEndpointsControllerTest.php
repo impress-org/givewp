@@ -286,6 +286,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
         $this->assertTrue($response['success']);
         $this->assertArrayNotHasKey('html', $response['data']);
         $this->assertSame('error', $response['data']['state']);
+        $this->assertTrue($response['data']['changed']);
         $this->assertStringContainsString('Webhook endpoint saved.', $response['data']['notices']);
         $this->assertStringContainsString($error['error']['message'], $response['data']['notices']);
         $this->assertSame(['get', 'post', 'get'], array_column($this->stripe->requests, 'method'));
@@ -311,6 +312,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
         ]);
 
         $this->assertArrayNotHasKey('html', $response['data']);
+        $this->assertFalse($response['data']['changed']);
         $this->assertStringContainsString($createError['error']['message'], $response['data']['notices']);
         $this->assertStringContainsString($listError['error']['message'], $response['data']['notices']);
         $this->assertSame(2, substr_count($response['data']['notices'], 'give-stripe-webhooks__notice--error'));
