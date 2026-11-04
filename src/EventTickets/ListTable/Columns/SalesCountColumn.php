@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Give\EventTickets\ListTable\Columns;
 
 use Give\EventTickets\Models\Event;
+use Give\EventTickets\Repositories\EventsDataRepository;
 use Give\Framework\ListTable\ColumnKind;
 use Give\Framework\ListTable\ModelColumn;
 
@@ -16,13 +17,14 @@ use Give\Framework\ListTable\ModelColumn;
 class SalesCountColumn extends ModelColumn
 {
     /**
-     * The sold ticket count by event id, so the raw value reuses the query of the cell.
+     * Data loaded here, one event at a time, when the list table has no page data.
      *
      * @since TBD
      *
-     * @var array<int, int>
+     * @var array<int, EventsDataRepository>
      */
-    private $soldCounts = [];
+    private $fallbackData = [];
+
     /**
      * @inheritDoc
      *
@@ -46,7 +48,7 @@ class SalesCountColumn extends ModelColumn
     /**
      * @inheritDoc
      *
-     * @since TBD Read the sold count through a per-event memo.
+     * @since TBD Read the sold count and the capacity from the page data.
      * @since 4.19.1 Add translators comments.
      * @since 3.6.0
      *
@@ -54,10 +56,9 @@ class SalesCountColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $soldTicketsCount = $this->soldCount($model);
-        $capacity = array_reduce($model->ticketTypes()->getAll() ?? [], function (int $carry, $ticketType) {
-            return $carry + $ticketType->capacity;
-        }, 0);
+        $data = $this->dataFor($model);
+        $soldTicketsCount = $data->getSoldCount($model->id);
+        $capacity = $data->getCapacity($model->id);
 
         return sprintf(
             /* translators: 1: Number of tickets sold, 2: Total ticket capacity */
@@ -86,20 +87,26 @@ class SalesCountColumn extends ModelColumn
      */
     public function getRawValue($model)
     {
-        return $this->soldCount($model);
+        return $this->dataFor($model)->getSoldCount($model->id);
     }
 
     /**
-     * Counts the sold tickets once per event.
+     * The page data, or data for this event alone when the column is used without page data.
      *
      * @since TBD
      */
-    private function soldCount(Event $event): int
+    private function dataFor(Event $event): EventsDataRepository
     {
-        if (!isset($this->soldCounts[$event->id])) {
-            $this->soldCounts[$event->id] = (int) ($event->eventTickets()->count() ?? 0);
+        $data = $this->getListTableData();
+
+        if ($data instanceof EventsDataRepository) {
+            return $data;
         }
 
-        return $this->soldCounts[$event->id];
+        if (!isset($this->fallbackData[$event->id])) {
+            $this->fallbackData[$event->id] = EventsDataRepository::events([$event->id]);
+        }
+
+        return $this->fallbackData[$event->id];
     }
 }

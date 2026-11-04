@@ -5,9 +5,12 @@ namespace Give\Tests\Unit\Donors\Endpoints;
 use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Endpoints\ListDonors;
 use Give\Donors\ListTable\DonorsListTable;
+use Give\Donors\ListTable\Columns\LatestDonationColumn;
 use Give\Donors\Models\Donor;
+use Give\Donors\Repositories\DonorsDataRepository;
 use Give\Framework\Database\DB;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
@@ -90,6 +93,37 @@ class TestListDonors extends TestCase
 
                 $this->assertEquals($expectedItems[$row][$key], $value);
             }
+        }
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testLoadsTheLatestDonationDatesForThePage()
+    {
+        $campaign = Campaign::factory()->create();
+        $donors = [Donor::factory()->create(), Donor::factory()->create()];
+        foreach ($donors as $donor) {
+            Donation::factory()->create([
+                'donorId' => $donor->id,
+                'campaignId' => $campaign->id,
+                'status' => DonationStatus::COMPLETE(),
+            ]);
+        }
+
+        $response = $this->listDonors(['campaignId' => $campaign->id]);
+
+        $this->assertInstanceOf(DonorsDataRepository::class, give(DonorsListTable::class)->getData());
+
+        // A column with no page data runs the single-donor query, so both paths must agree.
+        $column = new LatestDonationColumn();
+        $itemsById = array_column($response->data['items'], null, 'id');
+        foreach ($donors as $donor) {
+            $item = $itemsById[$donor->id];
+
+            $this->assertSame($column->getCellValue($donor), $item['latestDonation']);
+            $this->assertSame($column->getRawValue($donor), $item['rawValues']['latestDonation']);
+            $this->assertNotNull($item['rawValues']['latestDonation']);
         }
     }
 

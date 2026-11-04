@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Give\Donors\ListTable\Columns;
 
-use Give\Donors\Models\Donor;
 use DateTimeInterface;
+use Give\Donors\Models\Donor;
+use Give\Donors\Repositories\DonorsDataRepository;
 use Give\Framework\ListTable\ColumnKind;
 use Give\Framework\ListTable\Formatting\DateFormatter;
 use Give\Framework\ListTable\ModelColumn;
-use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
  * @since 2.24.0
@@ -19,13 +19,13 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 class LatestDonationColumn extends ModelColumn
 {
     /**
-     * The latest donation date by donor id, so the raw value reuses the query of the cell.
+     * Data loaded here, one donor at a time, when the list table has no page data.
      *
      * @since TBD
      *
-     * @var array<int, DateTimeInterface|null>
+     * @var array<int, DonorsDataRepository>
      */
-    private $latestDates = [];
+    private $fallbackData = [];
 
     /**
      * @since 2.24.0
@@ -48,6 +48,7 @@ class LatestDonationColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Read the date from the data the endpoint loads for the whole page.
      * @since TBD Format with the shared date formatter; no donations show the dash.
      * @since 4.13.0 updated date format
      * @since 2.24.0
@@ -84,18 +85,32 @@ class LatestDonationColumn extends ModelColumn
     }
 
     /**
-     * Finds the latest donation date once per donor.
+     * Reads the latest donation date from the data the endpoint loaded for the whole page.
      *
      * @since TBD
      */
     private function latestDate(Donor $donor): ?DateTimeInterface
     {
-        if (!array_key_exists($donor->id, $this->latestDates)) {
-            $latestDonation = give()->donors->getDonorLatestDonationDate($donor->id);
+        return $this->dataFor($donor)->getLatestDonationDate($donor->id);
+    }
 
-            $this->latestDates[$donor->id] = $latestDonation ? Temporal::toDateTime($latestDonation) : null;
+    /**
+     * The page data, or data for this donor alone when the column is used without page data.
+     *
+     * @since TBD
+     */
+    private function dataFor(Donor $donor): DonorsDataRepository
+    {
+        $data = $this->getListTableData();
+
+        if ($data instanceof DonorsDataRepository) {
+            return $data;
         }
 
-        return $this->latestDates[$donor->id];
+        if (!isset($this->fallbackData[$donor->id])) {
+            $this->fallbackData[$donor->id] = DonorsDataRepository::donors([$donor->id]);
+        }
+
+        return $this->fallbackData[$donor->id];
     }
 }

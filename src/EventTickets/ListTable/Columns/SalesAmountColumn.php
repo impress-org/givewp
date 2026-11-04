@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Give\EventTickets\ListTable\Columns;
 
 use Give\EventTickets\Models\Event;
+use Give\EventTickets\Repositories\EventsDataRepository;
 use Give\Framework\ListTable\ColumnKind;
 use Give\Framework\ListTable\Formatting\MoneyFormatter;
 use Give\Framework\ListTable\ModelColumn;
@@ -18,13 +19,13 @@ use Give\Framework\Support\ValueObjects\Money;
 class SalesAmountColumn extends ModelColumn
 {
     /**
-     * The sales totals by event id, so the raw value reuses the queries of the cell.
+     * Data loaded here, one event at a time, when the list table has no page data.
      *
      * @since TBD
      *
-     * @var array<int, array{0: Money, 1: Money}>
+     * @var array<int, EventsDataRepository>
      */
-    private $sales = [];
+    private $fallbackData = [];
 
     /**
      * @inheritDoc
@@ -49,6 +50,7 @@ class SalesAmountColumn extends ModelColumn
     /**
      * @inheritDoc
      *
+     * @since TBD Read the sales from the data the endpoint loads for the whole page.
      * @since TBD Format with the shared money formatter; $locale is kept for add-on filters and no longer used.
      * @since 3.20.0 Refactored to use event ticket amount instead of ticket type price
      * @since 3.6.0
@@ -113,7 +115,7 @@ class SalesAmountColumn extends ModelColumn
     }
 
     /**
-     * Returns [sales total, maximum sales at full capacity] once per event.
+     * Returns [sales total, maximum sales at full capacity] from the data the endpoint loaded for the whole page.
      *
      * @since TBD
      *
@@ -121,33 +123,28 @@ class SalesAmountColumn extends ModelColumn
      */
     private function salesFor(Event $event): array
     {
-        if (isset($this->sales[$event->id])) {
-            return $this->sales[$event->id];
+        $data = $this->dataFor($event);
+
+        return [$data->getSalesTotal($event->id), $data->getMaxCapacitySales($event->id)];
+    }
+
+    /**
+     * The page data, or data for this event alone when the column is used without page data.
+     *
+     * @since TBD
+     */
+    private function dataFor(Event $event): EventsDataRepository
+    {
+        $data = $this->getListTableData();
+
+        if ($data instanceof EventsDataRepository) {
+            return $data;
         }
 
-        $ticketTypes = [];
-        foreach ($event->ticketTypes()->getAll() ?? [] as $ticketType) {
-            $salesCount = $ticketType->eventTickets()->count();
-            $ticketsAvailable = $ticketType->capacity - $salesCount;
-
-            $ticketTypes[$ticketType->id] = [
-                'price' => $ticketType->price,
-                'capacity' => $ticketType->capacity,
-                'ticketsAvailable' => $ticketsAvailable,
-            ];
+        if (!isset($this->fallbackData[$event->id])) {
+            $this->fallbackData[$event->id] = EventsDataRepository::events([$event->id]);
         }
 
-        $salesTotal = array_reduce(
-            $event->eventTickets()->getAll() ?? [],
-            function (Money $carry, $eventTicket) {
-                return $carry->add($eventTicket->amount);
-            },
-            new Money(0, give_get_currency())
-        );
-        $maxCapacitySales = array_reduce($ticketTypes, function (Money $carry, $ticketType) {
-            return $carry->add($ticketType['price']->multiply($ticketType['ticketsAvailable']));
-        }, $salesTotal);
-
-        return $this->sales[$event->id] = [$salesTotal, $maxCapacitySales];
+        return $this->fallbackData[$event->id];
     }
 }

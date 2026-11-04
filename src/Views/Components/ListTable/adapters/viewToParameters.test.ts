@@ -53,7 +53,10 @@ describe('viewToParameters', () => {
     });
 
     it('never sends a locale', () => {
-        expect(viewToParameters(view(), [], {}, {testMode: false})).not.toHaveProperty('locale');
+        // A caller that still passes a locale must not get it sent.
+        const options = {testMode: false, locale: 'pt-BR'};
+
+        expect(viewToParameters(view(), [], {}, options)).not.toHaveProperty('locale');
     });
 
     it('leaves out an undefined test mode instead of sending "undefined"', () => {

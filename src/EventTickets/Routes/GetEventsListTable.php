@@ -3,6 +3,8 @@
 namespace Give\EventTickets\Routes;
 
 use Give\EventTickets\ListTable\EventTicketsListTable;
+use Give\EventTickets\Models\Event;
+use Give\EventTickets\Repositories\EventsDataRepository;
 use Give\Framework\Database\DB;
 use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -87,6 +89,7 @@ class GetEventsListTable
     }
 
     /**
+     * @since TBD Load the ticket sales for the whole page and pass them to the list table.
      * @since 3.6.0
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
@@ -101,7 +104,13 @@ class GetEventsListTable
         if ('model' === $this->request->get_param('return')) {
             $items = $events;
         } else {
-            $this->listTable->items($events, $this->request->get_param('locale') ?? '');
+            $eventIds = array_map(static function (Event $event) {
+                return $event->id;
+            }, $events);
+
+            $this->listTable
+                ->setData(EventsDataRepository::events($eventIds))
+                ->items($events, $this->request->get_param('locale') ?? '');
             $items = $this->listTable->getItems();
         }
 
