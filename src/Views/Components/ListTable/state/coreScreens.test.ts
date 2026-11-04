@@ -15,7 +15,13 @@ const SHARED_DIR = resolve(__dirname, '..');
  * The window data each standalone screen reads while its module loads.
  */
 function stubWindowData() {
-    const screenData = {apiRoot: 'https://example.test/wp-json', apiNonce: 'nonce', pluginUrl: '', adminUrl: '', forms: []};
+    const screenData = {
+        apiRoot: 'https://example.test/wp-json',
+        apiNonce: 'nonce',
+        pluginUrl: '',
+        adminUrl: '',
+        forms: [],
+    };
 
     Object.assign(window, {
         GiveDonations: {...screenData, recurringDonationsEnabled: true},
@@ -52,7 +58,8 @@ function standaloneScreens(): ScreenModule[] {
         {
             declarations: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable/filters')
                 .campaignFilters,
-            screen: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable/listTableScreen').default,
+            screen: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable/listTableScreen')
+                .default,
         },
         {
             declarations: require('@givewp/src/DonationForms/V2/resources/components/filters').donationFormFilters({
@@ -90,6 +97,96 @@ function sharedSourceFiles(dir: string): string[] {
     });
 }
 
+/**
+ * The column ids each core screen's server column classes return from `getId()`, by screen key.
+ */
+const SERVER_COLUMN_IDS: Record<string, string[]> = {
+    // src/Campaigns/ListTable/Columns
+    campaigns: [
+        'id',
+        'title',
+        'shortDescription',
+        'date',
+        'startDate',
+        'endDate',
+        'goal',
+        'donationsCount',
+        'revenue',
+        'status',
+    ],
+    // src/DonationForms/V2/ListTable/Columns, on both form lists
+    'donation-forms': [
+        'id',
+        'title',
+        'formCampaign',
+        'levels',
+        'goal',
+        'donationCount',
+        'donationRevenue',
+        'shortcode',
+        'dateCreated',
+        'status',
+    ],
+    'campaign-forms': [
+        'id',
+        'title',
+        'formCampaign',
+        'levels',
+        'goal',
+        'donationCount',
+        'donationRevenue',
+        'shortcode',
+        'dateCreated',
+        'status',
+    ],
+    // src/Donations/ListTable/Columns
+    donations: [
+        'id',
+        'donor',
+        'amount',
+        'paymentType',
+        'createdAt',
+        'campaign',
+        'form',
+        'gateway',
+        'status',
+        'subscriptionDonationType',
+    ],
+    // src/Donors/ListTable/Columns
+    donors: [
+        'id',
+        'donorInformation',
+        'donationRevenue',
+        'donationCount',
+        'latestDonation',
+        'donorType',
+        'dateCreated',
+    ],
+    // src/Subscriptions/ListTable/Columns
+    subscriptions: ['id', 'donor', 'amount', 'billingPeriod', 'renewalDate', 'subscriptionCampaign', 'status'],
+    // src/EventTickets/ListTable/Columns
+    'event-tickets': ['id', 'title', 'description', 'startDateTime', 'salesCount', 'salesAmount'],
+};
+
+/**
+ * Every core screen config that names card fields.
+ */
+function screensWithFieldRoles(): ListTableScreen[] {
+    stubWindowData();
+
+    /* eslint-disable @typescript-eslint/no-var-requires */
+    return [
+        require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable/listTableScreen').default,
+        require('@givewp/src/DonationForms/V2/resources/components/listTableScreen').default,
+        require('@givewp/src/Campaigns/resources/admin/components/CampaignDetailsPage/Tabs/listTableScreen').default,
+        require('@givewp/src/Donations/resources/components/listTableScreen').default,
+        require('@givewp/src/Donors/resources/components/listTableScreen').default,
+        require('@givewp/src/Subscriptions/resources/components/listTableScreen').default,
+        require('@givewp/src/EventTickets/resources/admin/components/EventTicketsListTable/listTableScreen').default,
+    ];
+    /* eslint-enable @typescript-eslint/no-var-requires */
+}
+
 const withoutComments = (source: string) => source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|\s)\/\/.*$/gm, '$1');
 
 describe('core list table screens', () => {
@@ -123,5 +220,26 @@ describe('core list table screens', () => {
             .map((path) => relative(SHARED_DIR, path));
 
         expect(offenders).toEqual([]);
+    });
+
+    it('name only card fields that are server columns of the screen', () => {
+        const screens = screensWithFieldRoles();
+
+        expect(screens.map(({key}) => key)).toEqual(Object.keys(SERVER_COLUMN_IDS));
+
+        screens.forEach(({key, fieldRoles}) => {
+            expect(fieldRoles).toBeDefined();
+
+            const ids = [fieldRoles.primary, fieldRoles.description, ...fieldRoles.secondary].filter(Boolean);
+            const unknown = ids.filter((id) => !SERVER_COLUMN_IDS[key].includes(id));
+
+            expect({key, unknown}).toEqual({key, unknown: []});
+        });
+    });
+
+    it("leave the campaign out of a campaign's Forms tab cards", () => {
+        const tab = screensWithFieldRoles().find(({key}) => key === 'campaign-forms');
+
+        expect(tab.fieldRoles.secondary).not.toContain('formCampaign');
     });
 });
