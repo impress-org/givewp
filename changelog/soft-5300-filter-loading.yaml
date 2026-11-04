@@ -1,0 +1,4 @@
+significance: minor
+type: enhancement
+entry: The Campaign, Form and Donor filter lists on the list screens now show placeholder lines while options load, instead of a spinner.
+timestamp: 2026-11-05T03:00:00.000Z

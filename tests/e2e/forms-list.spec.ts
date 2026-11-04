@@ -208,7 +208,7 @@ test.describe('Campaign Forms tab', () => {
         const stored = page.waitForResponse(
             (response) => response.url().includes('list-table-layouts/campaign-forms') && isLayoutWrite(response.request())
         );
-        await listTable(page).getByRole('button', {name: 'View options'}).click();
+        await listTable(page).getByRole('button', {name: 'View options', exact: true}).click();
         await page.getByRole('radio', {name: '10', exact: true}).click();
         await page.keyboard.press('Escape');
         expect((await stored).ok()).toBe(true);

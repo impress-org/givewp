@@ -69,11 +69,13 @@ afterEach(() => {
 });
 
 describe('EntityFilterControl', () => {
-    it('shows a labeled spinner while loading and the search box stays focusable', () => {
+    it('shows labeled skeleton lines while loading and the search box stays focusable', () => {
         render({isLoading: true});
 
         const status = container.querySelector('[role="status"]')!;
         expect(status.textContent).toContain('Loading');
+        expect(status.querySelectorAll('.givewp-skeleton').length).toBeGreaterThan(0);
+        expect(container.querySelector('.components-spinner')).toBeNull();
         const search = container.querySelector<HTMLInputElement>('input[type="search"]')!;
         expect(search.disabled).toBe(false);
         search.focus();

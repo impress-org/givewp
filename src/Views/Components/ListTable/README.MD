@@ -18,6 +18,10 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `ListTableFilters/` | The filter bar: primary filters, "Add filter", chips and Reset, read from a screen's `filters` declaration. Built from the `ListTableSearch`, `FilterChip`, `OptionsFilterControl`, `DateRangeFilterControl` and `EntityFilterControl` molecules. |
 | `ListTableViewReset/` | The "Reset view" button next to the stock view options, with its confirmation. |
 | `ListTableViewMenu/` | The small "More view options" menu after "Reset view". Holds "Switch to Legacy View" on the screens that pass `legacyView`. |
+| `ListTableNoticeArea/`, `notices/` | The one notice area above the list (action errors, system, onboarding, the daily recommendation) and the pure `pickDailyRecommendation`. |
+| `StatTiles/`, `StatTile/` | The row of stat tiles and one tile. Tiles show the server's `formatted` text and can toggle a list filter (`tileFilters.ts`). |
+| `Skeleton/`, `DashPlaceholder/` | Atoms: the loading block (use it instead of a spinner in the list area) and the empty-value dash with a screen reader label. |
+| `layout/` | The 782 px breakpoint (`breakpoints.ts` and `_breakpoints.scss`, kept equal) and the narrow card view (`narrowView.ts`). |
 | `actions/` | `runListAction`: runs an action, reports it, clears the selection when everything succeeded, reloads. Every action and dialog goes through it. |
 | `rowActions/` | Ready-made actions: `trashRowActions` (Edit, Restore, Trash, Delete permanently) and `setStatusRowAction`. |
 | `BulkActionConfirm/` | Body of a confirm modal: message, affected records, Cancel / Confirm. |
@@ -42,12 +46,16 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `testModeToggle` | `{label, ariaLabel}`: the header test-mode badge and switch | No | — |
 | `filterSettings` | **Deprecated.** `FilterConfig[]`, kept so add-ons that pass it keep working. Mapped onto declarations; read only without `filters`. The `filterby` type is skipped | No | `[]` |
 | `columnFilters` | `{column, filter(item, column, data)}[]` to render a column yourself | No | `[]` |
-| `statsConfig` | `Record<string, StatConfig>` for the stat tiles (`/stats` endpoint). Tiles stay mounted with skeletons while loading and show the server's `formatted` text; `{label, upgrade?}` per key | No | — |
+| `statsConfig` | `Record<string, StatConfig>` for the stat tiles (`/stats` endpoint). Tiles stay mounted with skeletons while loading and show the server's `formatted` text; `{label, filter?, upgrade?}` per key, where `filter: {filterId, value?}` makes the tile toggle that list filter | No | — |
 | `paymentMode` | `boolean`, initial test mode | No | — |
 | `contentMode` | `boolean`, no header or stats: the list sits in a details page tab | No | `false` |
 | `perPage` | `number`, 1–100, snapped to the offered sizes (10, 20, 30, 50, 100) | No | `30` |
-| `screen` | `ListTableScreen`: turns on view state (see below) | No | — |
-| `banner`, `productRecommendation`, `children` | as before | No | — |
+| `screen` | `ListTableScreen`: turns on view state (see below); its `fieldRoles` pick the card fields at 782 px and below | No | — |
+| `notices` | `ListTableNotice[]`: system and onboarding notices for the notice area | No | — |
+| `recommendations` | `{options, dismissed, apiNonce}`: one product tip a day in the notice area | No | — |
+| `legacyView` | Adds "Switch to Legacy View" to the "More view options" menu | No | — |
+| `banner`, `children` | as before | No | — |
+| `productRecommendation` | **Deprecated.** Pass `recommendations`. Still rendered, last in the notice area | No | — |
 
 The `ref` exposes `refresh()`, which reloads the rows and the stat tiles.
 

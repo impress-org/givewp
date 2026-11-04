@@ -108,8 +108,8 @@ test.describe('Donations list', () => {
         await expect(rowById(page, standalone)).toBeVisible();
 
         // A campaign's form and "No campaign" share no donations, so the list empties and says why. The
-        // Form filter takes several forms, so the first one is removed before the other is picked.
-        await filterBar(page).getByRole('button', {name: 'Remove Form'}).click();
+        // Form filter takes several forms, so it is reset before the other one is picked.
+        await filterBar(page).getByRole('button', {name: 'Reset Form'}).click();
         await applyFilter(page, 'Form', campaign.title);
         await expect(rowById(page, standalone)).toHaveCount(0);
         await expect(rowById(page, inCampaign)).toHaveCount(0);
@@ -307,7 +307,7 @@ test.describe('Donations list behavior', () => {
         createDonation((await createCampaignWithForm(requestUtils)).formId);
 
         await visitDonations(page, admin);
-        await listTable(page).getByRole('button', {name: 'View options'}).click();
+        await listTable(page).getByRole('button', {name: 'View options', exact: true}).click();
 
         const resized = page.waitForRequest((request) => request.url().includes('perPage=10'));
         await page.getByRole('radio', {name: '10', exact: true}).click();
@@ -357,7 +357,7 @@ test.describe('Donations list layout', () => {
         const stored = page.waitForResponse(
             (response) => response.url().includes('list-table-layouts/donations') && isLayoutWrite(response.request())
         );
-        await listTable(page).getByRole('button', {name: 'View options'}).click();
+        await listTable(page).getByRole('button', {name: 'View options', exact: true}).click();
         await page.getByRole('radio', {name: 'Compact', exact: true}).click();
         await page.keyboard.press('Escape');
         expect((await stored).ok()).toBe(true);
@@ -781,7 +781,7 @@ async function search(page: Page, term: string): Promise<void> {
 }
 
 async function choosePageSize(page: Page, size: string): Promise<void> {
-    await listTable(page).getByRole('button', {name: 'View options'}).click();
+    await listTable(page).getByRole('button', {name: 'View options', exact: true}).click();
     await page.getByRole('radio', {name: size, exact: true}).click();
     await page.keyboard.press('Escape');
 }
