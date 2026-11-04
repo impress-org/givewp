@@ -49,11 +49,16 @@ class DisconnectStripeAccountController
 
         $this->securityCheck($requestedData->accountSlug);
 
-        $account = $this->savedAccount($requestedData->accountSlug);
+        $accounts = give_stripe_get_all_accounts();
+        $isSaved = isset($accounts[$requestedData->accountSlug]);
+        $account = $isSaved ?
+            $this->accountFrom($accounts[$requestedData->accountSlug], $requestedData->accountSlug) :
+            null;
 
         give_stripe_disconnect_account($requestedData->accountSlug);
 
-        $deleted = !$account || $this->deleteWebhookEndpoints($account);
+        /* A saved record that cannot be read may still have an endpoint on Stripe, so it counts as a failed delete. */
+        $deleted = !$isSaved || ($account && $this->deleteWebhookEndpoints($account));
 
         wp_send_json_success($deleted ? null : ['webhookWarning' => $this->cleanupWarning()]);
     }
@@ -85,20 +90,15 @@ class DisconnectStripeAccountController
      *
      * @since TBD
      *
+     * @param mixed  $record      The record saved under the slug.
      * @param string $accountSlug Slug of the saved Stripe account being disconnected.
      *
-     * @return AccountDetail|null The account, or null when no account is saved under the slug.
+     * @return AccountDetail|null The account, or null when the record cannot be read.
      */
-    private function savedAccount(string $accountSlug): ?AccountDetail
+    private function accountFrom($record, string $accountSlug): ?AccountDetail
     {
-        $accounts = give_stripe_get_all_accounts();
-
-        if (!isset($accounts[$accountSlug]) || !is_array($accounts[$accountSlug])) {
-            return null;
-        }
-
         try {
-            return AccountDetail::fromArray($accounts[$accountSlug]);
+            return AccountDetail::fromArray(is_array($record) ? $record : []);
         } catch (Throwable $exception) {
             WebhookLogger::warning(
                 'Stripe webhook endpoint was not deleted on disconnect.',
@@ -142,13 +142,27 @@ class DisconnectStripeAccountController
      */
     private function cleanupWarning(): string
     {
+        $urls = $this->target->urls();
+
+        if (1 === count($urls)) {
+            return sprintf(
+                /* translators: %s: Webhook endpoint URL of this site. */
+                __(
+                    'The account is disconnected, but GiveWP could not delete its webhook endpoint for this site. Delete the endpoint for %s in the Webhooks section of your Stripe Dashboard.',
+                    'give'
+                ),
+                $urls[0]
+            );
+        }
+
         return sprintf(
-            /* translators: %s: Webhook endpoint URL of this site. */
+            /* translators: 1: Webhook endpoint URL from the home URL. 2: Webhook endpoint URL from the site URL. */
             __(
-                'The account is disconnected, but GiveWP could not delete its webhook endpoint for this site. Delete the endpoint for %s in the Webhooks section of your Stripe Dashboard.',
+                'The account is disconnected, but GiveWP could not delete its webhook endpoint for this site. Delete the endpoint for %1$s or %2$s in the Webhooks section of your Stripe Dashboard.',
                 'give'
             ),
-            $this->target->url()
+            $urls[0],
+            $urls[1]
         );
     }
 }
