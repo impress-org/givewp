@@ -464,9 +464,10 @@ function giveStripeSetUpWebhooks( nonce, account = null ) {
 			}
 
 			const retryButton = result.retry ?
-				`<button type="button" class="button give-stripe-webhook-retry-button" data-nonce="${ nonce }" data-account="${ account || '' }">${ __( 'Try again', 'give' ) }</button>` :
+				`<div class="give-stripe-webhook-retry"><button type="button" class="button give-stripe-webhook-retry-button" data-nonce="${ nonce }" data-account="${ account || '' }">${ __( 'Try again', 'give' ) }</button></div>` :
 				'';
 			const modalConfig = {
+				mainClass: 'give-stripe-webhook-setup-modal',
 				modalContent: {
 					title: result.title,
 					body: `<div class="give-modal__description">${ result.body }${ retryButton }</div>`,
