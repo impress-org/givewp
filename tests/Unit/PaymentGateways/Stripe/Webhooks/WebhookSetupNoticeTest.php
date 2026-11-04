@@ -30,6 +30,7 @@ final class WebhookSetupNoticeTest extends TestCase
 
         $this->assertSame('success', $notice['level']);
         $this->assertFalse($notice['retry']);
+        $this->assertStringContainsString('switch the site to live mode', $notice['body']);
     }
 
     /**
@@ -127,9 +128,10 @@ final class WebhookSetupNoticeTest extends TestCase
         $live = give(WebhookSetupNotice::class)->build($results, 'live');
         $test = give(WebhookSetupNotice::class)->build($results, 'test');
 
-        $this->assertStringContainsString('live mode', $live['body']);
-        $this->assertStringNotContainsString('test mode', $live['body']);
-        $this->assertStringContainsString('test mode', $test['body']);
+        $this->assertStringContainsString('Webhook endpoint for live mode', $live['body']);
+        $this->assertStringNotContainsString('Webhook endpoint for test mode', $live['body']);
+        $this->assertStringContainsString('switch the site to test mode', $live['body']);
+        $this->assertStringContainsString('Webhook endpoint for test mode', $test['body']);
         $this->assertStringContainsString(esc_html((new WebhookTarget())->url()), $live['body']);
     }
 
