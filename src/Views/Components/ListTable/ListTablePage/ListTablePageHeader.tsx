@@ -2,11 +2,14 @@ import type {ReactNode} from 'react';
 import cx from 'classnames';
 import {GiveIcon} from '@givewp/components';
 import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
-import ListTableStats, {StatConfig} from '../ListTableStats/ListTableStats';
-import type {TestModeToggle} from './types';
+import {__, sprintf} from '@wordpress/i18n';
+import StatTiles from '../StatTiles';
+import type {ListTableStats, StatsStatus} from '../hooks/useListTableStats';
+import type {StatConfig, TestModeToggle} from './types';
 import styles from './ListTablePage.module.scss';
 
 /**
+ * @since TBD Render the stat tiles whenever `statsConfig` is set, with a status.
  * @since TBD Take the test-mode switch as `testModeToggle`.
  * @since TBD
  */
@@ -20,13 +23,16 @@ export type ListTablePageHeaderProps = {
     testMode: boolean;
     onChangeTestMode: (isOn: boolean) => void;
     statsConfig?: Record<string, StatConfig>;
-    stats?: Record<string, number>;
+    stats?: ListTableStats;
+    /** Where the stats are: the tiles stay mounted in every status. */
+    statsStatus?: StatsStatus;
 };
 
 /**
  * The Give part of a list screen above the list: title, header buttons, banner, test-mode toggle
  * and stat tiles.
  *
+ * @since TBD Render the stat tiles whenever `statsConfig` is set, with a status.
  * @since TBD Take the test-mode switch as `testModeToggle`.
  * @since TBD
  */
@@ -39,7 +45,11 @@ export default function ListTablePageHeader({
     onChangeTestMode,
     statsConfig,
     stats,
+    statsStatus = 'loading',
 }: ListTablePageHeaderProps) {
+    /* translators: %s: the screen's title (for example "Donors") */
+    const statsLabel = sprintf(__('%s statistics', 'give'), title);
+
     return (
         <>
             <header className={styles.pageHeader}>
@@ -63,7 +73,14 @@ export default function ListTablePageHeader({
                     />
                 </div>
             )}
-            {statsConfig && stats && <ListTableStats config={statsConfig} values={stats} />}
+            {statsConfig && (
+                <StatTiles
+                    config={statsConfig}
+                    stats={stats}
+                    status={statsStatus}
+                    label={statsLabel}
+                />
+            )}
         </>
     );
 }

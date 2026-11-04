@@ -6,7 +6,7 @@ import './style.scss';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import type {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
 import type {ListTableRecommendations} from '@givewp/components/ListTable/notices/types';
-import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
+import { StatConfig } from '@givewp/components/ListTable/ListTablePage';
 import listTableScreen from './listTableScreen';
 import {donorsFilters} from './filters';
 

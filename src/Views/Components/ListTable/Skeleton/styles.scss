@@ -1,0 +1,27 @@
+.givewp-skeleton {
+    display: inline-block;
+    max-inline-size: 100%;
+    border-radius: var(--givewp-rounded-4);
+    background-color: var(--givewp-neutral-100);
+
+    @media (prefers-reduced-motion: no-preference) {
+        background-image: linear-gradient(
+            90deg,
+            var(--givewp-neutral-100) 0%,
+            var(--givewp-neutral-50) 50%,
+            var(--givewp-neutral-100) 100%
+        );
+        background-size: 200% 100%;
+        animation: givewp-skeleton-shimmer 1.5s ease-in-out infinite;
+    }
+}
+
+@keyframes givewp-skeleton-shimmer {
+    from {
+        background-position: 200% 0;
+    }
+
+    to {
+        background-position: -200% 0;
+    }
+}

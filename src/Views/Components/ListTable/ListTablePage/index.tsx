@@ -36,6 +36,7 @@ import useListTableUrlState, {readInitialUrlState} from '../hooks/useListTableUr
 import useListTableLayoutPreferences, {readInitialLayout} from '../hooks/useListTableLayoutPreferences';
 import useListTableSelection from '../hooks/useListTableSelection';
 import useListTableQuery from '../hooks/useListTableQuery';
+import useListTableStats from '../hooks/useListTableStats';
 import useListTableActionNotices from '../hooks/useListTableActionNotices';
 import useListTableActions from '../hooks/useListTableActions';
 import useDailyRecommendation from '../hooks/useDailyRecommendation';
@@ -67,6 +68,7 @@ export type {
     ListTableParameters,
     ListTablePageRef,
     ListTableRowAction,
+    StatConfig,
     TestModeToggle,
 } from './types';
 
@@ -87,6 +89,7 @@ export const ShowConfirmModalContext = createContext(
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
  *
+ * @since TBD Keep the stat tiles mounted with a status, and name their region by the screen.
  * @since TBD Send an explicit `scope` also without `filters`, over the scope from `filterSettings`.
  * @since TBD Announce a cached result count only after its request has finished.
  * @since TBD After Reset, focus the search box, else a control left in the filter bar, else the bar.
@@ -226,10 +229,11 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             isValidating,
             refresh: refreshList,
         } = useListTableQuery<ListTableResponse>(apiRoot, parameters);
-        const {data: stats, refresh: refreshStats} = useListTableQuery<Record<string, number>>(
-            statsConfig ? `${apiRoot}/stats` : null,
-            {testMode}
-        );
+        const {
+            stats,
+            status: statsStatus,
+            refresh: refreshStats,
+        } = useListTableStats(statsConfig ? `${apiRoot}/stats` : null, testMode);
 
         const refresh = useCallback(async () => {
             await Promise.all([refreshList(), statsConfig && refreshStats()]);
@@ -339,6 +343,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                             onChangeTestMode={setTestMode}
                             statsConfig={statsConfig}
                             stats={stats}
+                            statsStatus={statsStatus}
                         >
                             {children}
                         </ListTablePageHeader>

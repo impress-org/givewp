@@ -41,7 +41,7 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `testModeToggle` | `{label, ariaLabel}`: the header test-mode badge and switch | No | — |
 | `filterSettings` | **Deprecated.** `FilterConfig[]`, kept so add-ons that pass it keep working. Mapped onto declarations; read only without `filters`. The `filterby` type is skipped | No | `[]` |
 | `columnFilters` | `{column, filter(item, column, data)}[]` to render a column yourself | No | `[]` |
-| `statsConfig` | `Record<string, StatConfig>` for the stat tiles (`/stats` endpoint) | No | — |
+| `statsConfig` | `Record<string, StatConfig>` for the stat tiles (`/stats` endpoint). Tiles stay mounted with skeletons while loading and show the server's `formatted` text; `{label, upgrade?}` per key | No | — |
 | `paymentMode` | `boolean`, initial test mode | No | — |
 | `contentMode` | `boolean`, no header or stats: the list sits in a details page tab | No | `false` |
 | `perPage` | `number`, 1–100, snapped to the offered sizes (10, 20, 30, 50, 100) | No | `30` |
