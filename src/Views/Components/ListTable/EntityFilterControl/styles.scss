@@ -11,6 +11,9 @@
         gap: var(--givewp-spacing-2);
         max-block-size: 16rem;
         overflow-y: auto;
+        // Room for the focus ring, which the scroll container would otherwise clip.
+        padding: var(--givewp-spacing-1);
+        margin: calc(-1 * var(--givewp-spacing-1));
     }
 
     &__option {

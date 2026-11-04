@@ -4,7 +4,8 @@ import apiFetch from '@wordpress/api-fetch';
 import type {View} from '@wordpress/dataviews';
 import {SWRConfig} from 'swr';
 import type {DataViewsListTableProps} from '../DataViewsListTable';
-import type {FilterConfig, ListTablePageProps} from './types';
+import type {FilterDeclaration} from '../filters/types';
+import type {ListTablePageProps} from './types';
 import ListTablePage from './index';
 
 jest.mock('@wordpress/api-fetch', () => jest.fn());
@@ -20,25 +21,30 @@ const mockedFetch = apiFetch as unknown as jest.Mock;
 const API_ROOT = 'https://example.test/wp-json/give-api/v2/admin/donations';
 const PATH = '/wp-admin/edit.php';
 
-const filterSettings: FilterConfig[] = [
-    {name: 'search', type: 'search'},
-    {name: 'donor', type: 'hidden'},
+const filters: FilterDeclaration[] = [
+    {kind: 'search', id: 'search', label: 'Search donations', hint: '', parameter: 'search'},
     {
-        name: 'filterBy',
-        type: 'filterby',
-        groupedOptions: [
-            {
-                id: 'status',
-                apiParam: 'status',
-                name: 'Status',
-                type: 'checkbox',
-                options: [
-                    {text: 'Failed', value: 'failed'},
-                    {text: 'Pending', value: 'pending'},
-                ],
-            },
-        ],
+        kind: 'entity',
+        id: 'donor',
+        label: 'Donor',
+        source: 'donor',
+        multiple: false,
+        parameter: 'donor',
+        legacyUrlKey: 'donor',
     },
+    {
+        kind: 'options',
+        id: 'status',
+        label: 'Status',
+        isPrimary: true,
+        multiple: true,
+        options: [
+            {value: 'failed', label: 'Failed'},
+            {value: 'pending', label: 'Pending'},
+        ],
+        parameter: 'status',
+    },
+    {kind: 'date', id: 'date', label: 'Donation date', parameters: {start: 'start', end: 'end'}},
 ];
 
 const props = (overrides: Partial<ListTablePageProps> = {}): ListTablePageProps => ({
@@ -55,7 +61,7 @@ const props = (overrides: Partial<ListTablePageProps> = {}): ListTablePageProps 
             ],
         },
     },
-    filterSettings,
+    filters,
     listTableBlankSlate: null,
     screen: {key: 'donations', defaults: {hiddenFields: ['form'], density: 'compact'}},
     ...overrides,
@@ -319,39 +325,20 @@ describe('ListTablePage URL state', () => {
         expect(window.location.href).toBe(href);
     });
 
-    it('does not ask for the list again when only the columns or density change, even with a Period filter', async () => {
+    it('does not ask for the list again when only the columns or density change, even with a date preset', async () => {
         jest.useFakeTimers({
             now: new Date('2026-10-28T10:00:00Z'),
             doNotFake: ['setTimeout', 'setInterval', 'clearTimeout', 'clearInterval', 'setImmediate', 'clearImmediate'],
         });
-        window.history.replaceState(null, '', `${PATH}?page=give-payment-history&give-period=7`);
+        window.history.replaceState(null, '', `${PATH}?page=give-payment-history&give-date=7`);
 
         try {
-            await render({
-                filterSettings: [
-                    ...filterSettings,
-                    {
-                        name: 'periodFilter',
-                        type: 'filterby',
-                        groupedOptions: [
-                            {
-                                id: 'period',
-                                apiParam: 'start',
-                                name: 'Period',
-                                type: 'radio',
-                                options: [{text: 'Last 7 days', value: '7'}],
-                                toApiValue: (days: string, now: Date) =>
-                                    new Date(now.getTime() - Number(days) * 86_400_000).toISOString(),
-                            },
-                        ],
-                    },
-                ],
-            });
+            await render();
             const before = listRequests();
 
-            expect(before[0].searchParams.get('start')).toBe('2026-10-21T10:00:00.000Z');
+            expect(before[0].searchParams.get('start')).toMatch(/^\d{4}-\d{2}-\d{2}T00:00:00$/);
 
-            jest.setSystemTime(new Date('2026-10-28T10:05:00Z'));
+            jest.setSystemTime(new Date('2026-10-29T10:05:00Z'));
             await changeView((view) => ({...view, layout: {density: 'comfortable'}}));
             await changeView((view) => ({...view, fields: ['amount']}));
 

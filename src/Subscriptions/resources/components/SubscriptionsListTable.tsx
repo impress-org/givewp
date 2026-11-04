@@ -65,9 +65,9 @@ const statsConfig: Record<string, StatConfig> = {
 };
 
 /**
- * The test-mode switch in the header and its "Test mode" chip.
+ * The test-mode switch in the header and the "Test" badge next to the title.
  */
-const testModeToggle = {label: __('Test mode', 'give'), ariaLabel: __('View Test Subscriptions', 'give')};
+const testModeToggle = {label: __('Test', 'give'), ariaLabel: __('View Test Subscriptions', 'give')};
 
 /**
  * @since TBD Use the shared filter declarations and the test-mode switch in place of the "Filter by" settings.

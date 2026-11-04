@@ -63,7 +63,8 @@ class CampaignStatus extends Enum
     }
 
     /**
-     * Pending, Processing and Failed are internal: they show as badges but the filter does not offer them.
+     * The filter offers only Active and Archived, the two statuses an admin can set in the interface.
+     * Inactive, Draft, Pending, Processing and Failed show as badges but the filter does not offer them.
      *
      * @since TBD
      */
@@ -71,7 +72,7 @@ class CampaignStatus extends Enum
     {
         return new StatusVocabulary(
             self::labels(),
-            [self::ACTIVE, self::INACTIVE, self::ARCHIVED, self::DRAFT]
+            [self::ACTIVE, self::ARCHIVED]
         );
     }
 }

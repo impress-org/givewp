@@ -3,12 +3,6 @@
     flex-wrap: wrap;
     align-items: center;
     gap: var(--givewp-spacing-2);
-    // Lines up with the DataViews toolbar above it.
+    // No side padding: the page's container pads the list, and the toolbar above has none either.
     padding-block: 0 var(--givewp-spacing-4);
-    padding-inline: var(--givewp-spacing-12);
-
-    &__test-mode-text {
-        padding-inline: var(--givewp-spacing-3);
-        font-size: var(--givewp-font-size-paragraph-md);
-    }
 }

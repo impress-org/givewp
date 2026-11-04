@@ -16,23 +16,23 @@ class StatusVocabulariesTest extends TestCase
     /**
      * @since TBD
      */
-    public function testCampaignOffersActiveInactiveArchivedDraftInThatOrder(): void
+    public function testCampaignOffersActiveAndArchivedInThatOrder(): void
     {
         $offered = array_column(array_filter(CampaignStatus::vocabulary()->toArray(), function ($entry) {
             return $entry['filterable'];
         }), 'value');
 
-        $this->assertSame(['active', 'inactive', 'archived', 'draft'], array_values($offered));
+        $this->assertSame(['active', 'archived'], array_values($offered));
     }
 
     /**
      * @since TBD
      */
-    public function testCampaignShowsPendingProcessingFailedAsBadgesOnly(): void
+    public function testCampaignShowsTheOtherStatusesAsBadgesOnly(): void
     {
         $this->assertSame(
-            ['Pending', 'Processing', 'Failed'],
-            array_column(array_slice(CampaignStatus::vocabulary()->toArray(), 4), 'label')
+            ['Inactive', 'Draft', 'Pending', 'Processing', 'Failed'],
+            array_column(array_slice(CampaignStatus::vocabulary()->toArray(), 2), 'label')
         );
     }
 

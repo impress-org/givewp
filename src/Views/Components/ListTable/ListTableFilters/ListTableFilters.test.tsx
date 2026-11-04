@@ -290,67 +290,6 @@ describe('ListTableFilters', () => {
         expect(alert?.textContent).not.toContain('SQL error');
     });
 
-    it('the test mode chip shows when on and its × turns it off', async () => {
-        const onTestModeChange = jest.fn();
-        await render({testMode: {label: 'Test mode', isOn: false, onChange: onTestModeChange}});
-
-        expect(container.textContent).not.toContain('Test mode');
-
-        await render({testMode: {label: 'Test mode', isOn: true, onChange: onTestModeChange}});
-
-        expect(container.textContent).toContain('Test mode');
-
-        await click(buttonLabeled('Remove Test mode'));
-
-        expect(onTestModeChange).toHaveBeenCalledWith(false);
-    });
-
-    describe('removing the test mode chip', () => {
-        // Test mode turns off like the shell turns it off, so the chip goes away.
-        function TestModeHarness(props: HarnessProps) {
-            const [isOn, setIsOn] = useState(true);
-
-            return <Harness {...props} testMode={{label: 'Test mode', isOn, onChange: setIsOn}} />;
-        }
-
-        const renderWithTestMode = (props: HarnessProps = {}) => act(() => root.render(<TestModeHarness {...props} />));
-
-        it('moves focus to "Add filter"', async () => {
-            await renderWithTestMode();
-
-            await click(buttonLabeled('Remove Test mode'));
-
-            expect(buttonLabeled('Remove Test mode')).toBeNull();
-            expect(document.activeElement).toBe(addFilterButton());
-        });
-
-        it('moves focus to "Reset" when there is no "Add filter"', async () => {
-            await renderWithTestMode({declarations: [status], canReset: true});
-
-            await click(buttonLabeled('Remove Test mode'));
-
-            expect(document.activeElement?.textContent).toBe('Reset');
-        });
-
-        it('moves focus to the first chip when there is nothing else in the bar', async () => {
-            await renderWithTestMode({declarations: [status]});
-
-            await click(buttonLabeled('Remove Test mode'));
-
-            expect(document.activeElement).toBe(chipNamed('Status'));
-        });
-
-        it('hands focus back to the page when the bar is left empty', async () => {
-            const onFocusFallback = jest.fn();
-            await renderWithTestMode({declarations: [], onFocusFallback});
-
-            await click(buttonLabeled('Remove Test mode'));
-
-            expect(container.innerHTML).toBe('');
-            expect(onFocusFallback).toHaveBeenCalledTimes(1);
-        });
-    });
-
     it('"Reset" shows only when canReset and calls onReset', async () => {
         const resetButton = () =>
             Array.from(container.querySelectorAll('button')).find((button) => button.textContent === 'Reset');
