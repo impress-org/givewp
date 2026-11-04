@@ -1,0 +1,13 @@
+.givewp-list-table-notice-area {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-2);
+
+    &__link {
+        font-weight: 600;
+    }
+
+    &__message {
+        margin: 0;
+    }
+}
