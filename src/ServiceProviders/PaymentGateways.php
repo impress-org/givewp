@@ -236,7 +236,8 @@ class PaymentGateways implements ServiceProvider
             WebhookSettingsFields::class,
             'renderSetupField'
         );
-        Hooks::addAction('admin_init', WebhookHealthMonitor::class, 'schedule');
+        /* init rather than admin_init, so a site whose admin is not visited still gets the hourly check. */
+        Hooks::addAction('init', WebhookHealthMonitor::class, 'schedule');
         Hooks::addAction(WebhookHealthMonitor::CRON_HOOK, WebhookHealthMonitor::class);
     }
 
