@@ -226,12 +226,12 @@ export type LegacyRowActionArgs = {
 export type LegacyRowActions = (args: LegacyRowActionArgs) => ReactNode;
 
 /**
- * The test-mode switch in the page header, and the chip that shows while it is on.
+ * The test-mode switch in the page header, and the badge next to the title while it is on.
  *
  * @since TBD
  */
 export type TestModeToggle = {
-    /** The chip text and the header badge, "Test mode". */
+    /** The header badge text, "Test mode". */
     label: string;
     /** The accessible name of the switch. */
     ariaLabel: string;
@@ -303,7 +303,7 @@ export interface ListTablePageProps {
      */
     scope?: Record<string, string | number>;
     /**
-     * The test-mode switch in the header and its chip. Used with `filters`; with the deprecated
+     * The test-mode switch and badge in the header. Used with `filters`; with the deprecated
      * `filterSettings` the `toggle` setting adds it.
      *
      * @since TBD

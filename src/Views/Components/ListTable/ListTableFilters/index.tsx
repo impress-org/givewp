@@ -24,7 +24,6 @@ import './styles.scss';
 
 /**
  * @since TBD Add `containerRef`.
- * @since TBD Add `onFocusFallback`.
  * @since TBD
  */
 export interface ListTableFiltersProps {
@@ -36,21 +35,16 @@ export interface ListTableFiltersProps {
     statuses: StatusVocabularyEntry[];
     /** Sent with option requests, so the server checks the screen's permission. */
     screen?: ListTableScreenKey;
-    /** The test-mode chip. It is not a declaration; the header switch owns it. */
-    testMode?: {label: string; isOn: boolean; onChange: (isOn: boolean) => void};
     canReset: boolean;
     onReset: () => void;
-    /** Takes keyboard focus when a removed chip leaves nothing in the bar to focus. */
-    onFocusFallback?: () => void;
     /** The bar's element. It can take focus from code, for when no control is left to focus. */
     containerRef?: Ref<HTMLDivElement>;
 }
 
 /**
- * What gets focus after a chip is removed: "Add filter", the chip of a primary filter, or, after the
- * test-mode chip, the next control left in the bar.
+ * What gets focus after a chip is removed: "Add filter" or the chip of a primary filter.
  */
-type FocusTarget = {addFilter: true} | {chip: string} | {afterTestMode: true};
+type FocusTarget = {addFilter: true} | {chip: string};
 
 /**
  * The values a filter holds in the view, as a list. Empty when it holds nothing.
@@ -87,12 +81,11 @@ const isMultiple = (declaration: BarFilterDeclaration) => declaration.kind !== '
 
 /**
  * The filter bar of a list: the primary filters as chips that are always there, the secondary
- * filters the admin added, an "Add filter" menu for the rest, the test-mode chip and "Reset". It
+ * filters the admin added, an "Add filter" menu for the rest and "Reset". It
  * reads the entity's declaration and keeps every value in the view's filters (`filter-<id>`), so
  * the URL, reset and the empty state work from the same place. It has no screen-specific branches.
  *
  * @since TBD Let the page focus the bar itself (`containerRef`, `tabIndex={-1}`).
- * @since TBD Keep keyboard focus in the bar, or hand it to the page, when the test-mode chip is removed.
  * @since TBD
  */
 export default function ListTableFilters({
@@ -101,10 +94,8 @@ export default function ListTableFilters({
     onChangeView,
     statuses,
     screen,
-    testMode,
     canReset,
     onReset,
-    onFocusFallback,
     containerRef,
 }: ListTableFiltersProps) {
     const [justAdded, setJustAdded] = useState<string>();
@@ -131,20 +122,6 @@ export default function ListTableFilters({
 
         pendingFocus.current = undefined;
 
-        if ('afterTestMode' in target) {
-            let firstChip: HTMLDivElement | undefined;
-            chipRefs.current.forEach((chip) => {
-                firstChip = firstChip ?? chip;
-            });
-            const next =
-                addFilterRef.current?.querySelector<HTMLButtonElement>('button') ??
-                resetRef.current ??
-                firstChip?.querySelector<HTMLButtonElement>('button');
-
-            next ? next.focus() : onFocusFallback?.();
-            return;
-        }
-
         const holder = 'chip' in target ? chipRefs.current.get(target.chip) : addFilterRef.current;
         holder?.querySelector<HTMLButtonElement>('button')?.focus();
     });
@@ -156,7 +133,7 @@ export default function ListTableFilters({
     const available = declarations.filter((declaration) => !declaration.isPrimary && !entryOf(declaration.id));
     const shown = [...primary, ...added];
 
-    if (shown.length === 0 && available.length === 0 && !testMode?.isOn && !canReset) {
+    if (shown.length === 0 && available.length === 0 && !canReset) {
         return null;
     }
 
@@ -296,22 +273,6 @@ export default function ListTableFilters({
                     {renderFilter(declaration)}
                 </div>
             ))}
-
-            {testMode?.isOn && (
-                <div className="givewp-filter-chip givewp-filter-chip--has-value givewp-list-table-filters__test-mode">
-                    <span className="givewp-list-table-filters__test-mode-text">{testMode.label}</span>
-                    <Button
-                        className="givewp-filter-chip__remove"
-                        icon={closeSmall}
-                        /* translators: %s: the test-mode chip text, "Test mode". */
-                        label={sprintf(__('Remove %s', 'give'), testMode.label)}
-                        onClick={() => {
-                            pendingFocus.current = {afterTestMode: true};
-                            testMode.onChange(false);
-                        }}
-                    />
-                </div>
-            )}
 
             {available.length > 0 && (
                 <div ref={addFilterRef} className="givewp-list-table-filters__add">

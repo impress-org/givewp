@@ -299,13 +299,13 @@ and no shared code has a branch for one screen. The types are in `ListTable/filt
 - **Link-driven filters.** Some filters are mostly set by a link from another screen, such as Donor
   on Donations (`?donor=12` from a donor's page). They are ordinary declarations with a
   `legacyUrlKey`; the link applies them and the chip names the record.
-- **Test mode** is not a declaration. A screen passes `testModeToggle`; the header switch and the
-  "Test mode" chip edit the same view filter.
+- **Test mode** is not a declaration. A screen passes `testModeToggle`; the header switch edits the
+  view filter. It has no chip in the filter bar, so the switch is the one place to turn it on or off.
 
 ### The filter bar
 
-`ListTableFilters` renders the primary chips, the added secondary chips, the "Test mode" chip, "Add
-filter" and Reset, from `FilterChip`, `OptionsFilterControl`, `EntityFilterControl` and
+`ListTableFilters` renders the primary chips, the added secondary chips, "Add filter"
+and Reset, from `FilterChip`, `OptionsFilterControl`, `EntityFilterControl` and
 `DateRangeFilterControl`. `ListTableSearch` is the labeled search box with its hint, announced with
 the field. A chip lists up to three names and then says how many are chosen ("Status: 4 selected");
 its accessible name starts with the visible text and then lists the names ("Status: 4 selected.

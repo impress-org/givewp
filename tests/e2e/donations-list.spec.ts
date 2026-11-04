@@ -532,7 +532,7 @@ test.describe('Donations list view in the address', () => {
 
 /**
  * The shared list filters on Donations: the filter bar, its chips, "Add filter", the date range, the
- * labeled search and the test-mode chip.
+ * labeled search.
  *
  * The unit tests cover the declarations, the URL rules and the request builder. What they cannot
  * cover is the whole loop in a browser: a click in the bar reaching the endpoint with the right
@@ -715,20 +715,6 @@ test.describe('Donations list filters', () => {
 
         await expect(popover(page).getByRole('alert')).toHaveText('The end date must be on or after the start date.');
         await expect(popover(page).getByRole('button', {name: 'Apply'})).toBeDisabled();
-    });
-
-    test('removing the Test mode chip turns the header switch off', async ({page, admin}) => {
-        await visitList(page, admin, DONATIONS_LIST);
-        await setTestMode(page, true);
-
-        await expect(filterBar(page).getByText('Test mode', {exact: true})).toBeVisible();
-
-        const live = nextListRequest(page, DONATIONS_REQUEST, (url) => url.searchParams.get('testMode') === 'false');
-        await filterBar(page).getByRole('button', {name: 'Remove Test mode'}).click();
-        await live;
-
-        await expect(page.getByRole('switch')).toHaveAttribute('aria-checked', 'false');
-        await expect(filterBar(page).getByText('Test mode', {exact: true})).toHaveCount(0);
     });
 
     test('search matches a name from its start, not from its middle', async ({page, admin, requestUtils}) => {

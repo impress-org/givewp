@@ -18,6 +18,7 @@ jest.mock('../filters/siteDate', () => ({
 }));
 
 const mockRenderedHeader = jest.fn<null, [ListTablePageHeaderProps]>(() => null);
+const lastHeader = () => mockRenderedHeader.mock.calls[mockRenderedHeader.mock.calls.length - 1][0];
 jest.mock('./ListTablePageHeader', () => (props: ListTablePageHeaderProps) => mockRenderedHeader(props));
 
 const mockRenderedTable = jest.fn<null, [DataViewsListTableProps]>(() => null);
@@ -217,15 +218,6 @@ describe('ListTablePage with filter declarations', () => {
         expect(document.activeElement).toBe(box.querySelector('input'));
     });
 
-    it('gives the bar a focus fallback that focuses the search box', async () => {
-        await render();
-        const box = await renderSlot(lastTable().searchBox);
-
-        await act(async () => filterBar().props.onFocusFallback?.());
-
-        expect(document.activeElement).toBe(box.querySelector('input'));
-    });
-
     it('reset moves keyboard focus to a control left in the bar when the search box is hidden', async () => {
         // During a bulk selection the table shows no search box, but the filter bar stays.
         window.history.replaceState(null, '', `${PATH}?page=give-forms&give-status=pending`);
@@ -238,12 +230,12 @@ describe('ListTablePage with filter declarations', () => {
         expect(document.activeElement?.textContent).not.toBe('Reset');
     });
 
-    it('the focus fallback focuses the bar itself when the search box is hidden', async () => {
+    it('reset focuses the bar itself when the search box is hidden and no control is left', async () => {
         await render();
         const bar = await renderSlot(lastTable().filterBar);
         bar.querySelectorAll('button').forEach((button) => button.remove());
 
-        await act(async () => filterBar().props.onFocusFallback?.());
+        await act(async () => filterBar().props.onReset());
 
         expect(document.activeElement).toBe(bar.querySelector('[role="group"]'));
         expect(document.activeElement?.getAttribute('aria-label')).toBe('Filters');
@@ -356,7 +348,7 @@ describe('ListTablePage with filter declarations', () => {
         expect(bar.textContent).toContain('Status: Published, Pending');
     });
 
-    it('turns test mode on by default on a test site and shows the switch and the chip', async () => {
+    it('turns test mode on by default on a test site and shows the switch', async () => {
         await render({testModeToggle: {label: 'Test mode', ariaLabel: 'Show test mode'}, paymentMode: true});
 
         expect(lastRequest()).toMatchObject({testMode: 'true'});
@@ -364,7 +356,7 @@ describe('ListTablePage with filter declarations', () => {
             label: 'Test mode',
             ariaLabel: 'Show test mode',
         });
-        expect(filterBar().props.testMode).toMatchObject({label: 'Test mode', isOn: true});
+        expect(lastHeader().testMode).toBe(true);
     });
 
     describe('Reset shows only when the filters differ from the screen defaults', () => {
@@ -377,7 +369,7 @@ describe('ListTablePage with filter declarations', () => {
         it('hides Reset on an untouched view whose default holds test mode', async () => {
             await render(testModeProps);
 
-            expect(filterBar().props.testMode).toMatchObject({isOn: true});
+            expect(lastHeader().testMode).toBe(true);
             expect(filterBar().props.canReset).toBe(false);
         });
 
@@ -406,7 +398,7 @@ describe('ListTablePage with filter declarations', () => {
 
         it('shows Reset when test mode is turned off on a test site', async () => {
             await render(testModeProps);
-            await act(async () => filterBar().props.testMode?.onChange(false));
+            await act(async () => lastHeader().onChangeTestMode(false));
 
             expect(filterBar().props.canReset).toBe(true);
         });
@@ -423,7 +415,7 @@ describe('ListTablePage with filter declarations', () => {
                 {field: filterFieldId(TEST_MODE_FILTER), operator: 'is', value: true},
             ]);
             expect(filterBar().props.canReset).toBe(false);
-            expect(filterBar().props.testMode).toMatchObject({isOn: true});
+            expect(lastHeader().testMode).toBe(true);
             expect(lastRequest()).toMatchObject({testMode: 'true'});
             expect(lastRequest()).not.toHaveProperty('status');
         });

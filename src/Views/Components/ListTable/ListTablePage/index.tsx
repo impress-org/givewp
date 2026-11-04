@@ -401,16 +401,8 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                                     onChangeView={onChangeView}
                                     statuses={statuses}
                                     screen={screen?.key}
-                                    testMode={
-                                        testModeSwitch && {
-                                            label: testModeSwitch.label,
-                                            isOn: testMode,
-                                            onChange: setTestMode,
-                                        }
-                                    }
                                     canReset={canReset}
                                     onReset={resetFilters}
-                                    onFocusFallback={focusFilterArea}
                                     containerRef={filterBarRef}
                                 />
                             }
