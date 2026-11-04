@@ -48,6 +48,8 @@ final class WebhookTargetTest extends TestCase
             'http without trailing slash' => ["http://$host?give-listener=stripe"],
             'upper case host' => ['https://' . strtoupper($host) . '/?give-listener=stripe'],
             'extra query argument' => ["https://$host/?give-listener=stripe&source=givewp"],
+            'https with its default port' => ["https://$host:443/?give-listener=stripe"],
+            'http with its default port' => ["http://$host:80/?give-listener=stripe"],
         ];
     }
 
@@ -74,6 +76,8 @@ final class WebhookTargetTest extends TestCase
             'no listener' => ["https://$host/"],
             'other path' => ["https://$host/donate/?give-listener=stripe"],
             'not a url' => ['give-listener=stripe'],
+            'other port' => ["https://$host:8443/?give-listener=stripe"],
+            'port 80 over https' => ["https://$host:80/?give-listener=stripe"],
         ];
     }
 
