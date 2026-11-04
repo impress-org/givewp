@@ -139,8 +139,23 @@ final class ManageWebhookEndpointsController
         } catch (WebhookEndpointException $exception) {
             $this->logFailure('list', $account, $mode, $exception);
 
+            if ('list' === $operation) {
+                wp_send_json_success([
+                    'html' => $this->view->render([], $mode, $this->errorNotice($exception)),
+                    'state' => self::STATE_ERROR,
+                ]);
+            }
+
+            /* An empty list here would read as "no endpoints" and drop the form the admin submitted. */
             wp_send_json_success([
-                'html' => $this->view->render([], $mode, $this->errorNotice($exception)),
+                'notices' => $this->view->notices([
+                    $notice,
+                    $this->notice('error', sprintf(
+                        /* translators: %s: Error message from Stripe. */
+                        __('The endpoint list could not be read again. Stripe returned an error: %s', 'give'),
+                        $exception->getMessage()
+                    )),
+                ]),
                 'state' => self::STATE_ERROR,
             ]);
         }

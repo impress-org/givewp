@@ -256,6 +256,60 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     /**
      * @since TBD
      */
+    public function testAnUpdateWhoseListCannotBeReadAgainSendsItsNoticeAndNoList(): void
+    {
+        $account = $this->makeAccount();
+        $this->saveAccounts($account);
+        $existing = $this->endpointBody(['id' => 'we_site']);
+        $error = $this->errorBody('api_error', 'Something went wrong on our end.');
+        $this->stripe->queue(200, $this->listBody([$existing]));
+        $this->stripe->queue(200, $this->endpointBody(['id' => 'we_site', 'status' => 'disabled']));
+        $this->stripe->queue(500, $error);
+
+        $response = $this->callController('update', [
+            'account' => $account->accountSlug,
+            'endpoint_id' => 'we_site',
+            'url' => 'https://example.com/?give-listener=stripe',
+            'status' => 'disabled',
+            'events' => ['charge.refunded'],
+        ]);
+
+        $this->assertTrue($response['success']);
+        $this->assertArrayNotHasKey('html', $response['data']);
+        $this->assertSame('error', $response['data']['state']);
+        $this->assertStringContainsString('Webhook endpoint saved.', $response['data']['notices']);
+        $this->assertStringContainsString($error['error']['message'], $response['data']['notices']);
+        $this->assertSame(['get', 'post', 'get'], array_column($this->stripe->requests, 'method'));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testAFailedCreateWhoseListCannotBeReadAgainSendsBothErrors(): void
+    {
+        $account = $this->makeAccount();
+        $this->saveAccounts($account);
+        $createError = $this->errorBody('invalid_request_error', 'Invalid URL.');
+        $listError = $this->errorBody('api_error', 'Something went wrong on our end.');
+        $this->stripe->queue(200, $this->listBody([]));
+        $this->stripe->queue(400, $createError);
+        $this->stripe->queue(500, $listError);
+
+        $response = $this->callController('create', [
+            'account' => $account->accountSlug,
+            'url' => 'https://example.com/?give-listener=stripe',
+            'events' => ['charge.refunded'],
+        ]);
+
+        $this->assertArrayNotHasKey('html', $response['data']);
+        $this->assertStringContainsString($createError['error']['message'], $response['data']['notices']);
+        $this->assertStringContainsString($listError['error']['message'], $response['data']['notices']);
+        $this->assertSame(2, substr_count($response['data']['notices'], 'give-stripe-webhooks__notice--error'));
+    }
+
+    /**
+     * @since TBD
+     */
     public function testCreateSendsOnlyTheRequiredEventsTheApiVersionAndTheDescription(): void
     {
         $account = $this->makeAccount();
