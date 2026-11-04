@@ -2,7 +2,6 @@ import {expect, test} from '@wordpress/e2e-test-utils-playwright';
 import {donationForm, expectReceipt, fillDonorDetails, payWithTestGateway, waitForForm} from './utils/donation-form';
 import {createCampaignWithForm} from './utils/campaign';
 import {
-    allRecords,
     chip,
     expectListMounts,
     expectNoBrowserDialogs,
@@ -13,13 +12,10 @@ import {
     visitList,
 } from './utils/list-table';
 import {resetLayout} from './utils/user';
-import {wp} from './utils/wp-cli';
 
 const CAMPAIGNS = 'post_type=give_forms&page=give-campaigns';
 const CAMPAIGNS_REQUEST = /givewp\/v3\/campaigns\/list-table\?/;
 const FORMS_REQUEST = /give-api\/v2\/admin\/forms\?/;
-
-type V3Campaign = {id: number; status: string};
 
 /**
  * Creating a campaign, through the wizard a fundraiser actually uses.
@@ -97,57 +93,18 @@ test.describe('Campaigns list filters', () => {
         await resetLayout(requestUtils, 'campaigns');
     });
 
-    test('the Status filter offers the four statuses admins set, named as the badges name them', async ({
+    test('the Status filter offers the two statuses admins set, named as the badges name them', async ({
         page,
         admin,
     }) => {
         await visitList(page, admin, CAMPAIGNS);
         await chip(page, 'Status').click();
 
-        await expect(popover(page).getByRole('checkbox')).toHaveCount(4);
+        await expect(popover(page).getByRole('checkbox')).toHaveCount(2);
 
-        for (const label of ['Active', 'Inactive', 'Archived', 'Draft']) {
+        for (const label of ['Active', 'Archived']) {
             await expect(popover(page).getByRole('checkbox', {name: label, exact: true})).toBeVisible();
         }
-    });
-
-    test('Draft shows only the draft campaigns, all of them', async ({page, admin, requestUtils}) => {
-        // A draft of its own, so the filter has a row to show on an empty site too. Its title holds the
-        // word "Active", so a check that read the whole row instead of the status would fail on it.
-        const {campaignId} = await createCampaignWithForm(requestUtils, {
-            title: `E2E Active draft campaign ${Date.now()}`,
-        });
-        // The REST route cannot set a campaign back to draft, so this goes through the model.
-        wp(
-            'eval',
-            `$campaign = \\Give\\Campaigns\\Models\\Campaign::find(${campaignId}); $campaign->status = \\Give\\Campaigns\\ValueObjects\\CampaignStatus::DRAFT(); $campaign->save();`
-        );
-
-        const drafts = await allRecords<V3Campaign>(requestUtils, '/givewp/v3/campaigns', {status: ['draft']});
-
-        await visitList(page, admin, CAMPAIGNS);
-        await chip(page, 'Status').click();
-
-        const filtered = nextListRequest(
-            page,
-            CAMPAIGNS_REQUEST,
-            (url) => url.searchParams.get('statuses') === 'draft'
-        );
-        await popover(page).getByRole('checkbox', {name: 'Draft', exact: true}).check();
-        const response = await filtered;
-        await page.keyboard.press('Escape');
-
-        expect(drafts.map((draft) => draft.id)).toContain(campaignId);
-        expect(Number(((await response.json()) as {totalItems: number | string}).totalItems)).toBe(drafts.length);
-
-        // The table showed the unfiltered rows before, so wait for the filtered page with assertions that
-        // retry until it re-renders: one row per draft on the page, and each row's status badge reads
-        // "Draft". Only the badge is read, so a title with a status word in it does not count.
-        const perPage = Number(new URL(response.url()).searchParams.get('perPage'));
-        const rows = listRows(page);
-        const onPage = Math.min(drafts.length, perPage);
-        await expect(rows).toHaveCount(onPage);
-        await expect(rows.locator('.statusBadge')).toHaveText(Array(onPage).fill('Draft'));
     });
 });
 

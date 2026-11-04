@@ -173,7 +173,7 @@ test.describe('Donations list', () => {
         await page.setViewportSize({width: 1000, height: 800});
 
         await visitDonations(page, admin);
-        await addFilter(page, 'Form');
+        await chip(page, 'Form').click();
         await expect(popover(page).getByRole('checkbox').first()).toBeVisible();
 
         const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);

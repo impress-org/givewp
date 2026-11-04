@@ -361,8 +361,9 @@ filters (`ListTableFilterOptionsController`).
 Each entity's statuses come from one server source, a `StatusVocabulary` built by the value object
 (`CampaignStatus::vocabulary()` and the others): every value with its translated label, and which of
 them the Status filter offers. `ListTable::toArray()` sends it as `table.statuses`. The status badge
-and the Status filter both read it, so they always use the same words. Campaigns offers Active,
-Inactive, Archived and Draft; Pending, Processing and Failed show as badges only.
+and the Status filter both read it, so they always use the same words. Campaigns offers Active and
+Archived, the two statuses an admin can set in the interface; Inactive, Draft, Pending, Processing and
+Failed show as badges only.
 
 ### Parameters the endpoints accept
 

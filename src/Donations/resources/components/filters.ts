@@ -47,6 +47,7 @@ export function donationFilters({
             kind: 'entity',
             id: 'form',
             label: __('Form', 'give'),
+            isPrimary: true,
             legacyUrlKey: 'formId',
             source: 'form',
             multiple: true,
