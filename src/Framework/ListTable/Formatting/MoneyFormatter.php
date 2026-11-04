@@ -30,12 +30,13 @@ final class MoneyFormatter
         $code = $amount->getCurrency()->getCode();
 
         // Format the size of the amount, then put the minus sign in front. Give's own helpers drop the sign
-        // or put it after the currency symbol, depending on the amount.
+        // or put it after the currency symbol, depending on the amount. The decimal text is already clean, so
+        // it must not be sanitized again: with "." as the thousands separator, "12.50" would be read as 1250.
         $decimal = $amount->formatToDecimal();
         $isNegative = strpos($decimal, '-') === 0;
 
         $text = give_currency_filter(
-            give_format_amount(ltrim($decimal, '-'), ['currency' => $code]),
+            give_format_amount(ltrim($decimal, '-'), ['currency' => $code, 'sanitize' => false]),
             ['currency_code' => $code, 'decode_currency' => true]
         );
 

@@ -102,6 +102,29 @@ class MoneyFormatterTest extends TestCase
     }
 
     /**
+     * With "." as the thousands separator and no decimals, the text "12.50" must not be read as 1250.
+     *
+     * @since TBD
+     */
+    public function testAlreadyCleanDecimalsAreNotSanitizedAgain(): void
+    {
+        give_update_option('thousands_separator', '.');
+        give_update_option('decimal_separator', ',');
+        $noDecimals = static function () {
+            return 0;
+        };
+        add_filter('give_sanitize_amount_decimals', $noDecimals);
+
+        try {
+            $this->assertSame('$13', MoneyFormatter::fromDecimal('12.50'));
+            $this->assertSame('-$13', MoneyFormatter::fromDecimal('-12.50'));
+            $this->assertSame('$1.235', MoneyFormatter::fromDecimal('1234.50'));
+        } finally {
+            remove_filter('give_sanitize_amount_decimals', $noDecimals);
+        }
+    }
+
+    /**
      * On PHP 7.4, casting a float to a string follows LC_NUMERIC, so a comma locale writes "12,5".
      * The formatter must not depend on that.
      *
