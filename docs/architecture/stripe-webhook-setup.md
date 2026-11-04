@@ -23,7 +23,7 @@ Two consequences:
 | **Set up webhooks** button (Stripe settings, Webhooks group) | Runs the same AJAX action and shows the same modal. | Yes |
 | Hourly cron `givewp_stripe_webhook_health_check` | Lists the endpoints of every account and emails the site administrator when one has a problem. | No |
 | **Webhook Status** field of each account (Manage Accounts) | Page load reads every account's state (AJAX `status`, no write). The status button runs setup for that one account. **Edit** opens the endpoint modal. | Button and modal actions: yes. Page load: no |
-| Account disconnected (AJAX `disconnect_stripe_account`) | Deletes this site's endpoint from the account, then removes the account from Give. | Yes (delete) |
+| Account disconnected (AJAX `disconnect_stripe_account`) | Removes the account from Give, then deletes this site's endpoint from the account. | Yes (delete) |
 
 The AJAX action `givewp_stripe_ensure_webhook_endpoints` is registered only on `wp_ajax_`, checks a
 nonce, and requires `manage_give_settings`.
@@ -71,10 +71,12 @@ and the state for the status button. Changes are logged at info level, failures 
 
 ### Disconnecting an account
 
-`DisconnectStripeAccountController` runs `DeleteSiteWebhookEndpoint` before it calls
-`give_stripe_disconnect_account()`, because the request needs the stored key. Every account, Connect
-or manual, is disconnected through this AJAX action, so the give-stripe add-on needs no hook. Code
-that calls `give_stripe_disconnect_account()` directly skips the delete.
+`DisconnectStripeAccountController` reads the account and its key, calls
+`give_stripe_disconnect_account()`, then runs `DeleteSiteWebhookEndpoint` with the key it read. The
+account is removed first because each Stripe request can take up to 80 seconds, and a PHP, AJAX or
+proxy deadline that ends the request during the delete would otherwise leave the account connected.
+Every account, Connect or manual, is disconnected through this AJAX action, so the give-stripe add-on
+needs no hook. Code that calls `give_stripe_disconnect_account()` directly skips the delete.
 
 For each mode where the account holds a key, it lists the endpoints, deletes each one whose URL
 matches this site's listener URL, and leaves every other endpoint alone. A 404 on delete counts as
