@@ -68,6 +68,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
         $response = $this->callController($account->accountSlug);
 
         $this->assertTrue($response['success']);
+        $this->assertArrayNotHasKey('data', $response);
         $this->assertSame(0, $requestsWhenRemoved);
         $this->assertSame(['get', 'delete', 'get', 'delete'], array_column($this->stripe->requests, 'method'));
         $this->assertSame('Bearer ' . $account->testSecretKey, $this->stripe->header(1, 'Authorization'));
@@ -88,6 +89,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
         $response = $this->callController($account->accountSlug);
 
         $this->assertTrue($response['success']);
+        $this->assertStringContainsString((new WebhookTarget())->url(), $response['data']['webhookWarning']);
         $this->assertCount(2, $this->stripe->requests);
         $this->assertSame([], give_stripe_get_all_accounts());
     }
@@ -105,6 +107,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
         $response = $this->callController($account->accountSlug);
 
         $this->assertTrue($response['success']);
+        $this->assertStringContainsString((new WebhookTarget())->url(), $response['data']['webhookWarning']);
         $this->assertSame([], give_stripe_get_all_accounts());
     }
 
