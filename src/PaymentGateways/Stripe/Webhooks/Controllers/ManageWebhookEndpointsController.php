@@ -273,9 +273,14 @@ final class ManageWebhookEndpointsController
     {
         $endpointId = $this->input('endpoint_id');
         $url = $this->url();
+
+        if (!$url) {
+            return $this->notice('error', __('Enter a valid URL.', 'give'));
+        }
+
         $existing = $this->find(($this->listEndpoints)($account, $mode), $endpointId);
 
-        if (!$existing || !$url) {
+        if (!$existing) {
             return $this->notice('error', __('The webhook endpoint was not found.', 'give'));
         }
 
