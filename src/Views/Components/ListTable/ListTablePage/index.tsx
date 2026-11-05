@@ -25,7 +25,7 @@ import {
 import {getItemName} from '../adapters/getItemName';
 import {filterSettingsToDeclarations} from '../filters/legacyFilterSettings';
 import {siteToday} from '../filters/siteDate';
-import {differsFromDefaultFilters} from '../state/defaultFilterState';
+import {differsFromDefaultFilters, differsFromDefaultFiltersIgnoring} from '../state/defaultFilterState';
 import type {BarFilterDeclaration, FilterDeclaration, SearchFilterDeclaration} from '../filters/types';
 import {assembleView} from '../state/assembleView';
 import {keepPinnedLast, lockFields, placeShownFields} from '../state/fieldRules';
@@ -282,8 +282,14 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             restoreDefaultFilters(start.defaults.filters);
             setFocusRequest((count) => count + 1);
         }, [restoreDefaultFilters, start.defaults.filters]);
-        // The filtered empty state offers "Clear filters", so it shows only when there is something to clear.
-        const isFilteredEmpty = canReset;
+        // The filtered empty state offers "Clear filters", so it shows only when a search or a filter
+        // narrows the list. Test mode does not count: an empty list with only test mode changed is
+        // just empty, so it shows the screen's own blank slate.
+        const isFilteredEmpty = differsFromDefaultFiltersIgnoring(
+            view,
+            start.defaults.filters,
+            filterFieldId(TEST_MODE_FILTER)
+        );
 
         const fields = useMemo<Field<ListTableItem>[]>(
             () =>

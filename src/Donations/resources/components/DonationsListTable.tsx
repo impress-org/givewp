@@ -9,8 +9,8 @@ import styles from './ListTable.module.scss';
 import {BulkActionsConfig, ListTableRowAction} from '@givewp/components/ListTable/ListTablePage';
 import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
-import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
-import {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
+import type {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
+import type {ListTableRecommendations} from '@givewp/components/ListTable/notices/types';
 import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
 import listTableScreen from './listTableScreen';
 import {donationsFilters} from './filters';
@@ -121,16 +121,16 @@ const RecommendationConfig: DonationTableRecommendations = {
     },
 };
 
-const rotatingRecommendation = (
-    <ProductRecommendations
-        options={[
-            RecommendationConfig.recurring,
-            RecommendationConfig.feeRecovery,
-            RecommendationConfig.designatedFunds,
-        ]}
-        apiSettings={window.GiveDonations}
-    />
-);
+/**
+ * The recommendation data the notice area rotates through, in this screen's order.
+ *
+ * @since TBD
+ */
+const recommendations: ListTableRecommendations = {
+    options: [RecommendationConfig.recurring, RecommendationConfig.feeRecovery, RecommendationConfig.designatedFunds],
+    dismissed: window.GiveDonations.dismissedRecommendations ?? [],
+    apiNonce: window.GiveDonations.apiNonce,
+};
 
 /**
  * Configuration for the statistic tiles rendered above the ListTable.
@@ -167,6 +167,7 @@ const statsConfig: Record<string, StatConfig> = {
 const testModeToggle = {label: __('Test', 'give'), ariaLabel: __('View Test Donations', 'give')};
 
 /**
+ * @since TBD Pass the recommendation options as data for the notice area.
  * @since TBD Use the shared filter declarations and the test-mode switch in place of the "Filter by" settings.
  * @since TBD Pass the actions as data, the screen config, and the add-ons' bulk actions (the shared list page no longer reads them).
  * @since 4.10.0 Update button class names and add aria attributes.
@@ -186,7 +187,7 @@ export default function DonationsListTable() {
             testModeToggle={testModeToggle}
             paymentMode={!!window.GiveDonations.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
-            productRecommendation={rotatingRecommendation}
+            recommendations={recommendations}
             statsConfig={statsConfig}
             screen={listTableScreen}
         >
