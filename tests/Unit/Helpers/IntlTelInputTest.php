@@ -66,4 +66,37 @@ final class IntlTelInputTest extends TestCase
         $this->assertSame(substr_count($inline, 'function readyHandler()'), substr_count($inline, '(function () {'));
         $this->assertSame(substr_count($inline, '(function () {'), substr_count($inline, '})();'));
     }
+
+    /**
+     * @since TBD
+     */
+    public function testAssetUrlsPointToThePluginBuildFolder(): void
+    {
+        $this->assertSame(GIVE_PLUGIN_URL . 'build/assets/dist/css/intl-tel-input.css', IntlTelInput::getCssUrl());
+        $this->assertSame(
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/intl-tel-input/intlTelInput.min.js',
+            IntlTelInput::getScriptUrl()
+        );
+        $this->assertSame(
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/intl-tel-input/utils.js?ver=21.2.4',
+            IntlTelInput::getUtilsScriptUrl()
+        );
+
+        IntlTelInput::getHtmlInput('+15555550123', 'give_donor_phone_number');
+
+        $this->assertSame(IntlTelInput::getCssUrl(), wp_styles()->query('givewp-intl-tel-input')->src);
+        $this->assertSame(IntlTelInput::getScriptUrl(), wp_scripts()->query('givewp-intl-tel-input')->src);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testSettingsDoNotPointToARemoteHost(): void
+    {
+        $settings = IntlTelInput::getSettings();
+
+        foreach (['cssUrl', 'scriptUrl', 'utilsScriptUrl'] as $key) {
+            $this->assertStringStartsWith(GIVE_PLUGIN_URL, $settings[$key]);
+        }
+    }
 }

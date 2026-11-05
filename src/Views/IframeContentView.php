@@ -132,6 +132,7 @@ class IframeContentView
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title><?php
+                // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WordPress core the_title filter, applied on purpose so the iframe title is filtered like any post title.
                 echo esc_html(apply_filters('the_title', $this->title, $this->postId)); ?></title>
             <?php
             /**
