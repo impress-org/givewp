@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Legacy form editing, settings and shortcode screens now pass Plugin
+  Check, and form category and tag lists use the current get_terms() format.
+timestamp: 2026-11-04T21:27:57.980Z

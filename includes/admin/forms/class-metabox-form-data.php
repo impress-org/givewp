@@ -934,6 +934,7 @@ class Give_MetaBox_Form_Data {
 	 * @return array
 	 */
 	function cmb2_metabox_settings() {
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- cmb2_meta_boxes is the CMB2 library's own filter name; add-ons register their form settings on it, so it cannot be renamed.
 		$all_cmb2_settings   = apply_filters( 'cmb2_meta_boxes', [] );
 		$give_forms_settings = $all_cmb2_settings;
 
