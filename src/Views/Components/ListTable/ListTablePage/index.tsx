@@ -40,6 +40,8 @@ import useListTableStats from '../hooks/useListTableStats';
 import useListTableActionNotices from '../hooks/useListTableActionNotices';
 import useListTableActions from '../hooks/useListTableActions';
 import useDailyRecommendation from '../hooks/useDailyRecommendation';
+import useNarrowLayout from '../hooks/useNarrowLayout';
+import {fromNarrowView, resolveFieldRoles, toNarrowView} from '../layout/narrowView';
 import ListTablePageHeader from './ListTablePageHeader';
 import LegacyConfirmModal, {LegacyConfirmRequest} from './LegacyConfirmModal';
 import type {
@@ -89,6 +91,7 @@ export const ShowConfirmModalContext = createContext(
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
  *
+ * @since TBD At 782 px and below, show the records as cards built from the screen's field roles.
  * @since TBD Keep the stat tiles mounted with a status, and name their region by the screen.
  * @since TBD Send an explicit `scope` also without `filters`, over the scope from `filterSettings`.
  * @since TBD Announce a cached result count only after its request has finished.
@@ -321,6 +324,29 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             [onChangeView, view]
         );
 
+        // At 782 px and below the list shows cards. The card view is made from the table view on each
+        // render and never kept: a change made on the cards only carries its page, sort, filters and
+        // search back to the table view, so resizing keeps the view and the stored layout stays a table.
+        const isNarrow = useNarrowLayout();
+        const [fieldRoles] = useState(() => resolveFieldRoles(screen?.fieldRoles, columns, start.defaults.titleField));
+        const hasIdColumn = columns.some((column) => column.id === 'id');
+        const displayView = useMemo<View>(
+            () =>
+                isNarrow
+                    ? toNarrowView(
+                          view,
+                          fieldRoles,
+                          hasIdColumn,
+                          start.defaults.pinnedLast ? [start.defaults.pinnedLast] : []
+                      )
+                    : view,
+            [isNarrow, view, fieldRoles, hasIdColumn]
+        );
+        const onChangeDisplayView = useCallback(
+            (next: View) => (isNarrow ? onChangeView(fromNarrowView(next, view)) : onChangeTableView(next)),
+            [isNarrow, onChangeView, onChangeTableView, view]
+        );
+
         const {actions, actionDialog, closeActionDialog, customAction, setCustomActionOpen} = useListTableActions({
             rowActions: typedRowActions,
             bulkActions,
@@ -379,8 +405,9 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                             <NotificationPlaceholder type="notice" />
                         </ListTableNoticeArea>
                         <DataViewsListTable
-                            view={view}
-                            onChangeView={onChangeTableView}
+                            view={displayView}
+                            onChangeView={onChangeDisplayView}
+                            layoutMode={isNarrow ? 'narrow' : 'wide'}
                             fields={fields}
                             actions={actions}
                             data={error ? [] : data?.items ?? []}
