@@ -615,6 +615,7 @@ function give_get_raw_data_from_file( $file_dir, $start, $end, $delimiter ) {
 	$raw_data = [];
 
 	$count = 0;
+	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- streams the uploaded CSV row by row with fgetcsv() so large imports use flat memory; WP_Filesystem can only load the whole file.
 	if ( false !== ( $handle = fopen( $file_dir, 'r' ) ) ) {
 		while ( false !== ( $row = fgetcsv( $handle, 0, $delimiter ) ) ) {
 			if ( $count >= $start && $count <= $end ) {
@@ -622,6 +623,7 @@ function give_get_raw_data_from_file( $file_dir, $start, $end, $delimiter ) {
 			}
 			$count ++;
 		}
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- closes the handle opened above for the streamed fgetcsv() read.
 		fclose( $handle );
 	}
 

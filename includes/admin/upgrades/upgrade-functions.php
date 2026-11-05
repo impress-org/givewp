@@ -3580,9 +3580,10 @@ function give_v270_store_stripe_account_for_donation_callback() {
 /**
  * Removes any leftover export files that should've been deleted
  *
+ * @since TBD Use wp_delete_file() instead of unlink().
  * @since 2.9.0
  */
 function give_v290_remove_old_export_files() {
-	@unlink( WP_CONTENT_DIR . '/uploads/give-payments.csv' );
-	@unlink( WP_CONTENT_DIR . '/uploads/give-donors.csv' );
+	wp_delete_file( WP_CONTENT_DIR . '/uploads/give-payments.csv' );
+	wp_delete_file( WP_CONTENT_DIR . '/uploads/give-donors.csv' );
 }

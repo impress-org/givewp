@@ -100,6 +100,7 @@ class Hooks
      */
     public static function doAction($hookName, ...$args)
     {
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- generic wrapper; each caller passes its own hook name, and every call in Give passes a literal give_ or givewp_ name.
         do_action($hookName, ...$args);
 
         Log::debug(

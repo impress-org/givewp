@@ -116,6 +116,7 @@ class Give_Batch_Export extends Give_Export {
 	/**
 	 * Give_Batch_Export constructor.
 	 *
+	 * @since TBD Use wp_is_writable() to check the uploads folder.
      * @since 2.21.0 Create only csv file.
 	 * @since 2.9.0 add hash to filename to avoid collisions
 	 * @since 1.5
@@ -136,7 +137,7 @@ class Give_Batch_Export extends Give_Export {
 
         $this->file = trailingslashit( $upload_dir['basedir'] ) . $this->filename;
 
-		if ( ! is_writable( $upload_dir['basedir'] ) ) {
+		if ( ! wp_is_writable( $upload_dir['basedir'] ) ) {
 			$this->is_writable = false;
 		}
 
@@ -147,6 +148,7 @@ class Give_Batch_Export extends Give_Export {
 	/**
 	 * Process a step.
 	 *
+	 * @since TBD Use wp_delete_file() to remove the old export file.
 	 * @since 1.5
 	 * @return bool
 	 */
@@ -165,7 +167,7 @@ class Give_Batch_Export extends Give_Export {
 		if ( $this->step < 2 ) {
 
 			// Make sure we start with a fresh file on step 1.
-			@unlink( $this->file );
+			wp_delete_file( $this->file );
 			$this->print_csv_cols();
 		}
 
@@ -250,6 +252,7 @@ class Give_Batch_Export extends Give_Export {
 	/**
 	 * Retrieve the file data is written to.
 	 *
+	 * @since TBD Use wp_is_writable() to check the export file.
 	 * @since 1.5
 	 * @return string
 	 */
@@ -259,7 +262,7 @@ class Give_Batch_Export extends Give_Export {
 
 		if ( @file_exists( $this->file ) ) {
 
-			if ( ! is_writable( $this->file ) ) {
+			if ( ! wp_is_writable( $this->file ) ) {
 				$this->is_writable = false;
 			}
 
@@ -268,6 +271,7 @@ class Give_Batch_Export extends Give_Export {
 		} else {
 
 			@file_put_contents( $this->file, '' );
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_chmod -- sets group write on the temp export file this class just created in uploads; WP_Filesystem may need FTP credentials, which this ajax step cannot ask for.
 			@chmod( $this->file, 0664 );
 
 		}
@@ -302,6 +306,7 @@ class Give_Batch_Export extends Give_Export {
 	/**
 	 * Perform the export.
 	 *
+	 * @since  TBD Use wp_delete_file() to remove the temp export file.
 	 * @since  4.19.1 Escape output.
 	 * @access public
 	 * @since  1.5
@@ -314,7 +319,7 @@ class Give_Batch_Export extends Give_Export {
 
 		$file = $this->get_file();
 
-		@unlink( $this->file );
+		wp_delete_file( $this->file );
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- writes the exported file's raw content to the download stream, not to HTML.
 		echo $file;

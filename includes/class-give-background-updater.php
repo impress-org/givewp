@@ -106,6 +106,7 @@ class Give_Background_Updater extends WPBackgroundProcess
         $this->start_time = time(); // Set start time of current process.
 
         $lock_duration = (property_exists($this, 'queue_lock_time')) ? $this->queue_lock_time : 60; // 1 minute
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- runtime name is wp_give_db_updater_queue_lock_time; the identifier also names the stored queue rows and the cron event, so it cannot change.
         $lock_duration = apply_filters($this->identifier . '_queue_lock_time', $lock_duration);
 
         set_transient($this->identifier . '_process_lock', microtime(), $lock_duration);
