@@ -154,7 +154,7 @@ abstract class WPBackgroundProcess extends WPAsyncRequest
      */
     protected function generate_key($length = 64)
     {
-        $unique = md5(microtime() . wp_rand());
+        $unique = md5(microtime() . wp_rand(0, mt_getrandmax()));
         $prepend = $this->identifier . '_batch_';
 
         return substr($prepend . $unique, 0, $length);

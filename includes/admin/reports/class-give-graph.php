@@ -86,7 +86,7 @@ class Give_Graph {
 		$this->data = $_data;
 
 		// Generate unique ID
-		$this->id = md5( wp_rand() );
+		$this->id = md5( wp_rand( 0, mt_getrandmax() ) );
 
 		// Setup default options;
 		$this->options = apply_filters(
