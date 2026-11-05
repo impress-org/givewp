@@ -4,7 +4,7 @@ import {execFileSync} from 'child_process';
  * Runs a WP-CLI command in the wp-env site this checkout started and returns its last line of output.
  *
  * Some fixtures have no REST route: a legacy (v2) donation form is a post with protected meta, and
- * GiveWP's settings are one option nobody exposes. WP-CLI is what wp-env offers for those, and it
+ * Give's settings are one option nobody exposes. WP-CLI is what wp-env offers for those, and it
  * talks to the environment `npm run env:start` created here - not to whatever `WP_BASE_URL` points
  * at. A run against a different site has to set that site up by hand.
  */
@@ -24,7 +24,10 @@ export function wp(...args: string[]): string {
  * Whether the plugin with this slug is active on the wp-env site.
  */
 export function isPluginActive(slug: string): boolean {
-    return wp('plugin', 'list', '--status=active', '--field=name').split(/\s+/).includes(slug);
+    // wp() keeps only the last line of output, so the slugs must come back on one line.
+    const active = wp('eval', `echo implode(' ', array_map('dirname', (array) get_option('active_plugins', [])));`);
+
+    return active.split(/\s+/).includes(slug);
 }
 
 /**
