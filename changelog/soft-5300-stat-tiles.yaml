@@ -1,0 +1,4 @@
+significance: minor
+type: enhancement
+entry: The stat tiles on the list screens now stay in place while data loads and show the same money and numbers the server sends.
+timestamp: 2026-11-05T01:30:00.000Z

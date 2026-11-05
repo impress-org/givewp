@@ -1,0 +1,6 @@
+.givewp-stat-tiles {
+    display: flex;
+    flex-direction: row;
+    gap: var(--givewp-spacing-4);
+    margin-inline: var(--givewp-spacing-6);
+}

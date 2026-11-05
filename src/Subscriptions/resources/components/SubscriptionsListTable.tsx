@@ -4,7 +4,7 @@ import ListTableApi from '@givewp/components/ListTable/api';
 import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import {subscriptionsRowActions} from './SubscriptionsRowActions';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
-import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
+import { StatConfig } from '@givewp/components/ListTable/ListTablePage';
 import listTableScreen from './listTableScreen';
 import {subscriptionFilters} from './filters';
 
@@ -18,9 +18,6 @@ declare global {
             paymentMode: boolean;
             pluginUrl: string;
             subscriptionStatuses: {[statusCode: string]: string};
-        };
-        GiveSubscriptionOptions?: {
-            currency: string;
         };
     }
 }
@@ -54,13 +51,11 @@ const ListTableBlankSlate = (
  * then this config must use those same keys: "totalContributions", "activeSubscriptions".
  * Missing or mismatched keys will result in empty/undefined values in the UI.
  *
+ * @since TBD Remove `currency`; the server formats the amount.
  * @since 4.12.0
  */
 const statsConfig: Record<string, StatConfig> = {
-    totalContributions: {
-        label: __('Total Contributions', 'give'),
-        currency: window.GiveSubscriptionOptions?.currency
-    },
+    totalContributions: { label: __('Total Contributions', 'give')},
     activeSubscriptions: { label: __('Active Subscriptions', 'give')},
 };
 
