@@ -96,6 +96,24 @@ describe('DonationFormsListTable', () => {
         await unmount();
     });
 
+    it('goes to the legacy Forms list after the switch', async () => {
+        const unmount = await render(undefined, {isOptionBasedFormEditorEnabled: true, adminUrl: '/wp-admin/'});
+        const {legacyView} = mockPageProps.mock.calls[0][0];
+
+        // jsdom cannot navigate, so swap the location for a plain object that records the address.
+        const originalLocation = window.location;
+        Object.defineProperty(window, 'location', {configurable: true, value: {href: ''}});
+
+        try {
+            legacyView.onSwitched();
+
+            expect(window.location.href).toBe('/wp-admin/edit.php?post_type=give_forms');
+        } finally {
+            Object.defineProperty(window, 'location', {configurable: true, value: originalLocation});
+            await unmount();
+        }
+    });
+
     it('offers no "Switch to Legacy View" when the option-based editor is off', async () => {
         const unmount = await render(undefined, {isOptionBasedFormEditorEnabled: false});
 
