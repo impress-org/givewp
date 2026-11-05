@@ -174,6 +174,24 @@ class CampaignColumnsFormattingTest extends TestCase
     /**
      * @since TBD
      */
+    public function testCampaignWithoutAGoalShowsTheLabeledDash(): void
+    {
+        $campaign = new Campaign(['id' => 5, 'goal' => 0, 'goalType' => CampaignGoalType::AMOUNT()]);
+        $stub = $this->getMockBuilder(CampaignsDataRepository::class)
+            ->onlyMethods(['getGoalData'])
+            ->getMock();
+        $stub->method('getGoalData')->willReturn(['goal' => 0]);
+
+        $cell = $this->columnWithData(new GoalColumn(), $stub)->getCellValue($campaign);
+
+        $this->assertStringContainsString('givewp-list-table-dash', $cell);
+        $this->assertStringContainsString('No goal set', $cell);
+        $this->assertStringNotContainsString('No Goal Set', $cell);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testCountGoalIsNotFormattedAsMoney(): void
     {
         $campaign = new Campaign(['id' => 5, 'goal' => 40, 'goalType' => CampaignGoalType::DONATIONS()]);

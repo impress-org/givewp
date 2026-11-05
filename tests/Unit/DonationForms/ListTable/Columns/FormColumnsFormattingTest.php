@@ -8,6 +8,7 @@ use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\ListTable\Columns\DateCreatedColumn;
 use Give\DonationForms\V2\ListTable\Columns\DonationCountColumn;
 use Give\DonationForms\V2\ListTable\Columns\DonationRevenueColumn;
+use Give\DonationForms\V2\ListTable\Columns\GoalColumn;
 use Give\DonationForms\V2\ListTable\Columns\LevelsColumn;
 use Give\DonationForms\V2\ListTable\Columns\StatusColumn;
 use Give\DonationForms\V2\Models\DonationForm;
@@ -131,6 +132,21 @@ class FormColumnsFormattingTest extends TestCase
 
         $this->assertSame('$0.00', $goal['actualFormatted']);
         $this->assertSame('$' . number_format((float) $goal['goal'], 2), $goal['goalFormatted']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFormWithoutAGoalShowsTheLabeledDash(): void
+    {
+        $form = $this->createSimpleDonationForm();
+        $form->goalSettings->enableDonationGoal = false;
+
+        $cell = (new GoalColumn())->getCellValue($form);
+
+        $this->assertStringContainsString('givewp-list-table-dash', $cell);
+        $this->assertStringContainsString('No goal set', $cell);
+        $this->assertStringNotContainsString('No Goal Set', $cell);
     }
 
     /**

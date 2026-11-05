@@ -8,6 +8,7 @@ use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
 use Give\Framework\ListTable\Views\GoalProgress;
+use Give\Framework\ListTable\Views\Placeholder;
 
 /**
  * @since 2.24.0
@@ -37,6 +38,7 @@ class GoalColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Show a labeled dash when the form has no goal.
      * @since TBD Show a progress ring next to the amount, and a check with "Goal achieved" once the goal is met or the givewp_list_table_goal_progress_achieved_opacity filter returns a value above 0.
      * @since 4.3.0 use DonationFormDataRepository
      * @since 4.2.0 convert goal data to v3 form format
@@ -51,7 +53,7 @@ class GoalColumn extends ModelColumn
     public function getCellValue($model): string
     {
         if (! $model->goalSettings->enableDonationGoal) {
-            return __('No Goal Set', 'give');
+            return Placeholder::dash(__('No goal set', 'give'));
         }
 
         /**

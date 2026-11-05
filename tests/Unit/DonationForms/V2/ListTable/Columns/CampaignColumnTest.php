@@ -45,6 +45,7 @@ class CampaignColumnTest extends TestCase
 
         $this->assertStringContainsString('Spring Drive', $cell);
         $this->assertStringContainsString("id={$campaign->id}", $cell);
+        $this->assertStringStartsWith('<span class="givewp-truncated-text" title="Spring Drive"><a href="', $cell);
     }
 
     /**
@@ -62,7 +63,7 @@ class CampaignColumnTest extends TestCase
 
         $cell = $this->renderCell($form);
 
-        $this->assertSame('Team Ride', $cell);
+        $this->assertSame('<span class="givewp-truncated-text" title="Team Ride">Team Ride</span>', $cell);
         $this->assertStringNotContainsString('<a', $cell);
     }
 
