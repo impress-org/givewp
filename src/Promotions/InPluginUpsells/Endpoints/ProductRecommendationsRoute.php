@@ -84,16 +84,28 @@ class ProductRecommendationsRoute implements RestRoute
     }
 
     /**
+     * @since TBD Return an error when the dismissal was not saved.
      * @since 2.27.1
      *
      * @param WP_REST_Request $request
      *
-     * @return WP_REST_Response
+     * @return WP_REST_Response|WP_Error
      */
     public function handleRequest(WP_REST_Request $request)
     {
-        update_option($request->get_param('option'), time());
+        $option = $request->get_param('option');
 
-        return new WP_REST_Response(['option_updated' => $request->get_param('option')]);
+        update_option($option, time());
+
+        // update_option() also returns false when the value did not change, so check what is stored.
+        if (!get_option($option, false)) {
+            return new WP_Error(
+                'rest_option_update_failed',
+                __('Unable to save recommendation dismissal.', 'give'),
+                ['status' => 500]
+            );
+        }
+
+        return new WP_REST_Response(['option_updated' => $option]);
     }
 }
