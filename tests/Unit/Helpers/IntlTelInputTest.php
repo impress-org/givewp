@@ -78,7 +78,7 @@ final class IntlTelInputTest extends TestCase
             IntlTelInput::getScriptUrl()
         );
         $this->assertSame(
-            GIVE_PLUGIN_URL . 'build/assets/dist/js/intl-tel-input/utils.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/intl-tel-input/utils.js?ver=21.2.4',
             IntlTelInput::getUtilsScriptUrl()
         );
 

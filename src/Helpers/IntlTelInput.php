@@ -33,12 +33,12 @@ class IntlTelInput
     }
 
     /**
-     * @since TBD Serve the file from the plugin's build folder instead of the jsDelivr CDN.
+     * @since TBD Serve the file from the plugin's build folder instead of the jsDelivr CDN, with the library version as a query string.
      * @since 3.9.0
      */
     public static function getUtilsScriptUrl(): string
     {
-        return GIVE_PLUGIN_URL . 'build/assets/dist/js/intl-tel-input/utils.js';
+        return GIVE_PLUGIN_URL . 'build/assets/dist/js/intl-tel-input/utils.js?ver=' . self::VERSION;
     }
 
     /**
