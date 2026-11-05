@@ -1,3 +1,5 @@
+import {readFileSync} from 'fs';
+import {join} from 'path';
 import {act} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
 import type {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
@@ -82,6 +84,23 @@ describe('ListTableNoticeArea', () => {
         );
 
         expect(container.innerHTML).toBe('');
+    });
+
+    it('leaves an empty wrapper, which the styles hide, when its children render nothing', async () => {
+        const RendersNothing = () => null;
+        await act(() =>
+            root.render(
+                <ListTableNoticeArea notices={[]} recommendation={null} onDismissRecommendation={jest.fn()}>
+                    <RendersNothing />
+                </ListTableNoticeArea>
+            )
+        );
+
+        const area = container.querySelector('.givewp-list-table-notice-area') as HTMLElement;
+        expect(area.matches(':empty')).toBe(true);
+
+        const styles = readFileSync(join(__dirname, 'styles.scss'), 'utf8');
+        expect(styles).toMatch(/&:empty\s*\{\s*display:\s*none;/);
     });
 
     it('names the recommendation and says its link opens a new tab', async () => {

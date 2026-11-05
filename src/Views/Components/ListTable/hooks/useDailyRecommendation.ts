@@ -8,7 +8,7 @@ import type {ListTableRecommendations} from '../notices/types';
 /**
  * Today's recommendation for a screen. It is picked once, when the page loads, and stays fixed for
  * the page's life. Dismissing hides it at once and stores the dismissal; no other one appears until
- * the next load.
+ * the next load. If the dismissal cannot be saved, the same recommendation shows again.
  *
  * @since TBD
  */
@@ -27,7 +27,12 @@ export default function useDailyRecommendation(config?: ListTableRecommendations
         }
 
         setIsDismissed(true);
-        void dismissRecommendation(picked.enum, config.apiNonce);
+        void dismissRecommendation(picked.enum, config.apiNonce).then((saved) => {
+            // The dismissal was not saved, so the tip would come back on the next load. Show it again now.
+            if (!saved) {
+                setIsDismissed(false);
+            }
+        });
     }, [picked, config]);
 
     return {recommendation: isDismissed ? null : picked, dismiss};

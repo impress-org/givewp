@@ -8,13 +8,13 @@ import styles from './ListTablePage.module.scss';
 
 /**
  * @since TBD Take the test-mode switch as `testModeToggle`.
- * @since TBD Remove the `banner` slot; it renders in the notice area.
  * @since TBD
  */
 export type ListTablePageHeaderProps = {
     title: string;
     /** The screen's header buttons. */
     children?: ReactNode;
+    banner?: () => ReactNode;
     /** The test-mode switch's badge text and accessible name, on screens that have one. */
     testModeToggle?: TestModeToggle;
     testMode: boolean;
@@ -24,7 +24,7 @@ export type ListTablePageHeaderProps = {
 };
 
 /**
- * The Give part of a list screen above the list: title, header buttons, test-mode toggle
+ * The Give part of a list screen above the list: title, header buttons, banner, test-mode toggle
  * and stat tiles.
  *
  * @since TBD Take the test-mode switch as `testModeToggle`.
@@ -33,6 +33,7 @@ export type ListTablePageHeaderProps = {
 export default function ListTablePageHeader({
     title,
     children,
+    banner,
     testModeToggle,
     testMode,
     onChangeTestMode,
@@ -52,6 +53,7 @@ export default function ListTablePageHeader({
 
             <div className={cx('wp-header-end', 'hidden')} />
 
+            {banner && <section role="banner">{banner()}</section>}
             {testModeToggle && (
                 <div className={styles.filtersRow}>
                     <ToggleSwitch

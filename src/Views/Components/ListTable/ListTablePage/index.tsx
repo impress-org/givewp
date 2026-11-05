@@ -327,6 +327,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                     {!contentMode && (
                         <ListTablePageHeader
                             title={title}
+                            banner={banner}
                             testModeToggle={testModeSwitch}
                             testMode={testMode}
                             onChangeTestMode={setTestMode}
@@ -339,7 +340,6 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
 
                     <div className={styles.pageContent}>
                         {contentMode && children}
-                        {banner?.()}
                         <ListTableNoticeArea
                             notices={notices ?? []}
                             recommendation={recommendation}

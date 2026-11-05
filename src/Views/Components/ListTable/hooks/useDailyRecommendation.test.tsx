@@ -33,7 +33,7 @@ let container: HTMLDivElement;
 let root: Root;
 
 beforeEach(() => {
-    (dismissRecommendation as jest.Mock).mockReset().mockResolvedValue(undefined);
+    (dismissRecommendation as jest.Mock).mockReset().mockResolvedValue(true);
     container = document.createElement('div');
     root = createRoot(container);
 });
@@ -49,7 +49,7 @@ describe('useDailyRecommendation', () => {
         expect(result.recommendation).toBeNull();
     });
 
-    it('picks today\'s one', async () => {
+    it("picks today's one", async () => {
         await act(() => root.render(<Probe value={config} />));
 
         const index = Math.floor(Date.parse('2026-11-02T00:00:00Z') / 86400000) % 3;
@@ -69,5 +69,15 @@ describe('useDailyRecommendation', () => {
         // A re-render with the same props must not bring another one in.
         await act(() => root.render(<Probe value={{...config}} />));
         expect(result.recommendation).toBeNull();
+    });
+
+    it('brings the same one back when storing the dismissal fails', async () => {
+        (dismissRecommendation as jest.Mock).mockResolvedValue(false);
+        await act(() => root.render(<Probe value={config} />));
+        const shown = result.recommendation as RecommendedProductData;
+
+        await act(async () => result.dismiss());
+
+        expect(result.recommendation).toBe(shown);
     });
 });
