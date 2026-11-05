@@ -439,7 +439,7 @@ class Give_HTML_Elements {
 	 * @return string           Categories dropdown.
 	 */
 	public function category_dropdown( $name = 'give_forms_categories', $selected = 0, $args = array() ) {
-		$categories = get_terms( array_merge( wp_parse_args( apply_filters( 'give_forms_category_dropdown', array() ) ), array( 'taxonomy' => 'give_forms_category' ) ) );
+		$categories = get_terms( array_merge( wp_parse_args( apply_filters( 'give_forms_category_dropdown', array() ) ), [ 'taxonomy' => 'give_forms_category' ] ) );
 
 		$options = array();
 
@@ -479,7 +479,7 @@ class Give_HTML_Elements {
 	 * @return string           Tags dropdown.
 	 */
 	public function tags_dropdown( $name = 'give_forms_tags', $selected = 0, $args = array() ) {
-		$tags = get_terms( array_merge( wp_parse_args( apply_filters( 'give_forms_tag_dropdown', array() ) ), array( 'taxonomy' => 'give_forms_tag' ) ) );
+		$tags = get_terms( array_merge( wp_parse_args( apply_filters( 'give_forms_tag_dropdown', array() ) ), [ 'taxonomy' => 'give_forms_tag' ] ) );
 
 		$options = array();
 
