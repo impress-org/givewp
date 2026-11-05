@@ -7,12 +7,11 @@ const mockPageProps = jest.fn();
 
 jest.mock('@givewp/components', () => ({
     ListTableApi: class {},
-    ListTablePage: (props: Record<string, unknown>) => {
+    ListTablePage: (props: {children?: React.ReactNode}) => {
         mockPageProps(props);
-        return null;
+        return <div>{props.children}</div>;
     },
 }));
-jest.mock('@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton', () => () => null);
 jest.mock('@givewp/components/ListTable/BlankSlate', () => () => null);
 jest.mock('./DonorsRowActions', () => ({donorsRowActions: () => null}));
 
@@ -74,6 +73,29 @@ describe('DonorsListTable', () => {
         expect(props.recommendations.options.map((option) => option.enum)).toEqual([
             'givewp_donors_fee_recovery_recommendation_dismissed',
         ]);
+
+        await act(() => root.unmount());
+    });
+
+    it('offers "Switch to Legacy View" in the view menu and not in the header', async () => {
+        window.GiveDonors = {
+            apiNonce: '',
+            apiRoot: '',
+            forms: [],
+            table: {columns: []},
+            adminUrl: '',
+            pluginUrl: '',
+            dismissedRecommendations: [],
+            recurringDonationsEnabled: false,
+        };
+        const {default: DonorsListTable} = await import('./DonorsListTable');
+        const container = document.createElement('div');
+        const root = createRoot(container);
+
+        await act(() => root.render(<DonorsListTable />));
+
+        expect(mockPageProps.mock.calls[0][0].legacyView).toEqual({});
+        expect(container.textContent).not.toContain('Switch to Legacy View');
 
         await act(() => root.unmount());
     });

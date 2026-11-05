@@ -74,8 +74,10 @@
         }
     }
 
+    // Always at the end edge, also when a screen has no filter bar to fill the row.
     &__view-controls {
         flex-shrink: 0;
+        margin-inline-start: auto;
     }
 
     // In the narrow layout the view options get their own row under the filters, at the end edge.

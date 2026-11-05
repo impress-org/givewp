@@ -1,7 +1,6 @@
 @use '../layout/breakpoints' as *;
 
 :global {
-
     :root {
         --give-primary-color: #86b785;
     }
@@ -201,14 +200,6 @@ ul[role='document'] + .flexRow {
     padding: 0.5rem 1rem;
 }
 
-.buttonSecondary:is(:global(.button)) {
-    background-color: #fff;
-
-    &:hover {
-        background-color: #f6f7f7;
-    }
-}
-
 .addCampaignFormButton {
     $depth: 0px 1px 0px rgba(0, 0, 0, 0.25);
 
@@ -245,7 +236,7 @@ ul[role='document'] + .flexRow {
 
     &:focus {
         box-shadow: $depth;
-        outline: 0.125rem solid #2271B1;
+        outline: 0.125rem solid #2271b1;
         outline-offset: 0.25em;
     }
 }

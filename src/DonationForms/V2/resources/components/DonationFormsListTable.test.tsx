@@ -7,17 +7,20 @@ const mockPageProps = jest.fn();
 
 jest.mock('@givewp/components', () => ({
     ListTableApi: class {},
-    ListTablePage: (props: Record<string, unknown>) => {
+    ListTablePage: (props: {children?: React.ReactNode}) => {
         mockPageProps(props);
-        return null;
+        return <div>{props.children}</div>;
     },
 }));
-jest.mock('@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton', () => () => null);
 jest.mock('@givewp/components/ListTable/BlankSlate', () => () => null);
 jest.mock('./DonationFormsRowActions', () => ({useDonationFormsRowActions: () => []}));
 jest.mock('./AddCampaignFormModal', () => () => null);
 jest.mock('./UpgradedFormTooltip', () => () => null);
-jest.mock('./Onboarding', () => ({__esModule: true, default: () => null, OnboardingContext: require('react').createContext([])}));
+jest.mock('./Onboarding', () => ({
+    __esModule: true,
+    default: () => null,
+    OnboardingContext: require('react').createContext([]),
+}));
 jest.mock('@givewp/components/AdminUI/Icons', () => ({CubeIcon: () => null}));
 jest.mock('@wordpress/api-fetch', () => ({__esModule: true, default: jest.fn(() => Promise.resolve())}));
 
@@ -47,10 +50,12 @@ const settings = {
 describe('DonationFormsListTable', () => {
     afterEach(() => mockPageProps.mockClear());
 
-    const render = async (campaignId?: number) => {
-        window.GiveDonationForms = {...settings};
+    let container: HTMLDivElement;
+
+    const render = async (campaignId?: number, overrides: Partial<typeof settings> = {}) => {
+        window.GiveDonationForms = {...settings, ...overrides};
         const {default: DonationFormsListTable} = await import('./DonationFormsListTable');
-        const container = document.createElement('div');
+        container = document.createElement('div');
         const root = createRoot(container);
         await act(() => root.render(<DonationFormsListTable campaignId={campaignId} />));
         return () => act(() => root.unmount());
@@ -77,6 +82,51 @@ describe('DonationFormsListTable', () => {
         const unmount = await render();
 
         expect(mockPageProps.mock.calls[0][0].notices ?? []).toEqual([]);
+
+        await unmount();
+    });
+
+    it('offers "Switch to Legacy View" in the view menu when the option-based editor is on', async () => {
+        const unmount = await render(undefined, {isOptionBasedFormEditorEnabled: true, adminUrl: '/wp-admin/'});
+
+        const {legacyView} = mockPageProps.mock.calls[0][0];
+        expect(typeof legacyView.onSwitched).toBe('function');
+        expect(container.textContent).not.toContain('Switch to Legacy View');
+
+        await unmount();
+    });
+
+    it('goes to the legacy Forms list after the switch', async () => {
+        const unmount = await render(undefined, {isOptionBasedFormEditorEnabled: true, adminUrl: '/wp-admin/'});
+        const {legacyView} = mockPageProps.mock.calls[0][0];
+
+        // jsdom cannot navigate, so swap the location for a plain object that records the address.
+        const originalLocation = window.location;
+        Object.defineProperty(window, 'location', {configurable: true, value: {href: ''}});
+
+        try {
+            legacyView.onSwitched();
+
+            expect(window.location.href).toBe('/wp-admin/edit.php?post_type=give_forms');
+        } finally {
+            Object.defineProperty(window, 'location', {configurable: true, value: originalLocation});
+            await unmount();
+        }
+    });
+
+    it('offers no "Switch to Legacy View" when the option-based editor is off', async () => {
+        const unmount = await render(undefined, {isOptionBasedFormEditorEnabled: false});
+
+        expect(mockPageProps.mock.calls[0][0].legacyView).toBeUndefined();
+
+        await unmount();
+    });
+
+    it('offers no "Switch to Legacy View" in a campaign\'s Forms tab', async () => {
+        const unmount = await render(5, {isOptionBasedFormEditorEnabled: true});
+
+        expect(mockPageProps.mock.calls[0][0].legacyView).toBeUndefined();
+        expect(container.textContent).not.toContain('Switch to Legacy View');
 
         await unmount();
     });

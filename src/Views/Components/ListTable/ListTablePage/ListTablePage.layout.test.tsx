@@ -290,3 +290,59 @@ describe('ListTablePage narrow layout', () => {
         expect(viewOptions?.closest('.givewp-list-table__filter-row')).toBeNull();
     });
 });
+
+describe('ListTablePage legacy view menu', () => {
+    const menuButton = () => container.querySelector<HTMLButtonElement>('button[aria-label="More view options"]');
+    const legacyItem = () =>
+        Array.from(document.querySelectorAll<HTMLElement>('[role="menuitem"]')).find(
+            (item) => item.textContent?.trim() === 'Switch to Legacy View'
+        );
+
+    it('offers no view menu without legacyView', async () => {
+        await setNarrow(false, props);
+
+        expect(menuButton()).toBeNull();
+    });
+
+    it.each([false, true])('puts the menu after the view options (narrow: %s)', async (isNarrow) => {
+        await setNarrow(isNarrow, {...cardProps, legacyView: {}});
+
+        const viewOptions = container.querySelector('button[aria-label="View options"]');
+
+        expect(menuButton()).not.toBeNull();
+        expect(menuButton()?.closest('.givewp-list-table__view-controls')).not.toBeNull();
+        expect(follows(viewOptions, menuButton())).toBe(true);
+    });
+
+    it('never puts "Switch to Legacy View" in the header', async () => {
+        await setNarrow(false, {...props, legacyView: {}});
+
+        expect(container.querySelector('header')?.textContent).not.toContain('Switch to Legacy View');
+    });
+
+    it('saves the legacy view choice through the list endpoint, then calls onSwitched', async () => {
+        const onSwitched = jest.fn();
+        const fetchMock = jest.fn(() => Promise.resolve({ok: true, json: () => Promise.resolve({})}));
+        const originalFetch = globalThis.fetch;
+        globalThis.fetch = fetchMock as unknown as typeof fetch;
+
+        try {
+            await setNarrow(false, {
+                ...props,
+                legacyView: {ariaLabel: 'Switch to the legacy donations table view', onSwitched},
+            });
+            await act(async () => menuButton()?.click());
+
+            expect(legacyItem()?.getAttribute('aria-label')).toBe('Switch to the legacy donations table view');
+
+            await act(async () => legacyItem()?.click());
+
+            const url = new URL((fetchMock.mock.calls[0] as unknown as [string])[0]);
+            expect(url.pathname).toBe('/wp-json/give-api/v2/admin/donations/view');
+            expect(url.searchParams.get('isLegacy')).toBe('1');
+            expect(onSwitched).toHaveBeenCalledTimes(1);
+        } finally {
+            globalThis.fetch = originalFetch;
+        }
+    });
+});
