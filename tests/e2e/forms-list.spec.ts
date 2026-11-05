@@ -2,8 +2,20 @@ import {expect, Locator, Page, test} from '@wordpress/e2e-test-utils-playwright'
 import {chooseOption, openOptions} from './utils/async-select';
 import {createCampaignWithForm} from './utils/campaign';
 import {createStandaloneForm} from './utils/standalone-form';
-import {expectListMounts, listRows, listTable, rowWithText, runRowAction} from './utils/list-table';
+import {
+    expectLastColumnReachable,
+    expectListMounts,
+    expectNoBrowserDialogs,
+    expectStacksOnNarrowScreens,
+    listRows,
+    listTable,
+    rowById,
+    rowWithText,
+    runRowAction,
+    visitList,
+} from './utils/list-table';
 import {isLayoutWrite, resetLayout} from './utils/user';
+import {wp} from './utils/wp-cli';
 
 /**
  * Moving a form between campaigns, from the Forms list and from a campaign's Forms tab.
@@ -206,7 +218,8 @@ test.describe('Campaign Forms tab', () => {
 
         // A page size change is stored as the tab's layout, not as the standalone Forms list's.
         const stored = page.waitForResponse(
-            (response) => response.url().includes('list-table-layouts/campaign-forms') && isLayoutWrite(response.request())
+            (response) =>
+                response.url().includes('list-table-layouts/campaign-forms') && isLayoutWrite(response.request())
         );
         await listTable(page).getByRole('button', {name: 'View options', exact: true}).click();
         await page.getByRole('radio', {name: '10', exact: true}).click();
@@ -219,6 +232,72 @@ test.describe('Campaign Forms tab', () => {
         expect(params.get('id')).toBe(String(campaign.campaignId));
         expect(params.get('tab')).toBe('forms');
         expect(Array.from(params.keys()).filter((key) => key.startsWith('give-'))).toEqual([]);
+    });
+});
+
+test.describe('Forms list on wide and narrow screens', () => {
+    expectNoBrowserDialogs();
+
+    test('the last column is reachable at 1024 px', async ({page, admin, requestUtils}) => {
+        await resetLayout(requestUtils, 'donation-forms');
+        await createCampaignWithForm(requestUtils);
+
+        await expectLastColumnReachable(page, admin, FORMS_LIST);
+    });
+
+    test('stacks as cards at 782 px and 375 px, with no page overflow', async ({page, admin, requestUtils}) => {
+        await createCampaignWithForm(requestUtils);
+
+        await expectStacksOnNarrowScreens(page, admin, requestUtils, {
+            query: FORMS_LIST,
+            key: 'donation-forms',
+            hasRecords: true,
+        });
+    });
+
+    test('at 1440 px: names on two lines, dash for no goal, pill on the title line', async ({
+        page,
+        admin,
+        requestUtils,
+    }) => {
+        await resetLayout(requestUtils, 'donation-forms');
+
+        const longName = `E2E campaign with a long name ${Date.now()}`.padEnd(40, 'x').slice(0, 40);
+        const named = await createCampaignWithForm(requestUtils, {title: longName});
+        const noGoal = await createCampaignWithForm(requestUtils);
+        wp(
+            'eval',
+            `$form = \\Give\\DonationForms\\Models\\DonationForm::find(${noGoal.formId});
+            $form->settings->enableDonationGoal = false;
+            $form->save();`
+        );
+
+        await page.setViewportSize({width: 1440, height: 900});
+        await visitList(page, admin, FORMS_LIST);
+
+        // The campaign name wraps to two lines at most.
+        const name = rowById(page, named.formId).locator('.givewp-truncated-text');
+        await expect(name).toBeVisible();
+        const lines = await name.evaluate((element) => {
+            const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
+
+            return Math.round(element.getBoundingClientRect().height / lineHeight);
+        });
+        expect(lines).toBeLessThanOrEqual(2);
+        await expect(name).toHaveAttribute('title', longName);
+
+        // No goal: a dash, named for screen readers, and never the old "No Goal Set" text.
+        const noGoalRow = rowById(page, noGoal.formId);
+        await expect(noGoalRow.locator('.givewp-list-table-dash')).toContainText('No goal set');
+        await expect(listTable(page)).not.toContainText('No Goal Set');
+
+        // The "Default" pill flows on the title line rather than on a line of its own.
+        const title = rowById(page, named.formId).locator('.interweave').first();
+        const pill = rowById(page, named.formId).locator('.givewp-default-form-pill');
+        await expect(pill).toBeVisible();
+        const titleBox = (await title.boundingBox())!;
+        const pillBox = (await pill.boundingBox())!;
+        expect(pillBox.y).toBeLessThan(titleBox.y + titleBox.height);
     });
 });
 

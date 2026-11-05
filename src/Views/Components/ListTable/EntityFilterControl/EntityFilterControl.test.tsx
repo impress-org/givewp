@@ -74,7 +74,7 @@ describe('EntityFilterControl', () => {
 
         const status = container.querySelector('[role="status"]')!;
         expect(status.textContent).toContain('Loading');
-        expect(status.querySelectorAll('.givewp-skeleton').length).toBeGreaterThan(0);
+        expect(status.querySelectorAll('.givewp-skeleton')).toHaveLength(2);
         expect(container.querySelector('.components-spinner')).toBeNull();
         const search = container.querySelector<HTMLInputElement>('input[type="search"]')!;
         expect(search.disabled).toBe(false);

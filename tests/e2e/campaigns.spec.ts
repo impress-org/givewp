@@ -1,17 +1,25 @@
 import {expect, test} from '@wordpress/e2e-test-utils-playwright';
 import {donationForm, expectReceipt, fillDonorDetails, payWithTestGateway, waitForForm} from './utils/donation-form';
 import {createCampaignWithForm} from './utils/campaign';
+import {createDonation} from './utils/donation';
 import {
     chip,
+    expectCell,
     expectListMounts,
     expectNoBrowserDialogs,
+    expectStacksOnNarrowScreens,
     filterBar,
     listRows,
+    listTable,
+    MONEY,
     nextListRequest,
     popover,
+    rowById,
+    selectionBar,
     visitList,
 } from './utils/list-table';
-import {resetLayout} from './utils/user';
+import {resetLayout, signedInAdminId} from './utils/user';
+import {saveUserMeta, wp} from './utils/wp-cli';
 
 const CAMPAIGNS = 'post_type=give_forms&page=give-campaigns';
 const CAMPAIGNS_REQUEST = /givewp\/v3\/campaigns\/list-table\?/;
@@ -149,6 +157,95 @@ test.describe('Campaign Forms tab filters', () => {
         await expect(chip(page, 'Status')).toHaveText('Status');
         await expect(listRows(page)).toHaveCount(Math.min(initial, 30));
         await expect(page.getByText(/match your search or filters/)).toHaveCount(0);
+    });
+});
+
+test.describe('Campaigns list money', () => {
+    test.use({locale: 'pt-BR'});
+
+    test('writes revenue and goal in the site format in a pt-BR browser', async ({page, admin, requestUtils}) => {
+        expect(wp('eval', 'echo give_get_currency();'), 'This test expects a site in US dollars').toBe('USD');
+        // A stored layout can reorder or hide the columns read below.
+        await resetLayout(requestUtils, 'campaigns');
+
+        const campaign = await createCampaignWithForm(requestUtils);
+        createDonation(campaign.formId);
+
+        await visitList(page, admin, CAMPAIGNS);
+        const campaignRow = rowById(page, campaign.campaignId);
+        await expectCell(campaignRow, 'Revenue', MONEY);
+        await expectCell(campaignRow, 'Goal', /^\$[\d,]+\.\d{2} of \$[\d,]+\.\d{2}/);
+    });
+});
+
+test.describe('Campaigns list notice', () => {
+    expectNoBrowserDialogs();
+
+    let restoreNotice: () => void = () => undefined;
+
+    test.beforeEach(async ({requestUtils}) => {
+        // The tip's dismissal is stored on the signed-in admin; clear it so the tip shows, and put it back after.
+        const adminId = await signedInAdminId(requestUtils);
+        restoreNotice = saveUserMeta(adminId, 'givewp_campaign_listtable_notice');
+        wp('eval', `delete_user_meta(${adminId}, 'givewp_campaign_listtable_notice');`);
+    });
+
+    test.afterEach(() => {
+        restoreNotice();
+    });
+
+    test('the tip leaves select-all, bulk actions and the first title usable', async ({page, admin, requestUtils}) => {
+        await resetLayout(requestUtils, 'campaigns');
+
+        const first = await createCampaignWithForm(requestUtils);
+        await createCampaignWithForm(requestUtils);
+
+        await visitList(page, admin, CAMPAIGNS);
+
+        const tip = page.getByRole('group', {name: 'Campaign List'});
+        await expect(tip).toBeVisible();
+
+        // A plain click fails when something covers the target, so each click proves it is reachable.
+        await listTable(page).getByRole('checkbox', {name: 'Select all'}).first().click();
+        await expect(selectionBar(page)).toBeVisible();
+
+        await selectionBar(page).getByRole('button', {name: 'Merge'}).click();
+        await expect(page.getByRole('dialog')).toBeVisible();
+        await page.keyboard.press('Escape');
+        await expect(page.getByRole('dialog')).toHaveCount(0);
+
+        await listTable(page).getByRole('checkbox', {name: 'Deselect all'}).first().click();
+        await expect(tip).toBeVisible();
+
+        await rowById(page, first.campaignId).getByRole('link', {name: first.title}).first().click();
+        await expect(page).toHaveURL(new RegExp(`id=${first.campaignId}`));
+    });
+});
+
+test.describe('Campaigns list on narrow screens', () => {
+    expectNoBrowserDialogs();
+
+    test('the list and the Forms tab stack as cards at 782 px and 375 px', async ({page, admin, requestUtils}) => {
+        const campaign = await createCampaignWithForm(requestUtils);
+        createDonation(campaign.formId);
+
+        await expectStacksOnNarrowScreens(page, admin, requestUtils, {
+            query: CAMPAIGNS,
+            key: 'campaigns',
+            hasRecords: true,
+        });
+
+        /*
+         * `pageFits: false` checks only the list area. The campaign details page header (shared by every
+         * details page, outside the list shell) keeps the campaign title and status badge on one line,
+         * which is wider than 375 px for a long title.
+         */
+        await expectStacksOnNarrowScreens(page, admin, requestUtils, {
+            query: `${CAMPAIGNS}&id=${campaign.campaignId}&tab=forms`,
+            key: 'campaign-forms',
+            hasRecords: true,
+            pageFits: false,
+        });
     });
 });
 

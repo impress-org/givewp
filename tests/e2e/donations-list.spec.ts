@@ -4,23 +4,29 @@ import {createCampaignWithForm} from './utils/campaign';
 import {createDonation, SEEDED_FIRST_NAME, SEEDED_LAST_NAME} from './utils/donation';
 import {failedCalls, watchRestCalls} from './utils/rest';
 import {createStandaloneForm} from './utils/standalone-form';
-import {wp} from './utils/wp-cli';
+import {isPluginActive, saveOptions, wp} from './utils/wp-cli';
 import {
     addFilter,
     allRecords,
     applyFilter,
     chip,
+    DATE_TIME,
     dayOfLastMonth,
+    expectCell,
     expectListMounts,
     expectNoBrowserDialogs,
+    expectStacksOnNarrowScreens,
     filterBar,
     listRows,
     listTable,
+    MONEY,
     nextListRequest,
     popover,
     rowById,
     selectionBar,
     setTestMode,
+    topOf,
+    useUsDateFormats,
     visitList,
 } from './utils/list-table';
 import {adminInNewBrowser, deleteUser, isLayoutWrite, resetLayout, signInNewUser} from './utils/user';
@@ -740,6 +746,205 @@ test.describe('Donations list filters', () => {
 
         // The search term never goes in the address.
         expect(page.url()).not.toContain(`search=${middle}`);
+    });
+});
+
+test.describe('Donations list money and dates', () => {
+    test.use({locale: 'pt-BR'});
+    useUsDateFormats();
+
+    test('writes money and dates in the site format in a pt-BR browser', async ({page, admin, requestUtils}) => {
+        expect(wp('eval', 'echo give_get_currency();'), 'This test expects a site in US dollars').toBe('USD');
+        // A stored layout can reorder or hide the columns read below.
+        await resetLayout(requestUtils, 'donations');
+
+        const donationId = createDonation((await createCampaignWithForm(requestUtils)).formId);
+
+        // The list request no longer carries the browser's language for the server to format with.
+        const request = page.waitForRequest(DONATIONS_REQUEST);
+        await visitList(page, admin, DONATIONS_LIST);
+        expect(new URL((await request).url()).searchParams.has('locale')).toBe(false);
+
+        const donation = rowById(page, donationId);
+        await expectCell(donation, 'Amount', MONEY);
+        await expectCell(donation, 'Date', DATE_TIME);
+    });
+});
+
+test.describe('Donations list notices', () => {
+    expectNoBrowserDialogs();
+
+    const DISMISSALS = [
+        'givewp_donations_recurring_recommendation_dismissed',
+        'givewp_donations_fee_recovery_recommendation_dismissed',
+        'givewp_donations_designated_funds_recommendation_dismissed',
+    ];
+    let restoreDismissals: () => void = () => undefined;
+
+    test.beforeEach(() => {
+        // Recommendation dismissals are stored per site; clear them so today's tip shows, and put them back after.
+        restoreDismissals = saveOptions(...DISMISSALS);
+        wp('option', 'delete', ...DISMISSALS);
+    });
+
+    test.afterEach(() => {
+        restoreDismissals();
+    });
+
+    test('the recommendation is a notice above the table and the first row is a record', async ({
+        page,
+        admin,
+        requestUtils,
+    }) => {
+        test.skip(
+            isPluginActive('give-recurring') && isPluginActive('give-fee-recovery') && isPluginActive('give-funds'),
+            'Every recommended add-on is active, so there is no tip to show'
+        );
+
+        createDonation((await createCampaignWithForm(requestUtils)).formId);
+
+        const texts: string[] = [];
+
+        for (let load = 0; load < 5; load++) {
+            await visitList(page, admin, DONATIONS_LIST);
+
+            const tip = page.getByRole('group', {name: 'Pro tip'});
+            await expect(tip).toBeVisible();
+            texts.push(await tip.innerText());
+
+            // Above the table, never a row of it.
+            const tipBox = await tip.boundingBox();
+            expect(tipBox!.y + tipBox!.height).toBeLessThanOrEqual(await topOf(listRows(page).first()));
+            await expect(listTable(page).locator('.dataviews-view-table tbody').getByRole('group')).toHaveCount(0);
+            await expect(listRows(page).first().locator('.idBadge')).toHaveCount(1);
+        }
+
+        // One tip a day: every load shows the same one.
+        expect(new Set(texts).size).toBe(1);
+    });
+});
+
+test.describe('Donations list stat tiles', () => {
+    expectNoBrowserDialogs();
+
+    test.beforeEach(async ({requestUtils}) => {
+        await resetLayout(requestUtils, 'donations');
+    });
+
+    test('tiles stay mounted, filter and show their pressed state', async ({page, admin, requestUtils}) => {
+        const donationId = createDonation((await createCampaignWithForm(requestUtils)).formId);
+
+        await visitList(page, admin, DONATIONS_LIST);
+
+        const tiles = page.getByRole('region', {name: 'Donations statistics'});
+        await expect(tiles.locator('.givewp-stat-tile__value').first()).toBeVisible();
+        const firstTile = await tiles.locator('.givewp-stat-tile').first().elementHandle();
+
+        // A bulk action reloads the list and the numbers; the tiles must not unmount meanwhile.
+        await rowById(page, donationId).getByRole('checkbox').check();
+        await selectionBar(page).getByRole('button', {name: 'Set status'}).click();
+        const dialog = page.getByRole('dialog', {name: 'Set status'});
+        await dialog.getByLabel('Status').selectOption({label: 'Pending'});
+        const reloaded = page.waitForResponse(/give-api\/v2\/admin\/donations\/stats/);
+        await dialog.getByRole('button', {name: 'Set status'}).click();
+        await reloaded;
+
+        expect(await firstTile!.evaluate((element) => element.isConnected)).toBe(true);
+        await expect(tiles.locator('.givewp-skeleton')).toHaveCount(0);
+
+        const recurring = await page.evaluate(() =>
+            Boolean(
+                (window as {GiveDonations?: {recurringDonationsEnabled?: boolean}}).GiveDonations
+                    ?.recurringDonationsEnabled
+            )
+        );
+
+        if (!recurring) {
+            // Without recurring giving there is no Donation type filter: the Recurring tile is an upgrade, not a button.
+            const upgrade = tiles.locator('.givewp-stat-tile', {hasText: 'Recurring Donations'});
+            await expect(upgrade.getByRole('link', {name: 'Upgrade'})).toBeVisible();
+            await expect(tiles.getByRole('button')).toHaveCount(0);
+            test.info().annotations.push({
+                type: 'skipped part',
+                description: 'Tile filtering needs Give Recurring, which is not active on this site',
+            });
+
+            return;
+        }
+
+        const oneTime = tiles.getByRole('button', {name: /One-Time Donations/});
+        await expect(oneTime).toHaveAttribute('aria-pressed', 'false');
+        await oneTime.click();
+
+        await expect(oneTime).toHaveAttribute('aria-pressed', 'true');
+        await expect(page.getByRole('group', {name: 'Filters'})).toContainText('Donation type: One-time');
+    });
+});
+
+test.describe('Donations list on narrow screens', () => {
+    expectNoBrowserDialogs();
+
+    test('stacks as cards in order at 782 px and 375 px, with no page overflow', async ({
+        page,
+        admin,
+        requestUtils,
+    }) => {
+        createDonation((await createCampaignWithForm(requestUtils)).formId);
+
+        await expectStacksOnNarrowScreens(page, admin, requestUtils, {
+            query: DONATIONS_LIST,
+            key: 'donations',
+            hasRecords: true,
+        });
+
+        // The stacking order, on the screen that has every part: title, test-mode switch, tiles,
+        // notices, toolbar, then the cards.
+        await page.setViewportSize({width: 782, height: 900});
+        await admin.visitAdminPage('edit.php', DONATIONS_LIST);
+        await expect(listTable(page).locator('.dataviews-view-grid')).toBeVisible({timeout: 20_000});
+
+        const parts = [
+            page.getByRole('heading', {level: 1, name: 'Donations'}),
+            page.getByRole('switch'),
+            page.getByRole('region', {name: 'Donations statistics'}),
+            page.locator('.givewp-list-table-notice-area'),
+            page.getByRole('group', {name: 'Filters'}),
+            listTable(page).locator('.dataviews-view-grid'),
+        ];
+        const tops: number[] = [];
+
+        for (const part of parts) {
+            if ((await part.count()) > 0) {
+                tops.push(await topOf(part.first()));
+            }
+        }
+
+        expect(tops).toEqual([...tops].sort((a, b) => a - b));
+    });
+});
+
+test.describe('Donations list legacy view', () => {
+    expectNoBrowserDialogs();
+
+    test.afterEach(async ({requestUtils}) => {
+        await requestUtils.rest({path: '/give-api/v2/admin/donations/view', params: {isLegacy: 0}});
+    });
+
+    test('Switch to Legacy View lives in the view menu', async ({page, admin, requestUtils}) => {
+        await resetLayout(requestUtils, 'donations');
+        await visitList(page, admin, DONATIONS_LIST);
+
+        // Not in the page header any more.
+        await expect(
+            page.locator('.wrap header, [class*="pageHeader"]').getByText('Switch to Legacy View')
+        ).toHaveCount(0);
+
+        await listTable(page).getByRole('button', {name: 'More view options'}).click();
+        const item = page.getByRole('menuitem', {name: 'Switch to the legacy donations table view'});
+        await expect(item).toBeVisible();
+
+        await Promise.all([page.waitForEvent('load'), item.click()]);
+        await expect(listTable(page)).toHaveCount(0);
     });
 });
 
