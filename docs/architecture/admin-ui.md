@@ -135,6 +135,26 @@ server, with loading, error and "Load more") and `DateRangeFilterControl` (prese
 end day). The hooks `useFilterOptions` and `useFilterOptionLabels` load options and chip names from
 `givewp/v3/list-table-filter-options`. See [list-tables.md](list-tables.md#filters).
 
+The rest of the list page is built from small shared pieces in the same folder, also free to reuse:
+
+- `Skeleton` — the one placeholder block for content that is still loading. It is hidden from
+  screen readers; the component that uses it says "Loading" where that matters. Use it instead of a
+  spinner in the list area (the stock DataViews table keeps its own loading state).
+- `DashPlaceholder` — an empty value: a "—" for sighted users and a label ("No value") for screen
+  readers. Same markup as the PHP `Placeholder::dash()`.
+- `StatTile` and `StatTiles` — one figure and the row of figures above a list, with `loading`,
+  `ready`, `refreshing`, `error` and `upgrade` states. A tile with a filter is a toggle button. See
+  [list-tables.md](list-tables.md#stat-tiles).
+- `ListTableNoticeArea` — the one place for notices above a list, in a fixed order. See
+  [list-tables.md](list-tables.md#notices).
+- `ListTableViewMenu` — the "More view options" (⋮) menu next to the stock view options. Today it
+  holds only "Switch to Legacy View". See [list-tables.md](list-tables.md#switch-to-legacy-view).
+
+`src/Admin/components/Notices` takes three optional props besides `type`, `children` and
+`dismissHandleClick`: `title` (a visible heading that also names the notice as a `group`),
+`ariaLabel` (the name when there is no heading) and `dismissLabel` (the dismiss button's name,
+"Dismiss notice" by default).
+
 Styling uses the design system foundation tokens rather than hardcoded values — see the Styles
 section of [AGENTS.md](../../AGENTS.md).
 

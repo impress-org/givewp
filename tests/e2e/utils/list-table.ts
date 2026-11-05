@@ -1,6 +1,7 @@
 import type {Locator, Page, Response} from '@playwright/test';
 import {Admin, expect, RequestUtils, test} from '@wordpress/e2e-test-utils-playwright';
-import {wp} from './wp-cli';
+import {resetLayout} from './user';
+import {saveOptions, wp} from './wp-cli';
 
 /**
  * Helpers for the admin list screens, which render through `@wordpress/dataviews` with Give's own
@@ -241,4 +242,147 @@ export function dayOfLastMonth(day: number): string {
     return [date.getUTCFullYear(), String(date.getUTCMonth() + 1).padStart(2, '0'), String(day).padStart(2, '0')].join(
         '-'
     );
+}
+
+/**
+ * An amount in US dollars, as the lists write it: `$1,234.56`.
+ */
+export const MONEY = /^\$[\d,]+\.\d{2}$/;
+
+/**
+ * A date and time in the site's `F j, Y` and `g:i a` formats: `March 5, 2026 at 3:07 pm`.
+ */
+export const DATE_TIME = /^[A-Z][a-z]+ \d{1,2}, \d{4} at \d{1,2}:\d{2} (am|pm)$/;
+
+/**
+ * Sets the site's date and time formats to the ones `DATE_TIME` expects, for the tests in the
+ * calling `test.describe`, and puts the old formats back after them.
+ */
+export function useUsDateFormats(): void {
+    let restore: () => void = () => undefined;
+
+    test.beforeAll(() => {
+        restore = saveOptions('date_format', 'time_format');
+        wp('option', 'update', 'date_format', 'F j, Y');
+        wp('option', 'update', 'time_format', 'g:i a');
+    });
+
+    test.afterAll(() => {
+        restore();
+    });
+}
+
+/**
+ * The text of the cell under the column headed `header` in `row`. DataViews gives cells no field
+ * name, so the column is found by its position in the header row. The headers and the cell are read
+ * in one step, because the columns can still change while the stored layout settles.
+ */
+export function cellText(row: Locator, header: string): Promise<string> {
+    return row.evaluate((element, name) => {
+        const headers = Array.from(element.closest('table')?.querySelectorAll('thead th') ?? []).map((cell) =>
+            // The DOM text, not the rendered text: headers are styled in capitals and carry a sort arrow.
+            (cell.textContent ?? '').replace(/[↑↓]/g, '').trim()
+        );
+        const index = headers.indexOf(name);
+
+        if (index < 0) {
+            return `No "${name}" column; the columns are: ${headers.join(', ')}`;
+        }
+
+        return ((element.querySelectorAll('td')[index] as HTMLElement | undefined)?.innerText ?? '').trim();
+    }, header);
+}
+
+/**
+ * Checks the cell under `header` in `row` until it matches `pattern`.
+ */
+export async function expectCell(row: Locator, header: string, pattern: RegExp): Promise<void> {
+    await expect(row).toBeVisible();
+    await expect.poll(() => cellText(row, header), {message: `${header} cell`}).toMatch(pattern);
+}
+
+/**
+ * Whether the page scrolls sideways. Only the list's own scroll container may be wider than the window.
+ */
+export function pageOverflows(page: Page): Promise<boolean> {
+    return page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+}
+
+/**
+ * The top edge of `locator`, in page pixels.
+ */
+export async function topOf(locator: Locator): Promise<number> {
+    const box = await locator.boundingBox();
+
+    expect(box, 'The element should be on the page').not.toBeNull();
+
+    return box!.y;
+}
+
+/**
+ * Checks that the last column of the list can be scrolled into view at 1024 px, with the "more to
+ * the right" shadow shown until then, and that the page itself never scrolls sideways.
+ */
+export async function expectLastColumnReachable(page: Page, admin: Admin, query: string): Promise<void> {
+    await page.setViewportSize({width: 1024, height: 900});
+    await visitList(page, admin, query);
+
+    const root = listTable(page);
+    await expect(root).toHaveClass(/givewp-list-table--more-end/);
+
+    await root.locator('.dataviews-wrapper').evaluate((element) => {
+        element.scrollLeft = element.scrollWidth;
+    });
+
+    await expect(root.locator('.dataviews-view-table thead th').last()).toBeInViewport();
+    await expect(root).not.toHaveClass(/givewp-list-table--more-end/);
+    expect(await pageOverflows(page)).toBe(false);
+}
+
+export type NarrowScreen = {
+    /** The list screen's query string. */
+    query: string;
+    /** The screen's layout key, as the layouts route names it. */
+    key: string;
+    /** Whether the test made records for this screen, so cards must show. Without records it may show a blank slate. */
+    hasRecords: boolean;
+    /** Whether the whole page must fit the window, or only the list area. */
+    pageFits?: boolean;
+};
+
+/**
+ * Checks a list screen at 782 px and at 375 px: one card per record and no table, and nothing
+ * wider than the window. With `pageFits: false` only the list area is checked, for a screen whose
+ * page header is outside the list and may be wider.
+ */
+export async function expectStacksOnNarrowScreens(
+    page: Page,
+    admin: Admin,
+    requestUtils: RequestUtils,
+    {query, key, hasRecords, pageFits = true}: NarrowScreen
+): Promise<void> {
+    for (const width of [782, 375]) {
+        const label = `${key} at ${width} px`;
+
+        await page.setViewportSize({width, height: 900});
+        await resetLayout(requestUtils, key);
+        await admin.visitAdminPage('edit.php', query);
+
+        const list = listTable(page);
+
+        if (hasRecords) {
+            // One card per record, and no table.
+            await expect(list.locator('.dataviews-view-grid'), label).toBeVisible({timeout: 20_000});
+            await expect(list.locator('.dataviews-view-table'), label).toHaveCount(0);
+        } else {
+            await page.waitForLoadState('networkidle');
+        }
+
+        if (pageFits) {
+            expect(await pageOverflows(page), `${label} scrolls sideways`).toBe(false);
+        } else {
+            const right = await list.evaluate((element) => element.getBoundingClientRect().right);
+            expect(right, `${label}: the list is wider than the window`).toBeLessThanOrEqual(width);
+        }
+    }
 }

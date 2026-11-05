@@ -22,9 +22,8 @@
 
     &__status {
         display: flex;
-        align-items: center;
+        flex-direction: column;
         gap: var(--givewp-spacing-2);
-        color: var(--givewp-neutral-500);
     }
 
     &__error {
