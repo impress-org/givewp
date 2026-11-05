@@ -74,6 +74,18 @@ describe('StatTiles', () => {
         expect(container.textContent).toContain('Grow with recurring.');
     });
 
+    it('shows the number, not an upgrade message, when upgrade is false', async () => {
+        // The screens pass `!recurringDonationsEnabled && {...}`, which is false when the add-on is active.
+        const activeConfig: Record<string, StatConfig> = {
+            subscribersCount: {label: 'Subscribers', upgrade: false},
+        };
+
+        await render(<StatTiles config={activeConfig} stats={stats} status="ready" label="Donors statistics" />);
+
+        expect(container.querySelector('.givewp-stat-tile')?.textContent).toBe('Subscribers0');
+        expect(container.querySelector('a')).toBeNull();
+    });
+
     it('shows the error dash in each tile that has a number to show when loading failed', async () => {
         await render(<StatTiles config={config} status="error" label="Donors statistics" />);
 
