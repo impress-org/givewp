@@ -229,11 +229,16 @@ export type LegacyRowActions = (args: LegacyRowActionArgs) => ReactNode;
  * One stat tile of a list screen, keyed in `statsConfig` by the key the stats endpoint sends.
  * The server formats the value, so there is no currency here.
  *
- * @since TBD Move here from `ListTableStats`; remove `currency`; `upgrade` also accepts `false`.
+ * @since TBD Move here from `ListTableStats`; remove `currency`; add `filter`; `upgrade` also accepts `false`.
  * @since 4.10.0
  */
 export type StatConfig = {
     label: string;
+    /**
+     * The list filter this tile toggles. No `value` makes the tile the "Total" of that filter's
+     * group. Ignored when the screen does not declare the filter, and on an `upgrade` tile.
+     */
+    filter?: {filterId: string; value?: string};
     /**
      * Set when the add-on is missing: the tile shows this message and link instead of a number.
      * `false` means the add-on is active, so the screens can pass `!enabled && {...}`.

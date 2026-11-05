@@ -1,4 +1,5 @@
 import type {ReactNode} from 'react';
+import type {View} from '@wordpress/dataviews';
 import cx from 'classnames';
 import {GiveIcon} from '@givewp/components';
 import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
@@ -11,7 +12,7 @@ import styles from './ListTablePage.module.scss';
 /**
  * @since TBD Render the stat tiles whenever `statsConfig` is set, with a status.
  * @since TBD Take the test-mode switch as `testModeToggle`.
- * @since TBD
+ * @since TBD Add `filters`, `availableFilterIds` and `onChangeFilters` for the tiles that filter.
  */
 export type ListTablePageHeaderProps = {
     title: string;
@@ -26,6 +27,12 @@ export type ListTablePageHeaderProps = {
     stats?: ListTableStats;
     /** Where the stats are: the tiles stay mounted in every status. */
     statsStatus?: StatsStatus;
+    /** The view's filters, which press the tiles that stand for them. */
+    filters?: View['filters'];
+    /** The ids of the filters the screen declares. */
+    availableFilterIds?: string[];
+    /** Called with the new filters when a tile is toggled. */
+    onChangeFilters?: (filters: View['filters']) => void;
 };
 
 /**
@@ -34,7 +41,7 @@ export type ListTablePageHeaderProps = {
  *
  * @since TBD Render the stat tiles whenever `statsConfig` is set, with a status.
  * @since TBD Take the test-mode switch as `testModeToggle`.
- * @since TBD
+ * @since TBD Pass the view's filters to the stat tiles, which toggle them.
  */
 export default function ListTablePageHeader({
     title,
@@ -46,6 +53,9 @@ export default function ListTablePageHeader({
     statsConfig,
     stats,
     statsStatus = 'loading',
+    filters,
+    availableFilterIds,
+    onChangeFilters,
 }: ListTablePageHeaderProps) {
     /* translators: %s: the screen's title (for example "Donors") */
     const statsLabel = sprintf(__('%s statistics', 'give'), title);
@@ -79,6 +89,9 @@ export default function ListTablePageHeader({
                     stats={stats}
                     status={statsStatus}
                     label={statsLabel}
+                    filters={filters}
+                    availableFilterIds={availableFilterIds}
+                    onChangeFilters={onChangeFilters}
                 />
             )}
         </>
