@@ -420,7 +420,7 @@ function give_get_host() {
  *
  * @since 4.19.1 Escape output. Add translators comments. Stop dumping the backtrace in the notice.
  */
-function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
+function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Give's deprecation notice helper, called by this name in many legacy files and by add-ons.
 
 	/**
 	 * Fires while give deprecated function call occurs.
@@ -540,7 +540,7 @@ function give_svg_icons( $icon ) {
  * @return mixed
  * @since 1.3
  */
-function modify_nav_menu_meta_box_object( $post_type ) {
+function modify_nav_menu_meta_box_object( $post_type ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- callback on the core nav_menu_meta_box_object filter, registered below by this name; others may remove it by name.
 	if ( isset( $post_type->name ) && $post_type->name == 'give_forms' ) {
 		$post_type->labels->name = esc_html__( 'Donation Forms', 'give' );
 	}
@@ -1635,6 +1635,7 @@ function give_ignore_user_abort() {
 	ignore_user_abort( true );
 
 	if ( ! give_is_func_disabled( 'set_time_limit' )) {
+		// phpcs:ignore Squiz.PHP.DiscouragedFunctions.Discouraged -- long batch tools (exports, recounts, deletes) call this so they do not time out; WordPress has no API to raise the PHP time limit.
 		set_time_limit( 0 );
 	}
 }
@@ -1673,6 +1674,7 @@ function give_get_total_post_type_count( $post_type = '', $args = [] ) {
  */
 function give_maybe_define_constant( $name, $value ) {
 	if ( ! defined( $name ) ) {
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.VariableConstantNameFound -- generic helper; callers pass constants named by caching plugins (DONOTCACHEPAGE, DONOTCACHEOBJECT, DONOTCACHEDB), so the names are fixed.
 		define( $name, $value );
 	}
 }
@@ -1974,6 +1976,7 @@ function give_get_nonce_life() {
 	 *
 	 * @see wp-inlucdes/pluggable.php:wp_nonce_tick
 	 */
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WordPress core nonce_life filter, applied on purpose so Give's nonce lifetime follows the site's setting, as wp_nonce_tick() does.
 	return (int) apply_filters( 'nonce_life', DAY_IN_SECONDS );
 }
 
@@ -2222,6 +2225,7 @@ function give_get_formatted_address( $address = [] ) {
  * @param string $url URL
  *
  * @return string
+ * @since TBD Use wp_parse_url() in place of parse_url().
  * @since 2.2.0
  */
 function give_get_safe_asset_url( $url ) {
@@ -2231,7 +2235,7 @@ function give_get_safe_asset_url( $url ) {
 		return $url;
 	}
 
-	$schema        = parse_url( $url, PHP_URL_SCHEME );
+	$schema        = wp_parse_url( $url, PHP_URL_SCHEME );
 	$schema_length = strlen( $schema ) + 1;
 	$url           = substr( $url, $schema_length );
 

@@ -9,8 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 $give_map_deprecated_actions = give_deprecated_actions();
 
-foreach ( $give_map_deprecated_actions as $new => $old ) {
-	add_action( $new, 'give_deprecated_action_mapping', 10, 4 );
+foreach ( $give_map_deprecated_actions as $give_new_action => $give_old_action ) {
+	add_action( $give_new_action, 'give_deprecated_action_mapping', 10, 4 );
 }
 
 /**
@@ -141,6 +141,7 @@ function give_deprecated_action_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3
 
 	if ( isset( $give_map_deprecated_actions[ $action ] ) ) {
 		if ( has_action( $give_map_deprecated_actions[ $action ] ) ) {
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- fires the OLD action name from give_deprecated_actions() so add-ons still hooked on it keep working; it is a public name and cannot change.
 			do_action( $give_map_deprecated_actions[ $action ], $data, $arg_1, $arg_2, $arg_3 );
 
 			if ( ! defined( 'DOING_AJAX' ) ) {

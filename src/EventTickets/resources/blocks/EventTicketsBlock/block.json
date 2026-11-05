@@ -1,4 +1,5 @@
 {
+    "apiVersion": 3,
     "name": "givewp/event-tickets",
     "title": "Event Tickets",
     "description": "Sell event tickets for your cause",

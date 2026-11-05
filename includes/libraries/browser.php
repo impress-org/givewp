@@ -144,7 +144,7 @@
  *   Removed Netscape checks (matches heavily with firefox & mozilla)
  *
  */
-class Browser {
+class Browser { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound -- vendored Browser detection library (copy modified for EDD); class name stays as upstream.
 	public $_agent = '';
 	public $_browser_name = '';
 	public $_version = '';

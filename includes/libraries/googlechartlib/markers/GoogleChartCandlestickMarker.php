@@ -27,7 +27,7 @@ require_once dirname(__FILE__).'/../GoogleChartMarker.php';
  * @see GoogleChartMarker
  * @see http://code.google.com/apis/chart/docs/chart_params.html#gcharts_candlestick_markers
  */
-class GoogleChartCandlestickMarker extends GoogleChartMarker
+class GoogleChartCandlestickMarker extends GoogleChartMarker // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound -- vendored Google Chart library; class names stay as upstream and are loaded by name.
 {
 	/**
 	 * Compute the parameter value.

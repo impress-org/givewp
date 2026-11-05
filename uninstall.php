@@ -4,6 +4,7 @@
  * Uninstall Give
  *
  * @package     Give
+ * @since       TBD Use give_ names for the loop variables.
  * @since       4.19.1 Delete only the options that start with a GiveWP prefix, prepare SQL with placeholders, and skip DROP TABLE when there are no tables.
  * @since       1.0
  * @copyright   Copyright (c) 2016, GiveWP
@@ -48,7 +49,7 @@ if (give_is_setting_enabled(give_get_option('uninstall_on_delete'))) {
             $give_taxonomies[] = $taxonomy;
         }
 
-        $items = get_posts(
+        $give_items = get_posts(
             [
                 'post_type'   => $post_type,
                 'post_status' => 'any',
@@ -57,9 +58,9 @@ if (give_is_setting_enabled(give_get_option('uninstall_on_delete'))) {
             ]
         );
 
-        if ($items) {
-            foreach ($items as $item) {
-                wp_delete_post($item, true);
+        if ($give_items) {
+            foreach ($give_items as $give_item) {
+                wp_delete_post($give_item, true);
             }
         }
     }
@@ -67,7 +68,7 @@ if (give_is_setting_enabled(give_get_option('uninstall_on_delete'))) {
     // Delete All the Terms & Taxonomies.
     foreach (array_unique(array_filter($give_taxonomies)) as $taxonomy) {
 
-        $terms = $wpdb->get_results(
+        $give_terms = $wpdb->get_results(
             $wpdb->prepare(
                 "
 				SELECT t.*, tt.*
@@ -82,8 +83,8 @@ if (give_is_setting_enabled(give_get_option('uninstall_on_delete'))) {
         );
 
         // Delete Terms.
-        if ($terms) {
-            foreach ($terms as $term) {
+        if ($give_terms) {
+            foreach ($give_terms as $term) {
                 $wpdb->delete($wpdb->term_taxonomy, ['term_taxonomy_id' => $term->term_taxonomy_id]);
                 $wpdb->delete($wpdb->terms, ['term_id' => $term->term_id]);
             }
@@ -95,8 +96,8 @@ if (give_is_setting_enabled(give_get_option('uninstall_on_delete'))) {
 
     // Delete the Plugin Pages.
     $give_created_pages = ['success_page', 'failure_page', 'history_page'];
-    foreach ($give_created_pages as $p) {
-        $page = give_get_option($p, false);
+    foreach ($give_created_pages as $give_page_key) {
+        $page = give_get_option($give_page_key, false);
         if ($page) {
             wp_delete_post($page, true);
         }

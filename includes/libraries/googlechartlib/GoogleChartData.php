@@ -18,7 +18,7 @@
  *
  * Some method won't work for all charts, but won't produce an error.
  */
-class GoogleChartData
+class GoogleChartData // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound -- vendored Google Chart library; class names stay as upstream and are loaded by name.
 {
 	/**
 	 * An array of the values of the data serie.

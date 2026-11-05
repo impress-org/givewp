@@ -61,4 +61,17 @@ class TestGive extends TestCase
 
         $this->assertEquals($plugin['RequiresWP'], $readme['RequiresWP']);
     }
+
+    /**
+     * @since TBD
+     */
+    public function testPluginHeaderDeclaresTheGplLicenseOfTheReadme(): void
+    {
+        $plugin = get_file_data(GIVE_PLUGIN_FILE, ['License' => 'License', 'LicenseURI' => 'License URI']);
+        $readme = get_file_data(trailingslashit(GIVE_PLUGIN_DIR) . 'readme.txt', ['License' => 'License']);
+
+        $this->assertSame('GPLv3 or later', $plugin['License']);
+        $this->assertSame('https://www.gnu.org/licenses/gpl-3.0.html', $plugin['LicenseURI']);
+        $this->assertSame('GPLv3', $readme['License']);
+    }
 }

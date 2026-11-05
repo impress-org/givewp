@@ -26,7 +26,7 @@ require_once dirname(__FILE__).'/../GoogleChartMarker.php';
  *
  * @see http://code.google.com/apis/chart/docs/chart_params.html#gcharts_shape_markers
  */
-class GoogleChartShapeMarker extends GoogleChartMarker
+class GoogleChartShapeMarker extends GoogleChartMarker // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound -- vendored Google Chart library; class names stay as upstream and are loaded by name.
 {
 	const ARROW = 'a';
 	const CROSS = 'c';

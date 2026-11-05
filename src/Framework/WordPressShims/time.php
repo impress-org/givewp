@@ -14,7 +14,7 @@ if (!function_exists('wp_timezone_string')) {
      *
      * @see https://developer.wordpress.org/reference/functions/wp_timezone_string
      */
-    function wp_timezone_string()
+    function wp_timezone_string() // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- WordPress core function, declared only when core lacks it (function_exists() guard above); the name must match core.
     {
         $timezone_string = get_option('timezone_string');
 
@@ -43,7 +43,7 @@ if (!function_exists('wp_timezone')) {
      *
      * @see https://developer.wordpress.org/reference/functions/wp_timezone
      */
-    function wp_timezone()
+    function wp_timezone() // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- WordPress core function, declared only when core lacks it (function_exists() guard above); the name must match core.
     {
         return new DateTimeZone(wp_timezone_string());
     }
@@ -57,7 +57,7 @@ if (!function_exists('current_datetime')) {
      *
      * @see https://developer.wordpress.org/reference/functions/current_datetime
      */
-    function current_datetime()
+    function current_datetime() // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- WordPress core function, declared only when core lacks it (function_exists() guard above); the name must match core.
     {
         return date_create_immutable('now', wp_timezone());
     }

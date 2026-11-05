@@ -110,6 +110,7 @@ class Give_DB_Comments extends Give_DB {
 		$current_comment_data = wp_parse_args( $data, $this->get_column_defaults() );
 
 		// Filter comment content. Filter documented in /wp-includes/comment.php
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WordPress core pre_comment_content filter, applied on purpose so Give comments get the same filtering as core comments.
 		$current_comment_data['comment_content'] = apply_filters( 'pre_comment_content', $current_comment_data['comment_content'] );
 
 		// Strip out backslash for apostrophe and sanitize comment using give_clean.

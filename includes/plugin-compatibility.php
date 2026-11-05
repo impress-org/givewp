@@ -29,6 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_tickera_qr_compatibility() {
 	if ( is_plugin_active( 'tickera-event-ticketing-system/tickera.php' ) ) {
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound -- constant read by the TCPDF library, which Tickera loads from Give's autoloader; the name is fixed by TCPDF.
 		define( 'K_TCPDF_CALLS_IN_HTML', true );
 	}
 }

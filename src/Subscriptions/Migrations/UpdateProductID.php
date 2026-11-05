@@ -44,6 +44,7 @@ class UpdateProductID extends Migration
     }
 
     /**
+     * @since TBD Use a plain string in place of a heredoc for the SQL.
      * @since 4.19.1 Escape exception message.
      * @inheritDoc
      *
@@ -52,13 +53,11 @@ class UpdateProductID extends Migration
     public function run()
     {
         try {
-            $query = <<<SQL
-                UPDATE %s AS subscriptions
-                INNER JOIN %s revenue
-                    ON subscriptions.parent_payment_id = revenue.donation_id
-                SET subscriptions.product_id = revenue.form_id
-                WHERE subscriptions.product_id != revenue.form_id
-            SQL;
+            $query = "    UPDATE %s AS subscriptions
+    INNER JOIN %s revenue
+        ON subscriptions.parent_payment_id = revenue.donation_id
+    SET subscriptions.product_id = revenue.form_id
+    WHERE subscriptions.product_id != revenue.form_id";
 
             DB::query(sprintf(
                 $query,
