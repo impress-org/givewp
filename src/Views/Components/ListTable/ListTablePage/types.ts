@@ -3,6 +3,7 @@ import type {RenderModalProps} from '@wordpress/dataviews';
 import type {StatConfig} from '../ListTableStats/ListTableStats';
 import type ListTableApi from '../api';
 import type {ListTableScreen} from '../state/types';
+import type {ListTableNotice, ListTableRecommendations} from '../notices/types';
 import type {FilterDeclaration, StatusVocabularyEntry} from '../filters/types';
 
 /**
@@ -270,7 +271,15 @@ export interface ListTablePageProps {
     filterSettings?: FilterConfig[];
     paymentMode?: boolean;
     listTableBlankSlate: ReactNode;
+    /**
+     * @deprecated Pass `recommendations`. If given, it renders last in the notice area, in its old wrapper.
+     * @since TBD
+     */
     productRecommendation?: ReactNode;
+    /** @since TBD */
+    notices?: ListTableNotice[];
+    /** @since TBD */
+    recommendations?: ListTableRecommendations;
     columnFilters?: Array<ColumnFilterConfig>;
     banner?: () => ReactNode;
     contentMode?: boolean;

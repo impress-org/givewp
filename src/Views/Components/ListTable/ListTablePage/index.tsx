@@ -6,6 +6,7 @@ import ListTableApi from '../api';
 import DataViewsListTable from '../DataViewsListTable';
 import ListTableEmptyState from '../EmptyStates';
 import ListTableFilters from '../ListTableFilters';
+import ListTableNoticeArea from '../ListTableNoticeArea';
 import ListTableSearch from '../ListTableSearch';
 import ResultCountStatus from '../ResultCountStatus';
 import {isBarFilter} from '../filters/filterKinds';
@@ -37,6 +38,7 @@ import useListTableSelection from '../hooks/useListTableSelection';
 import useListTableQuery from '../hooks/useListTableQuery';
 import useListTableActionNotices from '../hooks/useListTableActionNotices';
 import useListTableActions from '../hooks/useListTableActions';
+import useDailyRecommendation from '../hooks/useDailyRecommendation';
 import ListTablePageHeader from './ListTablePageHeader';
 import LegacyConfirmModal, {LegacyConfirmRequest} from './LegacyConfirmModal';
 import type {
@@ -110,6 +112,8 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             paymentMode,
             listTableBlankSlate,
             productRecommendation,
+            notices,
+            recommendations,
             columnFilters = [],
             banner,
             contentMode = false,
@@ -309,6 +313,8 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             clearSelection,
         });
 
+        const {recommendation, dismiss: dismissRecommendation} = useDailyRecommendation(recommendations);
+
         const showConfirmModal = useCallback(
             (label, confirm, action, type = null, confirmButtonText = __('Confirm', 'give')) =>
                 setLegacyConfirm({label, confirm, action, type, confirmButtonText}),
@@ -334,12 +340,20 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
 
                     <div className={styles.pageContent}>
                         {contentMode && children}
-                        <NotificationPlaceholder type="notice" />
-                        {productRecommendation && (
-                            <table className="givewp-list-table-recommendation">
-                                <tbody>{productRecommendation}</tbody>
-                            </table>
-                        )}
+                        <ListTableNoticeArea
+                            notices={notices ?? []}
+                            recommendation={recommendation}
+                            onDismissRecommendation={dismissRecommendation}
+                            trailing={
+                                productRecommendation && (
+                                    <table className="givewp-list-table-recommendation">
+                                        <tbody>{productRecommendation}</tbody>
+                                    </table>
+                                )
+                            }
+                        >
+                            <NotificationPlaceholder type="notice" />
+                        </ListTableNoticeArea>
                         <DataViewsListTable
                             view={view}
                             onChangeView={onChangeTableView}
