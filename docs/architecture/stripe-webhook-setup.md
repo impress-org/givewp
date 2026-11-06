@@ -116,8 +116,15 @@ admin deletes it.
      events already on the endpoint are kept. Result `updated`. If Stripe refuses the update,
      `IncompleteWebhookEndpoint` is thrown.
 
-The required events are the ten events in `WebhookTarget::REQUIRED_EVENTS` that the Stripe listeners
-in GiveWP and Give Recurring act on.
+The required events are the thirteen events in `WebhookTarget::REQUIRED_EVENTS`. Ten of them are
+events that the Stripe listeners in GiveWP and Give Recurring act on. `payment_intent.requires_action`,
+`payment_intent.processing` and `customer.subscription.paused` have no listener yet; they are
+subscribed in advance so endpoints already send them when their listeners ship. The webhook listener
+answers 200 to event types it does not handle, so Stripe does not retry them.
+
+Adding an event to the list makes every existing endpoint `missing_events`. Nothing adds the event
+automatically: it is added when an admin runs setup again, from the setup modal or the **Add missing
+events** button on the Manage Accounts page. Until then the health email reports the endpoint.
 
 `CheckWebhookEndpointHealth` runs the same list and match steps and returns `healthy`, `missing`,
 `disabled` or `missing_events` without writing.
