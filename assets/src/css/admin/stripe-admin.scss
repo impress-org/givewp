@@ -131,6 +131,20 @@ a.give-stripe-connect-temp-dismiss:active {
 }
 
 // --------------------------------
+// Webhook Setup Modal
+// --------------------------------
+.give-stripe-webhook-setup-modal {
+    .give-modal__description > span {
+        display: block;
+    }
+
+    /* Its top margin collapses with the bottom margin of a results list, so every modal state has the same gap. */
+    .give-stripe-webhook-retry {
+        margin-top: 16px;
+    }
+}
+
+// --------------------------------
 // New Default Modal
 // --------------------------------
 .give-stripe-modal-new-default {
