@@ -59,9 +59,11 @@ jobs:
             # the wrong branch would commit a version bump to it. To accept other prefixes, pass them to
             # the action as a JSON array, e.g. `branch-prefixes: '["release/", "rc/"]'`; see the action's
             # README (its "Branches it refuses" section).
-            # Pinned to the plugin-toolbox commit that merged that check (its PR #8). Switch to @v1 once
-            # plugin-toolbox publishes a release.
-            -   uses: stellarwp/plugin-toolbox/.github/actions/release-prep@cf4fb51f0114341c7cf509d58e802adadb5fdf15
+            # The action also refuses a version the repository has already tagged, so a release branch
+            # prepared twice by mistake, or for a version that already shipped, changes nothing.
+            # Pinned to the plugin-toolbox commit of its PR #12, which adds that check (the branch check
+            # is from its PR #8). Switch to @v1 once plugin-toolbox publishes a release.
+            -   uses: stellarwp/plugin-toolbox/.github/actions/release-prep@696c944137a61d82b8e7cbb0e10c6d5cc91baba7
                 with:
                     branch: ${{ inputs.branch }}
                     version: ${{ inputs.version }}

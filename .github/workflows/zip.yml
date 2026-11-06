@@ -1,13 +1,24 @@
 name: Generate Zip
 
-# Builds the plugin zip with pup, via the shared StellarWP workflow.
+# Builds the plugin zip with pup and names it after the version the checkout holds: the clean
+# `give.<version>.zip` for a production build, `give.<version>-dev-<timestamp>-<hash>.zip` for a QA build,
+# or `-rc-…` / `-beta-…` / `-alpha-…` when asked for a pre-release. The version inside the zipped files
+# is the same string; the checkout is left as it was. The zip goes to the S3 bucket, to Slack when the
+# packaging bot asked for it, and is attached to the run as an artifact.
+#
+# A copy of templates/workflows/zip.yml in stellarwp/plugin-toolbox, through its zip-name and
+# release-zip actions, in place of the reusable workflow in stellarwp/github-actions it called before.
+# Build steps, ignore rules and the version number all come from .puprc - see the pup docs at
+# https://github.com/stellarwp/pup. Node comes from .nvmrc.
 #
 # This replaces generate-zip.yml. Both files can sit side by side during the transition: the packaging
 # bot in stellarwp/jenkins-scripts looks for zip.yml first and only falls back to generate-zip.yml when
 # there isn't one, so adding this file switches the bot over and deleting it switches the bot back.
 #
-# Build steps, ignore rules and the version number all come from .puprc - see the pup docs at
-# https://github.com/stellarwp/pup. Node comes from .nvmrc.
+# The inputs are the interface the bot and the NX1 release dashboard dispatch: `ref` and `production`.
+# `prerelease` and `sequence` name a QA build; `expected_version` refuses a build of the wrong ref.
+#
+# Run it by hand: `gh workflow run zip.yml -f ref=release/4.19.0 -f prerelease=rc`.
 
 on:
     workflow_dispatch:
@@ -17,17 +28,37 @@ on:
                 default: 'develop'
                 required: true
                 type: string
-            # Must stay a choice of yes/no rather than a boolean. The shared workflow compares this
-            # against the string 'yes', and the packaging bot only sends yes/no for choice inputs -
-            # declared as a boolean it would send `true`, which reads as a dev build on a release.
+            # Must stay a choice of yes/no rather than a boolean. The actions compare this against the
+            # string 'yes', and the packaging bot only sends yes/no for choice inputs - declared as a
+            # boolean it would send `true`, which the actions refuse.
             production:
-                description: 'Is this a production build?'
+                description: 'Is this a production build? yes names the zip after the clean version; no adds a pre-release suffix'
                 default: 'no'
                 required: false
                 type: choice
                 options:
                     - 'yes'
                     - 'no'
+            prerelease:
+                description: 'Label of a QA build (production: no). dev names it as before, -dev-<timestamp>-<hash>'
+                default: 'dev'
+                required: false
+                type: choice
+                options:
+                    - dev
+                    - alpha
+                    - beta
+                    - rc
+            sequence:
+                description: 'Number of a QA build numbered by hand, e.g. 2 for -rc-2. Empty uses the commit timestamp and hash'
+                default: ''
+                required: false
+                type: string
+            expected_version:
+                description: 'When set, the version the files have to hold; a different one fails with VERSION_MISMATCH'
+                default: ''
+                required: false
+                type: string
             slack_channel:
                 description: 'Slack channel ID to post to'
                 required: false
@@ -37,36 +68,137 @@ on:
                 required: false
                 type: string
 
+permissions:
+    contents: read
+
+# No concurrency group: two runs of the same commit build the same zip under the same name, and the
+# bucket sync writes the same bytes twice; two pre-release runs are two artifacts, which is the point.
+# Nothing here is written to a branch or a tag.
+
 jobs:
     zip:
-        # The shared workflow only checks out and builds this repo, so the token never needs write access.
-        permissions:
-            contents: read
-        uses: stellarwp/github-actions/.github/workflows/zip.yml@main
-        with:
-            ref: ${{ inputs.ref }}
-            production: ${{ inputs.production }}
-            # GiveWP supports PHP 7.4 and up, so the vendor directory has to be built on 7.4.
-            php_version: '7.4'
-            # pup has no POT generation of its own: `pup i18n` pulls finished translations down from
-            # GlotPress, it does not produce the source POT. Generate it here, which the shared workflow
-            # runs after `pup build` and before `pup package`, so languages/give.pot ends up in the zip.
-            # WP-CLI is already on the PATH by this point - the shared workflow installs it.
-            additional_commands: |
-                php -d xdebug.mode=off "$(which wp)" i18n make-pot "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/languages/give.pot" --exclude="$(cat .distignore | tr "\n" "," | sed 's/,$/ /' | tr " " "\n"),src/**/*.js,*.js.map,blocks/**/*.js"
-            slack_channel: ${{ inputs.slack_channel }}
-            slack_thread: ${{ inputs.slack_thread }}
-        secrets:
-            # The shared workflow only uses this to check out this repository, and GITHUB_TOKEN already
-            # covers that - it's minted per run, scoped to this repo, and expires with the job. A bot PAT
-            # is only needed when the checkout has to reach outside the repo, which is why TEC uses one:
-            # its zip workflow also checks out jenkins-scripts and recurses into the common submodule.
-            # Nothing in GiveWP or any of its add-ons does either. If that ever changes for this repo,
-            # swap this line for a real token.
-            GH_BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            JENKINS_SECRET: ${{ secrets.SLACK_PACKAGING_SECRET }}
-            S3_BUCKET: ${{ secrets.ZIP_S3_BUCKET }}
-            S3_ACCESS_KEY_ID: ${{ secrets.ZIP_S3_ACCESS_KEY_ID }}
-            S3_SECRET_ACCESS_KEY: ${{ secrets.ZIP_S3_SECRET_ACCESS_KEY }}
-            S3_REGION: ${{ secrets.ZIP_S3_REGION }}
-            S3_ENDPOINT: ${{ secrets.ZIP_S3_ENDPOINT }}
+        runs-on: blacksmith-4vcpu-ubuntu-2404
+        env:
+            # The secrets context is not available in a step's `if`, so whether the bucket and Slack are
+            # configured is decided here. Without the secrets the zip is still built and attached as an
+            # artifact; only the upload and the notice are skipped.
+            S3_CONFIGURED: ${{ secrets.ZIP_S3_BUCKET != '' }}
+            SLACK_CONFIGURED: ${{ secrets.SLACK_PACKAGING_SECRET != '' }}
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    ref: ${{ inputs.ref }}
+                    # Nothing here pushes, so the checkout keeps no credentials in .git/config.
+                    persist-credentials: false
+
+            -   uses: actions/setup-node@v7
+                with:
+                    node-version-file: .nvmrc
+                    cache: npm
+
+            # GiveWP supports PHP 7.4 and up, so the vendor directory pup build installs has to be built on 7.4.
+            -   uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '7.4'
+                    extensions: mbstring, intl
+                    coverage: none
+
+            # For the POT file generated after the build, below.
+            -   name: Set up WP-CLI
+                run: |
+                    curl -fsSLO https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+                    chmod +x wp-cli.phar
+                    sudo mv wp-cli.phar /usr/local/bin/wp
+
+            # The name before the build, so the bucket can be asked for it. Pinned to the plugin-toolbox
+            # commit of its PR #20, which adds the two actions. Switch to @v1 once plugin-toolbox publishes
+            # a release.
+            -   uses: stellarwp/plugin-toolbox/.github/actions/zip-name@8054bead231823b57c57bc2709df2323fb755310
+                id: name
+                with:
+                    production: ${{ inputs.production }}
+                    prerelease: ${{ inputs.prerelease }}
+                    sequence: ${{ inputs.sequence }}
+                    expected-version: ${{ inputs.expected_version }}
+
+            # A default QA build is skipped when the bucket already has it, which is what the bot relies on.
+            # An alpha, beta or rc build always builds: the release dashboard links the artifact of the run
+            # itself, and a run that skipped the build would have none. The utility fails the step when the
+            # object is missing, so the outcome is the answer.
+            -   name: Check whether the bucket already has the zip
+                id: s3_zip_exists
+                if: env.S3_CONFIGURED == 'true' && inputs.production == 'no' && steps.name.outputs.prerelease == 'dev'
+                continue-on-error: true
+                uses: the-events-calendar/action-s3-utility@2323d7371bb7c2675361dbaa2892127135c87cfb # main, 2025-11-11
+                env:
+                    S3_BUCKET: ${{ secrets.ZIP_S3_BUCKET }}
+                    S3_ACCESS_KEY_ID: ${{ secrets.ZIP_S3_ACCESS_KEY_ID }}
+                    S3_SECRET_ACCESS_KEY: ${{ secrets.ZIP_S3_SECRET_ACCESS_KEY }}
+                    S3_REGION: ${{ secrets.ZIP_S3_REGION }}
+                    S3_ENDPOINT: ${{ secrets.ZIP_S3_ENDPOINT }}
+                    COMMAND: exists
+                    FILE: ${{ steps.name.outputs.zip-name }}.zip
+
+            -   uses: stellarwp/plugin-toolbox/.github/actions/release-zip@8054bead231823b57c57bc2709df2323fb755310
+                id: zip
+                if: steps.s3_zip_exists.outcome != 'success'
+                with:
+                    version: ${{ steps.name.outputs.version }}
+                    production: ${{ inputs.production }}
+                    # The pup that named the zip packages it: `latest` is resolved once, by zip-name.
+                    pup-version: ${{ steps.name.outputs.pup-release }}
+                    # pup has no POT generation of its own: `pup i18n` pulls finished translations down from
+                    # GlotPress, it does not produce the source POT. Generate it between `pup build` and
+                    # `pup package`, where the reusable workflow ran it: WP-CLI reads the strings of the built
+                    # JavaScript, so it has to run after the build, and languages/give.pot ends up in the zip.
+                    after-build: |
+                        php -d xdebug.mode=off "$(command -v wp)" i18n make-pot "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/languages/give.pot" --exclude="$(cat .distignore | tr "\n" "," | sed 's/,$/ /' | tr " " "\n"),src/**/*.js,*.js.map,blocks/**/*.js"
+
+            -   name: Stage the zip for the bucket
+                if: env.S3_CONFIGURED == 'true' && steps.zip.outcome == 'success'
+                env:
+                    ZIP_PATH: ${{ steps.zip.outputs.zip-path }}
+                run: |
+                    mkdir zip_files
+                    cp "$ZIP_PATH" zip_files
+
+            -   name: Upload the zip to the bucket
+                if: env.S3_CONFIGURED == 'true' && steps.zip.outcome == 'success'
+                uses: the-events-calendar/action-s3-utility@2323d7371bb7c2675361dbaa2892127135c87cfb # main, 2025-11-11
+                with:
+                    args: --acl public-read --follow-symlinks
+                env:
+                    S3_BUCKET: ${{ secrets.ZIP_S3_BUCKET }}
+                    S3_ACCESS_KEY_ID: ${{ secrets.ZIP_S3_ACCESS_KEY_ID }}
+                    S3_SECRET_ACCESS_KEY: ${{ secrets.ZIP_S3_SECRET_ACCESS_KEY }}
+                    S3_REGION: ${{ secrets.ZIP_S3_REGION }}
+                    S3_ENDPOINT: ${{ secrets.ZIP_S3_ENDPOINT }}
+                    COMMAND: sync
+                    SOURCE_DIR: zip_files
+
+            # Also when the bucket already had the zip: the bot asked for a link, and the link is the same.
+            # A notice that fails is a warning on the run, not a failed build.
+            -   name: Tell Slack where the zip is
+                if: env.SLACK_CONFIGURED == 'true' && inputs.slack_channel != '' && inputs.slack_thread != ''
+                continue-on-error: true
+                env:
+                    CHANNEL: ${{ inputs.slack_channel }}
+                    THREAD: ${{ inputs.slack_thread }}
+                    FILE: ${{ steps.name.outputs.zip-name }}.zip
+                    SECRET: ${{ secrets.SLACK_PACKAGING_SECRET }}
+                    RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                run: |
+                    curl -fsS -G https://utility.theeventscalendar.com/slack-message.php \
+                      --data-urlencode "channel=$CHANNEL" \
+                      --data-urlencode "thread=$THREAD" \
+                      --data-urlencode "file=$FILE" \
+                      --data-urlencode "secret=$SECRET" \
+                      --data-urlencode "url=$RUN_URL"
+
+            # The release dashboard's "RC ZIP" link opens this run's page, where the artifact downloads.
+            -   uses: actions/upload-artifact@v7
+                if: steps.zip.outcome == 'success'
+                with:
+                    name: ${{ steps.name.outputs.zip-name }}
+                    path: ${{ steps.zip.outputs.zip-path }}
+                    retention-days: 30
