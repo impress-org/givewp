@@ -8,7 +8,7 @@
  * @var $backgroundSmall string
  * @var $cartIcon string
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 4.11.0
  */
 

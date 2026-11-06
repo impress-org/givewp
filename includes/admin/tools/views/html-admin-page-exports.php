@@ -2,7 +2,7 @@
 /**
  * Admin View: Exports
  *
- * @since TBD Escape output, use gmdate() instead of date(), replace short echo tags, add translators comments, and add a nonce to the core settings export form.
+ * @since 4.19.1 Escape output, use gmdate() instead of date(), replace short echo tags, add translators comments, and add a nonce to the core settings export form.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

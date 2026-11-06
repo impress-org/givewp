@@ -493,7 +493,7 @@ add_action( 'give_register_updates', 'give_show_upgrade_notices' );
  *
  * This function is usually triggered via AJAX
  *
- * @since TBD Verify the nonce.
+ * @since 4.19.1 Verify the nonce.
  * @since 1.0
  * @return void
  */
@@ -535,7 +535,7 @@ add_action( 'wp_ajax_give_trigger_upgrades', 'give_trigger_upgrades' );
  *
  * Standardizes the discrepancies between two metakeys `_give_payment_customer_id` and `_give_payment_donor_id`
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since      1.3.2
  */
 function give_v132_upgrade_give_payment_customer_id() {
@@ -557,7 +557,7 @@ function give_v132_upgrade_give_payment_customer_id() {
  *
  * Reverses the issue where offline donations in "pending" status where inappropriately marked as abandoned
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since      1.3.4
  */
 function give_v134_upgrade_give_offline_status() {
@@ -1234,7 +1234,7 @@ function give_v189_upgrades_levels_post_meta_callback() {
 /**
  * Give version 1.8.9 upgrades
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since      1.8.9
  */
 function give_v189_upgrades() {
@@ -1978,7 +1978,7 @@ function give_v20_upgrades_payment_metadata_callback() {
 /**
  * Move payment and form metadata to new table
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 4.14.0 Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
  * @since  2.0
  * @return void
@@ -2175,7 +2175,7 @@ function give_v20_upgrades_user_address() {
 /**
  * Upgrade logs data.
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since  2.0
  * @return void
  * @global wpdb $wpdb
@@ -2238,7 +2238,7 @@ function give_v201_create_tables() {
 /**
  * Upgrade payment metadata for new metabox settings.
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since  2.0.1
  * @return void
  * @global wpdb $wpdb
@@ -2336,7 +2336,7 @@ function give_v201_upgrades_payment_metadata_callback() {
 /**
  * Move payment and form metadata to new table
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 4.14.0 Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
  * @since  2.0.1
  * @return void
@@ -2428,7 +2428,7 @@ function give_v201_move_metadata_into_new_table_callback() {
 /**
  * Add missing donor.
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since  2.0.1
  * @return void
  */
@@ -2579,7 +2579,7 @@ function give_v203_upgrades() {
 /**
  * Version 2.2.0 automatic updates
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 2.2.0
  */
 function give_v220_upgrades() {
@@ -2670,7 +2670,7 @@ function give_v221_upgrades() {
 /**
  * Version 2.3.0 automatic updates
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 2.3.0
  */
 function give_v230_upgrades() {
@@ -2754,7 +2754,7 @@ function give_v210_verify_form_status_upgrades_callback() {
 /**
  * Upgrade routine for 2.1.3 to delete meta which is not attach to any donation.
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 2.1
  */
 function give_v213_delete_donation_meta_callback() {
@@ -2953,7 +2953,7 @@ function give_v230_add_missing_comment_tables() {
 /**
  * Move donor notes to comment table
  *
- * @since TBD Use gmdate() instead of date().
+ * @since 4.19.1 Use gmdate() instead of date().
  * @since 2.3.0
  */
 function give_v230_move_donor_note_callback() {
@@ -3012,7 +3012,7 @@ function give_v230_move_donor_note_callback() {
 /**
  * Move donation notes to comment table
  *
- * @since TBD Use gmdate() instead of date(), and prepare SQL with placeholders.
+ * @since 4.19.1 Use gmdate() instead of date(), and prepare SQL with placeholders.
  * @since 2.3.0
  */
 function give_v230_move_donation_note_callback() {
@@ -3128,7 +3128,7 @@ function give_v230_move_donation_note_callback() {
 /**
  * Delete donor wall related donor meta data
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 2.3.0
  */
 function give_v230_delete_dw_related_donor_data_callback() {

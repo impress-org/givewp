@@ -2,7 +2,7 @@
 /**
  * Payment confirmation view.
  *
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings.
  * @since 2.7.0
  */
 

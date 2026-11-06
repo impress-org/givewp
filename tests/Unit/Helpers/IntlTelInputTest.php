@@ -6,12 +6,12 @@ use Give\Helpers\IntlTelInput;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.19.1
  */
 final class IntlTelInputTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function tearDown(): void
     {
@@ -25,7 +25,7 @@ final class IntlTelInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testGetHtmlInputEnqueuesAssetsWithVersionAndInlineScript(): void
     {
@@ -49,7 +49,7 @@ final class IntlTelInputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.1
      */
     public function testEachInitializationBlockHasItsOwnScope(): void
     {

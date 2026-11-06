@@ -6,6 +6,77 @@
  */
 class Tests_Process_Donation extends Give_Unit_Test_Case {
 
+	public function test_logged_in_donor_requires_primary_email() {
+		$user_id = self::factory()->user->create( [ 'role' => 'subscriber', 'user_email' => 'wp@example.org' ] );
+		$legacy_donor = new Give_Donor();
+		$legacy_donor->create( [
+			'user_id' => $user_id,
+			'email' => 'primary@example.org',
+			'name' => 'Primary Donor',
+		] );
+		$legacy_donor->add_email( 'additional@example.org' );
+		wp_set_current_user( $user_id );
+
+		try {
+			foreach ( [ 'unused@example.org', 'additional@example.org', 'wp@example.org' ] as $email ) {
+				give_clear_errors();
+				$data = [ 'user_email' => $email ];
+				give_check_logged_in_user_for_existing_email( $data );
+				$this->assertNotEmpty( give_get_errors() );
+			}
+			give_clear_errors();
+			$data = [ 'user_email' => 'PRIMARY@example.org' ];
+			give_check_logged_in_user_for_existing_email( $data );
+			$this->assertEmpty( give_get_errors() );
+			$this->assertSame( $legacy_donor->email, $data['user_email'] );
+			$this->assertSame( $legacy_donor->email, give_get_prefill_form_field_values( 0 )['give_email'] );
+		} finally {
+			wp_set_current_user( 0 );
+			give_clear_errors();
+		}
+	}
+
+	public function test_logged_in_donor_email_field_renders_disabled_with_hidden_value() {
+		$form = Give_Helper_Form::create_multilevel_form();
+		$user_id = self::factory()->user->create( [ 'role' => 'subscriber', 'user_email' => 'wp@example.org' ] );
+		$legacy_donor = new Give_Donor();
+		$legacy_donor->create( [
+			'user_id' => $user_id,
+			'email' => 'primary@example.org',
+			'name' => 'Primary Donor',
+		] );
+		wp_set_current_user( $user_id );
+
+		try {
+			ob_start();
+			give_user_info_fields( $form->ID );
+			$html = ob_get_clean();
+
+			$this->assertStringContainsString( 'readonly="readonly" disabled="disabled"', $html );
+			$this->assertStringContainsString( '<input type="hidden" name="give_email" value="primary@example.org" />', $html );
+		} finally {
+			wp_set_current_user( 0 );
+		}
+	}
+
+	public function test_logged_in_user_without_donor_requires_wordpress_email() {
+		$user_id = self::factory()->user->create( [ 'role' => 'subscriber', 'user_email' => 'wp@example.org' ] );
+		wp_set_current_user( $user_id );
+
+		try {
+			$data = [ 'user_email' => 'unused@example.org' ];
+			give_check_logged_in_user_for_existing_email( $data );
+			$this->assertNotEmpty( give_get_errors() );
+			give_clear_errors();
+			$data = [ 'user_email' => 'wp@example.org' ];
+			give_check_logged_in_user_for_existing_email( $data );
+			$this->assertEmpty( give_get_errors() );
+		} finally {
+			wp_set_current_user( 0 );
+			give_clear_errors();
+		}
+	}
+
 	/**
 	 * Set up tests.
 	 */
@@ -264,6 +335,94 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 		$this->assertEmpty( give_get_errors() );
 		$this->assertTrue( is_user_logged_in() );
 
+	}
+
+	/**
+	 * Checkout registration must not accept an email that already belongs to a guest donor.
+	 *
+	 * @since 4.19.0.2
+	 */
+	public function test_validate_new_user_rejects_existing_donor_primary_email() {
+
+		Give()->donors->add(
+			[
+				'name'    => 'Guest Donor',
+				'email'   => 'guest-donor@example.org',
+				'user_id' => 0,
+			]
+		);
+
+		$_POST = $this->new_user_post( 'guest-donor@example.org' );
+
+		$result = give_donation_form_validate_new_user();
+
+		$this->assertArrayHasKey( 'email_used', give_get_errors() );
+		$this->assertArrayNotHasKey( 'user_email', $result );
+
+		give_clear_errors();
+
+	}
+
+	/**
+	 * Checkout registration must not accept a donor's additional email either.
+	 *
+	 * @since 4.19.0.2
+	 */
+	public function test_validate_new_user_rejects_existing_donor_additional_email() {
+
+		$donor_id = Give()->donors->add(
+			[
+				'name'    => 'Guest Donor',
+				'email'   => 'guest-donor@example.org',
+				'user_id' => 0,
+			]
+		);
+		Give()->donor_meta->add_meta( $donor_id, 'additional_email', 'guest-donor-alt@example.org' );
+
+		$_POST = $this->new_user_post( 'guest-donor-alt@example.org' );
+
+		$result = give_donation_form_validate_new_user();
+
+		$this->assertArrayHasKey( 'email_used', give_get_errors() );
+		$this->assertArrayNotHasKey( 'user_email', $result );
+
+		give_clear_errors();
+
+	}
+
+	/**
+	 * Checkout registration still accepts an email no donor or user has.
+	 *
+	 * @since 4.19.0.2
+	 */
+	public function test_validate_new_user_accepts_unused_email() {
+
+		$_POST = $this->new_user_post( 'first-time-donor@example.org' );
+
+		$result = give_donation_form_validate_new_user();
+
+		$this->assertEmpty( give_get_errors() );
+		$this->assertSame( 'first-time-donor@example.org', $result['user_email'] );
+
+		give_clear_errors();
+
+	}
+
+	/**
+	 * @since 4.19.0.2
+	 */
+	private function new_user_post( $email ) {
+		$form = Give_Helper_Form::create_simple_form();
+
+		return [
+			'give-form-id'                 => $form->ID,
+			'give-form-user-register-hash' => wp_create_nonce( "give_form_create_user_nonce_{$form->ID}" ),
+			'give_first'                   => 'New',
+			'give_last'                    => 'Donor',
+			'give_email'                   => $email,
+			'give_user_pass'               => 'password',
+			'give_user_pass_confirm'       => 'password',
+		];
 	}
 
 }

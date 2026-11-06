@@ -153,7 +153,7 @@ class Give_Email_Setting_Field {
 	/**
 	 * Get notification status setting field.
 	 *
-	 * @since TBD Add translators comments.
+	 * @since 4.19.1 Add translators comments.
 	 * @since  2.0
 	 * @access static
 	 *

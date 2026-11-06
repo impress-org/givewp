@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles the donation form process.
  *
  * @access private
- * @since TBD Use gmdate() instead of date().
+ * @since 4.19.1 Use gmdate() instead of date().
  * @since 4.16.7.2     Reject serialized data in name fields before storing donation data.
  * @since 4.16.6  Bail early when the form ID is not a give_forms post or is a Visual Form Builder (v3) form.
  * @since 3.16.1  Use give_maybe_safe_unserialize() on $user_info data
@@ -301,37 +301,36 @@ function give_check_logged_in_user_for_existing_email( &$valid_data ) {
 
 		$donor = new Give_Donor( get_current_user_id(), true );
 
-		// Bailout: check if wp user is existing donor or not.
+		// If the user does not have a donor record yet, enforce their WordPress user email.
 		if ( ! $donor->id ) {
+			$user = wp_get_current_user();
+			$expected_email = strtolower( $user->user_email );
+			$submitted_email = strtolower( $valid_data['user_email'] );
+
+			if ( $submitted_email !== $expected_email ) {
+				give_set_error(
+					'give-logged-in-user-email-mismatch',
+					__( 'You are logged in and must use your account email address to submit a donation.', 'give' )
+				);
+			}
+
 			return;
 		}
 
 		$submitted_email = strtolower( $valid_data['user_email'] );
+		$primary_email   = strtolower( $donor->email );
 
-		$donor_emails = array_map( 'strtolower', $donor->emails );
-		$email_index  = array_search( $submitted_email, $donor_emails, true );
-
-		// If donor matched with email then return set formatted email from database.
-		if ( false !== $email_index ) {
-			$valid_data['user_email'] = $donor->emails[ $email_index ];
+		// Logged in donor must use their primary email.
+		if ( $submitted_email === $primary_email ) {
+			$valid_data['user_email'] = $donor->email;
 
 			return;
 		}
 
-		// If this email address is not registered with this customer, see if it belongs to any other customer.
-		$found_donor = new Give_Donor( $submitted_email );
-
-		if ( $found_donor->id > 0 ) {
-			give_set_error(
-				'give-customer-email-exists',
-				sprintf(
-					/* translators: 1. Donor Email, 2. Submitted Email */
-					__( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.', 'give' ),
-					$donor->email,
-					$submitted_email
-				)
-			);
-		}
+		give_set_error(
+			'give-donor-primary-email-required',
+			__( 'You are logged in and must use your account primary email address to submit a donation.', 'give' )
+		);
 	}
 }
 
@@ -339,7 +338,7 @@ function give_check_logged_in_user_for_existing_email( &$valid_data ) {
  * Process the checkout login form
  *
  * @access private
- * @since  TBD Unslash and sanitize the login nonce, and read the AJAX flag after the nonce check.
+ * @since  4.19.1 Unslash and sanitize the login nonce, and read the AJAX flag after the nonce check.
  * @since  4.16.7 Require a valid nonce before processing the login form.
  * @since  1.0
  *
@@ -515,7 +514,7 @@ function give_donation_form_has_serialized_fields(array $post_data): bool
 /**
  * Detect spam donation.
  *
- * @since TBD Unslash and sanitize the user agent.
+ * @since 4.19.1 Unslash and sanitize the user agent.
  * @since 1.8.14
  *
  * @return bool|mixed
@@ -958,6 +957,7 @@ function give_donation_form_validate_logged_in_user() {
  * Donate Form Validate New User
  *
  * @access private
+ * @since 4.19.0.2 Validate the email as a new user registration so it cannot claim an existing donor.
  * @since 4.16.6 Flag data as coming from the checkout registration flow.
  * @since  1.0
  *
@@ -989,8 +989,6 @@ function give_donation_form_validate_new_user() {
 		give_set_error( 'invalid_nonce', __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ) );
 	}
 
-	$registering_new_user = false;
-
 	give_donation_form_validate_name_fields( $user_data );
 
 	// Start an empty array to collect valid user data.
@@ -1016,7 +1014,7 @@ function give_donation_form_validate_new_user() {
 	$valid_user_data['user_login'] = $user_data['give_email'];
 
 	// Check if we have an email to verify.
-	if ( give_validate_user_email( $user_data['give_email'], $registering_new_user ) ) {
+	if ( give_validate_user_email( $user_data['give_email'], true ) ) {
 		$valid_user_data['user_email'] = $user_data['give_email'];
 	}
 
@@ -1178,7 +1176,8 @@ function give_donation_form_validate_guest_user() {
  * @param array $user_data User Data.
  *
  * @access  private
- * @since TBD Use gmdate() instead of date().
+ * @since 4.19.1.1 Only give new users a safe donor role.
+ * @since 4.19.1 Use gmdate() instead of date().
  * @since   1.0
  *
  * @return  integer
@@ -1202,7 +1201,7 @@ function give_register_and_login_new_user( $user_data = [] ) {
 			'first_name'      => isset( $user_data['user_first'] ) ? $user_data['user_first'] : '',
 			'last_name'       => isset( $user_data['user_last'] ) ? $user_data['user_last'] : '',
 			'user_registered' => gmdate( 'Y-m-d H:i:s' ),
-			'role'            => give_get_option( 'donor_default_user_role', 'give_donor' ),
+			'role'            => give_get_donor_default_user_role(),
 		],
 		$user_data
 	);
@@ -1247,7 +1246,7 @@ function give_register_and_login_new_user( $user_data = [] ) {
 /**
  * Get Donation Form User
  *
- * @since   TBD Read the AJAX flag from the sanitized post data.
+ * @since   4.19.1 Read the AJAX flag from the sanitized post data.
  * @since   1.0
  * @since 2.17.1 Do not run validation check for ajax request expect donation validation ajax request.
  *

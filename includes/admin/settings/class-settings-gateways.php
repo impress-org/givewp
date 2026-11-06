@@ -4,7 +4,7 @@
  * Give Settings Page/Tab
  *
  * @package     Give
- * @since       TBD Escape output.
+ * @since       4.19.1 Escape output.
  * @since       1.8
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -258,7 +258,7 @@ if (! class_exists('Give_Settings_Gateways')) :
         /**
          * Render Gateway Notice
          *
-         * @since TBD Add translators comments.
+         * @since 4.19.1 Add translators comments.
          * @since 4.2.0 Updated messages removing mentions to Stripe fees
          * @since  2.3.0
          * @access public

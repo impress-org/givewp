@@ -89,7 +89,7 @@ class ScriptLoader
     /**
      * Load admin scripts
      *
-     * @since TBD Add translators comments. Send nonces with the PayPal onboarding requests.
+     * @since 4.19.1 Add translators comments. Send nonces with the PayPal onboarding requests.
      * @since 3.13.0 Add new "keepWebhooksAfterDisconnect" string
      * @since 2.9.0
      */
@@ -198,7 +198,7 @@ EOT;
     /**
      * Load public assets.
      *
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 3.2.0 Get form id from post content if form id is not available.
      * @since 3.2.0 Use EnqueueScript to register and enqueue script.
      * @since 2.32.0 Handle exception if client token is not generated.

@@ -117,7 +117,7 @@ function _give_die_handler() {
  * kills execution of the script using wp_die(). This allows us to then to work
  * with functions using give_die() in the unit tests.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.0
  *
  * @param string $message Message to store with the error.

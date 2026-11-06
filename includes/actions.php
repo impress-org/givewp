@@ -98,7 +98,7 @@ add_action( 'init', 'give_post_actions' );
  * @param  int   $user_id   User ID.
  * @param  array $user_data User Data.
  *
- * @since TBD Add translators comments.
+ * @since 4.19.1 Add translators comments.
  * @since 4.16.6 Only auto-link when registered via the donation-checkout flow.
  * @since  1.7
  *
@@ -162,7 +162,7 @@ add_action( 'give_file_export_complete', 'give_donor_batch_export_complete' );
  *
  * @param int $form_id Donation Form ID.
  *
- * @since TBD Unslash and sanitize the posted price option and donation levels.
+ * @since 4.19.1 Unslash and sanitize the posted price option and donation levels.
  * @since 1.8.9
  *
  * @return void
@@ -225,7 +225,7 @@ add_action( 'give_complete_donation', '_give_save_donor_billing_address', 9999 )
 /**
  * Verify addon dependency before addon update
  *
- * @since TBD Add translators comments.
+ * @since 4.19.1 Add translators comments.
  * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 4.1.0 add bailout for GiveWP to protect it from licensing issues
  * @since 2.1.4

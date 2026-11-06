@@ -109,7 +109,7 @@ class DefaultFormFactory
      *
      * Updates the default primary_color to match the Onboarding Wizard.
      *
-     * @since TBD Add translators comments.
+     * @since 4.19.1 Add translators comments.
      * @since 2.16.2 add new visual appearance settings
      * @since 2.8.0
      * @return array

@@ -256,7 +256,7 @@ class Give_Comment {
 	/**
 	 * Get comments
 	 *
-	 * @since  TBD Document why the query is safe.
+	 * @since  4.19.1 Document why the query is safe.
 	 * @since  2.2.0
 	 * @access public
 	 *
@@ -354,7 +354,7 @@ class Give_Comment {
 	/**
 	 * Remove Give Comments from the wp_count_comments function
 	 *
-	 * @since  TBD Document why the query is safe.
+	 * @since  4.19.1 Document why the query is safe.
 	 * @since  2.2.0
 	 * @access public
 	 *

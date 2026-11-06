@@ -6,7 +6,7 @@
  * @subpackage  Classes/Give_Settings_Email
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings.
  * @since       1.8
  */
 
@@ -43,7 +43,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
         /**
 		 * Render give_currency_code_preview field type
 		 *
-         * @since TBD Number the placeholders, move the outer markup out of a translatable string and add translators comments.
+         * @since 4.19.1 Number the placeholders, move the outer markup out of a translatable string and add translators comments.
 		 * @since 2.33.4 added nonce to give_sendwp_remote_install
 		 * @since  2.3.0
 		 * @access public

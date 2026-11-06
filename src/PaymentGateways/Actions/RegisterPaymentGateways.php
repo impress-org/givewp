@@ -132,7 +132,7 @@ class RegisterPaymentGateways
     }
 
     /**
-     * @since TBD Escape exception message. Guard the posted PayPal order id.
+     * @since 4.19.1 Escape exception message. Guard the posted PayPal order id.
      * @since 4.0.0 updated to support authorize and capture
      * @since 3.2.0 Prevent undefined index notice when getting payPalOrderId from gateway data.
      * @since 2.26.0 Add support for the updated PayPal Commerce gateway data.

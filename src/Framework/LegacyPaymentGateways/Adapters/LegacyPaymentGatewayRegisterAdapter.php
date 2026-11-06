@@ -12,7 +12,7 @@ class LegacyPaymentGatewayRegisterAdapter
      * Run the necessary legacy hooks on our LegacyPaymentGatewayAdapter
      * that prepares data to be sent to each gateway
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.30.0 check for getLegacyFormFieldMarkup before attempting to use
      *
      * @since 2.19.0
