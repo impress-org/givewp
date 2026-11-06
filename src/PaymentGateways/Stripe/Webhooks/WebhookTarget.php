@@ -25,12 +25,18 @@ final class WebhookTarget
     /**
      * The events that the Stripe listeners in GiveWP and Give Recurring handle.
      *
+     * payment_intent.requires_action, payment_intent.processing and customer.subscription.paused have no
+     * listener yet. They are subscribed now so existing endpoints already send them when their listeners
+     * ship. The webhook listener answers 200 to event types it does not handle.
+     *
      * @since TBD
      */
     public const REQUIRED_EVENTS = [
         'checkout.session.completed',
         'payment_intent.succeeded',
         'payment_intent.payment_failed',
+        'payment_intent.requires_action',
+        'payment_intent.processing',
         'charge.refunded',
         'invoice.payment_succeeded',
         'invoice.payment_failed',
@@ -38,6 +44,7 @@ final class WebhookTarget
         'customer.subscription.deleted',
         'customer.subscription.updated',
         'customer.subscription.resumed',
+        'customer.subscription.paused',
     ];
 
     private const LISTENER_ARG = 'give-listener';
