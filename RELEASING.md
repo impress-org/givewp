@@ -132,6 +132,21 @@ is an example to follow.
    (`gh workflow run release-prep.yml -f branch=<branch> -f version=<next>`) and check the
    `Prepare <branch> (<version>)` commit.
 
+For the deploy step, an add-on does not copy core's `release-dashboard-deploy.yml`: its deploy
+goes to GiveWP.com through the shared `givewp-release.yml` in impress-org/givewp-github-actions,
+and that repository has a second reusable workflow next to it,
+[`release-dashboard-deploy.yml`](https://github.com/impress-org/givewp-github-actions/blob/master/.github/workflows/release-dashboard-deploy.yml),
+with the same steps for a release the dashboard deploys (merge, publish the release, build,
+deploy, asset, translations, Slack). The add-on adds a thin caller of it, also named
+`release-dashboard-deploy.yml`, with `workflow_dispatch` inputs `branch` and `version` and
+`secrets: inherit`; impress-org/give-recurring#1256 is the one to copy, with `plugin_slug` and
+`zip_name` changed. Its `release.yml` keeps running on the `release` event for a release
+published by hand, and gets the same `concurrency` group as the caller. Once the caller is on
+the add-on's default branch, point the dashboard's deploy step at it: Releases → Repositories →
+the add-on → Release Actions → Change on "Release — Deploy", pick `release-dashboard-deploy.yml`.
+Until then the dashboard dispatches `release.yml`, and GitHub refuses it: the file has no
+`workflow_dispatch` trigger.
+
 ## Notes
 
 * The release tooling lives in `bin/` and is built on [stellarwp/pup](https://github.com/stellarwp/pup) and [@stellarwp/changelogger](https://github.com/stellarwp/changelogger). Its own tests can be run with `composer run release:test`.
