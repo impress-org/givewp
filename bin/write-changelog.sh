@@ -12,6 +12,12 @@
 # the changelog has to carry that one rather than a version the changelogger
 # would infer from the previous header.
 #
+# Running it again for a version that is already written adds the pending
+# entries to that version's block (the changelogger does this). With --date, the
+# date in that block's header is also changed to the one given, which the
+# changelogger does not do: it keeps the existing date, and writes nothing when
+# no entries are pending.
+#
 # Usage:
 #   bin/write-changelog.sh <version> [--date <date>] [--dry-run]
 #   composer run changelog:write -- 4.16.0
@@ -39,5 +45,22 @@ if [ ! -x "node_modules/.bin/changelogger" ]; then
   exit 1
 fi
 
+# The --date value, when it is a plain YYYY-MM-DD date.
+DATE=
+PREV=
+DRY_RUN=
+for arg in "$@"; do
+  case "$PREV" in --date) DATE="$arg" ;; esac
+  case "$arg" in --date=*) DATE="${arg#--date=}" ;; --dry-run) DRY_RUN=1 ;; esac
+  PREV="$arg"
+done
+case "$DATE" in [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) ;; *) DATE= ;; esac
+
 echo "Writing changelog for $VERSION..."
-exec npx --no-install changelogger write --overwrite-version "$VERSION" "$@"
+npx --no-install changelogger write --overwrite-version "$VERSION" "$@"
+
+if [ -n "$DATE" ] && [ -z "$DRY_RUN" ]; then
+  VERSION="$VERSION" DATE="$DATE" perl -pi -e \
+    's/^= \[\Q$ENV{VERSION}\E\] \d{4}-\d{2}-\d{2} =$/= [$ENV{VERSION}] $ENV{DATE} =/' \
+    readme.txt changelog.txt
+fi
