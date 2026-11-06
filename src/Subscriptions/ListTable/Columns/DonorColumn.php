@@ -38,6 +38,7 @@ class DonorColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Name the link by its visible text, with a fallback for a donor with no name, and escape both.
      * @since 2.24.0
      *
      * @inheritDoc
@@ -51,11 +52,12 @@ class DonorColumn extends ModelColumn
             $model->donor->lastName,
         ]);
 
+        $donorName = trim(implode(' ', $name));
+
         return sprintf(
-            '<a href="%s" aria-label="%s">%s</a>',
-            admin_url("edit.php?post_type=give_forms&page=give-donors&view=overview&id=$model->donorId"),
-            __('View donor information', 'give'),
-            trim(implode(' ', $name))
+            '<a href="%s">%s</a>',
+            esc_url(admin_url("edit.php?post_type=give_forms&page=give-donors&view=overview&id=$model->donorId")),
+            esc_html($donorName !== '' ? $donorName : __('View donor information', 'give'))
         );
     }
 }

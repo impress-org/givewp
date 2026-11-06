@@ -4,6 +4,7 @@ namespace Give\Donors\Actions;
 
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Framework\Database\DB;
+use Give\Framework\ListTable\Actions\RegisterListTableAssets;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 use Give\Helpers\Utils;
@@ -26,7 +27,7 @@ class LoadDonorsListTableAssets
         wp_register_script(
             $handleName,
             GIVE_PLUGIN_URL . 'build/assets/dist/js/give-admin-donors.js',
-            $asset['dependencies'],
+            array_merge([RegisterListTableAssets::HANDLE], $asset['dependencies']),
             $asset['version'],
             true
         );

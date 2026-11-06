@@ -4,6 +4,7 @@ namespace Give\Campaigns\Actions;
 
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ListTable\CampaignsListTable;
+use Give\Framework\ListTable\Actions\RegisterListTableAssets;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 
@@ -28,7 +29,7 @@ class LoadCampaignsListTableAssets
         wp_register_script(
             $handleName,
             GIVE_PLUGIN_URL . 'build/campaignListTable.js',
-            $asset['dependencies'],
+            array_merge([RegisterListTableAssets::HANDLE], $asset['dependencies']),
             $asset['version'],
             true
         );

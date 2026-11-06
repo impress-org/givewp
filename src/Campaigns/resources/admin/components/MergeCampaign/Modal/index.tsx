@@ -5,9 +5,10 @@ import {MergeCampaignModalProps} from '@givewp/campaigns/admin/components/MergeC
 /**
  * Create Campaign Modal component
  *
+ * @since TBD Pass `onMerged` to the form, so the list reloads after a merge.
  * @since 4.0.0
  */
-export default function MergeCampaignModal({isOpen, setOpen, campaigns}: MergeCampaignModalProps) {
+export default function MergeCampaignModal({isOpen, setOpen, campaigns, onMerged}: MergeCampaignModalProps) {
     const closeModal = () => {
         setOpen(false);
     };
@@ -17,6 +18,7 @@ export default function MergeCampaignModal({isOpen, setOpen, campaigns}: MergeCa
             <MergeCampaignsForm
                 isOpen={isOpen}
                 handleClose={closeModal}
+                onMerged={onMerged}
                 title={__('Merge campaigns', 'give')}
                 campaigns={campaigns}
             />

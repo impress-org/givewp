@@ -11,9 +11,10 @@ import {getGiveCampaignsListTableWindowData} from '../../CampaignsListTable';
 /**
  * Campaign Form Modal component
  *
+ * @since TBD Report a merge through `onMerged` instead of editing the list table's markup.
  * @since 4.0.0
  */
-export default function MergeCampaignsForm({isOpen, handleClose, title, campaigns}: MergeCampaignFormProps) {
+export default function MergeCampaignsForm({isOpen, handleClose, onMerged, title, campaigns}: MergeCampaignFormProps) {
     const [step, setStep] = useState<number>(1);
 
     const methods = useForm<MergeCampaignFormInputs>({
@@ -43,51 +44,16 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
         const campaignsToMergeIds = campaigns.selected.filter((id) => id != inputs.destinationCampaignId);
 
         try {
-            const response = await apiFetch({
+            await apiFetch({
                 path: addQueryArgs('/givewp/v3/campaigns/' + destinationCampaignId + '/merge', {
                     campaignsToMergeIds: campaignsToMergeIds,
                 }),
                 method: 'PATCH',
             });
 
-            console.log('Merge campaigns response: ', response);
-
             // Go to success page
             setStep(3);
-
-            //Reset bulk actions selector
-            const selects = document.querySelectorAll('#give-admin-campaigns-root select');
-            selects.forEach((select) => {
-                const selectElement = select as HTMLSelectElement;
-                selectElement.selectedIndex = 0;
-            });
-
-            // Uncheck all checkboxes
-            const checkboxes = document.querySelectorAll(".giveListTable input[type='checkbox']");
-            checkboxes.forEach((checkbox) => {
-                const input = checkbox as HTMLInputElement;
-                input.checked = false;
-            });
-            // @ts-ignore
-            document.querySelector('.giveListTable #giveListTableSelectAll').checked = false;
-
-            //Remove campaignsToMergeIds from the list table.
-            const adminFormsListViewItems = document.querySelectorAll('tr');
-            if (adminFormsListViewItems.length > 0) {
-                adminFormsListViewItems.forEach((itemElement) => {
-                    const select = itemElement.querySelector('.giveListTableSelect');
-
-                    if (!select) {
-                        return;
-                    }
-
-                    const campaignId = select.getAttribute('data-id');
-                    if (campaignsToMergeIds.includes(campaignId)) {
-                        itemElement.remove();
-                    }
-                });
-            }
-            //handleClose(response);
+            onMerged?.();
         } catch (error) {
             // Go to error page
             setStep(4);
