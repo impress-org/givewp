@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Prevented blank donation form fields from erasing saved donor profile
+  data when a returning donor submits a later donation.
+timestamp: 2026-11-04T01:24:37.051Z
