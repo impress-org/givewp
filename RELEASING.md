@@ -136,8 +136,8 @@ For the deploy step, an add-on does not copy core's `release-dashboard-deploy.ym
 goes to GiveWP.com through the shared `givewp-release.yml` in impress-org/givewp-github-actions,
 and that repository has a second reusable workflow next to it,
 [`release-dashboard-deploy.yml`](https://github.com/impress-org/givewp-github-actions/blob/master/.github/workflows/release-dashboard-deploy.yml),
-with the same steps for a release the dashboard deploys (merge, publish the release, build,
-deploy, asset, translations, Slack). The add-on adds a thin caller of it, also named
+with the same steps for a release the dashboard deploys (merge, build, deploy, publish the release
+with the zip attached, translations, Slack). The add-on adds a thin caller of it, also named
 `release-dashboard-deploy.yml`, with `workflow_dispatch` inputs `branch` and `version` and
 `secrets: inherit`; impress-org/give-recurring#1256 is the one to copy, with `plugin_slug` and
 `zip_name` changed. Its `release.yml` keeps running on the `release` event for a release
