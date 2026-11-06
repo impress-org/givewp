@@ -270,25 +270,49 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * The amount that reaches PayPal for a v2 form is the post-filter total (fee recovery), and it
-     * is held to the form's maximum even when the raw posted amount is within it.
+     * The form's maximum applies to the donation amount, as on the donate route; a fee recovery
+     * total above it still reaches PayPal.
      *
-     * @since 4.16.7.1
+     * @since TBD
      */
-    public function testCreateOrderRejectsV2FilteredTotalAboveFormMaximum(): void
+    public function testCreateOrderAcceptsV2FeeTotalAboveFormMaximum(): void
     {
-        $formId = Give_Helper_Form::create_simple_form([
-            'meta' => [
-                '_give_custom_amount' => 'enabled',
-                '_give_custom_amount_range_minimum' => '1',
-                '_give_custom_amount_range_maximum' => '100',
-            ],
-        ])->get_ID();
-        $_POST = $this->v2Request($formId, ['give-amount' => '98']);
+        $maximum = 100;
+        $fee = 5;
+        $formId = $this->createV2FormWithCustomAmountMaximum($maximum);
+        $_POST = $this->v2Request($formId, ['give-amount' => (string)$maximum]);
 
-        add_filter('give_donation_total', static function ($amount) {
-            return $amount + 5;
+        add_filter('give_donation_total', static function ($amount) use ($fee) {
+            return $amount + $fee;
         });
+
+        $orderData = null;
+        $this->payPalOrder->expects($this->once())
+            ->method('createOrder')
+            ->willReturnCallback(static function (array $data) use (&$orderData) {
+                $orderData = $data;
+
+                return 'ORDER123';
+            });
+
+        $response = $this->invokeAndCatchWpDie(function () {
+            give(AjaxRequestHandler::class)->createOrder();
+        });
+
+        $this->assertTrue($response['success']);
+        $this->assertEquals($maximum + $fee, $orderData['donationAmount']);
+    }
+
+    /**
+     * The handler no longer checks the maximum itself; the form layer holds the posted amount to it.
+     *
+     * @since TBD
+     */
+    public function testCreateOrderRejectsV2AmountAboveFormMaximumBeforeCallingPayPal(): void
+    {
+        $maximum = 100;
+        $formId = $this->createV2FormWithCustomAmountMaximum($maximum);
+        $_POST = $this->v2Request($formId, ['give-amount' => (string)($maximum + 1)]);
 
         $this->payPalOrder->expects($this->never())->method('createOrder');
 
@@ -297,7 +321,7 @@ class AjaxRequestHandlerTest extends TestCase
         });
 
         $this->assertFalse($response['success']);
-        $this->assertStringContainsString('must not exceed', $response['data']['error']);
+        $this->assertStringContainsString('maximum donation amount', $response['data']['error']);
     }
 
     /**
@@ -483,6 +507,20 @@ class AjaxRequestHandlerTest extends TestCase
             'meta' => [
                 '_give_custom_amount' => 'enabled',
                 '_give_custom_amount_range_minimum' => (string)$minimum,
+            ],
+        ])->get_ID();
+    }
+
+    /**
+     * @since TBD
+     */
+    private function createV2FormWithCustomAmountMaximum(int $maximum): int
+    {
+        return Give_Helper_Form::create_simple_form([
+            'meta' => [
+                '_give_custom_amount' => 'enabled',
+                '_give_custom_amount_range_minimum' => '1',
+                '_give_custom_amount_range_maximum' => (string)$maximum,
             ],
         ])->get_ID();
     }
