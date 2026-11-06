@@ -37,6 +37,8 @@ on:
 # One deploy at a time, shared with release.yml: both write to the same WordPress.org SVN, and two
 # releases prepared with the same version would otherwise merge side by side. Run one after the other,
 # the second finds the tag published and the release-merge action refuses it before merging.
+# GitHub keeps one pending run per group and cancels an older pending run when a third arrives;
+# `queue: max` would keep them all, once actionlint accepts the key (rhysd/actionlint#654).
 concurrency:
     group: deploy-wordpress-org
     cancel-in-progress: false
