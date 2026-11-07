@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Resolved an issue where forms without a campaign could not be selected in
+  the Elementor Donation Form and Donor Wall widgets
+timestamp: 2026-10-18T17:23:45.646Z
