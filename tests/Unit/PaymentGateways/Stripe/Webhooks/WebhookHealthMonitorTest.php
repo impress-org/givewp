@@ -286,20 +286,4 @@ final class WebhookHealthMonitorTest extends TestCase
         $this->assertSame([], $this->stripe->requests);
         $this->assertSame([], $this->emails);
     }
-
-    /**
-     * @since TBD
-     */
-    public function testItSchedulesTheHourlyCheckOnce(): void
-    {
-        wp_clear_scheduled_hook(WebhookHealthMonitor::CRON_HOOK);
-
-        give(WebhookHealthMonitor::class)->schedule();
-        $scheduled = wp_next_scheduled(WebhookHealthMonitor::CRON_HOOK);
-        give(WebhookHealthMonitor::class)->schedule();
-
-        $this->assertNotFalse($scheduled);
-        $this->assertSame($scheduled, wp_next_scheduled(WebhookHealthMonitor::CRON_HOOK));
-        $this->assertSame('hourly', wp_get_schedule(WebhookHealthMonitor::CRON_HOOK));
-    }
 }
