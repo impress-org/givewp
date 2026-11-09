@@ -23,7 +23,13 @@ final class EnsureWebhookEndpoint
 {
     /**
      * Stripe requires an API version when an endpoint is created on a connected account, and the version of an
-     * endpoint cannot change later. The listeners read only fields that this version still sends.
+     * endpoint cannot change later.
+     *
+     * Stripe renders an event's data with this version and never re-renders it, so retrieving the event again
+     * under the 2019-05-16 version GiveWP pins does not return the old shape. Listeners that read a field this
+     * version removed re-fetch the object under the pinned version when the field is null: invoice.payment_intent
+     * in StripePaymentElementGateway\Webhooks\Listeners\InvoicePaymentSucceeded, and invoice.charge in Give
+     * Recurring's InvoicePaymentSucceeded listener. Those fallbacks are required, not dead code.
      *
      * @since TBD
      */
