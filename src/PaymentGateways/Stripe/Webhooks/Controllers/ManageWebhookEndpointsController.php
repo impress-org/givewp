@@ -139,14 +139,17 @@ final class ManageWebhookEndpointsController
         } catch (WebhookEndpointException $exception) {
             $this->logFailure('list', $account, $mode, $exception);
 
+            /*
+             * No list is rendered when the read fails: an empty list would read as "no endpoints" on an account
+             * Stripe did not answer for, and after a change it would also drop the form the admin submitted.
+             */
             if ('list' === $operation) {
                 wp_send_json_success([
-                    'html' => $this->view->render([], $mode, $this->errorNotice($exception)),
+                    'notices' => $this->view->notices([$this->errorNotice($exception)]),
                     'state' => self::STATE_ERROR,
                 ]);
             }
 
-            /* An empty list here would read as "no endpoints" and drop the form the admin submitted. */
             wp_send_json_success([
                 'notices' => $this->view->notices([
                     $notice,
@@ -244,7 +247,11 @@ final class ManageWebhookEndpointsController
         if (count(($this->listEndpoints)($account, $mode)) >= WebhookTarget::MAX_ENDPOINTS_PER_ACCOUNT) {
             return $this->notice(
                 'error',
-                __('This account has the maximum of 16 webhook endpoints. Delete one to add another.', 'give')
+                sprintf(
+                    /* translators: %d: Maximum number of webhook endpoints. */
+                    __('This account has the maximum of %d webhook endpoints. Delete one to add another.', 'give'),
+                    WebhookTarget::MAX_ENDPOINTS_PER_ACCOUNT
+                )
             );
         }
 
