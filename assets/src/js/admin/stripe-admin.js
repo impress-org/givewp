@@ -137,33 +137,34 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		} );
 	}
 
+	/**
+	 * After an account is added, set up its webhook endpoint and show the result instead of the manual steps.
+	 *
+	 * @since TBD
+	 */
 	if ( null !== stripeConnectedElement ) {
 		const stripeStatus = stripeConnectedElement.getAttribute( 'data-status' );
 		const redirectUrl = stripeConnectedElement.getAttribute( 'data-redirect-url' );
 		const canDisplay = stripeConnectedElement.getAttribute( 'data-display' );
-		const modalTitle = stripeConnectedElement.getAttribute( 'data-title' );
-		const modalFirstDetail = stripeConnectedElement.getAttribute( 'data-first-detail' );
-		const modalSecondDetail = stripeConnectedElement.getAttribute( 'data-second-detail' );
 
 		if ( 'connected' === stripeStatus && '0' === canDisplay ) {
-			new Give.modal.GiveConfirmModal(
-				{
-					modalWrapper: 'give-stripe-connected-modal give-modal--success',
-					type: 'confirm',
-					modalContent: {
-						title: modalTitle,
-						desc: `<span>${ modalFirstDetail }</span><span class="give-field-description">${ modalSecondDetail }</span>`,
-					},
-					successConfirm: function( args ) {
-						window.location.href = redirectUrl;
-					},
-				}
-			).render();
+			giveStripeSetUpWebhooks( stripeConnectedElement.getAttribute( 'data-webhook-nonce' ) );
 
 			stripeConnectedElement.setAttribute( 'data-display', '1' );
 			history.pushState( { urlPath: redirectUrl }, '', redirectUrl );
 		}
 	}
+
+	document.addEventListener( 'click', ( event ) => {
+		const button = event.target.closest( '.give-stripe-webhook-setup-button, .give-stripe-webhook-retry-button' );
+
+		if ( null === button ) {
+			return;
+		}
+
+		event.preventDefault();
+		giveStripeSetUpWebhooks( button.getAttribute( 'data-nonce' ), button.getAttribute( 'data-account' ) );
+	} );
 
 	if ( null !== checkoutTypes ) {
 		checkoutTypes.forEach( ( checkoutType ) => {
@@ -404,4 +405,135 @@ function giveStripeJsonFormattedTextarea( element ) {
 			giveStripePrettyJson( element, event.target.value );
 		} );
 	}
+}
+
+let giveStripeWebhookSetupRunning = false;
+
+/**
+ * Asks the server to set up the webhook endpoint of each Stripe account, and shows the result in a modal.
+ *
+ * @since TBD
+ *
+ * @param {string}      nonce   Nonce for the webhook setup request.
+ * @param {string|null} account Slug of the only account to set up; every account when empty.
+ */
+function giveStripeSetUpWebhooks( nonce, account = null ) {
+	/* A second request while one is running could create a second endpoint. */
+	if ( giveStripeWebhookSetupRunning ) {
+		return;
+	}
+
+	giveStripeWebhookSetupRunning = true;
+	giveStripeSetWebhookButtonsDisabled( true );
+
+	new Give.modal.GiveNoticeAlert( {
+		modalContent: {
+			title: __( 'Setting up your Stripe webhook', 'give' ),
+			desc: Give.fn.loader( {}, { show: null, loadingText: Give.fn.getGlobalVar( 'loader_translation' ).processing } ),
+		},
+	} ).render();
+
+	const formData = new FormData();
+	formData.append( 'action', 'givewp_stripe_ensure_webhook_endpoints' );
+	formData.append( '_ajax_nonce', nonce );
+
+	if ( account ) {
+		formData.append( 'account', account );
+	}
+
+	let requestStatus = 0;
+
+	fetch( window.ajaxurl, { method: 'POST', credentials: 'same-origin', body: formData } )
+		.then( ( response ) => {
+			requestStatus = response.status;
+
+			return response.json();
+		} )
+		.then( ( response ) => {
+			if ( ! response.success ) {
+				throw new Error( 'Webhook setup request failed.' );
+			}
+
+			return response.data;
+		} )
+		.catch( () => giveStripeManualWebhookSetupContent( requestStatus ) )
+		.then( ( result ) => {
+			/* The admin closed the loading modal, so do not open it again. */
+			if ( ! document.querySelector( '.mfp-wrap' ) ) {
+				return;
+			}
+
+			const retryButton = result.retry ?
+				`<div class="give-stripe-webhook-retry"><button type="button" class="button give-stripe-webhook-retry-button" data-nonce="${ nonce }" data-account="${ account || '' }">${ __( 'Try again', 'give' ) }</button></div>` :
+				'';
+			const modalConfig = {
+				mainClass: 'give-stripe-webhook-setup-modal',
+				modalContent: {
+					title: result.title,
+					body: `<div class="give-modal__description">${ result.body }${ retryButton }</div>`,
+				},
+			};
+
+			if ( 'success' === result.level ) {
+				new Give.modal.GiveSuccessAlert( modalConfig ).render();
+			} else if ( 'warning' === result.level ) {
+				new Give.modal.GiveWarningAlert( modalConfig ).render();
+			} else {
+				new Give.modal.GiveErrorAlert( modalConfig ).render();
+			}
+		} )
+		.finally( () => {
+			giveStripeWebhookSetupRunning = false;
+			giveStripeSetWebhookButtonsDisabled( false );
+			window.dispatchEvent( new CustomEvent( 'givewp-stripe-webhook-setup-finished' ) );
+		} );
+}
+
+/**
+ * Enables or disables the buttons that start the webhook setup.
+ *
+ * @since TBD
+ *
+ * @param {boolean} disabled Whether the buttons are disabled.
+ */
+function giveStripeSetWebhookButtonsDisabled( disabled ) {
+	document
+		.querySelectorAll( '.give-stripe-webhook-setup-button, .give-stripe-webhook-retry-button' )
+		.forEach( ( button ) => {
+			button.disabled = disabled;
+		} );
+}
+
+/**
+ * The manual setup steps, for when the setup request itself fails.
+ *
+ * @since TBD Say why the request failed, so the admin can report the cause.
+ *
+ * @param {number} failedRequestStatus HTTP status of the failed request; 0 when it never answered.
+ *
+ * @return {{level: string, title: string, body: string, retry: boolean}} Modal content.
+ */
+function giveStripeManualWebhookSetupContent( failedRequestStatus = 0 ) {
+	const element = document.getElementById( 'give-stripe-connected' );
+	const reason = 404 === failedRequestStatus
+		? __( 'The setup request could not find this account in the current mode. Reload the page and try again.', 'give' )
+		: 403 === failedRequestStatus
+			? __( 'The setup request was not allowed for your user. Reload the page and log in again.', 'give' )
+			: __( 'The setup request did not get an answer from WordPress. Check your connection and try again.', 'give' );
+
+	if ( null === element ) {
+		return {
+			level: 'error',
+			title: __( 'We could not set up your Stripe webhook automatically.', 'give' ),
+			body: `<span class="give-field-description">${ reason }</span>`,
+			retry: true,
+		};
+	}
+
+	return {
+		level: 'error',
+		title: element.getAttribute( 'data-title' ),
+		body: `<span>${ element.getAttribute( 'data-first-detail' ) }</span><span class="give-field-description">${ reason }</span><span class="give-field-description">${ element.getAttribute( 'data-second-detail' ) }</span>`,
+		retry: true,
+	};
 }
