@@ -44,6 +44,11 @@ concurrency:
     group: deploy-wordpress-org
     cancel-in-progress: false
 
+# The default for every job, the tests included: they read the checkout and nothing else. The
+# release job raises its own to contents: write below.
+permissions:
+    contents: read
+
 jobs:
     tests:
         uses: ./.github/workflows/wordpress.yml
