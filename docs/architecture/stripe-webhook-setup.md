@@ -187,6 +187,12 @@ the marker of the other mode (`_test_` in live mode, `_live_` in test mode).
   changed afterwards. `EnsureWebhookEndpoint::API_VERSION` is `2026-09-30.endive`. GiveWP's own
   Stripe API calls stay pinned to `2019-05-16`. Moving an endpoint to another version means creating
   a second endpoint, switching to it, and disabling the first.
+- Stripe renders an event's data with the endpoint's version and never re-renders it, so retrieving
+  the event under `2019-05-16` does not return the old shape. Listeners that read a field the newer
+  version removed re-fetch the object under the pinned version when the field is null:
+  `invoice.payment_intent` in GiveWP's `InvoicePaymentSucceeded` (Payment Element) and
+  `invoice.charge` in Give Recurring's `InvoicePaymentSucceeded`. Without those fallbacks,
+  `invoice.payment_succeeded` from an endpoint this feature creates carries no transaction ID.
 - An account can have at most 16 endpoints.
 - The signing secret (`whsec_`) is in the response of the create request only. The code
   discards it, so the receiver cannot verify signatures.
