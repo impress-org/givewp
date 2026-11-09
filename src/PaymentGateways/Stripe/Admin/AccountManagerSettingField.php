@@ -246,7 +246,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Add the Webhook Status field. Escape output. Add nonces to the set default and statement descriptor requests.
+     * @since TBD Add the Webhook Status field.
      * @since 4.19.1 Escape output. Add nonces to the set default and statement descriptor requests.
      * @since 2.13.0
      *
