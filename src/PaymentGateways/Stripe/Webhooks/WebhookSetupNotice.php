@@ -84,13 +84,13 @@ final class WebhookSetupNotice
                 ),
                 $items,
                 /* A setup run covers the mode the site is in, so a test-mode site never writes to a live account. */
-                sprintf(
+                wp_kses_post(sprintf(
                     /* translators: 1: "live mode" or "test mode". 2: The other mode. 3: Documentation URL. */
                     __('This set up %1$s only. Before you switch the site to %2$s, add its endpoint as our <a href="%3$s" target="_blank">documentation</a> describes.', 'give'),
                     $modeLabel,
                     $otherModeLabel,
                     esc_url('https://docs.nexcess.com/software/give/setting-up-webhooks/')
-                )
+                ))
             ),
             'retry' => (bool)$failed,
         ];
@@ -109,19 +109,19 @@ final class WebhookSetupNotice
             case WebhookSetupStatus::UPDATED:
                 return esc_html__('GiveWP enabled the endpoint for this site and added the events it was missing.', 'give');
             case WebhookSetupStatus::INCOMPLETE:
-                return sprintf(
+                return wp_kses_post(sprintf(
                     /* translators: 1: List of Stripe event names. 2: Stripe Dashboard webhooks URL. */
                     __('An endpoint points at this site, but it is disabled or does not send every event GiveWP needs, and GiveWP could not change it. Enable it and make sure it sends %1$s in the <a href="%2$s" target="_blank">Webhooks section of your Stripe Dashboard</a>, then try again.', 'give'),
                     '<code>' . esc_html(implode(', ', WebhookTarget::REQUIRED_EVENTS)) . '</code>',
                     esc_url('https://dashboard.stripe.com/webhooks')
-                );
+                ));
             case WebhookSetupStatus::LIMIT_REACHED:
-                return sprintf(
+                return wp_kses_post(sprintf(
                     /* translators: 1: Maximum number of webhook endpoints. 2: Stripe Dashboard webhooks URL. */
                     __('This Stripe account already has %1$d webhook endpoints, the most Stripe allows. Delete an endpoint you no longer use in the <a href="%2$s" target="_blank">Webhooks section of your Stripe Dashboard</a>, then try again.', 'give'),
                     WebhookTarget::MAX_ENDPOINTS_PER_ACCOUNT,
                     esc_url('https://dashboard.stripe.com/webhooks')
-                );
+                ));
             case WebhookSetupStatus::AUTHORIZATION:
                 return 'connect' === $account->type ?
                     esc_html__('Stripe did not allow GiveWP to manage webhooks on this account. Disconnect the account and connect it again.', 'give') :
@@ -148,14 +148,14 @@ final class WebhookSetupNotice
     {
         return sprintf(
             '<span>%1$s</span><span>%2$s</span><span class="give-field-description">%3$s</span>',
-            sprintf(
+            wp_kses_post(sprintf(
                 /* translators: 1: Stripe Dashboard webhooks URL. 2: Webhook endpoint URL. 3: Documentation URL. */
                 __('Add the endpoint yourself: visit the <a href="%1$s" target="_blank">Webhooks section of your Stripe Dashboard</a>, click <strong>Add endpoint</strong> and paste %2$s. See our <a href="%3$s" target="_blank">documentation</a> for the events to select.', 'give'),
                 esc_url('https://dashboard.stripe.com/webhooks'),
                 '<code>' . esc_html($this->target->url()) . '</code>',
                 esc_url('https://docs.nexcess.com/software/give/setting-up-webhooks/')
-            ),
-            __('You can also click <strong>Try again</strong> now.', 'give'),
+            )),
+            wp_kses_post(__('You can also click <strong>Try again</strong> now.', 'give')),
             esc_html__(
                 'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.',
                 'give'
