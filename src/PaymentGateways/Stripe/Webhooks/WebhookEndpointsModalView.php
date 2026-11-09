@@ -59,11 +59,11 @@ final class WebhookEndpointsModalView
             <p class="give-stripe-webhooks__summary">
                 <?php
                 echo esc_html(sprintf(
-                    /* translators: 1: Number of webhook endpoints. 2: Maximum number of webhook endpoints. 3: "live" or "test". */
-                    __('%1$d of %2$d endpoints on this account (%3$s mode).', 'give'),
+                    /* translators: 1: Number of webhook endpoints. 2: Maximum number of webhook endpoints. 3: "live mode" or "test mode". */
+                    __('%1$d of %2$d endpoints on this account (%3$s).', 'give'),
                     count($endpoints),
                     WebhookTarget::MAX_ENDPOINTS_PER_ACCOUNT,
-                    $mode
+                    'live' === $mode ? __('live mode', 'give') : __('test mode', 'give')
                 ));
                 ?>
             </p>
@@ -246,10 +246,11 @@ final class WebhookEndpointsModalView
         if ($endpointCount >= WebhookTarget::MAX_ENDPOINTS_PER_ACCOUNT) {
             return sprintf(
                 '<p class="give-stripe-webhooks__notice give-stripe-webhooks__notice--warning">%s</p>',
-                esc_html__(
-                    'This account has the maximum of 16 webhook endpoints. Delete one to add another.',
-                    'give'
-                )
+                esc_html(sprintf(
+                    /* translators: %d: Maximum number of webhook endpoints. */
+                    __('This account has the maximum of %d webhook endpoints. Delete one to add another.', 'give'),
+                    WebhookTarget::MAX_ENDPOINTS_PER_ACCOUNT
+                ))
             );
         }
 
