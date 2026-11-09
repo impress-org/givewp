@@ -36,6 +36,7 @@ use Give\PaymentGateways\Stripe\DonationFormElements;
 use Give\PaymentGateways\Stripe\DonationFormSettingPage;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
 use Give\PaymentGateways\Stripe\Webhooks\Controllers\EnsureWebhookEndpointsController;
+use Give\PaymentGateways\Stripe\Webhooks\Controllers\ManageWebhookEndpointsController;
 
 /**
  * Class PaymentGateways
@@ -222,6 +223,10 @@ class PaymentGateways implements ServiceProvider
         Hooks::addAction(
             'wp_ajax_' . EnsureWebhookEndpointsController::ACTION,
             EnsureWebhookEndpointsController::class
+        );
+        Hooks::addAction(
+            'wp_ajax_' . ManageWebhookEndpointsController::ACTION,
+            ManageWebhookEndpointsController::class
         );
     }
 
