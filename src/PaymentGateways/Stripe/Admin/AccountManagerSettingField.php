@@ -507,7 +507,6 @@ class AccountManagerSettingField
 
     /**
      * @since TBD Add the nonce for the webhook setup request.
-     * @since TBD Escape output.
      * @since 4.19.1 Escape output.
      * @since 2.13.0
      */

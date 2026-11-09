@@ -3,7 +3,7 @@
  *
  * This will be used to disconnect any Stripe account from the list
  *
- * @since TBD Show a warning before the reload when the webhook endpoint could not be deleted.
+ * @since TBD Show a warning before the reload when the webhook endpoint could not be deleted. Reload when the request fails.
  * @since 2.13.0
  */
 import { __ } from '@wordpress/i18n'
@@ -59,7 +59,9 @@ window.addEventListener('DOMContentLoaded', function () {
                                     close: () => window.location.reload(),
                                 },
                             }).render();
-                        });
+                        })
+                        /* A failed request may come after the account was removed, so the reload shows its real state. */
+                        .catch(() => window.location.reload());
                 },
             }).render();
         });
