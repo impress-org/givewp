@@ -122,6 +122,8 @@ jobs:
                     mkdir -p ~/.subversion
                     printf '[global]\nhttp-timeout = 3600\n' >> ~/.subversion/servers
 
+            # Unlike release.yml, this run is not on a tag: without VERSION the action reads GITHUB_REF, here
+            # refs/heads/release/x.y.z, as the version and the SVN tag copy fails on it.
             -   name: WordPress Plugin Deploy
                 id: deploy
                 uses: 10up/action-wordpress-plugin-deploy@stable
@@ -131,6 +133,7 @@ jobs:
                     SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
                     SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
                     SLUG: give
+                    VERSION: ${{ inputs.version }}
 
             # The GitHub release, at the commit the merge left master on, with the zip the deploy built
             # attached before it is public. Published last, so a failed build or deploy leaves no release.
