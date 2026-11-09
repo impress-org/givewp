@@ -71,6 +71,10 @@ click outside reverts it.
 current mode. The last three operations return the refreshed modal HTML with a success or error notice,
 and the state for the status button. Changes are logged at info level, failures at warning level.
 
+When the endpoint list cannot be read, the controller returns `notices` and no `html`, because an
+empty list would read as an account with no endpoints. For `list`, the modal shows Stripe's error and
+a **Try again** button. After a change, the notices go above the current content and the form stays.
+
 ### Disconnecting an account
 
 `DisconnectStripeAccountController` reads the account and its key, calls
