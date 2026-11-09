@@ -230,15 +230,14 @@ class PaymentGateways implements ServiceProvider
             'wp_ajax_' . ManageWebhookEndpointsController::ACTION,
             ManageWebhookEndpointsController::class
         );
+        /* 11 runs after Give_Stripe_Admin_Settings::register_settings() creates the webhooks group at 10. */
         Hooks::addFilter('give_get_settings_gateways', WebhookSettingsFields::class, 'addFields', 11);
         Hooks::addAction(
             'give_admin_field_' . WebhookSettingsFields::SETUP_FIELD_TYPE,
             WebhookSettingsFields::class,
             'renderSetupField'
         );
-        /* init rather than admin_init, so a site whose admin is not visited still gets the hourly check. */
-        Hooks::addAction('init', WebhookHealthMonitor::class, 'schedule');
-        Hooks::addAction(WebhookHealthMonitor::CRON_HOOK, WebhookHealthMonitor::class);
+        Hooks::addAction('give_daily_scheduled_events', WebhookHealthMonitor::class);
     }
 
     /**
