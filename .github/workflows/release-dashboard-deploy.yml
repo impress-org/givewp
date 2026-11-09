@@ -21,13 +21,13 @@ name: Deploy to WordPress.org from the release dashboard
 #
 # The dashboard dispatches this file on the release branch, sending `branch` and `version`. Run it
 # by hand on that branch too (the first step refuses a run started elsewhere):
-#   gh workflow run release-dashboard-deploy.yml --ref release/4.19.0 -f branch=release/4.19.0 -f version=4.19.0
+#   gh workflow run release-dashboard-deploy.yml --ref release/M26.jigglypuff -f branch=release/M26.jigglypuff -f version=4.19.0
 
 on:
     workflow_dispatch:
         inputs:
             branch:
-                description: 'Release branch to merge, e.g. release/4.19.0'
+                description: 'Release branch to merge, e.g. release/M26.jigglypuff'
                 required: true
                 type: string
             version:
@@ -125,7 +125,7 @@ jobs:
                     printf '[global]\nhttp-timeout = 3600\n' >> ~/.subversion/servers
 
             # Unlike release.yml, this run is not on a tag: without VERSION the action reads GITHUB_REF, here
-            # refs/heads/release/x.y.z, as the version and the SVN tag copy fails on it.
+            # refs/heads/release/M26.jigglypuff, as the version and the SVN tag copy fails on it.
             -   name: WordPress Plugin Deploy
                 id: deploy
                 uses: 10up/action-wordpress-plugin-deploy@stable
