@@ -370,11 +370,13 @@ function restoreFormValues(form, formData) {
 }
 
 /**
- * Shows the failure of the first load of the modal: an error notice and a button that reads the list again.
+ * Shows the failure of a list read: an error notice and a button that reads the list again.
  *
  * @since TBD
+ *
+ * @param {string|null} notices The notices as HTML when Stripe answered with an error; null when the request failed.
  */
-function showListFailed() {
+function showListFailed(notices = null) {
     const container = document.querySelector('.give-stripe-webhooks-content');
 
     if (!container) {
@@ -382,9 +384,14 @@ function showListFailed() {
     }
 
     const notice = document.createElement('div');
-    notice.className = 'give-stripe-webhooks__notice give-stripe-webhooks__notice--error';
-    notice.setAttribute('role', 'status');
-    notice.textContent = __('The request failed. Check your connection and try again.', 'give');
+
+    if (notices) {
+        notice.append(document.createRange().createContextualFragment(notices));
+    } else {
+        notice.className = 'give-stripe-webhooks__notice give-stripe-webhooks__notice--error';
+        notice.setAttribute('role', 'status');
+        notice.textContent = __('The request failed. Check your connection and try again.', 'give');
+    }
 
     const retry = document.createElement('button');
     retry.type = 'button';
@@ -489,6 +496,12 @@ function runOperation(operation, formData = new FormData(), form = null) {
             setState(field, state);
 
             if (modal !== modalCount) {
+                return;
+            }
+
+            if ('string' === typeof notices && !form) {
+                showListFailed(notices);
+
                 return;
             }
 
