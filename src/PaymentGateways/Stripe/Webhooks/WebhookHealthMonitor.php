@@ -201,9 +201,9 @@ final class WebhookHealthMonitor
             "\n\n",
             [
                 sprintf(
-                    /* translators: %s: "live" or "test". */
-                    __('GiveWP checked the Stripe webhooks of your site in %s mode and found these problems:', 'give'),
-                    $mode
+                    /* translators: %s: "live mode" or "test mode". */
+                    __('GiveWP checked the Stripe webhooks of your site in %s and found these problems:', 'give'),
+                    'live' === $mode ? __('live mode', 'give') : __('test mode', 'give')
                 ),
                 '- ' . implode("\n- ", $problems),
                 sprintf(
