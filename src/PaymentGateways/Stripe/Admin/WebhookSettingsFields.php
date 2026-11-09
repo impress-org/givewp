@@ -42,7 +42,7 @@ final class WebhookSettingsFields
         $settings['webhooks'][] = [
             'name' => esc_html__('Notify Site Administrator About Webhook Health by Email', 'give'),
             'desc' => esc_html__(
-                'GiveWP checks every hour that each Stripe account sends events to this site. When one does not, GiveWP emails the address that WordPress sends fatal error emails to.',
+                'GiveWP checks once a day that each Stripe account sends events to this site. When one does not, GiveWP emails the address that WordPress sends fatal error emails to.',
                 'give'
             ),
             'id' => WebhookHealthMonitor::EMAIL_SETTING,

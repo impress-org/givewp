@@ -14,19 +14,17 @@ use Give\PaymentGateways\Stripe\Webhooks\ValueObjects\WebhookHealthStatus;
 use Give\PaymentGateways\Stripe\Webhooks\ValueObjects\WebhookSetupStatus;
 
 /**
- * Checks every hour that each Stripe account sends events to this site, and emails the site administrator when one
- * does not. It only reads from Stripe.
+ * Checks once a day, on give_daily_scheduled_events, that each Stripe account sends events to this site, and emails
+ * the site administrator when one does not. It only reads from Stripe.
  *
  * @since TBD
  */
 final class WebhookHealthMonitor
 {
-    public const CRON_HOOK = 'givewp_stripe_webhook_health_check';
-
     public const EMAIL_SETTING = 'stripe_webhook_health_email';
 
     /**
-     * Fingerprint of the problems in the last email, so the same problems are not emailed every hour.
+     * Fingerprint of the problems in the last email, so the same problems are not emailed every day.
      */
     private const NOTIFIED_OPTION = 'givewp_stripe_webhook_health_notified';
 
@@ -56,16 +54,6 @@ final class WebhookHealthMonitor
         $this->getAccounts = $getAccounts;
         $this->checkHealth = $checkHealth;
         $this->target = $target;
-    }
-
-    /**
-     * @since TBD
-     */
-    public function schedule(): void
-    {
-        if (!wp_next_scheduled(self::CRON_HOOK)) {
-            wp_schedule_event(time(), 'hourly', self::CRON_HOOK);
-        }
     }
 
     /**
@@ -120,7 +108,7 @@ final class WebhookHealthMonitor
         WebhookLogger::warning('Stripe webhook health problems found.', ['mode' => $mode, 'problems' => $problems]);
 
         if (!$this->sendEmail($problems, $mode)) {
-            /* The fingerprint is not stored, so the next hourly run tries to send the email again. */
+            /* The fingerprint is not stored, so the next daily run tries to send the email again. */
             WebhookLogger::error('The Stripe webhook health email could not be sent.', [
                 'mode' => $mode,
                 'recipient' => $this->recipient(),

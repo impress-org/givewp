@@ -54,7 +54,7 @@ final class WebhookHooksTest extends TestCase
     /**
      * @since TBD
      */
-    public function testItRunsTheHealthCheckOnTheCronHook(): void
+    public function testItRunsTheHealthCheckOnTheDailyEvent(): void
     {
         $account = $this->makeAccount();
         $emails = [];
@@ -67,7 +67,7 @@ final class WebhookHooksTest extends TestCase
         }, 10, 2);
         $this->stripe->queue(200, $this->listBody([]));
 
-        do_action(WebhookHealthMonitor::CRON_HOOK);
+        do_action('give_daily_scheduled_events');
 
         $this->assertCount(1, $this->stripe->requests);
         $this->assertCount(1, $emails);

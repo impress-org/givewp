@@ -23,7 +23,7 @@ Two consequences:
 |:--|:--|:--|
 | Account added (Connect, or manual keys from the give-stripe add-on) | The settings page reloads with `stripe_account=connected`. The modal shows a loader and calls the AJAX action. | Yes |
 | **Set up webhooks** button (Stripe settings, Webhooks group) | Runs the same AJAX action and shows the same modal. | Yes |
-| Hourly cron `givewp_stripe_webhook_health_check` | Lists the endpoints of every account and emails the site administrator when one has a problem. | No |
+| Daily cron `give_daily_scheduled_events` | Lists the endpoints of every account and emails the site administrator when one has a problem. | No |
 | **Webhook Status** field of each account (Manage Accounts) | Page load reads every account's state (AJAX `status`, no write). The status button runs setup for that one account. **Edit** opens the endpoint modal. | Button and modal actions: yes. Page load: no |
 | Account disconnected (AJAX `disconnect_stripe_account`) | Removes the account from Give, then deletes this site's endpoint from the account. | Yes (delete) |
 
@@ -203,7 +203,8 @@ the marker of the other mode (`_test_` in live mode, `_live_` in test mode).
 
 ## Health email
 
-`WebhookHealthMonitor` is scheduled on `admin_init` and runs hourly. It reads the endpoints of
+`WebhookHealthMonitor` runs on `give_daily_scheduled_events`, the daily event that `Give_Cron`
+schedules and `uninstall.php` clears. It reads the endpoints of
 every account for the current mode and sends one email listing the accounts with a problem.
 
 - The recipient is `RECOVERY_MODE_EMAIL` when it is a valid address, and the `admin_email` option
@@ -211,7 +212,7 @@ every account for the current mode and sends one email listing the accounts with
 - The setting `stripe_webhook_health_email` (Stripe settings, Webhooks group) turns the email off.
   It defaults to `enabled`.
 - The option `givewp_stripe_webhook_health_notified` stores the mode and the problem lines of the
-  last email, so the same problems are not emailed every hour. It is stored only after `wp_mail()`
+  last email, so the same problems are not emailed every day. It is stored only after `wp_mail()`
   succeeds, and deleted when a run checks every account and finds no problems.
 - A connection error or a 429 skips the account, because it says nothing about the endpoint. A run
   that skipped an account leaves the stored problems as they are and sends an email only when it
@@ -220,7 +221,7 @@ every account for the current mode and sends one email listing the accounts with
 
 ## Logging
 
-Entries go to the Give log (GiveWP > Tools > Logs) through `WebhookLogger`, with category `payment`
+Entries go to the Give log (GiveWP > Tools > Logs) through `WebhookLogger`, with category `Payment`
 and source `Stripe Webhooks`. The context holds the account slug, the account type, the mode and the
 Stripe identifiers, and never a key or a signing secret.
 
@@ -253,8 +254,8 @@ which endpoints GiveWP created or deleted is therefore not kept by default.
 - `src/PaymentGateways/Stripe/Webhooks/Controllers/ManageWebhookEndpointsController.php` and
   `WebhookEndpointsModalView.php` — the Webhook Status field and the endpoint modal
 - `src/PaymentGateways/resources/js/stripe-account-manager/webhook-endpoints.js` — status button, modal
-- `src/PaymentGateways/Stripe/Controllers/DisconnectStripeAccountController.php` — calls
-  `DeleteSiteWebhookEndpoint` before removing the account
+- `src/PaymentGateways/Stripe/Controllers/DisconnectStripeAccountController.php` — removes the
+  account, then calls `DeleteSiteWebhookEndpoint`
 - `src/PaymentGateways/Stripe/Webhooks/ValueObjects/`, `DataTransferObjects/`, `Exceptions/`,
   `Traits/` — statuses, `WebhookEndpointDto`, `WebhookEndpointException` (carries the Stripe HTTP
   status, error type and request id), `WebhookEndpointLimitReached`, `IncompleteWebhookEndpoint`
