@@ -14,9 +14,10 @@ name: Deploy to WordPress.org from the release dashboard
 # through its release-publish action, after the build, so the release is only public once the zip is
 # on it and a failed build or deploy leaves no release behind. Every step is safe to run again after a
 # late failure: a branch that already holds the release merges as a no-op and an existing release is
-# skipped, so a failed deploy is retried as it is. A merge conflict fails the run before anything is
-# published, with a MERGE_CONFLICT line the dashboard reads; resolve it on the branch named, push, and
-# run the step again.
+# skipped, so a failed deploy is retried as it is. A retry made after master moved on to a later
+# release is refused before anything is built, so that release's code is never published under this
+# version. A merge conflict fails the run before anything is published, with a MERGE_CONFLICT line
+# the dashboard reads; resolve it on the branch named, push, and run the step again.
 #
 # The dashboard dispatches this file on the release branch, sending `branch` and `version`. Run it
 # by hand on that branch too (the first step refuses a run started elsewhere):
@@ -69,11 +70,11 @@ jobs:
                     fi
 
             # The merges go through the GitHub API, so no checkout is needed before this step. Pinned to a
-            # commit of stellarwp/plugin-toolbox#16 (stacked on #10); switch to @v1 once plugin-toolbox
-            # publishes a release.
+            # commit of stellarwp/plugin-toolbox#21 (on main, which has #10 and #16); switch to @v1 once
+            # plugin-toolbox publishes a release.
             -   name: Merge the release into master and master back into develop
                 id: merge
-                uses: stellarwp/plugin-toolbox/.github/actions/release-merge@2fb753bcbb11c53faaac5164f67ab4051f6a9d05
+                uses: stellarwp/plugin-toolbox/.github/actions/release-merge@3a65b3057c4009a2ba63b344786d79051e0ff4f6
                 with:
                     branch: ${{ inputs.branch }}
                     # The commit the run was started on: the environment's approval may come long
@@ -140,7 +141,7 @@ jobs:
             # attached before it is public. Published last, so a failed build or deploy leaves no release.
             -   name: Publish the GitHub release
                 id: release
-                uses: stellarwp/plugin-toolbox/.github/actions/release-publish@2fb753bcbb11c53faaac5164f67ab4051f6a9d05
+                uses: stellarwp/plugin-toolbox/.github/actions/release-publish@3a65b3057c4009a2ba63b344786d79051e0ff4f6
                 with:
                     version: ${{ steps.merge.outputs.version }}
                     target: ${{ steps.merge.outputs.base-sha }}
