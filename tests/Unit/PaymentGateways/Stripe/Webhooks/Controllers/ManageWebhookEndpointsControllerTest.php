@@ -254,7 +254,8 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
 
         $this->assertTrue($response['success']);
         $this->assertSame('error', $response['data']['state']);
-        $this->assertStringContainsString($error['error']['message'], $response['data']['html']);
+        $this->assertStringContainsString($error['error']['message'], $response['data']['notices']);
+        $this->assertArrayNotHasKey('html', $response['data']);
 
         $logged = $this->webhookLogs(LogType::WARNING, $account->accountSlug);
 
@@ -422,7 +423,10 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
 
         $this->assertTrue($response['success']);
         $this->assertSame(['get', 'get'], array_column($this->stripe->requests, 'method'));
-        $this->assertStringContainsString('maximum of 16 webhook endpoints', $response['data']['html']);
+        $this->assertStringContainsString(
+            sprintf('maximum of %d webhook endpoints', WebhookTarget::MAX_ENDPOINTS_PER_ACCOUNT),
+            $response['data']['html']
+        );
         $this->assertStringNotContainsString('data-webhook-operation="create"', $response['data']['html']);
     }
 
