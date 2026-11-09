@@ -83,7 +83,8 @@ jobs:
                     base-branch: master
 
             # The merged commit on master, the one the release is published at: everything below builds
-            # the release from it.
+            # the release from it. The version below is the step's output too, not the input: the step
+            # trims the input before it accepts it, and the SVN tag and the gh lookup take the value as is.
             -   name: Checkout code
                 uses: actions/checkout@v7
                 with:
@@ -133,7 +134,7 @@ jobs:
                     SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
                     SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
                     SLUG: give
-                    VERSION: ${{ inputs.version }}
+                    VERSION: ${{ steps.merge.outputs.version }}
 
             # The GitHub release, at the commit the merge left master on, with the zip the deploy built
             # attached before it is public. Published last, so a failed build or deploy leaves no release.
@@ -141,7 +142,7 @@ jobs:
                 id: release
                 uses: stellarwp/plugin-toolbox/.github/actions/release-publish@2fb753bcbb11c53faaac5164f67ab4051f6a9d05
                 with:
-                    version: ${{ inputs.version }}
+                    version: ${{ steps.merge.outputs.version }}
                     target: ${{ steps.merge.outputs.base-sha }}
                     files: |
                         give.zip
@@ -154,7 +155,7 @@ jobs:
                 env:
                     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                     REPO: ${{ github.event.repository.name }}
-                    TAG: ${{ inputs.version }}
+                    TAG: ${{ steps.merge.outputs.version }}
                     URL: ${{ steps.release.outputs.release-url }}
                 run: |
                     version="$TAG"
