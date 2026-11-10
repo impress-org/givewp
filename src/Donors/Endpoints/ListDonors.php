@@ -6,6 +6,7 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\QueryBuilder\WhereQueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -29,6 +30,7 @@ class ListDonors extends Endpoint
     /**
      * @inheritDoc
      *
+     * @since TBD Accept a list of campaign IDs and add the donorType parameter.
      * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      */
     public function registerRoute()
@@ -70,9 +72,23 @@ class ListDonors extends Endpoint
                         'format' => 'date-time'
                     ],
                     'campaignId' => [
-                        'type' => 'integer',
+                        'type' => 'array',
                         'required' => false,
-                        'default' => 0
+                        'default' => [],
+                        'maxItems' => 50,
+                        'items' => [
+                            'type' => 'integer',
+                        ],
+                        'description' => 'Filter donors by one or more campaign IDs, at most 50. A 0 is ignored.',
+                    ],
+                    'donorType' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'enum' => [
+                            'one-time',
+                            'subscriber',
+                        ],
+                        'description' => 'Filter donors by type. Subscribers have at least one subscription.',
                     ],
                     'end' => [
                         'type' => 'string',
@@ -191,6 +207,7 @@ class ListDonors extends Endpoint
     }
 
     /**
+     * @since TBD Accept several campaign IDs, filter by donorType, and group the name and email search so other filters apply to every match.
      * @since 2.24.0 Replace Query Builder with Donors model
      * @since 2.21.0
      *
@@ -203,14 +220,18 @@ class ListDonors extends Endpoint
         $search = $this->request->get_param('search');
         $start = $this->request->get_param('start');
         $end = $this->request->get_param('end');
-        $campaignId = $this->request->get_param('campaignId');
+        $campaignIds = array_values(array_filter(array_map('intval', (array)$this->request->get_param('campaignId'))));
+        $donorType = $this->request->get_param('donorType');
 
         if ($search) {
             if (ctype_digit($search)) {
                 $query->where('id', $search);
             } else {
-                $query->whereLike('name', $search);
-                $query->orWhereLike('email', $search);
+                $query->where(static function (WhereQueryBuilder $builder) use ($search) {
+                    $builder
+                        ->whereLike('name', $search)
+                        ->orWhereLike('email', $search);
+                });
             }
         }
 
@@ -222,22 +243,36 @@ class ListDonors extends Endpoint
             $query->where('date_created', $end, '<=');
         }
 
-        if ($campaignId) {
+        if ($campaignIds) {
             $query
-                ->whereIn('id', static function (QueryBuilder $builder) use ($campaignId) {
+                ->whereIn('id', static function (QueryBuilder $builder) use ($campaignIds) {
                     $builder
                         ->from('give_donationmeta')
                         ->distinct()
                         ->select('meta_value')
                         ->where('meta_key', '_give_payment_donor_id')
-                        ->whereIn('donation_id', static function (QueryBuilder $builder) use ($campaignId) {
+                        ->whereIn('donation_id', static function (QueryBuilder $builder) use ($campaignIds) {
                             $builder
                                 ->from('give_donationmeta')
                                 ->select('donation_id')
                                 ->where('meta_key', DonationMetaKeys::CAMPAIGN_ID)
-                                ->where('meta_value', $campaignId);
+                                ->whereIn('meta_value', $campaignIds);
                         });
                 });
+        }
+
+        if ($donorType) {
+            $subscriberIds = static function (QueryBuilder $builder) {
+                $builder
+                    ->from('give_subscriptions')
+                    ->select('customer_id');
+            };
+
+            if ($donorType === 'subscriber') {
+                $query->whereIn('id', $subscriberIds);
+            } else {
+                $query->whereNotIn('id', $subscriberIds);
+            }
         }
 
         return $query;

@@ -49,6 +49,7 @@ class ListDonations extends Endpoint
     /**
      * @inheritDoc
      *
+     * @since TBD Accept a comma list of campaign IDs and a list of form IDs (at most 50 each), and add the donationType parameter.
      * @since 4.19.0 Add formId parameter and accept "none" for campaignId
      * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      * @since 3.4.0
@@ -81,13 +82,27 @@ class ListDonations extends Endpoint
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
-                        'pattern' => '^(\\d*|none)$',
-                        'description' => 'Filter donations by campaign ID, or "none" for donations that have no campaign.',
+                        'pattern' => '^(none|\\d*|\\d+(,\\d+){1,49})$',
+                        'description' => 'Filter donations by campaign ID or a comma-separated list of up to 50 campaign IDs, or "none" for donations that have no campaign.',
                     ],
                     'formId' => [
-                        'type' => 'integer',
+                        'type' => 'array',
                         'required' => false,
-                        'default' => 0,
+                        'default' => [],
+                        'maxItems' => 50,
+                        'items' => [
+                            'type' => 'integer',
+                        ],
+                        'description' => 'Filter donations by one or more form IDs. At most 50.',
+                    ],
+                    'donationType' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'enum' => [
+                            'one-time',
+                            'recurring',
+                        ],
+                        'description' => 'Filter donations by type. Recurring donations have a subscription ID.',
                     ],
                     'search' => [
                         'type' => 'string',
@@ -313,6 +328,24 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * Subquery for donation IDs that belong to a subscription. It uses the (meta_key, meta_value)
+     * index, like the test-mode subquery.
+     *
+     * @since TBD
+     */
+    private function donationIdsWithSubscription(): Closure
+    {
+        return static function (QueryBuilder $builder) {
+            $builder
+                ->select('donation_id')
+                ->from('give_donationmeta')
+                ->where('meta_key', DonationMetaKeys::SUBSCRIPTION_ID)
+                ->whereNotIn('meta_value', ['', '0']);
+        };
+    }
+
+    /**
+     * @since TBD Accept several campaign and form IDs, and filter by donationType.
      * @since 4.19.0 Filter by formId, and by campaignId "none" for donations that have no campaign.
      * @since 4.18.0 Match name and email searches by prefix through indexed subqueries, and filter test mode the same way instead of HAVING
      * @since 4.12.0 Updated status filtering to accept multiple comma-separated values
@@ -335,7 +368,8 @@ class ListDonations extends Endpoint
         $donor = $this->request->get_param('donor');
         $testMode = $this->request->get_param('testMode');
         $campaignId = $this->request->get_param('campaignId');
-        $formId = $this->request->get_param('formId');
+        $formIds = array_values(array_filter(array_map('intval', (array)$this->request->get_param('formId'))));
+        $donationType = $this->request->get_param('donationType');
         $subscriptionId = $this->request->get_param('subscriptionId');
         $status = $this->request->get_param('status');
         $dependencies = [];
@@ -376,16 +410,27 @@ class ListDonations extends Endpoint
                     ->orWhereIn('give_donationmeta_attach_meta_campaignId.meta_value', ['', '0']);
             });
             $dependencies[] = DonationMetaKeys::CAMPAIGN_ID();
-        } elseif ($campaignId) {
-            $query
-                ->where('give_donationmeta_attach_meta_campaignId.meta_value', $campaignId);
-            $dependencies[] = DonationMetaKeys::CAMPAIGN_ID();
+        } elseif ($campaignId !== null && $campaignId !== '') {
+            $campaignIds = array_values(array_filter(array_map('intval', explode(',', (string)$campaignId))));
+
+            if (count($campaignIds) > 1) {
+                $query->whereIn('give_donationmeta_attach_meta_campaignId.meta_value', $campaignIds);
+                $dependencies[] = DonationMetaKeys::CAMPAIGN_ID();
+            } elseif ($campaignIds) {
+                $query->where('give_donationmeta_attach_meta_campaignId.meta_value', $campaignIds[0]);
+                $dependencies[] = DonationMetaKeys::CAMPAIGN_ID();
+            }
         }
 
-        if ($formId) {
-            $query
-                ->where('give_donationmeta_attach_meta_formId.meta_value', $formId);
+        if ($formIds) {
+            $query->whereIn('give_donationmeta_attach_meta_formId.meta_value', $formIds);
             $dependencies[] = DonationMetaKeys::FORM_ID();
+        }
+
+        if ($donationType === 'recurring') {
+            $query->whereIn('ID', $this->donationIdsWithSubscription());
+        } elseif ($donationType === 'one-time') {
+            $query->whereNotIn('ID', $this->donationIdsWithSubscription());
         }
 
         if ($subscriptionId) {

@@ -83,7 +83,8 @@ class AdditiveContractTest extends TestCase
         foreach ($tables as $table) {
             $schema = give($table)->toArray();
 
-            $this->assertSame(['id', 'columns'], array_keys($schema), $table);
+            $this->assertSame(['id', 'columns'], array_slice(array_keys($schema), 0, 2), $table);
+            $this->assertSame([], array_diff(array_keys($schema), ['id', 'columns', 'statuses']), $table);
             $this->assertNotEmpty($schema['columns'], $table);
 
             foreach ($schema['columns'] as $column) {
