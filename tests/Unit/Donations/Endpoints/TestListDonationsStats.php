@@ -197,4 +197,24 @@ class TestListDonationsStats extends TestCase
 
         return $subscription;
     }
+
+    /**
+     * @since TBD
+     */
+    public function testCountsComeFormatted()
+    {
+        Donation::factory()->count(2)->create([
+            'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
+        ]);
+
+        $request = new WP_REST_Request('GET', '/give-api/v2/admin/donations/stats');
+        $data = (new ListDonationsStats())->handleRequest($request)->get_data();
+
+        $this->assertSame(
+            ['donationsCount' => '2', 'oneTimeDonationsCount' => '2', 'recurringDonationsCount' => '0'],
+            $data['formatted']
+        );
+        $this->assertSame(2, $data['donationsCount']);
+    }
 }
