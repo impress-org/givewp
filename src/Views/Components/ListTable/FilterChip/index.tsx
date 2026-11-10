@@ -41,10 +41,13 @@ export default function FilterChip({
     children,
 }: FilterChipProps) {
     const toggleRef = useRef<HTMLButtonElement>(null);
+    const opened = useRef(false);
 
     // The installed Dropdown has no default-open prop in every WordPress version, so open it once on mount.
+    // The ref keeps a second run of the effect (React StrictMode in development) from closing it again.
     useEffect(() => {
-        if (defaultOpen) {
+        if (defaultOpen && !opened.current) {
+            opened.current = true;
             toggleRef.current?.click();
         }
     }, []);
@@ -64,6 +67,7 @@ export default function FilterChip({
                         label={fullText}
                         showTooltip
                         aria-expanded={isOpen}
+                        aria-haspopup="dialog"
                         onClick={onToggle}
                     >
                         {text}
