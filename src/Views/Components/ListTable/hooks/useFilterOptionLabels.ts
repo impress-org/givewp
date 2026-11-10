@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState, useSyncExternalStore} from 'react';
+import {useCallback, useEffect, useRef, useState, useSyncExternalStore} from 'react';
 import {
     claimUnknownValues,
     knownLabel,
@@ -44,6 +44,17 @@ export default function useFilterOptionLabels(
     const lookup = `${source}|${screen ?? ''}|${key}`;
     const [retries, setRetries] = useState({lookup, round: 0});
     const round = retries.lookup === lookup ? retries.round : 0;
+    // Runs the lookup again after a request failed in an effect that new ids had already replaced.
+    const [lateRetry, setLateRetry] = useState(0);
+    const mounted = useRef(true);
+
+    useEffect(() => {
+        mounted.current = true;
+
+        return () => {
+            mounted.current = false;
+        };
+    }, []);
 
     useEffect(() => {
         const wanted = key === '' ? [] : key.split(',').filter((value) => value !== NONE_VALUE);
@@ -64,7 +75,19 @@ export default function useFilterOptionLabels(
                 .then(({options}) => rememberLabels(source, options))
                 .catch(() => {
                     releaseValues(source, missing);
-                    scheduleRetry();
+
+                    if (active) {
+                        scheduleRetry();
+                        return;
+                    }
+
+                    // New ids replaced this effect while the request ran. Its ids may still be selected, and the
+                    // current effect will not ask for them again unless it runs again.
+                    setTimeout(() => {
+                        if (mounted.current) {
+                            setLateRetry((count) => count + 1);
+                        }
+                    }, RETRY_DELAYS_MS[0]);
                 });
         });
 
@@ -73,7 +96,7 @@ export default function useFilterOptionLabels(
             active = false;
             clearTimeout(retryTimer);
         };
-    }, [source, screen, key, lookup, round]);
+    }, [source, screen, key, lookup, round, lateRetry]);
 
     // A new function each time the cache changes, so memoized chip text recomputes.
     return useCallback((value: string) => knownLabel(source, value), [source, version]);

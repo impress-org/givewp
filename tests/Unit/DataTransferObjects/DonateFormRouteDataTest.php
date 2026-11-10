@@ -17,12 +17,37 @@ use Give\Framework\FieldsAPI\Properties\DonationForm\CurrencySwitcherSetting;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @since 3.0.0
  */
 class DonateFormRouteDataTest extends TestCase
 {
+    use RefreshDatabase;
+
+    public function testFinalSubmissionRejectsNonPrimaryEmail(): void
+    {
+        $userId = self::factory()->user->create(['role' => 'subscriber']);
+        \Give\Donors\Models\Donor::factory()->create(['userId' => $userId, 'email' => 'primary@example.org']);
+        $form = DonationForm::factory()->create();
+        wp_set_current_user($userId);
+
+        try {
+            $request = $this->donationRequestData($form, give_get_currency($form->id));
+            $request['email'] = 'unused@example.org';
+            try {
+                DonateFormRouteData::fromRequest($request)->validated();
+                $this->fail('Expected an email validation error.');
+            } catch (DonationFormFieldErrorsException $exception) {
+                $this->assertNotEmpty($exception->getError()->get_error_messages('email'));
+            }
+            $request['email'] = 'primary@example.org';
+            $this->assertSame('primary@example.org', DonateFormRouteData::fromRequest($request)->validated()->email);
+        } finally {
+            wp_set_current_user(0);
+        }
+    }
 
     /**
      * @since 3.17.0 updated to ignore honeypot field
