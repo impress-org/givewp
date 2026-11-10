@@ -338,3 +338,14 @@
         content: '#';
     }
 }
+
+// Long cell text (for example a campaign name) clamps to two lines. The full text stays in the DOM
+// and in the title attribute.
+.givewp-truncated-text {
+    display: -webkit-box;
+    min-inline-size: 11rem;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}

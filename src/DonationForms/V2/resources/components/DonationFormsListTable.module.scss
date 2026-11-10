@@ -1,16 +1,16 @@
 // Styles of the Donation Forms list only: the title cell and the upgrade tooltip.
 
-// The form title keeps the stock DataViews title style, with the builder icon and the Default pill
-// on the same line.
+// The form title keeps the stock DataViews title style. The title, the builder icon and the Default
+// pill flow inline, so a long title wraps and the pill stays on the title line.
 .titleContainer {
-    display: flex;
-    align-items: center;
-    gap: var(--givewp-spacing-2);
+    display: block;
     min-width: 0;
 }
 
 .defaultFormPill {
-    flex-shrink: 0;
+    display: inline-block;
+    margin-inline-start: var(--givewp-spacing-2);
+    white-space: nowrap;
     background: var(--givewp-neutral-200);
     padding: 0 var(--givewp-spacing-2);
     border-radius: var(--givewp-rounded-12);
@@ -19,9 +19,7 @@
 }
 
 .migratedForm {
-    display: flex;
-    align-items: center;
-    gap: var(--givewp-spacing-1);
+    display: inline;
     min-width: 0;
 
     :global(.interweave) {
@@ -30,9 +28,10 @@
 
     .tooltipContainer {
         position: relative;
-        flex-shrink: 0;
-        display: flex;
+        display: inline-flex;
         align-items: center;
+        margin-inline-end: var(--givewp-spacing-1);
+        vertical-align: middle;
         z-index: 2;
 
         svg {
