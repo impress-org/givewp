@@ -6,6 +6,7 @@ import {date, getSettings, gmdateI18n} from '@wordpress/date';
  * @since TBD
  */
 export function siteToday(): string {
+    // The typings ask for all three arguments; `undefined` means now, in the site's zone.
     return date('Y-m-d', undefined, undefined);
 }
 
