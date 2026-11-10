@@ -58,7 +58,7 @@ export default function FilterChip({
         <div className={className}>
             <Dropdown
                 className="givewp-filter-chip__dropdown"
-                popoverProps={{placement: 'bottom-start'}}
+                popoverProps={{placement: 'bottom-start', role: 'dialog', 'aria-label': fullText}}
                 contentClassName="givewp-filter-chip__content"
                 renderToggle={({isOpen, onToggle}) => (
                     <Button
