@@ -4,6 +4,7 @@ namespace Give\Campaigns\ListTable\Columns;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignsDataRepository;
+use Give\Framework\ListTable\ColumnKind;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -49,5 +50,32 @@ class DonationsCountColumn extends ModelColumn
         );
 
         return apply_filters("givewp_list_table_cell_value_{$this::getId()}_content", $label, $model, $this);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::COUNT;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @param Campaign $model
+     */
+    public function getRawValue($model)
+    {
+        /**
+         * @var CampaignsDataRepository $campaignsData
+         */
+        $campaignsData = $this->getListTableData();
+
+        return $campaignsData->getDonationsCount($model);
     }
 }
