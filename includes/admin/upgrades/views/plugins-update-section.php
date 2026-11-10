@@ -4,8 +4,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 /**
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output. Add translators comments.
  */
 /* @var Give_Updates $give_updates */
 $plugins = $give_updates->get_updates( 'plugin' );
@@ -56,7 +58,9 @@ foreach ( $plugins as $plugin_data ) {
 
 			echo sprintf(
 				' &ndash; %s &ndash; %s',
+				/* translators: %s: Author name */
 				sprintf( esc_html( _x( 'by %s', 'by author', 'give' ) ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) ),
+				/* translators: %s: Version number */
 				sprintf( esc_html( __( '(Latest Version: %s)', 'give' ) ), esc_html( $plugin_data['update']->new_version ) )
 			);
 			?>

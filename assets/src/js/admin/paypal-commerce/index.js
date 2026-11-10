@@ -119,7 +119,7 @@ window.addEventListener('DOMContentLoaded', function () {
                         ajaxurl +
                             `?action=give_paypal_commerce_get_partner_url&countryCode=${countryCode}&mode=${mode}&accountType=${
                                 connectionAccountType ?? 'EXPRESS_CHECKOUT'
-                            }`
+                            }&_wpnonce=${encodeURIComponent(window.givePayPalCommerce.partnerUrlNonce)}`
                     );
                     const data = await response.json();
 

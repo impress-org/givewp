@@ -34,7 +34,7 @@ class ValidateDonation
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 3.22.0 replaced params to $email, $comment, $firstName, $lastName
      * @since 3.15.0
      *

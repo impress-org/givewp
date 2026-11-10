@@ -145,7 +145,7 @@ class Give_Cache_Setting {
 	/**
 	 * Load plugin settings
 	 *
-	 * @since TBD Prepare SQL with placeholders.
+	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since  2.4.0
 	 * @access private
 	 */
@@ -172,7 +172,7 @@ class Give_Cache_Setting {
 			}
 		}
 
-		$results = $wpdb->get_results(
+		$results = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Loads all GiveWP settings rows in one query, where get_option() would run one query per option; the result is stored with wp_cache_set just below.
 			$wpdb->prepare(
 				"SELECT option_name, option_value FROM $wpdb->options WHERE option_name IN (" . implode( ',', array_fill( 0, count( $this->db_option_ids ), '%s' ) ) . ') ',
 				$this->db_option_ids

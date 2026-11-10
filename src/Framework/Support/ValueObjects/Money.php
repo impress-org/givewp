@@ -102,7 +102,7 @@ class Money implements JsonSerializable, Arrayable
      * Any instance of this class in arguments will be converted to the underlying vendor Money instance.
      * If the returned value is an instance of the vendor Money class, it will be converted to an instance of this class.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.20.0
      *
      * @param $name

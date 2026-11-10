@@ -2,12 +2,14 @@
 /**
  * This template is used to display the login form with [give_login]
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 $get_data = give_clean( filter_input_array( INPUT_GET ) );
 

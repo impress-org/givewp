@@ -1,10 +1,10 @@
 <?php
-/** @since TBD Escape output. */
+/** @since 4.19.1 Escape output. */
 
 /**
  * @var int $formId
  *
- * @since TBD Escape translated output.
+ * @since 4.19.1 Escape translated output.
  */
 
 use Give\DonationForms\DonationQuery;
@@ -13,6 +13,8 @@ use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModal;
 if (!defined('ABSPATH')) {
     exit;
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 /**
  * @since 3.14.0 Use sumIntendedAmount() and getDonationCount() methods to retrieve the proper values for the raised amount and donations count

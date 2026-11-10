@@ -29,7 +29,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     abstract public static function name(): string;
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @throws Exception
      */
     public function __construct(BlockModel $block)
@@ -120,7 +120,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     /**
      * Validates that the given value is a valid type for the given attribute.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 3.8.0
      *
      * @throws InvalidArgumentException

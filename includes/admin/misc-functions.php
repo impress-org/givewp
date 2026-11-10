@@ -17,7 +17,7 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
 
 	$post_options = [ '' => '' ]; // Blank option
 
-	if ( ( ! isset( $_GET['page'] ) || 'give-settings' != $_GET['page'] ) && ! $force ) {
+	if ( ( ! isset( $_GET['page'] ) || 'give-settings' != $_GET['page'] ) && ! $force ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page name; it only decides whether to load the post options and saves nothing.
 		return $post_options;
 	}
 
@@ -115,7 +115,7 @@ function give_slug_to_title( $string, $filters = [] ) {
 /**
  * Display the API Keys
  *
- * @since       TBD Escape output.
+ * @since       4.19.1 Escape output.
  * @since       1.0
  * @return      void
  */
@@ -208,7 +208,7 @@ function give_get_format_md( $readme ) {
  * @param bool   $echo
  *
  * @return string
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.0
  */
 function give_add_ons_feed( $feed_type = '', $echo = true ) {

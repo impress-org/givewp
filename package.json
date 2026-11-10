@@ -47,11 +47,11 @@
         "files": [
             {
                 "path": "readme.txt",
-                "strategy": "bin/lib/changelog-strategy.js"
+                "strategy": "stellarwp-readme"
             },
             {
                 "path": "changelog.txt",
-                "strategy": "bin/lib/changelog-strategy.js"
+                "strategy": "stellarwp-readme"
             }
         ]
     },
@@ -68,7 +68,7 @@
     ],
     "devDependencies": {
         "@playwright/test": "^1.62.1",
-        "@stellarwp/changelogger": "^0.10.0",
+        "@stellarwp/changelogger": "^1.0.0",
         "@types/lodash": "^4.14.199",
         "@types/node": "^20.19.43",
         "@types/react": "^18.0.38",

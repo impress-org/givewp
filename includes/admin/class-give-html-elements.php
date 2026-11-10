@@ -133,6 +133,7 @@ class Give_HTML_Elements {
 	 *
 	 * Renders an HTML Dropdown of all the Give Forms.
 	 *
+	 * @since 4.19.1 Add translators comments.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -203,6 +204,7 @@ class Give_HTML_Elements {
 			$options[0] = $args['placeholder'];
 			foreach ( $forms as $form ) {
 				$form_title = empty( $form->post_title )
+					/* translators: %s: Donation form ID */
 					? sprintf( __( 'Untitled (#%s)', 'give' ), $form->ID )
 					: $form->post_title;
 
@@ -230,6 +232,7 @@ class Give_HTML_Elements {
 	}
 
     /**
+     * @since 4.19.1 Add translators comments.
      * @since 4.1.0
      */
     public function campaigns_dropdown($args = [])
@@ -296,6 +299,7 @@ class Give_HTML_Elements {
 
             if ($selectedCampaign) {
                 $selected_title = empty($selectedCampaign->title)
+                    /* translators: %s: Campaign ID */
                     ? sprintf(__('Untitled (#%s)', 'give'), $selectedCampaign->id)
                     : $selectedCampaign->title;
                 $options[$args['selected']] = esc_html($selected_title);
@@ -307,6 +311,7 @@ class Give_HTML_Elements {
             $options[0] = $args['placeholder'];
             foreach ($campaigns as $campaign) {
                 $campaign_title = empty($campaign->title)
+                    /* translators: %s: Campaign ID */
                     ? sprintf(__('Untitled (#%s)', 'give'), $campaign->id)
                     : $campaign->title;
 
@@ -501,7 +506,7 @@ class Give_HTML_Elements {
 	 *
 	 * Renders an HTML Dropdown of years.
 	 *
-	 * @since  TBD Use gmdate() instead of date().
+	 * @since  4.19.1 Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -542,7 +547,7 @@ class Give_HTML_Elements {
 	 *
 	 * Renders an HTML Dropdown of months.
 	 *
-	 * @since  TBD Use gmdate() instead of date().
+	 * @since  4.19.1 Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -885,7 +890,7 @@ class Give_HTML_Elements {
 		// Ensure selected user is not included in initial query.
 		// This is because sites with many users, it's not a guarantee the selected user will be returned.
 		if ( ! empty( $args['selected'] ) ) {
-			$get_users_args['exclude'] = $args['selected'];
+			$get_users_args['exclude'] = $args['selected']; // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- this is the get_users() exclude argument; it drops only the one selected user.
 		}
 
 		// Initial users array.

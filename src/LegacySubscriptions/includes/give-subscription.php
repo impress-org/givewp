@@ -219,6 +219,8 @@ class Give_Subscription {
 	/**
 	 * Magic __get function to dispatch a call to retrieve a private property.
 	 *
+	 * @since 4.19.1 Add translators comments.
+	 *
 	 * @param $key
 	 *
 	 * @return mixed|WP_Error
@@ -231,6 +233,7 @@ class Give_Subscription {
 
 		} else {
 
+			/* translators: %s: Name of the missing property */
 			return new WP_Error( 'give-subscription-invalid-property', sprintf( __( 'Can\'t get property %s', 'give' ), $key ) );
 
 		}
@@ -323,6 +326,8 @@ class Give_Subscription {
 	 *
 	 * Updates a subscription.
 	 *
+	 * @since 4.19.1 Number the placeholders and add translators comments.
+	 *
 	 * @param array $args Array of fields to update
 	 *
 	 * @return bool
@@ -332,7 +337,8 @@ class Give_Subscription {
         $old_status = '';
 		if ( isset( $args['status'] ) && strtolower( $this->status ) !== strtolower( $args['status'] ) ) {
             $old_status = $this->status;
-			$this->add_note( sprintf( __( 'Status changed from %s to %s', 'give' ), $this->status, $args['status'] ) );
+			/* translators: 1: Previous subscription status, 2: New subscription status */
+			$this->add_note( sprintf( __( 'Status changed from %1$s to %2$s', 'give' ), $this->status, $args['status'] ) );
 		}
 
         do_action( 'give_recurring_pre_update_subscription', $this->id, $args, $this );
@@ -663,7 +669,7 @@ class Give_Subscription {
 	 * subscription status as necessary. If the subscription has reached the total number of bill times the
 	 * subscription will be completed.
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since       1.0
 	 * @return bool
 	 */
@@ -799,6 +805,8 @@ class Give_Subscription {
 	 *
 	 * Marks a subscription as cancelled.
 	 *
+	 * @since 4.19.1 Add translators comments.
+	 *
 	 * @return void
 	 */
 	public function cancel() {
@@ -825,6 +833,7 @@ class Give_Subscription {
 
 			}
 
+			/* translators: 1: Subscription ID, 2: Name of the user who cancelled it */
 			$note = sprintf( __( 'Subscription #%1$d cancelled by %2$s', 'give' ), $this->id, $user );
 			$this->donor->add_note( $note );
 			$this->status = 'cancelled';
@@ -1075,7 +1084,7 @@ class Give_Subscription {
 	/**
 	 * Get the Subscription Renewal Date.
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 *
 	 * @param bool $localized Flag to return date in localized format or not
 	 *
@@ -1123,7 +1132,7 @@ class Give_Subscription {
 	/**
 	 * Payment Exists.
 	 *
-	 * @since TBD Prepare the SQL query with placeholders.
+	 * @since 4.19.1 Prepare the SQL query with placeholders.
 	 *
 	 * @param string $txn_id transaction ID.
 	 *
@@ -1138,7 +1147,7 @@ class Give_Subscription {
 
 		$donation_id_col_name = Give()->payment_meta->get_meta_type() . '_id';
 
-		$donation = $wpdb->get_var(
+		$donation = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds a donation by transaction ID in the GiveWP donation meta table; WordPress has no cache layer for it.
 			$wpdb->prepare(
 				"
 				SELECT %i
@@ -1302,6 +1311,7 @@ class Give_Subscription {
 	 */
 	private function mayBeSanitizeWebhookResponseDonationAmount( $donationAmount, $currencyCode ) {
 		// Is processing webhook for any payment gateway.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- only checks that a gateway webhook is running; the webhook is verified by its gateway and cannot send a WordPress nonce.
 		if ( empty( $_GET['give-listener'] ) ) {
 			return $donationAmount;
 		}

@@ -21,6 +21,7 @@ class PayPalWebhooks implements Route
      */
     public function callController()
     {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- PayPal webhook route; the controller verifies the webhook signature with PayPal, and PayPal cannot send a WordPress nonce.
         if (isset($_GET['give-listener']) && $_GET['give-listener'] === 'paypal-commerce') {
             give(Controller::class)->handle();
 

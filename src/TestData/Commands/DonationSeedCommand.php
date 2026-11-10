@@ -7,6 +7,8 @@ use Give\TestData\Factories\DonationFactory as DonationFactory;
 use Give\TestData\Repositories\DonationRepository as DonationRepository;
 use WP_CLI;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- WP-CLI test data code; it writes and reads fake data directly for speed, runs only from the command line, and is not cached.
+
 /**
  * Class DonationSeedCommand
  * @package Give\TestData\Commands

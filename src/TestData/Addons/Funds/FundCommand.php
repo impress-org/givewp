@@ -5,6 +5,8 @@ namespace Give\TestData\Addons\Funds;
 use Exception;
 use WP_CLI;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- WP-CLI test data code; it writes and reads fake data directly for speed, runs only from the command line, and is not cached.
+
 /**
  * Class FundCommand
  * @package Give\TestData\Funds

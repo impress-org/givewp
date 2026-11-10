@@ -52,7 +52,7 @@ class FormPreview
      **/
     public function setup_form_preview()
     {
-        if (empty($_GET['page']) || $this->slug !== $_GET['page'] || ! current_user_can('manage_give_settings')) { // WPCS: CSRF ok, input var ok.
+        if (empty($_GET['page']) || $this->slug !== $_GET['page'] || ! current_user_can('manage_give_settings')) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides whether the form preview renders and saves nothing.
             return;
         } else {
             $this->render_page();

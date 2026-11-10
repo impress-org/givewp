@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get formatted address
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  *
@@ -113,6 +113,7 @@ function give_get_format_address( $address, $address_args = array() ) {
  *
  * Renders the donors page contents.
  *
+ * @since 4.19.1 Unslash the requested view.
  * @since 4.13.1 add early return if showing new details page
  * @since  1.0
  * @return void
@@ -123,7 +124,7 @@ function give_donors_page() {
     }
 
 	$default_views  = give_donor_views();
-	$requested_view = isset( $_GET['view'] ) ? sanitize_text_field( $_GET['view'] ) : 'donors';
+	$requested_view = isset( $_GET['view'] ) ? sanitize_text_field( wp_unslash( $_GET['view'] ) ) : 'donors'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only view name; it selects which donor screen to show and saves nothing.
 	if ( array_key_exists( $requested_view, $default_views ) && function_exists( $default_views[ $requested_view ] ) ) {
 		give_render_donor_view( $requested_view, $default_views );
 	}
@@ -168,7 +169,7 @@ function give_donor_tabs() {
 /**
  * List table of donors.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  1.0
  * @return void
  */
@@ -215,7 +216,7 @@ function give_donors_list() {
 /**
  * Renders the donor view wrapper.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output.
  * @since  4.16.8 Relinking donors is handled only through the nonce-protected edit action.
  * @since  1.0
  *
@@ -235,12 +236,12 @@ function give_render_donor_view( $view, $callbacks ) {
 		$render = false;
 	}
 
-	if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
+	if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only donor id; it only picks which donor to show and saves nothing.
 		give_set_error( 'give-invalid_donor', __( 'Invalid Donor ID.', 'give' ) );
 		$render = false;
 	}
 
-	$donor_id          = (int) $_GET['id'];
+	$donor_id          = (int) $_GET['id']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only donor id; it only picks which donor to show and saves nothing.
 	$donor             = new Give_Donor( $donor_id );
 
 	if ( empty( $donor->id ) ) {
@@ -306,7 +307,7 @@ function give_render_donor_view( $view, $callbacks ) {
 /**
  * View a donor
  *
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings. Add translators comments.
  * @since 4.19.0.1 Issue the address form nonce for the displayed donor.
  * @since 4.16.4 Escaped the donor company and phone output.
  * @since 3.7.0 Add "phone" field
@@ -565,6 +566,7 @@ function give_donor_view( $donor ) {
 					<span class="dashicons dashicons-heart"></span>
 					<?php
 					// Completed Donations.
+					/* translators: %d: Number of completed donations */
 					$completed_donations_text = sprintf( _n( '%d Completed Donation', '%d Completed Donations', $donor->purchase_count, 'give' ), $donor->purchase_count );
 					echo esc_html( apply_filters( 'give_donor_completed_donations', $completed_donations_text, $donor ) );
 					?>
@@ -1041,7 +1043,7 @@ function give_donor_view( $donor ) {
 /**
  * View the notes of a donor.
  *
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings. Sanitize the page number.
  * @since 4.16.6 Escaped the donor name output in the donor notes header.
  * @since 4.6.0 Escape donor note
  * @since  1.0
@@ -1052,8 +1054,7 @@ function give_donor_view( $donor ) {
  */
 function give_donor_notes_view( $donor ) {
 
-	$paged       = isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) ? $_GET['paged'] : 1;
-	$paged       = absint( $paged );
+	$paged       = isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page number; it only picks which notes page to show and saves nothing.
 	$note_count  = $donor->get_notes_count();
 	$per_page    = apply_filters( 'give_donor_notes_per_page', 20 );
 	$total_pages = ceil( $note_count / $per_page );
@@ -1118,7 +1119,7 @@ function give_donor_notes_view( $donor ) {
 /**
  * The donor delete view.
  *
- * @since TBD Escape output, including translated strings.
+ * @since 4.19.1 Escape output, including translated strings.
  * @since 4.16.6 Escaped the donor name output in the delete donor view.
  * @since  1.0
  *

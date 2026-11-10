@@ -2,7 +2,7 @@
 /**
  * This template is used to display the donation summary with [give_receipt]
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 
 use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
@@ -10,6 +10,8 @@ use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 global $give_receipt_args, $donation;
 

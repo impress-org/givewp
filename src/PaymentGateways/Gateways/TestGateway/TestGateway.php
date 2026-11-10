@@ -118,7 +118,7 @@ class TestGateway extends PaymentGateway implements WebhookNotificationsListener
     public function webhookNotificationsListener()
     {
         try {
-            $webhookNotification = give_clean($_REQUEST);
+            $webhookNotification = give_clean($_REQUEST); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public test webhook sample; a WordPress nonce cannot be sent here.
 
             /**
              * Allow developers to handle the webhook notification.

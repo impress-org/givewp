@@ -2,12 +2,14 @@
 /**
  * This template is used to display the donation history of the current user.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output. Add translators comments. Unslash and sanitize the request URI.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 $donations             = array();
 $donation_history_args = Give()->session->get( 'give_donation_history_args' );
@@ -48,7 +50,9 @@ if ( is_user_logged_in() ) {
 			$message = (string) apply_filters(
 				'give_email_access_requests_exceed_notice',
 				sprintf(
+					/* translators: %s: Wait time, for example "5 minutes" */
 					__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
+					/* translators: %s: Number of minutes */
 					sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
 				),
 				$value
@@ -211,7 +215,7 @@ if ( $donations ) : ?>
 									add_query_arg(
 										'donation_id',
 										$post->ID,
-                                        $_SERVER['REQUEST_URI']
+										isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : ''
 									)
 								),
 								esc_attr( $post->post_status ),
@@ -226,7 +230,7 @@ if ( $donations ) : ?>
 									add_query_arg(
 										'donation_id',
 										$post->ID,
-                                        $_SERVER['REQUEST_URI']
+										isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : ''
                                     )
 								),
 								esc_html( __( 'View Receipt &raquo;', 'give' ) ),

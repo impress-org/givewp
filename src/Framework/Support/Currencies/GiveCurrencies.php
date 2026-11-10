@@ -25,7 +25,7 @@ class GiveCurrencies implements Currencies
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.10.0
      */
     public function subunitFor(Currency $currency): int

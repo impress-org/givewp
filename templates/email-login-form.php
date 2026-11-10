@@ -5,12 +5,14 @@
  * This template is used to display an email form which will when submitted send an update donation receipt and also
  * refresh the users session
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output. Add translators comments. Load the reCAPTCHA script with wp_enqueue_script().
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 global $give_access_form_outputted;
 
@@ -25,7 +27,7 @@ $recaptcha_secret = give_get_option( 'recaptcha_secret' );
 $enable_recaptcha = ( give_is_setting_enabled( give_get_option( 'enable_recaptcha' ) ) ) && ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ? true : false;
 
 // Email already sent?
-if ( isset( $_POST['email-access-sent'] ) ) {
+if ( isset( $_POST['email-access-sent'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only flag set by the email access form after it runs; it only picks which notice to show and saves nothing.
 
 	/**
 	 * Filter to modify access mail send notice
@@ -46,7 +48,7 @@ if ( isset( $_POST['email-access-sent'] ) ) {
 
 	$is_form_required = false;
 
-} elseif ( isset( $_POST['email-access-exhausted'] ) ) {
+} elseif ( isset( $_POST['email-access-exhausted'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only flag set by the email access form after it runs; it only picks which notice to show and saves nothing.
 
 	$value = Give()->email_access->verify_throttle / 60;
 
@@ -63,7 +65,9 @@ if ( isset( $_POST['email-access-sent'] ) ) {
 	$message = (string) apply_filters(
 		'give_email_access_requests_exceed_notice',
 		sprintf(
+			/* translators: %s: Wait time, for example "5 minutes" */
 			__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
+			/* translators: %s: Number of minutes */
 			sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
 		),
 		$value
@@ -131,7 +135,10 @@ if ( true === $is_form_required ) {
 					})(jQuery);
 				</script>
 
-				<script src='https://www.google.com/recaptcha/api.js'></script>
+				<?php
+				// External Google script: its URL has no version of ours, so the version stays null.
+				wp_enqueue_script( 'give-google-recaptcha', 'https://www.google.com/recaptcha/api.js', [], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- external Google script, not versioned by GiveWP.
+				?>
 				<div class="g-recaptcha" data-sitekey="<?php echo esc_attr( $recaptcha_key ); ?>"></div>
 				<input type="hidden" name="give_ip" class="give_ip" value=""/>
 			<?php endif; ?>

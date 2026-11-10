@@ -10,7 +10,7 @@ class DeregisterEntityScripts
 {
     public function __invoke()
     {
-        if ( ! isset($_GET['page']) || ! in_array($_GET['page'], ['et_theme_builder', 'et_divi_options'])) {
+        if ( ! isset($_GET['page']) || ! in_array($_GET['page'], ['et_theme_builder', 'et_divi_options'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides whether the entity scripts are deregistered.
             return;
         }
 

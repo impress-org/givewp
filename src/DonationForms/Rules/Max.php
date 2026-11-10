@@ -4,6 +4,7 @@ namespace Give\DonationForms\Rules;
 
 use Closure;
 use Give\DonationForms\Rules\Concerns\HasExemptAmounts;
+use Give\DonationForms\Rules\Concerns\ParsesAmountAsMoney;
 use Give\Vendors\StellarWP\Validation\Config;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidatesOnFrontEnd;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
@@ -17,6 +18,7 @@ use function is_numeric;
 class Max implements ValidationRule, ValidatesOnFrontEnd
 {
     use HasExemptAmounts;
+    use ParsesAmountAsMoney;
 
     /**
      * @var numeric
@@ -76,13 +78,24 @@ class Max implements ValidationRule, ValidatesOnFrontEnd
     /**
      * @inheritDoc
      *
+     * @since 4.19.1 Number the placeholders and add translators comments.
+     * @since 4.19.0.2 Compare the amount as parsed into Money in the submitted currency.
      * @since 4.16.8 Skip amounts the admin configured on the form, and report exceeding the maximum instead of
      *            repeating the minimum wording.
      * @since 3.0.0
      **/
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
-        $value = $this->sanitize($value);
+        if (is_numeric($value)) {
+            $value = $this->parseAmount((string)$value, $this->submittedCurrency($values));
+
+            if ($value === null) {
+                /* translators: %s: Field label */
+                $fail(sprintf(__('%s must be a valid amount', 'give'), '{field}'));
+
+                return;
+            }
+        }
 
         if ($this->isExemptAmount($value)) {
             return;
@@ -90,11 +103,13 @@ class Max implements ValidationRule, ValidatesOnFrontEnd
 
         if (is_numeric($value)) {
             if ($value > $this->getSize()) {
-                $fail(sprintf(__('%s must be less than or equal to %s', 'give'), '{field}', $this->getSize()));
+                /* translators: 1: Field label, 2: Maximum value */
+                $fail(sprintf(__('%1$s must be less than or equal to %2$s', 'give'), '{field}', $this->getSize()));
             }
         } elseif (is_string($value)) {
             if (mb_strlen($value) > $this->getSize()) {
-                $fail(sprintf(__('%s must be less than or equal to %d characters', 'give'), '{field}', $this->getSize()));
+                /* translators: 1: Field label, 2: Maximum number of characters */
+                $fail(sprintf(__('%1$s must be less than or equal to %2$d characters', 'give'), '{field}', $this->getSize()));
             }
         } else {
             Config::throwValidationException("Field value must be a number or string");

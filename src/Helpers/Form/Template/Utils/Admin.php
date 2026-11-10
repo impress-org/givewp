@@ -13,7 +13,7 @@ class Admin
     /**
      * Render template setting in form metabox.
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.7.0
      *
      * @param Template $template

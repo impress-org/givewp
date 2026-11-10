@@ -54,8 +54,10 @@ class PaymentGateways
      */
     public static function isShowing(): bool
     {
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only tab and post type checks; they only decide whether the promotion shows.
         $isGatewaysTab = isset($_GET['tab']) && $_GET['tab'] === 'gateways';
         $isGiveFormsPostType = isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
+        // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
         return $isGiveFormsPostType && $isGatewaysTab;
     }

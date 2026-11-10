@@ -2,7 +2,7 @@
 /**
  * Payment receipt view.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 2.7.0
  */
 
@@ -11,6 +11,8 @@ use Give\Views\IframeContentView;
 if (!defined('ABSPATH')) {
     exit;
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 $pageId     = give_get_option('success_page');
 $iframeView = new IframeContentView();

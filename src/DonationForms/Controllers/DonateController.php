@@ -210,7 +210,7 @@ class DonateController
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message. Add translators comments.
      *
      * @throws PaymentGatewayException
      */
@@ -221,6 +221,7 @@ class DonateController
 
             throw new PaymentGatewayException(
                 sprintf(
+                    /* translators: %s: Payment gateway name */
                     esc_html__(
                         "[%s] This payment gateway does not support recurring payments, please try selecting another payment gateway.",
                         'give'

@@ -318,6 +318,7 @@ class CampaignRepository
 
         throw new InvalidArgumentException(
             sprintf(
+                /* translators: %s: Campaign title */
                 __('This form is the default form for the campaign "%s". Choose a new default form for that campaign first.', 'give'), // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by DonationFormsRequestController and returned as a JSON 'message' string, never rendered as HTML; esc_html() here would double-encode the campaign title.
                 $campaign->title // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- see the note above.
             )
@@ -460,7 +461,7 @@ class CampaignRepository
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.0.0
      */
     private function validateProperties(Campaign $campaign): void

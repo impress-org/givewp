@@ -21,10 +21,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Disconnects user from the Give Stripe Connected App.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 function give_stripe_connect_deauthorize() {
-	$get_vars = give_clean( $_GET );
+	$get_vars = give_clean( $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only notice params; they only decide which admin notice to show and save nothing.
 
 	// Be sure only to deauthorize when param present.
 	if ( ! isset( $get_vars['stripe_disconnected'] ) ) {
@@ -85,7 +85,7 @@ add_action( 'give_view_donation_details_totals_after', 'give_stripe_opt_refund',
 /**
  * Process refund in Stripe.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output. Add translators comments.
  * @since  2.5.0
  * @access public
  *
@@ -97,7 +97,7 @@ add_action( 'give_view_donation_details_totals_after', 'give_stripe_opt_refund',
  */
 function give_stripe_process_refund( $donation_id, $new_status, $old_status ) {
 
-	$stripe_opt_refund_value = ! empty( $_POST['give_stripe_opt_refund'] ) ? give_clean( $_POST['give_stripe_opt_refund'] ) : '';
+	$stripe_opt_refund_value = ! empty( $_POST['give_stripe_opt_refund'] ) ? give_clean( $_POST['give_stripe_opt_refund'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data; the refund checkbox is posted by the donation details form, and give_update_payment_details() verifies its nonce with check_admin_referer() before the status changes; other code that changes the status is responsible for its own nonce.
 	$can_process_refund      = ! empty( $stripe_opt_refund_value ) ? $stripe_opt_refund_value : false;
 
 	// Only move forward if refund requested.
@@ -163,7 +163,9 @@ function give_stripe_process_refund( $donation_id, $new_status, $old_status ) {
 	} catch ( \Stripe\Error\Base $e ) {
 		// Refund issue occurred.
 		$log_message  = __( 'The Stripe payment gateway returned an error while refunding a donation.', 'give' ) . '<br><br>';
+		/* translators: %s: Error message */
 		$log_message .= sprintf( esc_html__( 'Message: %s', 'give' ), $e->getMessage() ) . '<br><br>';
+		/* translators: %s: Error code */
 		$log_message .= sprintf( esc_html__( 'Code: %s', 'give' ), $e->getCode() );
 
 		// Log it with DB.
@@ -297,6 +299,7 @@ add_action( 'admin_notices', 'give_stripe_show_connect_banner' );
 /**
  * Register Currency related admin notices.
  *
+ * @since 4.19.1 Add translators comments.
  * @since 2.6.1
  *
  * @return void
@@ -321,6 +324,7 @@ function give_stripe_show_currency_notice() {
 				'type'        => 'error',
 				'dismissible' => false,
 				'description' => sprintf(
+					/* translators: %s: URL of the currency settings page */
 					__( 'The currency must be set as "Euro (&euro;)" within Give\'s <a href="%s">Currency Settings</a> in order to collect donations through the Stripe - SEPA Direct Debit Payment Gateway.', 'give' ),
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=general&section=currency-settings' )
 				),
@@ -342,6 +346,7 @@ function give_stripe_show_currency_notice() {
 				'type'        => 'error',
 				'dismissible' => false,
 				'description' => sprintf(
+					/* translators: %s: URL of the currency settings page */
 					__( 'The currency must be set as "AUD (&dollar;)" within Give\'s <a href="%s">Currency Settings</a> in order to collect donations through the Stripe - BECS Direct Debit Payment Gateway.', 'give' ),
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=general&section=currency-settings' )
 				),
@@ -360,7 +365,7 @@ add_action( 'admin_notices', 'give_stripe_show_currency_notice' );
  * @param  int  $donationId  Donation ID.
  *
  * @return void
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 2.7.0
  *
  */

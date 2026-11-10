@@ -7,10 +7,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 /**
  * This template is used to display the goal with [give_goal]
  *
- * @since TBD Escape output and use gmdate() instead of date().
+ * @since 4.19.1 Escape output and use gmdate() instead of date().
  * @since 4.16.3 Escaped the goal color when rendering the progress bar.
  */
 

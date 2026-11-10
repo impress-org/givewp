@@ -11,7 +11,7 @@ class Hooks
      * A function which extends the WordPress add_action method to handle the instantiation of a class
      * once the action is fired. This prevents the need to instantiate a class before adding it to hook.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.8.0
      *
      * @param string $tag
@@ -52,7 +52,7 @@ class Hooks
      * A function which extends the WordPress add_filter method to handle the instantiation of a class
      * once the filter is fired. This prevents the need to instantiate a class before adding it to hook.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.8.0
      *
      * @param string $tag

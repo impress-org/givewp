@@ -41,7 +41,7 @@ class Give_Scripts {
 	 * @since 2.1.0
 	 */
 	public function __construct() {
-		$this->direction      = ( is_rtl() || isset( $_GET['d'] ) && 'rtl' === $_GET['d'] ) ? '.rtl' : '';
+		$this->direction      = ( is_rtl() || isset( $_GET['d'] ) && 'rtl' === $_GET['d'] ) ? '.rtl' : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only display param; it only picks the RTL stylesheet and saves nothing.
 		self::$scripts_footer = give_is_setting_enabled( give_get_option( 'scripts_footer' ) ) ? true : false;
 		$this->init();
 	}
@@ -263,6 +263,7 @@ class Give_Scripts {
 	/**
 	 * Localize admin scripts.
      *
+	 * @since 4.19.1 Add translators comments.
      * @since 2.25.3 Add nonce for payment note AJAX requests.
      * @since 4.15.4   Add nonce for give_set_notification_status AJAX request.
 	 */
@@ -326,6 +327,7 @@ class Give_Scripts {
 			'delete_test_donor'                 => __( 'Are you sure you want to delete all the test donors? This process will also delete test donations as well.', 'give' ),
 			'delete_import_donor'               => __( 'Are you sure you want to delete all the imported donors? This process will also delete imported donations as well.', 'give' ),
 			'delete_donations_only'             => __( 'Are you sure you want to delete all the donations in the specfied date range?', 'give' ),
+			/* translators: 1: Decimal separator, 2: Thousand separator */
 			'price_format_guide'                => sprintf( __( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator ),
 			/* translators : %s: Donation form options metabox */
 			'confirm_before_remove_row_text'    => __( 'Do you want to delete this item?', 'give' ),
@@ -428,7 +430,7 @@ class Give_Scripts {
 	/**
 	 * Global admin head.
 	 *
-	 * @since TBD Escape output.
+	 * @since 4.19.1 Escape output.
 	 */
 	public function global_admin_head() {
 		?>

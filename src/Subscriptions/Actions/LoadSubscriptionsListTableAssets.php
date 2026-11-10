@@ -50,7 +50,7 @@ class LoadSubscriptionsListTableAssets
             'give-admin-ui-font',
             'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400..700&display=swap',
             [],
-            null
+            null // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- external Google Fonts stylesheet, not versioned by GiveWP.
         );
 
         wp_enqueue_style('givewp-design-system-foundation');

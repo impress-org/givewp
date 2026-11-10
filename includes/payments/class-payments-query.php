@@ -81,7 +81,7 @@ class Give_Payments_Query extends Give_Stats {
 			'user'            => null, // deprecated, use donor
 			'donor'           => null,
 			'status'          => give_get_payment_status_keys(),
-			'meta_key'        => null,
+			'meta_key'        => null, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Null default for the meta_key arg; callers set it when they sort or filter by meta.
 			'year'            => null,
 			'month'           => null,
 			'day'             => null,
@@ -310,7 +310,7 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Get payments by group
 	 *
-	 * @since TBD Document why the query is safe.
+	 * @since 4.19.1 Document why the query is safe.
 	 * @since  1.8.17
 	 * @access public
 	 *
@@ -328,7 +328,7 @@ class Give_Payments_Query extends Give_Stats {
 
 				$this->set_filters();
 
-				$new_results = $wpdb->get_results( $this->get_sql(), ARRAY_N ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare(), WP_Date_Query, WP_Meta_Query, is_numeric, absint and allowlisted fragments.
+				$new_results = $wpdb->get_results( $this->get_sql(), ARRAY_N ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() builds the query from prepare(), WP_Date_Query, WP_Meta_Query, is_numeric, absint and allowlisted fragments. Grouped stats query built by get_sql(); WP_Query cannot return grouped totals.
 
 				$this->unset_filters();
 
@@ -368,7 +368,7 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * If querying a specific date, add the proper filters.
 	 *
-	 * @since TBD Use gmdate() instead of date().
+	 * @since 4.19.1 Use gmdate() instead of date().
 	 * @since  1.0
 	 * @access public
 	 *
@@ -827,7 +827,7 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * Note: Internal purpose only. We are developing on this fn.
 	 *
-	 * @since TBD Prepare the post status list and allowlist the order.
+	 * @since 4.19.1 Prepare the post status list and allowlist the order.
 	 * @since  1.8.18
 	 * @access public
 	 * @global $wpdb

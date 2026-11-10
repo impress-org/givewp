@@ -35,7 +35,7 @@ class CleanMultipleSlashesOnDB extends Migration
                 ->where('form_id', $item->form_id)
                 ->where('meta_key', DonationFormMetaKeys::SETTINGS()->getValue())
                 ->update([
-                    'meta_value' => json_encode($settings),
+                    'meta_value' => json_encode($settings), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an update of the form meta table, not a query filter.
                 ]);
         }
     }

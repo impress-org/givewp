@@ -199,7 +199,7 @@ add_action( 'give_edit-donor', 'give_edit_donor', 10, 1 );
  *
  * @param array $args The $_POST array being passed.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.0
  *
  * @return int The Note ID that was saved, or 0 if nothing was saved.
@@ -291,7 +291,7 @@ add_action( 'give_add-donor-note', 'give_donor_save_note', 10, 1 );
  *
  * @param array $args Array of arguments.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 1.0
  *
  * @return bool|array If the disconnect was successful.
@@ -400,7 +400,7 @@ add_action( 'give_disconnect-userid', 'give_disconnect_donor_user_id', 10, 1 );
  *
  * @param array $args Array of arguments: nonce, donor id, and email address.
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output. Add translators comments.
  * @since 1.7
  *
  * @return mixed If DOING_AJAX echos out JSON, otherwise returns array of success (bool) and message (string).
@@ -467,10 +467,12 @@ function give_add_donor_email( $args ) {
 
 			$user       = wp_get_current_user();
 			$user_login = ! empty( $user->user_login ) ? $user->user_login : __( 'System', 'give' );
+			/* translators: 1: Email address, 2: Username of the person who made the change */
 			$donor_note = sprintf( __( 'Email address %1$s added by %2$s', 'give' ), $email, $user_login );
 			$donor->add_note( $donor_note );
 
 			if ( $primary ) {
+				/* translators: 1: Email address, 2: Username of the person who made the change */
 				$donor_note = sprintf( __( 'Email address %1$s set as primary by %2$s', 'give' ), $email, $user_login );
 				$donor->add_note( $donor_note );
 			}
@@ -494,23 +496,27 @@ add_action( 'give_add_donor_email', 'give_add_donor_email', 10, 1 );
 /**
  * Remove an email address to the donor from within the admin and log a donor note and redirect back to the donor interface for feedback.
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output. Add translators comments. Unslash and sanitize the request values.
  * @since  1.7
  *
  * @return bool|null
  */
 function give_remove_donor_email() {
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- the nonce is verified below, before anything changes; these lines only check the format of the request.
 	if ( empty( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
 		return false;
 	}
-	if ( empty( $_GET['email'] ) || ! is_email( $_GET['email'] ) ) {
+	$email = isset( $_GET['email'] ) ? sanitize_email( wp_unslash( $_GET['email'] ) ) : '';
+	if ( empty( $email ) || ! is_email( $email ) ) {
 		return false;
 	}
 	if ( empty( $_GET['_wpnonce'] ) ) {
 		return false;
 	}
 
-	$nonce = $_GET['_wpnonce'];
+	$donor_id = absint( $_GET['id'] );
+	$nonce    = sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) );
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 	if ( ! wp_verify_nonce( $nonce, 'give-remove-donor-email' ) ) {
 		wp_die(
 			esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ),
@@ -521,12 +527,13 @@ function give_remove_donor_email() {
 		);
 	}
 
-	$donor = new Give_Donor( $_GET['id'] );
-	if ( $donor->remove_email( $_GET['email'] ) ) {
+	$donor = new Give_Donor( $donor_id );
+	if ( $donor->remove_email( $email ) ) {
 		$url        = add_query_arg( 'give-messages[]', 'email-removed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor->id ) );
 		$user       = wp_get_current_user();
 		$user_login = ! empty( $user->user_login ) ? $user->user_login : __( 'System', 'give' );
-		$donor_note = sprintf( __( 'Email address %1$s removed by %2$s', 'give' ), $_GET['email'], $user_login );
+		/* translators: 1: Email address, 2: Username of the person who made the change */
+		$donor_note = sprintf( __( 'Email address %1$s removed by %2$s', 'give' ), $email, $user_login );
 		$donor->add_note( $donor_note );
 	} else {
 		$url = add_query_arg( 'give-messages[]', 'email-remove-failed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor->id ) );
@@ -543,25 +550,27 @@ add_action( 'give_remove_donor_email', 'give_remove_donor_email', 10 );
  * Set an email address as the primary for a donor from within the admin and log a donor note
  * and redirect back to the donor interface for feedback
  *
- * @since  TBD Escape output.
+ * @since  4.19.1 Escape output. Add translators comments. Unslash and sanitize the request values.
  * @since  1.7
  *
  * @return bool|null
  */
 function give_set_donor_primary_email() {
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- the nonce is verified below, before anything changes; these lines only check the format of the request.
 	if ( empty( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
 		return false;
 	}
-
-	if ( empty( $_GET['email'] ) || ! is_email( $_GET['email'] ) ) {
+	$email = isset( $_GET['email'] ) ? sanitize_email( wp_unslash( $_GET['email'] ) ) : '';
+	if ( empty( $email ) || ! is_email( $email ) ) {
 		return false;
 	}
-
 	if ( empty( $_GET['_wpnonce'] ) ) {
 		return false;
 	}
 
-	$nonce = $_GET['_wpnonce'];
+	$donor_id = absint( $_GET['id'] );
+	$nonce    = sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) );
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	if ( ! wp_verify_nonce( $nonce, 'give-set-donor-primary-email' ) ) {
 		wp_die(
@@ -573,13 +582,14 @@ function give_set_donor_primary_email() {
 		);
 	}
 
-	$donor = new Give_Donor( $_GET['id'] );
+	$donor = new Give_Donor( $donor_id );
 
-	if ( $donor->set_primary_email( $_GET['email'] ) ) {
+	if ( $donor->set_primary_email( $email ) ) {
 		$url        = add_query_arg( 'give-messages[]', 'primary-email-updated', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor->id ) );
 		$user       = wp_get_current_user();
 		$user_login = ! empty( $user->user_login ) ? $user->user_login : __( 'System', 'give' );
-		$donor_note = sprintf( __( 'Email address %1$s set as primary by %2$s', 'give' ), $_GET['email'], $user_login );
+		/* translators: 1: Email address, 2: Username of the person who made the change */
+		$donor_note = sprintf( __( 'Email address %1$s set as primary by %2$s', 'give' ), $email, $user_login );
 
 		$donor->add_note( $donor_note );
 	} else {

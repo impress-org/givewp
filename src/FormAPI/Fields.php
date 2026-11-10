@@ -86,7 +86,7 @@ final class Fields
     /**
      * Validate field arguments
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.7.0
      *
      * @param array $array

@@ -3,13 +3,15 @@
 /**
  * This template is used to display the donation grid with [give_donor_wall]
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
     exit;
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 /** @var $args array */
 /** @var $donation array kind of like Give_Payment */

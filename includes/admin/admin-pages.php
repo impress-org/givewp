@@ -122,11 +122,13 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 	global $pagenow, $typenow;
 
 	$found          = true;
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only; the query args only tell which admin page is open and save nothing.
 	$get_query_args = ! empty( $_GET ) ?
 		array_map( function ( $data ) {
 			return is_string( $data ) ? strtolower( $data ) : $data;
 		}, $_GET ) :
 		[];
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	// Set default argument, if not passed.
 	$query_args = wp_parse_args( $get_query_args, array_fill_keys( [

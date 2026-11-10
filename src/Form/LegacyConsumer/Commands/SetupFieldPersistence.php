@@ -65,7 +65,7 @@ class SetupFieldPersistence implements HookCommandInterface
     {
         if ($field->getType() === Types::FILE) {
             /** @var File $field */
-            if (isset($_FILES[$field->getName()])) {
+            if (isset($_FILES[$field->getName()])) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- runs while a donation is created, after give_process_donation() or the signed v3 route verified the request.
                 $fileUploader = new UploadFilesAction($field);
                 $fileIds = $fileUploader();
 
@@ -80,8 +80,8 @@ class SetupFieldPersistence implements HookCommandInterface
                 }
             }
         } elseif (in_array($field->getType(), Types::all(), true) || $field->getType() === CheckboxGroup::TYPE) {
-            if (isset($_POST[$field->getName()])) {
-                $data = give_clean($_POST[$field->getName()]);
+            if (isset($_POST[$field->getName()])) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- runs while a donation is created, after give_process_donation() or the signed v3 route verified the request.
+                $data = give_clean($_POST[$field->getName()]); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- runs while a donation is created, after give_process_donation() or the signed v3 route verified the request. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
                 $value = is_array($data) ?
                     implode('| ', array_values(array_filter($data))) :
                     $data;

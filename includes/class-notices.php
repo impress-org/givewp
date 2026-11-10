@@ -204,7 +204,7 @@ class Give_Notices {
 	/**
 	 * Display notice.
 	 *
-	 * @since TBD Escape output.
+	 * @since 4.19.1 Escape output.
 	 * @since 1.8.9
 	 */
 	public function render_admin_notices() {
@@ -301,7 +301,7 @@ class Give_Notices {
     {
         $errors = give_get_errors();
 
-        $request_form_id = isset($_REQUEST['form-id']) ? absint($_REQUEST['form-id']) : 0;
+        $request_form_id = isset($_REQUEST['form-id']) ? absint($_REQUEST['form-id']) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only form id; it only picks which form shows the error notices and saves nothing.
 
         // Sanity checks first:
         // - Ensure that gateway returned errors display on the appropriate form.
@@ -338,7 +338,7 @@ class Give_Notices {
 	/**
 	 * Print notice js.
 	 *
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @since  1.8.9
 	 * @access private
 	 */
@@ -446,7 +446,7 @@ class Give_Notices {
 	 * @access public
 	 */
 	public function dismiss_notices() {
-		$_post     = give_clean( $_POST );
+		$_post     = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the nonce action includes the notice id, so check_ajax_referer() below runs once the notice id is read; nothing is saved before it.
 		$notice_id = esc_attr( $_post['notice_id'] );
 
 		// Bailout.
@@ -581,7 +581,7 @@ class Give_Notices {
 	/**
 	 * Print frontend errors.
 	 *
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @since  1.8.9
 	 * @access public
 	 *
@@ -646,7 +646,7 @@ class Give_Notices {
 	 * Print frontend notice.
 	 * Notice: notice type can be success/error/warning
 	 *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 3.7.0 Escape attributes
 	 * @since  1.8.9
 	 * @access public
@@ -725,7 +725,7 @@ class Give_Notices {
 	 * @todo   Implement render_admin_notices function within this function in future.
 	 *
 	 * @access public
-	 * @since  TBD Escape output.
+	 * @since  4.19.1 Escape output.
 	 * @since  1.8.17
 	 *
 	 * @return string

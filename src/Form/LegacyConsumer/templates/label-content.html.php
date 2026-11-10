@@ -1,5 +1,5 @@
 <?php
-/** @since TBD Escape output. */
+/** @since 4.19.1 Escape output. */
 
 use Give\Helpers\Form\Template;
 use Give\Views\Form\Templates\Sequoia\Sequoia;
@@ -7,6 +7,8 @@ use Give\Views\Form\Templates\Sequoia\Sequoia;
 if (!defined('ABSPATH')) {
     exit;
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 /** @var int $formId */
 /** @var Give\Framework\FieldsAPI\Field|Give\Framework\FieldsAPI\Text $field */

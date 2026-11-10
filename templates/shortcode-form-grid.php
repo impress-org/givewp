@@ -2,7 +2,7 @@
 /**
  * This template is used to display the donation grid with [donation_grid]
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output. Add translators comments.
  */
 
 use Give\Helpers\Form\Template;
@@ -13,9 +13,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 /**
  * List of changes
  *
+ * @since 4.19.1 Render the featured image from its URL when it does not resolve to an attachment
  * @since 4.14.2 Add aria-label to the wrapper link and aria-hidden to its inner elements
  * @since 3.16.0 Add filters to enable the async mode and to change the values of the "amount raised" and "donations count" on the progress bar
  * @since 2.27.1 Use get_the_excerpt function to get short description of donation form to display in form grid.
@@ -136,6 +139,17 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 
             $image = wp_get_attachment_image(attachment_url_to_postid($imageSrc), $image_size, false, $image_attr);
 
+            /*
+             * The image is stored as a URL. attachment_url_to_postid() returns 0 for a URL it cannot resolve, such as
+             * an attachment with no _wp_attached_file meta or an external URL, which leaves $image empty.
+             */
+            if (!$image) {
+                $image = sprintf(
+                    '<img src="%s" alt="" %s/>',
+                    esc_url($imageSrc),
+                    $image_attr ? 'style="' . esc_attr($image_attr['style']) . '" ' : ''
+                );
+            }
 
             echo wp_kses_post("
                         <div class='give-form-grid-media'>
@@ -297,7 +311,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                     $style = "width:$progress_bar_value%;";
                     $style .= "background: linear-gradient(180deg, {$color} 0%, {$color} 100%); background-blend-mode: multiply;";
                     echo '<div class="give-form-grid-progress-bar">
-                        <div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . esc_attr( $progress_bar_value ) . '" aria-label="' . esc_attr( sprintf( __( 'Form progress: %s%% toward goal', 'give' ), $progress_bar_value ) ) . '">
+                        <div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . esc_attr( $progress_bar_value ) . '" aria-label="' . esc_attr( sprintf( /* translators: %s: Percent of the goal reached */ __( 'Form progress: %s%% toward goal', 'give' ), $progress_bar_value ) ) . '">
                             <span style="' . esc_attr($style) . '"></span>
                         </div>
                     </div>';
@@ -439,6 +453,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                 <span class="goal">
                                     <?php
                                     echo esc_html( sprintf(
+                                        /* translators: %s: Goal number of donations */
                                         _n('of %s donation', 'of %s donations', $goal, 'give'),
                                         give_format_amount($goal, ['decimal' => false])
                                     ) ); ?>
@@ -452,6 +467,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                 <span class="goal">
                                     <?php
                                     echo esc_html( sprintf(
+                                        /* translators: %s: Goal number of donors */
                                         _n('of %s donor', 'of %s donors', $goal, 'give'),
                                         give_format_amount($goal, ['decimal' => false])
                                     ) ); ?>
@@ -479,7 +495,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
     // If modal, print form in hidden container until it is time to be revealed.
     if ('modal_reveal' === $atts['display_style']) {
         if (
-            !isset($_GET['context']) // check if we are in block editor
+            !isset($_GET['context']) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only block editor flag; it only decides whether to render the form and saves nothing.
             && !FormUtils::isLegacyForm($form_id)
         ) {
             // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_form_shortcode() renders the whole donation form; wp_kses_post() would strip the form elements, and its own output is escaped internally.

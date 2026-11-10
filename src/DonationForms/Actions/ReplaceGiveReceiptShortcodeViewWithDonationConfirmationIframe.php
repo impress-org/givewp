@@ -13,7 +13,7 @@ class ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe
      */
     public function __invoke(string $view): string
     {
-        $data = DonationConfirmationReceiptViewRouteData::fromRequest(give_clean($_GET));
+        $data = DonationConfirmationReceiptViewRouteData::fromRequest(give_clean($_GET)); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only param on a public page that may be cached; it saves nothing, and a nonce would expire in the cache. give_clean() sanitizes it.
 
         if ($data->receiptId) {
             $viewUrl = (new GenerateDonationConfirmationReceiptViewRouteUrl())($data->receiptId);

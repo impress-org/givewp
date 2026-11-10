@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param string $data Data.
  *
- * @since  TBD Escape output, and use gmdate() instead of date().
+ * @since  4.19.1 Escape output, use gmdate() instead of date(), and unslash and sanitize the nonce.
  * @since  1.0
  *
  * @uses   give_pdf
@@ -32,7 +32,9 @@ function give_generate_pdf( $data ) {
 		wp_die( esc_html__( 'You do not have permission to generate PDF sales reports.', 'give' ), esc_html__( 'Error', 'give' ), [ 'response' => 403 ] );
 	}
 
-	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'give_generate_pdf' ) ) {
+	$nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+
+	if ( ! wp_verify_nonce( $nonce, 'give_generate_pdf' ) ) {
 		wp_die( esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), esc_html__( 'Error', 'give' ), [ 'response' => 403 ] );
 	}
 
@@ -226,7 +228,7 @@ add_action( 'give_generate_pdf', 'give_generate_pdf' );
  * @uses   GoogleChartShapeMarker
  * @uses   GoogleChartTextMarker
  * @uses   GoogleChartAxis
- * @since  TBD Use gmdate() instead of date().
+ * @since  4.19.1 Use gmdate() instead of date().
  * @since  1.1.4.0
  */
 function give_draw_chart_image() {

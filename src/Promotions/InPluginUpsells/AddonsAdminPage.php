@@ -57,7 +57,7 @@ class AddonsAdminPage
     /**
      * Render admin page
      *
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      */
     public function render()
     {
@@ -72,6 +72,6 @@ class AddonsAdminPage
      */
     public static function isShowing()
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-add-ons';
+        return isset($_GET['page']) && $_GET['page'] === 'give-add-ons'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only page check; it only decides whether the add-ons promotion shows.
     }
 }

@@ -180,7 +180,7 @@ class SaleBanners
      */
     public static function isShowing(): bool
     {
-        return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
+        return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only post type check; it only decides whether the sale banner shows.
     }
 
     /**

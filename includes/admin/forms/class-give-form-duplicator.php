@@ -115,7 +115,7 @@ class Give_Form_Duplicator
     /**
      * Clone meta data
      *
-     * @since TBD Prepare SQL with placeholders.
+     * @since 4.19.1 Prepare SQL with placeholders.
      * @since  2.2.0
      * @access private
      *
@@ -127,7 +127,7 @@ class Give_Form_Duplicator
         global $wpdb;
 
         // Clone the metadata of the form.
-        $post_meta_data = $wpdb->get_results(
+        $post_meta_data = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
             $wpdb->prepare("SELECT meta_key, meta_value FROM {$wpdb->formmeta} WHERE form_id=%s", $old_form->ID)
         );
 
@@ -143,14 +143,14 @@ class Give_Form_Duplicator
 
             $duplicate_query .= implode(' UNION ALL ', $duplicate_query_select);
 
-            $wpdb->query($duplicate_query); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- every SELECT row is prepared above.
+            $wpdb->query($duplicate_query); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- every SELECT row is prepared above. GiveWP custom table; WordPress has no cache layer for it.
         }
     }
 
     /**
      * Reset stats for cloned form
      *
-     * @since TBD Prepare SQL with placeholders.
+     * @since 4.19.1 Prepare SQL with placeholders.
      * @since  2.2.0
      * @access private
      *
@@ -175,7 +175,7 @@ class Give_Form_Duplicator
 
         $meta_keys = array_values($meta_keys);
 
-        $wpdb->query(
+        $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
             $wpdb->prepare(
                 "
                 UPDATE $wpdb->formmeta

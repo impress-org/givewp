@@ -6,10 +6,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 /**
  * The following variables should be in scope when including this view
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 4.3.0 hide form background on v2 loader.
  * @var int $formId
  */

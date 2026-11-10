@@ -1,6 +1,6 @@
 <?php
 /**
- * @since TBD Escape output, including translated strings, and replace short echo tags with escaped echo.
+ * @since 4.19.1 Escape output, including translated strings, and replace short echo tags with escaped echo.
  */
 
 use Give\Helpers\Form\Template as FormTemplateUtils;
@@ -15,6 +15,8 @@ use Give_Payment as Payment;
 if (!defined('ABSPATH')) {
     exit;
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 $donationSessionAccessor = new DonationAccessor();
 $donation = new Payment($donationSessionAccessor->getDonationId());

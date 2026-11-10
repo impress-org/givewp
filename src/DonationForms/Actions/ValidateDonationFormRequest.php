@@ -54,14 +54,14 @@ class ValidateDonationFormRequest
      * after the run: before, so an earlier failed attempt in the same session cannot bleed in;
      * after, because the errors now live on the exception.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.16.7.1
      *
      * @throws DonationFormFieldErrorsException
      */
     private function validateLegacyRequest(int $formId): void
     {
-        if (absint($_POST['give-form-id'] ?? 0) !== $formId) {
+        if (absint($_POST['give-form-id'] ?? 0) !== $formId) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- v3 donation request; the signed route (DonateRouteData::validateSignature()) protects it, and legacy code reads $_POST.
             throw new DonationFormFieldErrorsException(
                 new WP_Error( // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- WP_Error object; its messages are returned as JSON and rendered as text by the form.
                     'give_invalid_donation_form',
@@ -74,7 +74,7 @@ class ValidateDonationFormRequest
         $validData = give_donation_form_validate_fields();
 
         /** This action is documented in includes/process-donation.php */
-        do_action('give_checkout_error_checks', $validData, give_clean($_POST));
+        do_action('give_checkout_error_checks', $validData, give_clean($_POST)); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- v3 donation request; the signed route (DonateRouteData::validateSignature()) protects it, and legacy code reads $_POST.
 
         $errors = give_get_errors();
 

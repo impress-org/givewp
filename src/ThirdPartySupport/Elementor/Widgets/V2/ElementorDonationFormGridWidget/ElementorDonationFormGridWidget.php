@@ -220,7 +220,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
                 'options' => [
                     'all' => __('All Forms', 'give'),
                     'include' => __('Include Specific Forms', 'give'),
-                    'exclude' => __('Exclude Specific Forms', 'give'),
+                    'exclude' => __('Exclude Specific Forms', 'give'), // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- this is a widget option label, not a query argument.
                 ],
                 'default' => 'all'
             ]
@@ -577,7 +577,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
                 $attributes[] = sprintf('ids="%s"', esc_attr($ids));
             } elseif ($settings['selection_type'] === 'exclude' && isset($settings['exclude']) && !empty($settings['exclude'])) {
                 $exclude = is_array($settings['exclude']) ? implode(',', $settings['exclude']) : $settings['exclude'];
-                $attributes[] = sprintf('exclude="%s"', esc_attr($exclude));
+                $attributes[] = sprintf('exclude="%s"', esc_attr($exclude)); // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- this is a shortcode attribute, not a query argument; hiding the chosen forms is the feature.
             }
         }
 

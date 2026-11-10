@@ -26,7 +26,7 @@ class UnserializeTitlePrefix extends Migration
                     ->where('donation_id', $item->donation_id)
                     ->where('meta_key', '_give_donor_billing_title_prefix')
                     ->update([
-                        'meta_value' => $unserializedTitlePrefix,
+                        'meta_value' => $unserializedTitlePrefix, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an update of the donation meta table, not a query filter.
                     ]);
             }
         }

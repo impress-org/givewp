@@ -2,12 +2,14 @@
 /**
  * Admin View: Exports
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 if ( ! current_user_can( 'manage_give_settings' ) ) {
 	return;

@@ -18,7 +18,7 @@ class GlobalSettingValidator
         if (
             ! Give_Admin_Settings::is_saving_settings() ||
             'emails' !== give_get_current_setting_tab() ||
-            ! isset($_GET['section'])
+            ! isset($_GET['section']) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified by Give_Admin_Settings::is_saving_settings() earlier in this condition.
         ) {
             return;
         }

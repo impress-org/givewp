@@ -369,6 +369,7 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
+     * @since 4.19.1 Add translators comments.
      * @since 2.29.0
      */
     public function addOptRefundCheckbox(int $donationId, PaymentGatewayInterface $registeredGateway)
@@ -382,6 +383,7 @@ class LegacyPaymentGatewayAdapter
               <input type="checkbox" id="give-gateway-opt-refund" name="give_gateway_opt_refund" value="1" />
               <label for="give-gateway-opt-refund">
                   <?php
+                    /* translators: %s: Payment gateway name */
                     echo sprintf(esc_html__('Refund the donation at %s?', 'give'), esc_html($registeredGateway->getName()));
                     ?>
               </label>
@@ -421,9 +423,7 @@ class LegacyPaymentGatewayAdapter
         string $oldStatus,
         PaymentGateway $registeredGateway
     ) {
-        $gatewayOptRefund = !empty($_POST['give_gateway_opt_refund']) ? give_clean(
-            $_POST['give_gateway_opt_refund']
-        ) : '';
+        $gatewayOptRefund = !empty($_POST['give_gateway_opt_refund']) ? give_clean($_POST['give_gateway_opt_refund']) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only the donation details form posts this field, and give_update_payment_details() verifies its nonce with check_admin_referer() before the status changes (add-ons that change the status themselves are responsible for their own nonce); give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
         $canProcessRefund = !empty($gatewayOptRefund) ? $gatewayOptRefund : false;
 
         // Only move forward if refund requested.

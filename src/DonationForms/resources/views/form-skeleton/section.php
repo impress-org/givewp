@@ -4,11 +4,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
 /**
  * One form section: a heading, a line of description, and a field per block. The amount, gateway
  * and summary blocks get their own sketch; every other block is a label and one input row.
  *
- * @since TBD Replace short echo tags with escaped echo.
+ * @since 4.19.1 Replace short echo tags with escaped echo.
  * @since 4.17.0
  *
  * @var string[] $blocks   Block names in the section.

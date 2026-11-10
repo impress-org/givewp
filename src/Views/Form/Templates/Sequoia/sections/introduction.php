@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 4.16.4 Escaped the introduction headline output.
  * @since 4.16.2 Escape introduction image URL when rendering the template.
  */
@@ -11,6 +11,8 @@ use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 if (!defined('ABSPATH')) {
     exit;
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 $formInfo = get_post(FrontendFormTemplateUtils::getFormId());
 

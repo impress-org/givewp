@@ -34,7 +34,7 @@ class Reports
             return;
         }
 
-        if (isset($_GET['legacy'])) {
+        if (isset($_GET['legacy'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only flag; it only switches to the legacy reports screen and saves nothing.
             $script = "
                 jQuery(document).ready(() => {
                     const anchors = [].slice.call(document.querySelectorAll('a[href*=give-reports]'));
@@ -79,7 +79,7 @@ class Reports
     public function add_page()
     {
         $render = [$this, 'render_template'];
-        if (isset($_GET['legacy'])) {
+        if (isset($_GET['legacy'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only flag; it only switches to the legacy reports screen and saves nothing.
             $render = [Give()->give_settings, 'output'];
         }
 

@@ -89,7 +89,7 @@ class Give_Donation_Form_Block
     public function addExtraDataToResponse($response, $form)
     {
         // Return extra data only if query in edit context.
-        if (empty($_REQUEST['context']) || $_REQUEST['context'] !== 'edit') {
+        if (empty($_REQUEST['context']) || $_REQUEST['context'] !== 'edit') { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only REST context param; it only decides whether to add extra data to the response and saves nothing.
             return $response;
         }
 
@@ -183,7 +183,7 @@ class Give_Donation_Form_Block
         $parameters['display_style'] = $attributes['displayStyle'];
         $parameters['continue_button_title'] = trim($attributes['continueButtonTitle']);
 
-        _give_redirect_form_id($parameters['id']);
+        give_redirect_form_id($parameters['id']);
 
         return give_form_shortcode($parameters);
     }
@@ -200,7 +200,7 @@ class Give_Donation_Form_Block
     {
         // Define variables.
         $result = array();
-        $post_data = give_clean($_POST);
+        $post_data = give_clean($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only block editor search; it returns forms the user can already see and changes nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
         $search_keyword = !empty($post_data['search']) ? $post_data['search'] : '';
 
         // Setup the arguments to fetch the donation forms.

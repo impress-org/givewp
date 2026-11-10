@@ -18,6 +18,7 @@ class Environment
      */
     public static function isLogsPage()
     {
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only page and tab checks; they only decide whether this is the logs page.
         if (!isset($_GET['page'], $_GET['tab'])) {
             return false;
         }
@@ -25,6 +26,7 @@ class Environment
         if ('give-tools' === $_GET['page'] && 'logs' === $_GET['tab']) {
             return true;
         }
+        // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
         return false;
     }

@@ -2,12 +2,15 @@
 /**
  * Admin View: Exports
  *
- * @since TBD Escape output, use gmdate() instead of date(), and replace short echo tags.
+ * @since 4.19.1 Escape output, use gmdate() instead of date(), replace short echo tags, add translators comments, and add a nonce to the core settings export form.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } ?>
+<?php
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+?>
 
 <div id="poststuff">
 	<div id="give-dashboard-widgets-wrap">
@@ -98,7 +101,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     $firstDonationDate ? ($currentYear - $firstDonationDate->format('Y')) : 0
                                 );
                                 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- year_dropdown()/month_dropdown() render <select> controls; wp_kses_post() would strip them.
-                                printf( esc_html__('%1$s to %2$s', 'give'), $start_year_dropdown . ' ' . Give()->html->month_dropdown('start_month'), $end_year_dropdown . ' ' . Give()->html->month_dropdown('end_month') );
+                                printf( /* translators: 1: Start year and month fields, 2: End year and month fields */ esc_html__('%1$s to %2$s', 'give'), $start_year_dropdown . ' ' . Give()->html->month_dropdown('start_month'), $end_year_dropdown . ' ' . Give()->html->month_dropdown('end_month') );
                                 ?>
 								<input type="hidden" name="give-action" value="earnings_export"/>
 								<input type="hidden" name="give-nonce" value="<?php echo esc_attr( wp_create_nonce('give_earnings_export') ); ?>"/>
@@ -152,6 +155,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 									</ul>
 								<?php } ?>
 								<input type="hidden" name="give-action" value="core_settings_export"/>
+								<input type="hidden" name="give-nonce" value="<?php echo esc_attr( wp_create_nonce( 'give_core_settings_export' ) ); ?>"/>
 								<input type="submit" value="<?php esc_attr_e( 'Export JSON', 'give' ); ?>" class="button-secondary"/>
 							</form>
 						</td>

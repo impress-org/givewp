@@ -131,6 +131,7 @@ class DonationFormViewModel
     }
 
     /**
+     * @since 4.19.1 Set explicit versions on the enqueued assets.
      * @since 4.1.0 Added custom form styles
      * @since 3.0.0
      */
@@ -141,7 +142,9 @@ class DonationFormViewModel
 
         wp_register_style(
             'givewp-base-form-styles',
-            GIVE_PLUGIN_URL . 'build/baseFormDesignCss.css'
+            GIVE_PLUGIN_URL . 'build/baseFormDesignCss.css',
+            [],
+            GIVE_VERSION
         );
 
         wp_add_inline_style(
@@ -161,7 +164,7 @@ class DonationFormViewModel
 
         // The skeleton prints in the body before the app bundles load, so its styles go in the head with the rest.
         if ($this->skeleton) {
-            wp_register_style('givewp-form-skeleton-styles', false);
+            wp_register_style('givewp-form-skeleton-styles', false, [], GIVE_VERSION);
             wp_add_inline_style('givewp-form-skeleton-styles', (new RenderFormSkeleton())->css());
             wp_enqueue_style('givewp-form-skeleton-styles');
         }
@@ -312,7 +315,7 @@ class DonationFormViewModel
      *
      * @since 4.16.7 Isolate the printed assets from anything enqueued after the form has been prepared
      * @since 4.14.3 Escape HTML attributes for classNames property
-     * @since TBD Escape output and replace short echo tags with escaped echo.
+     * @since 4.19.1 Escape output and replace short echo tags with escaped echo.
      * @since 3.20.0 Adds class for form design
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
@@ -467,6 +470,7 @@ class DonationFormViewModel
     }
 
     /**
+     * @since 4.19.1 Set explicit versions on the enqueued assets.
      * @since 3.0.0 Set script translations
      * @since 3.0.0
      */
@@ -477,7 +481,7 @@ class DonationFormViewModel
         // silently fail if design is missing for some reason
         if ($design) {
             if ($design->css()) {
-                wp_enqueue_style('givewp-form-design-' . $design::id(), $design->css());
+                wp_enqueue_style('givewp-form-design-' . $design::id(), $design->css(), [], GIVE_VERSION);
             }
 
             if ($design->js()) {
@@ -489,6 +493,7 @@ class DonationFormViewModel
                         $design->dependencies(),
                         ['givewp-donation-form-registrars']
                     ),
+                    GIVE_VERSION,
                     true
                 );
 

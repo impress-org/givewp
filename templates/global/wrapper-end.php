@@ -6,13 +6,15 @@
  * @subpackage  Templates/Global
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since       1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 $template = get_option( 'template' );
 

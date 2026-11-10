@@ -79,7 +79,7 @@ class Give_Subscriptions_DB extends Give_DB
      *
      * @access  public
      *
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 4.11.0 add campaign_id column
      * @since   1.0
      */
@@ -230,7 +230,7 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Retrieve all subscriptions for a donor.
      *
-     * @since TBD Allowlist the order direction and document why the query is safe.
+     * @since 4.19.1 Allowlist the order direction and document why the query is safe.
      * @since   1.0
      *
      * @param array $args
@@ -274,7 +274,7 @@ class Give_Subscriptions_DB extends Give_DB
 
             $args['order'] = 'ASC' === strtoupper((string)$args['order']) ? 'ASC' : 'DESC';
 
-            $subscriptions = $wpdb->get_results( // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause() from prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; orderby and order are allowlisted above.
+            $subscriptions = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause() from prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; orderby and order are allowlisted above. GiveWP custom table; WordPress has no cache layer for it.
                 $wpdb->prepare(
                     "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where is built by generate_where_clause() from prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; orderby and order are allowlisted above.
                     absint($args['offset']),
@@ -299,7 +299,7 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Count the total number of subscriptions in the database.
      *
-     * @since TBD Only group by a column of the subscriptions table.
+     * @since 4.19.1 Only group by a column of the subscriptions table.
      *
      * @param array $args
      *
@@ -327,7 +327,7 @@ class Give_Subscriptions_DB extends Give_DB
             $count = $return_count ? "COUNT({$this->primary_key})" : "{$group_by_args}, COUNT({$this->primary_key})";
             $sql = "SELECT {$count} FROM {$this->table_name} {$where} {$groupBy};";
 
-            $result = $return_count ? $wpdb->get_var($sql) : $wpdb->get_results($sql, ARRAY_A); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause() from intval, prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; groupBy is an allowlisted column.
+            $result = $return_count ? $wpdb->get_var($sql) : $wpdb->get_results($sql, ARRAY_A); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause() from intval, prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; groupBy is an allowlisted column. GiveWP custom table; WordPress has no cache layer for it.
 
             // Simplify result if query for groupBy.
             if ($group_by_args && $result) {
@@ -348,7 +348,7 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Create the table.
      *
-     * @since TBD Prepare the SHOW TABLES query.
+     * @since 4.19.1 Prepare the SHOW TABLES query.
      *
      * @access  public
      * @since   1.0
@@ -357,7 +357,7 @@ class Give_Subscriptions_DB extends Give_DB
     {
         global $wpdb;
 
-        if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $this->table_name)) !== $this->table_name) {
+        if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $this->table_name)) !== $this->table_name) { // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Checks whether the subscriptions table exists before creating it; WordPress has no function for it.
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
             $sql = 'CREATE TABLE ' . $this->table_name . ' (
@@ -393,7 +393,7 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Get Renewing Subscriptions
      *
-     * @since TBD Use gmdate() instead of date(), and document why the query is safe.
+     * @since 4.19.1 Use gmdate() instead of date(), and document why the query is safe.
      *
      * @param string $period
      *
@@ -421,7 +421,7 @@ class Give_Subscriptions_DB extends Give_DB
         if (is_null($subscriptions)) {
             $where = $this->generate_where_clause($args);
 
-            $subscriptions = $wpdb->get_results( // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause() from prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; orderby and order are the literals set in $args above.
+            $subscriptions = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause() from prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; orderby and order are the literals set in $args above. GiveWP custom table; WordPress has no cache layer for it.
                 $wpdb->prepare(
                     "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where is built by generate_where_clause() from prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; orderby and order are the literals set in $args above.
                     absint($args['offset']),
@@ -437,7 +437,7 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Get expiring subscriptions.
      *
-     * @since TBD Use gmdate() instead of date(), and document why the query is safe.
+     * @since 4.19.1 Use gmdate() instead of date(), and document why the query is safe.
      *
      * @param string $period
      *
@@ -467,7 +467,7 @@ class Give_Subscriptions_DB extends Give_DB
             $where .= ' AND `bill_times` != 0';
             $where .= ' AND ( SELECT COUNT(ID) FROM ' . $wpdb->prefix . 'posts WHERE `post_parent` = ' . $this->table_name . '.`parent_payment_id` OR `ID` = ' . $this->table_name . '.`parent_payment_id` ) + 1 >= `bill_times`';
 
-            $subscriptions = $wpdb->get_results( // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause() from prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; orderby and order are the literals set in $args above.
+            $subscriptions = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by generate_where_clause() from prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; orderby and order are the literals set in $args above. GiveWP custom table; WordPress has no cache layer for it.
                 $wpdb->prepare(
                     "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where is built by generate_where_clause() from prepare() fragments, esc_sql() search values, date() output and the give_subscriptions_mysql_query filter; orderby and order are the literals set in $args above.
                     absint($args['offset']),
@@ -499,7 +499,7 @@ class Give_Subscriptions_DB extends Give_DB
     /**
      * Build the query args for subscriptions.
      *
-     * @since TBD Escape values in the WHERE clause.
+     * @since 4.19.1 Escape values in the WHERE clause.
      *
      * @param array $args
      *
@@ -625,7 +625,7 @@ class Give_Subscriptions_DB extends Give_DB
     }
 
     /**
-     * @since TBD Prepare the donor name search.
+     * @since 4.19.1 Prepare the donor name search.
      * @since 2.26.0 Replace deprecated get_page_by_title() with give_get_page_by_title().
      *
      * @param $args
@@ -667,7 +667,7 @@ class Give_Subscriptions_DB extends Give_DB
             } else {
                 global $wpdb;
                 $subscription_donor_id = [];
-                $donor_ids = $wpdb->get_results(
+                $donor_ids = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
                     $wpdb->prepare(
                         "
 				SELECT id,name FROM {$wpdb->donors}
@@ -690,7 +690,7 @@ class Give_Subscriptions_DB extends Give_DB
     }
 
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      *
      * @param $args
      *
@@ -719,7 +719,7 @@ class Give_Subscriptions_DB extends Give_DB
     }
 
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      *
      * @param $args
      *

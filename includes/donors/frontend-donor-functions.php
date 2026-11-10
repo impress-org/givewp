@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * The fallback uses the donor's
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  * @since 2.2.0
  *
  * @param  Give_Donor  $donor
@@ -180,7 +180,7 @@ function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' 
 			'payment',
 			array(
 				'number'     => 1,
-				'meta_query' => array(
+				'meta_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Finds the notes of a donation by donor ID, which is stored as comment meta.
 					array(
 						'key'   => '_give_donor_id',
 						'value' => $donor_id,

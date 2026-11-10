@@ -1,5 +1,6 @@
 import {RequestUtils} from '@wordpress/e2e-test-utils-playwright';
 import {STORAGE_STATE_PATH, WP_BASE_URL} from './environment';
+import {wp} from './utils/wp-cli';
 
 const GIVEWP_REST_NAMESPACE = 'givewp/v3';
 const WHERE_TO_POINT_IT = 'Start wp-env, or point the run at the right environment with WP_BASE_URL.';
@@ -23,7 +24,7 @@ async function globalSetup(): Promise<void> {
     await requestUtils.request.get(`${WP_BASE_URL}/wp-admin/`);
 
     await assertGiveWpIsActive(requestUtils);
-    await dismissFormBuilderTours(requestUtils);
+    dismissFormBuilderTours();
 }
 
 /*
@@ -31,23 +32,23 @@ async function globalSetup(): Promise<void> {
  * editor modes, which on a fresh install is every run and which covers the canvas the builder specs
  * click into. The tour is the product's, not the suite's, and marking it seen is what the builder
  * does when a person finishes it.
+ *
+ * The builder's AJAX handler wants a nonce that only the builder page prints, so this sets the same
+ * user meta the handler sets, through WP-CLI. A failure here says the tour is still armed, which is
+ * worth knowing directly rather than through builder specs timing out on a canvas behind a modal.
  */
-async function dismissFormBuilderTours(requestUtils: RequestUtils): Promise<void> {
+function dismissFormBuilderTours(): void {
     for (const mode of ['design', 'schema']) {
-        const response = await requestUtils.request.post(`${WP_BASE_URL}/wp-admin/admin-ajax.php`, {
-            form: {action: 'givewp_tour_completed', mode},
-        });
+        try {
+            const completedAt = String(Math.floor(Date.now() / 1000));
 
-        /*
-         * The handler answers 200 with admin-ajax's bare `0`, so the status is all there is to read.
-         * It is enough: an action that no longer exists answers 400 and one that rejects the mode
-         * answers 500. Failing here says the tour is still armed, which is worth knowing directly
-         * rather than through four builder specs timing out on a canvas behind a modal.
-         */
-        if (!response.ok()) {
+            wp('user', 'meta', 'update', '1', `givewp-form-builder-${mode}-tour-completed`, completedAt);
+        } catch (error) {
+            const reason = error instanceof Error ? error.message : String(error);
+
             throw new Error(
-                `Could not mark the form builder's ${mode} tour as seen: admin-ajax answered ` +
-                    `${response.status()}. The builder specs will be blocked by the tour modal.`
+                `Could not mark the form builder's ${mode} tour as seen: ${reason}. ` +
+                    'The builder specs will be blocked by the tour modal.'
             );
         }
     }

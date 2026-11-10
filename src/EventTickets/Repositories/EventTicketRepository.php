@@ -243,7 +243,7 @@ class EventTicketRepository
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 3.6.0
      */
     private function validate(EventTicket $eventTicket): void
@@ -295,7 +295,7 @@ class EventTicketRepository
     /**
      * Check if a database table exists
      *
-     * @since TBD Inline the prepared query.
+     * @since 4.19.1 Inline the prepared query.
      * @since 4.6.0
      */
     private function tableExists(string $tableName): bool
@@ -304,7 +304,7 @@ class EventTicketRepository
 
         $prefixedTableName = $wpdb->prefix . $tableName;
 
-        return (bool) $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($prefixedTableName)));
+        return (bool) $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($prefixedTableName))); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Checks whether a table exists with SHOW TABLES; WordPress has no function for it.
     }
 
     /**

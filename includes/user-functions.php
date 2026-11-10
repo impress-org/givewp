@@ -351,6 +351,7 @@ function give_validate_username( $username, $form_id = 0 ) {
  * @param string $email                User email.
  * @param bool   $registering_new_user Flag to check user register or not.
  *
+ * @since 4.19.0.2 Reject any email that already belongs to a donor when registering a new user, not only additional emails.
  * @since 1.8
  *
  * @return bool
@@ -373,14 +374,10 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 		give_set_error( 'email_invalid', __( 'Invalid email.', 'give' ) );
 		$valid = false;
 
-	} elseif ( $registering_new_user ) {
-
-		// If donor email is not primary.
-		if ( ! email_exists( $email ) && give_donor_email_exists( $email ) && give_is_additional_email( $email ) ) {
-			// Check if email exists.
-			give_set_error( 'email_used', __( 'The email address provided is already associated with another donor in the system. Please log in or use a different email', 'give' ) );
-			$valid = false;
-		}
+	} elseif ( $registering_new_user && give_donor_email_exists( $email ) ) {
+		// A new account must not take over a donor record it has not proven it owns.
+		give_set_error( 'email_used', __( 'The email address provided is already associated with a donor in the system. Please log in, donate without creating an account, or use a different email.', 'give' ) );
+		$valid = false;
 	}
 
 	/**
@@ -516,8 +513,8 @@ function give_new_user_notification( $donation_id = 0, $donation_data = [] ) {
 	if (
 		empty( $donation_id )
 		|| empty( $donation_data )
-		|| ! isset( $_POST['give_create_account'] )
-		|| 'on' !== give_clean( $_POST['give_create_account'] )
+		|| ! isset( $_POST['give_create_account'] ) // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the nonce is only guaranteed for form donations (give_process_donation() checks it); this hook also runs on give_insert_user and for other callers of give_insert_payment(), and the value only decides whether to send an email.
+		|| 'on' !== give_clean( $_POST['give_create_account'] ) // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data. The nonce is only guaranteed for form donations (give_process_donation() checks it); this hook also runs on give_insert_user and for other callers of give_insert_payment(), and the value only decides whether to send an email.
 	) {
 		return;
 	}
@@ -613,7 +610,7 @@ function give_donor_email_exists( $email ) {
  *
  * @param string $email Donor Email.
  *
- * @since TBD Prepare SQL with placeholders.
+ * @since 4.19.1 Prepare SQL with placeholders.
  * @since 1.8.13
  *
  * @return bool
@@ -623,7 +620,7 @@ function give_is_additional_email( $email ) {
 
 	$meta_type = Give()->donor_meta->meta_type;
 	// Use the table name of GiveWP's own donor meta. Other plugins, such as Charitable, can overwrite $wpdb->donormeta.
-	$donor_id  = $wpdb->get_var( $wpdb->prepare( "SELECT %i FROM %i WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $meta_type . '_id', Give()->donor_meta->table_name, $email ) );
+	$donor_id  = $wpdb->get_var( $wpdb->prepare( "SELECT %i FROM %i WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $meta_type . '_id', Give()->donor_meta->table_name, $email ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 
 	if ( empty( $donor_id ) ) {
 		return false;

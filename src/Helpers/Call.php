@@ -9,7 +9,7 @@ class Call
     /**
      * Call an invokable class.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.17.0
      *
      * @param mixed $args

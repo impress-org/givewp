@@ -87,7 +87,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * Render Stripe account manager setting field.
      *
      * @since 2.13.0
@@ -122,7 +122,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output. Add translators comments.
      * @since 2.13.0
      */
     private function getIntroductionSectionMarkup()
@@ -158,6 +158,7 @@ class AccountManagerSettingField
             <p class="give-stripe-subheading-description">
                 <?php
                 echo wp_kses_post(sprintf(
+                    /* translators: %s: URL of the Stripe fees documentation */
                     __('Connect to the Stripe payment gateway using this section. Multiple Stripe accounts can be connected simultaneously. All donation forms will use the "Default Account" unless configured otherwise. To specify a different Stripe account for a form, configure the settings within the "Stripe Account" tab on the individual form edit screen. An additional 2%% fee is applied to donations for free users (removed with any premium product license). Read our <a href="%s" target="_blank" rel="noopener noreferrer">Stripe documentation</a> for more information.', 'give'),
                     esc_url('https://docs.givewp.com/stripe-fees')
                 ));
@@ -192,7 +193,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.13.0
      */
     private function getAddNewStripeAccountSectionMarkup()
@@ -243,7 +244,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output. Add nonces to the set default and statement descriptor requests.
      * @since 2.13.0
      *
      * @param array $stripeAccount
@@ -274,7 +275,7 @@ class AccountManagerSettingField
                 'action' => 'edit_stripe_account_statement_descriptor',
                 'account-slug' => $stripeAccountSlug,
             ],
-            admin_url('admin-ajax.php')
+            wp_nonce_url(admin_url('admin-ajax.php'), 'give_edit_stripe_statement_descriptor_' . $stripeAccountSlug)
         ));
 
         $classes = $stripeAccountSlug === $this->defaultStripeAccountSlug ? ' give-stripe-boxshadow-option-wrap__selected' : '';
@@ -449,6 +450,8 @@ class AccountManagerSettingField
                     <a
                         data-account="<?php
                         echo esc_attr($stripeAccountSlug); ?>"
+                        data-nonce="<?php
+                        echo esc_attr(wp_create_nonce('give_stripe_set_account_default')); ?>"
                         class="give-stripe-account-set-default"
                         href="#"
                     ><?php
@@ -461,7 +464,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.13.0
      */
     private function getStripeAccountOnBoardingModalMarkup()
@@ -492,7 +495,7 @@ class AccountManagerSettingField
             'Stripe webhooks are required so GiveWP can communicate properly with the payment gateway to confirm payment completion, renewals, and more.',
             'give'
         );
-        $can_display = ! empty($_GET['stripe_account']) ? '0' : '1';
+        $can_display = ! empty($_GET['stripe_account']) ? '0' : '1'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only display flag set by the Stripe Connect return redirect; it changes no data.
         ?>
         <div
             id="give-stripe-connected"
@@ -542,7 +545,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Escape output.
+     * @since 4.19.1 Escape output.
      * @since 2.13.0
      */
     public function getNoStripeAccountMarkup()

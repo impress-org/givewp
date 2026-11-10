@@ -56,7 +56,7 @@ class Give_Async_Process extends WPAsyncRequest {
 		 * )
 		 */
 
-		$_post = give_clean( $_POST );
+		$_post = give_clean( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by WPAsyncRequest::maybe_handle() with check_ajax_referer() before it calls handle().
 
 		if ( empty( $_post ) || empty( $_post['data'] ) || empty( $_post['hook'] ) ) {
 			exit();

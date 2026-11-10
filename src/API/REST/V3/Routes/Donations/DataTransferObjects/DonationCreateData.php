@@ -70,7 +70,7 @@ class DonationCreateData
     /**
      * Validate data for creating a single donation
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message. Add translators comments.
      * @since 4.8.0
      *
      * @throws DonationValidationException
@@ -90,6 +90,7 @@ class DonationCreateData
         foreach ($requiredFields as $field) {
             if (!isset($this->attributes[$field])) {
                 throw new DonationValidationException(
+                    /* translators: %s: Name of the missing field */
                     sprintf(esc_html__('Missing required field: %s', 'give'), esc_html($field)),
                     'missing_required_field',
                     400
@@ -101,7 +102,7 @@ class DonationCreateData
     /**
      * Validate data for creating a renewal donation
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message. Add translators comments.
      * @since 4.8.0
      *
      * @throws DonationValidationException
@@ -121,6 +122,7 @@ class DonationCreateData
         foreach ($requiredFields as $field) {
             if (!isset($this->attributes[$field])) {
                 throw new DonationValidationException(
+                    /* translators: %s: Name of the missing field */
                     sprintf(esc_html__('Missing required field: %s', 'give'), esc_html($field)),
                     'missing_required_field',
                     400
@@ -151,7 +153,7 @@ class DonationCreateData
     /**
      * Validate subscription-related rules
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.8.0
      *
      * @throws DonationValidationException

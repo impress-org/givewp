@@ -214,7 +214,8 @@ function give_import_get_form_data_from_csv( $data, $import_setting = [] ) {
 /**
  * Give get user details if not then create a user. Used in Import Donation CSV.
  *
- * @since TBD Use gmdate() instead of date().
+ * @since 4.19.1.1 Read the donor role through give_get_donor_default_user_role().
+ * @since 4.19.1 Use gmdate() instead of date(), and add translators comments.
  * @since 1.8.13
  *
  * @param $data
@@ -262,6 +263,7 @@ function give_import_get_user_from_csv( $data, $import_setting = [] ) {
 
 					// Adding notes that donor is being imported from CSV.
 					$current_user = wp_get_current_user();
+					/* translators: %s: Email address of the user who ran the import */
 					$donor_data->add_note( wp_sprintf( __( 'This donor was imported by %s', 'give' ), $current_user->user_email ) );
 
 					// Add is used to ensure duplicate emails are not added
@@ -295,7 +297,7 @@ function give_import_get_user_from_csv( $data, $import_setting = [] ) {
 			if ( empty( $donor_data->ID ) && isset( $import_setting['create_user'] ) && 1 === absint( $import_setting['create_user'] ) ) {
 				$data['first_name'] = ( ! empty( $data['first_name'] ) ? $data['first_name'] : $data['email'] );
 				$data['last_name']  = ( ! empty( $data['last_name'] ) ? $data['last_name'] : '' );
-				$give_role          = (array) give_get_option( 'donor_default_user_role', get_option( 'default_role', ( ( $give_donor = wp_roles()->is_role( 'give_donor' ) ) && ! empty( $give_donor ) ? 'give_donor' : 'subscriber' ) ) );
+				$give_role          = (array) give_get_donor_default_user_role();
 				$donor_args         = [
 					'user_login'      => $data['email'],
 					'user_email'      => $data['email'],
@@ -353,6 +355,7 @@ function give_import_get_user_from_csv( $data, $import_setting = [] ) {
 
 						// Adding notes that donor is being imported from CSV.
 						$current_user = wp_get_current_user();
+						/* translators: %s: Email address of the user who ran the import */
 						$donor_data->add_note( wp_sprintf( __( 'This donor was imported by %s', 'give' ), $current_user->user_email ) );
 					} else {
 						$dry_run_donor_create = true;
@@ -1060,7 +1063,7 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
 					'second' => $post_date[5],
 				],
 			],
-			'meta_query'             => [
+			'meta_query'             => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Matches an existing donation by its total and form meta; the meta match is the lookup.
 				[
 					'key'     => '_give_payment_total',
 					'value'   => preg_replace( '/[\$,]/', '', $payment_data['price'] ),
@@ -1108,6 +1111,7 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
 /**
  * Record payment notes that is being imported from CSV.
  *
+ * @since 4.19.1 Add translators comments.
  * @since  1.8.13
  *
  * @param  int $payment_id The ID number of the payment.
@@ -1116,6 +1120,7 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
  */
 function give_donation_import_insert_default_payment_note( $payment_id ) {
 	$current_user = wp_get_current_user();
+	/* translators: %s: Email address of the user who ran the import */
 	give_insert_payment_note( $payment_id, wp_sprintf( __( 'This donation was imported by %s', 'give' ), $current_user->user_email ) );
 }
 

@@ -205,7 +205,7 @@ abstract class WPBackgroundProcess extends WPAsyncRequest
 
         $key = $this->identifier . '_batch_%';
 
-        $count = $wpdb->get_var(
+        $count = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds queue batch rows by key pattern, which core options and meta functions cannot do; the queue must be read live.
             $wpdb->prepare(
                 "
 			SELECT COUNT(*)
@@ -291,7 +291,7 @@ abstract class WPBackgroundProcess extends WPAsyncRequest
 
         $key = $this->identifier . '_batch_%';
 
-        $query = $wpdb->get_row(
+        $query = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Finds queue batch rows by key pattern, which core options and meta functions cannot do; the queue must be read live.
             $wpdb->prepare(
                 "
 			SELECT *
@@ -457,6 +457,7 @@ abstract class WPBackgroundProcess extends WPAsyncRequest
         // Adds every 5 minutes to the existing schedules.
         $schedules[$this->identifier . '_cron_interval'] = [
             'interval' => MINUTE_IN_SECONDS * $interval,
+            /* translators: %d: Number of minutes */
             'display' => sprintf(__('Every %d Minutes', 'give'), $interval),
         ];
 

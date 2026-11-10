@@ -4,13 +4,17 @@ namespace Give\Framework\Migrations\Actions;
 
 use Exception;
 use Give\Framework\Migrations\Contracts\Migration;
-use Give\Framework\Migrations\MigrationsRunner;
+use Give\MigrationLog\MigrationLogFactory;
+use Give\MigrationLog\MigrationLogStatus;
+
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- transaction statements around a migration that an admin runs by hand; they cannot be cached.
 
 class ManuallyRunMigration
 {
     /**
      * Manually runs the migration and then marks the migration as finished if successful
      *
+     * @since 4.19.1 Log the exception class and message instead of the full dump.
      * @since 2.9.2
      *
      * @param Migration $migration
@@ -27,7 +31,7 @@ class ManuallyRunMigration
         } catch (Exception $exception) {
             $wpdb->query('ROLLBACK');
 
-            give_record_log('Migration Failed', print_r($exception, true), 0, 'update');
+            give_record_log('Migration Failed', get_class($exception) . ': ' . $exception->getMessage(), 0, 'update');
             give()->notices->register_notice(
                 [
                     'id' => 'migration-failure',
@@ -51,22 +55,17 @@ class ManuallyRunMigration
     }
 
     /**
-     * Updates the completed migrations to include the migration if not yet included
+     * Marks the migration as completed in the migration log
      *
+     * @since 4.19.1 Record the run in the migration log. The option this used to update no longer exists, so a valid run ended in a fatal error.
      * @since 2.9.2
      *
      * @param string $migrationId
      */
     private function updateMigrationsSetting($migrationId)
     {
-        $completedMigrations = get_option(MigrationsRunner::MIGRATION_OPTION);
-
-        if (in_array($migrationId, $completedMigrations, true)) {
-            return;
-        }
-
-        $completedMigrations[] = $migrationId;
-
-        update_option(MigrationsRunner::MIGRATION_OPTION, $completedMigrations);
+        give(MigrationLogFactory::class)
+            ->make($migrationId, MigrationLogStatus::SUCCESS)
+            ->save();
     }
 }

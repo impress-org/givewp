@@ -214,8 +214,8 @@ class Give_Email_Notification_Util {
 
 		if (
 			current_user_can( 'manage_give_settings' )
-			&& ! empty( $_GET['give_action'] )
-			&& 'preview_email' === $_GET['give_action']
+			&& ! empty( $_GET['give_action'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only check; it only says whether a preview was asked for, and Give_Email_Notifications::preview_email() verifies the nonce before it shows anything.
+			&& 'preview_email' === $_GET['give_action'] // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- same read-only check as above.
 		) {
 			$is_preview = true;
 		}
@@ -235,8 +235,8 @@ class Give_Email_Notification_Util {
 
 		if (
 			current_user_can( 'manage_give_settings' )
-			&& ! empty( $_GET['give_action'] )
-			&& 'send_preview_email' === $_GET['give_action']
+			&& ! empty( $_GET['give_action'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only check; it only says whether a test email was asked for, and Give_Email_Notifications::send_preview_email() verifies the nonce before it sends anything.
+			&& 'send_preview_email' === $_GET['give_action'] // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- same read-only check as above.
 		) {
 			$is_preview = true;
 		}

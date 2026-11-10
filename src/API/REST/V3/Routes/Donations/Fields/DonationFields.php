@@ -18,7 +18,7 @@ class DonationFields
     /**
      * Process field values for special data types before setting them on the donation model.
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 4.13.0 update money object format to use value and currency
      * @since 4.8.0
      *

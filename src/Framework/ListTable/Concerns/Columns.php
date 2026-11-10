@@ -19,7 +19,7 @@ trait Columns
     /**
      * Add List Table column
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.24.0
      *
      * @param ModelColumn $column
@@ -61,7 +61,7 @@ trait Columns
     /**
      * Remove List Table column
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.24.0
      *
      * @return self
@@ -110,7 +110,7 @@ trait Columns
     /**
      * Add column before specific column
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.24.0
      *
      * @return self
@@ -128,7 +128,7 @@ trait Columns
     /**
      * Add column after specific column
      *
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 2.24.0
      *
      * @return self

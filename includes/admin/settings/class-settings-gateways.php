@@ -4,7 +4,7 @@
  * Give Settings Page/Tab
  *
  * @package     Give
- * @since       TBD Escape output.
+ * @since       4.19.1 Escape output.
  * @since       1.8
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -258,6 +258,7 @@ if (! class_exists('Give_Settings_Gateways')) :
         /**
          * Render Gateway Notice
          *
+         * @since 4.19.1 Add translators comments.
          * @since 4.2.0 Updated messages removing mentions to Stripe fees
          * @since  2.3.0
          * @access public
@@ -300,6 +301,7 @@ if (! class_exists('Give_Settings_Gateways')) :
                     <p class="give-gateways-notice-message">
                         <?php
                         echo wp_kses_post( sprintf(
+                            /* translators: 1: Help icon markup, 2: URL of the PayPal settings page, 3: URL of the 2Checkout add-on page, 4: URL of the Authorize.Net add-on page */
                             __(
                                 'Activate the free Stripe payment gateway %1$s, <a href="%2$s" target="_blank">PayPal Donations</a>, or a premium gateway like <a href="%3$s" target="_blank">2checkout</a>, or <a href="%4$s" target="_blank">Authorize.Net</a>.',
                                 'give'
@@ -429,7 +431,7 @@ if (! class_exists('Give_Settings_Gateways')) :
                 echo '<div class="give-settings-section-group-menu">';
                 echo '<ul>';
                 foreach ($groups as $slug => $group) {
-                    $current_group = ! empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup;
+                    $current_group = ! empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only group param; it only selects which panel to show and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
                     $active_class = ($slug === $current_group) ? 'active' : '';
 
                     if ($group['helper']) {
@@ -468,7 +470,7 @@ if (! class_exists('Give_Settings_Gateways')) :
 
             echo '<div class="give-settings-section-group-content">';
             foreach ($groups as $slug => $group) :
-                $current_group = !empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup;
+                $current_group = !empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- read-only group param; it only selects which panel to show and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
                 $hide_class = $slug !== $current_group ? 'give-hidden' : '';
                 $suffix = $slug === 'v3' ? '_v3' : '';
 

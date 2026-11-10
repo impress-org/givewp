@@ -36,7 +36,7 @@ class AvatarRoute extends RouteAbstract
      */
     public function handleRequest(WP_REST_Request $request)
     {
-        if (!(is_array($_POST) && is_array($_FILES))) {
+        if (!(is_array($_POST) && is_array($_FILES))) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- REST route; WordPress verifies the wp_rest nonce and the route checks the donor permission.
             return new WP_REST_Response(
                 [
                     'status' => 400,
@@ -70,7 +70,7 @@ class AvatarRoute extends RouteAbstract
             require_once(ABSPATH . 'wp-admin/includes/file.php');
         }
 
-        foreach ($_FILES as $file) {
+        foreach ($_FILES as $file) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- REST route; WordPress verifies the wp_rest nonce and the route checks the donor permission.
             $upload = wp_handle_upload(
                 $file,
                 [

@@ -19,7 +19,7 @@ class GetAsyncFormDataForListView
      */
     public function __invoke()
     {
-        $options = give_clean($_GET);
+        $options = give_clean($_GET); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified by check_ajax_referer() a few lines below, before any value is used.
 
         if ( ! isset($options['nonce']) || ! check_ajax_referer('GiveDonationFormsAsyncDataAjaxNonce', 'nonce')) {
             wp_send_json_error([

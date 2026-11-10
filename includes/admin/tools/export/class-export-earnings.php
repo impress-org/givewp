@@ -37,7 +37,7 @@ class Give_Earnings_Export extends Give_Export
      * Set the export headers
      *
      * @access public
-     * @since  TBD Use gmdate() and wp_date() instead of date().
+     * @since  4.19.1 Use gmdate() and wp_date() instead of date().
      * @since  1.6
      * @return void
      */
@@ -78,12 +78,15 @@ class Give_Earnings_Export extends Give_Export
     /**
      * Include a nonce check when authenticating
      *
+     * @since 4.19.1 Unslash and sanitize the nonce.
      * @since 2.21.4
      *
      * @return bool
      */
     public function can_export() {
-        return (bool) apply_filters( 'give_export_capability', current_user_can( 'export_give_reports' ) && wp_verify_nonce($_REQUEST['give-nonce'], 'give_earnings_export'));
+        $nonce = isset( $_REQUEST['give-nonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['give-nonce'] ) ) : '';
+
+        return (bool) apply_filters( 'give_export_capability', current_user_can( 'export_give_reports' ) && wp_verify_nonce( $nonce, 'give_earnings_export' ) );
     }
 
     /**
@@ -139,7 +142,7 @@ class Give_Earnings_Export extends Give_Export
     }
 
     /**
-     * @since TBD Use gmdate() instead of date().
+     * @since 4.19.1 Use gmdate() instead of date().
      * @since 2.21.2
      *
      * @return object|null
@@ -159,6 +162,7 @@ class Give_Earnings_Export extends Give_Export
             ];
         }
 
+        // phpcs:disable WordPress.Security.NonceVerification.Missing -- nonce verified by Give_Earnings_Export::can_export() in Give_Export::export() before this runs.
         if (!isset($_POST['start_year'], $_POST['end_year'], $_POST['start_month'], $_POST['end_month'])) {
             throw new \Give\Framework\Exceptions\Primitives\InvalidArgumentException(
                 'Start year & month, End year & month can not be empty. Please enter validate dates to export revenue and donation stats.'
@@ -169,6 +173,7 @@ class Give_Earnings_Export extends Give_Export
         $dates->endYear = (string)absint($_POST['end_year']);
         $dates->startMonth = (string)absint($_POST['start_month']);
         $dates->endMonth = (string)absint($_POST['end_month']);
+        // phpcs:enable WordPress.Security.NonceVerification.Missing
 
         if ($firstDonation && $firstDonation->createdAt->format('Y') > $dates->startYear) {
             throw new \Give\Framework\Exceptions\Primitives\InvalidArgumentException(

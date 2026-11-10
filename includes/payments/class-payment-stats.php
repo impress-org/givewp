@@ -83,7 +83,7 @@ class Give_Payment_Stats extends Give_Stats {
 	/**
 	 * Retrieve earning stats
 	 *
-	 * @since TBD Prepare SQL with placeholders.
+	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since 4.18.0 Sum donation totals with one SQL query instead of loading every ID and formatting each amount
 	 * @since  1.0
 	 * @access public
@@ -159,7 +159,7 @@ class Give_Payment_Stats extends Give_Stats {
 			if ( ! empty( $payments ) ) {
 				$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
 
-				$payments = $wpdb->get_results(
+				$payments = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Reads totals from the GiveWP donation meta table; WordPress has no cache layer for it.
 					$wpdb->prepare(
 						"SELECT %i as id, meta_value as total
 					FROM {$wpdb->donationmeta}
@@ -290,7 +290,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * Returns null when the query args contain something this method does not translate, or when an
 	 * add-on filters `give_donation_amount`, so the caller falls back to the per-donation loop.
 	 *
-	 * @since TBD Document why the query is safe.
+	 * @since 4.19.1 Document why the query is safe.
 	 * @since 4.18.0
 	 *
 	 * @param array $args Give_Payments_Query arguments.
@@ -318,13 +318,13 @@ class Give_Payment_Stats extends Give_Stats {
 			LEFT JOIN {$wpdb->donationmeta} AS base ON base.{$donation_id_col} = p.ID AND base.meta_key = '_give_cs_base_amount'
 			WHERE p.post_type = 'give_payment' {$where}";
 
-		return (float) $wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by stats_where_sql() from prepare() fragments; $donation_id_col is the donation meta id column name.
+		return (float) $wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by stats_where_sql() from prepare() fragments; $donation_id_col is the donation meta id column name. Sum over the GiveWP donation meta table; WordPress has no function or cache for it.
 	}
 
 	/**
 	 * Count matching donations in one query instead of loading every ID into PHP.
 	 *
-	 * @since TBD Document why the query is safe.
+	 * @since 4.19.1 Document why the query is safe.
 	 * @since 4.18.0
 	 *
 	 * @param array $args Give_Payments_Query arguments.
@@ -340,7 +340,7 @@ class Give_Payment_Stats extends Give_Stats {
 			return null;
 		}
 
-		return (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} AS p WHERE p.post_type = 'give_payment' {$where}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by stats_where_sql() from prepare() fragments.
+		return (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} AS p WHERE p.post_type = 'give_payment' {$where}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $where is built by stats_where_sql() from prepare() fragments. Counts donation posts in one query instead of loading every ID; WP_Query would load the posts.
 	}
 
 	/**
@@ -374,7 +374,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * Translate the subset of Give_Payments_Query arguments the stats methods build (status, date
 	 * range, form, parent, and simple meta equality) into a WHERE fragment. Anything else returns null.
 	 *
-	 * @since TBD Use gmdate() instead of date(), and prepare SQL with placeholders.
+	 * @since 4.19.1 Use gmdate() instead of date(), and prepare SQL with placeholders.
 	 * @since 4.18.0
 	 *
 	 * @param array $args
@@ -481,7 +481,7 @@ class Give_Payment_Stats extends Give_Stats {
 	/**
 	 * Get the best selling forms
 	 *
-	 * @since TBD Prepare SQL with placeholders.
+	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since  1.0
 	 * @since 2.9.6 Added an explicit ORDER BY on which to apply a DESC order.
      * @since 2.18.0 Updated sales calculation so that the results are ordered as integers.
@@ -497,7 +497,7 @@ class Give_Payment_Stats extends Give_Stats {
 
 		$meta_table = give_v20_bc_table_details( 'form' );
 
-		$give_forms = $wpdb->get_results(
+		$give_forms = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Ranking by the _give_form_sales meta value; WordPress has no function for it.
 			$wpdb->prepare(
 				"SELECT %i as form_id, max(ABS(meta_value)) as sales
 				FROM %i WHERE meta_key='_give_form_sales' AND meta_value > 0

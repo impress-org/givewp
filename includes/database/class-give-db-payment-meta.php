@@ -80,8 +80,8 @@ class Give_DB_Payment_Meta extends Give_DB_Meta {
 		return array(
 			'meta_id'               => '%d',
 			"{$this->meta_type}_id" => '%d',
-			'meta_key'              => '%s',
-			'meta_value'            => '%s',
+			'meta_key'              => '%s', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Column format map of the GiveWP meta table, not a query filter.
+			'meta_value'            => '%s', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column format map of the GiveWP meta table, not a query filter.
 		);
 	}
 

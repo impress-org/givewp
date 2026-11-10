@@ -1,12 +1,17 @@
 <?php
+/**
+ * @since 4.19.1 Add translators comments.
+ */
 
 /**
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 $setupUrl = add_query_arg(
     [
@@ -50,6 +55,7 @@ $setupUrl = add_query_arg(
             <div class="give-donor-dashboard-upgrade-notice__pill">
                 <?php
                 echo wp_kses_post( sprintf(
+                    /* translators: %s: URL of the Donor Dashboard documentation */
                     __(
                         'Want to know more? Learn more about the <a href="%s" target="_blank">new Donor Dashboard <i class="fas fa-external-link-alt"></i></a>',
                         'give'

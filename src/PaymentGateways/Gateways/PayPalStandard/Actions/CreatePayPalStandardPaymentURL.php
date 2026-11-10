@@ -106,7 +106,7 @@ class CreatePayPalStandardPaymentURL
                     'purchase_key' => $donation->purchaseKey,
                     'user_email' => $donation->email,
                     'date' => $donation->createdAt->format('Y-m-d H:i:s'),
-                    'post_data' => give_clean($_POST),
+                    'post_data' => give_clean($_POST), // phpcs:ignore WordPress.Security.NonceVerification.Missing -- donation request; DonateRoute verifies the signed route for v3 forms and give_process_donation() verifies the donation form nonce for v2 forms.
                     'gateway' => $donation->gatewayId,
                 ]
             ],

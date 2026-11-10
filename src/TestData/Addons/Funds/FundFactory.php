@@ -4,6 +4,8 @@ namespace Give\TestData\Addons\Funds;
 
 use Give\TestData\Framework\Factory;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- WP-CLI test data code; it writes and reads fake data directly for speed, runs only from the command line, and is not cached.
+
 /**
  * Class FundFactory
  * @package Give\TestData\Funds

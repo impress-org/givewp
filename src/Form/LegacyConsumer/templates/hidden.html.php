@@ -4,7 +4,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-/** @since TBD Escape output. */
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
+
+/** @since 4.19.1 Escape output. */
 /** @var Give\Framework\FieldsAPI\Hidden $field */ ?>
 <?php
 /** @var string $fieldIdAttribute */ ?>

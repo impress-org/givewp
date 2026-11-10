@@ -2,12 +2,14 @@
 /**
  * This template is used to display the progress of [give_totals]
  *
- * @since TBD Escape output.
+ * @since 4.19.1 Escape output.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- template variables; this file is included inside a function, so they are not globals.
 
 // Bail out if total goal is empty.
 if ( empty( $total_goal ) ) {

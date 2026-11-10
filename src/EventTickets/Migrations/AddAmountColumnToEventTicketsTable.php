@@ -6,6 +6,8 @@ use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- migration; it copies data between GiveWP tables once and must not be cached.
+
 /**
  * @since 3.20.0
  */
@@ -58,7 +60,7 @@ class AddAmountColumnToEventTicketsTable extends Migration
     }
 
     /**
-     * @since TBD Escape exception message.
+     * @since 4.19.1 Escape exception message.
      * @since 3.20.0
      *
      * @throws DatabaseMigrationException
@@ -80,7 +82,7 @@ class AddAmountColumnToEventTicketsTable extends Migration
     }
 
     /**
-     * @since TBD Escape exception message and use %i for the table names.
+     * @since 4.19.1 Escape exception message and use %i for the table names.
      * @since 3.20.0
      *
      * @throws DatabaseMigrationException

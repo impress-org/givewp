@@ -147,7 +147,7 @@ class Give_DB_Comments extends Give_DB {
 	/**
 	 * Retrieves a single comment from the database
 	 *
-	 * @since  TBD Use the registered table name in the query.
+	 * @since  4.19.1 Use the registered table name in the query.
 	 * @since  2.3.0
 	 * @access public
 	 *
@@ -171,7 +171,7 @@ class Give_DB_Comments extends Give_DB {
 
 		switch ( $by ) {
 			case 'id':
-				$comment = $wpdb->get_row(
+				$comment = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- GiveWP custom table; WordPress has no cache layer for it.
 					$wpdb->prepare(
 						"SELECT * FROM {$wpdb->give_comments} WHERE comment_ID = %s LIMIT 1",
 						$comment_id
@@ -190,7 +190,7 @@ class Give_DB_Comments extends Give_DB {
 	/**
 	 * Retrieve comments from the database.
 	 *
-	 * @since  TBD Document why the query is safe.
+	 * @since  4.19.1 Document why the query is safe.
 	 * @since  2.3.0
 	 * @access public
 	 *
@@ -203,7 +203,7 @@ class Give_DB_Comments extends Give_DB {
 		$sql_query = $this->get_sql( $args );
 
 		// Get comment.
-		$comments = $wpdb->get_results( $sql_query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() returns a prepared query.
+		$comments = $wpdb->get_results( $sql_query ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() returns a prepared query. GiveWP custom table; WordPress has no cache layer for it.
 
 		return $comments;
 	}
@@ -212,7 +212,7 @@ class Give_DB_Comments extends Give_DB {
 	/**
 	 * Count the total number of comments in the database
 	 *
-	 * @since  TBD Document why the query is safe.
+	 * @since  4.19.1 Document why the query is safe.
 	 * @since  2.3.0
 	 * @access public
 	 *
@@ -229,7 +229,7 @@ class Give_DB_Comments extends Give_DB {
 
 		$sql_query = $this->get_sql( $args );
 
-		$count = $wpdb->get_var( $sql_query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() returns a prepared query.
+		$count = $wpdb->get_var( $sql_query ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- get_sql() returns a prepared query. GiveWP custom table; WordPress has no cache layer for it.
 
 		return absint( $count );
 	}
@@ -267,7 +267,7 @@ class Give_DB_Comments extends Give_DB {
 	/**
 	 * Get sql query from quaried array.
 	 *
-	 * @since  TBD Prepare the comment types, allowlist the order and document why the query is safe.
+	 * @since  4.19.1 Prepare the comment types, allowlist the order and document why the query is safe.
 	 * @since  2.3.0
 	 * @access public
 	 *
