@@ -35,7 +35,7 @@ function stubWindowData() {
     });
 }
 
-type ScreenModule = {filters: FilterConfig[]; declarations?: FilterDeclaration[]; screen: ListTableScreen};
+type ScreenModule = {filters?: FilterConfig[]; declarations?: FilterDeclaration[]; screen: ListTableScreen};
 
 /**
  * The real filter settings and screen config of every standalone core screen.
@@ -46,30 +46,30 @@ function standaloneScreens(): ScreenModule[] {
     /* eslint-disable @typescript-eslint/no-var-requires */
     return [
         {
-            filters: require('@givewp/src/Donations/resources/components/DonationsListTable').filters,
+            declarations: require('@givewp/src/Donations/resources/components/filters').donationsFilters,
             screen: require('@givewp/src/Donations/resources/components/listTableScreen').default,
         },
         {
-            filters: require('@givewp/src/Donors/resources/components/DonorsListTable').donorsFilters,
+            declarations: require('@givewp/src/Donors/resources/components/filters').donorsFilters,
             screen: require('@givewp/src/Donors/resources/components/listTableScreen').default,
         },
         {
-            filters: require('@givewp/src/Subscriptions/resources/components/SubscriptionsListTable').filters,
+            declarations: require('@givewp/src/Subscriptions/resources/components/filters').subscriptionFilters,
             screen: require('@givewp/src/Subscriptions/resources/components/listTableScreen').default,
         },
         {
-            filters: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable').filters,
+            declarations: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable/filters')
+                .campaignFilters,
             screen: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable/listTableScreen')
                 .default,
         },
         {
-            filters: require('@givewp/src/DonationForms/V2/resources/components/DonationFormsListTable')
-                .donationFormsFilters,
+            declarations: require('@givewp/src/DonationForms/V2/resources/components/filters').donationFormFilters({
+                withCampaign: true,
+            }),
             screen: require('@givewp/src/DonationForms/V2/resources/components/listTableScreen').default,
         },
         {
-            // Event Tickets already declares its filters, so it has no old filter settings.
-            filters: [],
             declarations: require('@givewp/src/EventTickets/resources/admin/components/EventTicketsListTable/filters')
                 .eventTicketFilters,
             screen: require('@givewp/src/EventTickets/resources/admin/components/EventTicketsListTable/listTableScreen')
@@ -79,7 +79,7 @@ function standaloneScreens(): ScreenModule[] {
     /* eslint-enable @typescript-eslint/no-var-requires */
 }
 
-function contextOf({filters, declarations, screen}: ScreenModule): ViewQueryContext {
+function contextOf({filters = [], declarations, screen}: ScreenModule): ViewQueryContext {
     const columns = [{id: 'id', label: 'ID', sortable: true, visible: true}];
 
     return {
