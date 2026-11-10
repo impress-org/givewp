@@ -14,7 +14,7 @@ declare global {
     }
 }
 
-const filters: Array<FilterConfig> = [
+export const filters: Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',
