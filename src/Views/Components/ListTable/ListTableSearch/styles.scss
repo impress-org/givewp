@@ -1,4 +1,7 @@
 .givewp-list-table-search {
+    // A set width, so a long hint wraps under the box and does not make the box wider.
+    inline-size: 24rem;
+    max-inline-size: 100%;
     min-inline-size: 16rem;
 
     // `base-control__label` is the label of the bundled components. WordPress 6.9 renders an
