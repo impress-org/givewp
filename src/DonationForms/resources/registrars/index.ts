@@ -7,6 +7,7 @@ import useDonationSummary from '@givewp/forms/app/hooks/useDonationSummary';
 import {useDonationFormSettings} from '@givewp/forms/app/store/form-settings';
 import useFormSubmitButton from '@givewp/forms/app/hooks/useFormSubmitButton';
 import useFormData from '@givewp/forms/app/hooks/useFormData';
+import type {useDonationFormState, useDonationFormStateDispatch} from '@givewp/forms/app/store';
 
 declare global {
     interface Window {
@@ -26,6 +27,8 @@ declare global {
                     useDonationFormSettings: typeof useDonationFormSettings;
                     useFormSubmitButton: typeof useFormSubmitButton;
                     useFormData: typeof useFormData;
+                    useDonationFormState: typeof useDonationFormState;
+                    useDonationFormStateDispatch: typeof useDonationFormStateDispatch;
                 };
             };
         };

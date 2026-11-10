@@ -87,6 +87,15 @@
         margin-block-start: var(--givewp-spacing-2);
     }
 
+    // On a phone the search box takes the whole row. DataViews sizes its search slot to the content, so the
+    // slot must fill the row before the box can.
+    @media (max-width: 782px) {
+        .dataviews__search {
+            flex: 1 1 100%;
+            min-inline-size: 0;
+        }
+    }
+
     // The DataViews wrapper scrolls sideways as a whole when the table is wider than the screen. Pin the
     // rows around the table to the start edge, so the search, the filters, the settings button and the
     // pagination stay in view while only the table moves.
