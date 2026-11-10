@@ -87,7 +87,7 @@ class ListDonationForms extends Endpoint
                                 'upgraded',
                             ],
                         ],
-                        'description' => 'Filter forms by one or more statuses. At most 50. "any" means every status except trash.',
+                        'description' => 'Filter forms by one or more statuses. At most 50. "any" means publish, draft, pending, private and upgraded. It leaves out trash and future, and it is the only value that returns private forms.',
                     ],
                     'search' => [
                         'type' => 'string',
@@ -134,13 +134,13 @@ class ListDonationForms extends Endpoint
                         'type' => 'string',
                         'required' => false,
                         'format' => 'date-time',
-                        'description' => 'Only forms created on or after this date and time (site time zone).',
+                        'description' => 'Only forms created on or after this date and time. Send the site\'s local time with seconds and no offset, such as 2025-04-10T14:30:00: it is compared as stored.',
                     ],
                     'end' => [
                         'type' => 'string',
                         'required' => false,
                         'format' => 'date-time',
-                        'description' => 'Only forms created on or before this date and time (site time zone).',
+                        'description' => 'Only forms created on or before this date and time. Send the site\'s local time with seconds and no offset, such as 2025-04-10T14:30:00: it is compared as stored.',
                     ],
                 ],
             ]
