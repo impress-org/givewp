@@ -4,6 +4,12 @@
     max-inline-size: 100%;
     min-inline-size: 16rem;
 
+    // Full width on a phone.
+    @media (max-width: 782px) {
+        inline-size: 100%;
+        min-inline-size: 0;
+    }
+
     // `base-control__label` is the label of the bundled components. WordPress 6.9 renders an
     // `input-control__label` styled by a triple-class 11px rule that is added after this file, so this
     // selector needs four classes to win.
