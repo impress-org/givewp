@@ -9,7 +9,6 @@ use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ColumnKind;
 use Give\Framework\ListTable\Formatting\MoneyFormatter;
 use Give\Framework\ListTable\ModelColumn;
-use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * @since 2.24.0
@@ -90,6 +89,6 @@ class DonationRevenueColumn extends ModelColumn
          */
         $donationFormData = $this->getListTableData();
 
-        return MoneyFormatter::raw(Money::fromDecimal($donationFormData->getRevenue($model), give_get_currency()));
+        return MoneyFormatter::rawFromDecimal($donationFormData->getRevenue($model));
     }
 }
