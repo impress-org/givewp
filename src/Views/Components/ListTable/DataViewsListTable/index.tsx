@@ -7,6 +7,7 @@ import ListTableViewReset from '../ListTableViewReset';
 import './styles.scss';
 
 /**
+ * @since TBD Add the `searchBox` and `filterBar` slots.
  * @since TBD
  */
 export interface DataViewsListTableProps {
@@ -27,6 +28,10 @@ export interface DataViewsListTableProps {
     isDefaultLayout?: boolean;
     /** Puts the layout back to the screen defaults. Without it there is no "Reset view". */
     onResetLayout?: () => void;
+    /** Shown in place of the DataViews search box. */
+    searchBox?: ReactNode;
+    /** Shown in place of the DataViews filter toggle and filter row. */
+    filterBar?: ReactNode;
 }
 
 const getItemId = (item: ListTableItem) => String(item.id);
@@ -35,8 +40,10 @@ const getItemId = (item: ListTableItem) => String(item.id);
  * The stock DataViews layout, with two changes: while rows are selected, the bulk actions also take
  * the place of the search row above the table, so they show where the selection starts (the stock
  * footer keeps its own copy next to the pagination); and a "Reset view" button sits after the view
- * options, which this DataViews version does not offer.
+ * options, which this DataViews version does not offer. A screen with filter declarations passes
+ * Give's search box and filter bar, which take the place of the stock search and filter row.
  *
+ * @since TBD Render the `searchBox` and `filterBar` slots in place of the stock search and filters.
  * @since TBD
  */
 function ListTableLayout({
@@ -45,12 +52,16 @@ function ListTableLayout({
     searchLabel,
     isDefaultLayout,
     onResetLayout,
+    searchBox,
+    filterBar,
 }: {
     hasSelection: boolean;
     search: boolean;
     searchLabel?: string;
     isDefaultLayout: boolean;
     onResetLayout?: () => void;
+    searchBox?: ReactNode;
+    filterBar?: ReactNode;
 }) {
     return (
         <>
@@ -61,8 +72,8 @@ function ListTableLayout({
             ) : (
                 <HStack alignment="top" justify="space-between" className="dataviews__view-actions" spacing={1}>
                     <HStack justify="start" expanded={false} className="dataviews__search">
-                        {search && <DataViews.Search label={searchLabel} />}
-                        <DataViews.FiltersToggle />
+                        {searchBox ?? (search && <DataViews.Search label={searchLabel} />)}
+                        {!filterBar && <DataViews.FiltersToggle />}
                     </HStack>
                     <HStack spacing={1} expanded={false} style={{flexShrink: 0}}>
                         <DataViews.LayoutSwitcher />
@@ -71,7 +82,7 @@ function ListTableLayout({
                     </HStack>
                 </HStack>
             )}
-            <DataViews.FiltersToggled className="dataviews-filters__container" />
+            {filterBar ?? <DataViews.FiltersToggled className="dataviews-filters__container" />}
             <DataViews.Layout />
             <DataViews.Footer />
         </>
@@ -82,6 +93,7 @@ function ListTableLayout({
  * Renders the stock DataViews table for an admin list screen. No data fetching and no
  * Give-specific behavior inside the DataViews area.
  *
+ * @since TBD Accept the `searchBox` and `filterBar` slots.
  * @since TBD
  */
 export default function DataViewsListTable({
@@ -100,6 +112,8 @@ export default function DataViewsListTable({
     searchLabel,
     isDefaultLayout = true,
     onResetLayout,
+    searchBox,
+    filterBar,
 }: DataViewsListTableProps) {
     return (
         <div className="givewp-list-table">
@@ -126,6 +140,8 @@ export default function DataViewsListTable({
                     searchLabel={searchLabel}
                     isDefaultLayout={isDefaultLayout}
                     onResetLayout={onResetLayout}
+                    searchBox={searchBox}
+                    filterBar={filterBar}
                 />
             </DataViews>
         </div>

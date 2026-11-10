@@ -1,4 +1,5 @@
 import {dateToken, parseDateToken} from './dateRange';
+import {NONE_VALUE} from './filterKinds';
 import type {
     BarFilterDeclaration,
     EntityFilterDeclaration,
@@ -17,7 +18,6 @@ export const MAX_FILTER_VALUES = 50;
 
 const TOKEN_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
 const ID_PATTERN = /^[1-9]\d{0,19}$/;
-const NONE = 'none';
 
 /**
  * The values an options filter offers.
@@ -35,7 +35,7 @@ function offeredValues(declaration: OptionsFilterDeclaration, statuses: StatusVo
  */
 function exclusiveValuesOf(declaration: OptionsFilterDeclaration | EntityFilterDeclaration): string[] {
     if (declaration.kind === 'entity') {
-        return declaration.allowNone ? [NONE] : [];
+        return declaration.allowNone ? [NONE_VALUE] : [];
     }
 
     return declaration.exclusiveValues ?? [];
@@ -85,7 +85,7 @@ export function parseFilterValue(
             return offered.includes(part);
         }
 
-        return TOKEN_PATTERN.test(part) && (ID_PATTERN.test(part) || (exclusive.includes(part) && part === NONE));
+        return TOKEN_PATTERN.test(part) && (ID_PATTERN.test(part) || (exclusive.includes(part) && part === NONE_VALUE));
     };
 
     const valid = rawParts.filter(isValid);

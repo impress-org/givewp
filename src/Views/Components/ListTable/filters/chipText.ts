@@ -48,42 +48,60 @@ function dateText(value: string, formatDate: (ymd: string) => string): string {
 }
 
 /**
- * The chip text of a filter. `text` is what the chip shows; `fullText` lists every label and is
- * used for the tooltip and the accessible name.
+ * The chip text of a filter. `text` is what the chip shows; `fullText` is the filter name with every
+ * label; `accessibleName` (the chip's name and tooltip) starts with `text`, so the spoken name holds
+ * the visible words, and then lists the labels when the chip shows only a count. When every label is a numbered fallback such as
+ * "Donor #123", the filter name is not repeated in front of it.
  *
+ * @since TBD Tell a numbered fallback by its whole label, so a translation may put the id first.
+ * @since TBD Leave out the filter name when every label is a numbered fallback.
+ * @since TBD Add the accessible name, which starts with the chip text.
  * @since TBD
  */
 export function filterChipText(
     declaration: BarFilterDeclaration,
     value: FilterValue | undefined,
     helpers: {labelOf: (value: string) => string; formatDate: (ymd: string) => string}
-): {text: string; fullText: string} {
-    const none = {text: declaration.label, fullText: declaration.label};
+): {text: string; fullText: string; accessibleName: string} {
+    const same = (text: string) => ({text, fullText: text, accessibleName: text});
 
     if (value === undefined || value === '' || (Array.isArray(value) && value.length === 0)) {
-        return none;
+        return same(declaration.label);
     }
 
     /* translators: 1: filter name such as "Status", 2: the chosen values. */
     const withLabel = (values: string) => sprintf(__('%1$s: %2$s', 'give'), declaration.label, values);
 
     if (declaration.kind === 'date') {
-        const text = withLabel(dateText(String(value), helpers.formatDate));
-
-        return {text, fullText: text};
+        return same(withLabel(dateText(String(value), helpers.formatDate)));
     }
 
     const labelOf = (item: string) =>
         helpers.labelOf(item) || (declaration.kind === 'entity' ? fallbackLabel(declaration, item) : item);
-    const labels = (Array.isArray(value) ? value : [value]).map(labelOf);
-    const fullText = withLabel(labels.join(', '));
+    const items = Array.isArray(value) ? value : [value];
+    const labels = items.map(labelOf);
+    const list = labels.join(', ');
 
     if (labels.length <= MAX_CHIP_LABELS) {
-        return {text: fullText, fullText};
+        // "Donor #123" already names the filter, so "Donor: Donor #123" would say it twice. A label is a
+        // fallback only when it is the whole numbered label of its own value, in whatever word order
+        // the translation uses.
+        const allFallback =
+            declaration.kind === 'entity' &&
+            items.every((item, index) => labels[index] === fallbackLabel(declaration, item));
+
+        return same(allFallback ? list : withLabel(list));
     }
 
     /* translators: %d: number of selected values. This text only shows above 3 values. */
     const count = sprintf(__('%d selected', 'give'), labels.length);
 
-    return {text: withLabel(count), fullText};
+    const text = withLabel(count);
+
+    return {
+        text,
+        fullText: withLabel(list),
+        /* translators: 1: the chip text such as "Status: 4 selected", 2: the chosen values. */
+        accessibleName: sprintf(__('%1$s. %2$s', 'give'), text, list),
+    };
 }
