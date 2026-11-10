@@ -125,4 +125,19 @@ class DateFormatterTest extends TestCase
         $this->assertStringContainsString('No date', DateFormatter::dateTime(null));
         $this->assertStringContainsString('givewp-list-table-dash', DateFormatter::date(new DateTime('@0')));
     }
+
+    /**
+     * A real date before 1970 is a date, not a missing one. Only the zero date counts as missing.
+     *
+     * @since TBD
+     */
+    public function testADateBefore1970IsWrittenOutAndTheZeroDateIsMissing(): void
+    {
+        update_option('date_format', 'Y-m-d');
+        update_option('timezone_string', 'UTC');
+
+        $this->assertSame('1969-07-20', DateFormatter::date(new DateTimeImmutable('1969-07-20 12:00:00', new DateTimeZone('UTC'))));
+        $this->assertStringContainsString('No date', DateFormatter::date(new DateTimeImmutable('0000-00-00 00:00:00', new DateTimeZone('UTC'))));
+        $this->assertNull(DateFormatter::iso(new DateTimeImmutable('0000-00-00 00:00:00', new DateTimeZone('UTC'))));
+    }
 }

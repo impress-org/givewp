@@ -13,6 +13,11 @@ use Give\Framework\ListTable\Views\Placeholder;
 final class DateFormatter
 {
     /**
+     * The timestamp of "0000-00-00", the empty date value of WordPress and MySQL.
+     */
+    private const ZERO_DATE_TIMESTAMP = -62169984000;
+
+    /**
      * Writes the date and the time with a translatable word between them, so the text is in one
      * language on every site. In English it reads "October 29, 2026 at 10:35 pm".
      *
@@ -48,11 +53,16 @@ final class DateFormatter
     }
 
     /**
+     * A missing date, the zero date ("0000-00-00") and the exact epoch (what an empty value turns into) count
+     * as no date. A real date before 1970, such as an imported or backdated donation, is still written out.
+     *
      * @since TBD
      */
     private static function isMissing(?DateTimeInterface $date): bool
     {
-        return $date === null || $date->getTimestamp() <= 0;
+        $timestamp = $date === null ? null : $date->getTimestamp();
+
+        return $timestamp === null || $timestamp === 0 || $timestamp <= self::ZERO_DATE_TIMESTAMP;
     }
 
     /**

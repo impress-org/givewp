@@ -264,7 +264,9 @@ class DonationFormDataRepository
 
 
     /**
-     * @since TBD Format the amounts with the shared money formatter.
+     * @since TBD Format the amounts with the shared money formatter. The list table passes these strings to the
+     *             give_goal_progress_stats filter, so an add-on on that filter now gets this text instead of the
+     *             older give_currency_filter() text.
      * @since 4.3.0
      *
      * Get goal data for form

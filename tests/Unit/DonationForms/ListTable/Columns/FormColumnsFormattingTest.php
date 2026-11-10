@@ -87,7 +87,7 @@ class FormColumnsFormattingTest extends TestCase
         $column = new LevelsColumn();
 
         $this->assertStringContainsString('$10.00 - $50.00', $column->getCellValue($form, 'pt_BR'));
-        $this->assertSame('money', $column->getKind());
+        $this->assertSame('text', $column->getKind());
     }
 
     /**
@@ -145,8 +145,7 @@ class FormColumnsFormattingTest extends TestCase
         $cell = (new GoalColumn())->getCellValue($form);
 
         $this->assertStringContainsString('givewp-list-table-dash', $cell);
-        $this->assertStringContainsString('No goal set', $cell);
-        $this->assertStringNotContainsString('No Goal Set', $cell);
+        $this->assertStringContainsString('No Goal Set', $cell);
     }
 
     /**

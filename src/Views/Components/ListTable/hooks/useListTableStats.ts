@@ -19,7 +19,8 @@ export type ListTableStats = {
 type StatsResponse = Record<string, unknown> & {formatted?: Record<string, string>};
 
 /**
- * - an error and no request running: `error`
+ * - an error and no request running, and no data to show: `error`
+ * - an error and no request running, but earlier data: `ready` (the last good numbers stay)
  * - no data yet (or a retry after an error): `loading`
  * - data and a request running: `refreshing`
  * - otherwise: `ready`
@@ -36,7 +37,7 @@ export function statsStatus({
     isValidating: boolean;
 }): StatsStatus {
     if (hasError && !isValidating) {
-        return 'error';
+        return hasData ? 'ready' : 'error';
     }
 
     if (!hasData || hasError) {

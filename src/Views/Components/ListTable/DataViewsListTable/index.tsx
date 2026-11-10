@@ -1,7 +1,8 @@
-import {createElement, type ReactNode, useMemo, useRef} from 'react';
+import {createContext, createElement, type MutableRefObject, type ReactNode, useContext, useMemo, useRef} from 'react';
 import cx from 'classnames';
 import {CheckboxControl, __experimentalHStack as HStack} from '@wordpress/components';
 import {DataViews} from '@wordpress/dataviews';
+import {__, sprintf} from '@wordpress/i18n';
 import type {Action, Field, View} from '@wordpress/dataviews';
 import type {ListTableItem} from '../ListTablePage/types';
 import ListTableViewReset from '../ListTableViewReset';
@@ -54,21 +55,47 @@ const canSelect = (actions: Action<ListTableItem>[], item: ListTableItem) =>
     actions.some((action) => action.supportsBulk && (!action.isEligible || action.isEligible(item)));
 
 /**
+ * The selection the card checkboxes read. It comes through context, not through the field's `render`
+ * function: DataViews draws the title field as a component, so a new `render` function on every
+ * selection change would remount the card, and the checkbox would lose keyboard focus.
+ */
+const CardSelectionContext = createContext<{
+    selection: string[];
+    onChangeSelection: (ids: string[]) => void;
+}>({selection: [], onChangeSelection: () => {}});
+
+function CardCheckbox({id, label}: {id: string; label: string}) {
+    const {selection, onChangeSelection} = useContext(CardSelectionContext);
+
+    return (
+        <CheckboxControl
+            className="givewp-list-table__card-checkbox"
+            __nextHasNoMarginBottom
+            /* translators: %s: the name of the record, for example a donor name. */
+            aria-label={sprintf(__('Select %s', 'give'), label)}
+            checked={selection.includes(id)}
+            onChange={() =>
+                onChangeSelection(
+                    selection.includes(id) ? selection.filter((selected) => selected !== id) : [...selection, id]
+                )
+            }
+        />
+    );
+}
+
+/**
  * Puts a selection checkbox before the card title. The cards of this DataViews version show their
  * checkbox only over a media image, and the list has no media, so without this a card could only be
  * selected with Ctrl or Cmd and a click.
+ *
+ * The returned `render` functions only change when the fields change, never with the selection (see
+ * CardSelectionContext). The actions are read from a ref, because their identity changes with the selection.
  */
 function withCardCheckbox(
     fields: Field<ListTableItem>[],
     titleField: string | undefined,
-    actions: Action<ListTableItem>[],
-    selection: string[],
-    onChangeSelection: (ids: string[]) => void
+    actionsRef: MutableRefObject<Action<ListTableItem>[]>
 ): Field<ListTableItem>[] {
-    if (!actions.some((action) => action.supportsBulk)) {
-        return fields;
-    }
-
     return fields.map((field) => {
         if (field.id !== titleField) {
             return field;
@@ -80,28 +107,15 @@ function withCardCheckbox(
             ...field,
             render: (renderProps) => {
                 const {item} = renderProps;
-                const id = getItemId(item);
                 const title = field.render ? createElement(field.render, renderProps) : label(item);
 
-                if (!canSelect(actions, item)) {
+                if (!canSelect(actionsRef.current, item)) {
                     return <>{title}</>;
                 }
 
                 return (
                     <HStack justify="start" alignment="center" spacing={2} className="givewp-list-table__card-title">
-                        <CheckboxControl
-                            className="givewp-list-table__card-checkbox"
-                            __nextHasNoMarginBottom
-                            aria-label={label(item)}
-                            checked={selection.includes(id)}
-                            onChange={() =>
-                                onChangeSelection(
-                                    selection.includes(id)
-                                        ? selection.filter((selected) => selected !== id)
-                                        : [...selection, id]
-                                )
-                            }
-                        />
+                        <CardCheckbox id={getItemId(item)} label={label(item)} />
                         {title}
                     </HStack>
                 );
@@ -207,10 +221,14 @@ export default function DataViewsListTable({
     const rootRef = useRef<HTMLDivElement>(null);
     const {hasMoreStart, hasMoreEnd} = useHorizontalOverflow(rootRef);
     const isNarrow = layoutMode === 'narrow';
+    const actionsRef = useRef(actions);
+    actionsRef.current = actions;
+    const hasBulkActions = actions.some((action) => action.supportsBulk);
     const shownFields = useMemo(
-        () => (isNarrow ? withCardCheckbox(fields, view.titleField, actions, selection, onChangeSelection) : fields),
-        [isNarrow, fields, view.titleField, actions, selection, onChangeSelection]
+        () => (isNarrow && hasBulkActions ? withCardCheckbox(fields, view.titleField, actionsRef) : fields),
+        [isNarrow, hasBulkActions, fields, view.titleField]
     );
+    const cardSelection = useMemo(() => ({selection, onChangeSelection}), [selection, onChangeSelection]);
 
     return (
         <div
@@ -221,33 +239,35 @@ export default function DataViewsListTable({
                 'givewp-list-table--narrow': isNarrow,
             })}
         >
-            <DataViews<ListTableItem>
-                view={view}
-                onChangeView={onChangeView}
-                fields={shownFields}
-                actions={actions}
-                data={data}
-                getItemId={getItemId}
-                paginationInfo={paginationInfo}
-                isLoading={isLoading}
-                selection={selection}
-                onChangeSelection={onChangeSelection}
-                empty={empty}
-                config={{perPageSizes}}
-                search={false}
-                // One layout at a time, so DataViews offers no layout switcher: the window width picks it.
-                defaultLayouts={isNarrow ? {grid: {}} : {table: {}}}
-            >
-                <ListTableLayout
-                    hasSelection={selection.length > 0}
-                    isDefaultLayout={isDefaultLayout}
-                    onResetLayout={onResetLayout}
-                    searchBox={searchBox}
-                    filterBar={filterBar}
-                    layoutMode={layoutMode}
-                    viewMenu={viewMenu}
-                />
-            </DataViews>
+            <CardSelectionContext.Provider value={cardSelection}>
+                <DataViews<ListTableItem>
+                    view={view}
+                    onChangeView={onChangeView}
+                    fields={shownFields}
+                    actions={actions}
+                    data={data}
+                    getItemId={getItemId}
+                    paginationInfo={paginationInfo}
+                    isLoading={isLoading}
+                    selection={selection}
+                    onChangeSelection={onChangeSelection}
+                    empty={empty}
+                    config={{perPageSizes}}
+                    search={false}
+                    // One layout at a time, so DataViews offers no layout switcher: the window width picks it.
+                    defaultLayouts={isNarrow ? {grid: {}} : {table: {}}}
+                >
+                    <ListTableLayout
+                        hasSelection={selection.length > 0}
+                        isDefaultLayout={isDefaultLayout}
+                        onResetLayout={onResetLayout}
+                        searchBox={searchBox}
+                        filterBar={filterBar}
+                        layoutMode={layoutMode}
+                        viewMenu={viewMenu}
+                    />
+                </DataViews>
+            </CardSelectionContext.Provider>
         </div>
     );
 }

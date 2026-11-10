@@ -142,8 +142,8 @@ afterEach(async () => {
 });
 
 describe('ListTablePage layout', () => {
-    // The narrow layout stacks the page in DOM order, so the order of the regions in the DOM is the
-    // order an admin sees on a phone (FR-031).
+    // The narrow layout stacks the page in DOM order. These tests check the DOM order only: the 782 px CSS
+    // rules (static header, tile wrapping) are checked in the Playwright narrow-screen tests (FR-031).
     it('puts the regions in the order header, test-mode toggle, tiles, notice area, list', async () => {
         await act(() => root.render(<ListTablePage {...props} />));
 
@@ -230,11 +230,19 @@ describe('ListTablePage narrow layout', () => {
             '.dataviews-view-grid__card .givewp-list-table__card-checkbox input'
         );
 
-        expect(checkbox?.getAttribute('aria-label')).toBe('Ada Lovelace');
+        expect(checkbox?.getAttribute('aria-label')).toBe('Select Ada Lovelace');
 
         await act(async () => checkbox?.click());
 
         expect(lastTable().selection).toEqual(['1']);
+
+        // The same checkbox element stays in the page, so keyboard focus is not lost (a remount drops it).
+        const after = container.querySelector<HTMLInputElement>(
+            '.dataviews-view-grid__card .givewp-list-table__card-checkbox input'
+        );
+
+        expect(after).toBe(checkbox);
+        expect(after?.checked).toBe(true);
     });
 
     it('resizing keeps page, sort, filters and selection', async () => {

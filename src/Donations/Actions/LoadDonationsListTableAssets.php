@@ -40,6 +40,7 @@ class LoadDonationsListTableAssets
             'adminUrl' => admin_url(),
             'pluginUrl' => GIVE_PLUGIN_URL,
             'dismissedRecommendations' => $this->getDismissedRecommendations(),
+            'canDismissRecommendations' => current_user_can('manage_options'),
             'addonsBulkActions' => [],
             'paymentMode' => give_is_test_mode(),
             'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),

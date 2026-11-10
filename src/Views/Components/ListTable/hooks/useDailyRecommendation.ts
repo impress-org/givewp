@@ -8,13 +8,15 @@ import type {ListTableRecommendations} from '../notices/types';
 /**
  * Today's recommendation for a screen. It is picked once, when the page loads, and stays fixed for
  * the page's life. Dismissing hides it at once and stores the dismissal; no other one appears until
- * the next load. If the dismissal cannot be saved, the same recommendation shows again.
+ * the next load. If the dismissal cannot be saved, the same recommendation shows again. A user who
+ * cannot dismiss (`canDismiss: false`) gets no dismiss function, so the button is not shown.
  *
  * @since TBD
  */
 export default function useDailyRecommendation(config?: ListTableRecommendations): {
     recommendation: RecommendedProductData | null;
-    dismiss: () => void;
+    /** Undefined when the user cannot dismiss, so the tip shows without a dismiss button. */
+    dismiss?: () => void;
 } {
     const [picked] = useState<RecommendedProductData | null>(() =>
         config ? pickDailyRecommendation(config.options, config.dismissed, siteToday()) : null
@@ -35,5 +37,8 @@ export default function useDailyRecommendation(config?: ListTableRecommendations
         });
     }, [picked, config]);
 
-    return {recommendation: isDismissed ? null : picked, dismiss};
+    return {
+        recommendation: isDismissed ? null : picked,
+        dismiss: config?.canDismiss === false ? undefined : dismiss,
+    };
 }

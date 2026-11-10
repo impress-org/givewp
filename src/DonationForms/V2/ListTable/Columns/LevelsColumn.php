@@ -8,6 +8,7 @@ use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ColumnKind;
 use Give\Framework\ListTable\Formatting\MoneyFormatter;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Framework\ListTable\Views\Placeholder;
 
 /**
  * @since 2.24.0
@@ -48,25 +49,24 @@ class LevelsColumn extends ModelColumn
     public function getCellValue($model, $locale = ''): string
     {
         if (empty($model->levels)) {
-            return __('No Levels', 'give');
+            return Placeholder::dash(__('No Levels', 'give'));
         }
 
         return sprintf(
             '<div class="amount"><span>%s</span></div>',
-            $this->getLevels($model->levels, $locale)
+            $this->getLevels($model->levels)
         );
     }
 
     /**
-     * @since TBD Format with the shared money formatter; $locale is no longer used.
+     * @since TBD Format with the shared money formatter; the $locale parameter is removed.
      * @since 2.24.0
      *
      * @param array $levels
-     * @param string $locale
      *
      * @return string
      */
-    private function getLevels(array $levels, string $locale): string
+    private function getLevels(array $levels): string
     {
         if (count($levels) === 1) {
             return MoneyFormatter::format($levels[0]->amount);
@@ -91,12 +91,14 @@ class LevelsColumn extends ModelColumn
     }
 
     /**
+     * The cell is a range of amounts or the text "No Levels", so it is not one money value.
+     *
      * @since TBD
      *
      * @inheritDoc
      */
     public function getKind(): string
     {
-        return ColumnKind::MONEY;
+        return ColumnKind::TEXT;
     }
 }

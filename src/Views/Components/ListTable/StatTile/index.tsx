@@ -15,6 +15,11 @@ export interface StatTileProps {
     upgrade?: {href: string; message: string};
     /** Set by the row when the filter this tile stands for is on. */
     isPressed?: boolean;
+    /**
+     * Whether a screen reader hears the pressed state. False for the Total tile: it is lit when no filter
+     * is on, but it does not toggle, so it is announced as a plain button. Defaults to true.
+     */
+    announcePressed?: boolean;
     /** Present: the tile is a toggle button. Never a button in the `upgrade` state. */
     onToggle?: () => void;
 }
@@ -47,7 +52,9 @@ function Value({state, value, upgrade}: Pick<StatTileProps, 'state' | 'value' | 
     }
 
     return (
-        <span className={cx('givewp-stat-tile__value', {'givewp-stat-tile__value--refreshing': state === 'refreshing'})}>
+        <span
+            className={cx('givewp-stat-tile__value', {'givewp-stat-tile__value--refreshing': state === 'refreshing'})}
+        >
             {value}
         </span>
     );
@@ -60,7 +67,15 @@ function Value({state, value, upgrade}: Pick<StatTileProps, 'state' | 'value' | 
  *
  * @since TBD
  */
-export default function StatTile({label, value, state, upgrade, isPressed = false, onToggle}: StatTileProps) {
+export default function StatTile({
+    label,
+    value,
+    state,
+    upgrade,
+    isPressed = false,
+    announcePressed = true,
+    onToggle,
+}: StatTileProps) {
     const content = (
         <>
             <span className="givewp-stat-tile__label">{label}</span>
@@ -76,7 +91,12 @@ export default function StatTile({label, value, state, upgrade, isPressed = fals
 
     if (onToggle && state !== 'upgrade') {
         return (
-            <button type="button" className={className} aria-pressed={isPressed} onClick={onToggle}>
+            <button
+                type="button"
+                className={className}
+                aria-pressed={announcePressed ? isPressed : undefined}
+                onClick={onToggle}
+            >
                 {content}
             </button>
         );

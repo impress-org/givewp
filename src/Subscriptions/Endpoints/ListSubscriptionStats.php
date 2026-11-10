@@ -3,7 +3,7 @@
 namespace Give\Subscriptions\Endpoints;
 
 use Give\Framework\Database\DB;
-use Give\Framework\ListTable\Formatting\MoneyFormatter;
+use Give\Framework\ListTable\Formatting\StatsFormatter;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -58,33 +58,7 @@ class ListSubscriptionStats extends Endpoint
 
         $statistics = $this->getSubscriptionStatistics();
 
-        return new WP_REST_Response($this->withFormatted($statistics, ['totalContributions']));
-    }
-
-    /**
-     * Adds a "formatted" key with one display string for each numeric value: money through the money
-     * formatter, counts through number_format_i18n().
-     *
-     * @since TBD
-     *
-     * @param array<string, int|float> $values
-     * @param string[] $moneyKeys Keys of $values that hold money.
-     *
-     * @return array<string, mixed>
-     */
-    private function withFormatted(array $values, array $moneyKeys = []): array
-    {
-        $formatted = [];
-
-        foreach ($values as $key => $value) {
-            $formatted[$key] = in_array($key, $moneyKeys, true)
-                ? MoneyFormatter::fromDecimal($value)
-                : number_format_i18n($value);
-        }
-
-        $values['formatted'] = $formatted;
-
-        return $values;
+        return new WP_REST_Response(StatsFormatter::withFormatted($statistics, ['totalContributions']));
     }
 
     /**
@@ -149,7 +123,4 @@ class ListSubscriptionStats extends Endpoint
         ];
     }
 }
-
-
-
 

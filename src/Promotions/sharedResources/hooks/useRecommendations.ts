@@ -25,18 +25,6 @@ export function useRecommendations(apiSettings, options) {
         apiSettings.dismissedRecommendations
     );
 
-    const getRandomRecommendation = useCallback((): RecommendedProductData | null => {
-        const availableOptions = options.filter((option) => !dismissedRecommendations.includes(option.enum));
-
-        if (availableOptions.length === 0) {
-            return null;
-        }
-
-        const randomIndex = Math.floor(Math.random() * availableOptions.length);
-
-        return availableOptions[randomIndex];
-    }, [dismissedRecommendations]);
-
     const getRecommendation = useCallback((): RecommendedProductData | null => {
         const availableOptions = options.filter((option) => !dismissedRecommendations.includes(option.enum));
 
@@ -53,5 +41,5 @@ export function useRecommendations(apiSettings, options) {
         await dismissRecommendation(data.option, apiSettings.apiNonce);
     };
 
-    return {getRecommendation, getRandomRecommendation, removeRecommendation};
+    return {getRecommendation, removeRecommendation};
 }

@@ -32,8 +32,9 @@
         font-weight: 600;
         line-height: 1.2;
 
+        // Dimmed with opacity on the dark value color, so the text keeps enough contrast.
         &--refreshing {
-            color: var(--givewp-neutral-400);
+            opacity: 0.65;
         }
     }
 
@@ -85,5 +86,11 @@
         background-color: var(--givewp-green-50);
         // A thicker edge, so the pressed tile is not told apart by color alone.
         box-shadow: inset 0 0 0 1px var(--givewp-green-500);
+
+        // Windows High Contrast drops box-shadow and overrides colors, so the pressed tile gets an outline.
+        @media (forced-colors: active) {
+            outline: 3px solid Highlight;
+            outline-offset: -3px;
+        }
     }
 }

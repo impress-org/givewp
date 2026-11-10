@@ -13,7 +13,7 @@ const mockedFetch = apiFetch as unknown as jest.Mock;
 describe('statsStatus', () => {
     it.each([
         [{hasData: false, hasError: true, isValidating: false}, 'error'],
-        [{hasData: true, hasError: true, isValidating: false}, 'error'],
+        [{hasData: true, hasError: true, isValidating: false}, 'ready'],
         [{hasData: false, hasError: false, isValidating: true}, 'loading'],
         [{hasData: false, hasError: true, isValidating: true}, 'loading'],
         [{hasData: false, hasError: false, isValidating: false}, 'loading'],

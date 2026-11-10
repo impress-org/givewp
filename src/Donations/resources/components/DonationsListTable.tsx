@@ -26,6 +26,7 @@ declare global {
             recurringDonationsEnabled: boolean;
             pluginUrl: string;
             dismissedRecommendations: Array<string>;
+            canDismissRecommendations?: boolean;
             addonsBulkActions: Array<BulkActionsConfig>;
             donationStatuses: {[statusCode: string]: string};
         };
@@ -138,6 +139,7 @@ const recommendations: ListTableRecommendations = {
     options: [RecommendationConfig.recurring, RecommendationConfig.feeRecovery, RecommendationConfig.designatedFunds],
     dismissed: window.GiveDonations.dismissedRecommendations ?? [],
     apiNonce: window.GiveDonations.apiNonce,
+    canDismiss: window.GiveDonations.canDismissRecommendations ?? true,
 };
 
 /**
