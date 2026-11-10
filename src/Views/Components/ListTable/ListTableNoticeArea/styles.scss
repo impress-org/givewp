@@ -1,0 +1,19 @@
+.givewp-list-table-notice-area {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-2);
+
+    // A child like the notification placeholder can render nothing. Hide the empty area so it
+    // takes no space in the page's flex gap.
+    &:empty {
+        display: none;
+    }
+
+    &__link {
+        font-weight: 600;
+    }
+
+    &__message {
+        margin: 0;
+    }
+}
