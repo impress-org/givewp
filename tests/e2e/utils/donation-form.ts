@@ -28,12 +28,26 @@ export async function waitForForm(form: FrameLocator): Promise<void> {
 }
 
 /**
- * Fills the donor fields the default form asks for.
+ * Fills the donor fields the default form asks for and returns the email the donation will use.
+ *
+ * A signed-in donor, including one who signed in through the form's login block, gets their own
+ * email prefilled in a disabled field, so that email is left as it is and returned. Otherwise the
+ * default donor email is typed in.
  */
-export async function fillDonorDetails(form: FrameLocator): Promise<void> {
+export async function fillDonorDetails(form: FrameLocator): Promise<string> {
     await form.getByLabel('First name').fill(DONOR.firstName);
     await form.getByLabel('Last name').fill(DONOR.lastName);
-    await form.getByLabel('Email Address').fill(DONOR.email);
+
+    const email = form.getByLabel('Email Address');
+    await email.waitFor();
+
+    if (await email.isDisabled()) {
+        return email.inputValue();
+    }
+
+    await email.fill(DONOR.email);
+
+    return DONOR.email;
 }
 
 /**
@@ -61,8 +75,8 @@ export async function payWithTestGateway(form: FrameLocator): Promise<void> {
  * The rows are read back off the donation that was just written, so reaching them is what makes a
  * passing donation test proof the donation was recorded rather than only that the request returned.
  */
-export async function expectReceipt(form: FrameLocator, total: string): Promise<void> {
-    await expect(form.locator('.details-row--email-address')).toContainText(DONOR.email, {timeout: 30_000});
+export async function expectReceipt(form: FrameLocator, total: string, email: string = DONOR.email): Promise<void> {
+    await expect(form.locator('.details-row--email-address')).toContainText(email, {timeout: 30_000});
     await expect(form.locator('.details-row--payment-status')).toContainText('Completed');
     await expect(form.locator('.details-row--donation-total')).toContainText(total);
 }

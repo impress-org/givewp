@@ -1,5 +1,5 @@
 import {Button, CheckboxControl, RadioControl, SearchControl, Spinner} from '@wordpress/components';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {applyExclusiveValues} from '../filters/exclusive';
 import type {FilterOption} from '../filters/types';
 import './styles.scss';
@@ -65,19 +65,24 @@ export default function EntityFilterControl({
     return (
         <div className="givewp-entity-filter-control">
             <SearchControl
-                label={label}
+                /* translators: %s: the filter name, such as "Campaign". */
+                label={sprintf(__('Search %s', 'give'), label)}
                 value={search}
                 onChange={onSearch}
                 hideLabelFromVision={false}
                 __nextHasNoMarginBottom
             />
 
-            {isLoading && (
-                <div role="status" className="givewp-entity-filter-control__status">
-                    <Spinner />
-                    <span>{__('Loading…', 'give')}</span>
-                </div>
-            )}
+            {/* One live region that stays mounted, so a screen reader announces each change of its text. */}
+            <div role="status" aria-live="polite" className="givewp-entity-filter-control__status">
+                {isLoading && (
+                    <>
+                        <Spinner />
+                        <span>{__('Loading…', 'give')}</span>
+                    </>
+                )}
+                {isEmpty && <span className="givewp-entity-filter-control__empty">{__('No matches', 'give')}</span>}
+            </div>
 
             {error && (
                 <div role="alert" className="givewp-entity-filter-control__error">
@@ -87,8 +92,6 @@ export default function EntityFilterControl({
                     </Button>
                 </div>
             )}
-
-            {isEmpty && <p className="givewp-entity-filter-control__empty">{__('No matches', 'give')}</p>}
 
             {choices.length > 0 && !multiple && (
                 <div role="radiogroup" aria-label={label} className="givewp-entity-filter-control__options">
@@ -119,8 +122,9 @@ export default function EntityFilterControl({
                 <Button
                     variant="tertiary"
                     className="givewp-entity-filter-control__more"
-                    disabled={isLoading}
-                    onClick={onLoadMore}
+                    // Not `disabled`, so the button keeps keyboard focus while the next page loads.
+                    aria-disabled={isLoading}
+                    onClick={() => !isLoading && onLoadMore()}
                 >
                     {__('Load more', 'give')}
                 </Button>
