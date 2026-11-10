@@ -83,5 +83,7 @@
     &--pressed {
         border-color: var(--givewp-green-500);
         background-color: var(--givewp-green-50);
+        // A thicker edge, so the pressed tile is not told apart by color alone.
+        box-shadow: inset 0 0 0 1px var(--givewp-green-500);
     }
 }

@@ -91,4 +91,44 @@ describe('StatTiles', () => {
 
         expect(container.querySelectorAll('.givewp-list-table-dash')).toHaveLength(2);
     });
+
+    it('makes a tile a toggle only when its filter is declared, and presses it from the view filters', async () => {
+        const filtering: Record<string, StatConfig> = {
+            donorsCount: {label: 'Number of Donors', filter: {filterId: 'donorType'}},
+            oneTimeDonorsCount: {label: 'One-Time Donors', filter: {filterId: 'donorType', value: 'one-time'}},
+            subscribersCount: {
+                label: 'Subscribers',
+                filter: {filterId: 'donorType', value: 'subscriber'},
+                upgrade: {href: 'https://example.test/up', tooltip: 'Grow with recurring.'},
+            },
+        };
+        const onChangeFilters = jest.fn();
+        const view = [{field: 'filter-donorType', operator: 'is', value: 'one-time'}];
+
+        await render(
+            <StatTiles
+                config={filtering}
+                stats={stats}
+                status="ready"
+                label="Donors statistics"
+                filters={view}
+                availableFilterIds={['donorType']}
+                onChangeFilters={onChangeFilters}
+            />
+        );
+
+        const buttons = Array.from(container.querySelectorAll('button.givewp-stat-tile'));
+
+        expect(buttons.map((button) => button.getAttribute('aria-pressed'))).toEqual(['false', 'true']);
+
+        await act(async () => (buttons[0] as HTMLElement).click());
+
+        expect(onChangeFilters).toHaveBeenCalledWith([]);
+
+        await render(
+            <StatTiles config={filtering} stats={stats} status="ready" label="Donors statistics" availableFilterIds={[]} />
+        );
+
+        expect(container.querySelectorAll('button.givewp-stat-tile')).toHaveLength(0);
+    });
 });

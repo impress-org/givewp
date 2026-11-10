@@ -86,13 +86,18 @@ const recommendations: ListTableRecommendations = {
  * then this config must use those same keys: "donorsCount", "oneTimeDonorsCount", "subscribersCount".
  * Missing or mismatched keys will result in empty/undefined values in the UI.
  *
+ * @since TBD Map each tile to the list filter it toggles.
  * @since 4.11.0
  */
 const statsConfig: Record<string, StatConfig> = {
-    donorsCount: { label: __('Number of Donors', 'give')},
-    oneTimeDonorsCount: { label: __('One-Time Donors', 'give')},
+    donorsCount: {label: __('Number of Donors', 'give'), filter: {filterId: 'donorType'}},
+    oneTimeDonorsCount: {
+        label: __('One-Time Donors', 'give'),
+        filter: {filterId: 'donorType', value: 'one-time'},
+    },
     subscribersCount: {
         label: __('Subscribers', 'give'),
+        filter: {filterId: 'donorType', value: 'subscriber'},
         upgrade: !window.GiveDonors.recurringDonationsEnabled && {
             href: 'https://docs.givewp.com/subscribers-stat',
             tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
