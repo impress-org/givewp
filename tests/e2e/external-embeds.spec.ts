@@ -178,13 +178,14 @@ test.describe('External donation form embeds', () => {
         await form.getByRole('button', {name: 'Log In'}).click();
         await expect(form.locator('input[name="login"]')).toBeHidden();
 
-        await fillDonorDetails(form);
+        // The inline login locks the email field to the signed-in donor's own address.
+        const email = await fillDonorDetails(form);
         await form.getByRole('button', {name: 'Continue'}).click();
 
         await payWithTestGateway(form);
         await form.getByRole('button', {name: 'Donate now'}).click();
 
-        await expectReceipt(form, '$10.00');
+        await expectReceipt(form, '$10.00', email);
     });
 
     test('swaps to the receipt view when an offsite gateway returns', async ({page}) => {

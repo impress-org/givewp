@@ -7,6 +7,7 @@ import postData from '@givewp/forms/app/utilities/postData';
 import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrlData';
 import navigateTop from '@givewp/forms/app/utilities/navigateTop';
 import {setAuthToken} from '@givewp/forms/app/utilities/authToken';
+import {setDonorAuthenticated} from '@givewp/forms/app/store/reducer';
 import FieldError from '../layouts/FieldError';
 import styles from '../styles.module.scss';
 
@@ -132,12 +133,14 @@ export default function Authentication({
 }
 
 /**
+ * @since 4.19.1.1 Record the signed-in donor in the form state so the email field locks on every step.
  * @since 4.3.0 replace "Forgot your password" anchor element with a button since it does not contain a valid href attribute.
  */
 const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
     const {authUrl} = getWindowData();
-    const {useWatch, useFormContext} = window.givewp.form.hooks;
+    const {useWatch, useFormContext, useDonationFormStateDispatch} = window.givewp.form.hooks;
     const {setValue, getValues} = useFormContext();
+    const dispatch = useDonationFormStateDispatch();
     const {firstName, lastName, email} = getValues();
 
     const login = useWatch({name: 'login'});
@@ -155,9 +158,11 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
 
         const {data: responseData} = await response.json();
         if (response.ok) {
+            const donorEmail = responseData.email || email;
+
             setValue('firstName', firstName || responseData.firstName);
             setValue('lastName', lastName || responseData.lastName);
-            setValue('email', email || responseData.email);
+            setValue('email', donorEmail);
 
             /*
              * Inside a cross-site iframe the browser drops the login cookie, so the
@@ -165,6 +170,8 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
              * validate and donate request instead.
              */
             setAuthToken(responseData.authToken);
+
+            dispatch(setDonorAuthenticated(donorEmail));
 
             success();
         } else {
