@@ -108,7 +108,7 @@ describe('EntityFilterControl', () => {
         render({noneOption: {value: 'none', label: 'No campaign'}});
 
         const labels = Array.from(container.querySelectorAll('label')).map((label) => label.textContent);
-        expect(labels.filter((text) => text !== 'Campaign').slice(0, 3)).toEqual([
+        expect(labels.filter((text) => text !== 'Search Campaign').slice(0, 3)).toEqual([
             'No campaign',
             'Spring appeal',
             'Spring gala',
@@ -162,5 +162,39 @@ describe('EntityFilterControl', () => {
 
         render({options: [], error: 'Failed'});
         expect(container.textContent).not.toContain('No matches');
+    });
+
+    it('names the search box differently from the option list', () => {
+        render();
+
+        expect(container.querySelector('label')?.textContent).toBe('Search Campaign');
+        expect(container.querySelector('[role="group"]')?.getAttribute('aria-label')).toBe('Campaign');
+    });
+
+    it('keeps one live region mounted and changes its text', async () => {
+        await render({options: [], isLoading: true});
+        const region = container.querySelector('[role="status"]');
+
+        expect(region?.textContent).toContain('Loading');
+
+        await render({options: [], isLoading: false});
+
+        expect(container.querySelector('[role="status"]')).toBe(region);
+        expect(region?.textContent).toContain('No matches');
+    });
+
+    it('keeps Load more focusable while it loads and ignores clicks', async () => {
+        await render({hasMore: true, isLoading: true});
+        const more = buttonNamed('Load more');
+
+        expect(more.disabled).toBe(false);
+        expect(more.getAttribute('aria-disabled')).toBe('true');
+
+        await click(more);
+        expect(onLoadMore).not.toHaveBeenCalled();
+
+        await render({hasMore: true, isLoading: false});
+        await click(buttonNamed('Load more'));
+        expect(onLoadMore).toHaveBeenCalledTimes(1);
     });
 });

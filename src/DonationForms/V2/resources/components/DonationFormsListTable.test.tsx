@@ -1,83 +1,59 @@
 import {act} from 'react';
-import {createRoot} from 'react-dom/client';
+import {createRoot, type Root} from 'react-dom/client';
 
 (globalThis as {IS_REACT_ACT_ENVIRONMENT?: boolean}).IS_REACT_ACT_ENVIRONMENT = true;
 
-const mockPageProps = jest.fn();
+(window as unknown as {GiveDonationForms: object}).GiveDonationForms = {
+    apiNonce: 'nonce',
+    apiRoot: '/give-api/v2/admin/forms',
+    table: {columns: []},
+    showDefaultFormTooltip: false,
+    isOptionBasedFormEditorEnabled: false,
+    newFormUrl: '/new-form',
+};
+
+type PageProps = {scope?: {campaignId?: number}; filters?: Array<{id: string}>; contentMode?: boolean};
+
+const pageProps: PageProps[] = [];
 
 jest.mock('@givewp/components', () => ({
     ListTableApi: class {},
-    ListTablePage: (props: Record<string, unknown>) => {
-        mockPageProps(props);
+    ListTablePage: (props: PageProps) => {
+        pageProps.push(props);
+
         return null;
     },
 }));
-jest.mock('@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton', () => () => null);
-jest.mock('@givewp/components/ListTable/BlankSlate', () => () => null);
-jest.mock('./DonationFormsRowActions', () => ({useDonationFormsRowActions: () => []}));
-jest.mock('./AddCampaignFormModal', () => () => null);
-jest.mock('./UpgradedFormTooltip', () => () => null);
-jest.mock('./Onboarding', () => ({__esModule: true, default: () => null, OnboardingContext: require('react').createContext([])}));
-jest.mock('@givewp/components/AdminUI/Icons', () => ({CubeIcon: () => null}));
-jest.mock('@wordpress/api-fetch', () => ({__esModule: true, default: jest.fn(() => Promise.resolve())}));
 
-const settings = {
-    apiNonce: '',
-    bannerActionUrl: '',
-    tooltipActionUrl: '',
-    migrationApiRoot: '',
-    defaultFormActionUrl: '/default-form',
-    apiRoot: '',
-    authors: [],
-    table: {columns: []},
-    pluginUrl: '',
-    showUpgradedTooltip: false,
-    isMigrated: false,
-    migratedFormUrl: '',
-    supportedAddons: [],
-    supportedGateways: [],
-    isOptionBasedFormEditorEnabled: false,
-    locale: 'en-US',
-    showDefaultFormTooltip: true,
-    campaignUrl: '',
-    newFormUrl: '',
-    adminUrl: '',
-};
+// Loaded after the window globals above exist: the module reads them when it is imported.
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const DonationFormsListTable = require('./DonationFormsListTable').default;
 
-describe('DonationFormsListTable', () => {
-    afterEach(() => mockPageProps.mockClear());
+let root: Root;
 
-    const render = async (campaignId?: number) => {
-        window.GiveDonationForms = {...settings};
-        const {default: DonationFormsListTable} = await import('./DonationFormsListTable');
-        const container = document.createElement('div');
-        const root = createRoot(container);
-        await act(() => root.render(<DonationFormsListTable campaignId={campaignId} />));
-        return () => act(() => root.unmount());
-    };
+beforeEach(() => {
+    pageProps.length = 0;
+    root = createRoot(document.createElement('div'));
+});
 
-    it('passes the default form notice on a campaign page, with its text and a dismiss handler', async () => {
-        const unmount = await render(5);
+afterEach(() => act(() => root.unmount()));
 
-        const {notices} = mockPageProps.mock.calls[0][0];
-        expect(notices).toHaveLength(1);
-        expect(notices[0]).toMatchObject({
-            id: 'default-form',
-            kind: 'onboarding',
-            title: 'Default campaign form',
-            message:
-                'The default form will always appear at the top of this list. Your campaign page and blocks will collect donations through this form by default. You can change it at any time.',
-        });
-        expect(typeof notices[0].onDismiss).toBe('function');
+const lastProps = () => pageProps[pageProps.length - 1];
 
-        await unmount();
+describe('DonationFormsListTable campaign scope', () => {
+    it('fixes the request to the campaign and drops the Campaign filter', async () => {
+        await act(() => root.render(<DonationFormsListTable campaignId={7} />));
+
+        expect(lastProps().scope).toEqual({campaignId: 7});
+        expect(lastProps().contentMode).toBe(true);
+        expect(lastProps().filters?.map((filter) => filter.id)).not.toContain('campaign');
     });
 
-    it('passes no notice on the standalone Forms screen', async () => {
-        const unmount = await render();
+    it('has no scope and offers the Campaign filter on the standalone list', async () => {
+        await act(() => root.render(<DonationFormsListTable />));
 
-        expect(mockPageProps.mock.calls[0][0].notices ?? []).toEqual([]);
-
-        await unmount();
+        expect(lastProps().scope).toBeUndefined();
+        expect(lastProps().contentMode).toBe(false);
+        expect(lastProps().filters?.map((filter) => filter.id)).toContain('campaign');
     });
 });

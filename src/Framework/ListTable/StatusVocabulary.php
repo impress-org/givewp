@@ -10,6 +10,11 @@ use Give\Framework\Support\Contracts\Arrayable;
  * The statuses of one list table entity: their ids, translated labels, and which of them the Status
  * filter offers. The status badge and the Status filter both read this one list.
  *
+ * The list endpoints do not all take statuses the same way. Campaigns takes a `statuses` array of stored
+ * values, and keeps `status` as a deprecated string where "any" hides archived campaigns and "inactive" means
+ * archived. The other list endpoints take `status` itself as an array. A client has to use the parameter name
+ * and the "any" rule of the endpoint it calls.
+ *
  * @since TBD
  */
 final class StatusVocabulary implements Arrayable
