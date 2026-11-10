@@ -15,8 +15,10 @@ name: Generate Zip
 # bot in stellarwp/jenkins-scripts looks for zip.yml first and only falls back to generate-zip.yml when
 # there isn't one, so adding this file switches the bot over and deleting it switches the bot back.
 #
-# The inputs are the interface the bot and the NX1 release dashboard dispatch: `ref` and `production`.
-# `prerelease` and `sequence` name a QA build; `expected_version` refuses a build of the wrong ref.
+# The inputs are the interface the packaging bot and the NX1 release dashboard dispatch. The bot sends
+# `ref` and `production`; the dashboard sends those and `prerelease: rc` for its RC build, so dropping
+# `prerelease` fails that build with a 422. `prerelease` and `sequence` name a QA build;
+# `expected_version` refuses a build of the wrong ref.
 #
 # Run it by hand: `gh workflow run zip.yml -f ref=release/4.19.0 -f prerelease=rc`.
 
@@ -113,7 +115,7 @@ jobs:
             # The name before the build, so the bucket can be asked for it. Pinned to the plugin-toolbox
             # commit of its PR #20, which adds the two actions. Switch to @v1 once plugin-toolbox publishes
             # a release.
-            -   uses: stellarwp/plugin-toolbox/.github/actions/zip-name@8054bead231823b57c57bc2709df2323fb755310
+            -   uses: stellarwp/plugin-toolbox/.github/actions/zip-name@28e9884c6102b45427b38543563dea66eb51c33a
                 id: name
                 with:
                     production: ${{ inputs.production }}
@@ -139,7 +141,7 @@ jobs:
                     COMMAND: exists
                     FILE: ${{ steps.name.outputs.zip-name }}.zip
 
-            -   uses: stellarwp/plugin-toolbox/.github/actions/release-zip@8054bead231823b57c57bc2709df2323fb755310
+            -   uses: stellarwp/plugin-toolbox/.github/actions/release-zip@28e9884c6102b45427b38543563dea66eb51c33a
                 id: zip
                 if: steps.s3_zip_exists.outcome != 'success'
                 with:
