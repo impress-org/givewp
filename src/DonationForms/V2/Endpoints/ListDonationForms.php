@@ -87,7 +87,7 @@ class ListDonationForms extends Endpoint
                                 'upgraded',
                             ],
                         ],
-                        'description' => 'Filter forms by one or more statuses. At most 50. "any" means every status except trash.',
+                        'description' => 'Filter forms by one or more statuses. At most 50. "any" means every status except trash, and it is the only value that also returns private forms.',
                     ],
                     'search' => [
                         'type' => 'string',
@@ -134,13 +134,13 @@ class ListDonationForms extends Endpoint
                         'type' => 'string',
                         'required' => false,
                         'format' => 'date-time',
-                        'description' => 'Only forms created on or after this date and time (site time zone).',
+                        'description' => 'Only forms created on or after this date and time. Send the site\'s local time, without an offset: it is compared as stored.',
                     ],
                     'end' => [
                         'type' => 'string',
                         'required' => false,
                         'format' => 'date-time',
-                        'description' => 'Only forms created on or before this date and time (site time zone).',
+                        'description' => 'Only forms created on or before this date and time. Send the site\'s local time, without an offset: it is compared as stored.',
                     ],
                 ],
             ]
@@ -350,7 +350,7 @@ class ListDonationForms extends Endpoint
         $campaign = (string)$this->request->get_param('campaign');
         $campaignIds = $this->request->get_param('campaignId')
             ? [(int)$this->request->get_param('campaignId')]
-            : array_values(array_filter(array_map('intval', array_filter(explode(',', $campaign), 'ctype_digit'))));
+            : array_values(array_filter(array_map('intval', array_filter(array_map('trim', explode(',', $campaign)), 'ctype_digit'))));
 
         // Forms attached through the campaign forms table, or a campaign's own default form
         // (how Peer-to-Peer campaigns link their form)
