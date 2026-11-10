@@ -6,13 +6,12 @@ import {createRoot} from 'react-dom/client';
 const mockPageProps = jest.fn();
 
 jest.mock('@givewp/components', () => ({
-    ListTablePage: (props: Record<string, unknown>) => {
+    ListTablePage: (props: {children?: React.ReactNode}) => {
         mockPageProps(props);
-        return null;
+        return <div>{props.children}</div>;
     },
 }));
 jest.mock('@givewp/components/ListTable/api', () => ({__esModule: true, default: class {}}));
-jest.mock('@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton', () => () => null);
 jest.mock('@givewp/components/ListTable/BlankSlate', () => () => null);
 jest.mock('./DonationRowActions', () => ({donationRowActions: () => [], isDonationsTrashView: () => false}));
 
@@ -53,10 +52,38 @@ describe('DonationsListTable', () => {
             'givewp_donations_fee_recovery_recommendation_dismissed',
             'givewp_donations_designated_funds_recommendation_dismissed',
         ]);
-        expect(props.recommendations.dismissed).toEqual([
-            'givewp_donations_fee_recovery_recommendation_dismissed',
-        ]);
+        expect(props.recommendations.dismissed).toEqual(['givewp_donations_fee_recovery_recommendation_dismissed']);
         expect(props.recommendations.apiNonce).toBe('nonce-1');
+
+        await act(() => root.unmount());
+    });
+
+    it('offers "Switch to Legacy View" in the view menu, with its accessible name, and not in the header', async () => {
+        window.GiveDonations = {
+            ...original,
+            apiNonce: '',
+            apiRoot: '',
+            adminUrl: '',
+            campaigns: [],
+            table: {columns: []},
+            paymentMode: false,
+            manualDonations: true,
+            recurringDonationsEnabled: false,
+            pluginUrl: '',
+            dismissedRecommendations: [],
+            addonsBulkActions: [],
+            donationStatuses: {},
+        };
+        const {default: DonationsListTable} = await import('./DonationsListTable');
+        const container = document.createElement('div');
+        const root = createRoot(container);
+
+        await act(() => root.render(<DonationsListTable />));
+
+        expect(mockPageProps.mock.calls[0][0].legacyView).toEqual({
+            ariaLabel: 'Switch to the legacy donations table view',
+        });
+        expect(container.textContent).not.toContain('Switch to Legacy View');
 
         await act(() => root.unmount());
     });

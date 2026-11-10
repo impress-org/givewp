@@ -7,7 +7,6 @@ import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import styles from './ListTable.module.scss';
 import {BulkActionsConfig, ListTableRowAction, StatConfig} from '@givewp/components/ListTable/ListTablePage';
-import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import type {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
 import type {ListTableRecommendations} from '@givewp/components/ListTable/notices/types';
@@ -38,7 +37,17 @@ const API = new ListTableApi(window.GiveDonations);
 /**
  * The statuses an admin can set from the list, in the order the old "Set To …" actions had.
  */
-const DONATION_STATUSES = ['publish', 'pending', 'processing', 'refunded', 'revoked', 'failed', 'cancelled', 'abandoned', 'preapproval'];
+const DONATION_STATUSES = [
+    'publish',
+    'pending',
+    'processing',
+    'refunded',
+    'revoked',
+    'failed',
+    'cancelled',
+    'abandoned',
+    'preapproval',
+];
 
 /**
  * The Donations actions: the ones shared with the subscription details tab, plus "Set status" and
@@ -160,8 +169,8 @@ const statsConfig: Record<string, StatConfig> = {
         filter: {filterId: 'donationType', value: 'recurring'},
         upgrade: !window.GiveDonations.recurringDonationsEnabled && {
             href: 'https://docs.givewp.com/recurring-stat',
-            tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
-        }
+            tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give'),
+        },
     },
 };
 
@@ -171,6 +180,7 @@ const statsConfig: Record<string, StatConfig> = {
 const testModeToggle = {label: __('Test', 'give'), ariaLabel: __('View Test Donations', 'give')};
 
 /**
+ * @since TBD Offer "Switch to Legacy View" in the list's view menu, not in the header.
  * @since TBD Pass the recommendation options as data for the notice area.
  * @since TBD Use the shared filter declarations and the test-mode switch in place of the "Filter by" settings.
  * @since TBD Pass the actions as data, the screen config, and the add-ons' bulk actions (the shared list page no longer reads them).
@@ -194,11 +204,8 @@ export default function DonationsListTable() {
             recommendations={recommendations}
             statsConfig={statsConfig}
             screen={listTableScreen}
+            legacyView={{ariaLabel: __('Switch to the legacy donations table view', 'give')}}
         >
-            <SwitchToLegacyViewButton
-                api={API}
-                ariaLabel={__('Switch to the legacy donations table view', 'give')}
-            />
             {window.GiveDonations.manualDonations ? (
                 <a
                     className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
@@ -239,4 +246,3 @@ export default function DonationsListTable() {
         </ListTablePage>
     );
 }
-

@@ -16,6 +16,7 @@ import './styles.scss';
 export type ListTableLayoutMode = 'wide' | 'narrow';
 
 /**
+ * @since TBD Add the `viewMenu` slot.
  * @since TBD Add `layoutMode`.
  * @since TBD Drop `search` and `searchLabel`: the search box and the filter bar are always Give's.
  * @since TBD Add the `searchBox` and `filterBar` slots.
@@ -43,6 +44,8 @@ export interface DataViewsListTableProps {
     filterBar?: ReactNode;
     /** `narrow` shows the cards (the view must be a grid view). Default `wide`. */
     layoutMode?: ListTableLayoutMode;
+    /** Give's "More view options" menu, right after the view options and "Reset view", in both layouts. */
+    viewMenu?: ReactNode;
 }
 
 const getItemId = (item: ListTableItem) => String(item.id);
@@ -114,6 +117,7 @@ function withCardCheckbox(
  * options, which this DataViews version does not offer. Give's search box and filter bar always take
  * the place of the stock search and filter row.
  *
+ * @since TBD Render the `viewMenu` slot after "Reset view", in both layouts.
  * @since TBD In the narrow layout, put the view options on their own row under the filters, with no layout switcher.
  * @since TBD Always render the `searchBox` and `filterBar` slots; no stock search or filter row.
  * @since TBD Show the view options on the filter bar's row instead of next to the search box.
@@ -127,6 +131,7 @@ function ListTableLayout({
     searchBox,
     filterBar,
     layoutMode,
+    viewMenu,
 }: {
     hasSelection: boolean;
     isDefaultLayout: boolean;
@@ -134,11 +139,13 @@ function ListTableLayout({
     searchBox?: ReactNode;
     filterBar?: ReactNode;
     layoutMode: ListTableLayoutMode;
+    viewMenu?: ReactNode;
 }) {
     const viewControls = !hasSelection && (
         <HStack spacing={1} expanded={false} className="givewp-list-table__view-controls">
             <DataViews.ViewConfig />
             {onResetLayout && <ListTableViewReset isDefault={isDefaultLayout} onConfirm={onResetLayout} />}
+            {viewMenu}
         </HStack>
     );
     const isNarrow = layoutMode === 'narrow';
@@ -171,6 +178,7 @@ function ListTableLayout({
  * Renders the stock DataViews table for an admin list screen. No data fetching and no
  * Give-specific behavior inside the DataViews area.
  *
+ * @since TBD Add the `viewMenu` slot.
  * @since TBD Add `layoutMode`: the cards at 782 px and below, the table above.
  * @since TBD Add the `--more-start` and `--more-end` modifiers while the list hides content at that edge.
  * @since TBD Drop `search` and `searchLabel`; DataViews' own search is always off.
@@ -194,6 +202,7 @@ export default function DataViewsListTable({
     searchBox,
     filterBar,
     layoutMode = 'wide',
+    viewMenu,
 }: DataViewsListTableProps) {
     const rootRef = useRef<HTMLDivElement>(null);
     const {hasMoreStart, hasMoreEnd} = useHorizontalOverflow(rootRef);
@@ -236,6 +245,7 @@ export default function DataViewsListTable({
                     searchBox={searchBox}
                     filterBar={filterBar}
                     layoutMode={layoutMode}
+                    viewMenu={viewMenu}
                 />
             </DataViews>
         </div>

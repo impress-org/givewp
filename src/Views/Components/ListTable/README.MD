@@ -9,7 +9,7 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 
 | Path | What it is |
 |:--|:--|
-| `ListTablePage/` | The page shell: `ListTablePageHeader` (title, test-mode switch, stat tiles), notices, and the list. `SwitchToLegacyViewButton` for the screens with a legacy view. `types.ts` holds the public types. |
+| `ListTablePage/` | The page shell: `ListTablePageHeader` (title, test-mode switch, stat tiles), notices, and the list. `switchToLegacyView` saves the legacy view choice for the screens that pass `legacyView`. `types.ts` holds the public types. |
 | `DataViewsListTable/` | Stock `<DataViews>` with Give's tokens. No data fetching. |
 | `adapters/` | Pure functions from the columns and actions to DataViews fields and actions, and from the view to the request parameters (`viewToParameters`), plus the page size rule (`snapPerPage`). Jest tests sit next to them. |
 | `hooks/` | `useListTableView` (the view and where its last change came from), `useListTableUrlState` (the view in the address, the search in the tab), `useListTableLayoutPreferences` (stores the layout, and Reset view), `useListTableSelection`, `useListTableQuery` (SWR + `apiFetch`), `useListTableActions` (the DataViews actions and the dialogs they open), `useListTableActionNotices`, and `useListActionSubmit` for a confirm modal or dialog. |
@@ -17,6 +17,7 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `filters/` | The filter model, pure functions: declaration types, value text, date ranges, chip text, exclusive values, request parameters, the option route client, and the deprecated `filterSettingsToDeclarations` adapter (`legacyFilterSettings.ts`). |
 | `ListTableFilters/` | The filter bar: primary filters, "Add filter", chips and Reset, read from a screen's `filters` declaration. Built from the `ListTableSearch`, `FilterChip`, `OptionsFilterControl`, `DateRangeFilterControl` and `EntityFilterControl` molecules. |
 | `ListTableViewReset/` | The "Reset view" button next to the stock view options, with its confirmation. |
+| `ListTableViewMenu/` | The small "More view options" menu after "Reset view". Holds "Switch to Legacy View" on the screens that pass `legacyView`. |
 | `actions/` | `runListAction`: runs an action, reports it, clears the selection when everything succeeded, reloads. Every action and dialog goes through it. |
 | `rowActions/` | Ready-made actions: `trashRowActions` (Edit, Restore, Trash, Delete permanently) and `setStatusRowAction`. |
 | `BulkActionConfirm/` | Body of a confirm modal: message, affected records, Cancel / Confirm. |

@@ -274,6 +274,19 @@ export type TestModeToggle = {
 };
 
 /**
+ * "Switch to Legacy View" in the list's "More view options" menu, for a screen that has a legacy screen.
+ *
+ * @since TBD
+ */
+export type LegacyViewSwitch = {
+    /** The accessible name of the menu item, when it should say more than "Switch to Legacy View". */
+    ariaLabel?: string;
+    /** Where to go once the choice is saved. Reloads the page by default. */
+    onSwitched?: () => void;
+};
+
+/**
+ * @since TBD Add `legacyView`.
  * @since TBD Deprecate `filterSettings`; it is mapped onto filter declarations.
  * @since TBD Add `filters`, `scope`, `testModeToggle` and `apiSettings.table.statuses`.
  * @since 2.24.0
@@ -353,6 +366,13 @@ export interface ListTablePageProps {
      * @since TBD
      */
     testModeToggle?: TestModeToggle;
+    /**
+     * Offers "Switch to Legacy View" in the list's "More view options" menu. Only for a screen that
+     * has a legacy screen; never in the page header.
+     *
+     * @since TBD
+     */
+    legacyView?: LegacyViewSwitch;
 }
 
 export interface ListTablePageRef {
