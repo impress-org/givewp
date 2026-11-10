@@ -6,8 +6,17 @@ import type {ListTableNotice, ListTableRecommendations} from '../notices/types';
 import type {FilterDeclaration, StatusVocabularyEntry} from '../filters/types';
 
 /**
+ * What a column holds, as `ColumnKind` names it on the server. The narrow layout reads it to pick the
+ * card fields of a screen that declares no field roles.
+ *
+ * @since TBD
+ */
+export type ColumnKind = 'money' | 'date' | 'count' | 'text' | 'status';
+
+/**
  * A column of a list table, as `ModelColumn::toArray()` sends it.
  *
+ * @since TBD Add `kind`.
  * @since TBD
  */
 export interface Column {
@@ -15,6 +24,7 @@ export interface Column {
     label: string;
     sortable: boolean;
     visible?: boolean;
+    kind?: ColumnKind;
 }
 
 /**
