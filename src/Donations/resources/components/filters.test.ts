@@ -36,11 +36,12 @@ describe('donationFilters', () => {
         });
     });
 
-    it('declares Form as a secondary multiple entity filter on formId', () => {
+    it('declares Form as a primary multiple entity filter on formId, as it is visible today', () => {
         expect(find(filters, 'form')).toEqual({
             kind: 'entity',
             id: 'form',
             label: 'Form',
+            isPrimary: true,
             legacyUrlKey: 'formId',
             source: 'form',
             multiple: true,

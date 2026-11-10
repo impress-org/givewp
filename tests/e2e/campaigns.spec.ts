@@ -1,6 +1,21 @@
 import {expect, test} from '@wordpress/e2e-test-utils-playwright';
 import {donationForm, expectReceipt, fillDonorDetails, payWithTestGateway, waitForForm} from './utils/donation-form';
-import {expectListMounts} from './utils/list-table';
+import {createCampaignWithForm} from './utils/campaign';
+import {
+    chip,
+    expectListMounts,
+    expectNoBrowserDialogs,
+    filterBar,
+    listRows,
+    nextListRequest,
+    popover,
+    visitList,
+} from './utils/list-table';
+import {resetLayout} from './utils/user';
+
+const CAMPAIGNS = 'post_type=give_forms&page=give-campaigns';
+const CAMPAIGNS_REQUEST = /givewp\/v3\/campaigns\/list-table\?/;
+const FORMS_REQUEST = /give-api\/v2\/admin\/forms\?/;
 
 /**
  * Creating a campaign, through the wizard a fundraiser actually uses.
@@ -64,6 +79,76 @@ test.describe('Campaigns', () => {
         await form.getByRole('button', {name: 'Donate now'}).click();
 
         await expectReceipt(form, '$10.00');
+    });
+});
+
+/**
+ * The shared list filters on Campaigns. Expected counts come from the v3 REST API, which does not
+ * share the list endpoint's filter code. No test opens a browser dialog.
+ */
+test.describe('Campaigns list filters', () => {
+    expectNoBrowserDialogs();
+
+    test.beforeEach(async ({requestUtils}) => {
+        await resetLayout(requestUtils, 'campaigns');
+    });
+
+    test('the Status filter offers the two statuses admins set, named as the badges name them', async ({
+        page,
+        admin,
+    }) => {
+        await visitList(page, admin, CAMPAIGNS);
+        await chip(page, 'Status').click();
+
+        await expect(popover(page).getByRole('checkbox')).toHaveCount(2);
+
+        for (const label of ['Active', 'Archived']) {
+            await expect(popover(page).getByRole('checkbox', {name: label, exact: true})).toBeVisible();
+        }
+    });
+});
+
+/**
+ * The shared list filters on a campaign's Forms tab, where the campaign is fixed by the page.
+ */
+test.describe('Campaign Forms tab filters', () => {
+    expectNoBrowserDialogs();
+
+    test.beforeEach(async ({requestUtils}) => {
+        await resetLayout(requestUtils, 'campaign-forms');
+    });
+
+    test('has no Campaign filter, and Reset keeps the campaign rows', async ({page, admin, requestUtils}) => {
+        const {campaignId} = await createCampaignWithForm(requestUtils);
+        const query = `${CAMPAIGNS}&id=${campaignId}&tab=forms`;
+        const first = nextListRequest(page, FORMS_REQUEST);
+        await visitList(page, admin, query);
+        const initial = Number(((await (await first).json()) as {totalItems: number | string}).totalItems);
+
+        // The bar is mounted once its Status chip shows, so the checks below do not pass on an empty bar.
+        await expect(chip(page, 'Status')).toBeVisible();
+        await expect(chip(page, 'Campaign')).toHaveCount(0);
+
+        const addFilterButton = filterBar(page).getByRole('button', {name: 'Add filter'});
+
+        if (await addFilterButton.isVisible()) {
+            await addFilterButton.click();
+            await expect(page.getByRole('menuitem', {name: 'Campaign', exact: true})).toHaveCount(0);
+            await page.keyboard.press('Escape');
+        }
+
+        await chip(page, 'Status').click();
+        const trashed = nextListRequest(page, FORMS_REQUEST, (url) => url.searchParams.get('status') === 'trash');
+        await popover(page).getByRole('checkbox', {name: 'Trash', exact: true}).check();
+        expect(new URL((await trashed).url()).searchParams.get('campaignId')).toBe(String(campaignId));
+        await page.keyboard.press('Escape');
+
+        // The list may answer Reset from its cache, so the rows are what is checked, not a new request.
+        await filterBar(page).getByRole('button', {name: 'Reset', exact: true}).click();
+
+        await expect(chip(page, 'Status')).toHaveText('Status');
+        await expect(listRows(page)).toHaveCount(Math.min(initial, 30));
+        await expect(page.getByText(/match your search or filters/)).toHaveCount(0);
     });
 });
 
