@@ -1,4 +1,4 @@
-import {__, _n, sprintf} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {datePresetLabel, parseDateToken} from './dateRange';
 import type {BarFilterDeclaration, FilterValue} from './types';
 
@@ -82,8 +82,8 @@ export function filterChipText(
         return {text: fullText, fullText};
     }
 
-    /* translators: %d: number of selected values. */
-    const count = sprintf(_n('%d selected', '%d selected', labels.length, 'give'), labels.length);
+    /* translators: %d: number of selected values. This text only shows above 3 values. */
+    const count = sprintf(__('%d selected', 'give'), labels.length);
 
     return {text: withLabel(count), fullText};
 }
