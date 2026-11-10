@@ -51,16 +51,15 @@ class TestGetOrCreateDonor extends TestCase
      * @since 3.2.0
      * @throws Exception
      */
-    public function testShouldReturnExistingDonorWithUserIdAndUpdateAdditionalEmails(): void
+    public function testShouldReturnExistingDonorWithoutAddingSubmittedEmail(): void
     {
         $donor = Donor::factory()->create(['userId' => 1]);
         $action = new GetOrCreateDonor();
-        $donorFromActionWithMatchingUserId = $action($donor->userId, 'newDonor@givewp.com', 'billing first name',
+        $donorFromAction = $action($donor->userId, 'newDonor@givewp.com', 'billing first name',
             'billing last name', null, null);
-        $donor->additionalEmails = array_merge($donor->additionalEmails ?? [], ['newDonor@givewp.com']);
-        $donor->save();
 
-        $this->assertEquals($donor->toArray(), $donorFromActionWithMatchingUserId->toArray());
+        $this->assertEquals($donor->additionalEmails, Donor::find($donor->id)->additionalEmails);
+        $this->assertFalse($donorFromAction->hasEmail('newDonor@givewp.com'));
         $this->assertFalse($action->donorCreated);
     }
 
