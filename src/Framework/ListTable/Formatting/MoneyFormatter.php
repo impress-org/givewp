@@ -124,6 +124,33 @@ final class MoneyFormatter
     }
 
     /**
+     * The "rawValues" entry for a decimal amount that may be a float, such as a revenue total. A float is
+     * written as a plain decimal first (see floatToDecimalString()), so a server locale that writes "12,5"
+     * cannot break the parsing.
+     *
+     * @since TBD
+     *
+     * @param string|int|float|null $amount
+     * @param string|null $currency Defaults to the currency of the site.
+     *
+     * @return array{amount: string, currency: string}|null
+     */
+    public static function rawFromDecimal($amount, ?string $currency = null): ?array
+    {
+        if ($amount === null || $amount === '') {
+            return null;
+        }
+
+        $currency = $currency ?: give_get_currency();
+
+        if (is_float($amount)) {
+            $amount = self::floatToDecimalString($amount, $currency);
+        }
+
+        return self::raw(Money::fromDecimal($amount, $currency));
+    }
+
+    /**
      * The unformatted amount for a row's "rawValues" key: ['amount' => '1331.28', 'currency' => 'USD'].
      *
      * @since TBD
