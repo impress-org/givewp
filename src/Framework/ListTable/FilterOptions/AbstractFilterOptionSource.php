@@ -38,7 +38,7 @@ abstract class AbstractFilterOptionSource implements FilterOptionSource
      */
     protected function optionLabel(string $label, object $row): string
     {
-        return html_entity_decode($label, ENT_QUOTES);
+        return html_entity_decode($label, ENT_QUOTES | ENT_HTML5);
     }
 
     /**
@@ -51,9 +51,15 @@ abstract class AbstractFilterOptionSource implements FilterOptionSource
 
         if ($search !== '') {
             $term = DB::esc_like($search);
+            // A title saved without `unfiltered_html` is stored encoded ("Tom &amp; Jerry"), and the option shows it decoded.
+            $encodedTerm = DB::esc_like(esc_html($search));
 
-            $query->where(static function (WhereQueryBuilder $builder) use ($label, $term) {
+            $query->where(static function (WhereQueryBuilder $builder) use ($label, $term, $encodedTerm) {
                 $builder->whereLike($label, $term . '%')->orWhereLike($label, '% ' . $term . '%');
+
+                if ($encodedTerm !== $term) {
+                    $builder->orWhereLike($label, $encodedTerm . '%')->orWhereLike($label, '% ' . $encodedTerm . '%');
+                }
             });
         }
 

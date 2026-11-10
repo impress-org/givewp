@@ -34,10 +34,15 @@ export function fetchFilterOptions({
     page,
     include,
 }: FetchFilterOptionsArgs): Promise<FilterOptionsPage> {
+    // No ids to look up is not a request for the first page of options.
+    if (include !== undefined && include.length === 0) {
+        return Promise.resolve({options: [], hasMore: false});
+    }
+
     const path = addQueryArgs(`/givewp/v3/list-table-filter-options/${source}`, {
         screen,
         search: search || undefined,
-        page: include ? undefined : page ?? 1,
+        page: include !== undefined ? undefined : page ?? 1,
         include: include?.length ? include : undefined,
     });
 

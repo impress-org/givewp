@@ -1,4 +1,4 @@
-import {act} from 'react';
+import {act, StrictMode} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
 import FilterChip, {type FilterChipProps} from './index';
 
@@ -120,5 +120,39 @@ describe('FilterChip', () => {
 
         expect(content()).not.toBeNull();
         expect(chip().getAttribute('aria-expanded')).toBe('true');
+    });
+
+    it('stays open with defaultOpen when effects run twice', async () => {
+        // The installed Dropdown may not close on a second click, so count the clicks the chip sends itself.
+        const clicks = jest.spyOn(HTMLButtonElement.prototype, 'click');
+
+        await act(() =>
+            root.render(
+                <StrictMode>
+                    <FilterChip
+                        text="Status"
+                        fullText="Status"
+                        hasValue={false}
+                        canRemove={false}
+                        removeLabel="Remove"
+                        onRemove={onRemove}
+                        defaultOpen
+                    >
+                        {() => <div>Inside</div>}
+                    </FilterChip>
+                </StrictMode>
+            )
+        );
+        await act(() => jest.runOnlyPendingTimers());
+
+        const toggleClicks = clicks.mock.instances.filter((element) =>
+            (element as HTMLElement).classList.contains('givewp-filter-chip__toggle')
+        );
+        clicks.mockRestore();
+
+        expect(toggleClicks).toHaveLength(1);
+        expect(chip().getAttribute('aria-expanded')).toBe('true');
+        expect(chip().getAttribute('aria-haspopup')).toBe('dialog');
+        expect(document.querySelector('.givewp-filter-chip__content')?.closest('[role="dialog"]')).not.toBeNull();
     });
 });
