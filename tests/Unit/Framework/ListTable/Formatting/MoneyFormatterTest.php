@@ -154,4 +154,15 @@ class MoneyFormatterTest extends TestCase
         $this->assertStringContainsString('givewp-list-table-dash', MoneyFormatter::format(null));
         $this->assertStringContainsString('No amount', MoneyFormatter::fromDecimal(null));
     }
+
+    /**
+     * A float revenue total becomes a plain decimal string in the raw value, with the decimals of the currency.
+     *
+     * @since TBD
+     */
+    public function testRawFromDecimalAcceptsAFloat(): void
+    {
+        $this->assertSame(['amount' => '12.50', 'currency' => 'USD'], MoneyFormatter::rawFromDecimal(12.5, 'USD'));
+        $this->assertNull(MoneyFormatter::rawFromDecimal(null));
+    }
 }

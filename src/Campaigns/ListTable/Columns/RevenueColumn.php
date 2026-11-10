@@ -7,7 +7,6 @@ use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Framework\ListTable\ColumnKind;
 use Give\Framework\ListTable\Formatting\MoneyFormatter;
 use Give\Framework\ListTable\ModelColumn;
-use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * @since 4.0.0
@@ -87,6 +86,6 @@ class RevenueColumn extends ModelColumn
          */
         $campaignsData = $this->getListTableData();
 
-        return MoneyFormatter::raw(Money::fromDecimal($campaignsData->getRevenue($model), give_get_currency()));
+        return MoneyFormatter::rawFromDecimal($campaignsData->getRevenue($model));
     }
 }
