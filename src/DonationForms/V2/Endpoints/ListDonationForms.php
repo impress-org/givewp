@@ -350,7 +350,7 @@ class ListDonationForms extends Endpoint
         $campaign = (string)$this->request->get_param('campaign');
         $campaignIds = $this->request->get_param('campaignId')
             ? [(int)$this->request->get_param('campaignId')]
-            : array_values(array_filter(array_map('intval', array_filter(array_map('trim', explode(',', $campaign)), 'ctype_digit'))));
+            : array_values(array_filter(array_map('intval', array_filter(explode(',', $campaign), 'ctype_digit'))));
 
         // Forms attached through the campaign forms table, or a campaign's own default form
         // (how Peer-to-Peer campaigns link their form)
