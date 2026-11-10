@@ -31,11 +31,27 @@ describe('StatTile', () => {
         expect(button.getAttribute('type')).toBe('button');
         expect(button.textContent).toContain('One-Time Donations');
         expect(button.textContent).toContain('1,204');
-        expect(button.textContent?.indexOf('One-Time Donations')).toBeLessThan(button.textContent?.indexOf('1,204') ?? 0);
+        expect(button.textContent?.indexOf('One-Time Donations')).toBeLessThan(
+            button.textContent?.indexOf('1,204') ?? 0
+        );
 
         await act(() => button.click());
 
         expect(onToggle).toHaveBeenCalledTimes(1);
+    });
+
+    it('shows a decorative filter icon on a tile that filters, but not on a plain tile or Total', async () => {
+        await render(<StatTile label="Donations" value="1" state="ready" onToggle={jest.fn()} />);
+        const icon = container.querySelector('button svg.givewp-stat-tile__filter-icon');
+
+        expect(icon).not.toBeNull();
+        expect(icon?.getAttribute('aria-hidden')).toBe('true');
+
+        await render(<StatTile label="Total" value="1" state="ready" announcePressed={false} onToggle={jest.fn()} />);
+        expect(container.querySelector('svg')).toBeNull();
+
+        await render(<StatTile label="Donations" value="1" state="ready" />);
+        expect(container.querySelector('svg')).toBeNull();
     });
 
     it('is not a button without onToggle', async () => {

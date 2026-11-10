@@ -24,6 +24,27 @@ export interface StatTileProps {
     onToggle?: () => void;
 }
 
+/** A small funnel in the tile corner. It shows on hover and focus, and stays on while the filter is on. */
+function FilterIcon() {
+    return (
+        <svg
+            className="givewp-stat-tile__filter-icon"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            focusable="false"
+        >
+            <path d="M2 3h12l-4.5 5.5V13l-3 1.5V8.5z" />
+        </svg>
+    );
+}
+
 function Value({state, value, upgrade}: Pick<StatTileProps, 'state' | 'value' | 'upgrade'>) {
     if (state === 'loading') {
         return (
@@ -98,6 +119,7 @@ export default function StatTile({
                 onClick={onToggle}
             >
                 {content}
+                {announcePressed && <FilterIcon />}
             </button>
         );
     }

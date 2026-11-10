@@ -1,4 +1,4 @@
 significance: patch
 type: fix
-entry: List table fixes from review. Dates before 1970 are shown, stats text never holds markup, the Donation Levels column reports a text kind, the tip dismiss button is hidden for users who cannot save it, and stat tiles keep their last numbers when a refresh fails.
+entry: List table fixes from review. Dates before 1970 are shown, stats text never holds markup, the Donation Levels column reports a text kind, the tip dismiss button is hidden for users who cannot save it, stat tiles keep their last numbers when a refresh fails, and a filter tile shows a small funnel icon on hover and focus.
 timestamp: 2026-11-10T12:00:00.000Z
