@@ -91,6 +91,9 @@ function declarationOf(filter: FilterConfig): FilterDeclaration | undefined {
  *   choice is its option, on by default. A standalone hidden filter without an option is skipped.
  * - Any other type, such as the removed `filterby`, is skipped without an error.
  *
+ * `ListTablePage` maps the settings once, on its first render. Settings that change after that, such as options that
+ * load later, are not read again, and neither is `contentMode`.
+ *
  * @deprecated Kept only so add-ons that still pass `filterSettings` to `ListTablePage` keep working
  * (CQ-006). Pass `filters`, `scope` and `testModeToggle` instead.
  *

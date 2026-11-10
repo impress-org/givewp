@@ -13,6 +13,7 @@ export interface OptionsFilterControlProps {
     value: string[];
     /** Checkboxes when true, radio buttons when false. */
     multiple: boolean;
+    /** Called with the next list. The parent must apply it to `value` at once: each click builds on the `value` of the last render. */
     onChange: (value: string[]) => void;
 }
 
