@@ -220,6 +220,26 @@ describe('useFilterOptionLabels', () => {
             root = createRoot(document.createElement('div'));
         });
 
+        it('asks again for an id whose request failed after new ids were selected', async () => {
+            let failFirst: (error: Error) => void = () => {};
+            mockedFetch
+                .mockReturnValueOnce(new Promise((_, reject) => (failFirst = reject)))
+                .mockResolvedValueOnce({options: [{value: '3', label: 'Three'}], hasMore: false})
+                .mockResolvedValueOnce({options: [{value: '2', label: 'Two'}], hasMore: false});
+
+            await render(['2']);
+            await render(['2', '3']);
+            await flush();
+            expect(mockedFetch).toHaveBeenCalledTimes(2);
+
+            await act(async () => failFirst(new Error('Offline')));
+            await advance(1000);
+            await flush();
+
+            expect(mockedFetch).toHaveBeenCalledTimes(3);
+            expect(renderedTwo).toBe('Two');
+        });
+
         it('does not retry ids that are no longer selected', async () => {
             mockedFetch.mockRejectedValueOnce(new Error('Offline'));
             rememberLabels('campaign', [{value: '1', label: 'One'}]);

@@ -3,6 +3,7 @@ import EntityFilterControl from '../EntityFilterControl';
 import FilterChip from '../FilterChip';
 import {filterChipText} from '../filters/chipText';
 import {NONE_VALUE} from '../filters/filterKinds';
+import {MAX_FILTER_VALUES} from '../filters/filterValue';
 import {formatSiteDate} from '../filters/siteDate';
 import type {EntityFilterDeclaration, FilterOption} from '../filters/types';
 import useFilterOptionLabels from '../hooks/useFilterOptionLabels';
@@ -63,7 +64,8 @@ function EntityFilterPopover({
             hasMore={hasMore}
             onLoadMore={loadMore}
             onRetry={retry}
-            onChange={onChange}
+            // The address keeps 50 values at most, so the list must not filter by more than the address holds.
+            onChange={(next) => onChange(next.slice(0, MAX_FILTER_VALUES))}
         />
     );
 }
