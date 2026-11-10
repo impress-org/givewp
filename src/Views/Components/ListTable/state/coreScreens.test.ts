@@ -1,6 +1,7 @@
 import {readdirSync, readFileSync, statSync} from 'fs';
 import {join, relative, resolve} from 'path';
 import type {FilterConfig} from '../ListTablePage/types';
+import type {FilterDeclaration} from '../filters/types';
 import {resolveScreenDefaults} from './screenDefaults';
 import {LIST_TABLE_SCREEN_KEYS} from './types';
 import type {ListTableScreen, ViewQueryContext} from './types';
@@ -15,19 +16,26 @@ const SHARED_DIR = resolve(__dirname, '..');
  * The window data each standalone screen reads while its module loads.
  */
 function stubWindowData() {
-    const screenData = {apiRoot: 'https://example.test/wp-json', apiNonce: 'nonce', pluginUrl: '', adminUrl: '', forms: []};
+    const screenData = {
+        apiRoot: 'https://example.test/wp-json',
+        apiNonce: 'nonce',
+        pluginUrl: '',
+        adminUrl: '',
+        forms: [],
+    };
 
     Object.assign(window, {
         GiveDonations: {...screenData, recurringDonationsEnabled: true},
         GiveDonors: screenData,
         GiveSubscriptions: screenData,
         GiveDonationForms: screenData,
+        GiveEventTickets: screenData,
         GiveCampaignsListTable: screenData,
         GiveCampaignOptions: {...screenData, admin: {}},
     });
 }
 
-type ScreenModule = {filters: FilterConfig[]; screen: ListTableScreen};
+type ScreenModule = {filters: FilterConfig[]; declarations?: FilterDeclaration[]; screen: ListTableScreen};
 
 /**
  * The real filter settings and screen config of every standalone core screen.
@@ -51,22 +59,32 @@ function standaloneScreens(): ScreenModule[] {
         },
         {
             filters: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable').filters,
-            screen: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable/listTableScreen').default,
+            screen: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable/listTableScreen')
+                .default,
         },
         {
             filters: require('@givewp/src/DonationForms/V2/resources/components/DonationFormsListTable')
                 .donationFormsFilters,
             screen: require('@givewp/src/DonationForms/V2/resources/components/listTableScreen').default,
         },
+        {
+            // Event Tickets already declares its filters, so it has no old filter settings.
+            filters: [],
+            declarations: require('@givewp/src/EventTickets/resources/admin/components/EventTicketsListTable/filters')
+                .eventTicketFilters,
+            screen: require('@givewp/src/EventTickets/resources/admin/components/EventTicketsListTable/listTableScreen')
+                .default,
+        },
     ];
     /* eslint-enable @typescript-eslint/no-var-requires */
 }
 
-function contextOf({filters, screen}: ScreenModule): ViewQueryContext {
+function contextOf({filters, declarations, screen}: ScreenModule): ViewQueryContext {
     const columns = [{id: 'id', label: 'ID', sortable: true, visible: true}];
 
     return {
         filterSettings: filters,
+        filters: declarations,
         sortableFields: ['id'],
         defaults: resolveScreenDefaults(screen, columns, undefined, {filters: []}),
         siteTestMode: false,
@@ -100,6 +118,7 @@ describe('core list table screens', () => {
             'subscriptions',
             'campaigns',
             'donation-forms',
+            'event-tickets',
         ]);
 
         screens.forEach((screenModule) => {
