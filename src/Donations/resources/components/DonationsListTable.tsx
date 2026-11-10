@@ -6,12 +6,11 @@ import {idsOf} from '@givewp/components/ListTable/adapters/idsOf';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import styles from './ListTable.module.scss';
-import {BulkActionsConfig, ListTableRowAction} from '@givewp/components/ListTable/ListTablePage';
+import {BulkActionsConfig, ListTableRowAction, StatConfig} from '@givewp/components/ListTable/ListTablePage';
 import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import type {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
 import type {ListTableRecommendations} from '@givewp/components/ListTable/notices/types';
-import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
 import listTableScreen from './listTableScreen';
 import {donationsFilters} from './filters';
 

@@ -1,0 +1,87 @@
+.givewp-stat-tile {
+    box-sizing: border-box;
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: var(--givewp-spacing-2);
+    justify-content: space-between;
+    min-inline-size: 0;
+    min-block-size: var(--givewp-spacing-32);
+    padding: var(--givewp-spacing-6);
+    border: 1px solid var(--givewp-neutral-50);
+    border-radius: var(--givewp-rounded-8);
+    background-color: var(--givewp-shades-white);
+    color: var(--givewp-neutral-700);
+    font-size: var(--givewp-font-size-paragraph-lg);
+    text-align: start;
+
+    &__label {
+        font-weight: 600;
+    }
+
+    &__body {
+        display: flex;
+        align-items: center;
+        gap: var(--givewp-spacing-3);
+        min-block-size: calc(var(--givewp-font-size-heading-md) * 1.2);
+    }
+
+    &__value {
+        color: var(--givewp-neutral-900);
+        font-size: var(--givewp-font-size-heading-md);
+        font-weight: 600;
+        line-height: 1.2;
+
+        &--refreshing {
+            color: var(--givewp-neutral-400);
+        }
+    }
+
+    &__upgrade {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--givewp-spacing-2);
+    }
+
+    &__upgrade-message {
+        color: var(--givewp-neutral-700);
+        font-size: var(--givewp-font-size-paragraph-md);
+    }
+
+    &__upgrade-link {
+        padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
+        border-radius: var(--givewp-rounded-full);
+        background: var(--givewp-green-500);
+        color: var(--givewp-shades-white);
+        font-size: var(--givewp-font-size-paragraph-md);
+        text-decoration: none;
+        text-transform: uppercase;
+
+        &:hover,
+        &:focus,
+        &:active,
+        &:visited {
+            background: var(--givewp-green-600);
+            color: var(--givewp-shades-white);
+        }
+    }
+
+    &--toggle {
+        cursor: pointer;
+
+        &:hover {
+            border-color: var(--givewp-neutral-300);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--givewp-blue-500);
+            outline-offset: 2px;
+        }
+    }
+
+    &--pressed {
+        border-color: var(--givewp-green-500);
+        background-color: var(--givewp-green-50);
+    }
+}
