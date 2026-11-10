@@ -1,11 +1,11 @@
 name: Plugin Check
 
-# Runs WordPress.org's Plugin Check on the built plugin and compares the error counts with an
-# earlier run. GiveWP still has known Plugin Check problems, fixed one ticket at a time; until they
-# are all gone, only a rule with more errors than the baseline fails. See docs/testing.md#plugin-check.
+# Runs WordPress.org's Plugin Check on the built plugin and compares the error counts with the
+# baseline committed in .plugin-check-baseline.json. GiveWP still has known Plugin Check problems,
+# fixed one ticket at a time; until they are all gone, only a rule with more errors than the baseline
+# fails. See docs/testing.md#plugin-check.
 #
-# The work is in stellarwp/plugin-toolbox/.github/workflows/plugin-check.yml. Keep this file's
-# name: the baselines are the artifacts of its earlier runs.
+# The work is in stellarwp/plugin-toolbox/.github/workflows/plugin-check.yml.
 #
 # Run it locally: see README.md, "Plugin Check".
 
@@ -26,7 +26,6 @@ permissions:
 jobs:
     plugin-check:
         permissions:
-            actions: read
             contents: read
             issues: write
             pull-requests: write

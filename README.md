@@ -87,9 +87,9 @@ Note: We use [@wordpress/scripts](https://developer.wordpress.org/block-editor/r
 Every pull request runs WordPress.org's [Plugin Check](https://wordpress.org/plugins/plugin-check/)
 (all categories) on the built plugin, with
 [`wordpress/plugin-check-action`](https://github.com/WordPress/plugin-check-action), and posts a short result comment.
-The job fails when a rule has more errors than the branch the pull request goes into has now (the
-counts of the latest Plugin Check run on that branch). Warnings are counted too, but never fail it.
-See [docs/testing.md](docs/testing.md#plugin-check) for how it works.
+The job fails when a rule has more errors than the committed baseline,
+[`.plugin-check-baseline.json`](.plugin-check-baseline.json), allows. Warnings are counted too, but
+never fail it. See [docs/testing.md](docs/testing.md#plugin-check) for how it works.
 
 To run the same check on your local site:
 
@@ -97,15 +97,14 @@ To run the same check on your local site:
 wp plugin install plugin-check --activate
 wp plugin check give --require=wp-content/plugins/plugin-check/cli.php \
     --format=json > plugin-check-results.txt
-toolbox=$(mktemp -d) && git clone --depth 1 https://github.com/stellarwp/plugin-toolbox "$toolbox"
-scripts="$toolbox/.github/actions/plugin-check-report"
-"$scripts/fetch-baseline.sh" develop baseline.json
-PLUGIN_CHECK_BASELINE=baseline.json "$scripts/ratchet.sh" plugin-check-results.txt
+node /path/to/plugin-toolbox/.github/actions/plugin-check-report/plugin-check-report.js \
+    compare plugin-check-results.txt
 ```
 
-The two scripts come from [plugin-toolbox](https://github.com/stellarwp/plugin-toolbox), which runs
-the check for every plugin. `fetch-baseline.sh` needs the GitHub CLI (`gh`), signed in. It downloads
-the baseline of the latest run on `develop` into `baseline.json`, which `ratchet.sh` then reads.
+The compare script comes from a checkout of
+[stellarwp/plugin-toolbox](https://github.com/stellarwp/plugin-toolbox). It needs Node 20 or newer,
+and runs from the plugin's root, where it reads `.plugin-check-baseline.json`. It exits 0 when the
+check would pass.
 
 The `--require` flag is needed: without it, WP-CLI does not know the `plugin check` command. A dev
 checkout has files the release zip leaves out (tests, dotfiles, docs), so some `plugin_repo`

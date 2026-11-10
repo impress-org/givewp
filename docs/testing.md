@@ -283,10 +283,12 @@ path and the excluded checks. The toolbox's
 describes every input, and how the comparison and the baseline work. The caller uses `@main`, so a
 change merged in the toolbox reaches the next GiveWP run.
 
-The shared workflow has three jobs. They show in GiveWP as `plugin-check / Plugin Check start`,
-`plugin-check / Plugin Check run` and `plugin-check / Plugin Check`:
+The shared workflow has these jobs. They show in GiveWP as `plugin-check / Plugin Check start`,
+`plugin-check / Plugin Check plan`, `plugin-check / Plugin Check run` and
+`plugin-check / Plugin Check`:
 
 - **Plugin Check start** posts the "in progress" comment.
+- **Plugin Check plan** decides whether the target branch has to be built too (see below).
 - **Plugin Check run** builds the zip and runs the action. It has a read-only token, because it runs
   a third-party action. The action also tries to post its own comment, and with this token that
   fails (the log shows "Failed to post PR comment"), so the only comment is the shared workflow's.
@@ -294,7 +296,7 @@ The shared workflow has three jobs. They show in GiveWP as `plugin-check / Plugi
   comment with the result.
 
 GiveWP still has known problems, fixed ticket by ticket, and the action fails on any error. So the
-last job counts instead: it counts errors and warnings per rule code and compares them with a
+last job counts instead: it counts errors and warnings per rule code and compares them with the
 baseline:
 
 - a rule with more errors than the baseline fails the check;
@@ -303,38 +305,40 @@ baseline:
 
 On pull requests from this repository the comment is short: totals, the top rules that went up, and
 links. Pull requests from forks get no comment (their token is read-only), but the job summary shows
-the same text. The full results are in the `plugin-check-report` artifact (the raw results and a new
-`baseline.json`).
+the same text. The full results are in the `plugin-check-report` artifact (the raw results and a
+`baseline.json` made from them).
 
-**Where the baseline comes from.** No baseline is committed. Every run uploads a `baseline.json`
-made from its own results, and later runs download it:
+**The baseline** is `.plugin-check-baseline.json` at the root: a count for each rule code, with no
+file names or line numbers, so it only changes when a rule gains or loses an error somewhere.
 
-- A **pull request** compares with the branch it goes into: the run for its base commit, waited for
-  (up to 20 minutes) when it is still going. For a stacked pull request this is the run of the pull
-  request below it. The comment calls this column "Target branch" and links to that run. When the
-  base commit's run has no baseline (a newer push cancelled it, say), the latest run on that branch
-  is used. It is older than the target, so more errors than it are only reported as a warning
-  ("Target branch, older run"), never a failure.
-- A **push** to `develop` or `master` compares with the run before it on the same branch ("Previous
-  run"). Two pull requests can each pass on their own and still add errors together once both are
-  merged; this is where that shows up, as a failed check on the branch.
-- If looking up the earlier run fails (a GitHub API or download error), the check fails, so an
-  outage never passes as "no baseline". Re-run it.
-- With **no earlier run** to take it from (a new branch, or artifacts past their 90 days), nothing is
-  compared and the check passes with a warning. Run the workflow on the target branch (Actions →
-  Plugin Check → Run workflow) to make a baseline.
+- A **pull request** is compared with the file in its own checkout, so a pull request that fixes
+  errors lowers the file in the same diff, and one that adds an error on purpose raises it in the
+  same diff, where a reviewer sees it. The comment says so when the pull request changes the file.
+- A **push** to `develop` or `master` is compared with the file at that commit. Two pull requests
+  can each pass on their own and still add errors together once both are merged; this is where that
+  shows up, as a failed check on the branch.
+- With **no baseline file**, a pull request builds and checks the target branch too and compares
+  with that, which is slower, and the comment says to commit the file. A push with no file passes
+  with a warning.
+- A file that is not valid fails the check with the reason.
 
-Fixing problems therefore needs no baseline change: the next run on the branch has the lower
-counts, and every pull request into it is held to them. Two branches worked on at the same time
-cannot leave a wrong baseline behind, because there is no file to merge.
+To make or lower the file, download the `plugin-check-report` artifact of a run on the branch and copy
+its `baseline.json` to `.plugin-check-baseline.json` (the job summary shows the command with the run
+number filled in), or run `update` locally, as in the toolbox's
+[README](https://github.com/stellarwp/plugin-toolbox/blob/main/.github/actions/plugin-check-report/README.md#running-it-locally).
+The workflow never commits the file itself. After errors are fixed, lower the file in the same pull
+request: when counts go down and the file is not updated, the check passes with a notice and the
+comment asks for the update. If two pull requests change the same count, git reports a conflict:
+merge the target branch, then make the file again from the new run instead of merging the numbers
+by hand.
 
-There is no switch to accept new errors. Fix them, or, when a finding is a false positive, add a
-`phpcs:ignore` comment for that rule with the reason, as the existing code does.
+There is no switch to accept new errors beyond changing the baseline. Fix them, or, when a finding
+is a false positive, add a `phpcs:ignore` comment for that rule with the reason, as the existing
+code does.
 
 **Plugin Check version.** The action always installs the latest Plugin Check, so a new release can
-add rules and raise counts with no code change. A pull request whose target's last run used the
-older release then fails on the new rules. Run the workflow on the target branch to give it a
-baseline from the new release, then re-run the pull request's check.
+add rules and raise counts with no code change. The check then fails on the new rules. Make the
+baseline file again from a fresh run on the branch.
 
 Once every error count is zero, add `mode: strict` to the caller's `with:`. The check then fails on
 any error, with no baseline.
