@@ -1,0 +1,4 @@
+significance: minor
+type: enhancement
+entry: The Donations, Donors, Subscriptions and Event Tickets list screens now write money and dates in one style, whatever the browser language is.
+timestamp: 2026-11-04T23:20:00.000Z

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Give\Donations\ListTable\Columns;
 
 use Give\Donations\Models\Donation;
+use Give\Framework\ListTable\ColumnKind;
+use Give\Framework\ListTable\Formatting\DateFormatter;
 use Give\Framework\ListTable\ModelColumn;
-use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
  * @since 2.24.0
@@ -40,6 +41,7 @@ class CreatedAtColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Format with the shared date formatter.
      * @since 4.13.0 updated the date format
      *
      * @since 2.24.0
@@ -50,6 +52,28 @@ class CreatedAtColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-       return Temporal::getFormattedDateTimeUsingTimeZoneAndFormatSettings($model->createdAt);
+        return DateFormatter::dateTime($model->createdAt);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::DATE;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @param Donation $model
+     */
+    public function getRawValue($model)
+    {
+        return DateFormatter::iso($model->createdAt);
     }
 }
