@@ -142,5 +142,6 @@ describe('FilterChip', () => {
 
         expect(chip().getAttribute('aria-expanded')).toBe('true');
         expect(chip().getAttribute('aria-haspopup')).toBe('dialog');
+        expect(document.querySelector('.givewp-filter-chip__content')?.closest('[role="dialog"]')).not.toBeNull();
     });
 });
