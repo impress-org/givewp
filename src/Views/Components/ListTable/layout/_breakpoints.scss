@@ -1,0 +1,6 @@
+// The one width at which the list pages change layout: at and below it the page stacks, and (from
+// slice 10) the list shows cards. Keep it equal to `NARROW_LAYOUT_QUERY` in `breakpoints.ts`, which
+// the scripts use for the same switch.
+//
+// @since TBD
+$givewp-list-table-narrow: 782px;

@@ -1,6 +1,14 @@
 .givewp-stat-tiles {
     display: flex;
     flex-direction: row;
+    // The tiles wrap onto a new row when there is no room, at any width, so a narrow page needs no
+    // rule of its own here.
+    flex-wrap: wrap;
     gap: var(--givewp-spacing-4);
     margin-inline: var(--givewp-spacing-6);
+
+    // Each tile shares the row equally, and drops to the next row before it gets narrower than this.
+    > .givewp-stat-tile {
+        flex: 1 1 10rem;
+    }
 }

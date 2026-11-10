@@ -1,9 +1,11 @@
-import type {ReactNode} from 'react';
+import {type ReactNode, useRef} from 'react';
+import cx from 'classnames';
 import {__experimentalHStack as HStack} from '@wordpress/components';
 import {DataViews} from '@wordpress/dataviews';
 import type {Action, Field, View} from '@wordpress/dataviews';
 import type {ListTableItem} from '../ListTablePage/types';
 import ListTableViewReset from '../ListTableViewReset';
+import useHorizontalOverflow from '../hooks/useHorizontalOverflow';
 import './styles.scss';
 
 /**
@@ -93,6 +95,7 @@ function ListTableLayout({
  * Renders the stock DataViews table for an admin list screen. No data fetching and no
  * Give-specific behavior inside the DataViews area.
  *
+ * @since TBD Add the `--more-start` and `--more-end` modifiers while the list hides content at that edge.
  * @since TBD Drop `search` and `searchLabel`; DataViews' own search is always off.
  * @since TBD Accept the `searchBox` and `filterBar` slots.
  * @since TBD
@@ -114,8 +117,17 @@ export default function DataViewsListTable({
     searchBox,
     filterBar,
 }: DataViewsListTableProps) {
+    const rootRef = useRef<HTMLDivElement>(null);
+    const {hasMoreStart, hasMoreEnd} = useHorizontalOverflow(rootRef);
+
     return (
-        <div className="givewp-list-table">
+        <div
+            ref={rootRef}
+            className={cx('givewp-list-table', {
+                'givewp-list-table--more-start': hasMoreStart,
+                'givewp-list-table--more-end': hasMoreEnd,
+            })}
+        >
             <DataViews<ListTableItem>
                 view={view}
                 onChangeView={onChangeView}

@@ -1,8 +1,57 @@
 @import '~@wordpress/dataviews/build-style/style.css';
 
 .givewp-list-table {
+    position: relative;
     background-color: var(--givewp-shades-white);
     border-radius: var(--givewp-rounded-8);
+
+    // A soft shadow at an edge while the list hides content past that edge, so the admin can see
+    // there is more to scroll to. Hidden until the `--more-start` or `--more-end` modifier is set.
+    // The shadows let clicks through, and nothing is pinned: the row checkbox and the row actions are
+    // reached by scrolling, and moving keyboard focus to a cell scrolls it into view.
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        // Only over the table rows: the hook sets the space above and below the table.
+        inset-block: var(--givewp-list-table-shadow-top, 0) var(--givewp-list-table-shadow-bottom, 0);
+        z-index: 1;
+        inline-size: var(--givewp-spacing-6);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 150ms ease-out;
+    }
+
+    &::before {
+        inset-inline-start: 0;
+        background: linear-gradient(to right, var(--givewp-grey-50), transparent);
+    }
+
+    &::after {
+        inset-inline-end: 0;
+        background: linear-gradient(to left, var(--givewp-grey-50), transparent);
+    }
+
+    // The gradients have a physical direction, so they flip in right-to-left.
+    [dir='rtl'] &::before {
+        background: linear-gradient(to left, var(--givewp-grey-50), transparent);
+    }
+
+    [dir='rtl'] &::after {
+        background: linear-gradient(to right, var(--givewp-grey-50), transparent);
+    }
+
+    &--more-start::before,
+    &--more-end::after {
+        opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        &::before,
+        &::after {
+            transition: none;
+        }
+    }
 
     // The bulk actions sit in the search row while rows are selected. Keep the row as tall as the
     // search field, so the table does not jump when the selection starts or ends.

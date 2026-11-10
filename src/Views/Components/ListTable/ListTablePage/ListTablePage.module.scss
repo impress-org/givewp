@@ -1,3 +1,5 @@
+@use '../layout/breakpoints' as *;
+
 :global {
 
     :root {
@@ -295,4 +297,34 @@ ul[role='document'] + .flexRow {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
+}
+
+// The narrow page, at and below 782 px. This is the only place the list pages change layout by width
+// (with the list's own styles, which read the same breakpoint), so every screen stacks the same way:
+// title, header buttons (primary first), test-mode toggle, tiles, notices, then the list. The regions
+// already come in that order in the DOM; this block only undoes what keeps them side by side.
+@media (max-width: $givewp-list-table-narrow) {
+    .page {
+        max-inline-size: 100%;
+    }
+
+    // A sticky header would cover most of a phone screen, so it scrolls away with the page.
+    .pageHeader {
+        position: static;
+        flex-direction: column;
+        align-items: stretch;
+
+        .flexRow:not(:first-child) {
+            justify-content: flex-start;
+        }
+
+        .primaryActionButton,
+        :global(.button-primary) {
+            order: -1;
+        }
+    }
+
+    .filtersRow {
+        height: auto;
+    }
 }
