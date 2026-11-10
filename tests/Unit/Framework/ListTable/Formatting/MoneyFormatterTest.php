@@ -166,6 +166,7 @@ class MoneyFormatterTest extends TestCase
 
         $this->assertStringStartsWith('-', $text);
         $this->assertStringContainsString('12.50', $text);
+        $this->assertStringEndsWith(' ZZZ', $text);
         $this->assertStringContainsString('12.50', MoneyFormatter::fromDecimal(12.5, 'ZZZ'));
     }
 }

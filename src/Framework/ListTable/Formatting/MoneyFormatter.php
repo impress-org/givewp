@@ -79,11 +79,10 @@ final class MoneyFormatter
             $decimal = is_float($amount) ? number_format($amount, (int) give_get_price_decimals($currency), '.', '') : (string) $amount;
             $isNegative = strpos($decimal, '-') === 0;
 
-            // Same as format(): the size of the amount is formatted without sanitizing, and the sign goes in front.
-            $text = give_currency_filter(
-                give_format_amount(ltrim($decimal, '-'), ['currency' => $currency, 'sanitize' => false]),
-                ['currency_code' => $currency, 'decode_currency' => true]
-            );
+            // Give has no symbol for this code, and its currency helper would swap in the site currency. So the
+            // number is written like format() writes it (no sanitizing, sign in front) and the stored code follows.
+            $text = give_format_amount(ltrim($decimal, '-'), ['currency' => $currency, 'sanitize' => false])
+                . ' ' . esc_html($currency);
 
             return $isNegative ? '-' . $text : $text;
         }
