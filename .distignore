@@ -51,6 +51,7 @@
 .huskyrc.json
 .lintstagedrc.json
 .distignore
+.plugin-check-baseline.json
 .stylelintignore
 .coderabbit.yaml
 jsconfig.json
