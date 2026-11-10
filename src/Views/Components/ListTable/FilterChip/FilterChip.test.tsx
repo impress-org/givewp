@@ -1,4 +1,4 @@
-import {act} from 'react';
+import {act, StrictMode} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
 import FilterChip, {type FilterChipProps} from './index';
 
@@ -118,5 +118,29 @@ describe('FilterChip', () => {
 
         expect(content()).not.toBeNull();
         expect(chip().getAttribute('aria-expanded')).toBe('true');
+    });
+
+    it('stays open with defaultOpen when effects run twice', async () => {
+        await act(() =>
+            root.render(
+                <StrictMode>
+                    <FilterChip
+                        text="Status"
+                        fullText="Status"
+                        hasValue={false}
+                        canRemove={false}
+                        removeLabel="Remove"
+                        onRemove={onRemove}
+                        defaultOpen
+                    >
+                        {() => <div>Inside</div>}
+                    </FilterChip>
+                </StrictMode>
+            )
+        );
+        await act(() => jest.runOnlyPendingTimers());
+
+        expect(chip().getAttribute('aria-expanded')).toBe('true');
+        expect(chip().getAttribute('aria-haspopup')).toBe('dialog');
     });
 });
