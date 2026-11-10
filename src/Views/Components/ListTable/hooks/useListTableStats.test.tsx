@@ -14,6 +14,8 @@ describe('statsStatus', () => {
     it.each([
         [{hasData: false, hasError: true, isValidating: false}, 'error'],
         [{hasData: true, hasError: true, isValidating: false}, 'ready'],
+        // Numbers kept from another request (for example the other test mode) are not shown as current.
+        [{hasData: true, hasError: true, isValidating: false, hasCurrentData: false}, 'error'],
         [{hasData: false, hasError: false, isValidating: true}, 'loading'],
         [{hasData: false, hasError: true, isValidating: true}, 'loading'],
         [{hasData: false, hasError: false, isValidating: false}, 'loading'],

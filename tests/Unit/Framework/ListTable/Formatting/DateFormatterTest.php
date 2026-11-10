@@ -139,5 +139,8 @@ class DateFormatterTest extends TestCase
         $this->assertSame('1969-07-20', DateFormatter::date(new DateTimeImmutable('1969-07-20 12:00:00', new DateTimeZone('UTC'))));
         $this->assertStringContainsString('No date', DateFormatter::date(new DateTimeImmutable('0000-00-00 00:00:00', new DateTimeZone('UTC'))));
         $this->assertNull(DateFormatter::iso(new DateTimeImmutable('0000-00-00 00:00:00', new DateTimeZone('UTC'))));
+        // The zero date is the zero date in any timezone.
+        $this->assertNull(DateFormatter::iso(new DateTimeImmutable('0000-00-00 00:00:00', new DateTimeZone('-08:00'))));
+        $this->assertStringContainsString('No date', DateFormatter::date(new DateTimeImmutable('0000-00-00 00:00:00', new DateTimeZone('+05:30'))));
     }
 }

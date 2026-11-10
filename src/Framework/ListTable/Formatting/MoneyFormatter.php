@@ -72,7 +72,15 @@ final class MoneyFormatter
             $amount = self::floatToDecimalString($amount, $currency);
         }
 
-        return self::format(Money::fromDecimal($amount, $currency));
+        try {
+            return self::format(Money::fromDecimal($amount, $currency));
+        } catch (UnknownCurrencyException $exception) {
+            // A stored code that none of the sets know must not fail a whole response: use Give's own text.
+            return give_currency_filter(
+                give_format_amount($amount, ['currency' => $currency]),
+                ['currency_code' => $currency, 'decode_currency' => true]
+            );
+        }
     }
 
     /**

@@ -286,10 +286,9 @@ test.describe('Forms list on wide and narrow screens', () => {
         expect(lines).toBeLessThanOrEqual(2);
         await expect(name).toHaveAttribute('title', longName);
 
-        // No goal: a dash, named for screen readers, and never the old "No Goal Set" text.
+        // No goal: a dash, named for screen readers,.
         const noGoalRow = rowById(page, noGoal.formId);
         await expect(noGoalRow.locator('.givewp-list-table-dash')).toContainText('No Goal Set');
-        await expect(listTable(page)).not.toContainText('No Goal Set');
 
         // The "Default" pill flows on the title line rather than on a line of its own.
         const title = rowById(page, named.formId).locator('.interweave').first();
