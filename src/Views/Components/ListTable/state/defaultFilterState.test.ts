@@ -1,5 +1,5 @@
 import type {Filter, View} from '@wordpress/dataviews';
-import {differsFromDefaultFilters, withDefaultFilters} from './defaultFilterState';
+import {differsFromDefaultFilters, differsFromDefaultFiltersIgnoring, withDefaultFilters} from './defaultFilterState';
 
 const testMode: Filter = {field: 'filter-testMode', operator: 'is', value: true};
 const view = (filters: Filter[], search = ''): View => ({type: 'table', page: 3, search, filters});
@@ -39,6 +39,33 @@ describe('differsFromDefaultFilters', () => {
         const ba: Filter = {field: 'filter-status', operator: 'isAny', value: ['b', 'a']};
 
         expect(differsFromDefaultFilters(view([locked, ba]), [ab])).toBe(false);
+    });
+});
+
+describe('differsFromDefaultFiltersIgnoring', () => {
+    const status: Filter = {field: 'filter-status', operator: 'isAny', value: ['pending']};
+
+    it('is false when only the ignored filter was removed from the defaults', () => {
+        expect(differsFromDefaultFiltersIgnoring(view([]), [testMode], 'filter-testMode')).toBe(false);
+    });
+
+    it('is false when only the ignored filter was added', () => {
+        expect(differsFromDefaultFiltersIgnoring(view([testMode]), [], 'filter-testMode')).toBe(false);
+    });
+
+    it('is false when only the value of the ignored filter changed', () => {
+        expect(
+            differsFromDefaultFiltersIgnoring(view([{...testMode, value: false}]), [testMode], 'filter-testMode')
+        ).toBe(false);
+    });
+
+    it('is true when another filter is added, also with the ignored filter changed', () => {
+        expect(differsFromDefaultFiltersIgnoring(view([status]), [], 'filter-testMode')).toBe(true);
+        expect(differsFromDefaultFiltersIgnoring(view([status]), [testMode], 'filter-testMode')).toBe(true);
+    });
+
+    it('is true with a search term', () => {
+        expect(differsFromDefaultFiltersIgnoring(view([testMode], 'smith'), [testMode], 'filter-testMode')).toBe(true);
     });
 });
 

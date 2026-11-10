@@ -35,6 +35,19 @@ export function differsFromDefaultFilters(view: View, defaultFilters: Filter[]):
 }
 
 /**
+ * Like differsFromDefaultFilters, but one filter does not count: whether it was added, removed or
+ * changed, only the search and the other filters decide. Used for the Test Mode switch, which picks
+ * which records to show and is not a filter the admin would clear.
+ *
+ * @since TBD
+ */
+export function differsFromDefaultFiltersIgnoring(view: View, defaultFilters: Filter[], field: string): boolean {
+    const others = (filters: Filter[]) => filters.filter((filter) => filter.field !== field);
+
+    return differsFromDefaultFilters({...view, filters: others(view.filters ?? [])}, others(defaultFilters));
+}
+
+/**
  * The view with the search cleared and the filters back to the screen's defaults, on page one. Locked
  * filters stay as they are; sort, page size and columns do not change.
  *

@@ -14,7 +14,6 @@ jest.mock('@givewp/components', () => ({
 }));
 jest.mock('@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton', () => () => null);
 jest.mock('@givewp/components/ListTable/BlankSlate', () => () => null);
-jest.mock('@givewp/components/ListTable/ProductRecommendations', () => () => null);
 jest.mock('./DonorsRowActions', () => ({donorsRowActions: () => null}));
 
 describe('DonorsListTable', () => {
@@ -33,7 +32,7 @@ describe('DonorsListTable', () => {
             table: {columns: []},
             adminUrl: '',
             pluginUrl: '',
-            dissedRecommendations: [],
+            dismissedRecommendations: ['x'],
             recurringDonationsEnabled: false,
         };
         // Loaded after the window settings, as the module reads them when it loads.
@@ -46,6 +45,35 @@ describe('DonorsListTable', () => {
         expect(mockPageProps).toHaveBeenCalledWith(
             expect.objectContaining({singleName: 'donor', pluralName: 'donors'})
         );
+
+        await act(() => root.unmount());
+    });
+
+    it('offers only the fee recovery recommendation, as notice data', async () => {
+        window.GiveDonors = {
+            apiNonce: '',
+            apiRoot: '',
+            forms: [],
+            table: {columns: []},
+            adminUrl: '',
+            pluginUrl: '',
+            dismissedRecommendations: [],
+            recurringDonationsEnabled: false,
+        };
+        const {default: DonorsListTable} = await import('./DonorsListTable');
+        const container = document.createElement('div');
+        const root = createRoot(container);
+
+        await act(() => root.render(<DonorsListTable />));
+
+        const props = mockPageProps.mock.calls[0][0] as {
+            productRecommendation?: unknown;
+            recommendations: {options: Array<{enum: string}>; dismissed: string[]; apiNonce: string};
+        };
+        expect(props.productRecommendation).toBeUndefined();
+        expect(props.recommendations.options.map((option) => option.enum)).toEqual([
+            'givewp_donors_fee_recovery_recommendation_dismissed',
+        ]);
 
         await act(() => root.unmount());
     });

@@ -4,7 +4,8 @@ import {donorsRowActions} from './DonorsRowActions';
 import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import './style.scss';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
-import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
+import type {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
+import type {ListTableRecommendations} from '@givewp/components/ListTable/notices/types';
 import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
 import listTableScreen from './listTableScreen';
 import {donorsFilters} from './filters';
@@ -18,7 +19,7 @@ declare global {
             table: {columns: Array<object>};
             adminUrl: string;
             pluginUrl: string;
-            dissedRecommendations: Array<string>;
+            dismissedRecommendations: Array<string>;
             recurringDonationsEnabled: boolean;
         };
     }
@@ -39,10 +40,15 @@ const ListTableBlankSlate = (
     />
 );
 
+interface DonorsRecommendations {
+    feeRecovery: RecommendedProductData;
+}
+
 /**
+ * @since TBD Type the config.
  * @since 2.27.1
  */
-const RecommendationConfig: any = {
+const RecommendationConfig: DonorsRecommendations = {
     feeRecovery: {
         enum: 'givewp_donors_fee_recovery_recommendation_dismissed',
         documentationPage: 'https://docs.givewp.com/feerecovery-donors-list',
@@ -54,9 +60,16 @@ const RecommendationConfig: any = {
     },
 };
 
-const recommendation = (
-    <ProductRecommendations options={[RecommendationConfig.feeRecovery]} apiSettings={window.GiveDonors} />
-);
+/**
+ * The recommendation data the notice area shows. Fee recovery is the only option.
+ *
+ * @since TBD
+ */
+const recommendations: ListTableRecommendations = {
+    options: [RecommendationConfig.feeRecovery],
+    dismissed: window.GiveDonors.dismissedRecommendations ?? [],
+    apiNonce: window.GiveDonors.apiNonce,
+};
 
 /**
  * Configuration for the statistic tiles rendered above the ListTable.
@@ -88,6 +101,7 @@ const statsConfig: Record<string, StatConfig> = {
 };
 
 /**
+ * @since TBD Pass the recommendation as data for the notice area.
  * @since TBD Name one record "donor", as the result count says it.
  * @since TBD Use the shared filter declarations in place of the "Filter by" settings.
  * @since TBD Pass the actions as data and the screen config.
@@ -102,7 +116,7 @@ export default function DonorsListTable() {
             apiSettings={window.GiveDonors}
             filters={donorsFilters}
             listTableBlankSlate={ListTableBlankSlate}
-            productRecommendation={recommendation}
+            recommendations={recommendations}
             statsConfig={statsConfig}
             screen={listTableScreen}
         >

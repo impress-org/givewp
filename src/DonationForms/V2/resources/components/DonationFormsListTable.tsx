@@ -13,10 +13,10 @@ import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import {CubeIcon} from '@givewp/components/AdminUI/Icons';
 import AddCampaignFormModal from './AddCampaignFormModal';
-import DefaultFormNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DefaultFormNotice';
 import apiFetch from '@wordpress/api-fetch';
 import {CampaignEntity} from '@givewp/campaigns/admin/components/types';
 import type {StatusVocabularyEntry} from '@givewp/components/ListTable/filters/types';
+import type {ListTableNotice} from '@givewp/components/ListTable/notices/types';
 import type {ListTableScreen} from '@givewp/components/ListTable/state/types';
 import donationFormsListTableScreen from './listTableScreen';
 import {donationFormFilters} from './filters';
@@ -118,6 +118,7 @@ const ListTableBlankSlate = (
 );
 
 /**
+ * @since TBD Show the default form notice above the list, not as a floating tooltip.
  * @since TBD Take the campaign as a prop: it fixes the request's campaign and replaces the Campaign filter, in place of reading the address.
  * @since TBD Pass the filter declaration in place of the filter settings.
  * @since TBD Pass the actions as data; Trash, Delete and Edit author or status move from bulk actions into them. Take the screen config: the standalone list uses its own, an embedded list only the one it is given.
@@ -152,6 +153,22 @@ export default function DonationFormsListTable({
         });
     };
 
+    const notices: ListTableNotice[] =
+        state.showDefaultFormTooltip && isCampaignDetailsPage
+            ? [
+                  {
+                      id: 'default-form',
+                      kind: 'onboarding',
+                      title: __('Default campaign form', 'give'),
+                      message: __(
+                          'The default form will always appear at the top of this list. Your campaign page and blocks will collect donations through this form by default. You can change it at any time.',
+                          'give'
+                      ),
+                      onDismiss: handleDefaultFormTooltipDismiss,
+                  },
+              ]
+            : [];
+
     const rowActions = useDonationFormsRowActions(entity, isCampaignDetailsPage);
     const [isOpen, setOpen] = useState<boolean>(false);
     const openModal = () => setOpen(true);
@@ -170,6 +187,7 @@ export default function DonationFormsListTable({
                 listTableBlankSlate={ListTableBlankSlate}
                 columnFilters={columnFilters}
                 banner={Onboarding}
+                notices={notices}
                 contentMode={isCampaignDetailsPage}
                 screen={screen ?? (isCampaignDetailsPage ? undefined : donationFormsListTableScreen)}
             >
@@ -213,9 +231,6 @@ export default function DonationFormsListTable({
                             />
                         )}
                     </>
-                )}
-                {state.showDefaultFormTooltip && isCampaignDetailsPage && (
-                    <DefaultFormNotice handleClick={handleDefaultFormTooltipDismiss} />
                 )}
             </ListTablePage>
         </OnboardingContext.Provider>
