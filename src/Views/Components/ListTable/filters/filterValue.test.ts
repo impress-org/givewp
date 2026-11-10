@@ -105,6 +105,27 @@ describe('filter value text', () => {
         });
     });
 
+    it('writes at most 50 values, so the address and the view agree', () => {
+        const ids = Array.from({length: 60}, (_, index) => String(index + 1));
+
+        expect(serializeFilterValue(campaign, ids)).toBe(ids.slice(0, 50).join(','));
+    });
+
+    it('accepts an offered option value whatever characters it has', () => {
+        const custom: OptionsFilterDeclaration = {
+            ...status,
+            options: [
+                {value: 'v1.2', label: 'Version 1.2'},
+                {value: 'two words', label: 'Two words'},
+            ],
+        };
+
+        expect(parseFilterValue(custom, 'v1.2,two words,other', {statuses})).toEqual({
+            value: ['v1.2', 'two words'],
+            corrected: true,
+        });
+    });
+
     it('rejects ids that are not positive integers', () =>
         expect(parseFilterValue(campaign, '0,-1,abc,7', {statuses})).toEqual({value: ['7'], corrected: true}));
 
