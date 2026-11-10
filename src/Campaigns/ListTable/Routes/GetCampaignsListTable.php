@@ -90,13 +90,13 @@ class GetCampaignsListTable implements RestRoute
                         'type' => 'string',
                         'required' => false,
                         'format' => 'date-time',
-                        'description' => 'Only campaigns created on or after this date and time (site time zone).',
+                        'description' => 'Only campaigns created on or after this date and time. Send the site\'s local time with seconds and no offset, such as 2025-04-10T14:30:00: it is compared as stored.',
                     ],
                     'end' => [
                         'type' => 'string',
                         'required' => false,
                         'format' => 'date-time',
-                        'description' => 'Only campaigns created on or before this date and time (site time zone).',
+                        'description' => 'Only campaigns created on or before this date and time. Send the site\'s local time with seconds and no offset, such as 2025-04-10T14:30:00: it is compared as stored.',
                     ],
                     'sortColumn' => [
                         'type' => 'string',

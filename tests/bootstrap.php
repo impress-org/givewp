@@ -3,9 +3,17 @@
 use Give\Tests\Framework\TestHooks;
 use Give\Tests\TestEnvironment;
 
-require __DIR__ . '/../vendor/autoload.php';
-
 const WP_CONTENT_DIR = __DIR__;
+
+/*
+ * Define ABSPATH before vendor/autoload.php so autoloaded functions files guarded by
+ * ABSPATH checks can load during test bootstrap.
+ */
+if (!defined('ABSPATH')) {
+    define('ABSPATH', __DIR__ . '/../vendor/wordpress/wordpress/src/');
+}
+
+require __DIR__ . '/../vendor/autoload.php';
 
 $testEnvironment = new TestEnvironment();
 

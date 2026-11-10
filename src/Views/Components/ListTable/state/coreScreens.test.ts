@@ -28,6 +28,7 @@ function stubWindowData() {
         GiveDonors: screenData,
         GiveSubscriptions: screenData,
         GiveDonationForms: screenData,
+        GiveEventTickets: screenData,
         GiveCampaignsListTable: screenData,
         GiveCampaignOptions: {...screenData, admin: {}},
     });
@@ -66,6 +67,12 @@ function standaloneScreens(): ScreenModule[] {
                 withCampaign: true,
             }),
             screen: require('@givewp/src/DonationForms/V2/resources/components/listTableScreen').default,
+        },
+        {
+            declarations: require('@givewp/src/EventTickets/resources/admin/components/EventTicketsListTable/filters')
+                .eventTicketFilters,
+            screen: require('@givewp/src/EventTickets/resources/admin/components/EventTicketsListTable/listTableScreen')
+                .default,
         },
     ];
     /* eslint-enable @typescript-eslint/no-var-requires */
@@ -199,6 +206,7 @@ describe('core list table screens', () => {
             'subscriptions',
             'campaigns',
             'donation-forms',
+            'event-tickets',
         ]);
 
         screens.forEach((screenModule) => {
