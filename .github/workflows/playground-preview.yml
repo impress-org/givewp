@@ -32,6 +32,9 @@ jobs:
         with:
             # GiveWP supports PHP 7.4 and up, so the vendor directory has to be built on 7.4.
             php-version: '7.4'
+            # The pup release `composer pup` downloads (composer.json). The zip's name is worked out with
+            # this one, and has to equal the name the zip workflow's pup gives it.
+            pup-version: '2.0.0'
             blueprints: |
                 .github/playground/blueprint.json
                 .github/playground/blueprint-sample-data.json
