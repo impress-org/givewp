@@ -1,4 +1,13 @@
-import {createContext, createElement, type MutableRefObject, type ReactNode, useContext, useMemo, useRef} from 'react';
+import {
+    type ComponentProps,
+    createContext,
+    createElement,
+    type MutableRefObject,
+    type ReactNode,
+    useContext,
+    useMemo,
+    useRef,
+} from 'react';
 import cx from 'classnames';
 import {CheckboxControl, __experimentalHStack as HStack} from '@wordpress/components';
 import {DataViews} from '@wordpress/dataviews';
@@ -55,31 +64,49 @@ const canSelect = (actions: Action<ListTableItem>[], item: ListTableItem) =>
     actions.some((action) => action.supportsBulk && (!action.isEligible || action.isEligible(item)));
 
 /**
- * The selection the card checkboxes read. It comes through context, not through the field's `render`
- * function: DataViews draws the title field as a component, so a new `render` function on every
- * selection change would remount the card, and the checkbox would lose keyboard focus.
+ * What the card titles read: the selection and the actions. They come through context, not through
+ * the field's `render` function: DataViews draws the title field as a component, so a new `render`
+ * function on every selection change would remount the card, and the checkbox would lose keyboard focus.
  */
 const CardSelectionContext = createContext<{
     selection: string[];
     onChangeSelection: (ids: string[]) => void;
-}>({selection: [], onChangeSelection: () => {}});
+    actions: Action<ListTableItem>[];
+}>({selection: [], onChangeSelection: () => {}, actions: []});
 
-function CardCheckbox({id, label}: {id: string; label: string}) {
-    const {selection, onChangeSelection} = useContext(CardSelectionContext);
+type CardTitleProps = {
+    field: Field<ListTableItem>;
+    renderProps: ComponentProps<NonNullable<Field<ListTableItem>['render']>>;
+};
+
+/** The card title with a selection checkbox before it, when the record can be selected. */
+function CardTitle({field, renderProps}: CardTitleProps) {
+    const {selection, onChangeSelection, actions} = useContext(CardSelectionContext);
+    const {item} = renderProps;
+    const id = getItemId(item);
+    const label = String(field.getValue?.({item}) ?? '');
+    const title = field.render ? createElement(field.render, renderProps) : label;
+
+    if (!canSelect(actions, item)) {
+        return <>{title}</>;
+    }
 
     return (
-        <CheckboxControl
-            className="givewp-list-table__card-checkbox"
-            __nextHasNoMarginBottom
-            /* translators: %s: the name of the record, for example a donor name. */
-            aria-label={sprintf(__('Select %s', 'give'), label)}
-            checked={selection.includes(id)}
-            onChange={() =>
-                onChangeSelection(
-                    selection.includes(id) ? selection.filter((selected) => selected !== id) : [...selection, id]
-                )
-            }
-        />
+        <HStack justify="start" alignment="center" spacing={2} className="givewp-list-table__card-title">
+            <CheckboxControl
+                className="givewp-list-table__card-checkbox"
+                __nextHasNoMarginBottom
+                /* translators: %s: the name of the record, for example a donor name. */
+                aria-label={sprintf(__('Select %s', 'give'), label)}
+                checked={selection.includes(id)}
+                onChange={() =>
+                    onChangeSelection(
+                        selection.includes(id) ? selection.filter((selected) => selected !== id) : [...selection, id]
+                    )
+                }
+            />
+            {title}
+        </HStack>
     );
 }
 
@@ -88,40 +115,15 @@ function CardCheckbox({id, label}: {id: string; label: string}) {
  * checkbox only over a media image, and the list has no media, so without this a card could only be
  * selected with Ctrl or Cmd and a click.
  *
- * The returned `render` functions only change when the fields change, never with the selection (see
- * CardSelectionContext). The actions are read from a ref, because their identity changes with the selection.
+ * The returned `render` functions only change when the fields change, never with the selection or the
+ * actions (see CardSelectionContext).
  */
-function withCardCheckbox(
-    fields: Field<ListTableItem>[],
-    titleField: string | undefined,
-    actionsRef: MutableRefObject<Action<ListTableItem>[]>
-): Field<ListTableItem>[] {
-    return fields.map((field) => {
-        if (field.id !== titleField) {
-            return field;
-        }
-
-        const label = (item: ListTableItem) => String(field.getValue?.({item}) ?? '');
-
-        return {
-            ...field,
-            render: (renderProps) => {
-                const {item} = renderProps;
-                const title = field.render ? createElement(field.render, renderProps) : label(item);
-
-                if (!canSelect(actionsRef.current, item)) {
-                    return <>{title}</>;
-                }
-
-                return (
-                    <HStack justify="start" alignment="center" spacing={2} className="givewp-list-table__card-title">
-                        <CardCheckbox id={getItemId(item)} label={label(item)} />
-                        {title}
-                    </HStack>
-                );
-            },
-        };
-    });
+function withCardCheckbox(fields: Field<ListTableItem>[], titleField: string | undefined): Field<ListTableItem>[] {
+    return fields.map((field) =>
+        field.id !== titleField
+            ? field
+            : {...field, render: (renderProps) => <CardTitle field={field} renderProps={renderProps} />}
+    );
 }
 
 /**
@@ -221,14 +223,15 @@ export default function DataViewsListTable({
     const rootRef = useRef<HTMLDivElement>(null);
     const {hasMoreStart, hasMoreEnd} = useHorizontalOverflow(rootRef);
     const isNarrow = layoutMode === 'narrow';
-    const actionsRef = useRef(actions);
-    actionsRef.current = actions;
     const hasBulkActions = actions.some((action) => action.supportsBulk);
     const shownFields = useMemo(
-        () => (isNarrow && hasBulkActions ? withCardCheckbox(fields, view.titleField, actionsRef) : fields),
+        () => (isNarrow && hasBulkActions ? withCardCheckbox(fields, view.titleField) : fields),
         [isNarrow, hasBulkActions, fields, view.titleField]
     );
-    const cardSelection = useMemo(() => ({selection, onChangeSelection}), [selection, onChangeSelection]);
+    const cardSelection = useMemo(
+        () => ({selection, onChangeSelection, actions}),
+        [selection, onChangeSelection, actions]
+    );
 
     return (
         <div

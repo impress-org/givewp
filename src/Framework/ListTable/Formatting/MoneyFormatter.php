@@ -76,10 +76,16 @@ final class MoneyFormatter
             return self::format(Money::fromDecimal($amount, $currency));
         } catch (UnknownCurrencyException $exception) {
             // A stored code that none of the sets know must not fail a whole response: use Give's own text.
-            return give_currency_filter(
-                give_format_amount($amount, ['currency' => $currency]),
+            $decimal = is_float($amount) ? number_format($amount, (int) give_get_price_decimals($currency), '.', '') : (string) $amount;
+            $isNegative = strpos($decimal, '-') === 0;
+
+            // Same as format(): the size of the amount is formatted without sanitizing, and the sign goes in front.
+            $text = give_currency_filter(
+                give_format_amount(ltrim($decimal, '-'), ['currency' => $currency, 'sanitize' => false]),
                 ['currency_code' => $currency, 'decode_currency' => true]
             );
+
+            return $isNegative ? '-' . $text : $text;
         }
     }
 

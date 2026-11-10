@@ -1,4 +1,4 @@
-import {useMemo, useRef} from 'react';
+import {useEffect, useMemo, useRef} from 'react';
 import useListTableQuery from './useListTableQuery';
 
 /**
@@ -79,9 +79,13 @@ export default function useListTableStats(endpoint: string | null, testMode: boo
     const requestKey = `${endpoint ?? ''}:${testMode}`;
     const settledKey = useRef<string | null>(null);
 
-    if (data && !error && !isValidating) {
-        settledKey.current = requestKey;
-    }
+    // After the commit, not during render, so a render React discards cannot change it. The status below
+    // only reads it when a request failed, which is always after an earlier committed success.
+    useEffect(() => {
+        if (data && !error && !isValidating) {
+            settledKey.current = requestKey;
+        }
+    }, [data, error, isValidating, requestKey]);
 
     return {
         stats,

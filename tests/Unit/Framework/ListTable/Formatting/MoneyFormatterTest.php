@@ -154,4 +154,18 @@ class MoneyFormatterTest extends TestCase
         $this->assertStringContainsString('givewp-list-table-dash', MoneyFormatter::format(null));
         $this->assertStringContainsString('No amount', MoneyFormatter::fromDecimal(null));
     }
+
+    /**
+     * A currency code that none of the currency sets know must not fail the response, and the sign stays in front.
+     *
+     * @since TBD
+     */
+    public function testAnUnknownCurrencyDoesNotThrowAndKeepsTheSign(): void
+    {
+        $text = MoneyFormatter::fromDecimal('-12.5', 'ZZZ');
+
+        $this->assertStringStartsWith('-', $text);
+        $this->assertStringContainsString('12.50', $text);
+        $this->assertStringContainsString('12.50', MoneyFormatter::fromDecimal(12.5, 'ZZZ'));
+    }
 }
