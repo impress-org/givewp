@@ -126,6 +126,21 @@ class FilterOptionQueriesTest extends TestCase
     }
 
     /**
+     * A title that was saved encoded ("Kids &amp; Co") is shown decoded, so a search for what the admin sees must find it.
+     *
+     * @dataProvider sources
+     *
+     * @since TBD
+     */
+    public function testSearchFindsTheTextAnEncodedLabelShows(string $source): void
+    {
+        $this->seed($source, 'Kids &amp; Co');
+
+        $this->assertSame(['Kids & Co'], array_column($this->source($source)->search('Kids &', 1)['options'], 'label'));
+        $this->assertSame(['Kids & Co'], array_column($this->source($source)->search('&', 1)['options'], 'label'));
+    }
+
+    /**
      * @dataProvider sources
      *
      * @since TBD
