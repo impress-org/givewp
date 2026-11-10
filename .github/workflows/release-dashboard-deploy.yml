@@ -79,7 +79,7 @@ jobs:
             # plugin-toolbox publishes a release.
             -   name: Merge the release into master and master back into develop
                 id: merge
-                uses: stellarwp/plugin-toolbox/.github/actions/release-merge@5328ef9e861504452fe8eb536142f3a8adf08107
+                uses: stellarwp/plugin-toolbox/.github/actions/release-merge@7b2ac9320f7b4e8d655c256aabfb39c457ec73ed
                 with:
                     branch: ${{ inputs.branch }}
                     # The commit the run was started on: the environment's approval may come long
@@ -146,7 +146,7 @@ jobs:
             # attached before it is public. Published last, so a failed build or deploy leaves no release.
             -   name: Publish the GitHub release
                 id: release
-                uses: stellarwp/plugin-toolbox/.github/actions/release-publish@5328ef9e861504452fe8eb536142f3a8adf08107
+                uses: stellarwp/plugin-toolbox/.github/actions/release-publish@7b2ac9320f7b4e8d655c256aabfb39c457ec73ed
                 with:
                     version: ${{ steps.merge.outputs.version }}
                     target: ${{ steps.merge.outputs.base-sha }}
