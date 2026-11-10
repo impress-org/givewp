@@ -1,5 +1,11 @@
 == Changelog ==
 
+= [4.19.1.1] 2026-11-03 =
+
+* Feature - Added support for Nexcess Plugin Stack licenses
+* Security - Added additional validation to the donor default user role setting. (CVE-2026-118193)
+* Security - Improved validation of donor email on donation forms.
+
 = [4.19.1] 2026-10-27 =
 
 * Fix - Updated the codebase to be fully compatible with the official WordPress Plugin Check guidelines.
