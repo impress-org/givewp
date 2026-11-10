@@ -113,9 +113,9 @@ jobs:
                     sudo mv wp-cli.phar /usr/local/bin/wp
 
             # The name before the build, so the bucket can be asked for it. Pinned to the plugin-toolbox
-            # commit of its PR #20, which adds the two actions. Switch to @v1 once plugin-toolbox publishes
+            # main commit after its PR #20, which adds the two actions. Switch to @v1 once plugin-toolbox publishes
             # a release.
-            -   uses: stellarwp/plugin-toolbox/.github/actions/zip-name@28e9884c6102b45427b38543563dea66eb51c33a
+            -   uses: stellarwp/plugin-toolbox/.github/actions/zip-name@7b2ac9320f7b4e8d655c256aabfb39c457ec73ed
                 id: name
                 with:
                     production: ${{ inputs.production }}
@@ -141,7 +141,7 @@ jobs:
                     COMMAND: exists
                     FILE: ${{ steps.name.outputs.zip-name }}.zip
 
-            -   uses: stellarwp/plugin-toolbox/.github/actions/release-zip@28e9884c6102b45427b38543563dea66eb51c33a
+            -   uses: stellarwp/plugin-toolbox/.github/actions/release-zip@7b2ac9320f7b4e8d655c256aabfb39c457ec73ed
                 id: zip
                 if: steps.s3_zip_exists.outcome != 'success'
                 with:

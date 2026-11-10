@@ -61,9 +61,9 @@ jobs:
             # README (its "Branches it refuses" section).
             # The action also refuses a version the repository has already tagged, so a release branch
             # prepared twice by mistake, or for a version that already shipped, changes nothing.
-            # Pinned to the plugin-toolbox commit of its PR #12, which adds that check (the branch check
-            # is from its PR #8). Switch to @v1 once plugin-toolbox publishes a release.
-            -   uses: stellarwp/plugin-toolbox/.github/actions/release-prep@696c944137a61d82b8e7cbb0e10c6d5cc91baba7
+            # Pinned to a commit of plugin-toolbox main; the check is from its PR #12, the branch check from
+            # its PR #8. Switch to @v1 once plugin-toolbox publishes a release.
+            -   uses: stellarwp/plugin-toolbox/.github/actions/release-prep@7b2ac9320f7b4e8d655c256aabfb39c457ec73ed
                 with:
                     branch: ${{ inputs.branch }}
                     version: ${{ inputs.version }}
