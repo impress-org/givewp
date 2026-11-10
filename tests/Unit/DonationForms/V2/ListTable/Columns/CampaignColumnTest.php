@@ -33,6 +33,7 @@ class CampaignColumnTest extends TestCase
     }
 
     /**
+     * @since TBD Expect the cell inside the truncated text wrapper.
      * @since 4.19.0
      */
     public function testLinksToTheCampaignPageForACoreCampaign()
@@ -49,6 +50,7 @@ class CampaignColumnTest extends TestCase
     }
 
     /**
+     * @since TBD Expect the unlinked title inside the truncated text wrapper.
      * @since 4.19.0
      */
     public function testRendersAnUnlinkedTitleForANonCoreCampaign()
