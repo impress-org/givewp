@@ -73,13 +73,18 @@ class LicenseRepository
     /**
      * Checks if we have any active licenses, including Harbor unified licenses.
      *
+     * A Nexcess Plugin Stack license holds only the stack product, not Give, so it
+     * counts too. Its paid features always include Give's.
+     *
+     * @since 4.19.1.1 count an active Nexcess Plugin Stack license
      * @since 4.15.0 add support for Harbor unified licenses
      * @since 4.3.0
      */
     public function hasActiveLicenses(): bool
     {
         return !empty($this->getActiveLicenses())
-            || lw_harbor_is_product_license_active('give');
+            || lw_harbor_is_product_license_active('give')
+            || lw_harbor_is_product_license_active('nexcess-plugin-stack');
     }
 
     /**
