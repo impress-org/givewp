@@ -47,7 +47,7 @@ function exclusiveValuesOf(declaration: OptionsFilterDeclaration | EntityFilterD
  * @since TBD
  */
 export function serializeFilterValue(declaration: BarFilterDeclaration, value: FilterValue): string | undefined {
-    const text = Array.isArray(value) ? value.join(',') : value;
+    const text = Array.isArray(value) ? value.slice(0, MAX_FILTER_VALUES).join(',') : value;
 
     if (declaration.kind === 'date' && text !== '') {
         const range = parseDateToken(text);
@@ -80,15 +80,12 @@ export function parseFilterValue(
     const exclusive = exclusiveValuesOf(declaration);
 
     const isValid = (part: string): boolean => {
-        if (!TOKEN_PATTERN.test(part)) {
-            return false;
-        }
-
+        // The declaration names what an options filter offers, so that list decides, whatever characters a value has.
         if (offered) {
             return offered.includes(part);
         }
 
-        return ID_PATTERN.test(part) || (exclusive.includes(part) && part === NONE_VALUE);
+        return TOKEN_PATTERN.test(part) && (ID_PATTERN.test(part) || (exclusive.includes(part) && part === NONE_VALUE));
     };
 
     const valid = rawParts.filter(isValid);
