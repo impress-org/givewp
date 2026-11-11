@@ -198,9 +198,20 @@ jobs:
                       --data-urlencode "url=$RUN_URL"
 
             # The release dashboard's "RC ZIP" link opens this run's page, where the artifact downloads.
+            # GitHub zips an artifact's contents on download, so the artifact holds the zip unpacked, the
+            # `give/` folder: the download is then the plugin zip itself, which the WordPress installer
+            # takes as is. Uploading the zip file would download as a zip inside a zip, which it refuses.
+            -   name: Unpack the zip for the artifact
+                if: steps.zip.outcome == 'success'
+                env:
+                    ZIP_PATH: ${{ steps.zip.outputs.zip-path }}
+                run: |
+                    mkdir artifact
+                    unzip -q "$ZIP_PATH" -d artifact
+
             -   uses: actions/upload-artifact@v7
                 if: steps.zip.outcome == 'success'
                 with:
                     name: ${{ steps.name.outputs.zip-name }}
-                    path: ${{ steps.zip.outputs.zip-path }}
+                    path: artifact
                     retention-days: 30
