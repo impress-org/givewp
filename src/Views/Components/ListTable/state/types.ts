@@ -99,6 +99,7 @@ export interface ViewQuery {
     sort?: ListTableView['sort'];
     filters: Filter[];
     testMode?: boolean;
+    search?: ListTableView['search'];
 }
 
 /**

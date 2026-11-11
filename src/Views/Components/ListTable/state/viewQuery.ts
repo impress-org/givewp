@@ -23,8 +23,16 @@ const PER_PAGE = 'give-per-page';
 const ORDER_BY = 'give-orderby';
 const ORDER = 'give-order';
 const TEST_MODE = 'give-test-mode';
+const SEARCH = 'give-search';
 const BARE_SEARCH = 'search';
-const COMMON_KEYS = [PAGE, PER_PAGE, ORDER_BY, ORDER, TEST_MODE];
+const COMMON_KEYS = [PAGE, PER_PAGE, ORDER_BY, ORDER, TEST_MODE, SEARCH];
+
+/**
+ * The longest search term the URL carries. A longer term is cut, so the address stays short.
+ *
+ * @since TBD
+ */
+export const MAX_SEARCH_LENGTH = 100;
 const TOGGLE_ON = '1';
 const TOGGLE_OFF = '0';
 
@@ -171,6 +179,7 @@ export function viewQueryKeys(context: ViewQueryContext): string[] {
     return [
         ...filterParameters(context).map((parameter) => parameter.key),
         ...(hasTestModeToggle(context.filterSettings) ? [TEST_MODE] : []),
+        SEARCH,
         ORDER_BY,
         ORDER,
         PAGE,
@@ -240,8 +249,18 @@ function writePaging(view: ListTableView, context: ViewQueryContext): Array<[str
 }
 
 /**
- * The view's `give-` URL parameters. A view equal to the defaults gives none. The search term, the
- * columns and the density are never written.
+ * The search parameter, written when the term is not empty. Spaces at the ends are dropped, and a long
+ * term is cut to `MAX_SEARCH_LENGTH`.
+ */
+function writeSearch(view: ListTableView): Array<[string, string]> {
+    const term = (view.search ?? '').trim().slice(0, MAX_SEARCH_LENGTH);
+
+    return term === '' ? [] : [[SEARCH, term]];
+}
+
+/**
+ * The view's `give-` URL parameters. A view equal to the defaults gives none. The columns and the
+ * density are never written.
  *
  * @since TBD
  */
@@ -249,6 +268,7 @@ export function serializeViewQuery(view: ListTableView, context: ViewQueryContex
     return Object.fromEntries([
         ...writeFilters(view, context),
         ...writeTestMode(view, context),
+        ...writeSearch(view),
         ...writeSort(view, context),
         ...writePaging(view, context),
     ]);
@@ -280,6 +300,20 @@ function readPerPage(raw: string | null): {perPage?: number; corrected: boolean}
     const perPage = snapPerPage(Number(raw));
 
     return {perPage, corrected: perPage !== Number(raw)};
+}
+
+/**
+ * Reads `give-search`: any text, with the ends trimmed and cut to `MAX_SEARCH_LENGTH`. An empty value
+ * is dropped.
+ */
+function readSearch(raw: string | null): {search?: string; corrected: boolean} {
+    if (raw === null) {
+        return {corrected: false};
+    }
+
+    const search = raw.trim().slice(0, MAX_SEARCH_LENGTH);
+
+    return {...(search !== '' && {search}), corrected: search === '' || search !== raw};
 }
 
 /**
@@ -352,7 +386,8 @@ function readFilters(
 /**
  * Reads the screen's view from the address. Every value is checked against what the screen offers;
  * invalid parts are dropped and the result is marked `corrected`. Parameters that are not this
- * screen's are never read. A bare `search` is never read but is listed in `legacyKeys` for removal.
+ * screen's are never read. A bare `search` is not read either, but it is listed in `legacyKeys` for
+ * removal.
  *
  * @since TBD
  */
@@ -362,6 +397,7 @@ export function parseViewQuery(params: URLSearchParams, context: ViewQueryContex
     const sort = readSort(params, context.sortableFields);
     const testMode = readTestMode(params.get(TEST_MODE), context);
     const filters = readFilters(params, context);
+    const search = readSearch(params.get(SEARCH));
     const hasBareSearch = params.has(BARE_SEARCH);
 
     return {
@@ -371,6 +407,7 @@ export function parseViewQuery(params: URLSearchParams, context: ViewQueryContex
             ...(sort.sort !== undefined && {sort: sort.sort}),
             filters: filters.filters,
             ...(testMode.testMode !== undefined && {testMode: testMode.testMode}),
+            ...(search.search !== undefined && {search: search.search}),
         },
         corrected:
             page.corrected ||
@@ -378,6 +415,7 @@ export function parseViewQuery(params: URLSearchParams, context: ViewQueryContex
             sort.corrected ||
             testMode.corrected ||
             filters.corrected ||
+            search.corrected ||
             hasBareSearch,
         legacyKeys: [...filters.legacyKeys, ...(hasBareSearch ? [BARE_SEARCH] : [])],
     };
@@ -394,6 +432,13 @@ function pairName(pair: string): string {
     } catch {
         return name;
     }
+}
+
+/**
+ * A parameter value for the address. A comma stays plain, because a filter list uses it as a separator.
+ */
+function encodeValue(value: string): string {
+    return encodeURIComponent(value).replace(/%2C/gi, ',');
 }
 
 /**
@@ -444,7 +489,7 @@ export function writeViewQuery(
         .filter((pair) => pair !== '' && !removed.includes(pairName(pair)));
     const entries = Object.entries(parameters);
     const build = () => {
-        const pairs = [...kept, ...entries.map(([key, value]) => `${key}=${value}`)];
+        const pairs = [...kept, ...entries.map(([key, value]) => `${key}=${encodeValue(value)}`)];
 
         return pairs.length > 0 ? `?${pairs.join('&')}` : '';
     };

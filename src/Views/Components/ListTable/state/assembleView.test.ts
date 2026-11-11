@@ -100,8 +100,8 @@ describe('assembleView', () => {
         expect(assembleView({defaults: testSite, query: {filters: []}}).filters).toEqual(testSite.filters);
     });
 
-    it('applies the tab search last', () => {
-        expect(assembleView({defaults, query: {filters: []}, search: 'smith'}).search).toBe('smith');
+    it('applies the URL search', () => {
+        expect(assembleView({defaults, query: {filters: [], search: 'smith'}}).search).toBe('smith');
     });
 
     it('does not change the defaults it was given', () => {

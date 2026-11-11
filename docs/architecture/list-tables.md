@@ -283,18 +283,18 @@ error notice).
 There is one DataViews view per page, owned by `useListTableView`. Nothing else holds a copy of the
 page, sort, filters or columns. Two things are derived from it:
 
-- **What is shown** (page, page size, sort, filters, test mode) is written to the address.
+- **What is shown** (page, page size, sort, search, filters, test mode) is written to the address.
 - **How it is shown** (visible columns and their order, density, page size) is stored per user.
 
 `assembleView` builds the view from, in order of precedence: the screen defaults
 (`resolveScreenDefaults`, from the server column schema plus the config's `hiddenFields`,
 `visibleFields`, `perPage` and `density`, default `balanced`), then the stored layout, then the
-address, then the tab's search. Page size is in both projections; the address wins. On back and
+address. Page size is in both projections; the address wins. On back and
 forward to an entry that names no page size, the page size of the user's layout is used (the layout
 hook exposes it as `layoutPerPage`).
 
 Every change records where it came from (`ViewChangeOrigin`): a `user` change adds a history entry
-only when the address query or the search changes, a `correction` (an invalid address, a page past
+only when the address query changes (the search is part of it), a `correction` (an invalid address, a page past
 the last one after records were removed) replaces it, `history` (back and forward) writes nothing, and
 `reset` behaves like a user change in the address. A layout-only change (columns, density) adds no
 entry, so Back does not undo it. Only a `user` change to the layout, or a reset, is stored.
@@ -304,7 +304,7 @@ entry, so Back does not undo it. Only a `user` change to the layout, or a reset,
 `viewQuery.ts` is the only code that knows the parameter names.
 
 - **Every written parameter has the `give-` prefix**, in kebab case: `give-paged`, `give-per-page`,
-  `give-orderby`, `give-order`, `give-test-mode`, and one per filter (`parameterName()`, for example
+  `give-orderby`, `give-order`, `give-test-mode`, `give-search`, and one per filter (`parameterName()`, for example
   `give-campaign-id` for `campaignId`). The WordPress admin uses the bare names (`page`, `paged`,
   `s`, `post_type`) itself, and the details pages that embed a list use `page`, `tab` and `id`.
 - **Only what differs from the defaults is written.** A view equal to the defaults leaves the
@@ -327,7 +327,7 @@ entry, so Back does not undo it. Only a `user` change to the layout, or a reset,
   own name for `select`, `campaignselect`, `formselect` and `hidden` filters (`?campaignId=4`). Those
   are read with the same rules when the `give-` form is missing (the prefixed one wins), and the
   address is then rewritten with `replaceState`, so no history entry is added. A bare `search` is
-  never read: it is only removed. A standalone page without a `screen` config reads the same
+  not read either: it is only removed. A standalone page without a `screen` config reads the same
   recognized filter parameters (bare and `give-` names) for its first view and first request, but
   never rewrites the address and ignores the page, sort and page size.
 - **Other parameters are kept as they are,** in their order. The writer replaces only the screen's
@@ -335,24 +335,22 @@ entry, so Back does not undo it. Only a `user` change to the layout, or a reset,
 - **Length limit.** The writer keeps the whole address under 2000 characters by dropping filter
   values from the end.
 
-### The search term stays in the tab
+### The search term is in the address
 
-The search can be a donor's name or email, so it never goes in the address, a bookmark, a shared
-link or the stored layout. It lives in the tab's history entry (`history.state.giveListTable`, keys
-belonging to others are kept), so reload, back and forward in that tab restore it and a new tab
-opens without it. A tab that the page opens itself (`window.open`, or a link without `noopener`)
-starts with a copy of this tab's `sessionStorage`, but the copy is only read on a reload or a
-back/forward load, not on a fresh visit, so a new tab does not use it.
+The search is written as `give-search`, the same way WordPress core writes `?s=` on its own list
+tables. It is the one value that is free text (see "Only ids and enumerated values" above for the
+others): it is trimmed, cut to `MAX_SEARCH_LENGTH` (100 characters) and percent-encoded when written,
+and read back as plain text, never as markup. An empty term is not written. It is never stored in the
+layout, and an embedded table (`contentMode`) never writes it.
 
-**WordPress clears `history.state` on every admin page load.** Core's admin canonical-URL script
-runs `history.replaceState(null, …)` after the page loads, so after a reload the entry's state is
-gone. `listTableHistory.ts` therefore also writes the term to `sessionStorage`, keyed by screen and
-address (`give-list-search:<screen>:<path and query>`), and reads that copy only when the entry has
-no state for the screen. `sessionStorage` belongs to the tab and dies with it, so the term still
-never outlives the tab. Blocked storage only loses the copy.
+**It is personal data in the address.** The term can be a donor's name or email, so it shows in the
+browser history, in server logs and in a copied link. Core does the same for `?s=`, and WordPress
+sends `Referrer-Policy: strict-origin-when-cross-origin`, so the term does not leave the site in a
+referrer. Someone who opens a copied link needs the same capability as the person who made it.
 
 A search-only change within 1.5 seconds of the previous one replaces the history entry instead of
-adding one (`SEARCH_COLLAPSE_MS`), so one typed term is one entry.
+adding one (`SEARCH_COLLAPSE_MS`), so one typed term is one entry. A new term goes back to page one in
+the same entry. Back and forward read the term from the address like any other parameter.
 
 ### The stored layout
 
