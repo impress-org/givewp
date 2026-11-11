@@ -133,6 +133,26 @@
     .dataviews-view-table tr td:last-child {
         padding-inline-end: var(--givewp-spacing-4);
     }
+
+    // Remove the total count rules below with `ListTableFooter` when the `@wordpress/dataviews` pin moves to
+    // 12.0.1 or later; see the note on `ListTableFooter`.
+    // Which rows are on the page, out of all the rows that match. It looks like the stock count and sits
+    // where the stock count sits: right after the selection checkbox, with the pagination on the right.
+    // The footer puts a gap between its children; the negative margin takes it back, so the count
+    // starts where the stock one does.
+    &__total {
+        margin-inline: calc(-1 * var(--givewp-spacing-2)) auto;
+    }
+
+    // The stock footer counts only the rows on the page ("30 Items"), which reads as the total. It is
+    // hidden until rows are selected, when it counts the selection ("2 Items selected").
+    &:not(&--has-selection) .dataviews-bulk-actions-footer__container .dataviews-bulk-actions-footer__item-count {
+        display: none;
+    }
+
+    &:not(&--has-selection) .dataviews-bulk-actions-footer__container {
+        margin-right: 0;
+    }
 }
 
 // Row checkboxes are always visible, as in the DataViews that WordPress 7.x ships. The pinned
@@ -178,4 +198,9 @@
             padding-inline: 0;
         }
     }
+}
+
+.givewp-list-table .dataviews-view-table,
+.givewp-list-table .dataviews-view-table tr.is-selected {
+    color: var(--givewp-grey-600);
 }
