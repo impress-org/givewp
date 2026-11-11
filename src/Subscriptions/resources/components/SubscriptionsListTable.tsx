@@ -7,6 +7,7 @@ import {subscriptionsRowActions} from './SubscriptionsRowActions';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
 import filterByOptions from '../constants/filterByOptions';
+import listTableScreen from './listTableScreen';
 
 declare global {
     interface Window {
@@ -27,7 +28,7 @@ declare global {
 
 const API = new ListTableApi(window.GiveSubscriptions);
 
-const filters: Array<FilterConfig> = [
+export const filters: Array<FilterConfig> = [
     {
         name: 'campaignId',
         type: 'campaignselect',
@@ -92,7 +93,7 @@ const statsConfig: Record<string, StatConfig> = {
 };
 
 /**
- * @since TBD Pass the actions as data.
+ * @since TBD Pass the actions as data and the screen config.
  */
 export default function SubscriptionsListTable() {
     return (
@@ -106,6 +107,7 @@ export default function SubscriptionsListTable() {
             filterSettings={filters}
             paymentMode={!!window.GiveSubscriptions.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
+            screen={listTableScreen}
         >
             <SwitchToLegacyViewButton api={API} />
         </ListTablePage>

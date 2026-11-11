@@ -1,0 +1,180 @@
+import {useEffect, useLayoutEffect, useRef} from 'react';
+import {assembleView} from '../state/assembleView';
+import {onPopState, pushEntry, readQuery, replaceEntry} from '../state/listTableHistory';
+import {parseViewQuery, serializeViewQuery, viewQueryKeys} from '../state/viewQuery';
+import type {
+    ListTableScreen,
+    ListTableScreenKey,
+    ListTableView,
+    ParseResult,
+    ScreenDefaults,
+    ViewQueryContext,
+} from '../state/types';
+import type {ViewChangeOrigin} from './useListTableView';
+
+/**
+ * The view parts a standalone screen reads on load: the parsed address.
+ *
+ * @since TBD
+ */
+export type UrlState = ParseResult;
+
+/**
+ * The key of a screen that keeps its view in the URL: a screen with a config that is not embedded
+ * (`contentMode`). Embedded tables never read or write the address.
+ */
+function urlScreenKey(screen: ListTableScreen | undefined, contentMode: boolean): ListTableScreenKey | undefined {
+    return contentMode ? undefined : screen?.key;
+}
+
+/**
+ * What a standalone table without a screen config reads on load: only the filters named in the address
+ * (links such as `?donor=ID` that were built before the view moved into the URL). It never writes the
+ * address, and ignores the page, sort and page size.
+ */
+function readLegacyUrlState(context: ViewQueryContext): UrlState {
+    const {query} = parseViewQuery(readQuery(), context);
+
+    return {query: {filters: query.filters}, corrected: false, legacyKeys: []};
+}
+
+/**
+ * What a table reads from the address once, before the first render, so the first list request
+ * already carries it: a screen that keeps its view in the URL reads the address, a
+ * standalone table without a screen config reads only the legacy filters, and an embedded table reads
+ * nothing.
+ *
+ * @since TBD
+ */
+export function readInitialUrlState(
+    screen: ListTableScreen | undefined,
+    contentMode: boolean,
+    context: ViewQueryContext
+): UrlState | undefined {
+    const screenKey = urlScreenKey(screen, contentMode);
+
+    if (screenKey) {
+        return parseViewQuery(readQuery(), context);
+    }
+
+    // No key and not embedded means a standalone table without a screen config.
+    return contentMode ? undefined : readLegacyUrlState(context);
+}
+
+/**
+ * @since TBD
+ */
+export type ListTableUrlStateOptions = {
+    screen?: ListTableScreen;
+    /** Embedded tables never touch the address. */
+    contentMode: boolean;
+    context: ViewQueryContext;
+    defaults: ScreenDefaults;
+    /** What `readInitialUrlState` read on load. */
+    initial?: UrlState;
+    /** The page size of the user's layout, used on back and forward when the entry names none. */
+    layoutPerPage: number;
+    view: ListTableView;
+    origin: ViewChangeOrigin;
+    replaceView: (view: ListTableView, origin: 'history') => void;
+};
+
+const sameParameters = (a: Record<string, string>, b: Record<string, string>) =>
+    JSON.stringify(a) === JSON.stringify(b);
+
+/**
+ * Keeps a standalone screen's view in the address (`give-` parameters, the search term too). A user
+ * change adds an entry, a correction replaces it, and back or forward re-assembles the view with the
+ * current columns and density and writes nothing.
+ *
+ * @since TBD
+ */
+export default function useListTableUrlState({
+    screen,
+    contentMode,
+    context,
+    defaults,
+    initial,
+    layoutPerPage,
+    view,
+    origin,
+    replaceView,
+}: ListTableUrlStateOptions) {
+    const previousView = useRef(view);
+    const currentView = useRef(view);
+    const currentLayoutPerPage = useRef(layoutPerPage);
+
+    // Synced after each commit, as the layout hook does, so the popstate listener never reads the view of
+    // an abandoned render.
+    useLayoutEffect(() => {
+        currentView.current = view;
+        currentLayoutPerPage.current = layoutPerPage;
+    });
+
+    const screenKey = urlScreenKey(screen, contentMode);
+    const owned = viewQueryKeys(context);
+
+    // On load: write the view into this entry (a corrected address, legacy names, the canonical form).
+    useEffect(() => {
+        if (!screenKey) {
+            return;
+        }
+
+        const parameters = serializeViewQuery(view, context);
+        const options = {owned, legacyKeys: initial?.legacyKeys ?? []};
+
+        replaceEntry(parameters, options);
+    }, []);
+
+    useEffect(() => {
+        const previous = previousView.current;
+        previousView.current = view;
+
+        if (!screenKey || previous === view || origin === 'history' || origin === 'load') {
+            return;
+        }
+
+        const parameters = serializeViewQuery(view, context);
+
+        if (origin === 'correction') {
+            replaceEntry(parameters, {owned});
+            return;
+        }
+
+        const previousParameters = serializeViewQuery(previous, context);
+
+        if (sameParameters(previousParameters, parameters)) {
+            return;
+        }
+
+        // Only the search differs when the previous view, given the new search, writes the same address.
+        const searchOnly = sameParameters(serializeViewQuery({...previous, search: view.search}, context), parameters);
+
+        pushEntry(parameters, {owned}, {searchOnly});
+    }, [view]);
+
+    useEffect(() => {
+        if (!screenKey) {
+            return undefined;
+        }
+
+        return onPopState(() => {
+            const {fields, layout} = currentView.current;
+            const {query} = parseViewQuery(readQuery(), context);
+
+            replaceView(
+                assembleView({
+                    defaults,
+                    // Columns, density and the layout's page size stay as they are; the address may name another size.
+                    layout: {
+                        fields: fields ?? defaults.fields,
+                        density: layout?.density ?? defaults.density,
+                        perPage: currentLayoutPerPage.current,
+                    },
+                    query,
+                }),
+                'history'
+            );
+        });
+    }, [screenKey]);
+}

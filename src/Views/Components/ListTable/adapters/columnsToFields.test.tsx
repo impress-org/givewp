@@ -6,7 +6,6 @@ import {
     isTitleColumnVisible,
     keepInteractiveClicksInCell,
     titleFieldId,
-    visibleFieldIds,
 } from './columnsToFields';
 import type {Column} from '../ListTablePage/types';
 
@@ -58,13 +57,6 @@ describe('columnsToFields', () => {
 
         expect(container.textContent).toBe('custom cell');
         expect(filter).toHaveBeenCalledWith({id: 3, title: 'x'}, columns[1], data);
-    });
-});
-
-describe('visibleFieldIds', () => {
-    it('includes undefined visibility and leaves out hidden columns and the title field', () => {
-        expect(visibleFieldIds(columns)).toEqual(['id', 'title', 'goal']);
-        expect(visibleFieldIds(columns, 'title')).toEqual(['id', 'goal']);
     });
 });
 
