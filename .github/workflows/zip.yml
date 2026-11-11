@@ -215,3 +215,29 @@ jobs:
                     name: ${{ steps.name.outputs.zip-name }}
                     path: artifact
                     retention-days: 30
+
+            # What this run produced, on its page: the artifact when it built, or the bucket link when a QA
+            # build found the zip there and built nothing, so the page is never empty. The link is the
+            # one the bot posts in Slack.
+            -   name: Summarize the zip
+                if: ${{ !cancelled() && (steps.zip.outcome == 'success' || steps.s3_zip_exists.outcome == 'success') }}
+                env:
+                    ZIP: ${{ steps.name.outputs.zip-name }}.zip
+                    BUILT: ${{ steps.zip.outcome == 'success' }}
+                    IN_BUCKET: ${{ steps.s3_zip_exists.outcome == 'success' || (steps.zip.outcome == 'success' && env.S3_CONFIGURED == 'true') }}
+                run: |
+                    {
+                        if [ "$BUILT" = "true" ]; then
+                            echo "## Built \`$ZIP\`"
+                            echo
+                            echo "Attached to this run as an artifact: the plugin zip, with its folder at the root."
+                        else
+                            echo "## \`$ZIP\` was already in the bucket"
+                            echo
+                            echo "Built by an earlier run of this commit, so this run built and attached nothing."
+                        fi
+                        if [ "$IN_BUCKET" = "true" ]; then
+                            echo
+                            echo "Download from the bucket: https://evnt.is/test.zip?file=$ZIP"
+                        fi
+                    } >> "$GITHUB_STEP_SUMMARY"
