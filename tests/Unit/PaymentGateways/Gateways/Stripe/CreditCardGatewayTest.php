@@ -31,6 +31,9 @@ class CreditCardGatewayTest extends \Give\Tests\TestCase
      */
     public function tearDown(): void
     {
+        $container = give()->getContainer();
+        unset($container[RecordMicrodepositVerification::class]);
+
         parent::tearDown();
         $donationsTable = DB::prefix('posts');
         $donationMetaTable = DB::prefix('give_donationmeta');

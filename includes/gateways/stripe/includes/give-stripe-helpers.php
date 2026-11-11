@@ -477,7 +477,6 @@ function give_stripe_get_sequential_id( $donation_or_post_id, $check_enabled = t
  * @param int $form_id     Donation Form ID.
  * @param int $donation_id Donation ID.
  *
- * @since TBD Unslash submitted FFM field values before sanitizing them.
  * @since 2.5.0
  *
  * @return array

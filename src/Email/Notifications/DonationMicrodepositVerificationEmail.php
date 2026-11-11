@@ -3,6 +3,7 @@
 namespace Give\Email\Notifications;
 
 use Give\Donations\Models\Donation;
+use Give\PaymentGateways\Gateways\Stripe\Actions\RecordMicrodepositVerification;
 use Give_Email_Notification;
 
 /**
@@ -26,7 +27,7 @@ class DonationMicrodepositVerificationEmail extends Give_Email_Notification
                 'id' => 'donation-microdeposit-verification',
                 'label' => __('ACH Microdeposit Verification', 'give'),
                 'description' => __(
-                    'Sent to the donor when Stripe requires ACH bank account microdeposit verification.',
+                    'Sent to the donor when Stripe requires ACH bank account microdeposit verification. For the Stripe Payment Element, the Stripe webhook endpoint must be subscribed to the `payment_intent.requires_action` event.',
                     'give'
                 ),
                 'notification_status' => 'enabled',
@@ -98,7 +99,7 @@ class DonationMicrodepositVerificationEmail extends Give_Email_Notification
                         return '';
                     }
 
-                    $url = give_get_meta(absint($args['payment_id']), '_give_stripe_microdeposit_verification_url', true);
+                    $url = give_get_meta(absint($args['payment_id']), RecordMicrodepositVerification::META_KEY, true);
 
                     return $url ? esc_url($url) : '';
                 },
