@@ -17,3 +17,8 @@
 .givewp-list-table .dataviews-view-table tbody .components-checkbox-control__input.components-checkbox-control__input {
     opacity: 1;
 }
+
+.givewp-list-table .dataviews-view-table,
+.givewp-list-table .dataviews-view-table tr.is-selected {
+    color: var(--givewp-grey-600);
+}
