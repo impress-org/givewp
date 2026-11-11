@@ -14,6 +14,8 @@ type PropTypes = {
         gateways: Gateway[];
         defaultValues: object;
         validationSchema: ObjectSchema;
+        isDonorAuthenticated?: boolean;
+        donorEmail?: string;
     };
     children: ReactNode;
 };
