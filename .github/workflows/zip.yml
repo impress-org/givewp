@@ -231,13 +231,13 @@ jobs:
                             echo "## Built \`$ZIP\`"
                             echo
                             echo "Attached to this run as an artifact: the plugin zip, with its folder at the root."
+                            if [ "$IN_BUCKET" = "true" ]; then
+                                echo
+                                echo "Also in the bucket: https://evnt.is/test.zip?file=$ZIP"
+                            fi
                         else
                             echo "## \`$ZIP\` was already in the bucket"
                             echo
-                            echo "Built by an earlier run of this commit, so this run built and attached nothing."
-                        fi
-                        if [ "$IN_BUCKET" = "true" ]; then
-                            echo
-                            echo "Download from the bucket: https://evnt.is/test.zip?file=$ZIP"
+                            echo "An earlier run of this commit built it, so there was nothing to build again and this run has no artifact. Download it here: https://evnt.is/test.zip?file=$ZIP"
                         fi
                     } >> "$GITHUB_STEP_SUMMARY"
