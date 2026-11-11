@@ -686,6 +686,19 @@ describe('declared filters in the URL', () => {
         expect(new Set(keys).size).toBe(keys.length);
     });
 
+    it('writes only the values the reader would accept', () => {
+        const [campaign] = declarations.filter(
+            (declaration): declaration is BarFilterDeclaration => declaration.kind !== 'search'
+        );
+        const status = declarations.find((declaration) => declaration.id === 'status') as BarFilterDeclaration;
+
+        // An entity filter takes ids, and "none" where it allows it. A status filter takes what it offers.
+        expect(declarationUrlParameter(campaign, statuses).write('abc')).toBeUndefined();
+        expect(declarationUrlParameter(campaign, statuses).write(['12', 'abc', '14'])).toBe('12,14');
+        expect(declarationUrlParameter(status, statuses).write(['publish', 'processing'])).toBe('publish');
+        expect(declarationUrlParameter(status, statuses).write(['processing'])).toBeUndefined();
+    });
+
     it('gives a declaration the operator of its kind', () => {
         const [campaign, , , donor] = declarations.filter(
             (declaration): declaration is BarFilterDeclaration => declaration.kind !== 'search'

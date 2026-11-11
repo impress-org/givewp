@@ -93,15 +93,26 @@ export function declarationUrlParameter(
 
             return value === undefined ? {corrected: true} : {filter: {field, operator, value}, corrected};
         },
-        // Only ids and enumerated values reach the address; anything else is left out.
+        // Only ids and enumerated values reach the address; anything else is left out. The reader's own
+        // rules decide what is valid, so a written link always keeps its filter when it is opened again.
         write: (value) => {
-            if (typeof value === 'string') {
-                return isToken(value) ? serializeFilterValue(declaration, value) : undefined;
+            const text =
+                typeof value === 'string'
+                    ? isToken(value)
+                        ? serializeFilterValue(declaration, value)
+                        : undefined
+                    : serializeFilterValue(
+                          declaration,
+                          Array.isArray(value) ? value.map(String).filter(isToken) : []
+                      );
+
+            if (text === undefined) {
+                return undefined;
             }
 
-            const values = Array.isArray(value) ? value.map(String).filter(isToken) : [];
+            const {value: valid} = parseFilterValue(declaration, text, {statuses});
 
-            return values.length > 0 ? serializeFilterValue(declaration, values) : undefined;
+            return valid === undefined ? undefined : serializeFilterValue(declaration, valid);
         },
     };
 }
