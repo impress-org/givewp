@@ -27,7 +27,7 @@ class DonationMicrodepositVerificationEmail extends Give_Email_Notification
                 'id' => 'donation-microdeposit-verification',
                 'label' => __('ACH Microdeposit Verification', 'give'),
                 'description' => __(
-                    'Sent to the donor when Stripe requires ACH bank account microdeposit verification. For the Stripe Payment Element, the Stripe webhook endpoint must be subscribed to the `payment_intent.requires_action` event.',
+                    'Sent to the donor when Stripe requires ACH bank account microdeposit verification. For the Stripe Payment Element, the Stripe webhook endpoint must be subscribed to the "payment_intent.requires_action" event.',
                     'give'
                 ),
                 'notification_status' => 'enabled',
