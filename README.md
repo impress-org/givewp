@@ -91,11 +91,11 @@ The job fails when a rule has more errors than the committed baseline,
 [`.plugin-check-baseline.json`](.plugin-check-baseline.json), allows. Warnings are counted too, but
 never fail it. See [docs/testing.md](docs/testing.md#plugin-check) for how it works.
 
-To run the same check on your local site:
+To run the same check on your local site, from the plugin folder (it reads `.plugin-check.json` there):
 
 ```bash
 wp plugin install plugin-check --activate
-wp plugin check give --require=wp-content/plugins/plugin-check/cli.php \
+wp plugin check give --require="$(wp plugin path plugin-check)/cli.php" \
     --format=json \
     $(node /path/to/plugin-toolbox/.github/actions/plugin-check-report/plugin-check-report.js exclude-checks) \
     > plugin-check-results.txt
