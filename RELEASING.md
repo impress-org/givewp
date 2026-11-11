@@ -35,7 +35,7 @@ Normal releases follow a [gitflow](https://nvie.com/posts/a-successful-git-branc
 5. Review the diff carefully — version strings, replaced TBD tags, and the new changelog entry.
 6. Validate `readme.txt` with the [WordPress readme validator](https://wordpress.org/plugins/developers/readme-validator/) and preview it on [WPReadme.com](https://wpreadme.com/).
 7. Run the test suite (`composer test`) and let CI pass on the release branch.
-8. Build a release candidate ZIP for QA by running the [Generate Plugin Zip](.github/workflows/generate-zip.yml) GitHub Action against the release branch. Attach the ZIP to the release ticket and wait for QA approval.
+8. Build a release candidate ZIP for QA by running the [Generate Zip](.github/workflows/zip.yml) GitHub Action against the release branch, with `prerelease` set to `rc` (see [Building a zip with the Generate Zip workflow](#building-a-zip-with-the-generate-zip-workflow)). Attach the ZIP to the release ticket and wait for QA approval.
 9. Open a PR for the release branch against `master` and get it reviewed.
 
 ## Preparing a release with the Release Prep workflow
@@ -55,6 +55,27 @@ gh workflow run release-prep.yml -f branch=release/M26.jigglypuff -f version=4.1
 * `branch` is the release branch to prepare, `release/*` or `hotfix/*`. It has to exist already (step 2 above). Its version has to be lower than or equal to the one you pass: preparing `4.16.0` on a branch already at `4.17.0` is refused.
 
 After it runs, continue from step 4 above. It works the same for a `hotfix/x.y.z` branch.
+
+## Building a zip with the Generate Zip workflow
+
+Step 8 above runs through the [Generate Zip](.github/workflows/zip.yml) GitHub Action, which builds the plugin with pup and names the zip after the version the checkout holds, through the shared [zip-name](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/zip-name) and [release-zip](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/release-zip) actions in stellarwp/plugin-toolbox. The build steps are the ones `.puprc` lists under `build`, the same ones `release.yml` runs, and the POT file is generated after the build, so `languages/give.pot` ends up in the zip. The zip is uploaded to the S3 bucket, announced on Slack when the packaging bot asked for it, and attached to the run as an artifact.
+
+The packaging bot (`bot package <branch> for givewp`) and the NX1 release dashboard dispatch this workflow with `ref` and `production`. To run it by hand:
+
+```bash
+gh workflow run zip.yml -f ref=release/4.16.0 -f prerelease=rc
+```
+
+| `production` | `prerelease` | `sequence` | Zip |
+|---|---|---|---|
+| `no` | `dev` (the default) | | `give.4.16.0-dev-<timestamp>-<hash>.zip`, the name a dev build had before, skipped when the bucket already has it |
+| `no` | `rc` (or `alpha`, `beta`) | | `give.4.16.0-rc-<timestamp>-<hash>.zip`, always built |
+| `no` | `rc` | `2` | `give.4.16.0-rc-2.zip` |
+| `yes` | ignored | ignored | `give.4.16.0.zip`, the version files untouched |
+
+* The version inside the zipped files is the same string as the zip name; the branch keeps the clean version.
+* `-f expected_version=4.16.0` refuses a build whose files hold another version, before anything is built.
+* A production build runs `pup check` strict, so a `TBD` left behind fails it; a QA build only warns.
 
 ## Publishing
 
@@ -97,8 +118,10 @@ this repository, because the conversion command is in this repository. impress-o
 is an example to follow.
 
 1. A `.puprc` with `paths.versions` (plugin header, version constant, `Stable tag` in
-   `readme.txt`) and `checks.tbd.dirs`. The shape is in the
-   [release-prep action's README](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/release-prep#what-the-repository-needs).
+   `readme.txt`), `checks.tbd.dirs`, the `build` commands and a `zip_name` (the slug the zip is
+   named after, `give-recurring` for Recurring). The shape is in the
+   [release-prep action's README](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/release-prep#what-the-repository-needs)
+   and the [zip-name action's README](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/zip-name#what-the-repository-needs).
 2. A `changelogger` section in `package.json`: copy core's, with `files` pointing at the
    add-on's `readme.txt` and `"strategy": "stellarwp-readme"`, and a `changelog/` directory
    with a `.gitkeep`. If `readme.txt` already lists the changes of an unreleased version under
@@ -106,7 +129,12 @@ is an example to follow.
    (`npx @stellarwp/changelogger add`) and delete the block: the workflow writes those entries
    at release time.
 3. `.github/workflows/release-prep.yml`, copied from core as it is.
-4. The changelog history converted. The changelogger writes entries as
+4. `.github/workflows/zip.yml`, copied from core with the POT path changed to the add-on's
+   (`languages/give-recurring.pot`). Keep the file name: the packaging bot looks for `zip.yml`
+   first and only falls back to `generate-zip.yml` when there is none, so adding the file switches
+   the bot over and deleting it switches it back; `generate-zip.yml` can stay during the
+   transition.
+5. The changelog history converted. The changelogger writes entries as
    `= [2.20.3] 2026-10-14 =` and `* Fix - …`; an add-on's history is in Give's earlier form,
    `= 2.20.3: October 14th, 2026 =` and `* Fix: …`, so convert it once, or the file carries both
    formats from the next release on. From the add-on's root:
@@ -120,17 +148,18 @@ is an example to follow.
    `116 header(s) and 369 bullet(s) converted; verified against the original: 126 version(s) and 372 entries match`.
    When something does not verify, nothing is written and the problems are listed. Commit the
    conversion on its own, so the reviewer can skim it.
-5. The same check, with the original taken from git, to quote in the pull request:
+6. The same check, with the original taken from git, to quote in the pull request:
 
    ```bash
    git show HEAD~1:readme.txt > /tmp/readme-before.txt
    node ../give/bin/convert-changelog-format.js --verify /tmp/readme-before.txt readme.txt
    ```
 
-6. The workflow can only be dispatched once it is on the add-on's default branch. After the
-   merge, run it once on a throwaway branch
-   (`gh workflow run release-prep.yml -f branch=<branch> -f version=<next>`) and check the
-   `Prepare <branch> (<version>)` commit.
+7. The workflows can only be dispatched once they are on the add-on's default branch. After
+   the merge, run each once on a throwaway branch
+   (`gh workflow run release-prep.yml -f branch=<branch> -f version=<next>`, then
+   `gh workflow run zip.yml -f ref=<branch> -f prerelease=rc`) and check the
+   `Prepare <branch> (<version>)` commit and the `-rc-` zip on the run.
 
 For the deploy step, an add-on does not copy core's `release-dashboard-deploy.yml`: its deploy
 goes to GiveWP.com through the shared `givewp-release.yml` in impress-org/givewp-github-actions,
