@@ -58,7 +58,7 @@ class PaymentIntent
      * determines how the donor completes the payment (for example `redirect_to_url` for 3D Secure or
      * `verify_with_microdeposits` for ACH bank account verification).
      *
-     * @since TBD
+     * @since 4.19.2
      *
      * @return string|null
      */
@@ -72,7 +72,7 @@ class PaymentIntent
      *
      * @see https://stripe.com/docs/payments/ach-direct-debit/accept-a-payment#bank-verification
      *
-     * @since TBD
+     * @since 4.19.2
      *
      * @return string|null
      */
@@ -82,7 +82,7 @@ class PaymentIntent
     }
 
     /**
-     * @since TBD Return null when Stripe is not redirecting (for example ACH microdeposit verification).
+     * @since 4.19.2 Return null when Stripe is not redirecting (for example ACH microdeposit verification).
      * @since 2.19.0
      *
      * @return string|null

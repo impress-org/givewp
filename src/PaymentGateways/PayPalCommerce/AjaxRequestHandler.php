@@ -276,7 +276,7 @@ class AjaxRequestHandler
     }
 
     /**
-     * @since TBD Stop holding the v2 post-filter amount to the form's maximum, so fee recovery totals reach PayPal.
+     * @since 4.19.2 Stop holding the v2 post-filter amount to the form's maximum, so fee recovery totals reach PayPal.
      * @since 4.19.0 Describe v3 orders with the form title and the donor's selected level.
      * @since 4.16.7.1 Validate the request through the form layer before building order data. v3 forms must
      *            also send a total at least as large as the amount the form validated; v2 forms are
@@ -501,7 +501,7 @@ class AjaxRequestHandler
      * adds its fee in that filter, and the donate route accepts a total above the maximum as well.
      * v3 amounts are validated by the form layer.
      *
-     * @since TBD No longer holds the filtered total to the form's maximum.
+     * @since 4.19.2 No longer holds the filtered total to the form's maximum.
      * @since 4.16.7.1 Applies to v2 forms only.
      * @since 4.14.4
      *

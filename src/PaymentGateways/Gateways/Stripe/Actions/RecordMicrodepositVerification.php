@@ -15,7 +15,7 @@ use Give\Email\Notifications\DonationMicrodepositVerificationEmail;
  * can deliver the same state more than once, and each caller can reach it independently. The emailed
  * URL is tracked apart from the recorded URL so a failed send is retried on the next call.
  *
- * @since TBD
+ * @since 4.19.2
  */
 class RecordMicrodepositVerification
 {
@@ -30,7 +30,7 @@ class RecordMicrodepositVerification
     const EMAILED_META_KEY = '_give_stripe_microdeposit_verification_emailed_url';
 
     /**
-     * @since TBD
+     * @since 4.19.2
      *
      * @return bool Whether the donor was emailed the verification link during this call.
      */

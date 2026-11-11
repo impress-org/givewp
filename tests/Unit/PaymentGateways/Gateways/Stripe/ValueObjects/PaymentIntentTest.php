@@ -6,12 +6,12 @@ use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.19.2
  */
 class PaymentIntentTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.19.2
      *
      * @test
      */
@@ -28,7 +28,7 @@ class PaymentIntentTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      *
      * @test
      */
@@ -47,7 +47,7 @@ class PaymentIntentTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      *
      * @test
      */
@@ -61,7 +61,7 @@ class PaymentIntentTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      *
      * @test
      */
@@ -71,7 +71,7 @@ class PaymentIntentTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      *
      * @test
      */
@@ -93,7 +93,7 @@ class PaymentIntentTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      *
      * @test
      */
@@ -112,7 +112,7 @@ class PaymentIntentTest extends TestCase
     /**
      * Builds a PaymentIntent value object around the given Stripe intent properties.
      *
-     * @since TBD
+     * @since 4.19.2
      */
     private function makePaymentIntent(array $properties): PaymentIntent
     {

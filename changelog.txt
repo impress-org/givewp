@@ -1,5 +1,10 @@
 == Changelog ==
 
+= [4.19.2] 2026-11-11 =
+
+* Fix - Allowed PayPal Donations on v2 forms to accept a donation at the form's maximum amount when Fee Recovery adds its fee.
+* Fix - Resolved an issue where Stripe ACH donations that require microdeposit verification stayed in a Processing state with no donor instructions. Donors were emailed a hosted verification link and the verification was recorded on the donation.
+
 = [4.19.1.1] 2026-11-03 =
 
 * Feature - Added support for Nexcess Plugin Stack licenses

@@ -13,12 +13,12 @@ use Give_Email_Notification;
  * cannot finish verification immediately. The hosted Stripe verification URL is emailed instead of
  * redirecting the donor to it.
  *
- * @since TBD
+ * @since 4.19.2
  */
 class DonationMicrodepositVerificationEmail extends Give_Email_Notification
 {
     /**
-     * @since TBD
+     * @since 4.19.2
      */
     public function init()
     {
@@ -41,7 +41,7 @@ class DonationMicrodepositVerificationEmail extends Give_Email_Notification
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      */
     public function getDefaultEmailMessage(): string
     {
@@ -74,7 +74,7 @@ class DonationMicrodepositVerificationEmail extends Give_Email_Notification
         );
 
         /**
-         * @since TBD
+         * @since 4.19.2
          */
         return apply_filters("give_{$this->config['id']}_get_default_email_message", $defaultEmailMessage);
     }
@@ -82,7 +82,7 @@ class DonationMicrodepositVerificationEmail extends Give_Email_Notification
     /**
      * Registers the hosted verification URL email tag used in the default message.
      *
-     * @since TBD
+     * @since 4.19.2
      */
     public function registerEmailTag()
     {
@@ -110,7 +110,7 @@ class DonationMicrodepositVerificationEmail extends Give_Email_Notification
     /**
      * Sends the verification email to the donor.
      *
-     * @since TBD
+     * @since 4.19.2
      */
     public function sendEmailNotificationToDonor(Donation $donation): bool
     {
