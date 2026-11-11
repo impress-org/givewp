@@ -35,13 +35,13 @@ const COMMON_KEYS = [PAGE, PER_PAGE, ORDER_BY, ORDER, TEST_MODE, SEARCH];
 export const MAX_SEARCH_LENGTH = 100;
 
 /**
- * The search term as the URL carries it: ends trimmed, cut to `MAX_SEARCH_LENGTH` characters. The cut
+ * The search term as the URL carries it: ends trimmed, cut to `MAX_SEARCH_LENGTH` characters, and trimmed again, since the cut can end on a space. The cut
  * counts whole characters, so an emoji (two UTF-16 units) is never split into a broken half.
  *
  * @since TBD
  */
 export function urlSearchTerm(term: string): string {
-    return Array.from(term.trim()).slice(0, MAX_SEARCH_LENGTH).join('');
+    return Array.from(term.trim()).slice(0, MAX_SEARCH_LENGTH).join('').trim();
 }
 const TOGGLE_ON = '1';
 const TOGGLE_OFF = '0';

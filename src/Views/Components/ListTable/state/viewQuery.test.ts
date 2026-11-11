@@ -269,6 +269,15 @@ describe('serializeViewQuery', () => {
         expect(urlSearchTerm(term)).toBe(written);
     });
 
+    it('gives the same term after a round trip when the cut ends on a space', () => {
+        const term = 'a'.repeat(MAX_SEARCH_LENGTH - 1) + ' b';
+        const written = serializeViewQuery(view({search: term}), donations)['give-search'];
+
+        expect(written).toBe('a'.repeat(MAX_SEARCH_LENGTH - 1));
+        expect(urlSearchTerm(term)).toBe(written);
+        expect(parse(`give-search=${encodeURIComponent(written)}`).query.search).toBe(written);
+    });
+
     it('cuts a long search term to the limit', () => {
         expect(serializeViewQuery(view({search: 'a'.repeat(MAX_SEARCH_LENGTH + 20)}), donations)).toEqual({
             'give-search': 'a'.repeat(MAX_SEARCH_LENGTH),
