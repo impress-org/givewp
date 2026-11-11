@@ -182,10 +182,10 @@ function ListTableFooter({
 }
 
 /**
- * The stock DataViews layout, with three changes: the footer shows the total row count; while rows are selected, the bulk actions also take
- * the place of the search row above the table, so they show where the selection starts (the stock
- * footer keeps its own copy next to the pagination); and a "Reset view" button sits after the view
- * options, which this DataViews version does not offer. Give's search box and filter bar always take
+ * The stock DataViews layout, with these changes: the footer shows the total row count; while rows are
+ * selected, the bulk actions also take the place of the search row above the table, so they show where
+ * the selection starts (the stock footer keeps its own copy next to the pagination); and a "Reset view"
+ * button sits after the view options, which this DataViews version does not offer. Give's search box and filter bar always take
  * the place of the stock search and filter row.
  *
  * @since TBD Render the `viewMenu` slot after "Reset view", in both layouts.
