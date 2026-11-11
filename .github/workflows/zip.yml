@@ -115,7 +115,7 @@ jobs:
             # The name before the build, so the bucket can be asked for it. Pinned to the plugin-toolbox
             # main commit after its PR #20, which adds the two actions. Switch to @v1 once plugin-toolbox publishes
             # a release.
-            -   uses: stellarwp/plugin-toolbox/.github/actions/zip-name@7b2ac9320f7b4e8d655c256aabfb39c457ec73ed
+            -   uses: stellarwp/plugin-toolbox/.github/actions/zip-name@c71c3832596c732ef5021c0183b1d65139aacb29
                 id: name
                 with:
                     production: ${{ inputs.production }}
@@ -141,7 +141,7 @@ jobs:
                     COMMAND: exists
                     FILE: ${{ steps.name.outputs.zip-name }}.zip
 
-            -   uses: stellarwp/plugin-toolbox/.github/actions/release-zip@7b2ac9320f7b4e8d655c256aabfb39c457ec73ed
+            -   uses: stellarwp/plugin-toolbox/.github/actions/release-zip@c71c3832596c732ef5021c0183b1d65139aacb29
                 id: zip
                 if: steps.s3_zip_exists.outcome != 'success'
                 with:
