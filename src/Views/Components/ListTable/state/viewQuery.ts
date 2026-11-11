@@ -33,6 +33,16 @@ const COMMON_KEYS = [PAGE, PER_PAGE, ORDER_BY, ORDER, TEST_MODE, SEARCH];
  * @since TBD
  */
 export const MAX_SEARCH_LENGTH = 100;
+
+/**
+ * The search term as the URL carries it: ends trimmed, cut to `MAX_SEARCH_LENGTH` characters. The cut
+ * counts whole characters, so an emoji (two UTF-16 units) is never split into a broken half.
+ *
+ * @since TBD
+ */
+export function urlSearchTerm(term: string): string {
+    return Array.from(term.trim()).slice(0, MAX_SEARCH_LENGTH).join('');
+}
 const TOGGLE_ON = '1';
 const TOGGLE_OFF = '0';
 
@@ -253,7 +263,7 @@ function writePaging(view: ListTableView, context: ViewQueryContext): Array<[str
  * term is cut to `MAX_SEARCH_LENGTH`.
  */
 function writeSearch(view: ListTableView): Array<[string, string]> {
-    const term = (view.search ?? '').trim().slice(0, MAX_SEARCH_LENGTH);
+    const term = urlSearchTerm(view.search ?? '');
 
     return term === '' ? [] : [[SEARCH, term]];
 }
@@ -311,7 +321,7 @@ function readSearch(raw: string | null): {search?: string; corrected: boolean} {
         return {corrected: false};
     }
 
-    const search = raw.trim().slice(0, MAX_SEARCH_LENGTH);
+    const search = urlSearchTerm(raw);
 
     return {...(search !== '' && {search}), corrected: search === '' || search !== raw};
 }

@@ -294,6 +294,15 @@ describe('ListTablePage URL state', () => {
         expect(window.location.href).toBe(href);
     });
 
+    it('asks for the same trimmed and cut search term that the address carries', async () => {
+        await render();
+
+        await changeView((view) => ({...view, search: `  ${'a'.repeat(120)} `}));
+
+        expect(listRequests().at(-1)?.searchParams.get('search')).toBe('a'.repeat(100));
+        expect(lastTable().view.search).toBe(`  ${'a'.repeat(120)} `);
+    });
+
     it('resets to page one when the search changes, in one entry', async () => {
         window.history.replaceState(null, '', `${PATH}?page=give-payment-history&give-paged=3`);
         await render();
