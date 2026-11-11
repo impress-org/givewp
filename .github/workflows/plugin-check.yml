@@ -29,7 +29,7 @@ jobs:
             contents: read
             issues: write
             pull-requests: write
-        uses: stellarwp/plugin-toolbox/.github/workflows/plugin-check.yml@feat/plugin-check-lint
+        uses: stellarwp/plugin-toolbox/.github/workflows/plugin-check.yml@main
         with:
             plugin-slug: give
             runs-on: blacksmith-4vcpu-ubuntu-2404
