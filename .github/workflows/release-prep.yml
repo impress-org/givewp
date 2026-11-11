@@ -13,13 +13,13 @@ name: Release Prep
 # Keep `date` optional: the dashboard refuses a workflow that requires an input it does not send.
 #
 # Run it by hand:
-#   gh workflow run release-prep.yml -f branch=release/4.19.0 -f version=4.19.0
+#   gh workflow run release-prep.yml -f branch=release/M26.jigglypuff -f version=4.19.0
 
 on:
     workflow_dispatch:
         inputs:
             branch:
-                description: 'Branch to prepare and commit to, release/* or hotfix/*, e.g. release/4.19.0'
+                description: 'Branch to prepare and commit to, release/* or hotfix/*, e.g. release/M26.jigglypuff'
                 required: true
                 type: string
             version:
