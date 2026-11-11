@@ -1,16 +1,7 @@
-import {
-    onPopState,
-    pushEntry,
-    readQuery,
-    readTabState,
-    rememberSearch,
-    replaceEntry,
-    SEARCH_COLLAPSE_MS,
-} from './listTableHistory';
+import {onPopState, pushEntry, readQuery, replaceEntry, SEARCH_COLLAPSE_MS} from './listTableHistory';
 
 const PATH = '/wp-admin/edit.php';
-const options = {owned: ['give-status', 'give-paged'], legacyKeys: []};
-const tabState = (search = '') => ({screen: 'donations' as const, search});
+const options = {owned: ['give-status', 'give-paged', 'give-search'], legacyKeys: []};
 
 let now = 1_000_000;
 
@@ -30,7 +21,7 @@ describe('listTableHistory', () => {
     it('pushes one entry for a user change and keeps other parameters in order', () => {
         const length = window.history.length;
 
-        pushEntry({'give-status': 'failed'}, options, tabState());
+        pushEntry({'give-status': 'failed'}, options);
 
         expect(window.history.length).toBe(length + 1);
         expect(window.location.search).toBe('?post_type=give_forms&page=give-payment-history&give-status=failed');
@@ -40,7 +31,7 @@ describe('listTableHistory', () => {
         window.history.replaceState(null, '', `${PATH}?page=give-payment-history&donor=12&search=smith`);
         const length = window.history.length;
 
-        replaceEntry({'give-donor': '12'}, {owned: ['give-donor'], legacyKeys: ['donor', 'search']}, tabState());
+        replaceEntry({'give-donor': '12'}, {owned: ['give-donor'], legacyKeys: ['donor', 'search']});
 
         expect(window.history.length).toBe(length);
         expect(window.location.search).toBe('?page=give-payment-history&give-donor=12');
@@ -49,48 +40,42 @@ describe('listTableHistory', () => {
     it('replaces a search change made within 1.5 s of the previous one', () => {
         const length = window.history.length;
 
-        pushEntry({}, options, tabState('s'), {searchOnly: true});
+        pushEntry({'give-search': 's'}, options, {searchOnly: true});
         now += SEARCH_COLLAPSE_MS - 1;
-        pushEntry({}, options, tabState('sm'), {searchOnly: true});
+        pushEntry({'give-search': 'sm'}, options, {searchOnly: true});
 
         expect(window.history.length).toBe(length + 1);
-        expect(readTabState('donations')?.search).toBe('sm');
+        expect(readQuery().get('give-search')).toBe('sm');
 
         now += SEARCH_COLLAPSE_MS;
-        pushEntry({}, options, tabState('smith'), {searchOnly: true});
+        pushEntry({'give-search': 'smith'}, options, {searchOnly: true});
 
         expect(window.history.length).toBe(length + 2);
     });
 
     it('pushes a search change that follows another kind of change', () => {
-        pushEntry({}, options, tabState('s'), {searchOnly: true});
-        pushEntry({'give-paged': '2'}, options, tabState('s'));
+        pushEntry({'give-search': 's'}, options, {searchOnly: true});
+        pushEntry({'give-search': 's', 'give-paged': '2'}, options);
         const length = window.history.length;
 
-        pushEntry({'give-paged': '2'}, options, tabState('sm'), {searchOnly: true});
+        pushEntry({'give-search': 'sm', 'give-paged': '2'}, options, {searchOnly: true});
 
         expect(window.history.length).toBe(length + 1);
     });
 
-    it('never writes the search term to the address', () => {
-        pushEntry({}, options, tabState('smith'), {searchOnly: true});
+    it('writes the search term to the address, encoded', () => {
+        pushEntry({'give-search': 'a b&c@example.com'}, options, {searchOnly: true});
 
-        expect(window.location.href).not.toContain('smith');
+        expect(window.location.search).toContain('give-search=a%20b%26c%40example.com');
+        expect(readQuery().get('give-search')).toBe('a b&c@example.com');
     });
 
-    it('writes the search to history.state and keeps unrelated keys', () => {
+    it('keeps the state of the entry as it is', () => {
         window.history.replaceState({other: 'kept'}, '', window.location.href);
 
-        replaceEntry({}, options, tabState('smith'));
+        replaceEntry({'give-search': 'smith'}, options);
 
-        expect(window.history.state).toEqual({other: 'kept', giveListTable: {screen: 'donations', search: 'smith'}});
-    });
-
-    it("reads only this screen's tab state", () => {
-        replaceEntry({}, options, tabState('smith'));
-
-        expect(readTabState('donations')).toEqual({screen: 'donations', search: 'smith'});
-        expect(readTabState('donors')).toBeUndefined();
+        expect(window.history.state).toEqual({other: 'kept'});
     });
 
     it('calls back on popstate until unsubscribed', () => {
@@ -102,107 +87,5 @@ describe('listTableHistory', () => {
         window.dispatchEvent(new PopStateEvent('popstate'));
 
         expect(callback).toHaveBeenCalledTimes(1);
-    });
-});
-
-describe('listTableHistory search copy', () => {
-    beforeEach(() => window.sessionStorage.clear());
-
-    const back = () =>
-        new Promise<void>((resolve) => {
-            window.addEventListener('popstate', () => resolve(), {once: true});
-            window.history.back();
-        });
-
-    it('does not restore a later search into an earlier entry at the same address', async () => {
-        replaceEntry({}, options, tabState(''));
-        pushEntry({}, options, tabState('smith'));
-
-        await back();
-
-        expect(readTabState('donations')).toEqual(tabState(''));
-    });
-
-    it('remembers the search of the entry the admin moved to, so a reload does not bring back another one', async () => {
-        replaceEntry({}, options, tabState(''));
-        pushEntry({}, options, tabState('smith'));
-
-        await back();
-        rememberSearch(tabState(readTabState('donations')?.search ?? ''));
-        window.history.replaceState(null, '', window.location.href);
-
-        expect(readTabState('donations')).toBeUndefined();
-    });
-
-    it('restores the search after the admin canonical-URL script clears history.state', () => {
-        pushEntry({'give-status': 'failed'}, options, tabState('smith'));
-        window.history.replaceState(null, '', window.location.href);
-
-        expect(readTabState('donations')).toEqual(tabState('smith'));
-    });
-
-    it('restores the search when WordPress encodes a comma that was written plain', () => {
-        pushEntry({'give-status': 'failed,pending'}, options, tabState('smith'));
-        const encoded = window.location.href.replace(/,/g, '%2C');
-        window.history.replaceState(null, '', encoded);
-
-        expect(window.location.search).toContain('%2C');
-        expect(readTabState('donations')).toEqual(tabState('smith'));
-    });
-
-    describe.each([
-        ['reload', true],
-        ['back_forward', true],
-        ['navigate', false],
-    ])('on a %s load', (type, restores) => {
-        it(`${restores ? 'restores' : 'does not restore'} the copy`, () => {
-            // jsdom has no navigation timing, so the browser's answer is supplied here.
-            Object.defineProperty(window.performance, 'getEntriesByType', {
-                configurable: true,
-                value: () => [{type}],
-            });
-            pushEntry({'give-status': 'failed'}, options, tabState('smith'));
-            window.history.replaceState(null, '', window.location.href);
-
-            expect(readTabState('donations')).toEqual(restores ? tabState('smith') : undefined);
-
-            delete (window.performance as Partial<Performance>).getEntriesByType;
-        });
-    });
-
-    it('reads no search in a new tab with no copy', () => {
-        expect(readTabState('donations')).toBeUndefined();
-    });
-
-    it('removes the copy when the search is cleared', () => {
-        pushEntry({}, options, tabState('smith'));
-        pushEntry({}, options, tabState(''), {searchOnly: true});
-
-        expect(window.sessionStorage.length).toBe(0);
-    });
-
-    it('keeps the page working when storage throws', () => {
-        jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
-            throw new Error('blocked');
-        });
-        jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
-            throw new Error('blocked');
-        });
-
-        expect(() => pushEntry({}, options, tabState('smith'))).not.toThrow();
-        window.history.replaceState(null, '', window.location.href);
-        expect(readTabState('donations')).toBeUndefined();
-    });
-
-    it('does not read the copy for another address or screen', () => {
-        pushEntry({'give-status': 'failed'}, options, tabState('smith'));
-        window.history.replaceState(null, '', `${PATH}?post_type=give_forms&page=give-payment-history`);
-
-        expect(readTabState('donations')).toBeUndefined();
-
-        pushEntry({'give-status': 'failed'}, options, tabState('smith'));
-        window.history.replaceState(null, '', window.location.href);
-
-        expect(readTabState('donors')).toBeUndefined();
     });
 });

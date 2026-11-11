@@ -108,9 +108,9 @@ afterEach(() => act(() => root.unmount()));
 describe('ListTablePage first render', () => {
     beforeEach(() => {
         window.history.replaceState(
-            {giveListTable: {screen: 'donations', search: 'smith'}},
+            null,
             '',
-            `${PATH}?page=give-payment-history&give-status=failed,pending&give-orderby=amount&give-order=asc&give-paged=3&give-per-page=50`
+            `${PATH}?page=give-payment-history&give-status=failed,pending&give-search=smith&give-orderby=amount&give-order=asc&give-paged=3&give-per-page=50`
         );
     });
 
@@ -189,7 +189,7 @@ describe('ListTablePage first render', () => {
         });
     });
 
-    it("sends the URL's page, sort, filters and page size and the tab's search with the first request", async () => {
+    it("sends the URL's page, sort, filters and page size and search with the first request", async () => {
         await render();
 
         const [first] = listRequests();
@@ -224,7 +224,7 @@ describe('ListTablePage URL state', () => {
         window.history.replaceState(null, '', `${PATH}?page=give-payment-history`);
     });
 
-    it('rewrites a legacy bare name and a bare search without a new entry', async () => {
+    it('rewrites a legacy bare name and drops a bare search without a new entry', async () => {
         window.history.replaceState(null, '', `${PATH}?page=give-payment-history&donor=12&search=smith`);
         const length = window.history.length;
 
@@ -236,7 +236,7 @@ describe('ListTablePage URL state', () => {
         expect(firstView().search).toBe('');
     });
 
-    it('pushes one entry per user change and keeps the search out of the address', async () => {
+    it('pushes one entry per user change and writes the search to the address', async () => {
         await render();
         const length = window.history.length;
 
@@ -244,8 +244,9 @@ describe('ListTablePage URL state', () => {
         await changeView((view) => ({...view, search: 'smith'}));
 
         expect(window.history.length).toBe(length + 2);
-        expect(window.location.search).toBe('?page=give-payment-history&give-orderby=amount&give-order=asc');
-        expect(window.history.state.giveListTable).toEqual({screen: 'donations', search: 'smith'});
+        expect(window.location.search).toBe(
+            '?page=give-payment-history&give-search=smith&give-orderby=amount&give-order=asc'
+        );
     });
 
     it('writes nothing for a layout change', async () => {
@@ -261,11 +262,7 @@ describe('ListTablePage URL state', () => {
         await render();
         await changeView((view) => ({...view, layout: {density: 'comfortable'}, fields: ['amount']}));
 
-        window.history.pushState(
-            {giveListTable: {screen: 'donations', search: 'jane'}},
-            '',
-            `${PATH}?page=give-payment-history&give-paged=2`
-        );
+        window.history.pushState(null, '', `${PATH}?page=give-payment-history&give-search=jane&give-paged=2`);
         const href = window.location.href;
         const length = window.history.length;
 
@@ -303,12 +300,16 @@ describe('ListTablePage URL state', () => {
         expect(window.location.href).toBe(href);
     });
 
-    it('stamps the first entry with its own tab state, so Back never borrows the search of a later entry', async () => {
-        window.history.replaceState(null, '', `${PATH}?page=give-payment-history`);
-
+    it('resets to page one when the search changes, in one entry', async () => {
+        window.history.replaceState(null, '', `${PATH}?page=give-payment-history&give-paged=3`);
         await render();
+        const length = window.history.length;
 
-        expect(window.history.state?.giveListTable).toEqual({screen: 'donations', search: ''});
+        await changeView((view) => ({...view, search: 'smith'}));
+
+        expect(lastTable().view).toMatchObject({page: 1, search: 'smith'});
+        expect(window.location.search).toBe('?page=give-payment-history&give-search=smith');
+        expect(window.history.length).toBe(length + 1);
     });
 
     it('never writes the address without a screen config, and reads only the filters it names', async () => {

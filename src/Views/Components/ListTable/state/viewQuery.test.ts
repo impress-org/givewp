@@ -5,6 +5,7 @@ import {
     declarationUrlParameter,
     MAX_ADDRESS_LENGTH,
     parameterName,
+    MAX_SEARCH_LENGTH,
     parseViewQuery,
     serializeViewQuery,
     viewQueryKeys,
@@ -163,6 +164,7 @@ describe('viewQueryKeys', () => {
             'give-date',
             'give-donation-type',
             'give-test-mode',
+            'give-search',
             'give-orderby',
             'give-order',
             'give-paged',
@@ -266,8 +268,15 @@ describe('serializeViewQuery', () => {
         expect(serializeViewQuery(view(), {...legacy, siteTestMode: true})).toEqual({});
     });
 
-    it('never writes the search term', () => {
-        expect(serializeViewQuery(view({search: 'smith'}), donations)).toEqual({});
+    it('writes the search term, trimmed, and nothing for an empty one', () => {
+        expect(serializeViewQuery(view({search: '  smith '}), donations)).toEqual({'give-search': 'smith'});
+        expect(serializeViewQuery(view({search: '   '}), donations)).toEqual({});
+    });
+
+    it('cuts a long search term to the limit', () => {
+        expect(serializeViewQuery(view({search: 'a'.repeat(MAX_SEARCH_LENGTH + 20)}), donations)).toEqual({
+            'give-search': 'a'.repeat(MAX_SEARCH_LENGTH),
+        });
     });
 
     it('never writes a value that is not an id or an enumerated value', () => {
@@ -290,6 +299,24 @@ describe('serializeViewQuery', () => {
 });
 
 describe('parseViewQuery', () => {
+    it('reads the search term', () => {
+        expect(parse('give-search=jane%20doe').query.search).toBe('jane doe');
+        expect(parse('give-search=jane%20doe').corrected).toBe(false);
+    });
+
+    it('trims and cuts the search term and marks the address as corrected', () => {
+        expect(parse('give-search=%20jane%20').query.search).toBe('jane');
+        expect(parse('give-search=%20jane%20').corrected).toBe(true);
+        expect(parse(`give-search=${'a'.repeat(MAX_SEARCH_LENGTH + 5)}`).query.search).toHaveLength(MAX_SEARCH_LENGTH);
+    });
+
+    it('drops an empty search term and marks the address as corrected', () => {
+        const {query, corrected} = parse('give-search=');
+
+        expect(query).not.toHaveProperty('search');
+        expect(corrected).toBe(true);
+    });
+
     it('reads nothing from an address without list parameters', () => {
         expect(parse('page=give-payment-history&post_type=give_forms')).toEqual({
             query: {filters: []},
@@ -640,7 +667,7 @@ describe('declared filters in the URL', () => {
         expect(serializeViewQuery(view({filters: [empty]}), declared)).toEqual({});
     });
 
-    it('names one parameter per declared filter, never the search, and never the old names', () => {
+    it('names one parameter per declared filter, the search, and never the old names', () => {
         const keys = viewQueryKeys({...declared, testModeToggle: false});
 
         expect(keys).toEqual([
@@ -650,6 +677,7 @@ describe('declared filters in the URL', () => {
             'give-donor',
             'give-date',
             'give-donation-type',
+            'give-search',
             'give-orderby',
             'give-order',
             'give-paged',

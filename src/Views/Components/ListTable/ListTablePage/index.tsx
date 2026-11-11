@@ -176,7 +176,6 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                 defaults: start.defaults,
                 layout: start.layout,
                 query: start.urlState?.query,
-                search: start.urlState?.search,
             })
         );
 
