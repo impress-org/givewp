@@ -61,7 +61,7 @@ jobs:
             # README (its "Branches it refuses" section).
             # Pinned to a commit of plugin-toolbox main; the check is from its PR #8. Switch to @v1 once
             # plugin-toolbox publishes a release.
-            -   uses: stellarwp/plugin-toolbox/.github/actions/release-prep@7b2ac9320f7b4e8d655c256aabfb39c457ec73ed
+            -   uses: stellarwp/plugin-toolbox/.github/actions/release-prep@c71c3832596c732ef5021c0183b1d65139aacb29
                 with:
                     branch: ${{ inputs.branch }}
                     version: ${{ inputs.version }}
