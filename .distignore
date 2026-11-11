@@ -52,6 +52,7 @@
 .lintstagedrc.json
 .distignore
 .plugin-check-baseline.json
+.plugin-check.json
 .stylelintignore
 .coderabbit.yaml
 jsconfig.json

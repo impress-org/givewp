@@ -36,12 +36,3 @@ jobs:
             # webpack's filesystem cache (see webpack.config.js). Outside node_modules, because pup
             # build runs npm ci and npm ci deletes node_modules first.
             cache-paths: .cache/webpack
-            # The five runtime checks boot WordPress with a scratch table prefix (wp_pc_), GiveWP's
-            # custom tables do not exist under it, and the whole run dies with "Error: Database
-            # Query" (SOFT-4567). Remove this once that is solved.
-            exclude-checks: |
-                enqueued_scripts_scope
-                enqueued_scripts_size
-                enqueued_styles_scope
-                enqueued_styles_size
-                non_blocking_scripts

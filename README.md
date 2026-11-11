@@ -96,7 +96,9 @@ To run the same check on your local site:
 ```bash
 wp plugin install plugin-check --activate
 wp plugin check give --require=wp-content/plugins/plugin-check/cli.php \
-    --format=json > plugin-check-results.txt
+    --format=json \
+    $(node /path/to/plugin-toolbox/.github/actions/plugin-check-report/plugin-check-report.js exclude-checks) \
+    > plugin-check-results.txt
 node /path/to/plugin-toolbox/.github/actions/plugin-check-report/plugin-check-report.js \
     compare plugin-check-results.txt
 ```

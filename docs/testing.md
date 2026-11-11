@@ -272,24 +272,26 @@ against it. It is for looking at a change, not for gateway or database work.
 plugin as the release ships it: pup builds and packages the zip with `.puprc` and `.distignore`,
 and the action checks the unzipped `give` folder. Every category runs, except the five runtime checks
 (in `performance`). They boot WordPress with a scratch table prefix, GiveWP's custom tables do not
-exist under it, and the whole run dies with `Error: Database Query` (SOFT-4567).
+exist under it, and the whole run dies with `Error: Database Query` (SOFT-4567). The five are listed in
+`.plugin-check.json`, which CI and a local run both read. Remove them there once that is solved.
 
 The workflow is a short caller of the shared one in
 [stellarwp/plugin-toolbox](https://github.com/stellarwp/plugin-toolbox/blob/main/.github/workflows/plugin-check.yml),
 so the build, the check, the comment and the baseline logic are the same for every plugin. What is
 GiveWP's own is in the caller's `with:`: the plugin folder `give`, the runner, the webpack cache
-path and the excluded checks. The toolbox's
+path, and the excluded checks, which are in `.plugin-check.json`. The toolbox's
 [plugin-check-report README](https://github.com/stellarwp/plugin-toolbox/blob/main/.github/actions/plugin-check-report/README.md)
 describes every input, and how the comparison and the baseline work. The caller uses `@main`, so a
 change merged in the toolbox reaches the next GiveWP run.
 
 The shared workflow has these jobs. They show in GiveWP as `plugin-check / Plugin Check start`,
-`plugin-check / Plugin Check plan`, `plugin-check / Plugin Check run` and
-`plugin-check / Plugin Check`:
+`plugin-check / Plugin Check plan`, `plugin-check / Plugin Check run (head)` and
+`plugin-check / Plugin Check`. With no baseline file there is also
+`plugin-check / Plugin Check run (base)`:
 
 - **Plugin Check start** posts the "in progress" comment.
 - **Plugin Check plan** decides whether the target branch has to be built too (see below).
-- **Plugin Check run** builds the zip and runs the action. It has a read-only token, because it runs
+- **Plugin Check run (head)** builds the zip and runs the action. It has a read-only token, because it runs
   a third-party action. The action also tries to post its own comment, and with this token that
   fails (the log shows "Failed to post PR comment"), so the only comment is the shared workflow's.
 - **Plugin Check** (the check to watch) compares the results with the baseline and replaces the
