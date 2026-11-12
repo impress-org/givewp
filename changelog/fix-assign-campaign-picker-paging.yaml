@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Resolved an issue where the campaign picker for assigning or moving a
+  form on the Forms list stopped at the first 30 campaigns
+timestamp: 2026-10-12T18:43:49.304Z
