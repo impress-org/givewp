@@ -1,0 +1,5 @@
+significance: patch
+type: enhancement
+entry: The Campaigns and Donation Forms lists show goal progress as a ring next to the raised amount, with a
+  check and "Goal achieved" once the goal is met.
+timestamp: 2026-10-27T12:00:00.000Z

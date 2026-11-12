@@ -2,12 +2,13 @@ import {expect, Locator, Page, test} from '@wordpress/e2e-test-utils-playwright'
 import {chooseOption, openOptions} from './utils/async-select';
 import {createCampaignWithForm} from './utils/campaign';
 import {createStandaloneForm} from './utils/standalone-form';
+import {expectListMounts, rowWithText, runRowAction} from './utils/list-table';
 
 /**
  * Moving a form between campaigns, from the Forms list and from a campaign's Forms tab.
  *
  * `CampaignRepository` and the associate and detach routes are covered by PHPUnit; what is not is
- * whether the row action opens the modal, whether the picker reaches the route with the form and
+ * whether the row menu action opens the modal, whether the picker reaches the route with the form and
  * campaign the admin chose, and whether the list shows the result. Every fixture is made inside the
  * test: a standalone form through the Add form button and campaigns over REST, so a run means the
  * same thing on a fresh install and on a developer site.
@@ -15,6 +16,10 @@ import {createStandaloneForm} from './utils/standalone-form';
 const FORMS_LIST = 'post_type=give_forms&page=give-forms';
 
 test.describe('Forms list', () => {
+    test('renders through the list engine without errors', async ({page, admin}) => {
+        await expectListMounts(page, admin, FORMS_LIST, 'Donation Forms');
+    });
+
     test('assigns a form with no campaign to a campaign, then moves it to another', async ({
         page,
         admin,
@@ -77,7 +82,11 @@ test.describe('Forms list', () => {
         await dialog.getByRole('button', {name: 'Done'}).click();
 
         await expect(row).toContainText('No campaign');
-        await expect(row.getByRole('button', {name: /Assign campaign/})).toBeVisible();
+
+        // A standalone form is offered "Assign campaign" again, in the row's menu.
+        await row.getByRole('button', {name: 'Actions', exact: true}).click();
+        await expect(page.getByRole('menuitem', {name: 'Assign campaign'})).toBeVisible();
+        await page.keyboard.press('Escape');
     });
 
     test("will not move a campaign's default form", async ({page, admin, requestUtils}) => {
@@ -170,15 +179,15 @@ test.describe('Forms list', () => {
  * The list row for the form called `title`.
  */
 function formRow(page: Page, title: string): Locator {
-    return page.getByRole('row', {name: new RegExp(title)});
+    return rowWithText(page, title);
 }
 
 /**
  * Opens the modal behind a row's campaign action - "Assign campaign" on a form with no campaign,
- * "Change campaign" on one with a campaign - and returns it.
+ * "Change campaign" on one with a campaign - from the row's menu, and returns it.
  */
 async function openCampaignDialog(page: Page, row: Locator, action: string): Promise<Locator> {
-    await row.getByRole('button', {name: new RegExp(action)}).click();
+    await runRowAction(page, row, action);
 
     const dialog = page.getByRole('dialog', {name: action});
     await expect(dialog).toBeVisible();

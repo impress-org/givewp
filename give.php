@@ -65,6 +65,7 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvider;
 use Give\Framework\Http\ServiceProvider as HttpServiceProvider;
+use Give\Framework\ListTable\ServiceProvider as ListTableServiceProvider;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\ValidationRules\ValidationRulesServiceProvider;
@@ -235,6 +236,7 @@ final class Give
         AdminNoticesServiceProvider::class,
         HttpServiceProvider::class,
         DesignSystemServiceProvider::class,
+        ListTableServiceProvider::class,
         FieldConditionsServiceProvider::class,
         FormBuilderServiceProvider::class,
         DonationFormsServiceProvider::class,

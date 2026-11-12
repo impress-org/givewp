@@ -1,4 +1,6 @@
 import {expect, test} from '@wordpress/e2e-test-utils-playwright';
+import {expectListMounts} from './utils/list-table';
+import {wp} from './utils/wp-cli';
 
 /**
  * Smoke coverage for the admin screens that mount a React app. These fail loudly when the build
@@ -24,9 +26,15 @@ test.describe('GiveWP admin pages', () => {
     });
 
     test('donors list table mounts', async ({page, admin}) => {
-        await admin.visitAdminPage('edit.php', 'post_type=give_forms&page=give-donors');
+        await expectListMounts(page, admin, 'post_type=give_forms&page=give-donors', 'Donors');
+    });
 
-        await expect(page.getByRole('heading', {level: 1, name: 'Donors'})).toBeVisible({timeout: 15_000});
+    test('event tickets list table mounts', async ({page, admin}) => {
+        // Events is a beta feature; its screen is registered only when the feature is on.
+        const isEnabled = wp('eval', 'echo (int) Give\\BetaFeatures\\Facades\\FeatureFlag::eventTickets();') === '1';
+        test.skip(!isEnabled, 'The Events beta feature is off on this site');
+
+        await expectListMounts(page, admin, 'post_type=give_forms&page=give-event-tickets', 'Events');
     });
 
     test('settings page renders the general tab', async ({page, admin}) => {
