@@ -1,3 +1,5 @@
+import {readFileSync} from 'fs';
+import {join} from 'path';
 import {act} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
 import StatTile from './index';
@@ -147,5 +149,15 @@ describe('StatTile', () => {
 
             expect(container.querySelector('.components-spinner')).toBeNull();
         }
+    });
+
+    it('colors the funnel with the theme color, and with a system color in forced colors', () => {
+        const styles = readFileSync(join(__dirname, 'styles.scss'), 'utf8');
+        const icon = styles.slice(styles.indexOf('&__filter-icon {'));
+
+        expect(icon.slice(0, icon.indexOf('}'))).toContain('color: var(--wp-admin-theme-color)');
+        expect(styles.slice(styles.indexOf('@media (forced-colors: active)'))).toMatch(
+            /filter-icon \{\s*color: CanvasText;/
+        );
     });
 });

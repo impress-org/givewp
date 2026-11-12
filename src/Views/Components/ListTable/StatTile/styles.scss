@@ -92,7 +92,11 @@
         }
     }
 
+    // The funnel uses the theme color, as in the design: an outline on hover and focus, filled when pressed.
+    // It is redundant, so it need not carry the state alone: the bottom bar, the words "Filtering the list"
+    // and `aria-pressed` carry it too, and the icon is hidden from screen readers. The words keep the text color.
     &__filter-icon {
+        color: var(--wp-admin-theme-color);
         opacity: 0;
         pointer-events: none;
     }
@@ -127,6 +131,11 @@
     // Windows High Contrast drops author colors: the bar shows only on the pressed tile.
     @media (forced-colors: active) {
         border-block-end-color: Canvas;
+
+        // System colors only: a theme color would not survive forced colors.
+        .givewp-stat-tile__filter-icon {
+            color: CanvasText;
+        }
 
         &--pressed {
             border-block-end-color: Highlight;
