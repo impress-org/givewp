@@ -1,3 +1,7 @@
+// The notice's block padding and its inline end padding: 6px, half of `--givewp-spacing-3`. The 32px dismiss
+// button then sets the height (about 44px), as in the design.
+$givewp-list-table-notice-edge: calc(var(--givewp-spacing-3) / 2);
+
 .givewp-list-table-notice-area {
     display: flex;
     flex-direction: column;
@@ -23,6 +27,8 @@
         border: 1px solid #c3c4c7;
         border-inline-start: 4px solid var(--givewp-list-table-action-edge);
         border-radius: 0;
+        padding-block: $givewp-list-table-notice-edge;
+        padding-inline: var(--givewp-spacing-3) $givewp-list-table-notice-edge;
         background: #fff;
         color: var(--givewp-list-table-text);
         font-size: 0.8125rem;
