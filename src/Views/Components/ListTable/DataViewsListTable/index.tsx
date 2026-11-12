@@ -241,11 +241,12 @@ function ListTableLayout({
     viewMenu?: ReactNode;
 }) {
     // While rows are selected, the view options, the search box and its hint stay in the layout, hidden
-    // (styles.scss), so the table does not move when the selection starts or ends.
+    // (styles.scss), so the table does not move when the selection starts or ends. Reset view comes and
+    // goes, so it sits first: the view options and the menu keep their place at the end edge.
     const viewControls = (
         <HStack spacing={1} expanded={false} className="givewp-list-table__view-controls">
-            <DataViews.ViewConfig />
             {onResetLayout && <ListTableViewReset isDefault={isDefaultLayout} onConfirm={onResetLayout} />}
+            <DataViews.ViewConfig />
             {viewMenu}
         </HStack>
     );

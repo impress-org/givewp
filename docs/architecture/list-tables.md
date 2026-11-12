@@ -398,7 +398,7 @@ overrides were written for the pinned `@wordpress/dataviews` version. See "Styli
 
 Donations, Donors, Subscriptions and Donation Forms (with the option-based form editor on) offer
 "Switch to Legacy View". It is no longer a button in the page header: it is the last group of the
-"More view options" menu (`ListTableViewMenu`), right after the stock view options and "Reset view".
+"More view options" menu (`ListTableViewMenu`), right after the stock view options. "Reset view" comes before them, so they do not move when it appears.
 A screen passes `legacyView` to `ListTablePage`; `switchToLegacyView()` calls the domain's `/view`
 route (see [the top of this page](#the-archive-screens-have-two-implementations-and-the-user-picks))
 and reloads. Screens without a legacy screen (Campaigns, Event Tickets, the Forms tab) pass nothing
