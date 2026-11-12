@@ -288,12 +288,13 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const canReset = differsFromDefaultFilters(view, start.defaults.filters);
         const searchBoxRef = useRef<HTMLDivElement>(null);
         const filterBarRef = useRef<HTMLDivElement>(null);
-        // The search box, or, when it is not shown (during a bulk selection, or on a screen without a
-        // search), the first control left in the filter bar, or else the bar itself.
+        // The search box, or, when it is not shown (hidden during a bulk selection, or on a screen without
+        // a search), the first control left in the filter bar, or else the bar itself.
         const focusFilterArea = useCallback(() => {
             const bar = filterBarRef.current;
+            const searchInput = searchBoxRef.current?.querySelector('input');
             const target =
-                searchBoxRef.current?.querySelector('input') ??
+                (searchInput && getComputedStyle(searchInput).visibility !== 'hidden' ? searchInput : null) ??
                 bar?.querySelector<HTMLElement>('button:not(:disabled)') ??
                 bar;
 

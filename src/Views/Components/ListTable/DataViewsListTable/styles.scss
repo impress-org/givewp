@@ -86,8 +86,23 @@
         }
     }
 
+    // One grid cell for the search box and, while rows are selected, the bulk actions: the taller of
+    // the two sets the height, so the row keeps its height when the selection starts or ends.
     &__search {
+        display: grid;
         max-inline-size: 100%;
+
+        > * {
+            grid-area: 1 / 1;
+            min-inline-size: 0;
+        }
+    }
+
+    // What the bulk actions replace keeps its place, hidden (also from keyboard and screen readers).
+    &--has-selection &__search-box,
+    &--has-selection &__hint,
+    &--has-selection &__view-controls {
+        visibility: hidden;
     }
 
     // Always at the end edge, also when a screen has no filter bar to fill the row.

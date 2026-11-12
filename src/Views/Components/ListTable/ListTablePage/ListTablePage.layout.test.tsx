@@ -221,6 +221,28 @@ describe('ListTablePage search hint', () => {
         expect(follows(row, hintRow)).toBe(true);
     });
 
+    it('keeps the search box, the hint and the view options in place, hidden, while rows are selected', async () => {
+        mockData = {items: [{id: 1}, {id: 2}], totalItems: 2, totalPages: 1};
+        await setNarrow(false, {...withHint, rowActions: cardProps.rowActions});
+        await act(async () => lastTable().onChangeSelection(['1']));
+
+        const list = container.querySelector('.givewp-list-table');
+        const toolbar = container.querySelector('.givewp-list-table__toolbar');
+        const slot = toolbar?.querySelector('.givewp-list-table__search');
+
+        // The bulk actions share the search box's place, so the toolbar keeps its height.
+        expect(list?.classList.contains('givewp-list-table--has-selection')).toBe(true);
+        expect(slot?.querySelector('.givewp-list-table__bulk-actions')).not.toBeNull();
+        expect(slot?.querySelector('.givewp-list-table__search-box .givewp-list-table-search')).not.toBeNull();
+        expect(toolbar?.querySelector('.givewp-list-table__hint .givewp-list-table-search__hint-row')).not.toBeNull();
+        expect(toolbar?.querySelector('.givewp-list-table__view-controls')).not.toBeNull();
+
+        await act(async () => lastTable().onChangeSelection([]));
+
+        expect(list?.classList.contains('givewp-list-table--has-selection')).toBe(false);
+        expect(slot?.querySelector('.givewp-list-table__bulk-actions')).toBeNull();
+    });
+
     it('renders no hint and no description for an empty hint (legacy screens)', async () => {
         await act(() => root.render(<ListTablePage {...props} />));
 

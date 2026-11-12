@@ -47,6 +47,18 @@ describe('list toolbar styles', () => {
         expect(block(row, '&--labeled')).toContain('padding-block-start: $givewp-list-table-search-label-block');
     });
 
+    it('keeps the toolbar height while rows are selected: the bulk actions share the search box cell', () => {
+        // One grid cell: the taller of the search box and the bulk actions sets the height.
+        expect(block(table, '&__search')).toContain('display: grid');
+        expect(block(block(table, '&__search'), '> *')).toContain('grid-area: 1 / 1');
+
+        // What the selection replaces stays in the layout, hidden, so nothing below it moves.
+        expect(table).toMatch(
+            /&--has-selection &__search-box,\s*&--has-selection &__hint,\s*&--has-selection &__view-controls \{\s*visibility: hidden;/
+        );
+        expect(table).not.toContain('&__bulk-actions {');
+    });
+
     it('places the search label out of the flow, with a line and a gap of our own', () => {
         const search = read('ListTableSearch', 'styles.scss');
         const label = block(search, '& &__control .components-input-control__label.components-input-control__label');

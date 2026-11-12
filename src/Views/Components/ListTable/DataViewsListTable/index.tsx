@@ -201,14 +201,15 @@ function ListTableFooter({
 /**
  * The stock DataViews layout, with these changes: the footer shows the total row count; Give's search
  * box, filter bar and view options share one toolbar row above the table, with the search hint under
- * it; while rows are selected, the bulk actions take the place of the search box, so they show where
- * the selection starts (the stock footer keeps its own copy next to the pagination); and a "Reset view"
- * button sits after the view options, which this DataViews version does not offer.
+ * it; while rows are selected, the bulk actions show in the search box's place, where the selection
+ * starts (the stock footer keeps its own copy next to the pagination), and the search box, its hint and
+ * the view options stay there, hidden, so the table does not move; and a "Reset view" button sits after
+ * the view options, which this DataViews version does not offer.
  *
  * @since TBD Render the `viewMenu` slot after "Reset view", in both layouts.
  * @since TBD In the narrow layout, put the view options on their own row under the filters, with no layout switcher.
  * @since TBD Always render the `searchBox` and `filterBar` slots; no stock search or filter row.
- * @since TBD Put the search box, the filter bar and the view options in one row, with the search hint under it.
+ * @since TBD Put the search box, the filter bar and the view options in one row, with the search hint under it; keep them in place while rows are selected.
  * @since TBD Render the `searchBox` and `filterBar` slots in place of the stock search and filters.
  * @since TBD
  */
@@ -239,7 +240,9 @@ function ListTableLayout({
     layoutMode: ListTableLayoutMode;
     viewMenu?: ReactNode;
 }) {
-    const viewControls = !hasSelection && (
+    // While rows are selected, the view options, the search box and its hint stay in the layout, hidden
+    // (styles.scss), so the table does not move when the selection starts or ends.
+    const viewControls = (
         <HStack spacing={1} expanded={false} className="givewp-list-table__view-controls">
             <DataViews.ViewConfig />
             {onResetLayout && <ListTableViewReset isDefault={isDefaultLayout} onConfirm={onResetLayout} />}
@@ -253,22 +256,25 @@ function ListTableLayout({
             <div className="givewp-list-table__toolbar">
                 <div
                     className={cx('givewp-list-table__toolbar-row', {
-                        'givewp-list-table__toolbar-row--labeled': !hasSelection && searchBox,
+                        'givewp-list-table__toolbar-row--labeled': searchBox,
                     })}
                 >
-                    {hasSelection ? (
-                        <HStack justify="start" expanded={false} className="givewp-list-table__bulk-actions">
-                            <DataViews.BulkActionToolbar />
-                        </HStack>
-                    ) : (
-                        searchBox && <div className="givewp-list-table__search">{searchBox}</div>
+                    {(searchBox || hasSelection) && (
+                        <div className="givewp-list-table__search">
+                            {searchBox && <div className="givewp-list-table__search-box">{searchBox}</div>}
+                            {hasSelection && (
+                                <HStack justify="start" expanded={false} className="givewp-list-table__bulk-actions">
+                                    <DataViews.BulkActionToolbar />
+                                </HStack>
+                            )}
+                        </div>
                     )}
                     {filterBar}
                     {!isNarrow && viewControls}
                 </div>
-                {!hasSelection && searchHint}
+                {searchHint && <div className="givewp-list-table__hint">{searchHint}</div>}
             </div>
-            {isNarrow && viewControls && <div className="givewp-list-table__view-controls-row">{viewControls}</div>}
+            {isNarrow && <div className="givewp-list-table__view-controls-row">{viewControls}</div>}
             <DataViews.Layout />
             <ListTableFooter
                 actions={actions}
