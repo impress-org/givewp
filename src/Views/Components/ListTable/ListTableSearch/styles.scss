@@ -42,13 +42,20 @@
         gap: 0;
     }
 
-    // Our own edge and fill: the stock search is a grey fill with no edge (1.14:1). As tall as the
-    // filter chips beside it. Four classes: the stock height is set by a triple-class rule.
+    // One box: the stock backdrop draws the edge around the icon and the input together. It takes our
+    // edge color at rest; while the input is focused the stock focus ring stays.
+    & &__control .components-input-control__container:not(:focus-within) .components-input-control__backdrop {
+        border-color: var(--givewp-list-table-control-edge);
+    }
+
+    // The input sits inside that box with no edge or fill of its own (so no line between the icon and
+    // the text). As tall as the filter chips beside it. Four classes: the stock height is set by a
+    // triple-class rule.
     & &__control input[type='search'] {
         block-size: 2rem;
         min-block-size: 2rem;
-        border: 1px solid var(--givewp-list-table-control-edge);
-        background: #fff;
+        background: transparent;
+        box-shadow: none;
 
         // A 40 px target on a phone.
         @media (max-width: $givewp-list-table-narrow) {

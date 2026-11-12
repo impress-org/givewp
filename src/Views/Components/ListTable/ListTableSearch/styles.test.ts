@@ -43,6 +43,15 @@ describe('list table styles', () => {
         expect(labelRule.slice(0, labelRule.indexOf('}'))).toContain('text-transform: none');
     });
 
+    it('draws the search edge on the shared box, so the icon and the input are one box', () => {
+        const source = readFileSync(join(SHARED_DIR, 'ListTableSearch', 'styles.scss'), 'utf8');
+        const input = source.slice(source.indexOf("input[type='search'] {"));
+
+        expect(source).toContain('.components-input-control__backdrop');
+        expect(source).toContain('border-color: var(--givewp-list-table-control-edge)');
+        expect(input.slice(0, input.indexOf('\n    }\n'))).not.toMatch(/border(?!-)/);
+    });
+
     it('use the shared narrow breakpoint, never a literal width', () => {
         const sources = ['ListTableSearch', 'FilterChip'].map((folder) =>
             readFileSync(join(SHARED_DIR, folder, 'styles.scss'), 'utf8')
