@@ -92,7 +92,7 @@
 
     // On a phone the search box takes the whole row. DataViews sizes its search slot to the content, so the
     // slot must fill the row before the box can.
-    @media (max-width: 782px) {
+    @media (max-width: $givewp-list-table-narrow) {
         .dataviews__search {
             flex: 1 1 100%;
             min-inline-size: 0;

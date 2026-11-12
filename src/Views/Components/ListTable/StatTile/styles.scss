@@ -1,3 +1,5 @@
+@use '../layout/breakpoints' as *;
+
 .givewp-stat-tile {
     box-sizing: border-box;
     display: flex;
@@ -131,7 +133,7 @@
         }
     }
 
-    @media (max-width: 782px) {
+    @media (max-width: $givewp-list-table-narrow) {
         &__value {
             font-size: 1.25rem;
         }

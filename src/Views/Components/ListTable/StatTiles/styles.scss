@@ -1,3 +1,5 @@
+@use '../layout/breakpoints' as *;
+
 .givewp-stat-tiles {
     display: flex;
     flex-direction: row;
@@ -18,7 +20,7 @@
     }
 
     // Stacked, in the same order.
-    @media (max-width: 782px) {
+    @media (max-width: $givewp-list-table-narrow) {
         > .givewp-stat-tile {
             flex-basis: 100%;
         }
