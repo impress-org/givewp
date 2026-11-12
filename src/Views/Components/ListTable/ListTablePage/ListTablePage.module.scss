@@ -158,12 +158,13 @@ $givewp-list-table-wp-footer-space: 65px;
     margin-inline: var(--givewp-spacing-6);
 }
 
-// On the full page the list content sits 12px under the tile band, and the notices 12px above the list, as
-// in the design. The gap only exists while the notice area renders something: an empty one is `display: none`.
-// The toolbar adds no space above itself here. An embedded list keeps the toolbar's own padding.
+// On the full page the content has no block padding: the sheet's gap puts 12px between the tile band and the
+// content, and the notices sit 12px above the list. The gap only exists while the notice area renders something:
+// an empty one is `display: none`. The toolbar adds no space above itself here. An embedded list keeps its
+// block padding and the toolbar's own padding.
 .sheet > .pageContent {
     gap: var(--givewp-spacing-3);
-    padding-block-start: var(--givewp-spacing-3);
+    padding-block: 0;
 
     :global(.givewp-list-table__toolbar) {
         padding-block-start: 0;
@@ -177,6 +178,9 @@ $givewp-list-table-wp-footer-space: 65px;
     background-color: var(--givewp-shades-white);
     border: 1px solid var(--givewp-list-table-hairline);
     border-radius: var(--givewp-rounded-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-3);
     overflow: clip;
 }
 

@@ -66,11 +66,15 @@ describe('list sheet styles', () => {
         );
     });
 
-    it('spaces the list content 12px from the band and the notices on the full page, with no toolbar padding above', () => {
+    it('gets the 12px under the band from the sheet gap, with no block padding on the full page content', () => {
         const content = block(page, '.sheet > .pageContent');
 
+        expect(block(page, '.sheet')).toContain('display: flex');
+        expect(block(page, '.sheet')).toContain('gap: var(--givewp-spacing-3)');
         expect(content).toContain('gap: var(--givewp-spacing-3)');
-        expect(content).toContain('padding-block-start: var(--givewp-spacing-3)');
+        expect(content).toContain('padding-block: 0');
+        expect(content).not.toContain('padding-block-start');
+        expect(block(page, '.pageContent')).toContain('padding: var(--givewp-spacing-6)');
         expect(content).toMatch(/\.givewp-list-table__toolbar\)\s*\{\s*padding-block-start: 0;/);
     });
 
