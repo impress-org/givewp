@@ -1,7 +1,10 @@
 @use '@givewp/css/Safe-Rem/functions' as *;
+@use '../layout/tokens' as *;
 
 .interweave {
     .statusBadge {
+        @include givewp-status-tone-tokens;
+
         --color: var(--givewp-list-table-status-neutral-text);
         --bg-color: var(--givewp-list-table-status-neutral-bg);
 

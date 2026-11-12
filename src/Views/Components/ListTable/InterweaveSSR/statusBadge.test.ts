@@ -3,10 +3,22 @@ import {join} from 'path';
 
 const scss = readFileSync(join(__dirname, 'styles.scss'), 'utf8');
 
-// Only the badge block: from `.statusBadge {` up to the next sibling block, `.subscriptionStatus`.
-const start = scss.indexOf('.statusBadge {');
-const end = scss.indexOf('.subscriptionStatus');
-const badge = start === -1 || end === -1 ? '' : scss.slice(start, end);
+// Only the badge block: from `.statusBadge {` to its closing brace (brace matching).
+const sliceBlock = (source: string, opener: string) => {
+    const start = source.indexOf(opener);
+    if (start === -1) {
+        return '';
+    }
+    let depth = 0;
+    for (let i = source.indexOf('{', start); i < source.length; i++) {
+        depth += source[i] === '{' ? 1 : source[i] === '}' ? -1 : 0;
+        if (depth === 0) {
+            return source.slice(start, i + 1);
+        }
+    }
+    return '';
+};
+const badge = sliceBlock(scss, '.statusBadge {');
 
 const TONE_VALUE = /^var\(--givewp-list-table-status-(success|warning|info|error|neutral)-(text|bg)\)$/;
 
@@ -35,6 +47,10 @@ describe('status badge styles', () => {
         expect(badge).not.toContain('.subscriptionStatus');
     });
 
+    it('defines its own tone tokens instead of relying on an ancestor', () => {
+        expect(badge).toContain('@include givewp-status-tone-tokens;');
+    });
+
     it('uses only the five tone tokens for status colors', () => {
         const lines = badge.split('\n').filter((line) => /--(?:bg-)?color:/.test(line));
         expect(lines.length).toBeGreaterThan(0);
@@ -45,8 +61,8 @@ describe('status badge styles', () => {
     });
 
     it('keeps the badge text at 13px or more', () => {
-        const small = [...badge.matchAll(/font-size:\s*([\d.]+)rem/g)]
-            .filter((m) => parseFloat(m[1]) < 0.8125)
+        const small = [...badge.matchAll(/font-size:\s*([\d.]+)(rem|px)/g)]
+            .filter((m) => parseFloat(m[1]) < (m[2] === 'rem' ? 0.8125 : 13))
             .map((m) => m[0]);
         expect(small).toEqual([]);
     });
