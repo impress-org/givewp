@@ -37,6 +37,7 @@ import useListTableSelection from '../hooks/useListTableSelection';
 import useListTableQuery from '../hooks/useListTableQuery';
 import useListTableActionNotices from '../hooks/useListTableActionNotices';
 import useListTableActions from '../hooks/useListTableActions';
+import {urlSearchTerm} from '../state/viewQuery';
 import ListTablePageHeader from './ListTablePageHeader';
 import LegacyConfirmModal, {LegacyConfirmRequest} from './LegacyConfirmModal';
 import type {
@@ -209,9 +210,18 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         // changes the request reads the day again, not a layout change such as density or columns.
         const requestKey = JSON.stringify([view.page, view.perPage, view.sort, view.filters, view.search]);
         const today = useMemo(() => siteToday(), [requestKey]);
+        // A table that keeps its view in the address asks for the same term the address carries, so a
+        // reload or a copied link returns the same rows. The input keeps what the user typed.
+        const urlBacked = !contentMode && Boolean(screen?.key);
         const parameters = useMemo(
-            () => viewToParameters(view, declarations, scope, {locale, testMode, today}),
-            [view, declarations, scope, locale, testMode, today]
+            () =>
+                viewToParameters(
+                    urlBacked && view.search ? {...view, search: urlSearchTerm(view.search)} : view,
+                    declarations,
+                    scope,
+                    {locale, testMode, today}
+                ),
+            [view, urlBacked, declarations, scope, locale, testMode, today]
         );
 
         const {

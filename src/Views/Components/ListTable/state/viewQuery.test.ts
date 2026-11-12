@@ -6,6 +6,7 @@ import {
     MAX_ADDRESS_LENGTH,
     parameterName,
     MAX_SEARCH_LENGTH,
+    urlSearchTerm,
     parseViewQuery,
     serializeViewQuery,
     viewQueryKeys,
@@ -271,6 +272,24 @@ describe('serializeViewQuery', () => {
     it('writes the search term, trimmed, and nothing for an empty one', () => {
         expect(serializeViewQuery(view({search: '  smith '}), donations)).toEqual({'give-search': 'smith'});
         expect(serializeViewQuery(view({search: '   '}), donations)).toEqual({});
+    });
+
+    it('does not split an emoji when it cuts the search term', () => {
+        const term = 'a'.repeat(MAX_SEARCH_LENGTH - 1) + '😀😀';
+        const written = serializeViewQuery(view({search: term}), donations)['give-search'];
+
+        expect(written).toBe('a'.repeat(MAX_SEARCH_LENGTH - 1) + '😀');
+        expect(() => encodeURIComponent(written)).not.toThrow();
+        expect(urlSearchTerm(term)).toBe(written);
+    });
+
+    it('gives the same term after a round trip when the cut ends on a space', () => {
+        const term = 'a'.repeat(MAX_SEARCH_LENGTH - 1) + ' b';
+        const written = serializeViewQuery(view({search: term}), donations)['give-search'];
+
+        expect(written).toBe('a'.repeat(MAX_SEARCH_LENGTH - 1));
+        expect(urlSearchTerm(term)).toBe(written);
+        expect(parse(`give-search=${encodeURIComponent(written)}`).query.search).toBe(written);
     });
 
     it('cuts a long search term to the limit', () => {

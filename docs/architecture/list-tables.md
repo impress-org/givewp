@@ -460,13 +460,17 @@ entry, so Back does not undo it. Only a `user` change to the layout, or a reset,
 The search is written as `give-search`, the same way WordPress core writes `?s=` on its own list
 tables. It is the one value that is free text (see "Only ids and enumerated values" above for the
 others): it is trimmed, cut to `MAX_SEARCH_LENGTH` (100 characters) and percent-encoded when written,
-and read back as plain text, never as markup. An empty term is not written. It is never stored in the
-layout, and an embedded table (`contentMode`) never writes it.
+and read back as plain text, never as markup. The cut counts whole characters, so an emoji is never
+split. The list request carries the same trimmed and cut term, so a reload or a copied link returns
+the same rows. An empty term is not written. It is never stored in the layout, and an embedded table
+(`contentMode`) never writes it.
 
 **It is personal data in the address.** The term can be a donor's name or email, so it shows in the
 browser history, in server logs and in a copied link. Core does the same for `?s=`, and WordPress
-sends `Referrer-Policy: strict-origin-when-cross-origin`, so the term does not leave the site in a
-referrer. Someone who opens a copied link needs the same capability as the person who made it.
+sends `Referrer-Policy: strict-origin-when-cross-origin` by default, so the term does not leave the
+site in a referrer. That holds only while the effective policy is unchanged: a site that sets
+`unsafe-url` with the `admin_referrer_policy` filter can send the term to another origin. Someone who opens a copied link needs the same capability as
+the person who made it.
 
 A search-only change within 1.5 seconds of the previous one replaces the history entry instead of
 adding one (`SEARCH_COLLAPSE_MS`), so one typed term is one entry. A new term goes back to page one in
