@@ -29,9 +29,13 @@ jobs:
             contents: read
             issues: write
             pull-requests: write
-        uses: stellarwp/plugin-toolbox/.github/workflows/plugin-check.yml@main
+        # Pinned to a commit, like the other plugin-toolbox calls. Switch to @v1 once plugin-toolbox
+        # publishes a release. To take a toolbox change, bump the commit here.
+        uses: stellarwp/plugin-toolbox/.github/workflows/plugin-check.yml@2a409f7161ce1518dca9b82c5ef302b81293f835
         with:
             plugin-slug: give
+            # The pup release the release build uses (composer.json), so the check builds the same way.
+            pup-version: '2.0.0'
             runs-on: blacksmith-4vcpu-ubuntu-2404
             # webpack's filesystem cache (see webpack.config.js). Outside node_modules, because pup
             # build runs npm ci and npm ci deletes node_modules first.

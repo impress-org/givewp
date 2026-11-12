@@ -95,12 +95,12 @@ To run the same check on your local site, from the plugin folder (it reads `.plu
 
 ```bash
 wp plugin install plugin-check --activate
-wp plugin check give --require="$(wp plugin path plugin-check)/cli.php" \
+wp plugin check give --require="$(wp plugin path plugin-check --dir)/cli.php" \
     --format=json \
     $(node /path/to/plugin-toolbox/.github/actions/plugin-check-report/plugin-check-report.js exclude-checks) \
-    > plugin-check-results.txt
+    > /tmp/plugin-check-results.txt
 node /path/to/plugin-toolbox/.github/actions/plugin-check-report/plugin-check-report.js \
-    compare plugin-check-results.txt
+    compare /tmp/plugin-check-results.txt
 ```
 
 The compare script comes from a checkout of

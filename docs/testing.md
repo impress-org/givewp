@@ -278,7 +278,7 @@ exist under it, and the whole run dies with `Error: Database Query` (SOFT-4567).
 The workflow is a short caller of the shared one in
 [stellarwp/plugin-toolbox](https://github.com/stellarwp/plugin-toolbox/blob/main/.github/workflows/plugin-check.yml),
 so the build, the check, the comment and the baseline logic are the same for every plugin. What is
-GiveWP's own is in the caller's `with:`: the plugin folder `give`, the runner, the webpack cache
+GiveWP's own is in the caller's `with:`: the plugin folder `give`, the pup version, the runner, the webpack cache
 path, and the excluded checks, which are in `.plugin-check.json`. The toolbox's
 [plugin-check-report README](https://github.com/stellarwp/plugin-toolbox/blob/main/.github/actions/plugin-check-report/README.md)
 describes every input, and how the comparison and the baseline work. The caller uses `@main`, so a
