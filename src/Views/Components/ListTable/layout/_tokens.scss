@@ -14,13 +14,16 @@
     --givewp-list-table-status-neutral-bg: #f0f0f1;
 }
 
+// The grey of the full list page. The admin wrapper around the page uses it too, so the page has no lighter strip under it.
+$givewp-list-table-page: #f0f0f1;
+
 @mixin givewp-list-table-tokens {
     --givewp-list-table-text: #1e1e1e;
     --givewp-list-table-text-secondary: #646970;
     --givewp-list-table-control-edge: #757575;
     --givewp-list-table-hairline: #dcdcde;
     --givewp-list-table-row-hover: #f8f8f8;
-    --givewp-list-table-page: #f0f0f1;
+    --givewp-list-table-page: #{$givewp-list-table-page};
 
     // Our own bars, edges and focus use a darker mix of the site's admin color, so old schemes
     // (Sunrise, Light) still pass 3:1.

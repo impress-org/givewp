@@ -501,7 +501,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
 
         return (
             <ShowConfirmModalContext.Provider value={showConfirmModal}>
-                <article className={cx(styles.page, {[styles.pageEmbedded]: contentMode})}>
+                <article className={cx(styles.page, contentMode ? styles.pageEmbedded : 'givewp-list-table-page')}>
                     {!contentMode && (
                         <ListTablePageHeader
                             title={title}

@@ -56,9 +56,14 @@ describe('list sheet styles', () => {
         expect(page.match(/65px/g)).toHaveLength(1);
     });
 
-    it('leaves 24px under the sheet on the full page, and none when embedded', () => {
-        expect(block(page, '.page')).toContain('padding-block-end: var(--givewp-spacing-6)');
-        expect(block(page, '.pageEmbedded')).toContain('padding-block-end: 0');
+    it('paints the admin wrapper the page color on the full page only', () => {
+        const rule = block(page, '    .post-type-give_forms #wpbody:has(.givewp-list-table-page)');
+
+        expect(rule).toContain('background-color: $givewp-list-table-page');
+        expect(page).not.toContain('padding-block-end');
+        expect(read('ListTablePage', 'index.tsx')).toContain(
+            "contentMode ? styles.pageEmbedded : 'givewp-list-table-page'"
+        );
     });
 
     it('does not fill the viewport when embedded in another page', () => {
