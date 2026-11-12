@@ -82,6 +82,75 @@ class TestGetOrCreateDonor extends TestCase
     }
 
     /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testShouldLinkLoggedInUserToExistingDonorWithMatchingAccountEmail(): void
+    {
+        $user = $this->factory()->user->create_and_get(['role' => 'subscriber']);
+        $donor = Donor::factory()->create(['email' => $user->user_email, 'userId' => null]);
+
+        $action = new GetOrCreateDonor();
+        $donorFromAction = $action($user->ID, $user->user_email, $donor->firstName, $donor->lastName, null, null);
+
+        $this->assertSame($donor->id, $donorFromAction->id);
+        $this->assertSame($user->ID, $donorFromAction->userId);
+        $this->assertSame($user->ID, Donor::find($donor->id)->userId);
+        $this->assertFalse($action->donorCreated);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testShouldNotLinkLoggedInUserToExistingDonorWhenAccountEmailDiffers(): void
+    {
+        $user = $this->factory()->user->create_and_get(['role' => 'subscriber']);
+        $donor = Donor::factory()->create(['userId' => null]);
+
+        $action = new GetOrCreateDonor();
+        $donorFromAction = $action($user->ID, $donor->email, $donor->firstName, $donor->lastName, null, null);
+
+        $this->assertSame($donor->id, $donorFromAction->id);
+        $this->assertEmpty(Donor::find($donor->id)->userId);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testShouldNotRelinkExistingDonorConnectedToAnotherUser(): void
+    {
+        $user = $this->factory()->user->create_and_get(['role' => 'subscriber']);
+        $otherUserId = $this->factory()->user->create();
+        $donor = Donor::factory()->create(['email' => $user->user_email, 'userId' => $otherUserId]);
+
+        $action = new GetOrCreateDonor();
+        $action($user->ID, $user->user_email, $donor->firstName, $donor->lastName, null, null);
+
+        $this->assertSame($otherUserId, Donor::find($donor->id)->userId);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testShouldNotLinkGuestToExistingDonorWithMatchingUserEmail(): void
+    {
+        $user = $this->factory()->user->create_and_get(['role' => 'subscriber']);
+        $donor = Donor::factory()->create(['email' => $user->user_email, 'userId' => null]);
+
+        $action = new GetOrCreateDonor();
+        $action(null, $user->user_email, $donor->firstName, $donor->lastName, null, null);
+
+        $this->assertEmpty(Donor::find($donor->id)->userId);
+    }
+
+    /**
      * @since 3.9.0 Add phone support to GetOrCreateDonor action
      * @since 3.2.0
      *
