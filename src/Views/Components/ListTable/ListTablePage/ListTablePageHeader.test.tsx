@@ -99,4 +99,46 @@ describe('ListTablePageHeader', () => {
 
         expect(container.querySelector('header svg.givewp-give-mark[aria-hidden="true"]')).not.toBeNull();
     });
+
+    describe('actions order', () => {
+        const renderActions = (withSwitch: boolean, withButtons: boolean) =>
+            render(
+                <ListTablePageHeader
+                    title="Donations"
+                    testMode={false}
+                    onChangeTestMode={jest.fn()}
+                    testModeToggle={withSwitch ? testModeToggle : undefined}
+                >
+                    {withButtons && <button type="button">Import donations</button>}
+                </ListTablePageHeader>
+            );
+        const divider = () => container.querySelector('.givewp-header-divider');
+
+        it('puts the switch before the header buttons', async () => {
+            await renderActions(true, true);
+            const toggle = container.querySelector('input[role="switch"]') as HTMLElement;
+            const button = container.querySelector('header button') as HTMLElement;
+
+            expect(toggle.compareDocumentPosition(button) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+        });
+
+        it('puts a hidden divider between the switch and the buttons', async () => {
+            await renderActions(true, true);
+
+            expect(divider()).not.toBeNull();
+            expect(divider()?.getAttribute('aria-hidden')).toBe('true');
+        });
+
+        it('has no divider with only the switch', async () => {
+            await renderActions(true, false);
+
+            expect(divider()).toBeNull();
+        });
+
+        it('has no divider with only the buttons', async () => {
+            await renderActions(false, true);
+
+            expect(divider()).toBeNull();
+        });
+    });
 });

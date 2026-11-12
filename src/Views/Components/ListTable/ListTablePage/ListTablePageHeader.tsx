@@ -5,6 +5,7 @@ import {FormToggle} from '@wordpress/components';
 import {useInstanceId} from '@wordpress/compose';
 import {__, sprintf} from '@wordpress/i18n';
 import GiveMark from '../GiveMark';
+import HeaderDivider from '../HeaderDivider';
 import TestModeBadge from '../TestModeBadge';
 import StatTiles from '../StatTiles';
 import type {ListTableStats, StatsStatus} from '../hooks/useListTableStats';
@@ -71,7 +72,6 @@ export default function ListTablePageHeader({
                 </div>
                 {(children || testModeToggle) && (
                     <div className={styles.flexRow}>
-                        {children}
                         {testModeToggle && (
                             <div className={styles.testModeSwitch}>
                                 <FormToggle
@@ -83,6 +83,8 @@ export default function ListTablePageHeader({
                                 <label htmlFor={switchId}>{testModeToggle.ariaLabel || testModeToggle.label}</label>
                             </div>
                         )}
+                        {testModeToggle && children && <HeaderDivider />}
+                        {children}
                     </div>
                 )}
             </header>

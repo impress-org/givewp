@@ -254,7 +254,7 @@ ul[role='document'] + .flexRow {
 
 // The narrow page, at and below 782 px. This is the only place the list pages change layout by width
 // (with the list's own styles, which read the same breakpoint), so every screen stacks the same way:
-// title, header buttons (primary first), test-mode toggle, tiles, notices, then the list. The regions
+// title, header buttons (primary first), test-mode toggle (last, by `order`), tiles, notices, then the list. The regions
 // already come in that order in the DOM; this block only undoes what keeps them side by side.
 @media (max-width: $givewp-list-table-narrow) {
     .page {
@@ -275,8 +275,14 @@ ul[role='document'] + .flexRow {
             order: -1;
         }
 
+        // The switch comes first in the DOM (the design puts it first on wide screens) but last here.
         .testModeSwitch {
             min-block-size: 2.75rem;
+            order: 1;
+        }
+
+        :global(.givewp-header-divider) {
+            display: none;
         }
     }
 }
