@@ -5,5 +5,7 @@
  * @since TBD
  */
 export function shortHint(hint: string): string {
-    return hint.split(/(?<=[.!?])\s+/)[0] ?? hint;
+    const text = hint.trim();
+
+    return text.split(/(?<=[.!?])\s+/)[0] ?? text;
 }

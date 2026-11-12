@@ -65,8 +65,10 @@ export default function ListTableSearch({label, hint, value, onChange}: ListTabl
     };
 
     // A long hint shows only its first sentence, so the input is described by the full rule instead.
-    const hasMore = shortHint(hint) !== hint;
-    const describedBy = hint ? (hasMore ? ruleId : hintId) : undefined;
+    const rule = hint.trim();
+    const short = shortHint(rule);
+    const fullRule = short !== rule ? rule : undefined;
+    const describedBy = rule ? (fullRule ? ruleId : hintId) : undefined;
 
     return (
         <div className="givewp-list-table-search">
@@ -79,7 +81,7 @@ export default function ListTableSearch({label, hint, value, onChange}: ListTabl
                 onChange={handleChange}
                 __nextHasNoMarginBottom
             />
-            {hint && <SearchHint id={hintId} ruleId={ruleId} hint={hint} />}
+            {rule && <SearchHint id={hintId} ruleId={ruleId} text={short} fullRule={fullRule} />}
         </div>
     );
 }

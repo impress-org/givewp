@@ -178,6 +178,19 @@ describe('shortHint', () => {
         expect(shortHint('Searches titles.')).toBe('Searches titles.');
     });
 
+    it('ignores trailing whitespace', () => {
+        expect(shortHint('Searches titles. ')).toBe('Searches titles.');
+    });
+
+    it('splits after a question mark or an exclamation mark', () => {
+        expect(shortHint('Which fields? Name and email.')).toBe('Which fields?');
+        expect(shortHint('Type a name! Then wait.')).toBe('Type a name!');
+    });
+
+    it('keeps a hint with no final punctuation whole', () => {
+        expect(shortHint('Searches titles')).toBe('Searches titles');
+    });
+
     it('returns an empty hint as empty', () => {
         expect(shortHint('')).toBe('');
     });
@@ -186,7 +199,7 @@ describe('shortHint', () => {
 describe('ListTableSearch hint row', () => {
     const long = 'Searches donor name or ID. An ID matches exactly.';
     const hintText = () => container.querySelector('.givewp-list-table-search__hint')?.textContent;
-    const helpButton = () => container.querySelector<HTMLButtonElement>('.givewp-list-table-search__help');
+    const helpButton = () => container.querySelector<HTMLButtonElement>('.givewp-help-tip__button');
 
     it('shows the short line and a help button that carries the full rule', async () => {
         await render({hint: long});
@@ -206,6 +219,9 @@ describe('ListTableSearch hint row', () => {
 
         expect(helpButton()).toBeNull();
         expect(hintText()).toBe('Searches titles.');
+        expect(input().getAttribute('aria-describedby')).toBe(
+            container.querySelector('.givewp-list-table-search__hint')?.id
+        );
     });
 
     it('renders no hint row for an empty hint (legacy screens)', async () => {

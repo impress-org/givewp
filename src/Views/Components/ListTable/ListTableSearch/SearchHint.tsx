@@ -1,7 +1,5 @@
-import {Button, Tooltip} from '@wordpress/components';
-import {help} from '@wordpress/icons';
+import HelpTip from '../HelpTip';
 import {__} from '@wordpress/i18n';
-import {shortHint} from './shortHint';
 
 /**
  * @since TBD
@@ -9,38 +7,31 @@ import {shortHint} from './shortHint';
 export interface SearchHintProps {
     /** Id of the visible short line. */
     id: string;
-    /** Id of the screen reader copy of the full rule, when there is more than the short line. */
+    /** Id of the screen reader copy of the full rule. */
     ruleId: string;
-    /** The full hint. */
-    hint: string;
+    /** The short line under the box. */
+    text: string;
+    /** The full rule, when the hint has more than the short line. */
+    fullRule?: string;
 }
 
 /**
- * The line under the search box: the first sentence of the hint. When the hint has more, a help
- * button shows the full rule in a tooltip, and a screen reader copy of it describes the input.
+ * The line under the search box. When there is a full rule, a help button shows it in a popover, and
+ * a screen reader copy of it describes the input.
  *
  * @since TBD
  */
-export default function SearchHint({id, ruleId, hint}: SearchHintProps) {
-    const visible = shortHint(hint);
-    const hasMore = visible !== hint;
-
+export default function SearchHint({id, ruleId, text, fullRule}: SearchHintProps) {
     return (
         <div className="givewp-list-table-search__hint-row">
             <p id={id} className="givewp-list-table-search__hint">
-                {visible}
+                {text}
             </p>
-            {hasMore && (
+            {fullRule && (
                 <>
-                    <Tooltip text={hint}>
-                        <Button
-                            className="givewp-list-table-search__help"
-                            icon={help}
-                            aria-label={__('How search works', 'give')}
-                        />
-                    </Tooltip>
+                    <HelpTip label={__('How search works', 'give')} text={fullRule} />
                     <span id={ruleId} className="screen-reader-text">
-                        {hint}
+                        {fullRule}
                     </span>
                 </>
             )}

@@ -1,0 +1,20 @@
+.givewp-help-tip {
+    &__button.components-button {
+        min-inline-size: 2rem;
+        block-size: 2rem;
+    }
+
+    // Wraps like a paragraph, and never runs past the screen.
+    &__content {
+        box-sizing: border-box;
+        max-inline-size: min(20rem, 90vw);
+        padding: 12px;
+        border: 1px solid #c3c4c7;
+        border-radius: 2px;
+        background: #fff;
+        color: var(--givewp-list-table-text);
+        font-size: 0.8125rem;
+        line-height: 1.5;
+        white-space: normal;
+    }
+}

@@ -38,10 +38,4 @@
         color: var(--givewp-list-table-text-secondary);
         font-size: 0.8125rem;
     }
-
-    // The installed Button has no `compact` size, so the 2rem target is set here.
-    &__help.components-button {
-        min-inline-size: 2rem;
-        block-size: 2rem;
-    }
 }
