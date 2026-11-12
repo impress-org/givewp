@@ -282,7 +282,7 @@ test.describe('Donations list behavior', () => {
         createDonation((await createCampaignWithForm(requestUtils)).formId);
 
         await visitDonations(page, admin);
-        const toggle = page.getByRole('switch', {name: 'View Test Donations'});
+        const toggle = page.getByRole('switch', {name: 'View test donations'});
         const siteTestMode = await toggle.getAttribute('aria-checked');
 
         await listTable(page).getByRole('searchbox').fill('zzzzqqq');
@@ -502,7 +502,7 @@ test.describe('Donations list view in the address', () => {
     test('writes test mode only when it differs from the site mode', async ({page, admin}) => {
         await visitDonations(page, admin);
 
-        const toggle = page.getByRole('switch', {name: 'View Test Donations'});
+        const toggle = page.getByRole('switch', {name: 'View test donations'});
         const siteTestMode = (await toggle.getAttribute('aria-checked')) === 'true';
 
         expect(page.url()).not.toContain('give-test-mode');

@@ -58,7 +58,7 @@ const statsConfig: Record<string, StatConfig> = {
 /**
  * The test-mode switch in the header and the "Test mode" badge next to the title.
  */
-const testModeToggle = {label: __('Test mode', 'give'), ariaLabel: __('View Test Subscriptions', 'give')};
+const testModeToggle = {label: __('Test mode', 'give'), ariaLabel: __('View test subscriptions', 'give')};
 
 /**
  * @since TBD Offer "Switch to Legacy View" in the list's view menu, not in the header.
