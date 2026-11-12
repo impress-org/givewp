@@ -42,6 +42,7 @@ describe('list table styles', () => {
         sources.forEach((source) => {
             expect(source).toContain('$givewp-list-table-narrow');
             expect(source).not.toContain('782px');
+            expect(source).toContain('2.5rem');
         });
     });
 });

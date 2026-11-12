@@ -47,8 +47,12 @@ The A+ look is kept small and in a few known places. Keep it that way.
 - **Table overrides.** They live only in `DataViewsListTable/_wp-look.scss`. Every rule starts at
   `.givewp-list-table .dataviews-view-table`. `wpLookScope.test.ts` compiles the file and checks the
   selectors.
-- **The DataViews footer is never styled.** The count, the pagination and the page select keep the
-  stock look, so a DataViews update cannot break them. Do not add a rule for them.
+- **The DataViews footer.** The A+ look adds no footer colors, type, sizes or controls. Nothing in
+  `_wp-look.scss` may reach the footer or the pager. The footer layout rules that already exist
+  (the sticky pin, the side padding and the total count) are in `DataViewsListTable/styles.scss`.
+  The total count rules are to be removed "with `ListTableFooter` when the `@wordpress/dataviews` pin
+  moves to 12.0.1 or later". `wpLookScope.test.ts` guards only `_wp-look.scss`, not the whole
+  stylesheet.
 - **The pin.** `@wordpress/dataviews` is pinned to `10.1.7` in `package.json`. The overrides in
   `_wp-look.scss` were written for that version. When the pin moves, check them again in the browser.
 - **Rows.** Rows keep the stock DataViews height on purpose.
@@ -57,7 +61,8 @@ The A+ look is kept small and in a few known places. Keep it that way.
 - **Embedded lists.** With `contentMode` there is no page header around the list. A rule for the
   shared list must still look right there.
 - **Narrow screens.** Our own search input, chip toggle and chip remove button are 40 px tall at 782
-  px and below (`$givewp-list-table-narrow`). Stock buttons and selects are not changed.
+  px and below (`$givewp-list-table-narrow`). The chip itself is 42 px tall there, because of its 1 px
+  border. Stock buttons and selects are not changed.
 
 Components added for the A+ look:
 

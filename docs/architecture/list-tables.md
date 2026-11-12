@@ -386,8 +386,10 @@ it; screens do not add their own media queries.
 
 The look of the list pages is kept in a few places: the color tokens in `layout/_tokens.scss`, the
 table-only overrides in `DataViewsListTable/_wp-look.scss` (guarded by `wpLookScope.test.ts`), and the
-status badge in `InterweaveSSR/styles.scss`. The DataViews footer is never styled, and the overrides
-were written for the pinned `@wordpress/dataviews` version. See "Styling scope" in the
+status badge in `InterweaveSSR/styles.scss`. The A+ look adds no footer colors, type, sizes or
+controls, and `_wp-look.scss` may not reach the footer. The footer layout and total count rules from
+SOFT-5300 stay in `DataViewsListTable/styles.scss`; the guard test covers only `_wp-look.scss`. The
+overrides were written for the pinned `@wordpress/dataviews` version. See "Styling scope" in the
 [React README](../../src/Views/Components/ListTable/README.MD).
 
 ## Switch to Legacy View

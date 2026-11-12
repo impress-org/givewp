@@ -15,7 +15,8 @@
 
     &__toggle.components-button {
         padding-inline: var(--givewp-spacing-3);
-        // 32 px chip minus the two 1 px borders.
+        // A 32 px chip is this plus the two 1 px borders. At 782 px and below the toggle is 40 px, so the
+        // chip is 42 px.
         min-block-size: 1.875rem;
         // A long value is cut here. The tooltip holds the full text.
         max-inline-size: 16rem;
