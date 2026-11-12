@@ -1,6 +1,7 @@
 // Vendor dependencies
 import { useState } from 'react';
 import moment from 'moment';
+import { getSettings } from '@wordpress/date';
 
 // react-dates dependencies
 import 'react-dates/initialize';
@@ -11,8 +12,11 @@ import 'react-dates/lib/css/_datepicker.css';
 import { useStoreValue } from '../../store';
 import { setDates, setRange } from '../../store/actions';
 
+import { phpToMomentDateFormat } from '@givewp/src/Admin/common/phpToMomentDateFormat';
 import './style.scss';
 import { __ } from '@wordpress/i18n';
+
+const getDisplayFormat = () => phpToMomentDateFormat( getSettings().formats.date );
 
 const PeriodSelector = () => {
 	// Get 'period' object from the store
@@ -51,6 +55,10 @@ const PeriodSelector = () => {
 					} }
 					isOutsideRange={ day => ( moment().diff( day ) < 0 ) }
 					numberOfMonths={ 1 }
+					startDatePlaceholderText={ __( 'Start Date', 'give' ) }
+					endDatePlaceholderText={ __( 'End Date', 'give' ) }
+					weekDayFormat="ddd"
+					displayFormat={ getDisplayFormat }
 					initialVisibleMonth={
 						() => {
 							if ( focusedInput === 'endDate' ) {
