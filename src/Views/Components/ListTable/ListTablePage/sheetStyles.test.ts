@@ -56,6 +56,11 @@ describe('list sheet styles', () => {
         expect(page.match(/65px/g)).toHaveLength(1);
     });
 
+    it('leaves 24px under the sheet on the full page, and none when embedded', () => {
+        expect(block(page, '.page')).toContain('padding-block-end: var(--givewp-spacing-6)');
+        expect(block(page, '.pageEmbedded')).toContain('padding-block-end: 0');
+    });
+
     it('does not fill the viewport when embedded in another page', () => {
         expect(block(page, '.pageEmbedded')).toContain('min-block-size: auto');
     });
