@@ -12,6 +12,7 @@ describe('list table tokens', () => {
         ['secondary text on white', T('text-secondary'), '#ffffff', 4.5],
         ['secondary text on hover row', T('text-secondary'), T('row-hover'), 4.5],
         ['control edge on white (UI edge)', T('control-edge'), '#ffffff', 3],
+        ['tag text on the neutral status fill', T('tag-text'), T('status-neutral-bg'), 4.5],
         ['test badge text on its fill', T('text'), T('test-badge-bg'), 4.5],
         ['test badge edge on white (UI edge)', T('test-badge-edge'), '#ffffff', 3],
     ])('%s passes', (_label, fg, bg, minimum) => {

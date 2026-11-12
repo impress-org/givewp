@@ -223,8 +223,8 @@ export default function DonationsListTable() {
                     aria-label={__('Learn about Manual Donations add-on (opens in new tab)', 'give')}
                     aria-describedby="manual-donations-tooltip"
                 >
-                    <span className={styles.manualDonationsAddOn}>{__('ADD-ON', 'give')}</span>
                     {__('Enter donations', 'give')}
+                    <span className={styles.manualDonationsAddOn}>{__('Add-on', 'give')}</span>
                     <span id="manual-donations-tooltip" className={styles.manualDonationsMessage}>
                         <img
                             src={`${window.GiveDonations.pluginUrl}build/assets/dist/images/admin/triangle-tip.svg`}
