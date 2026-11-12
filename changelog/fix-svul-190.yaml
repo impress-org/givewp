@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Improved Stripe account data security in the Visual Form Builder. Reported by Pasi Nuwan Senevi.
+timestamp: 2026-11-12T23:31:27.262Z
