@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Resolved an issue where the admin bar's New > Campaign item opened the
+  option-based form editor instead of the create campaign screen
+timestamp: 2026-10-18T16:42:01.950Z
