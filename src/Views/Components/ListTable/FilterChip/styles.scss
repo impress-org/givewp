@@ -1,3 +1,5 @@
+@use '../layout/breakpoints' as *;
+
 .givewp-filter-chip {
     display: inline-flex;
     align-items: center;
@@ -21,6 +23,11 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         font-size: 0.8125rem;
+
+        // A 40 px target on a phone.
+        @media (max-width: $givewp-list-table-narrow) {
+            min-block-size: 2.5rem;
+        }
     }
 
     &__remove.components-button {
@@ -30,6 +37,11 @@
         margin-inline-end: var(--givewp-spacing-1);
         padding: 0;
         color: var(--givewp-list-table-text);
+
+        @media (max-width: $givewp-list-table-narrow) {
+            min-inline-size: 2.5rem;
+            min-block-size: 2.5rem;
+        }
     }
 
     // The popover content sits outside the chip, so it is styled by its own class.

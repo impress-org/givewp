@@ -1,3 +1,5 @@
+@use '../layout/breakpoints' as *;
+
 .givewp-list-table-search {
     // A set width, so a long hint wraps under the box and does not make the box wider.
     inline-size: 32rem;
@@ -5,7 +7,7 @@
     min-inline-size: 16rem;
 
     // Full width on a phone.
-    @media (max-width: 782px) {
+    @media (max-width: $givewp-list-table-narrow) {
         inline-size: 100%;
         min-inline-size: 0;
     }
@@ -23,6 +25,11 @@
     &__control input[type='search'] {
         border: 1px solid var(--givewp-list-table-control-edge);
         background: #fff;
+
+        // A 40 px target on a phone.
+        @media (max-width: $givewp-list-table-narrow) {
+            min-block-size: 2.5rem;
+        }
     }
 
     &__hint-row {

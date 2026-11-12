@@ -33,4 +33,15 @@ describe('list table styles', () => {
 
         expect(source).toContain('.components-input-control__label');
     });
+
+    it('use the shared narrow breakpoint, never a literal width', () => {
+        const sources = ['ListTableSearch', 'FilterChip'].map((folder) =>
+            readFileSync(join(SHARED_DIR, folder, 'styles.scss'), 'utf8')
+        );
+
+        sources.forEach((source) => {
+            expect(source).toContain('$givewp-list-table-narrow');
+            expect(source).not.toContain('782px');
+        });
+    });
 });
