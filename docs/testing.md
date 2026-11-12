@@ -252,8 +252,9 @@ new, and a branch the bot already packaged is not built twice. Pull requests fro
 preview, because they cannot see the bucket credentials. The caller passes the bucket secrets one by
 one, because `secrets: inherit` does not work across organizations. The toolbox's
 [playground-preview README](https://github.com/stellarwp/plugin-toolbox/blob/main/.github/actions/playground-preview/README.md)
-describes every input and the blueprint rules. The caller uses `@main`, so a change merged in the
-toolbox reaches the next GiveWP run.
+describes every input and the blueprint rules. The caller pins a toolbox
+commit, like GiveWP's other toolbox calls, so a toolbox change reaches GiveWP when that commit is
+bumped.
 
 While the zip builds, the same comment says "building", so the links of an older push are never left
 on the pull request. If the build fails, it says "failed" with a link to the run. When the build is

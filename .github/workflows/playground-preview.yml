@@ -28,7 +28,9 @@ jobs:
         permissions:
             contents: read
             pull-requests: write
-        uses: stellarwp/plugin-toolbox/.github/workflows/playground-preview.yml@main
+        # Pinned to a commit, like the other plugin-toolbox calls. Switch to @v1 once plugin-toolbox
+        # publishes a release. To take a toolbox change, bump the commit here.
+        uses: stellarwp/plugin-toolbox/.github/workflows/playground-preview.yml@2a409f7161ce1518dca9b82c5ef302b81293f835
         with:
             # GiveWP supports PHP 7.4 and up, so the vendor directory has to be built on 7.4.
             php-version: '7.4'
