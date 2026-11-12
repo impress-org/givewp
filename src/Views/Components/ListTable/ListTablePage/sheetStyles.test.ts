@@ -73,7 +73,6 @@ describe('list sheet styles', () => {
         expect(block(page, '.sheet')).toContain('gap: var(--givewp-spacing-3)');
         expect(content).toContain('gap: var(--givewp-spacing-3)');
         expect(content).toContain('padding-block: 0');
-        expect(content).not.toContain('padding-block-start');
         expect(block(page, '.pageContent')).toContain('padding: var(--givewp-spacing-6)');
         expect(content).toMatch(/\.givewp-list-table__toolbar\)\s*\{\s*padding-block-start: 0;/);
     });
