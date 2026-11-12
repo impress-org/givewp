@@ -4,7 +4,6 @@ import {donationRowActions, isDonationsTrashView} from './DonationRowActions';
 import {setStatusRowAction} from '@givewp/components/ListTable/rowActions/setStatusRowAction';
 import {idsOf} from '@givewp/components/ListTable/adapters/idsOf';
 import ListTableApi from '@givewp/components/ListTable/api';
-import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import styles from './ListTable.module.scss';
 import {BulkActionsConfig, ListTableRowAction, StatConfig} from '@givewp/components/ListTable/ListTablePage';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
@@ -210,7 +209,7 @@ export default function DonationsListTable() {
         >
             {window.GiveDonations.manualDonations ? (
                 <a
-                    className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
+                    className="button button-tertiary"
                     href={`${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-manual-donation`}
                     aria-label={__('Create a new donation record', 'give')}
                 >
@@ -218,7 +217,7 @@ export default function DonationsListTable() {
                 </a>
             ) : (
                 <a
-                    className={`button button-tertiary ${tableStyles.secondaryActionButton} ${styles.manualDonationsNotice}`}
+                    className={`button button-tertiary ${styles.manualDonationsNotice}`}
                     href={'https://docs.givewp.com/enterdonation'}
                     target={'_blank'}
                     aria-label={__('Learn about Manual Donations add-on (opens in new tab)', 'give')}
@@ -239,7 +238,7 @@ export default function DonationsListTable() {
                 </a>
             )}
             <a
-                className={`button button-primary ${tableStyles.primaryActionButton}`}
+                className="button button-primary"
                 href={` ${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations`}
                 aria-label={__('Import donations from external source', 'give')}
             >
