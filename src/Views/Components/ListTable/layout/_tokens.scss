@@ -19,6 +19,10 @@
         --givewp-list-table-action-tint: color-mix(in srgb, var(--wp-admin-theme-color, #3858e9) 8%, #fff);
     }
 
+    // The test mode badge: an outline, text on fill.
+    --givewp-list-table-test-badge-edge: #996800;
+    --givewp-list-table-test-badge-bg: #fcf9e8;
+
     // Status badges: text on fill.
     --givewp-list-table-status-success-text: #0a400b;
     --givewp-list-table-status-success-bg: #cef2cf;

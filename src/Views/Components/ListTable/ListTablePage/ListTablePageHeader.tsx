@@ -57,8 +57,8 @@ export default function ListTablePageHeader({
     availableFilterIds,
     onChangeFilters,
 }: ListTablePageHeaderProps) {
-    /* translators: %s: the screen's title (for example "Donors") */
     const switchId = `givewp-test-mode-switch-${useInstanceId(ListTablePageHeader)}`;
+    /* translators: %s: the screen's title (for example "Donors") */
     const statsLabel = sprintf(__('%s statistics', 'give'), title);
 
     return (

@@ -38,6 +38,24 @@ describe('ListTablePageHeader', () => {
         expect(toggle.checked).toBe(false);
         expect(header.textContent).toContain('View test donations');
         expect(container.querySelector('[class*="filtersRow"]')).toBeNull();
+
+        const label = header.querySelector(`label[for="${toggle.id}"]`) as HTMLLabelElement;
+
+        expect(toggle.id).not.toBe('');
+        expect(label.textContent).toBe('View test donations');
+    });
+
+    it('checks the switch while test mode is on', async () => {
+        await render(
+            <ListTablePageHeader
+                title="Donations"
+                testMode
+                onChangeTestMode={jest.fn()}
+                testModeToggle={testModeToggle}
+            />
+        );
+
+        expect((container.querySelector('input[role="switch"]') as HTMLInputElement).checked).toBe(true);
     });
 
     it('calls onChangeTestMode with the new value', async () => {

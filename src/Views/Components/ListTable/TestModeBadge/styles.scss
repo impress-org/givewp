@@ -4,9 +4,9 @@
     align-items: center;
     gap: var(--givewp-spacing-1);
     padding: var(--givewp-spacing-1) var(--givewp-spacing-2);
-    border: 1px solid #996800; // The WP warning edge, 3:1 on the fill.
+    border: 1px solid var(--givewp-list-table-test-badge-edge);
     border-radius: 2px;
-    background: #fcf9e8;
+    background: var(--givewp-list-table-test-badge-bg);
     color: var(--givewp-list-table-text);
     font-size: 0.8125rem;
     font-weight: 500;
