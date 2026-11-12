@@ -80,7 +80,6 @@ Components added for the A+ look:
 
 Open items for the owner:
 
-- Where the test-mode switch sits in the header.
 - The upgrade tile is left unchanged.
 - The `#ff7b42` highlight is skipped.
 
