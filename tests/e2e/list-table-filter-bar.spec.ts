@@ -19,15 +19,23 @@ test.describe('Filter bar layout', () => {
             await addFilter(page, 'Donation date');
             await page.keyboard.press('Escape');
 
-            const bar = filterBar(page);
             await expect(chip(page, 'Status')).toContainText('Completed');
+
+            const group = filterBar(page);
+            const add = await group.locator('.givewp-list-table-filters__add').boundingBox();
+            const lastChip = await group.locator('.givewp-list-table-filters__item').last().boundingBox();
+
+            // "Add filter" is on the last chip's line or below it ...
+            expect(add!.y).toBeGreaterThanOrEqual(lastChip!.y - 1);
+            // ... and when they share a line it comes after the chip, on the inline-end side (LTR).
+            if (Math.abs(add!.y - lastChip!.y) <= 1) {
+                expect(add!.x).toBeGreaterThanOrEqual(lastChip!.x + lastChip!.width);
+            }
+
+            // The group never overflows its own box, and the page never scrolls sideways.
+            const fits = await group.evaluate((element) => element.scrollWidth <= element.clientWidth);
+            expect(fits).toBe(true);
             expect(await pageOverflows(page)).toBe(false);
-
-            const add = await bar.locator('.givewp-list-table-filters__add').boundingBox();
-            const lastChip = await bar.locator('.givewp-list-table-filters__item').last().boundingBox();
-
-            // "Add filter" is on or below the last chip's line.
-            expect(add!.y + add!.height).toBeGreaterThanOrEqual(lastChip!.y);
         });
     }
 
