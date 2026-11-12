@@ -68,6 +68,7 @@ The A+ look is kept small and in a few known places. Keep it that way.
 - **Narrow screens.** Our own search input, chip toggle and chip remove button are 40 px tall at 782
   px and below (`$givewp-list-table-narrow`). The chip itself is 42 px tall there, because of its 1 px
   border. Stock buttons and selects are not changed.
+- **Filter bar height.** "Add filter" and "Reset" (stock buttons) are 32 px tall above 782 px, so the chips, the buttons and the search box share one 32 px line. At 782 px and below they keep the stock size.
 
 Components added for the A+ look:
 

@@ -97,9 +97,9 @@ export const ShowConfirmModalContext = createContext(
 );
 
 /**
- * The page shell every admin list screen renders through: the Give page header and stats, and the
- * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
- * as before the engine change, so every screen and add-on keeps rendering without changes.
+ * The page shell every admin list screen renders through: the Give page header, and the list
+ * itself (with its stat tiles at the top of the sheet) through the WordPress list engine
+ * (`@wordpress/dataviews`). It accepts the same props as before the engine change, so every screen and add-on keeps rendering without changes.
  *
  * @since TBD Add `legacyView`: "Switch to Legacy View" in the list's "More view options" menu.
  * @since TBD At 782 px and below, show the records as cards built from the screen's field roles.
