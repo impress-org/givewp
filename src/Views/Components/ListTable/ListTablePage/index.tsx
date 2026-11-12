@@ -9,6 +9,8 @@ import ListTableEmptyState from '../EmptyStates';
 import ListTableFilters from '../ListTableFilters';
 import ListTableNoticeArea from '../ListTableNoticeArea';
 import ListTableSearch from '../ListTableSearch';
+import SearchHint from '../ListTableSearch/SearchHint';
+import useSearchHint from '../ListTableSearch/useSearchHint';
 import ListTableViewMenu from '../ListTableViewMenu';
 import ResultCountStatus from '../ResultCountStatus';
 import {isBarFilter} from '../filters/filterKinds';
@@ -278,6 +280,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         });
 
         const searchDeclaration = declarations.find(isSearch);
+        const searchHint = useSearchHint(searchDeclaration?.hint ?? '');
         // Reset shows only when the view differs from the screen's defaults, so an untouched view on a
         // test site (test mode on by default) offers no Reset, and Reset puts the defaults back instead
         // of turning test mode off. An added filter with no value yet counts.
@@ -480,13 +483,14 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                                     <div ref={searchBoxRef}>
                                         <ListTableSearch
                                             label={searchDeclaration.label}
-                                            hint={searchDeclaration.hint}
+                                            describedBy={searchHint.describedBy}
                                             value={view.search ?? ''}
                                             onChange={(term) => onChangeView({...view, search: term})}
                                         />
                                     </div>
                                 )
                             }
+                            searchHint={searchHint.hint && <SearchHint {...searchHint.hint} />}
                             filterBar={
                                 <ListTableFilters
                                     declarations={declarations.filter(isBarFilter)}

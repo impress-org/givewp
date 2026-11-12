@@ -1,7 +1,9 @@
 import {act, startTransition, Suspense, useState} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
-import ListTableSearch from './index';
+import ListTableSearch, {type ListTableSearchProps} from './index';
+import SearchHint from './SearchHint';
 import {shortHint} from './shortHint';
+import useSearchHint from './useSearchHint';
 
 (globalThis as {IS_REACT_ACT_ENVIRONMENT?: boolean}).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -9,18 +11,33 @@ let container: HTMLDivElement;
 let root: Root;
 const onChange = jest.fn();
 
-const render = (props: Partial<React.ComponentProps<typeof ListTableSearch>> = {}) =>
-    act(() =>
-        root.render(
-            <ListTableSearch
-                label="Search donors"
-                hint="Searches name and email."
-                value=""
-                onChange={onChange}
-                {...props}
-            />
-        )
+type HarnessProps = Partial<ListTableSearchProps> & {hint?: string};
+
+/**
+ * The search box and its hint as the list places them: the box in the toolbar row, other controls
+ * after it, and the hint under the row.
+ */
+function Harness({hint = 'Searches name and email.', ...props}: HarnessProps) {
+    const searchHint = useSearchHint(hint);
+
+    return (
+        <>
+            <div className="row">
+                <ListTableSearch
+                    label="Search donors"
+                    value=""
+                    onChange={onChange}
+                    describedBy={searchHint.describedBy}
+                    {...props}
+                />
+                <button type="button">Status</button>
+            </div>
+            {searchHint.hint && <SearchHint {...searchHint.hint} />}
+        </>
     );
+}
+
+const render = (props: HarnessProps = {}) => act(() => root.render(<Harness {...props} />));
 
 const input = () => container.querySelector<HTMLInputElement>('input')!;
 
@@ -63,6 +80,13 @@ describe('ListTableSearch', () => {
         const hint = document.getElementById(input().getAttribute('aria-describedby') ?? '');
 
         expect(hint?.textContent).toBe('Searches name and email.');
+    });
+
+    it('renders only the box: the hint is placed apart, under the row', async () => {
+        await render();
+
+        expect(container.querySelector('.givewp-list-table-search .givewp-list-table-search__hint')).toBeNull();
+        expect(container.querySelector('.row + .givewp-list-table-search__hint-row')).not.toBeNull();
     });
 
     it('calls onChange once after typing stops', async () => {
@@ -127,7 +151,7 @@ describe('ListTableSearch', () => {
             update = setState;
             return (
                 <Suspense fallback={null}>
-                    <ListTableSearch label="Search donors" hint="" value="" onChange={state.callback} />
+                    <ListTableSearch label="Search donors" value="" onChange={state.callback} />
                     <Gate suspend={state.suspend} />
                 </Suspense>
             );

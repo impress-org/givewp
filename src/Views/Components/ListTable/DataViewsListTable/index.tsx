@@ -29,7 +29,7 @@ export type ListTableLayoutMode = 'wide' | 'narrow';
  * @since TBD Add the `viewMenu` slot.
  * @since TBD Add `layoutMode`.
  * @since TBD Drop `search` and `searchLabel`: the search box and the filter bar are always Give's.
- * @since TBD Add the `searchBox` and `filterBar` slots.
+ * @since TBD Add the `searchBox`, `searchHint` and `filterBar` slots.
  * @since TBD
  */
 export interface DataViewsListTableProps {
@@ -50,6 +50,8 @@ export interface DataViewsListTableProps {
     onResetLayout?: () => void;
     /** Give's labeled search box, in place of the DataViews one. None when the list has no search. */
     searchBox?: ReactNode;
+    /** The search box's hint line, under the search and the filters. Hidden with the search box. */
+    searchHint?: ReactNode;
     /** Give's filter bar, in place of the DataViews filter toggle and filter row. */
     filterBar?: ReactNode;
     /** `narrow` shows the cards (the view must be a grid view). Default `wide`. */
@@ -219,6 +221,7 @@ function ListTableLayout({
     isDefaultLayout,
     onResetLayout,
     searchBox,
+    searchHint,
     filterBar,
     layoutMode,
     viewMenu,
@@ -231,6 +234,7 @@ function ListTableLayout({
     isDefaultLayout: boolean;
     onResetLayout?: () => void;
     searchBox?: ReactNode;
+    searchHint?: ReactNode;
     filterBar?: ReactNode;
     layoutMode: ListTableLayoutMode;
     viewMenu?: ReactNode;
@@ -261,6 +265,7 @@ function ListTableLayout({
                 {filterBar}
                 {!isNarrow && viewControls}
             </div>
+            {!hasSelection && searchHint}
             {isNarrow && viewControls && <div className="givewp-list-table__view-controls-row">{viewControls}</div>}
             <DataViews.Layout />
             <ListTableFooter
@@ -282,7 +287,7 @@ function ListTableLayout({
  * @since TBD Add `layoutMode`: the cards at 782 px and below, the table above.
  * @since TBD Add the `--more-start` and `--more-end` modifiers while the list hides content at that edge.
  * @since TBD Drop `search` and `searchLabel`; DataViews' own search is always off.
- * @since TBD Accept the `searchBox` and `filterBar` slots.
+ * @since TBD Accept the `searchBox`, `searchHint` and `filterBar` slots.
  * @since TBD
  */
 export default function DataViewsListTable({
@@ -300,6 +305,7 @@ export default function DataViewsListTable({
     isDefaultLayout = true,
     onResetLayout,
     searchBox,
+    searchHint,
     filterBar,
     layoutMode = 'wide',
     viewMenu,
@@ -354,6 +360,7 @@ export default function DataViewsListTable({
                         isDefaultLayout={isDefaultLayout}
                         onResetLayout={onResetLayout}
                         searchBox={searchBox}
+                        searchHint={searchHint}
                         filterBar={filterBar}
                         layoutMode={layoutMode}
                         viewMenu={viewMenu}

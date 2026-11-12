@@ -9,14 +9,14 @@ export interface SearchHintProps {
     id: string;
     /** Id of the screen reader copy of the full rule. */
     ruleId: string;
-    /** The short line under the box. */
+    /** The short line. */
     text: string;
     /** The full rule, when the hint has more than the short line. */
     fullRule?: string;
 }
 
 /**
- * The line under the search box. When there is a full rule, a help button shows it in a popover, and
+ * The hint line of the search box, placed under the toolbar row. When there is a full rule, a help button shows it in a popover, and
  * a screen reader copy of it describes the input.
  *
  * @since TBD

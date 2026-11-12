@@ -1,8 +1,6 @@
-import {useCallback, useEffect, useId, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {SearchControl} from '@wordpress/components';
 import {useDebounce} from '@wordpress/compose';
-import SearchHint from './SearchHint';
-import {shortHint} from './shortHint';
 import './styles.scss';
 
 /**
@@ -11,8 +9,8 @@ import './styles.scss';
 export interface ListTableSearchProps {
     /** Visible label of the box. */
     label: string;
-    /** Names the fields searched and how they match. Empty hides it (legacy screens). */
-    hint: string;
+    /** The id of the hint that describes the box (see `useSearchHint`). None on legacy screens. */
+    describedBy?: string;
     /** The search term in the view. */
     value: string;
     /** Called once, a moment after typing stops. */
@@ -22,15 +20,14 @@ export interface ListTableSearchProps {
 const DEBOUNCE_MS = 300;
 
 /**
- * The list search box. It keeps what the admin types, reports the term after a short pause, and
- * follows the view when the term changes from outside (for example a reset).
+ * The labeled list search box. It keeps what the admin types, reports the term after a short pause, and
+ * follows the view when the term changes from outside (for example a reset). Its hint is a separate
+ * piece (`SearchHint`), placed under the toolbar row.
  *
  * @since TBD
  */
-export default function ListTableSearch({label, hint, value, onChange}: ListTableSearchProps) {
+export default function ListTableSearch({label, describedBy, value, onChange}: ListTableSearchProps) {
     const [text, setText] = useState(value);
-    const hintId = useId();
-    const ruleId = useId();
     // The debounced call must keep a stable identity, or a parent re-render would cancel a pending search.
     const onChangeRef = useRef(onChange);
     const lastReported = useRef(value);
@@ -64,12 +61,6 @@ export default function ListTableSearch({label, hint, value, onChange}: ListTabl
         reportChange(next);
     };
 
-    // A long hint shows only its first sentence, so the input is described by the full rule instead.
-    const rule = hint.trim();
-    const short = shortHint(rule);
-    const fullRule = short !== rule ? rule : undefined;
-    const describedBy = rule ? (fullRule ? ruleId : hintId) : undefined;
-
     return (
         <div className="givewp-list-table-search">
             <SearchControl
@@ -81,7 +72,6 @@ export default function ListTableSearch({label, hint, value, onChange}: ListTabl
                 onChange={handleChange}
                 __nextHasNoMarginBottom
             />
-            {rule && <SearchHint id={hintId} ruleId={ruleId} text={short} fullRule={fullRule} />}
         </div>
     );
 }

@@ -182,6 +182,37 @@ describe('ListTablePage layout', () => {
     });
 });
 
+describe('ListTablePage search hint', () => {
+    const rule = 'Searches donor name or ID. An ID matches exactly.';
+    const withHint: ListTablePageProps = {
+        ...props,
+        filters: [
+            {kind: 'search', id: 'search', label: 'Search donations', hint: rule, parameter: 'search'},
+            ...(cardProps.filters ?? []).filter((filter) => filter.kind !== 'search'),
+        ],
+    };
+    const input = () => container.querySelector<HTMLInputElement>('.givewp-list-table-search input');
+
+    it('places the hint after the filter bar and keeps it describing the search input', async () => {
+        await act(() => root.render(<ListTablePage {...withHint} />));
+
+        const hintRow = container.querySelector('.givewp-list-table-search__hint-row');
+        const described = document.getElementById(input()?.getAttribute('aria-describedby') ?? '');
+
+        expect(container.querySelector('.givewp-list-table-search .givewp-list-table-search__hint-row')).toBeNull();
+        expect(follows(container.querySelector('.givewp-list-table-filters'), hintRow)).toBe(true);
+        expect(described?.textContent).toBe(rule);
+        expect(hintRow?.contains(described)).toBe(true);
+    });
+
+    it('renders no hint and no description for an empty hint (legacy screens)', async () => {
+        await act(() => root.render(<ListTablePage {...props} />));
+
+        expect(container.querySelector('.givewp-list-table-search__hint-row')).toBeNull();
+        expect(input()?.hasAttribute('aria-describedby')).toBe(false);
+    });
+});
+
 describe('ListTablePage narrow layout', () => {
     beforeEach(() => {
         mockData = {
