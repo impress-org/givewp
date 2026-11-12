@@ -1,58 +1,31 @@
 import type {View} from '@wordpress/dataviews';
 import type {FilterConfig} from '../ListTablePage/types';
-import {filterByValues, filterFieldId, isApplied, snapPerPage, viewToParameters} from './viewToParameters';
+import {filterSettingsToDeclarations} from '../filters/legacyFilterSettings';
+import type {FilterDeclaration} from '../filters/types';
+import {filterFieldId, isApplied, snapPerPage, viewToParameters} from './viewToParameters';
 
-const donationFilters: FilterConfig[] = [
-    {name: 'campaignId', type: 'campaignselect', options: [{value: 'none', text: 'No campaign'}]},
-    {name: 'formId', type: 'formselect'},
-    {name: 'search', type: 'search'},
-    {name: 'toggle', type: 'checkbox', text: 'Test'},
-    {name: 'donor', type: 'hidden'},
+const donationFilters: FilterDeclaration[] = [
+    {kind: 'search', id: 'search', label: 'Search donations', hint: '', parameter: 'search'},
     {
-        name: 'filterBy',
-        type: 'filterby',
-        groupedOptions: [
-            {
-                id: 'showTrashed',
-                apiParam: 'status',
-                name: 'Status',
-                type: 'toggle',
-                options: [{text: 'Show trashed', value: 'trash'}],
-            },
-            {
-                id: 'status',
-                apiParam: 'status',
-                name: 'Status',
-                type: 'checkbox',
-                isVisible: (values) => !values?.status?.includes('trash'),
-                options: [
-                    {text: 'Completed', value: 'publish'},
-                    {text: 'Pending', value: 'pending'},
-                ],
-            },
-            {
-                id: 'period',
-                apiParam: 'start',
-                name: 'Period',
-                type: 'radio',
-                options: [{text: 'Last 7 days', value: '2026-10-13'}],
-            },
-        ],
+        kind: 'entity',
+        id: 'campaign',
+        label: 'Campaign',
+        source: 'campaign',
+        multiple: true,
+        parameter: 'campaignId',
+        allowNone: true,
     },
-];
-
-const formFilters: FilterConfig[] = [
+    {kind: 'entity', id: 'donor', label: 'Donor', source: 'donor', multiple: false, parameter: 'donor'},
     {
-        name: 'status',
-        type: 'select',
-        options: [
-            {value: 'any', text: 'All'},
-            {value: 'trash', text: 'Trash'},
-        ],
+        kind: 'options',
+        id: 'status',
+        label: 'Status',
+        multiple: true,
+        options: 'statuses',
+        parameter: 'status',
+        exclusiveValues: ['trash'],
     },
-    {name: 'search', type: 'search'},
-    {name: 'campaign', type: 'campaignselect'},
-    {name: 'campaignId', type: 'hidden'},
+    {kind: 'date', id: 'date', label: 'Donation date', parameters: {start: 'start', end: 'end'}},
 ];
 
 const view = (overrides: Partial<View> = {}): View =>
@@ -92,15 +65,15 @@ describe('viewToParameters', () => {
                 sort: {field: 'amount', direction: 'asc'},
                 search: 'jane',
                 filters: [
-                    is('campaignId', 4),
+                    {field: filterFieldId('campaign'), operator: 'isAny', value: ['4']},
                     is('donor', '12'),
                     {field: filterFieldId('status'), operator: 'isAny', value: ['publish', 'pending']},
-                    is('period', '2026-10-13'),
+                    is('date', '2026-10-01_2026-10-15'),
                 ],
             }),
             donationFilters,
             {},
-            {locale: 'en-US', testMode: true}
+            {locale: 'en-US', testMode: true, today: '2026-10-28'}
         );
 
         expect(parameters).toEqual({
@@ -111,24 +84,16 @@ describe('viewToParameters', () => {
             locale: 'en-US',
             testMode: true,
             search: 'jane',
-            campaignId: 4,
+            campaignId: ['4'],
             donor: '12',
             status: ['publish', 'pending'],
-            start: ['2026-10-13'],
-        });
-    });
-
-    it('sends the first select option when the select filter is not applied, as the old default', () => {
-        expect(viewToParameters(view(), formFilters, {}, {locale: 'en-US'})).toMatchObject({status: 'any'});
-        expect(
-            viewToParameters(view({filters: [is('status', 'trash')]}), formFilters, {}, {locale: 'en-US'})
-        ).toMatchObject({
-            status: 'trash',
+            start: '2026-10-01T00:00:00',
+            end: '2026-10-15T23:59:59',
         });
     });
 
     it('merges the table scope into every request', () => {
-        expect(viewToParameters(view(), formFilters, {campaignId: 7}, {locale: 'en-US'})).toMatchObject({
+        expect(viewToParameters(view(), donationFilters, {campaignId: 7}, {locale: 'en-US'})).toMatchObject({
             campaignId: 7,
         });
     });
@@ -137,75 +102,59 @@ describe('viewToParameters', () => {
         expect(viewToParameters(view({perPage: 500}), [], {}, {locale: 'en-US'})).toMatchObject({perPage: 100});
     });
 
-    describe('a group with toApiValue', () => {
-        const periodFilters: FilterConfig[] = [
-            {
-                name: 'filterBy',
-                type: 'filterby',
-                groupedOptions: [
-                    {
-                        id: 'period',
-                        apiParam: 'start',
-                        name: 'Period',
-                        type: 'radio',
-                        options: [{text: 'Last 30 days', value: '30'}],
-                        toApiValue: (days, now) => new Date(now.getTime() - Number(days) * 86_400_000).toISOString(),
-                        isVisible: (values) => values.start?.[0] === '30',
-                    },
-                ],
-            },
-        ];
-        const now = new Date('2026-10-28T12:00:00.000Z');
-
-        it('sends the API value made from the option value and the given time', () => {
-            const parameters = viewToParameters(
-                view({filters: [is('period', '30')]}),
-                periodFilters,
+    it('gives the same parameters for the same view and day', () => {
+        const build = () =>
+            viewToParameters(
+                view({filters: [is('date', '30')]}),
+                donationFilters,
                 {},
-                {
-                    locale: 'en-US',
-                    now,
-                }
+                {locale: 'en-US', today: '2026-10-28'}
             );
 
-            expect(parameters.start).toEqual(['2026-09-28T12:00:00.000Z']);
-        });
-
-        it('gives the same parameters for the same view and time', () => {
-            const build = () =>
-                viewToParameters(view({filters: [is('period', '30')]}), periodFilters, {}, {locale: 'en-US', now});
-
-            expect(build()).toEqual(build());
-        });
-
-        it('keeps the option values for the isVisible rules and chips', () => {
-            expect(filterByValues(view({filters: [is('period', '30')]}), periodFilters)).toEqual({start: ['30']});
-        });
-    });
-});
-
-describe('filterByValues', () => {
-    it('adds groups that share an API parameter to one array', () => {
-        const values = filterByValues(
-            view({filters: [is('showTrashed', 'trash'), {field: filterFieldId('period'), operator: 'is', value: 'x'}]}),
-            donationFilters
-        );
-
-        expect(values).toEqual({status: ['trash'], start: ['x']});
+        expect(build()).toEqual(build());
     });
 
-    it('drops the values of a group the current values hide', () => {
-        const values = filterByValues(
-            view({
-                filters: [
-                    is('showTrashed', 'trash'),
-                    {field: filterFieldId('status'), operator: 'isAny', value: ['publish']},
+    describe('an add-on screen that passes only the old filter settings', () => {
+        // The shape an add-on passed before filter declarations existed.
+        const settings: FilterConfig[] = [
+            {name: 'campaignId', type: 'campaignselect', options: [{value: 'none', text: 'No campaign'}]},
+            {name: 'search', type: 'search', text: 'Search'},
+            {
+                name: 'status',
+                type: 'select',
+                text: 'Status',
+                options: [
+                    {value: 'any', text: 'All'},
+                    {value: 'active', text: 'Active'},
                 ],
-            }),
-            donationFilters
-        );
+            },
+            {name: 'toggle', type: 'checkbox', text: 'Test'},
+        ];
+        const {filters} = filterSettingsToDeclarations(settings, false);
 
-        expect(values).toEqual({status: ['trash']});
+        it('sends the first select option while the select is not applied, as the old default', () => {
+            expect(viewToParameters(view(), filters, {}, {locale: 'en-US'})).toMatchObject({status: 'any'});
+        });
+
+        it('sends the old parameter names with the chosen values', () => {
+            const parameters = viewToParameters(
+                view({
+                    search: 'jane',
+                    filters: [is('campaignId', '4'), is('status', 'active')],
+                }),
+                filters,
+                {},
+                {locale: 'en-US', testMode: true}
+            );
+
+            expect(parameters).toMatchObject({campaignId: '4', status: 'active', search: 'jane', testMode: true});
+        });
+
+        it('sends "No campaign" as none', () => {
+            expect(
+                viewToParameters(view({filters: [is('campaignId', 'none')]}), filters, {}, {locale: 'en-US'})
+            ).toMatchObject({campaignId: 'none'});
+        });
     });
 });
 

@@ -9,9 +9,12 @@ use Give\Campaigns\ListTable\Columns\RevenueColumn;
 use Give\Campaigns\ListTable\Columns\StatusColumn;
 use Give\Campaigns\ListTable\Columns\TitleColumn;
 use Give\Framework\ListTable\ListTable;
+use Give\Framework\ListTable\StatusVocabulary;
+use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
+ * @since TBD Send the status vocabulary.
  * @since 4.0.0
  */
 class CampaignsListTable extends ListTable
@@ -65,5 +68,13 @@ class CampaignsListTable extends ListTable
             //EndDateColumn::getId(),
             StatusColumn::getId(),
         ];
+    }
+
+    /**
+     * @since TBD
+     */
+    protected function statuses(): ?StatusVocabulary
+    {
+        return CampaignStatus::vocabulary();
     }
 }

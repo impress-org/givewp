@@ -8,6 +8,8 @@ import ListTableViewReset from '../ListTableViewReset';
 import './styles.scss';
 
 /**
+ * @since TBD Drop `search` and `searchLabel`: the search box and the filter bar are always Give's.
+ * @since TBD Add the `searchBox` and `filterBar` slots.
  * @since TBD
  */
 export interface DataViewsListTableProps {
@@ -22,12 +24,14 @@ export interface DataViewsListTableProps {
     onChangeSelection: (ids: string[]) => void;
     empty: ReactNode;
     perPageSizes: number[];
-    search: boolean;
-    searchLabel?: string;
     /** True while the layout is the screen default. Hides "Reset view". */
     isDefaultLayout?: boolean;
     /** Puts the layout back to the screen defaults. Without it there is no "Reset view". */
     onResetLayout?: () => void;
+    /** Give's labeled search box, in place of the DataViews one. None when the list has no search. */
+    searchBox?: ReactNode;
+    /** Give's filter bar, in place of the DataViews filter toggle and filter row. */
+    filterBar?: ReactNode;
 }
 
 const getItemId = (item: ListTableItem) => String(item.id);
@@ -106,8 +110,12 @@ function ListTableFooter({
  * The stock DataViews layout, with three changes: the footer shows the total row count; while rows are selected, the bulk actions also take
  * the place of the search row above the table, so they show where the selection starts (the stock
  * footer keeps its own copy next to the pagination); and a "Reset view" button sits after the view
- * options, which this DataViews version does not offer.
+ * options, which this DataViews version does not offer. Give's search box and filter bar always take
+ * the place of the stock search and filter row.
  *
+ * @since TBD Always render the `searchBox` and `filterBar` slots; no stock search or filter row.
+ * @since TBD Show the view options on the filter bar's row instead of next to the search box.
+ * @since TBD Render the `searchBox` and `filterBar` slots in place of the stock search and filters.
  * @since TBD
  */
 function ListTableLayout({
@@ -116,20 +124,20 @@ function ListTableLayout({
     totalItems,
     totalPages,
     hasSelection,
-    search,
-    searchLabel,
     isDefaultLayout,
     onResetLayout,
+    searchBox,
+    filterBar,
 }: {
     actions: Action<ListTableItem>[];
     data: ListTableItem[];
     totalItems: number;
     totalPages: number;
     hasSelection: boolean;
-    search: boolean;
-    searchLabel?: string;
     isDefaultLayout: boolean;
     onResetLayout?: () => void;
+    searchBox?: ReactNode;
+    filterBar?: ReactNode;
 }) {
     return (
         <>
@@ -138,19 +146,22 @@ function ListTableLayout({
                     <DataViews.BulkActionToolbar />
                 </HStack>
             ) : (
-                <HStack alignment="top" justify="space-between" className="dataviews__view-actions" spacing={1}>
-                    <HStack justify="start" expanded={false} className="dataviews__search">
-                        {search && <DataViews.Search label={searchLabel} />}
-                        <DataViews.FiltersToggle />
+                <HStack alignment="top" justify="start" className="dataviews__view-actions" spacing={1}>
+                    <HStack justify="start" className="dataviews__search">
+                        {searchBox}
                     </HStack>
-                    <HStack spacing={1} expanded={false} style={{flexShrink: 0}}>
+                </HStack>
+            )}
+            <div className="givewp-list-table__filter-row">
+                {filterBar}
+                {!hasSelection && (
+                    <HStack spacing={1} expanded={false} className="givewp-list-table__view-controls">
                         <DataViews.LayoutSwitcher />
                         <DataViews.ViewConfig />
                         {onResetLayout && <ListTableViewReset isDefault={isDefaultLayout} onConfirm={onResetLayout} />}
                     </HStack>
-                </HStack>
-            )}
-            <DataViews.FiltersToggled className="dataviews-filters__container" />
+                )}
+            </div>
             <DataViews.Layout />
             <ListTableFooter
                 actions={actions}
@@ -167,6 +178,8 @@ function ListTableLayout({
  * Renders the stock DataViews table for an admin list screen. No data fetching and no
  * Give-specific behavior inside the DataViews area.
  *
+ * @since TBD Drop `search` and `searchLabel`; DataViews' own search is always off.
+ * @since TBD Accept the `searchBox` and `filterBar` slots.
  * @since TBD
  */
 export default function DataViewsListTable({
@@ -181,10 +194,10 @@ export default function DataViewsListTable({
     onChangeSelection,
     empty,
     perPageSizes,
-    search,
-    searchLabel,
     isDefaultLayout = true,
     onResetLayout,
+    searchBox,
+    filterBar,
 }: DataViewsListTableProps) {
     return (
         <div className={`givewp-list-table${selection.length > 0 ? ' givewp-list-table--has-selection' : ''}`}>
@@ -201,8 +214,7 @@ export default function DataViewsListTable({
                 onChangeSelection={onChangeSelection}
                 empty={empty}
                 config={{perPageSizes}}
-                search={search}
-                searchLabel={searchLabel}
+                search={false}
                 defaultLayouts={{table: {}}}
             >
                 <ListTableLayout
@@ -211,10 +223,10 @@ export default function DataViewsListTable({
                     totalItems={paginationInfo.totalItems}
                     totalPages={paginationInfo.totalPages}
                     hasSelection={selection.length > 0}
-                    search={search}
-                    searchLabel={searchLabel}
                     isDefaultLayout={isDefaultLayout}
                     onResetLayout={onResetLayout}
+                    searchBox={searchBox}
+                    filterBar={filterBar}
                 />
             </DataViews>
         </div>

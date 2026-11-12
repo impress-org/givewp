@@ -1,0 +1,6 @@
+significance: patch
+type: fix
+entry: Searching the Donors and Campaigns lists now respects the other filters,
+  such as status, campaign and date. The words a search matches have not
+  changed.
+timestamp: 2026-11-02T21:02:34.259Z

@@ -1,0 +1,46 @@
+.givewp-entity-filter-control {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-2);
+    min-inline-size: 16rem;
+    font-size: var(--givewp-font-size-paragraph-md);
+
+    &__options {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-2);
+        max-block-size: 16rem;
+        overflow-y: auto;
+        // Room for the focus ring, which the scroll container would otherwise clip.
+        padding: var(--givewp-spacing-1);
+        margin: calc(-1 * var(--givewp-spacing-1));
+    }
+
+    &__option {
+        margin: 0;
+    }
+
+    &__status {
+        display: flex;
+        align-items: center;
+        gap: var(--givewp-spacing-2);
+        color: var(--givewp-neutral-500);
+    }
+
+    &__error {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--givewp-spacing-2);
+        color: var(--givewp-red-700);
+    }
+
+    &__empty {
+        margin: 0;
+        color: var(--givewp-neutral-500);
+    }
+
+    &__more {
+        align-self: flex-start;
+    }
+}

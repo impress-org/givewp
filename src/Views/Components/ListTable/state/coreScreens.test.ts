@@ -1,6 +1,6 @@
 import {readdirSync, readFileSync, statSync} from 'fs';
 import {join, relative, resolve} from 'path';
-import type {FilterConfig} from '../ListTablePage/types';
+import type {FilterDeclaration} from '../filters/types';
 import {resolveScreenDefaults} from './screenDefaults';
 import {LIST_TABLE_SCREEN_KEYS} from './types';
 import type {ListTableScreen, ViewQueryContext} from './types';
@@ -15,7 +15,13 @@ const SHARED_DIR = resolve(__dirname, '..');
  * The window data each standalone screen reads while its module loads.
  */
 function stubWindowData() {
-    const screenData = {apiRoot: 'https://example.test/wp-json', apiNonce: 'nonce', pluginUrl: '', adminUrl: '', forms: []};
+    const screenData = {
+        apiRoot: 'https://example.test/wp-json',
+        apiNonce: 'nonce',
+        pluginUrl: '',
+        adminUrl: '',
+        forms: [],
+    };
 
     Object.assign(window, {
         GiveDonations: {...screenData, recurringDonationsEnabled: true},
@@ -28,10 +34,10 @@ function stubWindowData() {
     });
 }
 
-type ScreenModule = {filters: FilterConfig[]; screen: ListTableScreen};
+type ScreenModule = {declarations: FilterDeclaration[]; screen: ListTableScreen};
 
 /**
- * The real filter settings and screen config of every standalone core screen.
+ * The real filter declarations and screen config of every standalone core screen.
  */
 function standaloneScreens(): ScreenModule[] {
     stubWindowData();
@@ -39,28 +45,32 @@ function standaloneScreens(): ScreenModule[] {
     /* eslint-disable @typescript-eslint/no-var-requires */
     return [
         {
-            filters: require('@givewp/src/Donations/resources/components/DonationsListTable').filters,
+            declarations: require('@givewp/src/Donations/resources/components/filters').donationsFilters,
             screen: require('@givewp/src/Donations/resources/components/listTableScreen').default,
         },
         {
-            filters: require('@givewp/src/Donors/resources/components/DonorsListTable').donorsFilters,
+            declarations: require('@givewp/src/Donors/resources/components/filters').donorsFilters,
             screen: require('@givewp/src/Donors/resources/components/listTableScreen').default,
         },
         {
-            filters: require('@givewp/src/Subscriptions/resources/components/SubscriptionsListTable').filters,
+            declarations: require('@givewp/src/Subscriptions/resources/components/filters').subscriptionFilters,
             screen: require('@givewp/src/Subscriptions/resources/components/listTableScreen').default,
         },
         {
-            filters: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable').filters,
-            screen: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable/listTableScreen').default,
+            declarations: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable/filters')
+                .campaignFilters,
+            screen: require('@givewp/src/Campaigns/resources/admin/components/CampaignsListTable/listTableScreen')
+                .default,
         },
         {
-            filters: require('@givewp/src/DonationForms/V2/resources/components/DonationFormsListTable')
-                .donationFormsFilters,
+            declarations: require('@givewp/src/DonationForms/V2/resources/components/filters').donationFormFilters({
+                withCampaign: true,
+            }),
             screen: require('@givewp/src/DonationForms/V2/resources/components/listTableScreen').default,
         },
         {
-            filters: require('@givewp/src/EventTickets/resources/admin/components/EventTicketsListTable').filters,
+            declarations: require('@givewp/src/EventTickets/resources/admin/components/EventTicketsListTable/filters')
+                .eventTicketFilters,
             screen: require('@givewp/src/EventTickets/resources/admin/components/EventTicketsListTable/listTableScreen')
                 .default,
         },
@@ -68,11 +78,11 @@ function standaloneScreens(): ScreenModule[] {
     /* eslint-enable @typescript-eslint/no-var-requires */
 }
 
-function contextOf({filters, screen}: ScreenModule): ViewQueryContext {
+function contextOf({declarations, screen}: ScreenModule): ViewQueryContext {
     const columns = [{id: 'id', label: 'ID', sortable: true, visible: true}];
 
     return {
-        filterSettings: filters,
+        filters: declarations,
         sortableFields: ['id'],
         defaults: resolveScreenDefaults(screen, columns, undefined, {filters: []}),
         siteTestMode: false,

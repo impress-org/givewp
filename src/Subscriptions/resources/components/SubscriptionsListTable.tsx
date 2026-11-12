@@ -1,13 +1,12 @@
 import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
 import ListTableApi from '@givewp/components/ListTable/api';
-import {FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import {subscriptionsRowActions} from './SubscriptionsRowActions';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
-import filterByOptions from '../constants/filterByOptions';
 import listTableScreen from './listTableScreen';
+import {subscriptionFilters} from './filters';
 
 declare global {
     interface Window {
@@ -27,33 +26,6 @@ declare global {
 }
 
 const API = new ListTableApi(window.GiveSubscriptions);
-
-export const filters: Array<FilterConfig> = [
-    {
-        name: 'campaignId',
-        type: 'campaignselect',
-        text: __('Select Campaign', 'give'),
-        ariaLabel: __('filter subscriptions by campaign', 'give'),
-        options: window.GiveSubscriptions.forms,
-    },
-    {
-        name: 'search',
-        type: 'search',
-        text: __('Name, Email, or Subscription ID', 'give'),
-        ariaLabel: __('search subscriptions', 'give'),
-    },
-    {
-        name: 'toggle',
-        type: 'checkbox',
-        text: __('Test', 'give'),
-        ariaLabel: __('View Test Subscriptions', 'give'),
-    },
-    {
-        name: 'filterBy',
-        type: 'filterby',
-        groupedOptions: filterByOptions,
-    }
-];
 
 /**
  * Displays a blank slate for the Subscriptions table.
@@ -93,6 +65,12 @@ const statsConfig: Record<string, StatConfig> = {
 };
 
 /**
+ * The test-mode switch in the header and the "Test" badge next to the title.
+ */
+const testModeToggle = {label: __('Test', 'give'), ariaLabel: __('View Test Subscriptions', 'give')};
+
+/**
+ * @since TBD Use the shared filter declarations and the test-mode switch in place of the "Filter by" settings.
  * @since TBD Pass the actions as data and the screen config.
  */
 export default function SubscriptionsListTable() {
@@ -104,7 +82,8 @@ export default function SubscriptionsListTable() {
             rowActions={subscriptionsRowActions}
             statsConfig={statsConfig}
             apiSettings={window.GiveSubscriptions}
-            filterSettings={filters}
+            filters={subscriptionFilters}
+            testModeToggle={testModeToggle}
             paymentMode={!!window.GiveSubscriptions.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
             screen={listTableScreen}

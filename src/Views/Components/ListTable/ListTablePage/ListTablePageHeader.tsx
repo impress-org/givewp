@@ -3,10 +3,11 @@ import cx from 'classnames';
 import {GiveIcon} from '@givewp/components';
 import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 import ListTableStats, {StatConfig} from '../ListTableStats/ListTableStats';
-import type {FilterConfig} from './types';
+import type {TestModeToggle} from './types';
 import styles from './ListTablePage.module.scss';
 
 /**
+ * @since TBD Take the test-mode switch as `testModeToggle`.
  * @since TBD
  */
 export type ListTablePageHeaderProps = {
@@ -14,8 +15,8 @@ export type ListTablePageHeaderProps = {
     /** The screen's header buttons. */
     children?: ReactNode;
     banner?: () => ReactNode;
-    /** The test-mode toggle's settings, on screens that have one. */
-    testModeFilter?: FilterConfig;
+    /** The test-mode switch's badge text and accessible name, on screens that have one. */
+    testModeToggle?: TestModeToggle;
     testMode: boolean;
     onChangeTestMode: (isOn: boolean) => void;
     statsConfig?: Record<string, StatConfig>;
@@ -26,13 +27,14 @@ export type ListTablePageHeaderProps = {
  * The Give part of a list screen above the list: title, header buttons, banner, test-mode toggle
  * and stat tiles.
  *
+ * @since TBD Take the test-mode switch as `testModeToggle`.
  * @since TBD
  */
 export default function ListTablePageHeader({
     title,
     children,
     banner,
-    testModeFilter,
+    testModeToggle,
     testMode,
     onChangeTestMode,
     statsConfig,
@@ -44,7 +46,7 @@ export default function ListTablePageHeader({
                 <div className={styles.flexRow}>
                     <GiveIcon size={'2.25rem'} />
                     <h1 className={styles.pageTitle}>{title}</h1>
-                    {testModeFilter && testMode && <span className={styles.testModeBadge}>{testModeFilter.text}</span>}
+                    {testModeToggle && testMode && <span className={styles.testModeBadge}>{testModeToggle.label}</span>}
                 </div>
                 {children && <div className={styles.flexRow}>{children}</div>}
             </header>
@@ -52,9 +54,13 @@ export default function ListTablePageHeader({
             <div className={cx('wp-header-end', 'hidden')} />
 
             {banner && <section role="banner">{banner()}</section>}
-            {testModeFilter && (
+            {testModeToggle && (
                 <div className={styles.filtersRow}>
-                    <ToggleSwitch ariaLabel={testModeFilter.ariaLabel} onChange={onChangeTestMode} checked={testMode} />
+                    <ToggleSwitch
+                        ariaLabel={testModeToggle.ariaLabel || undefined}
+                        onChange={onChangeTestMode}
+                        checked={testMode}
+                    />
                 </div>
             )}
             {statsConfig && stats && <ListTableStats config={statsConfig} values={stats} />}

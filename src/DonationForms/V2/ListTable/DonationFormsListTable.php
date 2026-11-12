@@ -11,8 +11,11 @@ use Give\DonationForms\V2\ListTable\Columns\IdColumn;
 use Give\DonationForms\V2\ListTable\Columns\StatusColumn;
 use Give\DonationForms\V2\ListTable\Columns\TitleColumn;
 use Give\Framework\ListTable\ListTable;
+use Give\Framework\ListTable\StatusVocabulary;
+use Give\DonationForms\V2\ValueObjects\DonationFormStatus;
 
 /**
+ * @since TBD Send the status vocabulary.
  * @since 2.24.0
  */
 class DonationFormsListTable extends ListTable
@@ -65,5 +68,13 @@ class DonationFormsListTable extends ListTable
             DateCreatedColumn::getId(),
             StatusColumn::getId(),
         ];
+    }
+
+    /**
+     * @since TBD
+     */
+    protected function statuses(): ?StatusVocabulary
+    {
+        return DonationFormStatus::vocabulary();
     }
 }

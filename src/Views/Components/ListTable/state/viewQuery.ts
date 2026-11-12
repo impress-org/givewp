@@ -1,7 +1,8 @@
 import type {Filter} from '@wordpress/dataviews';
-import type {FilterByGroupedOptions, FilterConfig} from '../ListTablePage/types';
-import {hasTestModeToggle, TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
-import {filterFieldId, isApplied, snapPerPage} from '../adapters/viewToParameters';
+import {filterFieldId, isApplied, snapPerPage, TEST_MODE_FILTER} from '../adapters/viewToParameters';
+import {isBarFilter} from '../filters/filterKinds';
+import {parseFilterValue, serializeFilterValue} from '../filters/filterValue';
+import type {BarFilterDeclaration, FilterDeclaration, StatusVocabularyEntry} from '../filters/types';
 import type {ListTableView, ParseResult, ViewQuery, ViewQueryContext} from './types';
 
 /**
@@ -53,8 +54,10 @@ type ReadResult = {filter?: Filter; corrected: boolean};
 
 /**
  * How one filter maps to one URL parameter.
+ *
+ * @since TBD
  */
-type FilterParameter = {
+export type FilterParameter = {
     key: string;
     /** The bare name links used before the `give-` prefix. */
     legacyKey?: string;
@@ -78,117 +81,76 @@ export function parameterName(id: string): string {
 }
 
 /**
- * A filter that holds one value, read when `parse` accepts the raw text.
+ * The URL parameter of a declared filter: `give-<id>`, read and written with the declaration's own
+ * text rules. A list kind is `isAny` in the view, a single kind `is`.
+ *
+ * @since TBD Write only ids and enumerated values, as the old filter settings did.
+ * @since TBD
  */
-function singleValue(id: string, parse: (raw: string) => unknown, legacy: boolean): FilterParameter {
-    const field = filterFieldId(id);
+export function declarationUrlParameter(
+    declaration: BarFilterDeclaration,
+    statuses: StatusVocabularyEntry[]
+): FilterParameter {
+    const field = filterFieldId(declaration.id);
+    const operator = declaration.kind !== 'date' && declaration.multiple ? 'isAny' : 'is';
 
     return {
-        key: parameterName(id),
-        legacyKey: legacy ? id : undefined,
+        key: parameterName(declaration.id),
+        legacyKey: declaration.legacyUrlKey,
         field,
         read: (raw) => {
-            const value = isToken(raw) ? parse(raw) : undefined;
+            const {value, corrected} = parseFilterValue(declaration, raw, {statuses});
 
-            return value === undefined ? {corrected: true} : {filter: {field, operator: 'is', value}, corrected: false};
+            return value === undefined ? {corrected: true} : {filter: {field, operator, value}, corrected};
         },
-        write: (value) => (isToken(String(value)) ? String(value) : undefined),
-    };
-}
+        // Only ids and enumerated values reach the address; anything else is left out. The reader's own
+        // rules decide what is valid, so a written link always keeps its filter when it is opened again.
+        write: (value) => {
+            const text =
+                typeof value === 'string'
+                    ? isToken(value)
+                        ? serializeFilterValue(declaration, value)
+                        : undefined
+                    : serializeFilterValue(
+                          declaration,
+                          Array.isArray(value) ? value.map(String).filter(isToken) : []
+                      );
 
-const oneOf = (allowed: string[]) => (raw: string) => allowed.includes(raw) ? raw : undefined;
-
-const idOrOneOf = (allowed: string[]) => (raw: string) => /^[1-9]\d*$/.test(raw) ? Number(raw) : oneOf(allowed)(raw);
-
-/**
- * A "Filter by" group with a list of values (checkbox) or one value (radio).
- */
-function listGroup(group: FilterByGroupedOptions): FilterParameter {
-    const field = filterFieldId(group.id);
-    const allowed = group.options.map((groupOption) => groupOption.value);
-    const isCheckbox = group.type === 'checkbox';
-
-    return {
-        key: parameterName(group.id),
-        field,
-        read: (raw) => {
-            const parts = raw.split(',');
-            const valid = parts.filter(
-                (part, index) => isToken(part) && allowed.includes(part) && parts.indexOf(part) === index
-            );
-            const kept = isCheckbox ? valid : valid.slice(0, 1);
-            const corrected = kept.length !== parts.length;
-
-            if (kept.length === 0) {
-                return {corrected: true};
+            if (text === undefined) {
+                return undefined;
             }
 
-            return {
-                filter: isCheckbox ? {field, operator: 'isAny', value: kept} : {field, operator: 'is', value: kept[0]},
-                corrected,
-            };
-        },
-        write: (value) => {
-            const values = ([] as unknown[]).concat(value).map(String).filter(isToken);
+            const {value: valid} = parseFilterValue(declaration, text, {statuses});
 
-            return values.length > 0 ? values.join(',') : undefined;
+            return valid === undefined ? undefined : serializeFilterValue(declaration, valid);
         },
     };
 }
 
 /**
- * A "Filter by" toggle: `1` in the URL, the group's single option value in the view.
+ * The screen's filter parameters, one per bar filter declaration.
  */
-function toggleGroup(group: FilterByGroupedOptions): FilterParameter {
-    const field = filterFieldId(group.id);
-    const onValue = group.options[0]?.value;
-
-    return {
-        key: parameterName(group.id),
-        field,
-        read: (raw) =>
-            raw === TOGGLE_ON && onValue !== undefined
-                ? {filter: {field, operator: 'is', value: onValue}, corrected: false}
-                : {corrected: true},
-        write: () => TOGGLE_ON,
-    };
-}
+const filterParameters = (context: ViewQueryContext): FilterParameter[] =>
+    context.filters
+        .filter(isBarFilter)
+        .map((declaration) => declarationUrlParameter(declaration, context.statuses ?? []));
 
 /**
- * The URL parameters of one filter setting. `search` and the test-mode checkbox have none.
+ * Whether the screen has the test-mode switch.
  */
-function parametersOf(filter: FilterConfig): FilterParameter[] {
-    const staticValues = filter.type === 'filterby' ? [] : (filter.options ?? []).map((item) => item.value);
-
-    switch (filter.type) {
-        case 'select':
-            // The first option is "All", which means no filter, so it is never a URL value.
-            return [singleValue(filter.name, oneOf(staticValues.slice(1)), true)];
-        case 'campaignselect':
-        case 'formselect':
-            return [singleValue(filter.name, idOrOneOf(staticValues), true)];
-        case 'hidden':
-            return [singleValue(filter.name, (raw) => raw, true)];
-        case 'filterby':
-            return (filter.groupedOptions ?? []).map((group) =>
-                group.type === 'toggle' ? toggleGroup(group) : listGroup(group)
-            );
-        default:
-            return [];
-    }
-}
-
-const filterParameters = (context: ViewQueryContext) => context.filterSettings.flatMap(parametersOf);
+const hasTestMode = (context: ViewQueryContext): boolean => Boolean(context.testModeToggle);
 
 /**
  * Every `give-` parameter the screen reads and writes, in the order they are written.
  *
+ * @since TBD Only declared filters; the old filter settings are mapped onto declarations first.
+ * @since TBD Name the declared filters when the screen has declarations.
  * @since TBD
  */
 export function viewQueryKeys(context: ViewQueryContext): string[] {
     return [
         ...filterParameters(context).map((parameter) => parameter.key),
-        ...(hasTestModeToggle(context.filterSettings) ? [TEST_MODE] : []),
+        ...(hasTestMode(context) ? [TEST_MODE] : []),
         SEARCH,
         ORDER_BY,
         ORDER,
@@ -225,9 +187,7 @@ function writeTestMode(view: ListTableView, context: ViewQueryContext): Array<[s
         view.filters?.some((filter) => filter.field === filterFieldId(TEST_MODE_FILTER) && filter.value === true) ??
         false;
 
-    return hasTestModeToggle(context.filterSettings) && isOn !== context.siteTestMode
-        ? [[TEST_MODE, isOn ? TOGGLE_ON : TOGGLE_OFF]]
-        : [];
+    return hasTestMode(context) && isOn !== context.siteTestMode ? [[TEST_MODE, isOn ? TOGGLE_ON : TOGGLE_OFF]] : [];
 }
 
 /**
@@ -272,6 +232,8 @@ function writeSearch(view: ListTableView): Array<[string, string]> {
  * The view's `give-` URL parameters. A view equal to the defaults gives none. The columns and the
  * density are never written.
  *
+ * @since TBD Only declared filters; the old filter settings are mapped onto declarations first.
+ * @since TBD Write the declared filters when the screen has declarations.
  * @since TBD
  */
 export function serializeViewQuery(view: ListTableView, context: ViewQueryContext): Record<string, string> {
@@ -353,7 +315,7 @@ function readSort(params: URLSearchParams, sortableFields: string[]): {sort?: Vi
  * Reads `give-test-mode`: `1` or `0`, only on a screen with the test-mode toggle.
  */
 function readTestMode(raw: string | null, context: ViewQueryContext): {testMode?: boolean; corrected: boolean} {
-    if (raw === null || !hasTestModeToggle(context.filterSettings)) {
+    if (raw === null || !hasTestMode(context)) {
         return {corrected: false};
     }
 
@@ -399,6 +361,8 @@ function readFilters(
  * screen's are never read. A bare `search` is not read either, but it is listed in `legacyKeys` for
  * removal.
  *
+ * @since TBD Only declared filters; the old filter settings are mapped onto declarations first.
+ * @since TBD Read the declared filters when the screen has declarations.
  * @since TBD
  */
 export function parseViewQuery(params: URLSearchParams, context: ViewQueryContext): ParseResult {

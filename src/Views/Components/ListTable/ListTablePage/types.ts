@@ -3,6 +3,7 @@ import type {RenderModalProps} from '@wordpress/dataviews';
 import type {StatConfig} from '../ListTableStats/ListTableStats';
 import type ListTableApi from '../api';
 import type {ListTableScreen} from '../state/types';
+import type {FilterDeclaration, StatusVocabularyEntry} from '../filters/types';
 
 /**
  * A column of a list table, as `ModelColumn::toArray()` sends it.
@@ -43,51 +44,24 @@ export type ListTableResponse = {
 export type ListTableParameters = Record<string, string | number | boolean | Array<string | number> | undefined>;
 
 /**
- * Applied "Filter by" values keyed by their API parameter, the shape `FilterByGroupedOptions.isVisible` reads.
+ * One old filter setting. Screens declare filters with `FilterDeclaration` now; this shape stays only
+ * for add-ons that still pass `filterSettings`, which `filterSettingsToDeclarations()` maps onto
+ * declarations. The grouped "Filter by" type (`filterby`) is gone; a setting of that type is skipped.
  *
- * @since TBD
+ * @deprecated Use `FilterDeclaration` and the `filters` prop.
+ *
+ * @since TBD Remove the grouped `filterby` type; mapped onto filter declarations.
  */
-export type FilterValues = Record<string, string[]>;
-
-interface FilterConfigBase {
+export interface FilterConfig {
     // required
     name: string;
+    type: 'select' | 'campaignselect' | 'formselect' | 'search' | 'checkbox' | 'hidden';
 
     // optional
     ariaLabel?: string;
     text?: string;
-}
-
-interface FilterConfigWithSimpleOptions extends FilterConfigBase {
-    type: 'select' | 'campaignselect' | 'formselect' | 'search' | 'checkbox' | 'hidden';
     options?: Array<{text: string; value: string}>;
 }
-
-export interface FilterByGroupedOptions {
-    id: string;
-    apiParam: string;
-    name: string;
-    type: 'checkbox' | 'radio' | 'toggle';
-    options: Array<{text: string; value: string}>;
-    defaultValue?: string | string[];
-    isVisible?: (values: Record<string, string[]>) => boolean;
-    showTitle?: boolean;
-    /**
-     * Turns an option value into the value the endpoint receives, so the option can keep a stable value
-     * in the URL ("Period" keeps `30` and sends the ISO date 30 days before `now`). `now` is fixed per
-     * view, so the request stays the same while the view does not change.
-     *
-     * @since TBD
-     */
-    toApiValue?: (value: string, now: Date) => string;
-}
-
-interface FilterConfigWithGroupedOptions extends FilterConfigBase {
-    type: 'filterby';
-    groupedOptions?: Array<FilterByGroupedOptions>;
-}
-
-export type FilterConfig = FilterConfigWithSimpleOptions | FilterConfigWithGroupedOptions;
 
 export interface ColumnFilterConfig {
     column: string;
@@ -251,10 +225,31 @@ export type LegacyRowActionArgs = {
  */
 export type LegacyRowActions = (args: LegacyRowActionArgs) => ReactNode;
 
+/**
+ * The test-mode switch in the page header, and the badge next to the title while it is on.
+ *
+ * @since TBD
+ */
+export type TestModeToggle = {
+    /** The header badge text, "Test". */
+    label: string;
+    /** The accessible name of the switch. */
+    ariaLabel: string;
+};
+
+/**
+ * @since TBD Deprecate `filterSettings`; it is mapped onto filter declarations.
+ * @since TBD Add `filters`, `scope`, `testModeToggle` and `apiSettings.table.statuses`.
+ * @since 2.24.0
+ */
 export interface ListTablePageProps {
     //required
     title: string;
-    apiSettings: {apiRoot: string; apiNonce: string; table: {id?: string; columns: Array<object>}};
+    apiSettings: {
+        apiRoot: string;
+        apiNonce: string;
+        table: {id?: string; columns: Array<object>; statuses?: StatusVocabularyEntry[]};
+    };
 
     //optional
     bulkActions?: Array<BulkActionsConfig> | null;
@@ -262,6 +257,16 @@ export interface ListTablePageProps {
     singleName?: string;
     children?: ReactNode;
     rowActions?: LegacyRowActions | Function | ListTableRowAction[] | null;
+    /**
+     * The old filter settings. Mapped onto filter declarations by `filterSettingsToDeclarations()`,
+     * so they render through the same filter bar and URL rules. Read only when `filters` is not set.
+     *
+     * @deprecated Kept only so add-ons that pass it keep working (CQ-006); no core screen uses it.
+     * Pass `filters`, `scope` and `testModeToggle` instead. The grouped `filterby` type is no longer
+     * supported and is skipped.
+     *
+     * @since TBD Mapped onto filter declarations; `filterby` is skipped.
+     */
     filterSettings?: FilterConfig[];
     paymentMode?: boolean;
     listTableBlankSlate: ReactNode;
@@ -281,6 +286,29 @@ export interface ListTablePageProps {
      * @since TBD
      */
     screen?: ListTableScreen;
+    /**
+     * The entity's filter declaration: Give's filter bar and labeled search. When set,
+     * `filterSettings` is not read.
+     *
+     * @since TBD
+     */
+    filters?: FilterDeclaration[];
+    /**
+     * Fixed request parameters set by the page the list sits on (the campaign of a campaign's "Forms"
+     * tab). Sent with every request; never a control, a chip or a URL parameter, and never reset.
+     * Also honored without `filters`, where it goes over the scope from hidden `filterSettings`.
+     *
+     * @since TBD Honored without `filters` too.
+     * @since TBD
+     */
+    scope?: Record<string, string | number>;
+    /**
+     * The test-mode switch and badge in the header. Used with `filters`; with the deprecated
+     * `filterSettings` the `toggle` setting adds it.
+     *
+     * @since TBD
+     */
+    testModeToggle?: TestModeToggle;
 }
 
 export interface ListTablePageRef {
