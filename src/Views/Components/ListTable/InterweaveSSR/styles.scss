@@ -10,13 +10,13 @@
 
         align-items: center;
         background-color: var(--bg-color);
-        border-radius: 2px;
+        border-radius: var(--givewp-rounded-full);
         color: var(--color);
         display: inline-flex;
         font-size: 0.8125rem;
         font-weight: 500;
         line-height: 1.5;
-        padding: 2px var(--givewp-spacing-2);
+        padding: 2px var(--givewp-spacing-3);
         width: fit-content;
 
         div,

@@ -67,6 +67,11 @@ describe('status badge styles', () => {
         expect(small).toEqual([]);
     });
 
+    it('is a full pill, like the other cell badges', () => {
+        expect(badge).toContain('border-radius: var(--givewp-rounded-full);');
+        expect(badge).not.toMatch(/border-radius:\s*2px/);
+    });
+
     it('keeps the server word as is', () => {
         expect(badge).not.toMatch(/text-transform/);
     });
