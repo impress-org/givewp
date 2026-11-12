@@ -1,30 +1,52 @@
 @use '../layout/breakpoints' as *;
+@use './label' as *;
 
 .givewp-list-table-search {
+    // The label is placed against the box.
+    position: relative;
     // A set width: the box does not grow with what is typed.
-    inline-size: 32rem;
+    inline-size: 22.5rem;
     max-inline-size: 100%;
-    min-inline-size: 16rem;
 
     // Full width on a phone.
     @media (max-width: $givewp-list-table-narrow) {
         inline-size: 100%;
-        min-inline-size: 0;
     }
 
     // `base-control__label` is the label of the bundled components. WordPress 6.9 renders an
     // `input-control__label` styled by a triple-class 11px rule that is added after this file, so this
     // selector needs four classes to win. The same rule undoes its uppercase.
+    // The label is out of the flow, above the box, so the box alone is the toolbar item that lines up
+    // with the chips. Its line and gap are ours (see `_label.scss`), so they do not change with the
+    // installed WordPress.
     & &__control .components-base-control__label,
     & &__control .components-input-control__label.components-input-control__label {
+        position: absolute;
+        inset-block-end: calc(100% + $givewp-list-table-search-label-gap);
+        inset-inline-start: 0;
+        max-inline-size: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
         color: var(--givewp-neutral-700);
         font-size: var(--givewp-font-size-paragraph-md);
+        line-height: $givewp-list-table-search-label-line;
+        text-overflow: ellipsis;
         // The stock label is uppercase. The list pages use sentence case.
         text-transform: none;
+        white-space: nowrap;
     }
 
-    // Our own edge and fill: the stock search is a grey fill with no edge (1.14:1).
-    &__control input[type='search'] {
+    // The stock gap between the label and the box: the label is out of the flow now.
+    & &__control .components-input-base {
+        gap: 0;
+    }
+
+    // Our own edge and fill: the stock search is a grey fill with no edge (1.14:1). As tall as the
+    // filter chips beside it. Four classes: the stock height is set by a triple-class rule.
+    & &__control input[type='search'] {
+        block-size: 2rem;
+        min-block-size: 2rem;
         border: 1px solid var(--givewp-list-table-control-edge);
         background: #fff;
 
@@ -38,7 +60,6 @@
         display: flex;
         align-items: center;
         gap: var(--givewp-spacing-1);
-        margin-block-start: var(--givewp-spacing-1);
     }
 
     // 13px, the smallest text size the list pages allow.

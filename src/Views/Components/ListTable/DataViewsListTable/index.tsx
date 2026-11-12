@@ -199,16 +199,16 @@ function ListTableFooter({
 }
 
 /**
- * The stock DataViews layout, with these changes: the footer shows the total row count; while rows are
- * selected, the bulk actions also take the place of the search row above the table, so they show where
+ * The stock DataViews layout, with these changes: the footer shows the total row count; Give's search
+ * box, filter bar and view options share one toolbar row above the table, with the search hint under
+ * it; while rows are selected, the bulk actions take the place of the search box, so they show where
  * the selection starts (the stock footer keeps its own copy next to the pagination); and a "Reset view"
- * button sits after the view options, which this DataViews version does not offer. Give's search box and filter bar always take
- * the place of the stock search and filter row.
+ * button sits after the view options, which this DataViews version does not offer.
  *
  * @since TBD Render the `viewMenu` slot after "Reset view", in both layouts.
  * @since TBD In the narrow layout, put the view options on their own row under the filters, with no layout switcher.
  * @since TBD Always render the `searchBox` and `filterBar` slots; no stock search or filter row.
- * @since TBD Show the view options on the filter bar's row instead of next to the search box.
+ * @since TBD Put the search box, the filter bar and the view options in one row, with the search hint under it.
  * @since TBD Render the `searchBox` and `filterBar` slots in place of the stock search and filters.
  * @since TBD
  */
@@ -250,22 +250,24 @@ function ListTableLayout({
 
     return (
         <>
-            {hasSelection ? (
-                <HStack justify="start" className="dataviews__view-actions givewp-list-table__bulk-actions">
-                    <DataViews.BulkActionToolbar />
-                </HStack>
-            ) : (
-                <HStack alignment="top" justify="start" className="dataviews__view-actions" spacing={1}>
-                    <HStack justify="start" className="dataviews__search">
-                        {searchBox}
-                    </HStack>
-                </HStack>
-            )}
-            <div className="givewp-list-table__filter-row">
-                {filterBar}
-                {!isNarrow && viewControls}
+            <div className="givewp-list-table__toolbar">
+                <div
+                    className={cx('givewp-list-table__toolbar-row', {
+                        'givewp-list-table__toolbar-row--labeled': !hasSelection && searchBox,
+                    })}
+                >
+                    {hasSelection ? (
+                        <HStack justify="start" expanded={false} className="givewp-list-table__bulk-actions">
+                            <DataViews.BulkActionToolbar />
+                        </HStack>
+                    ) : (
+                        searchBox && <div className="givewp-list-table__search">{searchBox}</div>
+                    )}
+                    {filterBar}
+                    {!isNarrow && viewControls}
+                </div>
+                {!hasSelection && searchHint}
             </div>
-            {!hasSelection && searchHint}
             {isNarrow && viewControls && <div className="givewp-list-table__view-controls-row">{viewControls}</div>}
             <DataViews.Layout />
             <ListTableFooter

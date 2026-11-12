@@ -15,8 +15,9 @@
 
     &__toggle.components-button {
         padding-inline: var(--givewp-spacing-3);
-        // A 32 px chip is this plus the two 1 px borders. At 782 px and below the toggle is 40 px, so the
-        // chip is 42 px.
+        // A 32 px chip is this plus the two 1 px borders (the stock button is 36 px). At 782 px and below
+        // the toggle is 40 px, so the chip is 42 px.
+        block-size: 1.875rem;
         min-block-size: 1.875rem;
         // A long value is cut here. The tooltip holds the full text.
         max-inline-size: 16rem;
@@ -32,7 +33,8 @@
     }
 
     &__remove.components-button {
-        // A 24 px target.
+        // A 24 px target, inside the 32 px chip (the stock icon button is 36 px).
+        block-size: 1.5rem;
         min-inline-size: 1.5rem;
         min-block-size: 1.5rem;
         margin-inline-end: var(--givewp-spacing-1);

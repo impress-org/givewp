@@ -205,6 +205,22 @@ describe('ListTablePage search hint', () => {
         expect(hintRow?.contains(described)).toBe(true);
     });
 
+    it('puts the search box, the filter bar and the view options in one row, and the hint under it', async () => {
+        await act(() => root.render(<ListTablePage {...withHint} />));
+
+        const row = container.querySelector('.givewp-list-table__toolbar-row');
+        const search = row?.querySelector('.givewp-list-table__search .givewp-list-table-search');
+        const filterBar = row?.querySelector('.givewp-list-table-filters');
+        const viewOptions = row?.querySelector('.givewp-list-table__view-controls');
+        const hintRow = container.querySelector('.givewp-list-table-search__hint-row');
+
+        [search, filterBar, viewOptions].forEach((part) => expect(part).toBeTruthy());
+        expect(follows(search, filterBar)).toBe(true);
+        expect(follows(filterBar, viewOptions)).toBe(true);
+        expect(row?.contains(hintRow)).toBe(false);
+        expect(follows(row, hintRow)).toBe(true);
+    });
+
     it('renders no hint and no description for an empty hint (legacy screens)', async () => {
         await act(() => root.render(<ListTablePage {...props} />));
 
@@ -322,14 +338,14 @@ describe('ListTablePage narrow layout', () => {
     it('orders the narrow toolbar search, filters, then view options', async () => {
         await setNarrow(true);
 
-        const search = container.querySelector('.dataviews__search');
+        const search = container.querySelector('.givewp-list-table__search');
         const filterBar = container.querySelector('.givewp-list-table-filters');
         const viewOptions = container.querySelector('.givewp-list-table__view-controls');
 
         expect(follows(search, filterBar)).toBe(true);
         expect(follows(filterBar, viewOptions)).toBe(true);
-        // On its own row, under the filters.
-        expect(viewOptions?.closest('.givewp-list-table__filter-row')).toBeNull();
+        // On its own row, under the search and the filters.
+        expect(viewOptions?.closest('.givewp-list-table__toolbar-row')).toBeNull();
     });
 });
 

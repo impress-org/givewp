@@ -6,8 +6,15 @@
     align-items: center;
     row-gap: var(--givewp-spacing-2);
     column-gap: var(--givewp-spacing-2);
-    // No side padding: the page's container pads the list, and the toolbar above has none either.
-    padding-block: 0 var(--givewp-spacing-4);
+}
+
+// Above the narrow width, "Add filter" and Reset are as tall as the chips and the search input beside
+// them (the stock button is 36 px). At and below it they keep the stock size.
+@media (min-width: #{$givewp-list-table-narrow + 1px}) {
+    .givewp-list-table-filters__add .components-button,
+    .givewp-list-table-filters__reset.components-button {
+        block-size: 2rem;
+    }
 }
 
 // At a narrow width a chip may be as wide as the bar, so a long value is cut instead of pushing the page sideways.
