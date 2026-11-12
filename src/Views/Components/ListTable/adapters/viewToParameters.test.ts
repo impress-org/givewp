@@ -2,7 +2,7 @@ import type {View} from '@wordpress/dataviews';
 import type {FilterConfig} from '../ListTablePage/types';
 import {filterSettingsToDeclarations} from '../filters/legacyFilterSettings';
 import type {FilterDeclaration} from '../filters/types';
-import {filterFieldId, isApplied, snapPerPage, viewToParameters} from './viewToParameters';
+import {DEFAULT_PER_PAGE, filterFieldId, isApplied, snapPerPage, viewToParameters} from './viewToParameters';
 
 const donationFilters: FilterDeclaration[] = [
     {kind: 'search', id: 'search', label: 'Search donations', hint: '', parameter: 'search'},
@@ -177,18 +177,24 @@ describe('snapPerPage', () => {
         expect(snapPerPage(input)).toBe(expected);
     });
 
+    it('defaults to 20 rows, like WordPress, and still accepts 30', () => {
+        expect(DEFAULT_PER_PAGE).toBe(20);
+        expect(snapPerPage(undefined)).toBe(20);
+        expect(snapPerPage(30)).toBe(30);
+    });
+
     it('picks the smaller size on a tie', () => {
         expect(snapPerPage(25)).toBe(20);
     });
 
     it('falls back to the given default when the size is not a number', () => {
         expect(snapPerPage(Number.NaN, 50)).toBe(50);
-        expect(snapPerPage(undefined)).toBe(30);
+        expect(snapPerPage(undefined)).toBe(DEFAULT_PER_PAGE);
     });
 
     it('sends the nearest offered page size in the request', () => {
         expect(viewToParameters({type: 'table', perPage: 25}, [], {}, {}).perPage).toBe(20);
-        expect(viewToParameters({type: 'table'}, [], {}, {}).perPage).toBe(30);
+        expect(viewToParameters({type: 'table'}, [], {}, {}).perPage).toBe(20);
     });
 });
 

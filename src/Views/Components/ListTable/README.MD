@@ -96,7 +96,7 @@ Open items for the owner:
 | `statsConfig` | `Record<string, StatConfig>` for the stat tiles (`/stats` endpoint). Tiles stay mounted with skeletons while loading and show the server's `formatted` text; `{label, filter?, upgrade?}` per key, where `filter: {filterId, value?}` makes the tile toggle that list filter | No | — |
 | `paymentMode` | `boolean`, initial test mode | No | — |
 | `contentMode` | `boolean`, no header or stats: the list sits in a details page tab | No | `false` |
-| `perPage` | `number`, 1–100, snapped to the offered sizes (10, 20, 30, 50, 100) | No | `30` |
+| `perPage` | `number`, 1–100, snapped to the offered sizes (10, 20, 30, 50, 100) | No | `20` |
 | `screen` | `ListTableScreen`: turns on view state (see below); its `fieldRoles` pick the card fields at 782 px and below | No | — |
 | `notices` | `ListTableNotice[]`: system and onboarding notices for the notice area | No | — |
 | `recommendations` | `{options, dismissed, apiNonce}`: one product tip a day in the notice area | No | — |
