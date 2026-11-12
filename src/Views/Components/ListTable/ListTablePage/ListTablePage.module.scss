@@ -114,11 +114,13 @@ $givewp-list-table-wp-footer-space: 65px;
     min-block-size: 1.5rem;
 }
 
+// A header group: the title with its mark and badge, and the switch, divider and buttons. 12px between
+// the items, as in the design.
 .flexRow {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: var(--givewp-spacing-2);
+    gap: var(--givewp-spacing-3);
     flex-wrap: wrap;
 }
 

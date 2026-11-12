@@ -74,6 +74,10 @@ describe('list sheet styles', () => {
         expect(content).toMatch(/\.givewp-list-table__toolbar\)\s*\{\s*padding-block-start: 0;/);
     });
 
+    it('puts 12px between the items of each header group', () => {
+        expect(block(page, '.flexRow')).toContain('gap: var(--givewp-spacing-3)');
+    });
+
     it('does not fill the viewport when embedded in another page', () => {
         expect(block(page, '.pageEmbedded')).toContain('min-block-size: auto');
     });
