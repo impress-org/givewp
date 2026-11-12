@@ -47,4 +47,12 @@ describe('list sheet styles', () => {
         expect(band).not.toMatch(/(^|\s)border:/);
         expect(band).not.toContain('background');
     });
+
+    it('fills the viewport under the admin bar on the full page, so the grey page never stops short', () => {
+        expect(block(page, '.page')).toContain('min-block-size: calc(100vh - var(--wp-admin--admin-bar--height, 32px))');
+    });
+
+    it('does not fill the viewport when embedded in another page', () => {
+        expect(block(page, '.pageEmbedded')).toContain('min-block-size: auto');
+    });
 });

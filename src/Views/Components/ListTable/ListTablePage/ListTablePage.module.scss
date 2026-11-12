@@ -53,6 +53,8 @@
         'Helvetica Neue', sans-serif;
     font-size: 0.8125rem;
     gap: var(--givewp-spacing-4);
+    // The grey page reaches the bottom of the window also when the list is short.
+    min-block-size: calc(100vh - var(--wp-admin--admin-bar--height, 32px));
 
     *,
     ::before,
@@ -61,13 +63,14 @@
     }
 }
 
-// An embedded list keeps the host page look. Only the full page gets the WP admin shell.
+// An embedded list keeps the host page look and size. Only the full page gets the WP admin shell and fills the window.
 // Same specificity as .page and defined after it, so it wins without !important.
 .pageEmbedded {
     background-color: var(--givewp-neutral-25);
     color: var(--givewp-neutral-900);
     font-family: Inter, system-ui, sans-serif;
     font-size: 1rem;
+    min-block-size: auto;
 }
 
 .pageHeader {
