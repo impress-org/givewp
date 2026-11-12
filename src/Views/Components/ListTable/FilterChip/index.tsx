@@ -1,7 +1,7 @@
 import {useEffect, useRef, type ReactNode} from 'react';
 import {Button, Dropdown} from '@wordpress/components';
 import {__, sprintf} from '@wordpress/i18n';
-import {closeSmall} from '@wordpress/icons';
+import {chevronDown, closeSmall, Icon} from '@wordpress/icons';
 import './styles.scss';
 
 /**
@@ -34,7 +34,7 @@ export interface FilterChipProps {
  * A filter chip: a button that opens a popover with the filter control, and an optional button that
  * removes or resets the filter. Escape closes the popover and puts focus back on the chip.
  *
- * @since TBD Name the chip and its remove button by `accessibleName`, which is also the tooltip.
+ * @since TBD Name the chip and its remove button by `accessibleName`, which is also the tooltip. A chip without a value shows a caret after its text.
  */
 export default function FilterChip({
     text,
@@ -76,7 +76,16 @@ export default function FilterChip({
                         aria-haspopup="dialog"
                         onClick={onToggle}
                     >
-                        {text}
+                        <span className="givewp-filter-chip__text">{text}</span>
+                        {!hasValue && (
+                            <Icon
+                                className="givewp-filter-chip__caret"
+                                icon={chevronDown}
+                                size={16}
+                                aria-hidden="true"
+                                focusable="false"
+                            />
+                        )}
                     </Button>
                 )}
                 renderContent={({onClose}) => children(onClose)}

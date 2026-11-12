@@ -19,17 +19,30 @@
         // the toggle is 40 px, so the chip is 42 px.
         block-size: 1.875rem;
         min-block-size: 1.875rem;
-        // A long value is cut here. The tooltip holds the full text.
+        // The text and the caret sit in one row. A long value is cut in the text (below), not in the caret.
+        gap: var(--givewp-spacing-1);
         max-inline-size: 16rem;
         overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
         font-size: 0.8125rem;
 
         // A 40 px target on a phone.
         @media (max-width: $givewp-list-table-narrow) {
             min-block-size: 2.5rem;
         }
+    }
+
+    // A long value is cut here. The tooltip holds the full text.
+    &__text {
+        min-inline-size: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    // Shows that a chip without a value opens a popover. It never shrinks or gets cut.
+    &__caret {
+        flex-shrink: 0;
+        fill: currentColor;
     }
 
     &__remove.components-button {

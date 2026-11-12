@@ -155,4 +155,25 @@ describe('FilterChip', () => {
         expect(chip().getAttribute('aria-haspopup')).toBe('dialog');
         expect(document.querySelector('.givewp-filter-chip__content')?.closest('[role="dialog"]')).not.toBeNull();
     });
+
+    it('shows a hidden caret after the text on a chip without a value, and keeps the accessible name', async () => {
+        await render({text: 'Campaign', accessibleName: 'Campaign', hasValue: false, canRemove: false});
+
+        const caret = chip().querySelector('.givewp-filter-chip__caret');
+        expect(caret).not.toBeNull();
+        expect(caret!.getAttribute('aria-hidden')).toBe('true');
+        expect(caret!.getAttribute('focusable')).toBe('false');
+        expect(chip().lastElementChild).toBe(caret);
+        expect(chip().textContent).toBe('Campaign');
+        expect(chip().getAttribute('aria-label')).toBe('Campaign');
+        expect(chip().getAttribute('aria-haspopup')).toBe('dialog');
+        expect(chip().getAttribute('aria-expanded')).toBe('false');
+    });
+
+    it('shows no caret on a chip that holds a value', async () => {
+        await render();
+
+        expect(chip().querySelector('.givewp-filter-chip__caret')).toBeNull();
+        expect(chip().textContent).toBe('Status: 2');
+    });
 });
