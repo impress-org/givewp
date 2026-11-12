@@ -7,6 +7,8 @@ import type {ListTablePageProps, ListTableResponse} from './types';
 import ListTablePage from './index';
 
 jest.mock('@givewp/components/AdminDetailsPage/Notifications', () => () => null);
+// The style mock is an empty object. Make each class name its own key so the tests can assert on it.
+jest.mock('./ListTablePage.module.scss', () => new Proxy({}, {get: (_target, key) => (key === '__esModule' ? false : key)}));
 jest.mock('../filters/siteDate', () => ({
     ...jest.requireActual('../filters/siteDate'),
     siteToday: () => '2026-11-02',
@@ -375,5 +377,22 @@ describe('ListTablePage legacy view menu', () => {
         } finally {
             globalThis.fetch = originalFetch;
         }
+    });
+});
+
+describe('ListTablePage embedded look', () => {
+    const page = () => container.querySelector('article');
+
+    it('marks the page as embedded in content mode so it keeps the host page look', async () => {
+        await setNarrow(false, cardProps);
+
+        expect(page()?.classList.contains('pageEmbedded')).toBe(true);
+    });
+
+    it('does not mark the full page as embedded', async () => {
+        await setNarrow(false, props);
+
+        expect(page()?.classList.contains('page')).toBe(true);
+        expect(page()?.classList.contains('pageEmbedded')).toBe(false);
     });
 });

@@ -60,6 +60,15 @@
     }
 }
 
+// An embedded list keeps the host page look. Only the full page gets the WP admin shell.
+// Same specificity as .page and defined after it, so it wins without !important.
+.pageEmbedded {
+    background-color: var(--givewp-neutral-25);
+    color: var(--givewp-neutral-900);
+    font-family: Inter, system-ui, sans-serif;
+    font-size: 1rem;
+}
+
 .pageHeader {
     align-items: center;
     background-color: var(--givewp-shades-white);

@@ -1,5 +1,6 @@
 import {createContext, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
+import cx from 'classnames';
 import type {Field, View} from '@wordpress/dataviews';
 import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notifications';
 import ListTableApi from '../api';
@@ -376,7 +377,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
 
         return (
             <ShowConfirmModalContext.Provider value={showConfirmModal}>
-                <article className={styles.page}>
+                <article className={cx(styles.page, {[styles.pageEmbedded]: contentMode})}>
                     {!contentMode && (
                         <ListTablePageHeader
                             title={title}
