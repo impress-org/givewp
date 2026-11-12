@@ -1,6 +1,9 @@
 @use '../layout/breakpoints' as *;
 @use '../layout/tokens' as *;
 
+// The bottom padding of `#wpbody-content`: the room WordPress keeps for its admin footer below the content.
+$givewp-list-table-wp-footer-space: 65px;
+
 :global {
     // Kept for custom site CSS. No list table code reads it.
     :root {
@@ -53,8 +56,9 @@
         'Helvetica Neue', sans-serif;
     font-size: 0.8125rem;
     gap: var(--givewp-spacing-4);
-    // The grey page reaches the bottom of the window also when the list is short.
-    min-block-size: calc(100vh - var(--wp-admin--admin-bar--height, 32px));
+    // The grey page reaches the bottom of the window, down to the WordPress footer, also when the list is
+    // short. It then does not scroll.
+    min-block-size: calc(100vh - var(--wp-admin--admin-bar--height, 32px) - $givewp-list-table-wp-footer-space);
 
     *,
     ::before,

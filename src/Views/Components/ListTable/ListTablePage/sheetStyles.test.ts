@@ -48,8 +48,12 @@ describe('list sheet styles', () => {
         expect(band).not.toContain('background');
     });
 
-    it('fills the viewport under the admin bar on the full page, so the grey page never stops short', () => {
-        expect(block(page, '.page')).toContain('min-block-size: calc(100vh - var(--wp-admin--admin-bar--height, 32px))');
+    it('fills the viewport under the admin bar and above the WordPress footer, so a short list does not scroll', () => {
+        expect(block(page, '.page')).toContain(
+            'min-block-size: calc(100vh - var(--wp-admin--admin-bar--height, 32px) - $givewp-list-table-wp-footer-space)'
+        );
+        expect(page).toMatch(/\$givewp-list-table-wp-footer-space:\s*65px;/);
+        expect(page.match(/65px/g)).toHaveLength(1);
     });
 
     it('does not fill the viewport when embedded in another page', () => {
