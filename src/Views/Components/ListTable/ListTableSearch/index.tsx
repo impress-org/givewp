@@ -1,6 +1,8 @@
 import {useCallback, useEffect, useId, useRef, useState} from 'react';
 import {SearchControl} from '@wordpress/components';
 import {useDebounce} from '@wordpress/compose';
+import SearchHint from './SearchHint';
+import {shortHint} from './shortHint';
 import './styles.scss';
 
 /**
@@ -23,13 +25,12 @@ const DEBOUNCE_MS = 300;
  * The list search box. It keeps what the admin types, reports the term after a short pause, and
  * follows the view when the term changes from outside (for example a reset).
  *
- * @since TBD Keep the latest callback in an effect, not during render.
- * @since TBD Drop a pending search when the view gets a new term from outside.
  * @since TBD
  */
 export default function ListTableSearch({label, hint, value, onChange}: ListTableSearchProps) {
     const [text, setText] = useState(value);
     const hintId = useId();
+    const ruleId = useId();
     // The debounced call must keep a stable identity, or a parent re-render would cancel a pending search.
     const onChangeRef = useRef(onChange);
     const lastReported = useRef(value);
@@ -63,22 +64,22 @@ export default function ListTableSearch({label, hint, value, onChange}: ListTabl
         reportChange(next);
     };
 
+    // A long hint shows only its first sentence, so the input is described by the full rule instead.
+    const hasMore = shortHint(hint) !== hint;
+    const describedBy = hint ? (hasMore ? ruleId : hintId) : undefined;
+
     return (
         <div className="givewp-list-table-search">
             <SearchControl
                 className="givewp-list-table-search__control"
                 label={label}
                 hideLabelFromVision={false}
-                aria-describedby={hint ? hintId : undefined}
+                aria-describedby={describedBy}
                 value={text}
                 onChange={handleChange}
                 __nextHasNoMarginBottom
             />
-            {hint && (
-                <p id={hintId} className="givewp-list-table-search__hint">
-                    {hint}
-                </p>
-            )}
+            {hint && <SearchHint id={hintId} ruleId={ruleId} hint={hint} />}
         </div>
     );
 }

@@ -1,6 +1,7 @@
 import {act, startTransition, Suspense, useState} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
 import ListTableSearch from './index';
+import {shortHint} from './shortHint';
 
 (globalThis as {IS_REACT_ACT_ENVIRONMENT?: boolean}).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -163,5 +164,54 @@ describe('ListTableSearch', () => {
 
         expect(onChange).not.toHaveBeenCalled();
         expect(input().value).toBe('');
+    });
+});
+
+describe('shortHint', () => {
+    it('keeps the first sentence of the Donations hint', () => {
+        expect(
+            shortHint('Searches donor first name, last name, email or donation ID. A name matches from the start.')
+        ).toBe('Searches donor first name, last name, email or donation ID.');
+    });
+
+    it('keeps a one-sentence hint whole', () => {
+        expect(shortHint('Searches titles.')).toBe('Searches titles.');
+    });
+
+    it('returns an empty hint as empty', () => {
+        expect(shortHint('')).toBe('');
+    });
+});
+
+describe('ListTableSearch hint row', () => {
+    const long = 'Searches donor name or ID. An ID matches exactly.';
+    const hintText = () => container.querySelector('.givewp-list-table-search__hint')?.textContent;
+    const helpButton = () => container.querySelector<HTMLButtonElement>('.givewp-list-table-search__help');
+
+    it('shows the short line and a help button that carries the full rule', async () => {
+        await render({hint: long});
+
+        expect(hintText()).toBe('Searches donor name or ID.');
+        expect(helpButton()?.getAttribute('aria-label')).toBe('How search works');
+
+        // The input is described by the FULL rule, in text only a screen reader gets.
+        const described = document.getElementById(input().getAttribute('aria-describedby') ?? '');
+
+        expect(described?.textContent).toBe(long);
+        expect(described?.className).toContain('screen-reader-text');
+    });
+
+    it('has no help button when the hint is one sentence', async () => {
+        await render({hint: 'Searches titles.'});
+
+        expect(helpButton()).toBeNull();
+        expect(hintText()).toBe('Searches titles.');
+    });
+
+    it('renders no hint row for an empty hint (legacy screens)', async () => {
+        await render({hint: ''});
+
+        expect(hintText()).toBeUndefined();
+        expect(helpButton()).toBeNull();
     });
 });

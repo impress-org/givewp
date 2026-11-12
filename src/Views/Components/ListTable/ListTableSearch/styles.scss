@@ -19,10 +19,29 @@
         font-size: var(--givewp-font-size-paragraph-md);
     }
 
-    // Never smaller than the label: the hint is what tells the admin how search matches.
+    // Our own edge and fill: the stock search is a grey fill with no edge (1.14:1).
+    &__control input[type='search'] {
+        border: 1px solid var(--givewp-list-table-control-edge);
+        background: #fff;
+    }
+
+    &__hint-row {
+        display: flex;
+        align-items: center;
+        gap: var(--givewp-spacing-1);
+        margin-block-start: var(--givewp-spacing-1);
+    }
+
+    // 13px, the smallest text size the list pages allow.
     &__hint {
-        margin: var(--givewp-spacing-1) 0 0;
-        color: var(--givewp-neutral-500);
-        font-size: var(--givewp-font-size-paragraph-md);
+        margin: 0;
+        color: var(--givewp-list-table-text-secondary);
+        font-size: 0.8125rem;
+    }
+
+    // The installed Button has no `compact` size, so the 2rem target is set here.
+    &__help.components-button {
+        min-inline-size: 2rem;
+        block-size: 2rem;
     }
 }
