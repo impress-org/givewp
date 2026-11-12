@@ -48,11 +48,20 @@ final class DateFormatter
     }
 
     /**
+     * A missing date, the zero date ("0000-00-00") and the exact epoch (what an empty value turns into) count
+     * as no date. A real date before 1970, such as an imported or backdated donation, is still written out.
+     *
      * @since TBD
      */
     private static function isMissing(?DateTimeInterface $date): bool
     {
-        return $date === null || $date->getTimestamp() <= 0;
+        if ($date === null || $date->getTimestamp() === 0) {
+            return true;
+        }
+
+        // "0000-00-00" becomes the year -1 in whatever timezone the date was built in, so the year tells the
+        // zero date from a real one without depending on the timezone.
+        return (int) $date->format('Y') < 1;
     }
 
     /**

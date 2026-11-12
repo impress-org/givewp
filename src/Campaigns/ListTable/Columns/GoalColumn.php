@@ -51,7 +51,7 @@ class GoalColumn extends ModelColumn
         $goalData = $campaignsData->getGoalData($model, true);
 
         if ($goalData['goal'] === 0) {
-            return Placeholder::dash(__('No goal set', 'give'));
+            return Placeholder::dash(__('No Goal Set', 'give'));
         }
 
         return GoalProgress::render($model->id, $goalData['percentage'], $goalData['actualFormatted'], $goalData['goalFormatted']);

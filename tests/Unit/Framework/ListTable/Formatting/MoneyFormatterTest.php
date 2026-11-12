@@ -156,6 +156,21 @@ class MoneyFormatterTest extends TestCase
     }
 
     /**
+     * A currency code that none of the currency sets know must not fail the response, and the sign stays in front.
+     *
+     * @since TBD
+     */
+    public function testAnUnknownCurrencyDoesNotThrowAndKeepsTheSign(): void
+    {
+        $text = MoneyFormatter::fromDecimal('-12.5', 'ZZZ');
+
+        $this->assertStringStartsWith('-', $text);
+        $this->assertStringContainsString('12.50', $text);
+        $this->assertStringEndsWith(' ZZZ', $text);
+        $this->assertStringContainsString('12.50', MoneyFormatter::fromDecimal(12.5, 'ZZZ'));
+    }
+
+    /**
      * A float revenue total becomes a plain decimal string in the raw value, with the decimals of the currency.
      *
      * @since TBD

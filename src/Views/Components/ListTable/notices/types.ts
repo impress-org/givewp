@@ -29,4 +29,9 @@ export type ListTableRecommendations = {
     /** Enums of the dismissed options (the site-wide `dismissedRecommendations`). */
     dismissed: string[];
     apiNonce: string;
+    /**
+     * False when the user cannot store a dismissal (the route needs `manage_options`). The tip then shows
+     * without a dismiss button. Defaults to true.
+     */
+    canDismiss?: boolean;
 };

@@ -88,7 +88,7 @@ const tile = (label: string) =>
         element.textContent?.includes(label)
     ) as HTMLElement;
 const pressed = () =>
-    Array.from(container.querySelectorAll('button[aria-pressed="true"]')).map((button) => button.textContent);
+    Array.from(container.querySelectorAll('button.givewp-stat-tile--pressed')).map((button) => button.textContent);
 
 beforeEach(() => {
     mockedFetch.mockReset();

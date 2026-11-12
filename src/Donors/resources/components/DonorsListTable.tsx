@@ -19,6 +19,7 @@ declare global {
             adminUrl: string;
             pluginUrl: string;
             dismissedRecommendations: Array<string>;
+            canDismissRecommendations?: boolean;
             recurringDonationsEnabled: boolean;
         };
     }
@@ -66,6 +67,7 @@ const recommendations: ListTableRecommendations = {
     options: [RecommendationConfig.feeRecovery],
     dismissed: window.GiveDonors.dismissedRecommendations ?? [],
     apiNonce: window.GiveDonors.apiNonce,
+    canDismiss: window.GiveDonors.canDismissRecommendations ?? true,
 };
 
 /**

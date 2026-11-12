@@ -185,8 +185,7 @@ class CampaignColumnsFormattingTest extends TestCase
         $cell = $this->columnWithData(new GoalColumn(), $stub)->getCellValue($campaign);
 
         $this->assertStringContainsString('givewp-list-table-dash', $cell);
-        $this->assertStringContainsString('No goal set', $cell);
-        $this->assertStringNotContainsString('No Goal Set', $cell);
+        $this->assertStringContainsString('No Goal Set', $cell);
     }
 
     /**

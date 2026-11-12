@@ -3,6 +3,7 @@
 namespace Give\Donors\Endpoints;
 
 use Give\Framework\Database\DB;
+use Give\Framework\ListTable\Formatting\StatsFormatter;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -51,29 +52,7 @@ class ListDonorsStats extends Endpoint
 
         $statistics = $this->getDonorStatistics();
 
-        return new WP_REST_Response($this->withFormatted($statistics));
-    }
-
-    /**
-     * Adds a "formatted" key with one display string for each count, through number_format_i18n().
-     *
-     * @since TBD
-     *
-     * @param array<string, int> $values
-     *
-     * @return array<string, mixed>
-     */
-    private function withFormatted(array $values): array
-    {
-        $formatted = [];
-
-        foreach ($values as $key => $value) {
-            $formatted[$key] = number_format_i18n($value);
-        }
-
-        $values['formatted'] = $formatted;
-
-        return $values;
+        return new WP_REST_Response(StatsFormatter::withFormatted($statistics));
     }
 
     /**

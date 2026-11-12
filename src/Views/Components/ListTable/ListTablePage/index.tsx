@@ -80,6 +80,9 @@ export type {
 const isSearch = (declaration: FilterDeclaration): declaration is SearchFilterDeclaration =>
     declaration.kind === 'search';
 
+// A stable default: a new `[]` on every render would rebuild the DataViews fields on every render.
+const NO_COLUMN_FILTERS: NonNullable<ListTablePageProps['columnFilters']> = [];
+
 /**
  * Opens the confirm modal for a legacy row action.
  *
@@ -125,7 +128,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             productRecommendation,
             notices,
             recommendations,
-            columnFilters = [],
+            columnFilters = NO_COLUMN_FILTERS,
             banner,
             contentMode = false,
             perPage = DEFAULT_PER_PAGE,

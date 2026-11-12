@@ -9,6 +9,7 @@ use Money\Currencies\AggregateCurrencies;
 use Money\Currencies\BitcoinCurrencies;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
+use Money\Exception\UnknownCurrencyException;
 
 /**
  * The one way list tables write money. It follows the currency settings of the site, the same way
@@ -19,6 +20,14 @@ use Money\Currency;
 final class MoneyFormatter
 {
     /**
+     * @var AggregateCurrencies|null
+     */
+    private static $currencies;
+
+    /**
+     * Writes the amount as text. A missing amount comes back as the dash placeholder, which is an HTML
+     * string, so use the result in HTML cells and not as plain text (a CSV, an aria-label).
+     *
      * @since TBD
      */
     public static function format(?Money $amount): string
@@ -44,6 +53,8 @@ final class MoneyFormatter
     }
 
     /**
+     * Like format(), for a decimal amount. A missing amount comes back as the dash placeholder (HTML).
+     *
      * @since TBD
      *
      * @param string|int|float|null $amount A decimal amount such as "12.50", or a number.
@@ -61,7 +72,20 @@ final class MoneyFormatter
             $amount = self::floatToDecimalString($amount, $currency);
         }
 
-        return self::format(Money::fromDecimal($amount, $currency));
+        try {
+            return self::format(Money::fromDecimal($amount, $currency));
+        } catch (UnknownCurrencyException $exception) {
+            // A stored code that none of the sets know must not fail a whole response: use Give's own text.
+            $decimal = is_float($amount) ? number_format($amount, (int) give_get_price_decimals($currency), '.', '') : (string) $amount;
+            $isNegative = strpos($decimal, '-') === 0;
+
+            // Give has no symbol for this code, and its currency helper would swap in the site currency. So the
+            // number is written like format() writes it (no sanitizing, sign in front) and the stored code follows.
+            $text = give_format_amount(ltrim($decimal, '-'), ['currency' => $currency, 'sanitize' => false])
+                . ' ' . esc_html($currency);
+
+            return $isNegative ? '-' . $text : $text;
+        }
     }
 
     /**
@@ -73,13 +97,30 @@ final class MoneyFormatter
      */
     private static function floatToDecimalString(float $amount, string $currency): string
     {
-        $currencies = new AggregateCurrencies([
-            new GiveCurrencies(),
-            new ISOCurrencies(),
-            new BitcoinCurrencies(),
-        ]);
+        try {
+            $decimals = self::currencies()->subunitFor(new Currency($currency));
+        } catch (UnknownCurrencyException $exception) {
+            // A stored code that none of the sets know must not fail a whole response.
+            $decimals = (int) give_get_price_decimals($currency);
+        }
 
-        return number_format($amount, $currencies->subunitFor(new Currency($currency)), '.', '');
+        return number_format($amount, $decimals, '.', '');
+    }
+
+    /**
+     * The currency sets are built once, not once for every cell.
+     */
+    private static function currencies(): AggregateCurrencies
+    {
+        if (self::$currencies === null) {
+            self::$currencies = new AggregateCurrencies([
+                new GiveCurrencies(),
+                new ISOCurrencies(),
+                new BitcoinCurrencies(),
+            ]);
+        }
+
+        return self::$currencies;
     }
 
     /**

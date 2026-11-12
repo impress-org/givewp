@@ -46,7 +46,7 @@ describe('StatTiles', () => {
     it('names the region by the screen, and shows the server text in config order', async () => {
         await render(<StatTiles config={config} stats={stats} status="ready" label="Donors statistics" />);
 
-        const region = container.querySelector('[role="region"]') as HTMLElement;
+        const region = container.querySelector('section[aria-label]') as HTMLElement;
         const tiles = Array.from(container.querySelectorAll('.givewp-stat-tile'));
 
         expect(region.getAttribute('aria-label')).toBe('Donors statistics');
@@ -119,7 +119,7 @@ describe('StatTiles', () => {
 
         const buttons = Array.from(container.querySelectorAll('button.givewp-stat-tile'));
 
-        expect(buttons.map((button) => button.getAttribute('aria-pressed'))).toEqual(['false', 'true']);
+        expect(buttons.map((button) => button.getAttribute('aria-pressed'))).toEqual([null, 'true']);
 
         await act(async () => (buttons[0] as HTMLElement).click());
 

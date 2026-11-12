@@ -116,10 +116,10 @@ test.describe('Subscriptions list filters @recurring', () => {
 /**
  * The Subscriptions list on narrow screens. Like the filters above, this needs Give Recurring active.
  */
-test.describe('Subscriptions list on narrow screens @recurring', () => {
+test.describe('Subscriptions blank slate on narrow screens @recurring', () => {
     expectNoBrowserDialogs();
 
-    test('fits 782 px and 375 px with no page overflow', async ({page, admin, requestUtils}) => {
+    test('blank slate fits 782 px and 375 px with no page overflow', async ({page, admin, requestUtils}) => {
         test.skip(!isPluginActive(SLUG), 'Give Recurring is not active.');
 
         // A test site may have no subscriptions, and then shows a blank slate rather than cards.

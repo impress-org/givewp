@@ -15,8 +15,34 @@ export interface StatTileProps {
     upgrade?: {href: string; message: string};
     /** Set by the row when the filter this tile stands for is on. */
     isPressed?: boolean;
+    /**
+     * Whether a screen reader hears the pressed state. False for the Total tile: it is lit when no filter
+     * is on, but it does not toggle, so it is announced as a plain button. Defaults to true.
+     */
+    announcePressed?: boolean;
     /** Present: the tile is a toggle button. Never a button in the `upgrade` state. */
     onToggle?: () => void;
+}
+
+/** A small funnel in the tile corner. It shows on hover and focus, and stays on while the filter is on. */
+function FilterIcon() {
+    return (
+        <svg
+            className="givewp-stat-tile__filter-icon"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            focusable="false"
+        >
+            <path d="M2 3h12l-4.5 5.5V13l-3 1.5V8.5z" />
+        </svg>
+    );
 }
 
 function Value({state, value, upgrade}: Pick<StatTileProps, 'state' | 'value' | 'upgrade'>) {
@@ -47,7 +73,9 @@ function Value({state, value, upgrade}: Pick<StatTileProps, 'state' | 'value' | 
     }
 
     return (
-        <span className={cx('givewp-stat-tile__value', {'givewp-stat-tile__value--refreshing': state === 'refreshing'})}>
+        <span
+            className={cx('givewp-stat-tile__value', {'givewp-stat-tile__value--refreshing': state === 'refreshing'})}
+        >
             {value}
         </span>
     );
@@ -60,7 +88,15 @@ function Value({state, value, upgrade}: Pick<StatTileProps, 'state' | 'value' | 
  *
  * @since TBD
  */
-export default function StatTile({label, value, state, upgrade, isPressed = false, onToggle}: StatTileProps) {
+export default function StatTile({
+    label,
+    value,
+    state,
+    upgrade,
+    isPressed = false,
+    announcePressed = true,
+    onToggle,
+}: StatTileProps) {
     const content = (
         <>
             <span className="givewp-stat-tile__label">{label}</span>
@@ -76,8 +112,14 @@ export default function StatTile({label, value, state, upgrade, isPressed = fals
 
     if (onToggle && state !== 'upgrade') {
         return (
-            <button type="button" className={className} aria-pressed={isPressed} onClick={onToggle}>
+            <button
+                type="button"
+                className={className}
+                aria-pressed={announcePressed ? isPressed : undefined}
+                onClick={onToggle}
+            >
                 {content}
+                {announcePressed && <FilterIcon />}
             </button>
         );
     }

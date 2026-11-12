@@ -12,7 +12,8 @@ export interface ListTableNoticeAreaProps {
     notices: ListTableNotice[];
     /** Today's recommendation, or null when there is none. */
     recommendation: RecommendedProductData | null;
-    onDismissRecommendation: () => void;
+    /** Leave it out to show the recommendation without a dismiss button. */
+    onDismissRecommendation?: () => void;
     /** Rendered first: the error notices of failed actions. */
     children?: ReactNode;
     /** Rendered last: the deprecated `productRecommendation` slot. */
@@ -42,8 +43,10 @@ function NoticeLink({href, label, opensInNewTab}: {href: string; label: string; 
 
 /**
  * The one place above a list table where notices, onboarding tips and the daily product
- * recommendation render. Everything comes from page config, so there is no loading state. It
- * renders nothing, and takes no space, when there is nothing to show.
+ * recommendation render. Everything comes from page config, so there is no loading state. When
+ * there is nothing to show, the wrapper is hidden by the `:empty` rule in the stylesheet, so it takes
+ * no space. (It returns null when there is also no `children` at all; the page always passes the
+ * action notification placeholder, so there the wrapper is what gets hidden.)
  *
  * Order: `children`, system notices, onboarding notices, the recommendation, then `trailing`.
  *
@@ -91,7 +94,8 @@ export default function ListTableNoticeArea({
                     dismissHandleClick={onDismissRecommendation}
                 >
                     <p className="givewp-list-table-notice-area__message">
-                        <strong>{__('PRO TIP:', 'give')}</strong> {recommendation.message}{' '}
+                        <strong>{__('PRO TIP: ', 'give')}</strong>
+                        {recommendation.message}{' '}
                         <NoticeLink href={recommendation.documentationPage} label={recommendation.innerHtml} opensInNewTab />
                     </p>
                 </Notice>

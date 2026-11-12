@@ -14,15 +14,15 @@ final class TruncatedText
      *
      * @since TBD
      *
-     * @param string $html     The cell markup, already escaped.
-     * @param string $fullText The plain text, for the title.
+     * @param string $escapedHtml The cell markup. It is printed as given, so escape it before the call.
+     * @param string $fullText    The plain text, for the title. It is escaped here.
      */
-    public static function render(string $html, string $fullText): string
+    public static function render(string $escapedHtml, string $fullText): string
     {
         return sprintf(
             '<span class="givewp-truncated-text" title="%s">%s</span>',
             esc_attr($fullText),
-            $html
+            $escapedHtml
         );
     }
 }

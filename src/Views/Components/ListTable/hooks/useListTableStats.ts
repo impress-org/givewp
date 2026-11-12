@@ -1,4 +1,4 @@
-import {useMemo} from 'react';
+import {useEffect, useMemo, useRef} from 'react';
 import useListTableQuery from './useListTableQuery';
 
 /**
@@ -19,7 +19,8 @@ export type ListTableStats = {
 type StatsResponse = Record<string, unknown> & {formatted?: Record<string, string>};
 
 /**
- * - an error and no request running: `error`
+ * - an error and no request running, and no data of this request to show: `error`
+ * - an error and no request running, but earlier data of the same request: `ready` (the last good numbers stay)
  * - no data yet (or a retry after an error): `loading`
  * - data and a request running: `refreshing`
  * - otherwise: `ready`
@@ -30,13 +31,16 @@ export function statsStatus({
     hasData,
     hasError,
     isValidating,
+    hasCurrentData = hasData,
 }: {
     hasData: boolean;
     hasError: boolean;
     isValidating: boolean;
+    /** The data on screen was loaded for this same request (not kept from another test mode). */
+    hasCurrentData?: boolean;
 }): StatsStatus {
     if (hasError && !isValidating) {
-        return 'error';
+        return hasCurrentData ? 'ready' : 'error';
     }
 
     if (!hasData || hasError) {
@@ -70,9 +74,27 @@ export default function useListTableStats(endpoint: string | null, testMode: boo
     const {data, error, isValidating, refresh} = useListTableQuery<StatsResponse>(endpoint, {testMode});
     const stats = useMemo(() => (data ? toStats(data) : undefined), [data]);
 
+    // The query keeps the rows of the previous request while a new one loads or fails. Remember which
+    // request the settled data came from, so a failed refresh keeps the numbers only for the same request.
+    const requestKey = `${endpoint ?? ''}:${testMode}`;
+    const settledKey = useRef<string | null>(null);
+
+    // After the commit, not during render, so a render React discards cannot change it. The status below
+    // only reads it when a request failed, which is always after an earlier committed success.
+    useEffect(() => {
+        if (data && !error && !isValidating) {
+            settledKey.current = requestKey;
+        }
+    }, [data, error, isValidating, requestKey]);
+
     return {
         stats,
-        status: statsStatus({hasData: Boolean(data), hasError: Boolean(error), isValidating}),
+        status: statsStatus({
+            hasData: Boolean(data),
+            hasError: Boolean(error),
+            isValidating,
+            hasCurrentData: settledKey.current === requestKey,
+        }),
         refresh,
     };
 }

@@ -53,7 +53,7 @@ class GoalColumn extends ModelColumn
     public function getCellValue($model): string
     {
         if (! $model->goalSettings->enableDonationGoal) {
-            return Placeholder::dash(__('No goal set', 'give'));
+            return Placeholder::dash(__('No Goal Set', 'give'));
         }
 
         /**

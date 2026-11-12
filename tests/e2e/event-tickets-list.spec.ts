@@ -8,10 +8,10 @@ import {isEventTicketsEnabled} from './utils/wp-cli';
  */
 const EVENT_TICKETS = 'post_type=give_forms&page=give-event-tickets';
 
-test.describe('Event Tickets list on narrow screens', () => {
+test.describe('Event Tickets blank slate on narrow screens', () => {
     expectNoBrowserDialogs();
 
-    test('fits 782 px and 375 px with no page overflow', async ({page, admin, requestUtils}) => {
+    test('blank slate fits 782 px and 375 px with no page overflow', async ({page, admin, requestUtils}) => {
         test.skip(!isEventTicketsEnabled(), 'Event Tickets is not enabled on this site.');
 
         // A test site may have no events, and then shows a blank slate rather than cards.

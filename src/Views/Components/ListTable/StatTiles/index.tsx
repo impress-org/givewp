@@ -51,7 +51,7 @@ export default function StatTiles({
     onChangeFilters,
 }: StatTilesProps) {
     return (
-        <section className="givewp-stat-tiles" role="region" aria-label={label}>
+        <section className="givewp-stat-tiles" aria-label={label}>
             {Object.entries(config).map(([key, statConfig]) => {
                 const value = stats?.formatted[key];
                 const tileFilter = onChangeFilters ? tileFilterOf(statConfig, availableFilterIds) : undefined;
@@ -60,6 +60,7 @@ export default function StatTiles({
                     <StatTile
                         key={key}
                         isPressed={tileFilter ? isTilePressed(tileFilter, filters) : false}
+                        announcePressed={tileFilter?.value !== undefined}
                         onToggle={
                             tileFilter ? () => onChangeFilters?.(toggleTileFilter(filters, tileFilter)) : undefined
                         }

@@ -1,4 +1,5 @@
 .givewp-stat-tile {
+    position: relative;
     box-sizing: border-box;
     display: flex;
     flex: 1 1 0;
@@ -32,8 +33,9 @@
         font-weight: 600;
         line-height: 1.2;
 
+        // Dimmed with opacity on the dark value color, so the text keeps enough contrast.
         &--refreshing {
-            color: var(--givewp-neutral-400);
+            opacity: 0.65;
         }
     }
 
@@ -67,6 +69,27 @@
         }
     }
 
+    // The funnel that says the tile filters the list. Hidden at rest, so the tile stays clean.
+    &__filter-icon {
+        position: absolute;
+        inset-block-start: var(--givewp-spacing-3);
+        inset-inline-end: var(--givewp-spacing-3);
+        color: var(--givewp-neutral-900);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    &--toggle:hover &__filter-icon,
+    &--toggle:focus-visible &__filter-icon {
+        opacity: 1;
+    }
+
+    &--pressed &__filter-icon {
+        color: var(--givewp-green-600);
+        fill: currentColor;
+        opacity: 1;
+    }
+
     &--toggle {
         cursor: pointer;
 
@@ -85,5 +108,11 @@
         background-color: var(--givewp-green-50);
         // A thicker edge, so the pressed tile is not told apart by color alone.
         box-shadow: inset 0 0 0 1px var(--givewp-green-500);
+
+        // Windows High Contrast drops box-shadow and overrides colors, so the pressed tile gets a thicker
+        // border. The focus outline is left alone, so a focused pressed tile shows both.
+        @media (forced-colors: active) {
+            border-width: 3px;
+        }
     }
 }
