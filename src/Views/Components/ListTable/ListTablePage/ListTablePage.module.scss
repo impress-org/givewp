@@ -169,6 +169,11 @@ $givewp-list-table-wp-footer-space: 65px;
     :global(.givewp-list-table__toolbar) {
         padding-block-start: 0;
     }
+
+    // With no tile band above it, the content gets the band's 12px at the top of the sheet.
+    &:first-child {
+        padding-block-start: var(--givewp-spacing-3);
+    }
 }
 
 // The full page's list sheet: one white box with the stat tiles at its top and the notices and the

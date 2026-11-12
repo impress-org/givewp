@@ -73,6 +73,8 @@ describe('list sheet styles', () => {
         expect(block(page, '.sheet')).toContain('gap: var(--givewp-spacing-3)');
         expect(content).toContain('gap: var(--givewp-spacing-3)');
         expect(content).toContain('padding-block: 0');
+        // With no band above it, the content keeps the same 12px at the top of the sheet.
+        expect(block(content, '&:first-child')).toContain('padding-block-start: var(--givewp-spacing-3)');
         expect(block(page, '.pageContent')).toContain('padding: var(--givewp-spacing-6)');
         expect(content).toMatch(/\.givewp-list-table__toolbar\)\s*\{\s*padding-block-start: 0;/);
     });
