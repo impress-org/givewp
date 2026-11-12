@@ -1,4 +1,5 @@
 @use '../layout/breakpoints' as *;
+@use '../layout/tokens' as *;
 
 :global {
     :root {
@@ -40,13 +41,16 @@
 }
 
 .page {
-    background-color: var(--givewp-neutral-25);
+    @include givewp-list-table-tokens;
+    background-color: var(--givewp-list-table-page);
     box-sizing: border-box;
-    color: var(--givewp-neutral-900);
+    color: var(--givewp-list-table-text);
     display: flex;
     flex-direction: column;
-    font-family: Inter, system-ui, sans-serif;
-    font-size: 1rem;
+    // The WP admin font stack.
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+        'Helvetica Neue', sans-serif;
+    font-size: 0.8125rem;
     gap: var(--givewp-spacing-4);
 
     *,
