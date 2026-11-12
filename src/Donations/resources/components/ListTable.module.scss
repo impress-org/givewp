@@ -4,6 +4,9 @@
 
 .manualDonationsNotice {
     position: relative;
+    // The WordPress button is inline-block, where `gap` does nothing. Flex makes the 8px between the label and the tag.
+    display: inline-flex;
+    align-items: center;
     gap: .5rem;
     text-decoration: none;
 
