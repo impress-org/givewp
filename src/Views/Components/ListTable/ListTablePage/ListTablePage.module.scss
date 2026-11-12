@@ -2,10 +2,6 @@
 @use '../layout/tokens' as *;
 
 :global {
-    :root {
-        --give-primary-color: #86b785;
-    }
-
     .post-type-give_forms #wpbody {
         -webkit-font-smoothing: antialiased;
         box-sizing: border-box;
@@ -201,55 +197,6 @@ ul[role='document'] + .flexRow {
         outline: 0.125rem solid #2271b1;
         outline-offset: 0.25em;
     }
-}
-
-.addFormButton {
-    $depth: 0px 1px 0px rgba(0, 0, 0, 0.25);
-
-    background-color: #f7f7f7;
-    border: 1px solid #ddd;
-    border-radius: 0.1875rem;
-    box-shadow: $depth;
-    color: #888;
-    font-family: inherit;
-    font-size: 0.875rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    block-size: 2.5rem;
-    padding-inline: 1rem;
-    transition-property: filter, color, outline;
-    transition-duration: 180ms;
-    transition-timing-function: ease-in;
-    cursor: pointer;
-
-    &:is(a) {
-        text-decoration: none;
-    }
-
-    &:is(:hover, :active, :focus) {
-        color: #777;
-    }
-
-    &:hover {
-        filter: contrast(110%);
-    }
-
-    &:active {
-        filter: contrast(90%);
-    }
-
-    &:focus {
-        box-shadow: $depth;
-        outline: 0.125rem solid var(--give-primary-color);
-        outline-offset: 0.25em;
-    }
-}
-
-.tryNewFormBuilderBtnContainer {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0);
 }
 
 // The narrow page, at and below 782 px. This is the only place the list pages change layout by width
