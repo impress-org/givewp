@@ -14,7 +14,7 @@ use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 trait HandlePaymentIntentStatus
 {
     /**
-     * @since TBD Handle ACH `verify_with_microdeposits` next actions and stop returning an empty redirect.
+     * @since 4.19.2 Handle ACH `verify_with_microdeposits` next actions and stop returning an empty redirect.
      * @since 4.19.1 Escape exception message. Add translators comments.
      * @since 2.27.1 Update PaymentIntentException message.
      * @since 2.21.0 Update second argument type to Donation model

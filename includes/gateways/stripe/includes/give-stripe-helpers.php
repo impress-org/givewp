@@ -1008,7 +1008,7 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
  * @param \Stripe\PaymentIntent $payment_intent Stripe Payment Intent Object.
  *
  * @since 2.5.0
- * @since TBD Handle ACH `verify_with_microdeposits` next actions, and send the donor back to the form instead of redirecting to an empty URL.
+ * @since 4.19.2 Handle ACH `verify_with_microdeposits` next actions, and send the donor back to the form instead of redirecting to an empty URL.
  *
  * @return void
  */

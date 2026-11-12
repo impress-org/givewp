@@ -8,7 +8,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Stripe\PaymentIntent;
 
 /**
- * @since TBD
+ * @since 4.19.2
  */
 class ProcessAdditionalAuthenticationTest extends TestCase
 {
@@ -20,7 +20,7 @@ class ProcessAdditionalAuthenticationTest extends TestCase
     private $redirectLocation;
 
     /**
-     * @since TBD
+     * @since 4.19.2
      */
     public function setUp(): void
     {
@@ -46,7 +46,7 @@ class ProcessAdditionalAuthenticationTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      */
     public function tearDown(): void
     {
@@ -59,7 +59,7 @@ class ProcessAdditionalAuthenticationTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      *
      * @test
      */

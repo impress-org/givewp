@@ -32,7 +32,7 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider
 
     /**
      * @since 2.24.0
-     * @since TBD Add the ACH microdeposit verification notification.
+     * @since 4.19.2 Add the ACH microdeposit verification notification.
      *
      * @param Give_Email_Notification[] $emails
      *

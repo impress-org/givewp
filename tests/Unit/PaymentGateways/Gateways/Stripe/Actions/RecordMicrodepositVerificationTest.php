@@ -8,7 +8,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.19.2
  */
 class RecordMicrodepositVerificationTest extends TestCase
 {
@@ -20,7 +20,7 @@ class RecordMicrodepositVerificationTest extends TestCase
     private $sentEmails = [];
 
     /**
-     * @since TBD
+     * @since 4.19.2
      */
     public function tearDown(): void
     {
@@ -30,7 +30,7 @@ class RecordMicrodepositVerificationTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      *
      * @test
      */
@@ -64,7 +64,7 @@ class RecordMicrodepositVerificationTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      *
      * @test
      */
@@ -84,7 +84,7 @@ class RecordMicrodepositVerificationTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      */
     private function captureEmails(): void
     {
