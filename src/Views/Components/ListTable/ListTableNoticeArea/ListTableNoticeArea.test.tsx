@@ -174,4 +174,36 @@ describe('ListTableNoticeArea', () => {
 
         expect(container.querySelector('button')).toBeNull();
     });
+
+    it('keeps a long tip with a link readable: one dismiss button, a safe link, no alert role', async () => {
+        await act(() =>
+            root.render(
+                <ListTableNoticeArea
+                    notices={[]}
+                    recommendation={{...recommendation, message: 'A '.repeat(200)}}
+                    onDismissRecommendation={jest.fn()}
+                />
+            )
+        );
+
+        expect(container.querySelectorAll('button[aria-label="Dismiss tip"]')).toHaveLength(1);
+        expect(container.querySelector('a[target="_blank"]')?.getAttribute('rel')).toContain('noopener');
+        expect(container.querySelector('[role="alert"]')).toBeNull();
+    });
+
+    it('gives every notice the list table notice class so the area can restyle it', async () => {
+        await act(() =>
+            root.render(
+                <ListTableNoticeArea
+                    notices={[notice('a', 'system')]}
+                    recommendation={recommendation}
+                    onDismissRecommendation={jest.fn()}
+                />
+            )
+        );
+
+        const groups = container.querySelectorAll('[role="group"]');
+        expect(groups).toHaveLength(2);
+        groups.forEach((group) => expect(group.classList.contains('givewp-list-table-notice')).toBe(true));
+    });
 });
