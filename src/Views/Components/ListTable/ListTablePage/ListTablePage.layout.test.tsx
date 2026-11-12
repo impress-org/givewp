@@ -1,4 +1,5 @@
 import {act} from 'react';
+import {select} from '@wordpress/data';
 import {createRoot, type Root} from 'react-dom/client';
 import type {View} from '@wordpress/dataviews';
 import type {DataViewsListTableProps} from '../DataViewsListTable';
@@ -349,6 +350,28 @@ describe('ListTablePage legacy view menu', () => {
             expect(url.pathname).toBe('/wp-json/give-api/v2/admin/donations/view');
             expect(url.searchParams.get('isLegacy')).toBe('1');
             expect(onSwitched).toHaveBeenCalledTimes(1);
+        } finally {
+            globalThis.fetch = originalFetch;
+        }
+    });
+
+    it('shows an error notice and does not switch when the save fails', async () => {
+        const onSwitched = jest.fn();
+        const fetchMock = jest.fn(() => Promise.resolve({ok: false, status: 500, json: () => Promise.resolve({})}));
+        const originalFetch = globalThis.fetch;
+        globalThis.fetch = fetchMock as unknown as typeof fetch;
+
+        try {
+            await setNarrow(false, {...props, legacyView: {onSwitched}});
+            await act(async () => menuButton()?.click());
+            await act(async () => legacyItem()?.click());
+
+            expect(onSwitched).not.toHaveBeenCalled();
+            const notices = select('givewp/admin-details-page-notifications').getNotifications() as {content: string}[];
+
+            expect(notices.map((notice) => notice.content)).toContain(
+                'The legacy view could not be saved. Please try again.'
+            );
         } finally {
             globalThis.fetch = originalFetch;
         }

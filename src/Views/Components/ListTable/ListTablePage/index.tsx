@@ -195,7 +195,6 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                 defaults: start.defaults,
                 layout: start.layout,
                 query: start.urlState?.query,
-                search: start.urlState?.search,
             })
         );
 
@@ -421,7 +420,17 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                                     legacyView={
                                         legacyView && {
                                             ariaLabel: legacyView.ariaLabel,
-                                            onSelect: () => switchToLegacyView(listTableApi, legacyView.onSwitched),
+                                            onSelect: () =>
+                                                switchToLegacyView(listTableApi, legacyView.onSwitched).catch(() =>
+                                                    report({
+                                                        changed: 0,
+                                                        failed: 0,
+                                                        notice: __(
+                                                            'The legacy view could not be saved. Please try again.',
+                                                            'give'
+                                                        ),
+                                                    })
+                                                ),
                                         }
                                     }
                                 />
