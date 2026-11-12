@@ -1,7 +1,7 @@
 import {type Ref, useEffect, useRef, useState} from 'react';
 import {Button, DropdownMenu} from '@wordpress/components';
 import type {Filter} from '@wordpress/dataviews';
-import {__, sprintf} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 import {closeSmall, plus} from '@wordpress/icons';
 import {filterFieldId} from '../adapters/viewToParameters';
 import DateRangeFilterControl from '../DateRangeFilterControl';

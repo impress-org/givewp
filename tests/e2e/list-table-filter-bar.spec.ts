@@ -11,7 +11,9 @@ test.describe('Filter bar layout', () => {
     for (const width of [1024, 782, 390]) {
         test(`filter bar wraps without a sideways page scroll at ${width}px`, async ({page, admin}) => {
             await page.setViewportSize({width, height: 900});
-            await visitList(page, admin, DONATIONS_LIST);
+            // Below 783 px the list shows cards, not a table, so wait for the bar instead of a table.
+            await admin.visitAdminPage('edit.php', DONATIONS_LIST);
+            await expect(filterBar(page)).toBeVisible({timeout: 20_000});
 
             await applyFilter(page, 'Status', 'Completed');
             await addFilter(page, 'Donation date');
