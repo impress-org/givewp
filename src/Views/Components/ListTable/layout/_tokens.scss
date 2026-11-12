@@ -22,9 +22,8 @@
     --givewp-list-table-row-hover: #f8f8f8;
     --givewp-list-table-page: #f0f0f1;
 
-    // The admin color of the site's color scheme.
-    --givewp-list-table-action: var(--wp-admin-theme-color, #3858e9);
-    // Our own bars, edges and focus use a darker mix, so old schemes (Sunrise, Light) still pass 3:1.
+    // Our own bars, edges and focus use a darker mix of the site's admin color, so old schemes
+    // (Sunrise, Light) still pass 3:1.
     --givewp-list-table-action-edge: var(--wp-admin-theme-color, #3858e9);
     --givewp-list-table-action-tint: rgb(0 0 0 / 0.04);
 
