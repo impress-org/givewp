@@ -19,12 +19,12 @@ use Stripe\PaymentIntent;
  * The parent class re-fetches the event from the Stripe account of the donation's form, so the hosted
  * verification URL emailed to the donor never comes from the unauthenticated webhook request body.
  *
- * @since TBD
+ * @since 4.19.2
  */
 class PaymentIntentRequiresAction extends StripeEventListener
 {
     /**
-     * @since TBD
+     * @since 4.19.2
      *
      * @return void
      */
@@ -56,7 +56,7 @@ class PaymentIntentRequiresAction extends StripeEventListener
      * The gateways create the PaymentIntent from the donation amount, so any difference means the
      * PaymentIntent is not the one this donation was charged with.
      *
-     * @since TBD
+     * @since 4.19.2
      *
      * @param PaymentIntent $paymentIntent The PaymentIntent from the Stripe event.
      * @param Donation      $donation      The donation linked to the PaymentIntent ID.

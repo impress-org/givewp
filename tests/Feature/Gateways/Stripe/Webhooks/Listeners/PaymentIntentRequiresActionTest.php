@@ -14,14 +14,14 @@ use Stripe\Event;
 use Stripe\PaymentIntent;
 
 /**
- * @since TBD
+ * @since 4.19.2
  */
 class PaymentIntentRequiresActionTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.2
      *
      * @test
      */
@@ -57,7 +57,7 @@ class PaymentIntentRequiresActionTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      *
      * @test
      */
@@ -84,7 +84,7 @@ class PaymentIntentRequiresActionTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      *
      * @test
      */
@@ -104,7 +104,7 @@ class PaymentIntentRequiresActionTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      *
      * @test
      */
@@ -125,7 +125,7 @@ class PaymentIntentRequiresActionTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      */
     private function createDonation(): Donation
     {
@@ -143,7 +143,7 @@ class PaymentIntentRequiresActionTest extends TestCase
     /**
      * Stripe sends the currency in lowercase, so the default here does too.
      *
-     * @since TBD
+     * @since 4.19.2
      *
      * @param array{amount?: int, currency?: string} $overrides PaymentIntent fields to replace.
      */
