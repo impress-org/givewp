@@ -427,6 +427,35 @@ describe('ListTablePage legacy view menu', () => {
     });
 });
 
+describe('ListTablePage list sheet', () => {
+    it('renders the stat tiles at the top of the list sheet, before the notices and the list', async () => {
+        await setNarrow(false, props);
+
+        const sheet = container.querySelector('.sheet');
+        const tiles = container.querySelector('.givewp-stat-tiles');
+
+        expect(sheet?.firstElementChild).toBe(tiles);
+        expect(sheet?.querySelector('.givewp-list-table-notice-area')).not.toBeNull();
+        expect(sheet?.querySelector('.givewp-list-table')).not.toBeNull();
+        expect(container.querySelector('header')?.contains(tiles)).toBe(false);
+    });
+
+    it('renders the sheet without tiles on a screen with no stats', async () => {
+        await setNarrow(false, {...props, statsConfig: undefined});
+
+        expect(container.querySelector('.sheet .givewp-list-table')).not.toBeNull();
+        expect(container.querySelector('.givewp-stat-tiles')).toBeNull();
+    });
+
+    it('renders no sheet and no tiles when embedded', async () => {
+        await setNarrow(false, {...cardProps, statsConfig: props.statsConfig});
+
+        expect(container.querySelector('.sheet')).toBeNull();
+        expect(container.querySelector('.givewp-stat-tiles')).toBeNull();
+        expect(container.querySelector('.pageContent .givewp-list-table')).not.toBeNull();
+    });
+});
+
 describe('ListTablePage embedded look', () => {
     const page = () => container.querySelector('article');
 

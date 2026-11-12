@@ -1,0 +1,50 @@
+import {readFileSync} from 'fs';
+import {join} from 'path';
+
+const LIST_TABLE_DIR = join(__dirname, '..');
+const read = (...path: string[]) => readFileSync(join(LIST_TABLE_DIR, ...path), 'utf8');
+
+/**
+ * The text of the first rule block that opens right after `selector`, braces matched.
+ */
+function block(source: string, selector: string): string {
+    const start = source.indexOf(`\n${selector} {`);
+
+    if (start < 0) {
+        return '';
+    }
+
+    const open = source.indexOf('{', start);
+    let depth = 0;
+
+    for (let index = open; index < source.length; index++) {
+        depth += source[index] === '{' ? 1 : source[index] === '}' ? -1 : 0;
+
+        if (depth === 0) {
+            return source.slice(open + 1, index);
+        }
+    }
+
+    return '';
+}
+
+describe('list sheet styles', () => {
+    const page = read('ListTablePage', 'ListTablePage.module.scss');
+
+    it('draws one bordered, rounded sheet that clips its corners without a scroll container', () => {
+        const sheet = block(page, '.sheet');
+
+        expect(sheet).toContain('border: 1px solid var(--givewp-list-table-hairline)');
+        expect(sheet).toContain('border-radius: var(--givewp-rounded-8)');
+        expect(sheet).toContain('overflow: clip');
+    });
+
+    it('lays the tile band full width at the top of the sheet, with a hairline under it', () => {
+        const band = block(read('StatTiles', 'styles.scss'), '.givewp-stat-tiles');
+
+        expect(band).toContain('border-block-end: 1px solid var(--givewp-list-table-hairline)');
+        expect(band).not.toContain('margin-inline');
+        expect(band).not.toMatch(/(^|\s)border:/);
+        expect(band).not.toContain('background');
+    });
+});

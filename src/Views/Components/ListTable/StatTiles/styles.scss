@@ -6,9 +6,8 @@
     // The tiles wrap onto a new row when there is no room, at any width.
     flex-wrap: wrap;
     gap: 0;
-    margin-inline: var(--givewp-spacing-6);
-    border: 1px solid var(--givewp-list-table-hairline);
-    background: var(--givewp-shades-white);
+    // The band at the top of the list sheet: full width, with a hairline under it.
+    border-block-end: 1px solid var(--givewp-list-table-hairline);
 
     // Each tile shares the row equally, and drops to the next row before it gets narrower than this.
     > .givewp-stat-tile {

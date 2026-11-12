@@ -131,8 +131,24 @@
     display: flex;
     flex-direction: column;
     gap: var(--givewp-spacing-2);
-    margin-inline: var(--givewp-spacing-6);
     padding: var(--givewp-spacing-6);
+}
+
+// The outermost box under the page holds the side gutter: the sheet on the full page, the content
+// itself when embedded.
+.sheet,
+.page > .pageContent {
+    margin-inline: var(--givewp-spacing-6);
+}
+
+// The full page's list sheet: one white box with the stat tiles at its top and the notices and the
+// list under them. `overflow: clip` rounds the corners of the tiles without making a scroll
+// container, so nothing sticky inside changes what it sticks to.
+.sheet {
+    background-color: var(--givewp-shades-white);
+    border: 1px solid var(--givewp-list-table-hairline);
+    border-radius: var(--givewp-rounded-8);
+    overflow: clip;
 }
 
 .button:is(:global(.button)) {

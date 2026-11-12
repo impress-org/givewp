@@ -141,4 +141,15 @@ describe('ListTablePageHeader', () => {
             expect(divider()).toBeNull();
         });
     });
+
+    it('takes no stats: the stat tiles render in the list sheet', async () => {
+        const header = (
+            // @ts-expect-error The header has no stats props.
+            <ListTablePageHeader title="Donations" testMode={false} onChangeTestMode={() => {}} statsConfig={{}} />
+        );
+
+        await render(header);
+
+        expect(container.querySelector('.givewp-stat-tiles')).toBeNull();
+    });
 });
