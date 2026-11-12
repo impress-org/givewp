@@ -98,10 +98,10 @@ describe('FilterChip', () => {
         expect(document.querySelector('.components-tooltip')?.textContent).toBe('Status: 2. Active, Pending');
     });
 
-    it('has a remove button named removeLabel that calls onRemove', async () => {
+    it('has a remove button named after removeLabel and the chip that calls onRemove', async () => {
         await render();
 
-        expect(removeButton()?.getAttribute('aria-label')).toBe('Reset');
+        expect(removeButton()?.getAttribute('aria-label')).toMatch(/^Reset filter: /);
 
         await click(removeButton());
 

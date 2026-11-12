@@ -115,7 +115,7 @@ test.describe('Donations list', () => {
 
         // A campaign's form and "No campaign" share no donations, so the list empties and says why. The
         // Form filter takes several forms, so it is reset before the other one is picked.
-        await filterBar(page).getByRole('button', {name: 'Reset Form'}).click();
+        await filterBar(page).getByRole('button', {name: /^Reset filter: Form/}).click();
         await applyFilter(page, 'Form', campaign.title);
         await expect(rowById(page, standalone)).toHaveCount(0);
         await expect(rowById(page, inCampaign)).toHaveCount(0);

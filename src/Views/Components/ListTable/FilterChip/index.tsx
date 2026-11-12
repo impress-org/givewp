@@ -1,5 +1,6 @@
 import {useEffect, useRef, type ReactNode} from 'react';
 import {Button, Dropdown} from '@wordpress/components';
+import {__, sprintf} from '@wordpress/i18n';
 import {closeSmall} from '@wordpress/icons';
 import './styles.scss';
 
@@ -20,7 +21,7 @@ export interface FilterChipProps {
     hasValue: boolean;
     /** Shows the remove button. */
     canRemove: boolean;
-    /** Name of the remove button: "Remove" (secondary) or "Reset" (primary with a value). */
+    /** The first word of the remove button's name: "Remove" (secondary) or "Reset" (primary with a value). */
     removeLabel: string;
     /** Opens the popover on mount. */
     defaultOpen?: boolean;
@@ -33,9 +34,7 @@ export interface FilterChipProps {
  * A filter chip: a button that opens a popover with the filter control, and an optional button that
  * removes or resets the filter. Escape closes the popover and puts focus back on the chip.
  *
- * @since TBD Show `accessibleName` in the tooltip too, so it is not read twice.
- * @since TBD Name the chip by `accessibleName` and keep `fullText` as the tooltip.
- * @since TBD
+ * @since TBD Name the chip and its remove button by `accessibleName`, which is also the tooltip.
  */
 export default function FilterChip({
     text,
@@ -86,7 +85,12 @@ export default function FilterChip({
                 <Button
                     className="givewp-filter-chip__remove"
                     icon={closeSmall}
-                    label={removeLabel}
+                    label={sprintf(
+                        /* translators: 1: "Remove" or "Reset", 2: the filter and its value (for example "Status: Failed") */
+                        __('%1$s filter: %2$s', 'give'),
+                        removeLabel,
+                        accessibleName
+                    )}
                     onClick={onRemove}
                 />
             )}

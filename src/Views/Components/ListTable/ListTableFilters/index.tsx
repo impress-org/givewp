@@ -182,11 +182,7 @@ export default function ListTableFilters({
         const chipValue = hasValue ? (isMultiple(declaration) ? values : values[0]) : undefined;
         const chip = {
             canRemove: !declaration.isPrimary || hasValue,
-            removeLabel: declaration.isPrimary
-                ? /* translators: %s: filter name such as "Status". */
-                  sprintf(__('Reset %s', 'give'), declaration.label)
-                : /* translators: %s: filter name such as "Donation date". */
-                  sprintf(__('Remove %s', 'give'), declaration.label),
+            removeLabel: declaration.isPrimary ? __('Reset', 'give') : __('Remove', 'give'),
             defaultOpen: justAdded === declaration.id,
             onRemove: () => remove(declaration),
         };

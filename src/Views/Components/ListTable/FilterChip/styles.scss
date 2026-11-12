@@ -1,29 +1,35 @@
 .givewp-filter-chip {
     display: inline-flex;
     align-items: center;
-    border: 1px solid var(--givewp-neutral-300);
+    // Real borders, so the chip keeps its edge in forced colors. The edge is 3:1 on the page.
+    border: 1px solid var(--givewp-list-table-control-edge);
     border-radius: 2px;
-    background: var(--givewp-neutral-25);
+    background: #fff;
 
     &--has-value {
-        border-color: var(--givewp-blue-400);
-        background: var(--givewp-blue-50);
+        border-color: var(--givewp-list-table-action-edge);
+        background: var(--givewp-list-table-action-tint);
     }
 
     &__toggle.components-button {
         padding-inline: var(--givewp-spacing-3);
+        // 32 px chip minus the two 1 px borders.
+        min-block-size: 1.875rem;
+        // A long value is cut here. The tooltip holds the full text.
         max-inline-size: 16rem;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-size: var(--givewp-font-size-paragraph-md);
+        font-size: 0.8125rem;
     }
 
     &__remove.components-button {
-        min-inline-size: 0;
+        // A 24 px target.
+        min-inline-size: 1.5rem;
+        min-block-size: 1.5rem;
         margin-inline-end: var(--givewp-spacing-1);
         padding: 0;
-        color: var(--givewp-neutral-500);
+        color: var(--givewp-list-table-text);
     }
 
     // The popover content sits outside the chip, so it is styled by its own class.

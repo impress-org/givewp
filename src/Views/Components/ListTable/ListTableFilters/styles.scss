@@ -2,7 +2,15 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--givewp-spacing-2);
+    row-gap: var(--givewp-spacing-2);
+    column-gap: var(--givewp-spacing-2);
     // No side padding: the page's container pads the list, and the toolbar above has none either.
     padding-block: 0 var(--givewp-spacing-4);
+}
+
+// At a narrow width a chip may be as wide as the bar, so a long value is cut instead of pushing the page sideways.
+@media (max-width: 782px) {
+    .givewp-list-table-filters__item {
+        max-inline-size: 100%;
+    }
 }
