@@ -21,7 +21,8 @@ $givewp-list-table-wp-footer-space: 65px;
 
     // The Give admin paints `#wpbody` a lighter grey, which shows in the room under the page. The full list
     // page paints it the page color. Only the full page carries this class, so an embedded list and the other
-    // Give admin pages keep their wrapper. The extra class beats the rule above without `!important`.
+    // Give admin pages keep their wrapper. The extra class beats `.post-type-give_forms #wpbody { background-color: #f9fafb }` in
+    // `AdminDetailsPage/AdminDetailsPage.module.scss` without `!important`.
     .post-type-give_forms #wpbody:has(.givewp-list-table-page) {
         background-color: $givewp-list-table-page;
     }

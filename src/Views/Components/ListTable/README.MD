@@ -62,7 +62,9 @@ The A+ look is kept small and in a few known places. Keep it that way.
   `ListTablePage.module.scss`), with the stat tile band at its top, and the page fills the window
   height. The toolbar is one row: the search box, the filter bar, then the view options, with the
   search hint under the row. The search label sits out of the flow, above the box; its size is in
-  `ListTableSearch/_label.scss`, and the toolbar row keeps that space above itself.
+  `ListTableSearch/_label.scss`, and the toolbar row keeps that space above itself. Only the full page article carries the stable class
+  `givewp-list-table-page` (an embedded list does not); the rule that paints the admin wrapper the page
+  color uses `:has()` on it.
 - **Embedded lists.** With `contentMode` there is no page header around the list, no sheet, no tiles
   and no window height. A rule for the shared list must still look right there.
 - **Narrow screens.** Our own search input, chip toggle and chip remove button are 40 px tall at 782
