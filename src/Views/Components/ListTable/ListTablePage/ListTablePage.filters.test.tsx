@@ -428,6 +428,69 @@ describe('ListTablePage with filter declarations', () => {
         });
     });
 
+    describe('the empty state when test mode is changed', () => {
+        const testModeProps = {
+            testModeToggle: {label: 'Test mode', ariaLabel: 'Show test mode'},
+            listTableBlankSlate: <p>No forms found</p>,
+        };
+        const statusFilter = {field: 'filter-status', operator: 'isAny' as const, value: ['pending']};
+        const emptyText = async () => (await renderSlot(lastTable().empty)).textContent;
+
+        it('shows the blank slate when only test mode is turned off on a test site', async () => {
+            await render({...testModeProps, paymentMode: true});
+            await act(async () => lastHeader().onChangeTestMode(false));
+
+            expect(lastHeader().testMode).toBe(false);
+            expect(await emptyText()).toBe('No forms found');
+            expect(slotContainer?.textContent).not.toContain('Clear filters');
+        });
+
+        it('shows the blank slate when only test mode is turned on on a live site', async () => {
+            await render({...testModeProps, paymentMode: false});
+            await act(async () => lastHeader().onChangeTestMode(true));
+
+            expect(lastHeader().testMode).toBe(true);
+            expect(await emptyText()).toBe('No forms found');
+            expect(slotContainer?.textContent).not.toContain('Clear filters');
+        });
+
+        it('shows the filtered empty state for a real filter', async () => {
+            await render({...testModeProps, paymentMode: true});
+            await act(async () =>
+                filterBar().props.onChangeView({
+                    ...lastTable().view,
+                    filters: [...(lastTable().view.filters ?? []), statusFilter],
+                })
+            );
+
+            expect(await emptyText()).toContain('match your search or filters.');
+            expect(slotContainer?.textContent).toContain('Clear filters');
+        });
+
+        it('shows the filtered empty state for a search', async () => {
+            await render({...testModeProps, paymentMode: true});
+            await act(async () => lastTable().onChangeView({...lastTable().view, search: 'spring'}));
+
+            expect(await emptyText()).toContain('match your search or filters.');
+            expect(slotContainer?.textContent).toContain('Clear filters');
+        });
+
+        it('shows the filtered empty state when test mode is changed and a real filter is set', async () => {
+            await render({...testModeProps, paymentMode: true});
+            await act(async () => lastHeader().onChangeTestMode(false));
+            await act(async () =>
+                filterBar().props.onChangeView({
+                    ...lastTable().view,
+                    filters: [...(lastTable().view.filters ?? []), statusFilter],
+                })
+            );
+
+            expect(lastHeader().testMode).toBe(false);
+            expect(await emptyText()).toContain('match your search or filters.');
+            expect(slotContainer?.textContent).toContain('Clear filters');
+        });
+    });
+
     it('a screen with neither filters nor filter settings shows no search box and an empty bar', async () => {
         await render({filters: undefined});
 

@@ -3,6 +3,7 @@
 namespace Give\Donors\Endpoints;
 
 use Give\Framework\Database\DB;
+use Give\Framework\ListTable\Formatting\StatsFormatter;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -42,6 +43,7 @@ class ListDonorsStats extends Endpoint
     }
 
     /**
+     * @since TBD Add formatted values.
      * @since 4.11.0
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
@@ -50,7 +52,7 @@ class ListDonorsStats extends Endpoint
 
         $statistics = $this->getDonorStatistics();
 
-        return new WP_REST_Response($statistics);
+        return new WP_REST_Response(StatsFormatter::withFormatted($statistics));
     }
 
     /**

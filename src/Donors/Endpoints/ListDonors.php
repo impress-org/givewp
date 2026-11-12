@@ -4,6 +4,8 @@ namespace Give\Donors\Endpoints;
 
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\ListTable\DonorsListTable;
+use Give\Donors\Models\Donor;
+use Give\Donors\Repositories\DonorsDataRepository;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\QueryBuilder\WhereQueryBuilder;
@@ -128,6 +130,7 @@ class ListDonors extends Endpoint
     }
 
     /**
+     * @since TBD Load the latest donation dates for the whole page and pass them to the list table.
      * @since 2.24.0 Change this to use the new ListTable class
      * @since 2.20.0
      *
@@ -147,7 +150,13 @@ class ListDonors extends Endpoint
         if ('model' === $this->request->get_param('return')) {
             $items = $donors;
         } else {
-            $this->listTable->items($donors, $this->request->get_param('locale') ?? '');
+            $donorIds = array_map(static function (Donor $donor) {
+                return $donor->id;
+            }, $donors);
+
+            $this->listTable
+                ->setData(DonorsDataRepository::donors($donorIds))
+                ->items($donors, $this->request->get_param('locale') ?? '');
             $items = $this->listTable->getItems();
         }
 

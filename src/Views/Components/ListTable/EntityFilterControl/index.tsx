@@ -1,7 +1,8 @@
-import {Button, CheckboxControl, RadioControl, SearchControl, Spinner} from '@wordpress/components';
+import {Button, CheckboxControl, RadioControl, SearchControl} from '@wordpress/components';
 import {__, sprintf} from '@wordpress/i18n';
 import {applyExclusiveValues} from '../filters/exclusive';
 import type {FilterOption} from '../filters/types';
+import Skeleton from '../Skeleton';
 import './styles.scss';
 
 /**
@@ -35,6 +36,7 @@ export interface EntityFilterControlProps {
  * options, and the loading, failure and "load more" states. It never fetches; the parent passes
  * the options and reacts to the callbacks.
  *
+ * @since TBD Show skeleton lines while loading, not a spinner.
  * @since TBD
  */
 export default function EntityFilterControl({
@@ -77,8 +79,9 @@ export default function EntityFilterControl({
             <div role="status" aria-live="polite" className="givewp-entity-filter-control__status">
                 {isLoading && (
                     <>
-                        <Spinner />
-                        <span>{__('Loading…', 'give')}</span>
+                        <Skeleton blockSize="var(--givewp-font-size-paragraph-md)" />
+                        <Skeleton inlineSize="60%" blockSize="var(--givewp-font-size-paragraph-md)" />
+                        <span className="screen-reader-text">{__('Loading…', 'give')}</span>
                     </>
                 )}
                 {isEmpty && <span className="givewp-entity-filter-control__empty">{__('No matches', 'give')}</span>}

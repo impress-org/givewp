@@ -231,9 +231,13 @@ searching and paging stay on the server.
 
 - **Stock behavior inside the list.** Toolbar, view options, row menu, selection bar, loading state
   and pagination are DataViews' own, as WordPress core uses them. Give adds the page header, stat
-  tiles, empty states, confirm bodies and action notices around it. **The one exception is the
-  search box and the filter row**, which are Give components (see [Why the filter bar is
-  Give's](#why-the-filter-bar-is-gives)). Where the pinned DataViews lags
+  tiles, the notice area, empty states, confirm bodies and action notices around it. **The
+  exceptions are the search box and the filter row**, which are Give components (see [Why the
+  filter bar is Give's](#why-the-filter-bar-is-gives)), **the small "More view options" menu (⋮)**
+  next to the stock view options, which the pinned DataViews cannot take extra items into (see
+  [Switch to Legacy View](#switch-to-legacy-view)), and **the narrow layout**, which uses the stock
+  `grid` layout but picks it by window width, not by a layout switcher (see [Narrow
+  screens](#narrow-screens)). Where the pinned DataViews lags
   the current WordPress release, a short commented CSS rule in `DataViewsListTable/styles.scss`
   matches the newer behavior (row checkboxes always visible).
 - **One layout change: the selection bar sits above the table.** In the Site Editor the list fills
@@ -265,6 +269,128 @@ searching and paging stay on the server.
   screen's globals.
 - **No preloaded rows.** The list fetches its own first page; do not localize rows into the page (see
   [pii.md](pii.md)).
+
+## Money and dates
+
+Every list screen writes money and dates the same way, and the server does all of it. The browser
+only shows the text it gets.
+
+- **Two formatters.** `Give\Framework\ListTable\Formatting\MoneyFormatter` writes money through
+  `give_currency_filter(give_format_amount())`, the same helpers receipts and reports use, so the
+  currency settings (symbol, position, separators, decimals) decide the result.
+  `DateFormatter::dateTime()` uses the site's date format, time format and time zone ("November 29,
+  2025 at 4:16 pm"); `DateFormatter::date()` is the date-only form (Campaign start and end). Every
+  column calls one of them. `tests/Unit/Framework/ListTable/ListTableFormattingCallSitesTest.php`
+  fails when a column formats money or dates another way.
+- **Empty values are a dash.** A missing amount or date renders `Placeholder::dash()`: a "—" hidden
+  from screen readers and a `screen-reader-text` label ("No date", "No amount", "No value"). The
+  client atom `DashPlaceholder` writes the same markup. Never write `-`, "Invalid date" or a 1970
+  date.
+- **`kind` and `rawValues`.** `ModelColumn::getKind()` says what a column holds (`money`, `date`,
+  `count`, `text`, `status`; see `ColumnKind`) and goes out in the column schema. A column can also
+  return `getRawValue()`; rows then carry a `rawValues` key with the unformatted value (money as
+  `{amount: "1331.28", currency: "USD"}`, a date as an ISO 8601 string in UTC). Both keys are
+  optional and additive. The narrow layout uses `kind` to pick card fields; nothing formats from
+  `rawValues` in the browser. A raw value must reuse what the cell already computed, never run a
+  new query.
+- **Stats send text too.** The Donations, Donors and Subscriptions stats endpoints add a
+  `formatted` map next to the numbers: counts through `number_format_i18n()`, money through
+  `MoneyFormatter`. The tiles show that text as it is.
+- **Why the browser never formats.** The old list sent `locale: navigator.language` and the server
+  formatted with it, so a Brazilian browser on a US-dollar site saw `US$ 100,00` on some screens and
+  `$100.00` on others. The request no longer sends `locale`; endpoints fall back to `get_locale()`,
+  so an add-on column that still reads `$locale` gets the site's language. There is no `Intl`,
+  `toLocaleString` or `navigator.language` in the list client code. One exception stays: the filter
+  chip text formats a picked day with the site's date format (`filters/siteDate.ts`).
+- **Two details found on the way.** The intl fallback in `CurrencyFacade::formatToLocale()` passes a
+  `currency` key that `give_currency_filter()` ignores, so a donation in another currency showed the
+  site's symbol. `MoneyFormatter` passes `currency_code`. The facade itself is not changed. And on
+  sites with "Auto-format server currency amounts" on, Donations, Donors, Subscriptions and Event
+  Tickets amounts used to follow PHP intl; they now follow the currency settings like the rest.
+
+## Notices
+
+Every message above a list renders in one place, `ListTableNoticeArea`, between the stat tiles and
+the toolbar. Nothing renders inside the table: its body holds records only.
+
+- **Order.** Errors of failed actions first, then `system` notices, then `onboarding` notices, then
+  the daily recommendation, then the deprecated `productRecommendation` slot.
+- **Config only.** A screen passes `notices` (`ListTableNotice[]`: `id`, `kind`, `title`, `message`,
+  optional `link` and `onDismiss`) and `recommendations` (`options`, `dismissed`, `apiNonce`). All of
+  it is known when the page loads, so the area has no loading state and does not push the table
+  down after it renders. With nothing to show it renders nothing and takes no space.
+- **One recommendation a day.** `pickDailyRecommendation()` drops dismissed options (or ones whose
+  add-on is active) and picks `available[dayNumber % available.length]` for the site's day. Every
+  reload that day shows the same tip; the next day moves to the next one.
+- **Dismissals are site-wide.** The recommendation dismissals are options
+  (`givewp_donations_*_recommendation_dismissed`), as before, so one admin's dismissal hides the tip
+  for every admin. Dismissing hides it at once; no other tip appears until the next load. Onboarding
+  notices keep the storage they had before; the screen owns the "shown" flag (the Campaigns
+  "Campaign List" tip, for example, is user meta).
+- **Accessible.** A notice with a title is a `group` named by its heading; the recommendation is
+  named "Pro tip". Dismiss buttons read "Dismiss notice" or "Dismiss tip", and a link that opens a
+  new tab says so.
+- **No record data.** Notices carry product and onboarding text only (see [pii.md](pii.md)).
+
+## Stat tiles
+
+`StatTiles` renders one `StatTile` for every key in the screen's `statsConfig`, in order, inside a
+region named after the screen ("Donations statistics").
+
+- **States.** `loading` (a `Skeleton` and "Loading" for screen readers), `ready`, `refreshing` (the
+  old value stays, dimmed, and nothing is announced), `error` (a dash, "Statistic could not be
+  loaded") and `upgrade` (a message and an "Upgrade" link in place of the number when the add-on is
+  missing). `useListTableStats` derives the state from the request. The tiles never unmount, so the
+  row keeps its size and the table does not move when numbers land.
+- **Values are `formatted`.** The tile shows the server's text from the stats `formatted` map and
+  never formats a number itself.
+- **Tiles that filter.** A `StatConfig` with `filter: {filterId, value}` makes the tile a toggle
+  button for that list filter; `filter: {filterId}` with no value is the "Total" tile of the group,
+  pressed when the filter is off. A tile is pressed only because the view's filters say so
+  (`isTilePressed()`), so picking the value from the toolbar chip presses the tile too. Clicking a
+  pressed tile clears the filter; clicking another tile of the group replaces it. A tile whose filter
+  the screen does not declare, or an `upgrade` tile, is plain text. Donations and Donors map their
+  One-Time and Recurring tiles to the "Donation type" and "Donor type" filters, which exist only with
+  Give Recurring active. Subscriptions tiles are plain statistics.
+
+## Narrow screens
+
+There is one layout breakpoint: `(max-width: 782px)`, the same as the WordPress admin. It is defined
+twice, side by side: `NARROW_LAYOUT_QUERY` in `layout/breakpoints.ts` and `$givewp-list-table-narrow`
+in `layout/_breakpoints.scss`, each with a comment pointing at the other. Only the shared shell uses
+it; screens do not add their own media queries.
+
+- **The page stacks.** At 782 px and below the page reads, top to bottom: title (and test badge),
+  header actions, test-mode switch, tiles, notices, toolbar (search, filters, view options), the
+  list, pagination. Nothing makes the page scroll sideways down to 375 px.
+- **Cards.** When `useNarrowLayout` reports 782 px or less, `ListTablePage` switches the list to the
+  stock DataViews `grid` layout with one card per record. Only that layout is in `defaultLayouts`, so there is no layout switcher. Each card
+  shows the primary field, a description, the ID as a badge, the secondary fields with their labels,
+  the row checkbox and the actions menu, all without hover.
+- **Field roles.** A screen picks its card fields in `ListTableScreen.fieldRoles` (`primary`,
+  `description`, `secondary`). `resolveFieldRoles()` drops a role whose column is missing (the
+  Campaign column on a campaign's Forms tab). A screen with no roles gets them from the column
+  kinds: the title, the first money column, the first status and the first date column.
+- **Resizing keeps state.** `toNarrowView()` builds the card view from the wide view, and
+  `fromNarrowView()` maps a change back, taking only the query (page, page size, sort, filters,
+  search). The card view is never stored as the layout and never written to the URL, and the
+  selection is kept.
+- **Scroll shadow.** Above 782 px a wide table scrolls sideways inside the list.
+  `useHorizontalOverflow` watches the stock `.dataviews-wrapper` and sets
+  `givewp-list-table--more-start` and `--more-end` while content is hidden at that edge, which shows
+  a shadow there (logical sides, so RTL works). It reads layout, never component state; if DataViews
+  renames the class the shadows stop and nothing else breaks.
+- **Motion.** Any animation in the list sits inside `@media (prefers-reduced-motion: no-preference)`.
+
+## Switch to Legacy View
+
+Donations, Donors, Subscriptions and Donation Forms (with the option-based form editor on) offer
+"Switch to Legacy View". It is no longer a button in the page header: it is the last group of the
+"More view options" menu (`ListTableViewMenu`), right after the stock view options and "Reset view".
+A screen passes `legacyView` to `ListTablePage`; `switchToLegacyView()` calls the domain's `/view`
+route (see [the top of this page](#the-archive-screens-have-two-implementations-and-the-user-picks))
+and reloads. Screens without a legacy screen (Campaigns, Event Tickets, the Forms tab) pass nothing
+and get no menu.
 
 ## Filters
 
@@ -550,6 +676,8 @@ config it still resets the layout for the current page view; nothing is stored.
   the page.
 - Sortable or filterable? → the filter must reach `getWhereConditions()` so the count query sees it
   too.
+- Money or a date? → write it with `MoneyFormatter` or `DateFormatter`, return the matching `kind`,
+  and give a `getRawValue()` from what the cell already has. An empty value is `Placeholder::dash()`.
 
 ## Related
 
@@ -561,4 +689,7 @@ config it still resets the layout for the current page view; nothing is stored.
 - `src/Framework/ListTable/FilterOptions/` — the filter option route and its sources
 - `src/Framework/ListTable/StatusVocabulary.php` — the status list a badge and a Status filter share
 - `src/Framework/ListTable/Views/GoalProgress.php` — the goal cell the Campaigns and Donation Forms lists share
+- `src/Framework/ListTable/Formatting/` — `MoneyFormatter` and `DateFormatter`, the one way list cells write money and dates
+- `src/Framework/ListTable/Views/Placeholder.php`, `TruncatedText.php` — the empty-value dash and the two-line clamp with the full text on hover
+- `src/Views/Components/ListTable/layout/` — the 782 px breakpoint and the narrow card view
 - `src/Framework/QueryBuilder/` — what the endpoints build queries with ([README](../../src/Framework/QueryBuilder/README.md))

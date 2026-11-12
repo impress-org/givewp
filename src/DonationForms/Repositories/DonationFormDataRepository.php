@@ -10,6 +10,7 @@ use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Database\DB;
+use Give\Framework\ListTable\Formatting\MoneyFormatter;
 
 /**
  * @since 4.3.0
@@ -263,6 +264,9 @@ class DonationFormDataRepository
 
 
     /**
+     * @since TBD Format the amounts with the shared money formatter. The list table passes these strings to the
+     *             give_goal_progress_stats filter, so an add-on on that filter now gets this text instead of the
+     *             older give_currency_filter() text.
      * @since 4.3.0
      *
      * Get goal data for form
@@ -287,10 +291,10 @@ class DonationFormDataRepository
             'actual' => $actual,
             'goal' => $form->goalSettings->goalAmount,
             'actualFormatted' => $typeIsMoney
-                ? give_currency_filter(give_format_amount($actual))
+                ? MoneyFormatter::fromDecimal($actual)
                 : $actual,
             'goalFormatted' => $typeIsMoney
-                ? give_currency_filter(give_format_amount($form->goalSettings->goalAmount))
+                ? MoneyFormatter::fromDecimal($form->goalSettings->goalAmount)
                 : $form->goalSettings->goalAmount,
             'percentage' => round($percentage * 100, 2),
             'typeIsMoney' => $typeIsMoney,

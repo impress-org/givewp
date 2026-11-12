@@ -6,7 +6,9 @@ import ListTableApi from '../api';
 import DataViewsListTable from '../DataViewsListTable';
 import ListTableEmptyState from '../EmptyStates';
 import ListTableFilters from '../ListTableFilters';
+import ListTableNoticeArea from '../ListTableNoticeArea';
 import ListTableSearch from '../ListTableSearch';
+import ListTableViewMenu from '../ListTableViewMenu';
 import ResultCountStatus from '../ResultCountStatus';
 import {isBarFilter} from '../filters/filterKinds';
 import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
@@ -24,7 +26,7 @@ import {
 import {getItemName} from '../adapters/getItemName';
 import {filterSettingsToDeclarations} from '../filters/legacyFilterSettings';
 import {siteToday} from '../filters/siteDate';
-import {differsFromDefaultFilters} from '../state/defaultFilterState';
+import {differsFromDefaultFilters, differsFromDefaultFiltersIgnoring} from '../state/defaultFilterState';
 import type {BarFilterDeclaration, FilterDeclaration, SearchFilterDeclaration} from '../filters/types';
 import {assembleView} from '../state/assembleView';
 import {keepPinnedLast, lockFields, placeShownFields} from '../state/fieldRules';
@@ -35,10 +37,15 @@ import useListTableUrlState, {readInitialUrlState} from '../hooks/useListTableUr
 import useListTableLayoutPreferences, {readInitialLayout} from '../hooks/useListTableLayoutPreferences';
 import useListTableSelection from '../hooks/useListTableSelection';
 import useListTableQuery from '../hooks/useListTableQuery';
+import useListTableStats from '../hooks/useListTableStats';
 import useListTableActionNotices from '../hooks/useListTableActionNotices';
 import useListTableActions from '../hooks/useListTableActions';
+import useDailyRecommendation from '../hooks/useDailyRecommendation';
+import useNarrowLayout from '../hooks/useNarrowLayout';
+import {fromNarrowView, resolveFieldRoles, toNarrowView} from '../layout/narrowView';
 import ListTablePageHeader from './ListTablePageHeader';
 import LegacyConfirmModal, {LegacyConfirmRequest} from './LegacyConfirmModal';
+import switchToLegacyView from './switchToLegacyView';
 import type {
     Column,
     LegacyRowActions as LegacyRowActionsRender,
@@ -59,17 +66,22 @@ export type {
     FilterConfig,
     LegacyRowActionArgs,
     LegacyRowActions,
+    LegacyViewSwitch,
     ListTableActionDialogProps,
     ListTableItem,
     ListTablePageProps,
     ListTableParameters,
     ListTablePageRef,
     ListTableRowAction,
+    StatConfig,
     TestModeToggle,
 } from './types';
 
 const isSearch = (declaration: FilterDeclaration): declaration is SearchFilterDeclaration =>
     declaration.kind === 'search';
+
+// A stable default: a new `[]` on every render would rebuild the DataViews fields on every render.
+const NO_COLUMN_FILTERS: NonNullable<ListTablePageProps['columnFilters']> = [];
 
 /**
  * Opens the confirm modal for a legacy row action.
@@ -85,10 +97,15 @@ export const ShowConfirmModalContext = createContext(
  * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
  * as before the engine change, so every screen and add-on keeps rendering without changes.
  *
+ * @since TBD Add `legacyView`: "Switch to Legacy View" in the list's "More view options" menu.
+ * @since TBD At 782 px and below, show the records as cards built from the screen's field roles.
+ * @since TBD Keep the stat tiles mounted with a status, and name their region by the screen.
  * @since TBD Send an explicit `scope` also without `filters`, over the scope from `filterSettings`.
  * @since TBD Announce a cached result count only after its request has finished.
+ * @since TBD Let the stat tiles toggle the single-choice option filters the screen declares.
  * @since TBD After Reset, focus the search box, else a control left in the filter bar, else the bar.
  * @since TBD Announce the result count to screen readers after the admin changes the view.
+ * @since TBD Do not send the browser locale with list requests.
  * @since TBD One filter path: the deprecated `filterSettings` are mapped onto filter declarations, and the DataViews filter row and search are gone.
  * @since TBD With `filters`, show Reset only when the filters differ from the screen defaults, and reset to those defaults.
  * @since TBD Accept filter declarations (`filters`), a fixed `scope` and `testModeToggle`; with `filters`, render Give's filter bar and labeled search.
@@ -109,7 +126,9 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             paymentMode,
             listTableBlankSlate,
             productRecommendation,
-            columnFilters = [],
+            notices,
+            recommendations,
+            columnFilters = NO_COLUMN_FILTERS,
             banner,
             contentMode = false,
             perPage = DEFAULT_PER_PAGE,
@@ -118,6 +137,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             filters: declaredFilters,
             scope: fixedScope,
             testModeToggle,
+            legacyView,
         }: ListTablePageProps,
         ref
     ) => {
@@ -131,7 +151,6 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const declarations = declaredFilters ?? legacy?.filters ?? [];
         const testModeSwitch = testModeToggle ?? legacy?.testModeToggle;
         const statuses = apiSettings.table.statuses ?? [];
-        const locale = navigator.language || navigator.languages[0];
 
         // Read once: some screens' header modals rewrite `apiSettings.apiRoot` while they render.
         const [apiRoot] = useState(apiSettings.apiRoot);
@@ -200,6 +219,15 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         });
         // A screen with the test-mode toggle keeps test mode in the view, so it shows as a chip.
         const testMode = testModeSwitch ? viewFilterValue(view, TEST_MODE_FILTER) === true : paymentMode;
+        // Only a single-choice list can be set by a tile.
+        const tileFilterIds = useMemo(
+            () =>
+                declarations
+                    .filter((declaration) => declaration.kind === 'options' && !declaration.multiple)
+                    .map((declaration) => declaration.id),
+            [declarations]
+        );
+
         const setTestMode = (isOn: boolean) => onChangeView(withToggleFilter(view, TEST_MODE_FILTER, isOn));
         const {selection, onChangeSelection} = useListTableSelection(view);
         const clearSelection = useCallback(() => onChangeSelection([]), [onChangeSelection]);
@@ -210,8 +238,8 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         const requestKey = JSON.stringify([view.page, view.perPage, view.sort, view.filters, view.search]);
         const today = useMemo(() => siteToday(), [requestKey]);
         const parameters = useMemo(
-            () => viewToParameters(view, declarations, scope, {locale, testMode, today}),
-            [view, declarations, scope, locale, testMode, today]
+            () => viewToParameters(view, declarations, scope, {testMode, today}),
+            [view, declarations, scope, testMode, today]
         );
 
         const {
@@ -221,10 +249,11 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             isValidating,
             refresh: refreshList,
         } = useListTableQuery<ListTableResponse>(apiRoot, parameters);
-        const {data: stats, refresh: refreshStats} = useListTableQuery<Record<string, number>>(
-            statsConfig ? `${apiRoot}/stats` : null,
-            {testMode}
-        );
+        const {
+            stats,
+            status: statsStatus,
+            refresh: refreshStats,
+        } = useListTableStats(statsConfig ? `${apiRoot}/stats` : null, testMode);
 
         const refresh = useCallback(async () => {
             await Promise.all([refreshList(), statsConfig && refreshStats()]);
@@ -277,8 +306,14 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             restoreDefaultFilters(start.defaults.filters);
             setFocusRequest((count) => count + 1);
         }, [restoreDefaultFilters, start.defaults.filters]);
-        // The filtered empty state offers "Clear filters", so it shows only when there is something to clear.
-        const isFilteredEmpty = canReset;
+        // The filtered empty state offers "Clear filters", so it shows only when a search or a filter
+        // narrows the list. Test mode does not count: an empty list with only test mode changed is
+        // just empty, so it shows the screen's own blank slate.
+        const isFilteredEmpty = differsFromDefaultFiltersIgnoring(
+            view,
+            start.defaults.filters,
+            filterFieldId(TEST_MODE_FILTER)
+        );
 
         const fields = useMemo<Field<ListTableItem>[]>(
             () =>
@@ -296,6 +331,29 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             [onChangeView, view]
         );
 
+        // At 782 px and below the list shows cards. The card view is made from the table view on each
+        // render and never kept: a change made on the cards only carries its page, sort, filters and
+        // search back to the table view, so resizing keeps the view and the stored layout stays a table.
+        const isNarrow = useNarrowLayout();
+        const [fieldRoles] = useState(() => resolveFieldRoles(screen?.fieldRoles, columns, start.defaults.titleField));
+        const hasIdColumn = columns.some((column) => column.id === 'id');
+        const displayView = useMemo<View>(
+            () =>
+                isNarrow
+                    ? toNarrowView(
+                          view,
+                          fieldRoles,
+                          hasIdColumn,
+                          start.defaults.pinnedLast ? [start.defaults.pinnedLast] : []
+                      )
+                    : view,
+            [isNarrow, view, fieldRoles, hasIdColumn]
+        );
+        const onChangeDisplayView = useCallback(
+            (next: View) => (isNarrow ? onChangeView(fromNarrowView(next, view)) : onChangeTableView(next)),
+            [isNarrow, onChangeView, onChangeTableView, view]
+        );
+
         const {actions, actionDialog, closeActionDialog, customAction, setCustomActionOpen} = useListTableActions({
             rowActions: typedRowActions,
             bulkActions,
@@ -307,6 +365,8 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             refresh,
             clearSelection,
         });
+
+        const {recommendation, dismiss: dismissRecommendation} = useDailyRecommendation(recommendations);
 
         const showConfirmModal = useCallback(
             (label, confirm, action, type = null, confirmButtonText = __('Confirm', 'give')) =>
@@ -326,6 +386,10 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                             onChangeTestMode={setTestMode}
                             statsConfig={statsConfig}
                             stats={stats}
+                            statsStatus={statsStatus}
+                            filters={view.filters}
+                            availableFilterIds={tileFilterIds}
+                            onChangeFilters={(filters) => onChangeView({...view, filters, page: 1})}
                         >
                             {children}
                         </ListTablePageHeader>
@@ -333,15 +397,44 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
 
                     <div className={styles.pageContent}>
                         {contentMode && children}
-                        <NotificationPlaceholder type="notice" />
-                        {productRecommendation && (
-                            <table className="givewp-list-table-recommendation">
-                                <tbody>{productRecommendation}</tbody>
-                            </table>
-                        )}
+                        <ListTableNoticeArea
+                            notices={notices ?? []}
+                            recommendation={recommendation}
+                            onDismissRecommendation={dismissRecommendation}
+                            trailing={
+                                productRecommendation && (
+                                    <table className="givewp-list-table-recommendation">
+                                        <tbody>{productRecommendation}</tbody>
+                                    </table>
+                                )
+                            }
+                        >
+                            <NotificationPlaceholder type="notice" />
+                        </ListTableNoticeArea>
                         <DataViewsListTable
-                            view={view}
-                            onChangeView={onChangeTableView}
+                            view={displayView}
+                            onChangeView={onChangeDisplayView}
+                            layoutMode={isNarrow ? 'narrow' : 'wide'}
+                            viewMenu={
+                                <ListTableViewMenu
+                                    legacyView={
+                                        legacyView && {
+                                            ariaLabel: legacyView.ariaLabel,
+                                            onSelect: () =>
+                                                switchToLegacyView(listTableApi, legacyView.onSwitched).catch(() =>
+                                                    report({
+                                                        changed: 0,
+                                                        failed: 0,
+                                                        notice: __(
+                                                            'The legacy view could not be saved. Please try again.',
+                                                            'give'
+                                                        ),
+                                                    })
+                                                ),
+                                        }
+                                    }
+                                />
+                            }
                             fields={fields}
                             actions={actions}
                             data={error ? [] : data?.items ?? []}

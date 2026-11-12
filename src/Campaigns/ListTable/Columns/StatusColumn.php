@@ -3,6 +3,7 @@
 namespace Give\Campaigns\ListTable\Columns;
 
 use Give\Campaigns\Models\Campaign;
+use Give\Framework\ListTable\ColumnKind;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -39,5 +40,15 @@ class StatusColumn extends ModelColumn
             $model->status->getValue(),
             $model->status->label()
         );
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::STATUS;
     }
 }

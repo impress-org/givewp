@@ -1,0 +1,4 @@
+significance: minor
+type: enhancement
+entry: On screens 782 pixels wide or less, the list screens now show records as cards, with the fields that matter most for each screen.
+timestamp: 2026-11-05T03:10:00.000Z

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Give\EventTickets\ListTable\Columns;
 
 use Give\EventTickets\Models\Event;
+use Give\Framework\ListTable\ColumnKind;
+use Give\Framework\ListTable\Formatting\DateFormatter;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -40,6 +42,7 @@ class DateColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Format with the shared date formatter instead of a fixed pattern; $locale is no longer used.
      * @since 2.24.0
      *
      * @inheritDoc
@@ -48,8 +51,28 @@ class DateColumn extends ModelColumn
      */
     public function getCellValue($model, $locale = ''): string
     {
-        $format = _x('m/d/Y \a\t g:ia', 'date format', 'give');
+        return DateFormatter::dateTime($model->startDateTime);
+    }
 
-        return $model->startDateTime->format($format);
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::DATE;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @param Event $model
+     */
+    public function getRawValue($model)
+    {
+        return DateFormatter::iso($model->startDateTime);
     }
 }

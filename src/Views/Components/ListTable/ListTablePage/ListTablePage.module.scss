@@ -1,5 +1,6 @@
-:global {
+@use '../layout/breakpoints' as *;
 
+:global {
     :root {
         --give-primary-color: #86b785;
     }
@@ -199,14 +200,6 @@ ul[role='document'] + .flexRow {
     padding: 0.5rem 1rem;
 }
 
-.buttonSecondary:is(:global(.button)) {
-    background-color: #fff;
-
-    &:hover {
-        background-color: #f6f7f7;
-    }
-}
-
 .addCampaignFormButton {
     $depth: 0px 1px 0px rgba(0, 0, 0, 0.25);
 
@@ -243,7 +236,7 @@ ul[role='document'] + .flexRow {
 
     &:focus {
         box-shadow: $depth;
-        outline: 0.125rem solid #2271B1;
+        outline: 0.125rem solid #2271b1;
         outline-offset: 0.25em;
     }
 }
@@ -295,4 +288,34 @@ ul[role='document'] + .flexRow {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
+}
+
+// The narrow page, at and below 782 px. This is the only place the list pages change layout by width
+// (with the list's own styles, which read the same breakpoint), so every screen stacks the same way:
+// title, header buttons (primary first), test-mode toggle, tiles, notices, then the list. The regions
+// already come in that order in the DOM; this block only undoes what keeps them side by side.
+@media (max-width: $givewp-list-table-narrow) {
+    .page {
+        max-inline-size: 100%;
+    }
+
+    // A sticky header would cover most of a phone screen, so it scrolls away with the page.
+    .pageHeader {
+        position: static;
+        flex-direction: column;
+        align-items: stretch;
+
+        .flexRow:not(:first-child) {
+            justify-content: flex-start;
+        }
+
+        .primaryActionButton,
+        :global(.button-primary) {
+            order: -1;
+        }
+    }
+
+    .filtersRow {
+        height: auto;
+    }
 }

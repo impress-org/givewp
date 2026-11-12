@@ -1,8 +1,58 @@
+@use '../layout/breakpoints' as *;
 @import '~@wordpress/dataviews/build-style/style.css';
 
 .givewp-list-table {
+    position: relative;
     background-color: var(--givewp-shades-white);
     border-radius: var(--givewp-rounded-8);
+
+    // A soft shadow at an edge while the list hides content past that edge, so the admin can see
+    // there is more to scroll to. Hidden until the `--more-start` or `--more-end` modifier is set.
+    // The shadows let clicks through, and nothing is pinned: the row checkbox and the row actions are
+    // reached by scrolling, and moving keyboard focus to a cell scrolls it into view.
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        // Only over the table rows: the hook sets the space above and below the table.
+        inset-block: var(--givewp-list-table-shadow-top, 0) var(--givewp-list-table-shadow-bottom, 0);
+        z-index: 1;
+        inline-size: var(--givewp-spacing-6);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 150ms ease-out;
+    }
+
+    &::before {
+        inset-inline-start: 0;
+        background: linear-gradient(to right, var(--givewp-grey-50), transparent);
+    }
+
+    &::after {
+        inset-inline-end: 0;
+        background: linear-gradient(to left, var(--givewp-grey-50), transparent);
+    }
+
+    // The gradients have a physical direction, so they flip in right-to-left.
+    [dir='rtl'] &::before {
+        background: linear-gradient(to left, var(--givewp-grey-50), transparent);
+    }
+
+    [dir='rtl'] &::after {
+        background: linear-gradient(to right, var(--givewp-grey-50), transparent);
+    }
+
+    &--more-start::before,
+    &--more-end::after {
+        opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        &::before,
+        &::after {
+            transition: none;
+        }
+    }
 
     // The bulk actions sit in the search row while rows are selected. Keep the row as tall as the
     // search field, so the table does not jump when the selection starts or ends.
@@ -24,8 +74,17 @@
         }
     }
 
+    // Always at the end edge, also when a screen has no filter bar to fill the row.
     &__view-controls {
         flex-shrink: 0;
+        margin-inline-start: auto;
+    }
+
+    // In the narrow layout the view options get their own row under the filters, at the end edge.
+    &__view-controls-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-block-start: var(--givewp-spacing-2);
     }
 
     // On a phone the search box takes the whole row. DataViews sizes its search slot to the content, so the
@@ -101,6 +160,44 @@
 // moves to a version with the newer behavior.
 .givewp-list-table .dataviews-view-table tbody .components-checkbox-control__input.components-checkbox-control__input {
     opacity: 1;
+}
+
+// At 782 px and below the list shows one card per record (the DataViews grid layout), stacked in one
+// column. The page's white container is the only gutter, so the grid drops its own side padding, and
+// each card gets a border so the records stay apart without the table's row lines.
+@media (max-width: $givewp-list-table-narrow) {
+    .givewp-list-table {
+        .dataviews-view-grid-items {
+            grid-template-columns: minmax(0, 1fr);
+            gap: var(--givewp-spacing-3);
+            padding-inline: 0;
+            padding-block: var(--givewp-spacing-3);
+        }
+
+        .dataviews-view-grid__card {
+            padding-inline: var(--givewp-spacing-4);
+            padding-block: var(--givewp-spacing-2);
+            border: 1px solid var(--givewp-grey-100);
+            border-radius: var(--givewp-rounded-8);
+
+            &.is-selected {
+                border-color: var(--wp-admin-theme-color);
+            }
+        }
+
+        .dataviews-view-grid__title-field {
+            font-weight: 600;
+        }
+
+        // The checkbox Give adds before the card title, in place of the one DataViews shows over media.
+        .givewp-list-table__card-checkbox {
+            flex-shrink: 0;
+        }
+
+        .dataviews-footer {
+            padding-inline: 0;
+        }
+    }
 }
 
 .givewp-list-table .dataviews-view-table,
