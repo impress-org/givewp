@@ -9,7 +9,7 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 
 | Path | What it is |
 |:--|:--|
-| `ListTablePage/` | The page shell: `ListTablePageHeader` (title, test-mode switch, stat tiles), notices, and the list. `switchToLegacyView` saves the legacy view choice for the screens that pass `legacyView`. `types.ts` holds the public types. |
+| `ListTablePage/` | The page shell: `ListTablePageHeader` (title, header buttons, test-mode switch), then the list sheet with the stat tiles at its top, the notices and the list (the sheet and the tiles are on the full page only). `switchToLegacyView` saves the legacy view choice for the screens that pass `legacyView`. `types.ts` holds the public types. |
 | `DataViewsListTable/` | Stock `<DataViews>` with Give's tokens. No data fetching. |
 | `adapters/` | Pure functions from the columns and actions to DataViews fields and actions, and from the view to the request parameters (`viewToParameters`), plus the page size rule (`snapPerPage`). Jest tests sit next to them. |
 | `hooks/` | `useListTableView` (the view and where its last change came from), `useListTableUrlState` (the view in the address, the search in the tab), `useListTableLayoutPreferences` (stores the layout, and Reset view), `useListTableSelection`, `useListTableQuery` (SWR + `apiFetch`), `useListTableActions` (the DataViews actions and the dialogs they open), `useListTableActionNotices`, and `useListActionSubmit` for a confirm modal or dialog. |
@@ -21,7 +21,7 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `ListTableNoticeArea/`, `notices/` | The one notice area above the list (action errors, system, onboarding, the daily recommendation) and the pure `pickDailyRecommendation`. |
 | `StatTiles/`, `StatTile/` | The row of stat tiles and one tile. Tiles show the server's `formatted` text and can toggle a list filter (`tileFilters.ts`). |
 | `GiveMark/`, `TestModeBadge/`, `HelpTip/` | The Give mark (atom), the "Test mode" badge in the page header and the small help button with its popover (molecules). |
-| `ListTableSearch/` | The labeled search box and its `SearchHint` (the hint line and its help tip). |
+| `ListTableSearch/` | The labeled search box, its `SearchHint` (the hint line and its help tip), and `useSearchHint`, which gives both the same ids so the box can sit in the toolbar row and the hint under it. |
 | `InterweaveSSR/` | Renders server markup in a cell. Its `styles.scss` also styles the server-rendered status badge. |
 | `Skeleton/`, `DashPlaceholder/` | Atoms: the loading block (use it instead of a spinner in the list area) and the empty-value dash with a screen reader label. |
 | `layout/` | The 782 px breakpoint (`breakpoints.ts` and `_breakpoints.scss`, kept equal) and the narrow card view (`narrowView.ts`). |
@@ -58,8 +58,13 @@ The A+ look is kept small and in a few known places. Keep it that way.
 - **Rows.** Rows keep the stock DataViews height on purpose.
 - **Status badge.** It is server-rendered markup. It is restyled in `InterweaveSSR/styles.scss`, with
   no PHP change and no class rename.
-- **Embedded lists.** With `contentMode` there is no page header around the list. A rule for the
-  shared list must still look right there.
+- **Page layout.** On the full page the list sits in one bordered white sheet (`.sheet` in
+  `ListTablePage.module.scss`), with the stat tile band at its top, and the page fills the window
+  height. The toolbar is one row: the search box, the filter bar, then the view options, with the
+  search hint under the row. The search label sits out of the flow, above the box; its size is in
+  `ListTableSearch/_label.scss`, and the toolbar row keeps that space above itself.
+- **Embedded lists.** With `contentMode` there is no page header around the list, no sheet, no tiles
+  and no window height. A rule for the shared list must still look right there.
 - **Narrow screens.** Our own search input, chip toggle and chip remove button are 40 px tall at 782
   px and below (`$givewp-list-table-narrow`). The chip itself is 42 px tall there, because of its 1 px
   border. Stock buttons and selects are not changed.

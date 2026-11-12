@@ -335,7 +335,9 @@ the toolbar. Nothing renders inside the table: its body holds records only.
 ## Stat tiles
 
 `StatTiles` renders one `StatTile` for every key in the screen's `statsConfig`, in order, inside a
-region named after the screen ("Donations statistics").
+region named after the screen ("Donations statistics"). `ListTablePage` renders it as the band at the
+top of the list sheet, above the notices and the list, on the full page only: an embedded list has no
+tiles.
 
 - **States.** `loading` (a `Skeleton` and "Loading" for screen readers), `ready`, `refreshing` (the
   old value stays, dimmed, and nothing is announced), `error` (a dash, "Statistic could not be
@@ -442,8 +444,9 @@ and no shared code has a branch for one screen. The types are in `ListTable/filt
 
 `ListTableFilters` renders the primary chips, the added secondary chips, "Add filter"
 and Reset, from `FilterChip`, `OptionsFilterControl`, `EntityFilterControl` and
-`DateRangeFilterControl`. `ListTableSearch` is the labeled search box with its hint, announced with
-the field. A chip lists up to three names and then says how many are chosen ("Status: 4 selected");
+`DateRangeFilterControl`. `ListTableSearch` is the labeled search box. Its hint, announced with the
+field, is a separate piece (`SearchHint`): `useSearchHint` gives the box and the hint the same ids, so
+the toolbar shows the box, the chips and the view options in one row and the hint under that row. A chip lists up to three names and then says how many are chosen ("Status: 4 selected");
 its accessible name starts with the visible text and then lists the names ("Status: 4 selected.
 Active, Pending, Draft, Archived"), so a voice command that says the visible words still finds it.
 The tooltip shows the same text: newer `@wordpress/components` Tooltips add the tooltip as a
