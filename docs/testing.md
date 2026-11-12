@@ -268,7 +268,7 @@ in `blueprints:`, `{{ZIP_URL}}` in each file becomes the link to the pull reques
 `wp give-data donations 100 --campaigns=3` before opening, with the site switched to test mode so
 the Donations and Donors screens show what it made. It takes a few minutes longer to open. To
 change what a preview does, edit these files; to try one, paste its JSON, with `{{ZIP_URL}}`
-replaced by a zip link, into the [Playground blueprint editor](https://playground.wordpress.net/).
+replaced by a zip link, into the [Playground Blueprint Builder](https://playground.wordpress.net/builder/builder.html).
 
 `.wordpress-org/blueprints/blueprint.json` is the same blueprint pointed at the WordPress.org
 release. It gives the plugin page its Live Preview button.
