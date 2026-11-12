@@ -155,6 +155,18 @@ $givewp-list-table-wp-footer-space: 65px;
     margin-inline: var(--givewp-spacing-6);
 }
 
+// On the full page the list content sits 12px under the tile band, and the notices 12px above the list, as
+// in the design. The gap only exists while the notice area renders something: an empty one is `display: none`.
+// The toolbar adds no space above itself here. An embedded list keeps the toolbar's own padding.
+.sheet > .pageContent {
+    gap: var(--givewp-spacing-3);
+    padding-block-start: var(--givewp-spacing-3);
+
+    :global(.givewp-list-table__toolbar) {
+        padding-block-start: 0;
+    }
+}
+
 // The full page's list sheet: one white box with the stat tiles at its top and the notices and the
 // list under them. `overflow: clip` rounds the corners of the tiles without making a scroll
 // container, so nothing sticky inside changes what it sticks to.
