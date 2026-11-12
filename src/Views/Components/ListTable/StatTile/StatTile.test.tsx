@@ -54,6 +54,38 @@ describe('StatTile', () => {
         expect(container.querySelector('svg')).toBeNull();
     });
 
+    it('shows the funnel and "Filtering the list" top right on a pressed filter tile, hidden from screen readers', async () => {
+        await render(<StatTile label="One-time donations" value="450" state="ready" isPressed onToggle={jest.fn()} />);
+        const cue = container.querySelector('.givewp-stat-tile__filter-cue') as HTMLElement;
+
+        expect(cue.textContent).toContain('Filtering the list');
+        expect(cue.getAttribute('aria-hidden')).toBe('true');
+        // The state is announced once, by aria-pressed.
+        expect(container.querySelector('button')!.getAttribute('aria-pressed')).toBe('true');
+    });
+
+    it('shows no cue on an unpressed tile, but keeps the cue row so nothing moves', async () => {
+        await render(<StatTile label="One-time donations" value="450" state="ready" onToggle={jest.fn()} />);
+        const cue = container.querySelector('.givewp-stat-tile__filter-cue') as HTMLElement;
+
+        expect(cue).not.toBeNull();
+        expect(cue.textContent).toBe('');
+    });
+
+    it('shows no "Filtering" cue on the Total tile when it is lit (it is not a filter)', async () => {
+        await render(
+            <StatTile label="Total" value="1,204" state="ready" isPressed announcePressed={false} onToggle={jest.fn()} />
+        );
+
+        expect(container.querySelector('.givewp-stat-tile__filter-cue')?.textContent).toBe('');
+    });
+
+    it.each(['loading', 'error', 'upgrade'] as const)('shows no cue in the %s state', async (state) => {
+        await render(<StatTile label="X" state={state} isPressed />);
+
+        expect(container.querySelector('.givewp-stat-tile__filter-cue')?.textContent ?? '').toBe('');
+    });
+
     it('is not a button without onToggle', async () => {
         await render(<StatTile label="Donors" value="12" state="ready" />);
 
