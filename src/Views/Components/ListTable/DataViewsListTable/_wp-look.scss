@@ -1,6 +1,8 @@
 // Table-only rules for the A+ look. Every selector starts at `.givewp-list-table .dataviews-view-table`.
 // Nothing here may reach the DataViews footer or the pager (`wpLookScope.test.ts` enforces it).
 // These override the pinned `@wordpress/dataviews` 10.1.7 styles; re-check them when the pin moves.
+// Rows keep the stock DataViews height (56px at the default density) on purpose. The A+ look only
+// changes the header, the selected row text, links and secondary text.
 .givewp-list-table .dataviews-view-table {
     color: var(--givewp-list-table-text);
 
@@ -9,18 +11,7 @@
     thead th,
     .dataviews-view-table-header-button {
         font-size: 0.8125rem;
-        font-weight: 500;
         text-transform: none;
-    }
-
-    .dataviews-view-table-header-button:not(:hover) {
-        color: var(--givewp-list-table-text);
-    }
-
-    // 48 px for one line; two-line cells (Donors: name and email) grow on their own.
-    // Only the balanced density: compact and comfortable keep the stock padding the admin chose.
-    &:not(.has-compact-density, .has-comfortable-density) td {
-        height: 3rem;
     }
 
     // Stock selected rows use #757575 text, which fails on the tint.
