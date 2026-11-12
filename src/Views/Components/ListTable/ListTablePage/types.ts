@@ -267,7 +267,7 @@ export type StatConfig = {
  * @since TBD
  */
 export type TestModeToggle = {
-    /** The header badge text, "Test". */
+    /** The header badge text, "Test mode". */
     label: string;
     /** The accessible name of the switch. */
     ariaLabel: string;
