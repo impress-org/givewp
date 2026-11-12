@@ -382,6 +382,14 @@ it; screens do not add their own media queries.
   renames the class the shadows stop and nothing else breaks.
 - **Motion.** Any animation in the list sits inside `@media (prefers-reduced-motion: no-preference)`.
 
+### Styling
+
+The look of the list pages is kept in a few places: the color tokens in `layout/_tokens.scss`, the
+table-only overrides in `DataViewsListTable/_wp-look.scss` (guarded by `wpLookScope.test.ts`), and the
+status badge in `InterweaveSSR/styles.scss`. The DataViews footer is never styled, and the overrides
+were written for the pinned `@wordpress/dataviews` version. See "Styling scope" in the
+[React README](../../src/Views/Components/ListTable/README.MD).
+
 ## Switch to Legacy View
 
 Donations, Donors, Subscriptions and Donation Forms (with the option-based form editor on) offer

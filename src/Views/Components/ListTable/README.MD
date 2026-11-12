@@ -20,6 +20,9 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `ListTableViewMenu/` | The small "More view options" menu after "Reset view". Holds "Switch to Legacy View" on the screens that pass `legacyView`. |
 | `ListTableNoticeArea/`, `notices/` | The one notice area above the list (action errors, system, onboarding, the daily recommendation) and the pure `pickDailyRecommendation`. |
 | `StatTiles/`, `StatTile/` | The row of stat tiles and one tile. Tiles show the server's `formatted` text and can toggle a list filter (`tileFilters.ts`). |
+| `GiveMark/`, `TestModeBadge/`, `HelpTip/` | The Give mark (atom), the "Test mode" badge in the page header and the small help button with its popover (molecules). |
+| `ListTableSearch/` | The labeled search box and its `SearchHint` (the hint line and its help tip). |
+| `InterweaveSSR/` | Renders server markup in a cell. Its `styles.scss` also styles the server-rendered status badge. |
 | `Skeleton/`, `DashPlaceholder/` | Atoms: the loading block (use it instead of a spinner in the list area) and the empty-value dash with a screen reader label. |
 | `layout/` | The 782 px breakpoint (`breakpoints.ts` and `_breakpoints.scss`, kept equal) and the narrow card view (`narrowView.ts`). |
 | `actions/` | `runListAction`: runs an action, reports it, clears the selection when everything succeeded, reloads. Every action and dialog goes through it. |
@@ -30,6 +33,45 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `AsyncEntitySelect/` | The campaign and form entities the "Assign campaign" picker loads from. |
 | `LegacyRowActions/` | Renders an old row-actions function in its own column (`useLegacyRowActionsField`). |
 | `api.ts` | `ListTableApi.fetchWithArgs`, for a list endpoint's actions. |
+
+## Styling scope
+
+The A+ look is kept small and in a few known places. Keep it that way.
+
+- **Tokens.** `layout/_tokens.scss` holds every color the list pages need that has no Give token. It
+  has two mixins: `givewp-list-table-tokens` (included in `.page` of `ListTablePage`, and in
+  `.givewp-list-table`) and `givewp-status-tone-tokens` (included in the status badge). A popover
+  renders outside those roots, so popover content must not rely on these tokens.
+  `layout/tokens.contrast.test.ts` measures the contrast of each pair. To fix a color, change it in
+  `_tokens.scss`, not in the rule that uses it.
+- **Table overrides.** They live only in `DataViewsListTable/_wp-look.scss`. Every rule starts at
+  `.givewp-list-table .dataviews-view-table`. `wpLookScope.test.ts` compiles the file and checks the
+  selectors.
+- **The DataViews footer is never styled.** The count, the pagination and the page select keep the
+  stock look, so a DataViews update cannot break them. Do not add a rule for them.
+- **The pin.** `@wordpress/dataviews` is pinned to `10.1.7` in `package.json`. The overrides in
+  `_wp-look.scss` were written for that version. When the pin moves, check them again in the browser.
+- **Rows.** Rows keep the stock DataViews height on purpose.
+- **Status badge.** It is server-rendered markup. It is restyled in `InterweaveSSR/styles.scss`, with
+  no PHP change and no class rename.
+- **Embedded lists.** With `contentMode` there is no page header around the list. A rule for the
+  shared list must still look right there.
+- **Narrow screens.** Our own search input, chip toggle and chip remove button are 40 px tall at 782
+  px and below (`$givewp-list-table-narrow`). Stock buttons and selects are not changed.
+
+Components added for the A+ look:
+
+| Level | Component |
+|:--|:--|
+| Atom | `GiveMark` |
+| Molecule | `TestModeBadge`, `HelpTip`, `SearchHint` |
+| Changed | `StatTile`, `FilterChip`, `ListTableSearch`, `EmptyStates`, `ListTableNoticeArea` (styles the shared `Notice` only through its `className`) |
+
+Open items for the owner:
+
+- Where the test-mode switch sits in the header.
+- The upgrade tile is left unchanged.
+- The `#ff7b42` highlight is skipped.
 
 ## `<ListTablePage />` props
 
