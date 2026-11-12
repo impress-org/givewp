@@ -85,6 +85,7 @@ export default function HelpTip({label, text}: HelpTipProps) {
                     anchor={anchor}
                     placement="bottom-start"
                     focusOnMount={false}
+                    resize={false}
                     noArrow
                 >
                     <div
