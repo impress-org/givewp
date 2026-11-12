@@ -1,5 +1,6 @@
 @use '../layout/breakpoints' as *;
 @use '../layout/tokens' as *;
+@use './wp-look';
 @import '~@wordpress/dataviews/build-style/style.css';
 
 .givewp-list-table {
@@ -200,9 +201,4 @@
             padding-inline: 0;
         }
     }
-}
-
-.givewp-list-table .dataviews-view-table,
-.givewp-list-table .dataviews-view-table tr.is-selected {
-    color: var(--givewp-grey-600);
 }
