@@ -47,6 +47,12 @@ describe('list toolbar styles', () => {
         expect(block(row, '&--labeled')).toContain('padding-block-start: $givewp-list-table-search-label-block');
     });
 
+    it('keeps ring room inside both edges of the toolbar and the narrow view-options row', () => {
+        expect(table).toMatch(/\$givewp-list-table-focus-ring-room: var\(--givewp-spacing-1\);/);
+        expect(block(table, '&__toolbar')).toContain('padding-inline: $givewp-list-table-focus-ring-room');
+        expect(block(table, '&__view-controls-row')).toContain('padding-inline: $givewp-list-table-focus-ring-room');
+    });
+
     it('keeps the toolbar height while rows are selected: the bulk actions share the search box cell', () => {
         // One grid cell: the taller of the search box and the bulk actions sets the height.
         expect(block(table, '&__search')).toContain('display: grid');

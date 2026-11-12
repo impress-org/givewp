@@ -4,6 +4,10 @@
 @use './wp-look';
 @import '~@wordpress/dataviews/build-style/style.css';
 
+// The room a focus ring needs outside a control. The DataViews wrapper scrolls sideways, so it clips whatever
+// pokes out of it: the toolbar keeps this much inside both edges, and no control touches the wrapper edge.
+$givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
+
 .givewp-list-table {
     @include givewp-list-table-tokens;
     position: relative;
@@ -64,6 +68,7 @@
         flex-direction: column;
         gap: var(--givewp-spacing-1);
         padding-block: var(--givewp-spacing-4);
+        padding-inline: $givewp-list-table-focus-ring-room;
     }
 
     // The search box, the filter bar and the view options share one row, lined up at the top. The
@@ -116,6 +121,7 @@
         display: flex;
         justify-content: flex-end;
         margin-block-start: var(--givewp-spacing-2);
+        padding-inline: $givewp-list-table-focus-ring-room;
     }
 
     // On a phone the search box takes the whole row, and the filters wrap under it.
