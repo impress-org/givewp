@@ -1,5 +1,6 @@
 significance: patch
 type: security
-entry: Restricted the Test Donation gateway to Test Mode and locked it in the
-  payment gateway settings while Test Mode is disabled.
+entry: Restricted the Test Donation gateway to users who can manage GiveWP
+  settings while Test Mode is disabled, and recorded their donations as test
+  donations.
 timestamp: 2026-11-13T18:53:00.165Z

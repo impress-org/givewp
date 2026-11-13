@@ -3,6 +3,7 @@ import {createCampaignWithForm} from './utils/campaign';
 import {editForm, section} from './utils/form';
 import {captureOffsiteRedirect, enableTestOffsiteGateway, signedReturnUrl} from './utils/offsite-gateway';
 import {enableTestGatewayInLiveMode} from './utils/test-mode';
+import {STORAGE_STATE_PATH} from './environment';
 import {
     DONOR,
     donationForm,
@@ -564,10 +565,10 @@ test.describe('V3 donation forms', () => {
     });
 
     /**
-     * Test Donation completes a donation without taking a payment, so the form offers it only while
-     * Test Mode is enabled, even when the gateway settings have it enabled.
+     * Test Donation completes a donation without taking a payment. While Test Mode is disabled the
+     * form offers it only to users who can manage GiveWP settings, so they can test a live form.
      */
-    test.describe('the Test Donation gateway', () => {
+    test.describe('the Test Donation gateway while Test Mode is disabled', () => {
         let formId: number;
         let restoreSettings: () => void;
 
@@ -580,7 +581,7 @@ test.describe('V3 donation forms', () => {
             restoreSettings();
         });
 
-        test('is not offered while Test Mode is disabled', async ({page}) => {
+        test('is not offered to visitors', async ({page}) => {
             await page.goto(`/?post_type=give_forms&p=${formId}`);
 
             const form = donationForm(page);
@@ -599,6 +600,29 @@ test.describe('V3 donation forms', () => {
 
             await expect(gateways.getByText('Donate with Offline Donation')).toBeVisible();
             await expect(gateways.getByText('Donate with Test Donation')).toHaveCount(0);
+        });
+
+        test.describe('for an admin', () => {
+            test.use({storageState: STORAGE_STATE_PATH});
+
+            test('is offered and takes a donation through to the receipt', async ({page}) => {
+                await page.goto(`/?post_type=give_forms&p=${formId}`);
+
+                const form = donationForm(page);
+                await waitForForm(form);
+
+                await form.getByRole('button', {name: 'Donate now'}).click();
+
+                const email = await fillDonorDetails(form);
+                await form.getByRole('button', {name: 'Continue'}).click();
+
+                // payWithTestGateway() skips when the gateway is missing; here a missing gateway is the failure.
+                await expect(form.getByRole('radio', {name: 'Donate with Test Donation'})).toBeVisible();
+                await payWithTestGateway(form);
+                await form.getByRole('button', {name: 'Donate now'}).click();
+
+                await expectReceipt(form, '$10.00', email);
+            });
         });
     });
 });

@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
@@ -11,11 +12,13 @@ use Give\Framework\PaymentGateways\Contracts\WebhookNotificationsListener;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Language;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
 
 /**
  * A gateway for testing the donation process. No actual payment is processed and only form validation is performed.
@@ -93,7 +96,18 @@ class TestGateway extends PaymentGateway implements WebhookNotificationsListener
     }
 
     /**
-     * @since TBD Refuse the payment while test mode is disabled.
+     * Whether the current user can donate with this gateway. While test mode is disabled, only users
+     * who can manage GiveWP settings can use it, so they can test a live form.
+     *
+     * @since TBD
+     */
+    public function isAvailable(): bool
+    {
+        return give_is_test_mode() || UserPermissions::settings()->canManage();
+    }
+
+    /**
+     * @since TBD Refuse the payment when the gateway is not available, and record the donation as a test donation.
      *
      * @inheritDoc
      *
@@ -101,7 +115,8 @@ class TestGateway extends PaymentGateway implements WebhookNotificationsListener
      */
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
-        $this->ensureTestModeIsEnabled();
+        $this->ensureIsAvailable();
+        $this->recordAsTestDonation($donation);
 
         $intent = $gatewayData['testGatewayIntent'] ?? 'test-gateway-intent';
 
@@ -109,8 +124,8 @@ class TestGateway extends PaymentGateway implements WebhookNotificationsListener
     }
 
     /**
-     * Refuses the subscription while test mode is disabled. The subscription module is added by the
-     * Recurring Donations add-on.
+     * Refuses the subscription when the gateway is not available, and records the subscription and its
+     * first donation as test records. The subscription module is added by the Recurring Donations add-on.
      *
      * @since TBD
      *
@@ -120,7 +135,13 @@ class TestGateway extends PaymentGateway implements WebhookNotificationsListener
      */
     public function createSubscription(Donation $donation, Subscription $subscription, $gatewayData)
     {
-        $this->ensureTestModeIsEnabled();
+        $this->ensureIsAvailable();
+        $this->recordAsTestDonation($donation);
+
+        if ($subscription->mode->isLive()) {
+            $subscription->mode = SubscriptionMode::TEST();
+            $subscription->save();
+        }
 
         return parent::createSubscription($donation, $subscription, $gatewayData);
     }
@@ -205,14 +226,28 @@ class TestGateway extends PaymentGateway implements WebhookNotificationsListener
     /**
      * @since TBD
      *
-     * @throws PaymentGatewayException When test mode is disabled.
+     * @throws PaymentGatewayException When the current user cannot donate with this gateway.
      */
-    private function ensureTestModeIsEnabled(): void
+    private function ensureIsAvailable(): void
     {
-        if (! give_is_test_mode()) {
-            throw new PaymentGatewayException(
-                __('Test donations can only be made while Test Mode is enabled.', 'give')
-            );
+        if (! $this->isAvailable()) {
+            throw new PaymentGatewayException(__('The Test Donation gateway is not available.', 'give'));
         }
+    }
+
+    /**
+     * A donation made through this gateway takes no payment, so it stays out of live reports and goals
+     * even when test mode is disabled.
+     *
+     * @since TBD
+     */
+    private function recordAsTestDonation(Donation $donation): void
+    {
+        if ($donation->mode->isTest()) {
+            return;
+        }
+
+        $donation->mode = DonationMode::TEST();
+        $donation->save();
     }
 }

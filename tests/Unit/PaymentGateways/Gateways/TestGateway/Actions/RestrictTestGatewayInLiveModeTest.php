@@ -7,7 +7,7 @@ use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\Rules\GatewayRule;
 use Give\PaymentGateways\Gateways\Offline\OfflineGateway;
-use Give\PaymentGateways\Gateways\TestGateway\Actions\DisableTestGatewayInLiveMode;
+use Give\PaymentGateways\Gateways\TestGateway\Actions\RestrictTestGatewayInLiveMode;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -15,9 +15,9 @@ use Give\Tests\TestTraits\RefreshDatabase;
 /**
  * @since TBD
  *
- * @covers \Give\PaymentGateways\Gateways\TestGateway\Actions\DisableTestGatewayInLiveMode
+ * @covers \Give\PaymentGateways\Gateways\TestGateway\Actions\RestrictTestGatewayInLiveMode
  */
-class DisableTestGatewayInLiveModeTest extends TestCase
+class RestrictTestGatewayInLiveModeTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -32,16 +32,18 @@ class DisableTestGatewayInLiveModeTest extends TestCase
 
         give_update_option('gateways', $enabledGateways);
         give_update_option('gateways_v3', $enabledGateways);
+
+        wp_set_current_user(0);
     }
 
     /**
      * @since TBD
      */
-    public function testRemovesTestGatewayWhileTestModeIsDisabled(): void
+    public function testRemovesTestGatewayForVisitorsWhileTestModeIsDisabled(): void
     {
         add_filter('give_is_test_mode', '__return_false');
 
-        $gateways = (new DisableTestGatewayInLiveMode())([TestGateway::id() => [], OfflineGateway::id() => []]);
+        $gateways = (new RestrictTestGatewayInLiveMode())([TestGateway::id() => [], OfflineGateway::id() => []]);
 
         $this->assertSame([OfflineGateway::id()], array_keys($gateways));
     }
@@ -49,19 +51,32 @@ class DisableTestGatewayInLiveModeTest extends TestCase
     /**
      * @since TBD
      */
-    public function testKeepsTestGatewayWhileTestModeIsEnabled(): void
+    public function testKeepsTestGatewayForAdminsWhileTestModeIsDisabled(): void
     {
-        add_filter('give_is_test_mode', '__return_true');
+        add_filter('give_is_test_mode', '__return_false');
+        $this->actAsAdmin();
 
         $input = [TestGateway::id() => [], OfflineGateway::id() => []];
 
-        $this->assertSame($input, (new DisableTestGatewayInLiveMode())($input));
+        $this->assertSame($input, (new RestrictTestGatewayInLiveMode())($input));
     }
 
     /**
      * @since TBD
      */
-    public function testV2EnabledGatewaysExcludeTestGatewayWhileTestModeIsDisabled(): void
+    public function testKeepsTestGatewayForVisitorsWhileTestModeIsEnabled(): void
+    {
+        add_filter('give_is_test_mode', '__return_true');
+
+        $input = [TestGateway::id() => [], OfflineGateway::id() => []];
+
+        $this->assertSame($input, (new RestrictTestGatewayInLiveMode())($input));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testV2EnabledGatewaysExcludeTestGatewayForVisitorsWhileTestModeIsDisabled(): void
     {
         add_filter('give_is_test_mode', '__return_false');
 
@@ -75,9 +90,10 @@ class DisableTestGatewayInLiveModeTest extends TestCase
     /**
      * @since TBD
      */
-    public function testV2EnabledGatewaysIncludeTestGatewayWhileTestModeIsEnabled(): void
+    public function testV2EnabledGatewaysIncludeTestGatewayForAdminsWhileTestModeIsDisabled(): void
     {
-        add_filter('give_is_test_mode', '__return_true');
+        add_filter('give_is_test_mode', '__return_false');
+        $this->actAsAdmin();
 
         $this->assertArrayHasKey(TestGateway::id(), give_get_enabled_payment_gateways(0, 2));
         $this->assertTrue(give_is_gateway_active(TestGateway::id()));
@@ -86,7 +102,7 @@ class DisableTestGatewayInLiveModeTest extends TestCase
     /**
      * @since TBD
      */
-    public function testV3EnabledGatewaysExcludeTestGatewayWhileTestModeIsDisabled(): void
+    public function testV3EnabledGatewaysExcludeTestGatewayForVisitorsWhileTestModeIsDisabled(): void
     {
         add_filter('give_is_test_mode', '__return_false');
 
@@ -102,9 +118,10 @@ class DisableTestGatewayInLiveModeTest extends TestCase
     /**
      * @since TBD
      */
-    public function testV3EnabledGatewaysIncludeTestGatewayWhileTestModeIsEnabled(): void
+    public function testV3EnabledGatewaysIncludeTestGatewayForAdminsWhileTestModeIsDisabled(): void
     {
-        add_filter('give_is_test_mode', '__return_true');
+        add_filter('give_is_test_mode', '__return_false');
+        $this->actAsAdmin();
 
         /** @var DonationForm $form */
         $form = DonationForm::factory()->create();
@@ -118,7 +135,7 @@ class DisableTestGatewayInLiveModeTest extends TestCase
     /**
      * @since TBD
      */
-    public function testV3GatewayRuleRejectsTestGatewayWhileTestModeIsDisabled(): void
+    public function testV3GatewayRuleRejectsTestGatewayForVisitorsWhileTestModeIsDisabled(): void
     {
         add_filter('give_is_test_mode', '__return_false');
 
@@ -151,5 +168,13 @@ class DisableTestGatewayInLiveModeTest extends TestCase
 
         $this->assertSame([], give(DonationFormRepository::class)->getEnabledPaymentGateways($form->id));
         $this->assertSame('', give(DonationFormRepository::class)->getDefaultEnabledGatewayId($form->id));
+    }
+
+    /**
+     * @since TBD
+     */
+    private function actAsAdmin(): void
+    {
+        wp_set_current_user(self::factory()->user->create(['role' => 'administrator']));
     }
 }

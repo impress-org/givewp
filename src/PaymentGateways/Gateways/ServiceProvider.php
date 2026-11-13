@@ -28,7 +28,7 @@ use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Li
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentPaymentFailed;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentSucceeded;
 use Give\PaymentGateways\Gateways\Stripe\Webhooks\Listeners\PaymentIntentRequiresAction;
-use Give\PaymentGateways\Gateways\TestGateway\Actions\DisableTestGatewayInLiveMode;
+use Give\PaymentGateways\Gateways\TestGateway\Actions\RestrictTestGatewayInLiveMode;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\PaymentGateways\Gateways\TestOffsiteGateway\TestOffsiteGateway;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -197,7 +197,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function bootTestGateway(): void
     {
-        Hooks::addFilter('give_enabled_payment_gateways', DisableTestGatewayInLiveMode::class);
-        Hooks::addFilter('givewp_donation_form_enabled_gateways', DisableTestGatewayInLiveMode::class);
+        Hooks::addFilter('give_enabled_payment_gateways', RestrictTestGatewayInLiveMode::class);
+        Hooks::addFilter('givewp_donation_form_enabled_gateways', RestrictTestGatewayInLiveMode::class);
     }
 }

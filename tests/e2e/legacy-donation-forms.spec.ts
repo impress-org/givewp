@@ -1,4 +1,4 @@
-import {expect, test} from '@wordpress/e2e-test-utils-playwright';
+import {expect, Locator, Page, test} from '@wordpress/e2e-test-utils-playwright';
 import {createLegacyForm} from './utils/legacy-form';
 import {
     captureOffsiteRedirect,
@@ -7,6 +7,7 @@ import {
     TEST_OFFSITE_GATEWAY,
 } from './utils/offsite-gateway';
 import {enableTestGatewayInLiveMode, TEST_GATEWAY} from './utils/test-mode';
+import {STORAGE_STATE_PATH} from './environment';
 
 /**
  * A legacy (v2) donation form on the front end, paid through an offsite gateway.
@@ -77,10 +78,10 @@ test.describe('Legacy donation forms', () => {
     });
 
     /**
-     * Test Donation completes a donation without taking a payment, so the form offers it only while
-     * Test Mode is enabled, even when the gateway settings have it enabled.
+     * Test Donation completes a donation without taking a payment. While Test Mode is disabled the
+     * form offers it only to users who can manage GiveWP settings, so they can test a live form.
      */
-    test.describe('the Test Donation gateway', () => {
+    test.describe('the Test Donation gateway while Test Mode is disabled', () => {
         let restoreSettings: () => void;
 
         test.beforeAll(() => {
@@ -91,19 +92,36 @@ test.describe('Legacy donation forms', () => {
             restoreSettings();
         });
 
-        test('is not offered while Test Mode is disabled', async ({page}) => {
-            await page.goto(`/?post_type=give_forms&p=${formId}`);
-
-            const form = page.frameLocator('iframe[name="give-embed-form"]');
-
-            await form.locator('.give-section.introduction .advance-btn').click();
-            await form.locator('.give-section.choose-amount .advance-btn').click();
-
-            const gateways = form.locator('#give-gateway-radio-list');
+        test('is not offered to visitors', async ({page}) => {
+            const gateways = await openGatewayList(page, formId);
 
             // The radios are hidden behind their styled labels, so these count them rather than look for them.
             await expect(gateways.locator('input[name="payment-mode"]').first()).toBeAttached();
             await expect(gateways.locator(`input[name="payment-mode"][value="${TEST_GATEWAY}"]`)).toHaveCount(0);
         });
+
+        test.describe('for an admin', () => {
+            test.use({storageState: STORAGE_STATE_PATH});
+
+            test('is offered', async ({page}) => {
+                const gateways = await openGatewayList(page, formId);
+
+                await expect(gateways.locator(`input[name="payment-mode"][value="${TEST_GATEWAY}"]`)).toHaveCount(1);
+            });
+        });
     });
 });
+
+/**
+ * Opens the form and steps through to the gateway list on its payment step.
+ */
+async function openGatewayList(page: Page, formId: number): Promise<Locator> {
+    await page.goto(`/?post_type=give_forms&p=${formId}`);
+
+    const form = page.frameLocator('iframe[name="give-embed-form"]');
+
+    await form.locator('.give-section.introduction .advance-btn').click();
+    await form.locator('.give-section.choose-amount .advance-btn').click();
+
+    return form.locator('#give-gateway-radio-list');
+}

@@ -25,7 +25,10 @@ export function enableTestGatewayInLiveMode(): () => void {
     const saved = SETTINGS.map((key) => [key, wp('option', 'pluck', 'give_settings', key, '--format=json')]);
 
     for (const option of ['gateways', 'gateways_v3']) {
-        const gateways = JSON.parse(wp('option', 'pluck', 'give_settings', option, '--format=json') || '{}');
+        const saved = JSON.parse(wp('option', 'pluck', 'give_settings', option, '--format=json') || '{}');
+
+        // PHP encodes an empty array as `[]`, and keys added to a JavaScript array are dropped by JSON.stringify.
+        const gateways = Array.isArray(saved) ? {} : saved;
 
         gateways[TEST_GATEWAY] = 1;
         gateways[OFFLINE_GATEWAY] = 1;
