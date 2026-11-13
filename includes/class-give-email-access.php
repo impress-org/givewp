@@ -235,6 +235,7 @@ class Give_Email_Access {
 	/**
 	 * Has the user authenticated?
 	 *
+	 * @since TBD Set the give_nl cookie with HttpOnly, Secure (on HTTPS) and SameSite=Lax.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -260,7 +261,18 @@ class Give_Email_Access {
 
 			// Set cookie.
 			$lifetime = current_time( 'timestamp' ) + Give()->session->set_expiration_time();
-			@setcookie( 'give_nl', $token, $lifetime, COOKIEPATH, COOKIE_DOMAIN, false );
+			@setcookie(
+				'give_nl',
+				$token,
+				[
+					'expires'  => $lifetime,
+					'path'     => COOKIEPATH,
+					'domain'   => COOKIE_DOMAIN,
+					'secure'   => is_ssl(),
+					'httponly' => true,
+					'samesite' => 'Lax',
+				]
+			);
 
 			return true;
 		}

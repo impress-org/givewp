@@ -54,6 +54,9 @@ class TestReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe extends 
         $result = (new ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe())($view);
         $replacedViewUrl = (new GenerateDonationConfirmationReceiptViewRouteUrl())($receiptId);
 
-        $this->assertEquals("<iframe style='width: 1px;min-width: 100%;border: 0;' data-givewp-embed src='$replacedViewUrl'></iframe>", $result);
+        $this->assertEquals(
+            sprintf('<iframe style="width: 1px;min-width: 100%%;border: 0;" data-givewp-embed src="%s"></iframe>', esc_url($replacedViewUrl)),
+            $result
+        );
     }
 }
