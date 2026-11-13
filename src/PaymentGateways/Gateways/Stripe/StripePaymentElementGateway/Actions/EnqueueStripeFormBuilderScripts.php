@@ -13,6 +13,7 @@ class EnqueueStripeFormBuilderScripts
     /**
      * Enqueues the Stripe scripts and styles for the Form Builder.
      *
+     * @since TBD Localize only the account ID and name of each Stripe account.
      * @since 4.19.1 Set an explicit version on the script and style.
      *
      * @return void
@@ -41,7 +42,7 @@ class EnqueueStripeFormBuilderScripts
             'stripePaymentElementGatewaySettings',
             [
                 'defaultAccount' => (bool)give_stripe_get_default_account(),
-                'allAccounts' => give_stripe_get_all_accounts(),
+                'allAccounts' => $this->getAccountOptions(),
                 'stripeSettingsUrl' => admin_url(
                     'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings&group=accounts'
                 ),
@@ -54,5 +55,22 @@ class EnqueueStripeFormBuilderScripts
             [],
             $scriptAsset['version']
         );
+    }
+
+    /**
+     * Returns the stored Stripe accounts reduced to the fields the account picker uses.
+     *
+     * @since TBD
+     *
+     * @return array<string, array{account_id: string, account_name: string}>
+     */
+    private function getAccountOptions(): array
+    {
+        return array_map(static function ($account) {
+            return [
+                'account_id' => $account['account_id'] ?? '',
+                'account_name' => $account['account_name'] ?? '',
+            ];
+        }, give_stripe_get_all_accounts());
     }
 }
