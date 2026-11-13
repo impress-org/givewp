@@ -1,0 +1,5 @@
+significance: patch
+type: security
+entry: Restricted the Test Donation gateway to Test Mode and locked it in the
+  payment gateway settings while Test Mode is disabled.
+timestamp: 2026-11-13T18:53:00.165Z
