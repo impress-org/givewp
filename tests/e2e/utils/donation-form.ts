@@ -54,8 +54,9 @@ export async function fillDonorDetails(form: FrameLocator): Promise<string> {
  * Selects the Test Donation gateway, skipping the test if the site does not offer it.
  *
  * Test Donation is enabled on a fresh install and is the only gateway that can complete a donation
- * without an account somewhere else, so it is what these specs pay with. A site that has turned it
- * off cannot run them and says so rather than failing.
+ * without an account somewhere else, so it is what these specs pay with. Forms offer it only while
+ * Test Mode is enabled. A site that has turned either off cannot run them and says so rather than
+ * failing.
  */
 export async function payWithTestGateway(form: FrameLocator): Promise<void> {
     await expect(form.locator('.givewp-fields-gateways__list')).toBeVisible();
@@ -63,7 +64,7 @@ export async function payWithTestGateway(form: FrameLocator): Promise<void> {
     const testGateway = form.getByRole('radio', {name: 'Donate with Test Donation'});
 
     if ((await testGateway.count()) === 0) {
-        test.skip(true, 'The Test Donation gateway is not enabled on this site.');
+        test.skip(true, 'The Test Donation gateway is not enabled on this site, or Test Mode is disabled.');
     }
 
     await testGateway.check();

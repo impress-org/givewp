@@ -121,6 +121,7 @@ function give_is_gateway_active($gateway, $version = 2)
 /**
  * Gets the default payment gateway selected from the Give Settings
  *
+ * @since TBD Return an empty string when no gateway is enabled.
  * @since 3.0.2 add $version param
  * @since 1.0
  *
@@ -136,7 +137,7 @@ function give_get_default_gateway($form_id, $version = 2)
     $default = !empty($default_gateway) && give_is_gateway_active(
         $default_gateway,
         $version
-    ) ? $default_gateway : $enabled_gateways[0];
+    ) ? $default_gateway : ($enabled_gateways[0] ?? '');
 	$form_default     = give_get_meta( $form_id, '_give_default_gateway', true );
 
 	// Single Form settings varies compared to the Global default settings.

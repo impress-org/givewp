@@ -494,6 +494,31 @@ div.give-field-description {
 			color: #333;
 		}
 	}
+
+	/*
+	 * The label is greyed with a color rather than opacity, because opacity on it would also fade the
+	 * tooltip bubble rendered inside it.
+	 */
+	&.give-payment-gateway-locked {
+		.admin-label {
+			color: #8c8f94;
+		}
+
+		.checkout-label,
+		.gateways-checkbox,
+		.gateways-radio {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
+
+		.give-payment-gateway-lock .dashicons {
+			font-size: 16px;
+			width: 16px;
+			height: 16px;
+			vertical-align: text-bottom;
+			color: #8c8f94;
+		}
+	}
 }
 
 .give-gateways-notice {

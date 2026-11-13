@@ -11,6 +11,7 @@
  * @subpackage  Classes/Give_Settings_Gateways
  */
 
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
 
@@ -335,6 +336,7 @@ if (! class_exists('Give_Settings_Gateways')) :
         /**
          * Render enabled gateways
          *
+         * @since TBD Lock the Test Donation gateway while test mode is disabled.
          * @since 3.15.0 Set the v3 settings tab as default in the gateways list
          * @since 3.0.0 split gateways into separated tabs for v2 and v3 settings
          * @since  2.0.5
@@ -504,13 +506,27 @@ if (! class_exists('Give_Settings_Gateways')) :
                         $enabled = '1';
                     }
 
-                    echo '<li>';
+                    $isLocked = TestGateway::id() === $key && ! give_is_test_mode();
+
+                    echo $isLocked ? '<li class="give-payment-gateway-locked">' : '<li>';
                     printf('<span class="give-drag-handle"><span class="dashicons dashicons-menu"></span></span>');
                     $tooltip = !empty($option['admin_tooltip']) ? Give()->tooltips->render_help($option['admin_tooltip']) : '';
+
+                    if ($isLocked) {
+                        $tooltip .= Give()->tooltips->render_span([
+                            'label' => __(
+                                'Test Donation does not appear on donation forms while Test Mode is disabled. Enable Test Mode to use it.',
+                                'give'
+                            ),
+                            'tag_content' => '<span class="dashicons dashicons-lock" aria-hidden="true"></span>',
+                            'attributes' => ['class' => 'give-tooltip give-payment-gateway-lock'],
+                        ]);
+                    }
+
                     printf(
                         '<span class="admin-label">%1$s %2$s</span>',
                         esc_html($option['admin_label']),
-                        $tooltip // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- render_help() escapes every attribute value (including aria-label) and the tag name; its content is a fixed icon literal.
+                        $tooltip // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- render_help() and render_span() escape every attribute value (including aria-label) and the tag name; their content is a fixed icon literal.
                     );
 
                     $label = '';
@@ -519,11 +535,12 @@ if (! class_exists('Give_Settings_Gateways')) :
                     }
 
                     printf(
-                        '<input class="checkout-label" type="text" id="%1$s[%2$s]" name="%1$s[%2$s]" value="%3$s" placeholder="%4$s"/>',
+                        '<input class="checkout-label" type="text" id="%1$s[%2$s]" name="%1$s[%2$s]" value="%3$s" placeholder="%4$s" %5$s/>',
                         esc_attr('gateways_label' . $suffix),
                         esc_attr($key),
                         esc_html($label),
-                        esc_html($option['checkout_label'])
+                        esc_html($option['checkout_label']),
+                        $isLocked ? 'readonly' : ''
                     );
 
                     printf(
@@ -531,16 +548,29 @@ if (! class_exists('Give_Settings_Gateways')) :
                         esc_attr('default_gateway' . $suffix),
                         esc_attr($key),
                         checked($key, $group['defaultGateway'], false),
-                        disabled(null, $enabled, false)
+                        disabled($isLocked || ! $enabled, true, false)
                     );
 
                     printf(
-                        '<input class="gateways-checkbox" name="%1$s[%2$s]" id="%1$s[%2$s]" type="checkbox" value="1" %3$s data-payment-gateway="%4$s"/>',
+                        '<input class="gateways-checkbox" name="%1$s[%2$s]" id="%1$s[%2$s]" type="checkbox" value="1" %3$s %4$s data-payment-gateway="%5$s"/>',
                         esc_attr($id) . esc_attr($suffix),
                         esc_attr($key),
                         checked('1', $enabled, false),
+                        disabled($isLocked, true, false),
                         esc_html($option['admin_label'])
                     );
+
+                    /*
+                     * A disabled checkbox is not submitted, so this keeps the saved setting for when
+                     * test mode is enabled again.
+                     */
+                    if ($isLocked && $enabled) {
+                        printf(
+                            '<input type="hidden" name="%1$s[%2$s]" value="1"/>',
+                            esc_attr($id) . esc_attr($suffix),
+                            esc_attr($key)
+                        );
+                    }
                     echo '</li>';
                 endforeach;
                 echo '</ul>';

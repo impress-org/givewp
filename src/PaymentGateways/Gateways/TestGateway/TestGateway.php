@@ -8,12 +8,14 @@ use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Contracts\WebhookNotificationsListener;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Language;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
+use Give\Subscriptions\Models\Subscription;
 
 /**
  * A gateway for testing the donation process. No actual payment is processed and only form validation is performed.
@@ -91,13 +93,49 @@ class TestGateway extends PaymentGateway implements WebhookNotificationsListener
     }
 
     /**
+     * @since TBD Refuse the payment while test mode is disabled.
+     *
      * @inheritDoc
+     *
+     * @throws PaymentGatewayException
      */
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
+        $this->ensureTestModeIsEnabled();
+
         $intent = $gatewayData['testGatewayIntent'] ?? 'test-gateway-intent';
 
         return new PaymentComplete("test-gateway-transaction-id-{$intent}-$donation->id");
+    }
+
+    /**
+     * Refuses the subscription while test mode is disabled. The subscription module is added by the
+     * Recurring Donations add-on.
+     *
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @throws PaymentGatewayException
+     */
+    public function createSubscription(Donation $donation, Subscription $subscription, $gatewayData)
+    {
+        $this->ensureTestModeIsEnabled();
+
+        return parent::createSubscription($donation, $subscription, $gatewayData);
+    }
+
+    /**
+     * The parent counts an overridden createSubscription() as subscription support. Support still comes
+     * only from the subscription module.
+     *
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function supportsSubscriptions(): bool
+    {
+        return isset($this->subscriptionModule);
     }
 
     /**
@@ -162,5 +200,19 @@ class TestGateway extends PaymentGateway implements WebhookNotificationsListener
         }
 
         exit();
+    }
+
+    /**
+     * @since TBD
+     *
+     * @throws PaymentGatewayException When test mode is disabled.
+     */
+    private function ensureTestModeIsEnabled(): void
+    {
+        if (! give_is_test_mode()) {
+            throw new PaymentGatewayException(
+                __('Test donations can only be made while Test Mode is enabled.', 'give')
+            );
+        }
     }
 }

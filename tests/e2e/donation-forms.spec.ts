@@ -2,6 +2,7 @@ import {expect, test} from '@wordpress/e2e-test-utils-playwright';
 import {createCampaignWithForm} from './utils/campaign';
 import {editForm, section} from './utils/form';
 import {captureOffsiteRedirect, enableTestOffsiteGateway, signedReturnUrl} from './utils/offsite-gateway';
+import {enableTestGatewayInLiveMode} from './utils/test-mode';
 import {
     DONOR,
     donationForm,
@@ -559,6 +560,45 @@ test.describe('V3 donation forms', () => {
 
             await expect(page).toHaveURL(/givewp-event=donation-completed/);
             await expectReceipt(donationForm(page), '$10.00');
+        });
+    });
+
+    /**
+     * Test Donation completes a donation without taking a payment, so the form offers it only while
+     * Test Mode is enabled, even when the gateway settings have it enabled.
+     */
+    test.describe('the Test Donation gateway', () => {
+        let formId: number;
+        let restoreSettings: () => void;
+
+        test.beforeAll(async ({requestUtils}) => {
+            restoreSettings = enableTestGatewayInLiveMode();
+            ({formId} = await createCampaignWithForm(requestUtils));
+        });
+
+        test.afterAll(() => {
+            restoreSettings();
+        });
+
+        test('is not offered while Test Mode is disabled', async ({page}) => {
+            await page.goto(`/?post_type=give_forms&p=${formId}`);
+
+            const form = donationForm(page);
+            await waitForForm(form);
+
+            await form.getByRole('button', {name: 'Donate now'}).click();
+
+            await fillDonorDetails(form);
+            await form.getByRole('button', {name: 'Continue'}).click();
+
+            /*
+             * A form with one gateway left shows it without a radio, so these look for the gateway
+             * labels rather than for radios.
+             */
+            const gateways = form.locator('.givewp-fields-gateways__list');
+
+            await expect(gateways.getByText('Donate with Offline Donation')).toBeVisible();
+            await expect(gateways.getByText('Donate with Test Donation')).toHaveCount(0);
         });
     });
 });

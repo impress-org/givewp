@@ -28,6 +28,7 @@ use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Li
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentPaymentFailed;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentSucceeded;
 use Give\PaymentGateways\Gateways\Stripe\Webhooks\Listeners\PaymentIntentRequiresAction;
+use Give\PaymentGateways\Gateways\TestGateway\Actions\DisableTestGatewayInLiveMode;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\PaymentGateways\Gateways\TestOffsiteGateway\TestOffsiteGateway;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -59,6 +60,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since TBD boot the Test Donation gateway hooks
      * @since 4.16.8 register TestOffsiteGateway when GIVEWP_ENABLE_TEST_OFFSITE_GATEWAY is set
      * @since 3.0.0
      *
@@ -84,6 +86,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->addStripeFormBuilderHooks();
         $this->addStripeTransactionMetadata();
         $this->bootOfflineDonations();
+        $this->bootTestGateway();
     }
 
     /**
@@ -187,5 +190,14 @@ class ServiceProvider implements ServiceProviderInterface
             10,
             2
         );
+    }
+
+    /**
+     * @since TBD
+     */
+    private function bootTestGateway(): void
+    {
+        Hooks::addFilter('give_enabled_payment_gateways', DisableTestGatewayInLiveMode::class);
+        Hooks::addFilter('givewp_donation_form_enabled_gateways', DisableTestGatewayInLiveMode::class);
     }
 }

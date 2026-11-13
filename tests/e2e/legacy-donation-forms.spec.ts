@@ -6,6 +6,7 @@ import {
     signedReturnUrl,
     TEST_OFFSITE_GATEWAY,
 } from './utils/offsite-gateway';
+import {enableTestGatewayInLiveMode, TEST_GATEWAY} from './utils/test-mode';
 
 /**
  * A legacy (v2) donation form on the front end, paid through an offsite gateway.
@@ -73,5 +74,36 @@ test.describe('Legacy donation forms', () => {
         await expect(receipt).toBeVisible({timeout: 30_000});
         await expect(receipt).toContainText('ada@example.test');
         await expect(receipt).toContainText('Complete');
+    });
+
+    /**
+     * Test Donation completes a donation without taking a payment, so the form offers it only while
+     * Test Mode is enabled, even when the gateway settings have it enabled.
+     */
+    test.describe('the Test Donation gateway', () => {
+        let restoreSettings: () => void;
+
+        test.beforeAll(() => {
+            restoreSettings = enableTestGatewayInLiveMode();
+        });
+
+        test.afterAll(() => {
+            restoreSettings();
+        });
+
+        test('is not offered while Test Mode is disabled', async ({page}) => {
+            await page.goto(`/?post_type=give_forms&p=${formId}`);
+
+            const form = page.frameLocator('iframe[name="give-embed-form"]');
+
+            await form.locator('.give-section.introduction .advance-btn').click();
+            await form.locator('.give-section.choose-amount .advance-btn').click();
+
+            const gateways = form.locator('#give-gateway-radio-list');
+
+            // The radios are hidden behind their styled labels, so these count them rather than look for them.
+            await expect(gateways.locator('input[name="payment-mode"]').first()).toBeAttached();
+            await expect(gateways.locator(`input[name="payment-mode"][value="${TEST_GATEWAY}"]`)).toHaveCount(0);
+        });
     });
 });
