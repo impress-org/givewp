@@ -1,18 +1,15 @@
 import type {ReactNode} from 'react';
-import type {View} from '@wordpress/dataviews';
 import cx from 'classnames';
-import {GiveIcon} from '@givewp/components';
-import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
-import {__, sprintf} from '@wordpress/i18n';
-import StatTiles from '../StatTiles';
-import type {ListTableStats, StatsStatus} from '../hooks/useListTableStats';
-import type {StatConfig, TestModeToggle} from './types';
+import {FormToggle} from '@wordpress/components';
+import {useInstanceId} from '@wordpress/compose';
+import GiveMark from '../GiveMark';
+import HeaderDivider from '../HeaderDivider';
+import TestModeBadge from '../TestModeBadge';
+import type {TestModeToggle} from './types';
 import styles from './ListTablePage.module.scss';
 
 /**
- * @since TBD Render the stat tiles whenever `statsConfig` is set, with a status.
- * @since TBD Take the test-mode switch as `testModeToggle`.
- * @since TBD Add `filters`, `availableFilterIds` and `onChangeFilters` for the tiles that filter.
+ * @since TBD Take the test-mode switch as `testModeToggle`; drop the stats props (the tiles render in the list sheet).
  */
 export type ListTablePageHeaderProps = {
     title: string;
@@ -23,25 +20,12 @@ export type ListTablePageHeaderProps = {
     testModeToggle?: TestModeToggle;
     testMode: boolean;
     onChangeTestMode: (isOn: boolean) => void;
-    statsConfig?: Record<string, StatConfig>;
-    stats?: ListTableStats;
-    /** Where the stats are: the tiles stay mounted in every status. */
-    statsStatus?: StatsStatus;
-    /** The view's filters, which press the tiles that stand for them. */
-    filters?: View['filters'];
-    /** The ids of the filters the screen declares. */
-    availableFilterIds?: string[];
-    /** Called with the new filters when a tile is toggled. */
-    onChangeFilters?: (filters: View['filters']) => void;
 };
 
 /**
- * The Give part of a list screen above the list: title, header buttons, banner, test-mode toggle
- * and stat tiles.
+ * The Give part of a list screen above the list: title, header buttons, banner and test-mode toggle.
  *
- * @since TBD Render the stat tiles whenever `statsConfig` is set, with a status.
- * @since TBD Take the test-mode switch as `testModeToggle`.
- * @since TBD Pass the view's filters to the stat tiles, which toggle them.
+ * @since TBD Take the test-mode switch as `testModeToggle` and show it in the header with the stock form toggle; the stat tiles move to the list sheet.
  */
 export default function ListTablePageHeader({
     title,
@@ -50,50 +34,39 @@ export default function ListTablePageHeader({
     testModeToggle,
     testMode,
     onChangeTestMode,
-    statsConfig,
-    stats,
-    statsStatus = 'loading',
-    filters,
-    availableFilterIds,
-    onChangeFilters,
 }: ListTablePageHeaderProps) {
-    /* translators: %s: the screen's title (for example "Donors") */
-    const statsLabel = sprintf(__('%s statistics', 'give'), title);
+    const switchId = `givewp-test-mode-switch-${useInstanceId(ListTablePageHeader)}`;
 
     return (
         <>
             <header className={styles.pageHeader}>
                 <div className={styles.flexRow}>
-                    <GiveIcon size={'2.25rem'} />
+                    <GiveMark />
                     <h1 className={styles.pageTitle}>{title}</h1>
-                    {testModeToggle && testMode && <span className={styles.testModeBadge}>{testModeToggle.label}</span>}
+                    {testModeToggle && testMode && <TestModeBadge label={testModeToggle.label} />}
                 </div>
-                {children && <div className={styles.flexRow}>{children}</div>}
+                {(children || testModeToggle) && (
+                    <div className={styles.flexRow}>
+                        {testModeToggle && (
+                            <div className={styles.testModeSwitch}>
+                                <FormToggle
+                                    id={switchId}
+                                    role="switch"
+                                    checked={testMode}
+                                    onChange={(event) => onChangeTestMode(event.target.checked)}
+                                />
+                                <label htmlFor={switchId}>{testModeToggle.ariaLabel || testModeToggle.label}</label>
+                            </div>
+                        )}
+                        {testModeToggle && children && <HeaderDivider />}
+                        {children}
+                    </div>
+                )}
             </header>
 
             <div className={cx('wp-header-end', 'hidden')} />
 
             {banner && <section role="banner">{banner()}</section>}
-            {testModeToggle && (
-                <div className={styles.filtersRow}>
-                    <ToggleSwitch
-                        ariaLabel={testModeToggle.ariaLabel || undefined}
-                        onChange={onChangeTestMode}
-                        checked={testMode}
-                    />
-                </div>
-            )}
-            {statsConfig && (
-                <StatTiles
-                    config={statsConfig}
-                    stats={stats}
-                    status={statsStatus}
-                    label={statsLabel}
-                    filters={filters}
-                    availableFilterIds={availableFilterIds}
-                    onChangeFilters={onChangeFilters}
-                />
-            )}
         </>
     );
 }

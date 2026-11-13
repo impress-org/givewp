@@ -1,102 +1,63 @@
 @use '@givewp/css/Safe-Rem/functions' as *;
+@use '../layout/tokens' as *;
 
 .interweave {
     .statusBadge {
-        --color: var(--givewp-shades-white);
-        --bg-color: var(--givewp-shades-black);
+        @include givewp-status-tone-tokens;
+
+        --color: var(--givewp-list-table-status-neutral-text);
+        --bg-color: var(--givewp-list-table-status-neutral-bg);
 
         align-items: center;
         background-color: var(--bg-color);
-        border-radius: 0.75rem;
+        border-radius: 2px;
         color: var(--color);
-        column-gap: safe-rem(1);
         display: inline-flex;
-        font-size: 0.75rem;
-        font-weight: 600;
-        justify-content: center;
+        font-size: 0.8125rem;
+        font-weight: 500;
         line-height: 1.5;
-        padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
-        text-transform: capitalize;
-        transform: translateY(0.075rem);
+        padding: 2px var(--givewp-spacing-3);
         width: fit-content;
 
         div,
         p {
-            font-size: safe-rem(0.75);
-            font-weight: 600;
-            line-height: safe-rem(1.125);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        p {
+            font-size: inherit;
+            font-weight: inherit;
+            line-height: inherit;
             margin: 0;
         }
 
         &--completed,
-        &--complete {
-            --bg-color: var(--givewp-emerald-100);
-            --color: var(--givewp-emerald-900);
-        }
-
+        &--complete,
         &--active,
         &--publish,
         &--published {
-            --bg-color: var(--givewp-green-100);
-            --color: var(--givewp-green-900);
+            --color: var(--givewp-list-table-status-success-text);
+            --bg-color: var(--givewp-list-table-status-success-bg);
         }
 
-        &--archived,
-        &--inactive {
-            --bg-color: var(--givewp-grey-100);
-            --color: var(--givewp-grey-900);
+        &--pending {
+            --color: var(--givewp-list-table-status-warning-text);
+            --bg-color: var(--givewp-list-table-status-warning-bg);
         }
 
-        &--failing {
-            --bg-color: var(--givewp-yellow-100);
-            --color: var(--givewp-yellow-900);
+        &--processing {
+            --color: var(--givewp-list-table-status-info-text);
+            --bg-color: var(--givewp-list-table-status-info-bg);
         }
 
         &--failed,
+        &--failing,
         &--revoked,
-        &--abandoned,
         &--cancelled,
-        &--expired {
-            --bg-color: var(--givewp-red-100);
-            --color: var(--givewp-red-900);
-        }
-
-        &--draft {
-            --bg-color: var(--givewp-orange-100);
-            --color: var(--givewp-orange-900);
-        }
-
-        &--pending,
-        &--processing {
-            --bg-color: var(--givewp-blue-100);
-            --color: var(--givewp-blue-900);
-        }
-
-        &--upgraded {
-            --bg-color: var(--givewp-purple-50);
-            --color: var(--givewp-purple-900);
-        }
-
-        &--refunded {
-            --bg-color: var(--givewp-blue-700);
-            --color: var(--givewp-blue-25);
-        }
-
-        &--give_subscription {
-            --bg-color: var(--givewp-green-700);
-            --color: var(--givewp-green-25);
-        }
-
+        &--expired,
         &--trash,
         &--trashed {
-            --bg-color: var(--givewp-red-700);
-            --color: var(--givewp-red-25);
+            --color: var(--givewp-list-table-status-error-text);
+            --bg-color: var(--givewp-list-table-status-error-bg);
         }
+
+        // refunded, abandoned, draft, archived, inactive, upgraded and give_subscription use the neutral default.
     }
 
     .subscriptionStatus {
@@ -176,7 +137,7 @@
         --padding-y: calc(var(--givewp-spacing-1) - var(--border-width));
         align-items: center;
         background-color: var(--givewp-neutral-25);
-        border-radius: 1.5rem;
+        border-radius: 2px;
         border: var(--border-width) solid var(--givewp-neutral-600);
         color: var(--givewp-neutral-900);
         display: inline-flex;
@@ -200,7 +161,7 @@
         min-width: 0;
 
         &__email {
-            color: var(--givewp-grey-600);
+            color: var(--givewp-list-table-text-secondary);
             font-weight: 400;
             overflow: hidden;
             text-overflow: ellipsis;

@@ -1,7 +1,7 @@
 import {type Ref, useEffect, useRef, useState} from 'react';
 import {Button, DropdownMenu} from '@wordpress/components';
 import type {Filter} from '@wordpress/dataviews';
-import {__, sprintf} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 import {closeSmall, plus} from '@wordpress/icons';
 import {filterFieldId} from '../adapters/viewToParameters';
 import DateRangeFilterControl from '../DateRangeFilterControl';
@@ -182,11 +182,7 @@ export default function ListTableFilters({
         const chipValue = hasValue ? (isMultiple(declaration) ? values : values[0]) : undefined;
         const chip = {
             canRemove: !declaration.isPrimary || hasValue,
-            removeLabel: declaration.isPrimary
-                ? /* translators: %s: filter name such as "Status". */
-                  sprintf(__('Reset %s', 'give'), declaration.label)
-                : /* translators: %s: filter name such as "Donation date". */
-                  sprintf(__('Remove %s', 'give'), declaration.label),
+            removeLabel: declaration.isPrimary ? __('Reset', 'give') : __('Remove', 'give'),
             defaultOpen: justAdded === declaration.id,
             onRemove: () => remove(declaration),
         };

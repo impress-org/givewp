@@ -104,7 +104,8 @@ const chipNamed = (start: string) =>
     Array.from(container.querySelectorAll<HTMLButtonElement>('.givewp-filter-chip__toggle')).find((chip) =>
         chipText(chip)?.startsWith(start)
     )!;
-const buttonLabeled = (label: string) => container.querySelector<HTMLButtonElement>(`button[aria-label="${label}"]`);
+// The remove button's name ends with the filter's accessible name, so it is found by its start.
+const buttonLabeled = (label: string) => container.querySelector<HTMLButtonElement>(`button[aria-label^="${label}"]`);
 const addFilterButton = () => container.querySelector<HTMLButtonElement>('.givewp-list-table-filters__add button');
 const menuItems = () => Array.from(document.querySelectorAll<HTMLButtonElement>('[role="menuitem"]'));
 const popover = () => document.querySelector('.givewp-filter-chip__content');
@@ -199,13 +200,13 @@ describe('ListTableFilters', () => {
 
         expect(chips()).toContain('Payment type');
         expect(entry('paymentType')).toEqual({field: 'filter-paymentType', operator: 'isAny', value: undefined});
-        expect(buttonLabeled('Remove Payment type')).not.toBeNull();
+        expect(buttonLabeled('Remove filter: Payment type')).not.toBeNull();
     });
 
     it('removing a secondary chip moves focus to "Add filter"', async () => {
         await render({initial: [{field: 'filter-date', operator: 'is', value: '30'}]});
 
-        await click(buttonLabeled('Remove Donation date'));
+        await click(buttonLabeled('Remove filter: Donation date'));
 
         expect(entry('date')).toBeUndefined();
         expect(chips()).not.toContain('Donation date');
@@ -215,14 +216,35 @@ describe('ListTableFilters', () => {
     it('resetting a primary filter keeps its chip and moves focus to it', async () => {
         await render({initial: [{field: 'filter-status', operator: 'isAny', value: ['pending']}]});
 
-        expect(buttonLabeled('Remove Status')).toBeNull();
+        expect(buttonLabeled('Remove filter: Status')).toBeNull();
 
-        await click(buttonLabeled('Reset Status'));
+        await click(buttonLabeled('Reset filter: Status'));
 
         expect(entry('status')).toBeUndefined();
         expect(chips()).toContain('Status');
-        expect(buttonLabeled('Reset Status')).toBeNull();
+        expect(buttonLabeled('Reset filter: Status')).toBeNull();
         expect(document.activeElement).toBe(chipNamed('Status'));
+    });
+
+    it('names the remove button by the filter it removes', async () => {
+        await render({initial: [{field: 'filter-paymentType', operator: 'isAny', value: ['card']}]});
+
+        const remove = container.querySelector('.givewp-filter-chip__remove');
+
+        expect(remove?.getAttribute('aria-label')).toBe('Remove filter: Payment type: Card');
+    });
+
+    it('keeps "Add filter" and "Reset" after the last chip in DOM order', async () => {
+        await render({canReset: true, initial: [{field: 'filter-date', operator: 'is', value: '30'}]});
+
+        const children = Array.from(container.querySelector('.givewp-list-table-filters')!.children);
+        const lastChip = children.map((child) => child.className).lastIndexOf('givewp-list-table-filters__item');
+        const add = children.findIndex((child) => child.className.includes('givewp-list-table-filters__add'));
+        const reset = children.findIndex((child) => child.className.includes('givewp-list-table-filters__reset'));
+
+        expect(lastChip).toBeGreaterThan(0);
+        expect(add).toBeGreaterThan(lastChip);
+        expect(reset).toBeGreaterThan(add);
     });
 
     it('selecting Trash drops the other statuses', async () => {

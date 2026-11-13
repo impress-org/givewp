@@ -1,5 +1,6 @@
 import {createContext, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
+import cx from 'classnames';
 import type {Field, View} from '@wordpress/dataviews';
 import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notifications';
 import ListTableApi from '../api';
@@ -8,8 +9,11 @@ import ListTableEmptyState from '../EmptyStates';
 import ListTableFilters from '../ListTableFilters';
 import ListTableNoticeArea from '../ListTableNoticeArea';
 import ListTableSearch from '../ListTableSearch';
+import SearchHint from '../ListTableSearch/SearchHint';
+import useSearchHint from '../ListTableSearch/useSearchHint';
 import ListTableViewMenu from '../ListTableViewMenu';
 import ResultCountStatus from '../ResultCountStatus';
+import StatTiles from '../StatTiles';
 import {isBarFilter} from '../filters/filterKinds';
 import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
 import useLegacyRowActionsField from '../LegacyRowActions/useLegacyRowActionsField';
@@ -93,13 +97,13 @@ export const ShowConfirmModalContext = createContext(
 );
 
 /**
- * The page shell every admin list screen renders through: the Give page header and stats, and the
- * list itself through the WordPress list engine (`@wordpress/dataviews`). It accepts the same props
- * as before the engine change, so every screen and add-on keeps rendering without changes.
+ * The page shell every admin list screen renders through: the Give page header, and the list
+ * itself (with its stat tiles at the top of the sheet) through the WordPress list engine
+ * (`@wordpress/dataviews`). It accepts the same props as before the engine change, so every screen and add-on keeps rendering without changes.
  *
  * @since TBD Add `legacyView`: "Switch to Legacy View" in the list's "More view options" menu.
  * @since TBD At 782 px and below, show the records as cards built from the screen's field roles.
- * @since TBD Keep the stat tiles mounted with a status, and name their region by the screen.
+ * @since TBD Keep the stat tiles mounted with a status, name their region by the screen, and render them at the top of the list sheet.
  * @since TBD Send an explicit `scope` also without `filters`, over the scope from `filterSettings`.
  * @since TBD Announce a cached result count only after its request has finished.
  * @since TBD Let the stat tiles toggle the single-choice option filters the screen declares.
@@ -277,18 +281,20 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         });
 
         const searchDeclaration = declarations.find(isSearch);
+        const searchHint = useSearchHint(searchDeclaration?.hint ?? '');
         // Reset shows only when the view differs from the screen's defaults, so an untouched view on a
         // test site (test mode on by default) offers no Reset, and Reset puts the defaults back instead
         // of turning test mode off. An added filter with no value yet counts.
         const canReset = differsFromDefaultFilters(view, start.defaults.filters);
         const searchBoxRef = useRef<HTMLDivElement>(null);
         const filterBarRef = useRef<HTMLDivElement>(null);
-        // The search box, or, when it is not shown (during a bulk selection, or on a screen without a
-        // search), the first control left in the filter bar, or else the bar itself.
+        // The search box, or, when it is not shown (hidden during a bulk selection, or on a screen without
+        // a search), the first control left in the filter bar, or else the bar itself.
         const focusFilterArea = useCallback(() => {
             const bar = filterBarRef.current;
+            const searchInput = searchBoxRef.current?.querySelector('input');
             const target =
-                searchBoxRef.current?.querySelector('input') ??
+                (searchInput && getComputedStyle(searchInput).visibility !== 'hidden' ? searchInput : null) ??
                 bar?.querySelector<HTMLElement>('button:not(:disabled)') ??
                 bar;
 
@@ -374,9 +380,128 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             []
         );
 
+        // The notices and the list. On the full page they sit in the list sheet, under the stat tiles.
+        const listContent = (
+            <div className={styles.pageContent}>
+                {contentMode && children}
+                <ListTableNoticeArea
+                    notices={notices ?? []}
+                    recommendation={recommendation}
+                    onDismissRecommendation={dismissRecommendation}
+                    trailing={
+                        productRecommendation && (
+                            <table className="givewp-list-table-recommendation">
+                                <tbody>{productRecommendation}</tbody>
+                            </table>
+                        )
+                    }
+                >
+                    <NotificationPlaceholder type="notice" />
+                </ListTableNoticeArea>
+                <DataViewsListTable
+                    view={displayView}
+                    onChangeView={onChangeDisplayView}
+                    layoutMode={isNarrow ? 'narrow' : 'wide'}
+                    viewMenu={
+                        <ListTableViewMenu
+                            legacyView={
+                                legacyView && {
+                                    ariaLabel: legacyView.ariaLabel,
+                                    onSelect: () =>
+                                        switchToLegacyView(listTableApi, legacyView.onSwitched).catch(() =>
+                                            report({
+                                                changed: 0,
+                                                failed: 0,
+                                                notice: __(
+                                                    'The legacy view could not be saved. Please try again.',
+                                                    'give'
+                                                ),
+                                            })
+                                        ),
+                                }
+                            }
+                        />
+                    }
+                    fields={fields}
+                    actions={actions}
+                    data={error ? [] : data?.items ?? []}
+                    paginationInfo={{
+                        totalItems: Number(data?.totalItems ?? 0),
+                        totalPages: data?.totalPages ?? 0,
+                    }}
+                    isLoading={isLoading}
+                    selection={selection}
+                    onChangeSelection={onChangeSelection}
+                    empty={
+                        error ? (
+                            <ListTableEmptyState
+                                isError
+                                message={sprintf(
+                                    /* translators: %s: record type, plural (for example "donations") */
+                                    __('There was a problem retrieving the %s.', 'give'),
+                                    pluralName
+                                )}
+                                actionLabel={__('Try again', 'give')}
+                                onAction={refresh}
+                            />
+                        ) : isFilteredEmpty ? (
+                            <ListTableEmptyState
+                                message={sprintf(
+                                    /* translators: %s: record type, plural (for example "donations") */
+                                    __('No %s match your search or filters.', 'give'),
+                                    pluralName
+                                )}
+                                actionLabel={__('Clear filters', 'give')}
+                                onAction={resetFilters}
+                            />
+                        ) : (
+                            listTableBlankSlate
+                        )
+                    }
+                    perPageSizes={PER_PAGE_SIZES}
+                    isDefaultLayout={isDefaultLayout}
+                    onResetLayout={resetLayout}
+                    searchBox={
+                        searchDeclaration && (
+                            <div ref={searchBoxRef}>
+                                <ListTableSearch
+                                    label={searchDeclaration.label}
+                                    describedBy={searchHint.describedBy}
+                                    value={view.search ?? ''}
+                                    onChange={(term) => onChangeView({...view, search: term})}
+                                />
+                            </div>
+                        )
+                    }
+                    searchHint={searchHint.hint && <SearchHint {...searchHint.hint} />}
+                    filterBar={
+                        <ListTableFilters
+                            declarations={declarations.filter(isBarFilter)}
+                            view={view}
+                            onChangeView={onChangeView}
+                            statuses={statuses}
+                            screen={screen?.key}
+                            canReset={canReset}
+                            onReset={resetFilters}
+                            containerRef={filterBarRef}
+                        />
+                    }
+                />
+                <ResultCountStatus
+                    // The request itself, so a filter added with no value yet is not a new result.
+                    requestKey={JSON.stringify(parameters)}
+                    isLoading={isLoading}
+                    isValidating={isValidating}
+                    totalItems={error || !data ? undefined : Number(data.totalItems ?? 0)}
+                    singleName={singleName}
+                    pluralName={pluralName}
+                />
+            </div>
+        );
+
         return (
             <ShowConfirmModalContext.Provider value={showConfirmModal}>
-                <article className={styles.page}>
+                <article className={cx(styles.page, contentMode ? styles.pageEmbedded : 'givewp-list-table-page')}>
                     {!contentMode && (
                         <ListTablePageHeader
                             title={title}
@@ -384,131 +509,33 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                             testModeToggle={testModeSwitch}
                             testMode={testMode}
                             onChangeTestMode={setTestMode}
-                            statsConfig={statsConfig}
-                            stats={stats}
-                            statsStatus={statsStatus}
-                            filters={view.filters}
-                            availableFilterIds={tileFilterIds}
-                            onChangeFilters={(filters) => onChangeView({...view, filters, page: 1})}
                         >
                             {children}
                         </ListTablePageHeader>
                     )}
 
-                    <div className={styles.pageContent}>
-                        {contentMode && children}
-                        <ListTableNoticeArea
-                            notices={notices ?? []}
-                            recommendation={recommendation}
-                            onDismissRecommendation={dismissRecommendation}
-                            trailing={
-                                productRecommendation && (
-                                    <table className="givewp-list-table-recommendation">
-                                        <tbody>{productRecommendation}</tbody>
-                                    </table>
-                                )
-                            }
-                        >
-                            <NotificationPlaceholder type="notice" />
-                        </ListTableNoticeArea>
-                        <DataViewsListTable
-                            view={displayView}
-                            onChangeView={onChangeDisplayView}
-                            layoutMode={isNarrow ? 'narrow' : 'wide'}
-                            viewMenu={
-                                <ListTableViewMenu
-                                    legacyView={
-                                        legacyView && {
-                                            ariaLabel: legacyView.ariaLabel,
-                                            onSelect: () =>
-                                                switchToLegacyView(listTableApi, legacyView.onSwitched).catch(() =>
-                                                    report({
-                                                        changed: 0,
-                                                        failed: 0,
-                                                        notice: __(
-                                                            'The legacy view could not be saved. Please try again.',
-                                                            'give'
-                                                        ),
-                                                    })
-                                                ),
-                                        }
-                                    }
+                    {contentMode ? (
+                        listContent
+                    ) : (
+                        <div className={styles.sheet}>
+                            {statsConfig && (
+                                <StatTiles
+                                    config={statsConfig}
+                                    stats={stats}
+                                    status={statsStatus}
+                                    label={sprintf(
+                                        /* translators: %s: the screen's title (for example "Donors") */
+                                        __('%s statistics', 'give'),
+                                        title
+                                    )}
+                                    filters={view.filters}
+                                    availableFilterIds={tileFilterIds}
+                                    onChangeFilters={(filters) => onChangeView({...view, filters, page: 1})}
                                 />
-                            }
-                            fields={fields}
-                            actions={actions}
-                            data={error ? [] : data?.items ?? []}
-                            paginationInfo={{
-                                totalItems: Number(data?.totalItems ?? 0),
-                                totalPages: data?.totalPages ?? 0,
-                            }}
-                            isLoading={isLoading}
-                            selection={selection}
-                            onChangeSelection={onChangeSelection}
-                            empty={
-                                error ? (
-                                    <ListTableEmptyState
-                                        isError
-                                        message={sprintf(
-                                            /* translators: %s: record type, plural (for example "donations") */
-                                            __('There was a problem retrieving the %s.', 'give'),
-                                            pluralName
-                                        )}
-                                        actionLabel={__('Try again', 'give')}
-                                        onAction={refresh}
-                                    />
-                                ) : isFilteredEmpty ? (
-                                    <ListTableEmptyState
-                                        message={sprintf(
-                                            /* translators: %s: record type, plural (for example "donations") */
-                                            __('No %s match your search or filters.', 'give'),
-                                            pluralName
-                                        )}
-                                        actionLabel={__('Clear filters', 'give')}
-                                        onAction={resetFilters}
-                                    />
-                                ) : (
-                                    listTableBlankSlate
-                                )
-                            }
-                            perPageSizes={PER_PAGE_SIZES}
-                            isDefaultLayout={isDefaultLayout}
-                            onResetLayout={resetLayout}
-                            searchBox={
-                                searchDeclaration && (
-                                    <div ref={searchBoxRef}>
-                                        <ListTableSearch
-                                            label={searchDeclaration.label}
-                                            hint={searchDeclaration.hint}
-                                            value={view.search ?? ''}
-                                            onChange={(term) => onChangeView({...view, search: term})}
-                                        />
-                                    </div>
-                                )
-                            }
-                            filterBar={
-                                <ListTableFilters
-                                    declarations={declarations.filter(isBarFilter)}
-                                    view={view}
-                                    onChangeView={onChangeView}
-                                    statuses={statuses}
-                                    screen={screen?.key}
-                                    canReset={canReset}
-                                    onReset={resetFilters}
-                                    containerRef={filterBarRef}
-                                />
-                            }
-                        />
-                        <ResultCountStatus
-                            // The request itself, so a filter added with no value yet is not a new result.
-                            requestKey={JSON.stringify(parameters)}
-                            isLoading={isLoading}
-                            isValidating={isValidating}
-                            totalItems={error || !data ? undefined : Number(data.totalItems ?? 0)}
-                            singleName={singleName}
-                            pluralName={pluralName}
-                        />
-                    </div>
+                            )}
+                            {listContent}
+                        </div>
+                    )}
                 </article>
 
                 {/* Details pages that hold a list in a tab already show snackbars. */}

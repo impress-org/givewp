@@ -1,0 +1,17 @@
+// An outline, not a fill: test mode must not look like a warning color wash.
+.givewp-test-mode-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--givewp-spacing-1);
+    padding: var(--givewp-spacing-1) var(--givewp-spacing-2);
+    border: 1px solid var(--givewp-list-table-test-badge-edge);
+    border-radius: 2px;
+    background: var(--givewp-list-table-test-badge-bg);
+    color: var(--givewp-list-table-text);
+    font-size: 0.8125rem;
+    font-weight: 500;
+
+    &__icon {
+        flex-shrink: 0;
+    }
+}

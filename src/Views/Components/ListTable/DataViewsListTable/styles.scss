@@ -1,7 +1,15 @@
 @use '../layout/breakpoints' as *;
+@use '../layout/tokens' as *;
+@use '../ListTableSearch/label' as *;
+@use './wp-look';
 @import '~@wordpress/dataviews/build-style/style.css';
 
+// The room a focus ring needs outside a control. The DataViews wrapper scrolls sideways, so it clips whatever
+// pokes out of it: the toolbar keeps this much inside both edges, and no control touches the wrapper edge.
+$givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
+
 .givewp-list-table {
+    @include givewp-list-table-tokens;
     position: relative;
     background-color: var(--givewp-shades-white);
     border-radius: var(--givewp-rounded-8);
@@ -54,24 +62,52 @@
         }
     }
 
-    // The bulk actions sit in the search row while rows are selected. Keep the row as tall as the
-    // search field, so the table does not jump when the selection starts or ends.
-    &__bulk-actions {
-        min-height: calc(2 * var(--givewp-spacing-8));
+    // The toolbar above the table: one row, then the search hint under it.
+    &__toolbar {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
+        padding-block: var(--givewp-spacing-4);
+        padding-inline: $givewp-list-table-focus-ring-room;
     }
 
-    // The filter bar and the view options (layout, columns, reset view) share one row, so the options
-    // sit with the filters and not beside the search box.
-    &__filter-row {
+    // The search box, the filter bar and the view options share one row, lined up at the top. The
+    // filter bar stays beside the search box while 16rem is left for it (about two chips), and else
+    // moves to the next line with the view options. Its chips wrap inside it.
+    &__toolbar-row {
         display: flex;
+        flex-wrap: wrap;
         align-items: flex-start;
-        justify-content: space-between;
         gap: var(--givewp-spacing-2);
 
         > .givewp-list-table-filters {
-            flex: 1;
+            flex: 1 1 16rem;
             min-inline-size: 0;
         }
+
+        // The search label sits above the search box, out of the flow: the row keeps its space.
+        &--labeled {
+            padding-block-start: $givewp-list-table-search-label-block;
+        }
+    }
+
+    // One grid cell for the search box and, while rows are selected, the bulk actions: the taller of
+    // the two sets the height, so the row keeps its height when the selection starts or ends.
+    &__search {
+        display: grid;
+        max-inline-size: 100%;
+
+        > * {
+            grid-area: 1 / 1;
+            min-inline-size: 0;
+        }
+    }
+
+    // What the bulk actions replace keeps its place, hidden (also from keyboard and screen readers).
+    &--has-selection &__search-box,
+    &--has-selection &__hint,
+    &--has-selection &__view-controls {
+        visibility: hidden;
     }
 
     // Always at the end edge, also when a screen has no filter bar to fill the row.
@@ -85,22 +121,20 @@
         display: flex;
         justify-content: flex-end;
         margin-block-start: var(--givewp-spacing-2);
+        padding-inline: $givewp-list-table-focus-ring-room;
     }
 
-    // On a phone the search box takes the whole row. DataViews sizes its search slot to the content, so the
-    // slot must fill the row before the box can.
-    @media (max-width: 782px) {
-        .dataviews__search {
+    // On a phone the search box takes the whole row, and the filters wrap under it.
+    @media (max-width: $givewp-list-table-narrow) {
+        &__search {
             flex: 1 1 100%;
-            min-inline-size: 0;
         }
     }
 
     // The DataViews wrapper scrolls sideways as a whole when the table is wider than the screen. Pin the
     // rows around the table to the start edge, so the search, the filters, the settings button and the
     // pagination stay in view while only the table moves.
-    .dataviews__view-actions,
-    &__filter-row,
+    &__toolbar,
     .dataviews-footer {
         position: sticky;
         inset-inline-start: 0;
@@ -110,7 +144,6 @@
     // adds its own 48px at the sides of the toolbar, the footer and the outer table cells, which
     // pushed the list in from the banner above it. Take that padding out so the container is the
     // only gutter, and the search and the filters line up with the banner.
-    .dataviews__view-actions,
     .dataviews-filters__container,
     .dataviews-loading,
     .dataviews-no-results {
@@ -198,9 +231,4 @@
             padding-inline: 0;
         }
     }
-}
-
-.givewp-list-table .dataviews-view-table,
-.givewp-list-table .dataviews-view-table tr.is-selected {
-    color: var(--givewp-grey-600);
 }

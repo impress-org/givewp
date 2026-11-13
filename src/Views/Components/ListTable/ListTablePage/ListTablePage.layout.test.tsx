@@ -7,6 +7,8 @@ import type {ListTablePageProps, ListTableResponse} from './types';
 import ListTablePage from './index';
 
 jest.mock('@givewp/components/AdminDetailsPage/Notifications', () => () => null);
+// The style mock is an empty object. Make each class name its own key so the tests can assert on it.
+jest.mock('./ListTablePage.module.scss', () => new Proxy({}, {get: (_target, key) => (key === '__esModule' ? false : key)}));
 jest.mock('../filters/siteDate', () => ({
     ...jest.requireActual('../filters/siteDate'),
     siteToday: () => '2026-11-02',
@@ -180,6 +182,75 @@ describe('ListTablePage layout', () => {
     });
 });
 
+describe('ListTablePage search hint', () => {
+    const rule = 'Searches donor name or ID. An ID matches exactly.';
+    const withHint: ListTablePageProps = {
+        ...props,
+        filters: [
+            {kind: 'search', id: 'search', label: 'Search donations', hint: rule, parameter: 'search'},
+            ...(cardProps.filters ?? []).filter((filter) => filter.kind !== 'search'),
+        ],
+    };
+    const input = () => container.querySelector<HTMLInputElement>('.givewp-list-table-search input');
+
+    it('places the hint after the filter bar and keeps it describing the search input', async () => {
+        await act(() => root.render(<ListTablePage {...withHint} />));
+
+        const hintRow = container.querySelector('.givewp-list-table-search__hint-row');
+        const described = document.getElementById(input()?.getAttribute('aria-describedby') ?? '');
+
+        expect(container.querySelector('.givewp-list-table-search .givewp-list-table-search__hint-row')).toBeNull();
+        expect(follows(container.querySelector('.givewp-list-table-filters'), hintRow)).toBe(true);
+        expect(described?.textContent).toBe(rule);
+        expect(hintRow?.contains(described)).toBe(true);
+    });
+
+    it('puts the search box, the filter bar and the view options in one row, and the hint under it', async () => {
+        await act(() => root.render(<ListTablePage {...withHint} />));
+
+        const row = container.querySelector('.givewp-list-table__toolbar-row');
+        const search = row?.querySelector('.givewp-list-table__search .givewp-list-table-search');
+        const filterBar = row?.querySelector('.givewp-list-table-filters');
+        const viewOptions = row?.querySelector('.givewp-list-table__view-controls');
+        const hintRow = container.querySelector('.givewp-list-table-search__hint-row');
+
+        [search, filterBar, viewOptions].forEach((part) => expect(part).toBeTruthy());
+        expect(follows(search, filterBar)).toBe(true);
+        expect(follows(filterBar, viewOptions)).toBe(true);
+        expect(row?.contains(hintRow)).toBe(false);
+        expect(follows(row, hintRow)).toBe(true);
+    });
+
+    it('keeps the search box, the hint and the view options in place, hidden, while rows are selected', async () => {
+        mockData = {items: [{id: 1}, {id: 2}], totalItems: 2, totalPages: 1};
+        await setNarrow(false, {...withHint, rowActions: cardProps.rowActions});
+        await act(async () => lastTable().onChangeSelection(['1']));
+
+        const list = container.querySelector('.givewp-list-table');
+        const toolbar = container.querySelector('.givewp-list-table__toolbar');
+        const slot = toolbar?.querySelector('.givewp-list-table__search');
+
+        // The bulk actions share the search box's place, so the toolbar keeps its height.
+        expect(list?.classList.contains('givewp-list-table--has-selection')).toBe(true);
+        expect(slot?.querySelector('.givewp-list-table__bulk-actions')).not.toBeNull();
+        expect(slot?.querySelector('.givewp-list-table__search-box .givewp-list-table-search')).not.toBeNull();
+        expect(toolbar?.querySelector('.givewp-list-table__hint .givewp-list-table-search__hint-row')).not.toBeNull();
+        expect(toolbar?.querySelector('.givewp-list-table__view-controls')).not.toBeNull();
+
+        await act(async () => lastTable().onChangeSelection([]));
+
+        expect(list?.classList.contains('givewp-list-table--has-selection')).toBe(false);
+        expect(slot?.querySelector('.givewp-list-table__bulk-actions')).toBeNull();
+    });
+
+    it('renders no hint and no description for an empty hint (legacy screens)', async () => {
+        await act(() => root.render(<ListTablePage {...props} />));
+
+        expect(container.querySelector('.givewp-list-table-search__hint-row')).toBeNull();
+        expect(input()?.hasAttribute('aria-describedby')).toBe(false);
+    });
+});
+
 describe('ListTablePage narrow layout', () => {
     beforeEach(() => {
         mockData = {
@@ -289,14 +360,14 @@ describe('ListTablePage narrow layout', () => {
     it('orders the narrow toolbar search, filters, then view options', async () => {
         await setNarrow(true);
 
-        const search = container.querySelector('.dataviews__search');
+        const search = container.querySelector('.givewp-list-table__search');
         const filterBar = container.querySelector('.givewp-list-table-filters');
         const viewOptions = container.querySelector('.givewp-list-table__view-controls');
 
         expect(follows(search, filterBar)).toBe(true);
         expect(follows(filterBar, viewOptions)).toBe(true);
-        // On its own row, under the filters.
-        expect(viewOptions?.closest('.givewp-list-table__filter-row')).toBeNull();
+        // On its own row, under the search and the filters.
+        expect(viewOptions?.closest('.givewp-list-table__toolbar-row')).toBeNull();
     });
 });
 
@@ -375,5 +446,51 @@ describe('ListTablePage legacy view menu', () => {
         } finally {
             globalThis.fetch = originalFetch;
         }
+    });
+});
+
+describe('ListTablePage list sheet', () => {
+    it('renders the stat tiles at the top of the list sheet, before the notices and the list', async () => {
+        await setNarrow(false, props);
+
+        const sheet = container.querySelector('.sheet');
+        const tiles = container.querySelector('.givewp-stat-tiles');
+
+        expect(sheet?.firstElementChild).toBe(tiles);
+        expect(sheet?.querySelector('.givewp-list-table-notice-area')).not.toBeNull();
+        expect(sheet?.querySelector('.givewp-list-table')).not.toBeNull();
+        expect(container.querySelector('header')?.contains(tiles)).toBe(false);
+    });
+
+    it('renders the sheet without tiles on a screen with no stats', async () => {
+        await setNarrow(false, {...props, statsConfig: undefined});
+
+        expect(container.querySelector('.sheet .givewp-list-table')).not.toBeNull();
+        expect(container.querySelector('.givewp-stat-tiles')).toBeNull();
+    });
+
+    it('renders no sheet and no tiles when embedded', async () => {
+        await setNarrow(false, {...cardProps, statsConfig: props.statsConfig});
+
+        expect(container.querySelector('.sheet')).toBeNull();
+        expect(container.querySelector('.givewp-stat-tiles')).toBeNull();
+        expect(container.querySelector('.pageContent .givewp-list-table')).not.toBeNull();
+    });
+});
+
+describe('ListTablePage embedded look', () => {
+    const page = () => container.querySelector('article');
+
+    it('marks the page as embedded in content mode so it keeps the host page look', async () => {
+        await setNarrow(false, cardProps);
+
+        expect(page()?.classList.contains('pageEmbedded')).toBe(true);
+    });
+
+    it('does not mark the full page as embedded', async () => {
+        await setNarrow(false, props);
+
+        expect(page()?.classList.contains('page')).toBe(true);
+        expect(page()?.classList.contains('pageEmbedded')).toBe(false);
     });
 });

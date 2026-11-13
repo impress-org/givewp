@@ -335,7 +335,9 @@ the toolbar. Nothing renders inside the table: its body holds records only.
 ## Stat tiles
 
 `StatTiles` renders one `StatTile` for every key in the screen's `statsConfig`, in order, inside a
-region named after the screen ("Donations statistics").
+region named after the screen ("Donations statistics"). `ListTablePage` renders it as the band at the
+top of the list sheet, above the notices and the list, on the full page only: an embedded list has no
+tiles.
 
 - **States.** `loading` (a `Skeleton` and "Loading" for screen readers), `ready`, `refreshing` (the
   old value stays, dimmed, and nothing is announced), `error` (a dash, "Statistic could not be
@@ -382,11 +384,21 @@ it; screens do not add their own media queries.
   renames the class the shadows stop and nothing else breaks.
 - **Motion.** Any animation in the list sits inside `@media (prefers-reduced-motion: no-preference)`.
 
+### Styling
+
+The look of the list pages is kept in a few places: the color tokens in `layout/_tokens.scss`, the
+table-only overrides in `DataViewsListTable/_wp-look.scss` (guarded by `wpLookScope.test.ts`), and the
+status badge in `InterweaveSSR/styles.scss`. The A+ look adds no footer colors, type, sizes or
+controls, and `_wp-look.scss` may not reach the footer. The footer layout and total count rules from
+SOFT-5300 stay in `DataViewsListTable/styles.scss`; the guard test covers only `_wp-look.scss`. The
+overrides were written for the pinned `@wordpress/dataviews` version. See "Styling scope" in the
+[React README](../../src/Views/Components/ListTable/README.MD).
+
 ## Switch to Legacy View
 
 Donations, Donors, Subscriptions and Donation Forms (with the option-based form editor on) offer
 "Switch to Legacy View". It is no longer a button in the page header: it is the last group of the
-"More view options" menu (`ListTableViewMenu`), right after the stock view options and "Reset view".
+"More view options" menu (`ListTableViewMenu`), right after the stock view options. "Reset view" comes before them, so they do not move when it appears.
 A screen passes `legacyView` to `ListTablePage`; `switchToLegacyView()` calls the domain's `/view`
 route (see [the top of this page](#the-archive-screens-have-two-implementations-and-the-user-picks))
 and reloads. Screens without a legacy screen (Campaigns, Event Tickets, the Forms tab) pass nothing
@@ -432,8 +444,9 @@ and no shared code has a branch for one screen. The types are in `ListTable/filt
 
 `ListTableFilters` renders the primary chips, the added secondary chips, "Add filter"
 and Reset, from `FilterChip`, `OptionsFilterControl`, `EntityFilterControl` and
-`DateRangeFilterControl`. `ListTableSearch` is the labeled search box with its hint, announced with
-the field. A chip lists up to three names and then says how many are chosen ("Status: 4 selected");
+`DateRangeFilterControl`. `ListTableSearch` is the labeled search box. Its hint, announced with the
+field, is a separate piece (`SearchHint`): `useSearchHint` gives the box and the hint the same ids, so
+the toolbar shows the box, the chips and the view options in one row and the hint under that row. A chip lists up to three names and then says how many are chosen ("Status: 4 selected");
 its accessible name starts with the visible text and then lists the names ("Status: 4 selected.
 Active, Pending, Draft, Archived"), so a voice command that says the visible words still finds it.
 The tooltip shows the same text: newer `@wordpress/components` Tooltips add the tooltip as a

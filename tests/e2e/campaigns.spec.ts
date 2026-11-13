@@ -155,7 +155,7 @@ test.describe('Campaign Forms tab filters', () => {
         await filterBar(page).getByRole('button', {name: 'Reset', exact: true}).click();
 
         await expect(chip(page, 'Status')).toHaveText('Status');
-        await expect(listRows(page)).toHaveCount(Math.min(initial, 30));
+        await expect(listRows(page)).toHaveCount(Math.min(initial, 20));
         await expect(page.getByText(/match your search or filters/)).toHaveCount(0);
     });
 });

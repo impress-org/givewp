@@ -7,17 +7,27 @@
     gap: .5rem;
     text-decoration: none;
 
+    // The WordPress button (`.wp-core-ui .button`) is inline-block, where `gap` does nothing. Flex makes the
+    // 8px between the label and the tag. The extra `a` and `.button` win over the WordPress rule.
+    &:is(a):global(.button) {
+        align-items: center;
+        display: inline-flex;
+    }
+
     img {
         transform: scale(.8)
     }
 
+    // The neutral "Add-on" tag after the label, as in the design.
     .manualDonationsAddOn {
-        background: var(--givewp-blue-50);
-        color: var(--givewp-blue-500);
-        font-size: 0.625rem;
-        font-weight: 700;
-        padding: 0.15rem 0.5rem;
-        border-radius: 4px;
+        background: var(--givewp-list-table-status-neutral-bg);
+        border-radius: var(--givewp-rounded-2);
+        color: var(--givewp-list-table-tag-text);
+        font-size: 0.8125rem;
+        font-weight: 500;
+        // The button's own line height is as tall as the button, so the tag sets a short one.
+        line-height: 1.25;
+        padding-inline: 0.375rem;
     }
 
     .manualDonationsMessage {

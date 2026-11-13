@@ -17,7 +17,7 @@ export const PER_PAGE_SIZES = [10, 20, 30, 50, 100];
  *
  * @since TBD
  */
-export const DEFAULT_PER_PAGE = 30;
+export const DEFAULT_PER_PAGE = 20;
 
 /**
  * The nearest offered page size. On a tie the smaller size wins. A value that is not a number gives

@@ -1,28 +1,78 @@
+@use '../layout/breakpoints' as *;
+@use './label' as *;
+
 .givewp-list-table-search {
-    // A set width, so a long hint wraps under the box and does not make the box wider.
-    inline-size: 32rem;
+    // The label is placed against the box.
+    position: relative;
+    // A set width: the box does not grow with what is typed.
+    inline-size: 22.5rem;
     max-inline-size: 100%;
-    min-inline-size: 16rem;
 
     // Full width on a phone.
-    @media (max-width: 782px) {
+    @media (max-width: $givewp-list-table-narrow) {
         inline-size: 100%;
-        min-inline-size: 0;
     }
 
     // `base-control__label` is the label of the bundled components. WordPress 6.9 renders an
     // `input-control__label` styled by a triple-class 11px rule that is added after this file, so this
-    // selector needs four classes to win.
+    // selector needs four classes to win. The same rule undoes its uppercase.
+    // The label is out of the flow, above the box, so the box alone is the toolbar item that lines up
+    // with the chips. Its line and gap are ours (see `_label.scss`), so they do not change with the
+    // installed WordPress.
     & &__control .components-base-control__label,
     & &__control .components-input-control__label.components-input-control__label {
+        position: absolute;
+        inset-block-end: calc(100% + $givewp-list-table-search-label-gap);
+        inset-inline-start: 0;
+        max-inline-size: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
         color: var(--givewp-neutral-700);
         font-size: var(--givewp-font-size-paragraph-md);
+        line-height: $givewp-list-table-search-label-line;
+        text-overflow: ellipsis;
+        // The stock label is uppercase. The list pages use sentence case.
+        text-transform: none;
+        white-space: nowrap;
     }
 
-    // Never smaller than the label: the hint is what tells the admin how search matches.
+    // The stock gap between the label and the box: the label is out of the flow now.
+    & &__control .components-input-base {
+        gap: 0;
+    }
+
+    // One box: the stock backdrop draws the edge around the icon and the input together. It takes our
+    // edge color at rest; while the input is focused the stock focus ring stays.
+    & &__control .components-input-control__container:not(:focus-within) .components-input-control__backdrop {
+        border-color: var(--givewp-list-table-control-edge);
+    }
+
+    // The input sits inside that box with no edge or fill of its own (so no line between the icon and
+    // the text). As tall as the filter chips beside it. Four classes: the stock height is set by a
+    // triple-class rule.
+    & &__control input[type='search'] {
+        block-size: 2rem;
+        min-block-size: 2rem;
+        background: transparent;
+        box-shadow: none;
+
+        // A 40 px target on a phone.
+        @media (max-width: $givewp-list-table-narrow) {
+            min-block-size: 2.5rem;
+        }
+    }
+
+    &__hint-row {
+        display: flex;
+        align-items: center;
+        gap: var(--givewp-spacing-1);
+    }
+
+    // 13px, the smallest text size the list pages allow.
     &__hint {
-        margin: var(--givewp-spacing-1) 0 0;
-        color: var(--givewp-neutral-500);
-        font-size: var(--givewp-font-size-paragraph-md);
+        margin: 0;
+        color: var(--givewp-list-table-text-secondary);
+        font-size: 0.8125rem;
     }
 }

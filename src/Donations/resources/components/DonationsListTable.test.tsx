@@ -87,4 +87,35 @@ describe('DonationsListTable', () => {
 
         await act(() => root.unmount());
     });
+
+    it('puts the "Add-on" tag after the "Enter donations" text when Manual Donations is not active', async () => {
+        window.GiveDonations = {
+            ...original,
+            apiNonce: '',
+            apiRoot: '',
+            adminUrl: '',
+            campaigns: [],
+            table: {columns: []},
+            paymentMode: false,
+            manualDonations: false,
+            recurringDonationsEnabled: false,
+            pluginUrl: '',
+            dismissedRecommendations: [],
+            addonsBulkActions: [],
+            donationStatuses: {},
+        };
+        const {default: DonationsListTable} = await import('./DonationsListTable');
+        const container = document.createElement('div');
+        const root = createRoot(container);
+
+        await act(() => root.render(<DonationsListTable />));
+
+        const link = container.querySelector('a[aria-describedby="manual-donations-tooltip"]') as HTMLElement;
+        const text = link.textContent as string;
+        expect(text.indexOf('Enter donations')).toBeGreaterThanOrEqual(0);
+        expect(text.indexOf('Add-on')).toBeGreaterThan(text.indexOf('Enter donations'));
+        expect(link.getAttribute('aria-label')).toBe('Learn about Manual Donations add-on (opens in new tab)');
+
+        await act(() => root.unmount());
+    });
 });

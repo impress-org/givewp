@@ -1,0 +1,32 @@
+// Table-only rules for the A+ look. Every selector starts at `.givewp-list-table .dataviews-view-table`.
+// Nothing here may reach the DataViews footer or the pager (`wpLookScope.test.ts` enforces it).
+// These override the pinned `@wordpress/dataviews` 10.1.7 styles; re-check them when the pin moves.
+// Rows keep the stock DataViews height (56px at the default density) on purpose. The A+ look only
+// changes the header, the selected row text, links and secondary text.
+.givewp-list-table .dataviews-view-table {
+    color: var(--givewp-list-table-text);
+
+    // Stock is 11 px uppercase, below our 13 px floor. The sort arrow and the select-all checkbox
+    // are not text, so they keep their own styles.
+    thead th,
+    .dataviews-view-table-header-button {
+        font-size: 0.8125rem;
+        text-transform: none;
+    }
+
+    // Stock selected rows use #757575 text, which fails on the tint.
+    tr.is-selected {
+        color: var(--givewp-list-table-text);
+    }
+
+    // Links: the scheme's own link color, underlined so color is not the only cue.
+    td a {
+        color: var(--wp-admin-theme-color);
+        text-decoration: underline;
+
+        &:hover,
+        &:focus {
+            text-decoration-thickness: 2px;
+        }
+    }
+}

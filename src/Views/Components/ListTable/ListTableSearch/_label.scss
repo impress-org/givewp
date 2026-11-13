@@ -1,0 +1,7 @@
+// The search label sits out of the flow, above the input: one line, then a small gap. The list toolbar
+// reserves this space above its row, so the filter chips and the view options line up with the input.
+//
+// @since TBD
+$givewp-list-table-search-label-line: 1.25rem;
+$givewp-list-table-search-label-gap: 0.375rem;
+$givewp-list-table-search-label-block: $givewp-list-table-search-label-line + $givewp-list-table-search-label-gap;

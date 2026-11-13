@@ -1,3 +1,7 @@
+// The notice's block padding and its inline end padding: 6px, half of `--givewp-spacing-3`. The 32px dismiss
+// button then sets the height (about 44px), as in the design.
+$givewp-list-table-notice-edge: calc(var(--givewp-spacing-3) / 2);
+
 .givewp-list-table-notice-area {
     display: flex;
     flex-direction: column;
@@ -15,5 +19,29 @@
 
     &__message {
         margin: 0;
+    }
+
+    // The WordPress notice look for every notice in the area: square, a hairline edge and a 4px
+    // bar at the inline start. The shared Notice sets its own colors, so this wins by specificity.
+    .givewp-list-table-notice {
+        border: 1px solid #c3c4c7;
+        border-inline-start: 4px solid var(--givewp-list-table-action-edge);
+        border-radius: 0;
+        padding-block: $givewp-list-table-notice-edge;
+        padding-inline: var(--givewp-spacing-3) $givewp-list-table-notice-edge;
+        background: #fff;
+        color: var(--givewp-list-table-text);
+        font-size: 0.8125rem;
+
+        // The dismiss button gets a 32px target.
+        button {
+            min-inline-size: 2rem;
+            min-block-size: 2rem;
+        }
+
+        .givewp-list-table-notice-area__link {
+            color: var(--wp-admin-theme-color);
+            text-decoration: underline;
+        }
     }
 }

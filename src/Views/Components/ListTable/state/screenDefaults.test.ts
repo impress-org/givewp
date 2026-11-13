@@ -30,10 +30,10 @@ describe('resolveScreenDefaults', () => {
         expect(resolveScreenDefaults(screen, hidden, 'donor').showTitle).toBe(false);
     });
 
-    it('uses the shared defaults: 30 per page, balanced, newest first, no filters', () => {
+    it('uses the shared defaults: 20 per page, balanced, newest first, no filters', () => {
         const defaults = resolveScreenDefaults(screen, columns, 'donor');
 
-        expect(defaults.perPage).toBe(30);
+        expect(defaults.perPage).toBe(20);
         expect(defaults.density).toBe('balanced');
         expect(defaults.sort).toEqual({field: 'id', direction: 'desc'});
         expect(defaults.filters).toEqual([]);
