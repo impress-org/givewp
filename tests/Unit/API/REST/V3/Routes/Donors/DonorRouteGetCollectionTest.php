@@ -266,6 +266,61 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testGetDonorsShouldReturn403WhenDonorOwnerIncludesSensitiveData()
+    {
+        $user = $this->factory()->user->create(['role' => 'subscriber']);
+        /** @var Donor $ownDonor */
+        $ownDonor = Donor::factory()->create(['userId' => $user]);
+        Donor::factory()->create();
+        wp_set_current_user($user);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'id' => $ownDonor->id,
+                'onlyWithDonations' => false,
+                'includeSensitiveData' => true,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(403, $response->get_status());
+    }
+
+    /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testGetDonorsShouldReturn403WhenDonorOwnerIncludesAnonymousDonors()
+    {
+        $user = $this->factory()->user->create(['role' => 'subscriber']);
+        /** @var Donor $ownDonor */
+        $ownDonor = Donor::factory()->create(['userId' => $user]);
+        $this->createDonor1WithDonation(0, true);
+        wp_set_current_user($user);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'id' => $ownDonor->id,
+                'anonymousDonors' => 'include',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(403, $response->get_status());
+    }
+
+    /**
      * @since 4.0.0
      *
      * @throws Exception

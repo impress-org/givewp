@@ -281,6 +281,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @since TBD Use DonorPermissions::validationForGetCollectionMethod(), which ignores donor ownership.
      * @since 4.14.0 Use DonorPermissions class
      * @since 4.0.0
      *
@@ -290,7 +291,7 @@ class DonorController extends WP_REST_Controller
      */
     public function get_items_permissions_check($request)
     {
-        return DonorPermissions::validationForGetMethods($request);
+        return DonorPermissions::validationForGetCollectionMethod($request);
     }
 
     /**
