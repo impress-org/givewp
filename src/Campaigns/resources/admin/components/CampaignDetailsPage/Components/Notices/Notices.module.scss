@@ -32,9 +32,11 @@
     top: 20px;
 }
 
+// The Campaign List tip is a child of the list page header (the sticky box it is placed against), so it
+// hangs from the bottom edge of the header, at the end edge of the page.
 .campaignList {
-    left: 20px;
-    top: 90px;
+    inset-block-start: 100%;
+    inset-inline-end: 24px;
 }
 
 .campaignForm {
