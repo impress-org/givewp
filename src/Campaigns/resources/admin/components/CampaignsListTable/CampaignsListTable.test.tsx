@@ -40,12 +40,13 @@ describe('CampaignsListTable', () => {
 
         const heading = container.querySelector('h3') as HTMLElement;
         expect(heading.textContent).toBe('Campaign List');
-        const balloon = heading.closest('div')!.parentElement as HTMLElement;
+        const balloon = heading.closest('.givewp-balloon') as HTMLElement;
         expect(balloon.querySelector('a')?.getAttribute('href')).toBe('https://docs.givewp.com/campaigns-docs');
         expect(balloon.querySelector('[role="group"]')).toBeNull();
 
-        // The close control is the balloon's first child.
-        await act(() => (balloon.firstElementChild as HTMLElement).click());
+        const close = balloon.querySelector('button[aria-label="Dismiss"]') as HTMLButtonElement;
+        expect(close).toBe(balloon.firstElementChild);
+        await act(() => close.click());
 
         expect(mockDismiss).toHaveBeenCalledWith('givewp_campaign_listtable_notice');
         expect(container.querySelector('h3')).toBeNull();

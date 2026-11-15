@@ -74,9 +74,10 @@ describe('DonationFormsListTable', () => {
             'The default form will always appear at the top of this list. Your campaign page and blocks will collect donations through this form by default. You can change it at any time.'
         );
 
-        // The close control is the balloon's first child.
-        const balloon = heading.parentElement as HTMLElement;
-        await act(async () => (balloon.firstElementChild as HTMLElement).click());
+        const balloon = heading.closest('.givewp-balloon') as HTMLElement;
+        const close = balloon.querySelector('button[aria-label="Dismiss"]') as HTMLButtonElement;
+        expect(close).toBe(balloon.firstElementChild);
+        await act(async () => close.click());
         expect(apiFetch).toHaveBeenCalled();
 
         await unmount();
