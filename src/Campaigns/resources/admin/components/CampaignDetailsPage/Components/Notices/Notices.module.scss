@@ -37,6 +37,15 @@
 .campaignList {
     inset-block-start: 100%;
     inset-inline-end: 24px;
+
+    // Below this width the balloon would reach the search row (the filters and the view options), and under
+    // 783px the header is not sticky, so it would hang at the end of the page. It floats at the bottom
+    // corner of the window instead: always in view, never over the search row, the filters or the header.
+    @media (max-width: 1279px) {
+        position: fixed;
+        inset-block: auto 24px;
+        max-inline-size: calc(100vw - 48px);
+    }
 }
 
 .campaignForm {
