@@ -25,7 +25,7 @@ export type ListTablePageHeaderProps = {
 /**
  * The Give part of a list screen above the list: title, header buttons, banner and test-mode toggle.
  *
- * @since TBD Take the test-mode switch as `testModeToggle` and show it in the header with the stock form toggle; the stat tiles move to the list sheet.
+ * @since TBD Take the test-mode switch as `testModeToggle` and show it in the header with the stock form toggle; the stat tiles move to the list sheet. Render no banner landmark when the banner returns nothing.
  */
 export default function ListTablePageHeader({
     title,
@@ -36,6 +36,9 @@ export default function ListTablePageHeader({
     onChangeTestMode,
 }: ListTablePageHeaderProps) {
     const switchId = `givewp-test-mode-switch-${useInstanceId(ListTablePageHeader)}`;
+    // A banner that renders nothing (the onboarding, once it is done) gets no landmark: an empty one still
+    // takes the page's flex gap.
+    const bannerContent = banner?.();
 
     return (
         <>
@@ -66,7 +69,7 @@ export default function ListTablePageHeader({
 
             <div className={cx('wp-header-end', 'hidden')} />
 
-            {banner && <section role="banner">{banner()}</section>}
+            {bannerContent && <section role="banner">{bannerContent}</section>}
         </>
     );
 }
