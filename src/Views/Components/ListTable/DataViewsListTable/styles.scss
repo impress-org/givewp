@@ -75,6 +75,8 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
     // filter bar stays beside the search box while 16rem is left for it (about two chips), and else
     // moves to the next line with the view options. Its chips wrap inside it.
     &__toolbar-row {
+        // The containing box of the bulk bar, which lies over the row while rows are selected.
+        position: relative;
         display: flex;
         flex-wrap: wrap;
         align-items: flex-start;
@@ -91,22 +93,33 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
         }
     }
 
-    // One grid cell for the search box and, while rows are selected, the bulk actions: the taller of
-    // the two sets the height, so the row keeps its height when the selection starts or ends.
     &__search {
-        display: grid;
         max-inline-size: 100%;
 
         > * {
-            grid-area: 1 / 1;
             min-inline-size: 0;
         }
     }
 
-    // What the bulk actions replace keeps its place, hidden (also from keyboard and screen readers).
+    // While rows are selected the bulk actions take the place of the whole toolbar row: the search box,
+    // the filter bar, the view options and the hint keep their place, hidden (also from keyboard and screen
+    // readers), and the bulk bar lies over the row, out of the flow. It can be wider than the search box,
+    // so it must not set the row height: the table never moves when the selection starts or ends.
+    &__bulk-actions {
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline: 0;
+        z-index: 1;
+    }
+
+    &__toolbar-row--labeled &__bulk-actions {
+        inset-block-start: $givewp-list-table-search-label-block;
+    }
+
     &--has-selection &__search-box,
     &--has-selection &__hint,
-    &--has-selection &__view-controls {
+    &--has-selection &__view-controls,
+    &--has-selection .givewp-list-table-filters {
         visibility: hidden;
     }
 

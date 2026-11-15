@@ -53,16 +53,19 @@ describe('list toolbar styles', () => {
         expect(block(table, '&__view-controls-row')).toContain('padding-inline: $givewp-list-table-focus-ring-room');
     });
 
-    it('keeps the toolbar height while rows are selected: the bulk actions share the search box cell', () => {
-        // One grid cell: the taller of the search box and the bulk actions sets the height.
-        expect(block(table, '&__search')).toContain('display: grid');
-        expect(block(block(table, '&__search'), '> *')).toContain('grid-area: 1 / 1');
+    it('keeps the toolbar height while rows are selected: the bulk bar lies over the row, out of the flow', () => {
+        const bar = block(table, '&__bulk-actions');
+
+        expect(bar).toContain('position: absolute');
+        expect(block(table, '&__toolbar-row')).toContain('position: relative');
+        expect(block(table, '&__toolbar-row--labeled &__bulk-actions')).toContain(
+            'inset-block-start: $givewp-list-table-search-label-block'
+        );
 
         // What the selection replaces stays in the layout, hidden, so nothing below it moves.
         expect(table).toMatch(
-            /&--has-selection &__search-box,\s*&--has-selection &__hint,\s*&--has-selection &__view-controls \{\s*visibility: hidden;/
+            /&--has-selection &__search-box,\s*&--has-selection &__hint,\s*&--has-selection &__view-controls,\s*&--has-selection \.givewp-list-table-filters \{\s*visibility: hidden;/
         );
-        expect(table).not.toContain('&__bulk-actions {');
     });
 
     it('places the search label out of the flow, with a line and a gap of our own', () => {
