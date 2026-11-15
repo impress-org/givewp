@@ -1,5 +1,7 @@
 import {act} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
+import {readFileSync} from 'fs';
+import {join} from 'path';
 import ListTableViewReset from './index';
 
 (globalThis as {IS_REACT_ACT_ENVIRONMENT?: boolean}).IS_REACT_ACT_ENVIRONMENT = true;
@@ -110,6 +112,14 @@ describe('ListTableViewReset', () => {
 
         expect(document.activeElement).toBe(input);
         input.remove();
+    });
+
+    it('is 32px tall above the narrow width, like the other toolbar controls', () => {
+        const styles = readFileSync(join(__dirname, 'styles.scss'), 'utf8');
+
+        expect(styles).toMatch(
+            /@media \(min-width: #\{\$givewp-list-table-narrow \+ 1px\}\) \{\s*block-size: 2rem;/
+        );
     });
 });
 
