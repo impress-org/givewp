@@ -10,7 +10,7 @@ import './styles.scss';
  * @since TBD
  */
 export interface BalloonProps {
-    /** The bold first line. A balloon with a title is a labeled region. */
+    /** The bold first line. A balloon with a title is a group named by it. */
     title?: string;
     /** The message. */
     children: ReactNode;
@@ -26,16 +26,20 @@ export interface BalloonProps {
 
 /**
  * A floating onboarding tip in the stock WordPress look: a white box, a 1px neutral edge and a small
- * shadow. The screen places it with `className`.
+ * shadow. The screen places it with `className`. The root is always a `div`: host pages style `section`
+ * elements (the details page sets `position: relative` on them), which would undo the placement class.
  *
  * @since TBD
  */
 export default function Balloon({title, children, link, onDismiss, actions, className}: BalloonProps) {
     const titleId = useId();
-    const Root = title ? 'section' : 'div';
 
     return (
-        <Root className={cx('givewp-balloon', className)} aria-labelledby={title ? titleId : undefined}>
+        <div
+            className={cx('givewp-balloon', className)}
+            role={title ? 'group' : undefined}
+            aria-labelledby={title ? titleId : undefined}
+        >
             {onDismiss && (
                 <Button
                     className="givewp-balloon__close"
@@ -59,6 +63,6 @@ export default function Balloon({title, children, link, onDismiss, actions, clas
                 </p>
             )}
             {actions && <div className="givewp-balloon__actions">{actions}</div>}
-        </Root>
+        </div>
     );
 }

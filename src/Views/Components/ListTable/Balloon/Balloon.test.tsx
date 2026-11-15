@@ -20,7 +20,7 @@ const render = async (element: JSX.Element) => {
 };
 
 describe('Balloon', () => {
-    it('is a region named by its title, with the message, the link and a named close button', async () => {
+    it('is a group named by its title, with the message, the link and a named close button', async () => {
         const onDismiss = jest.fn();
         const {container, unmount} = await render(
             <Balloon
@@ -34,9 +34,10 @@ describe('Balloon', () => {
         );
 
         const balloon = container.firstElementChild as HTMLElement;
-        expect(balloon.tagName).toBe('SECTION');
+        // Never a `section`: host pages style that element, which would undo the placement class.
+        expect(balloon.tagName).toBe('DIV');
         expect(balloon.className).toBe('givewp-balloon placement');
-        expect(balloon.getAttribute('role')).toBeNull();
+        expect(balloon.getAttribute('role')).toBe('group');
 
         const heading = balloon.querySelector('h3') as HTMLElement;
         expect(heading.textContent).toBe('Campaign List');
@@ -67,6 +68,7 @@ describe('Balloon', () => {
         const balloon = container.firstElementChild as HTMLElement;
         expect(balloon.tagName).toBe('DIV');
         expect(balloon.hasAttribute('aria-labelledby')).toBe(false);
+        expect(balloon.hasAttribute('role')).toBe(false);
         expect(balloon.querySelector('h3')).toBeNull();
         expect(balloon.querySelector('[aria-label="Dismiss"]')).toBeNull();
         expect(balloon.querySelector('.givewp-balloon__actions')?.textContent).toBe('Got it');
