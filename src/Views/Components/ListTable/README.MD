@@ -18,7 +18,7 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `ListTableFilters/` | The filter bar: primary filters, "Add filter", chips and Reset, read from a screen's `filters` declaration. Built from the `ListTableSearch`, `FilterChip`, `OptionsFilterControl`, `DateRangeFilterControl` and `EntityFilterControl` molecules. |
 | `ListTableViewReset/` | The "Reset view" button before the stock view options, with its confirmation. |
 | `ListTableViewMenu/` | The small "More view options" menu after the stock view options. Holds "Switch to Legacy View" on the screens that pass `legacyView`. |
-| `ListTableNoticeArea/`, `notices/` | The one notice area above the list (action errors, system, onboarding, the daily recommendation) and the pure `pickDailyRecommendation`. |
+| `ListTableNoticeArea/`, `notices/` | The one notice area above the list (action errors, system notices, the daily recommendation) and the pure `pickDailyRecommendation`. |
 | `StatTiles/`, `StatTile/` | The row of stat tiles and one tile. Tiles show the server's `formatted` text and can toggle a list filter (`tileFilters.ts`). |
 | `GiveMark/`, `TestModeBadge/`, `HelpTip/` | The Give mark (atom), the "Test mode" badge in the page header and the small help button with its popover (molecules). |
 | `ListTableSearch/` | The labeled search box, its `SearchHint` (the hint line and its help tip), and `useSearchHint`, which gives both the same ids so the box can sit in the toolbar row and the hint under it. |
@@ -105,7 +105,7 @@ Open items for the owner:
 | `contentMode` | `boolean`, no header or stats: the list sits in a details page tab | No | `false` |
 | `perPage` | `number`, 1–100, snapped to the offered sizes (10, 20, 30, 50, 100) | No | `20` |
 | `screen` | `ListTableScreen`: turns on view state (see below); its `fieldRoles` pick the card fields at 782 px and below | No | — |
-| `notices` | `ListTableNotice[]`: system and onboarding notices for the notice area | No | — |
+| `notices` | `ListTableNotice[]`: system notices for the notice area | No | — |
 | `recommendations` | `{options, dismissed, apiNonce}`: one product tip a day in the notice area | No | — |
 | `legacyView` | Adds "Switch to Legacy View" to the "More view options" menu | No | — |
 | `banner`, `children` | as before | No | — |

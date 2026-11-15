@@ -313,9 +313,9 @@ only shows the text it gets.
 Every message above a list renders in one place, `ListTableNoticeArea`, between the stat tiles and
 the toolbar. Nothing renders inside the table: its body holds records only.
 
-- **Order.** Errors of failed actions first, then `system` notices, then `onboarding` notices, then
+- **Order.** Errors of failed actions first, then `system` notices, then
   the daily recommendation, then the deprecated `productRecommendation` slot.
-- **Config only.** A screen passes `notices` (`ListTableNotice[]`: `id`, `kind`, `title`, `message`,
+- **Config only.** A screen passes `notices` (`ListTableNotice[]`: `id`, `kind` (`system`), `title`, `message`,
   optional `link` and `onDismiss`) and `recommendations` (`options`, `dismissed`, `apiNonce`). All of
   it is known when the page loads, so the area has no loading state and does not push the table
   down after it renders. With nothing to show it renders nothing and takes no space.
@@ -324,13 +324,15 @@ the toolbar. Nothing renders inside the table: its body holds records only.
   reload that day shows the same tip; the next day moves to the next one.
 - **Dismissals are site-wide.** The recommendation dismissals are options
   (`givewp_donations_*_recommendation_dismissed`), as before, so one admin's dismissal hides the tip
-  for every admin. Dismissing hides it at once; no other tip appears until the next load. Onboarding
-  notices keep the storage they had before; the screen owns the "shown" flag (the Campaigns
-  "Campaign List" tip, for example, is user meta).
+  for every admin. Dismissing hides it at once; no other tip appears until the next load.
+- **Onboarding tips are balloons, not notices.** The Campaigns "Campaign List" tip and the "Default
+  campaign form" tip on a campaign's Forms tab are floating balloons (`CampaignNotice`,
+  `DefaultFormNotice`), passed to the page as children. They are not part of the notice area. The
+  screen owns the "shown" flag (user meta).
 - **Accessible.** A notice with a title is a `group` named by its heading; the recommendation is
   named "Pro tip". Dismiss buttons read "Dismiss notice" or "Dismiss tip", and a link that opens a
   new tab says so.
-- **No record data.** Notices carry product and onboarding text only (see [pii.md](pii.md)).
+- **No record data.** Notices carry product text only (see [pii.md](pii.md)).
 
 ## Stat tiles
 

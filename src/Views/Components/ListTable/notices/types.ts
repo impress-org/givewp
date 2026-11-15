@@ -1,15 +1,15 @@
 import type {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
 
 /**
- * A notice above a list table. Product or onboarding content only, never record data.
+ * A notice above a list table. Product content only, never record data.
  *
  * @since TBD
  */
 export type ListTableNotice = {
-    /** A stable key, for example `campaign-list` or `default-form`. */
+    /** A stable key. */
     id: string;
-    /** Area order: action errors, `system`, `onboarding`, then the recommendation. */
-    kind: 'system' | 'onboarding';
+    /** Area order: action errors, `system` notices, then the recommendation. */
+    kind: 'system';
     /** The visible heading and the accessible name. */
     title: string;
     message: string;

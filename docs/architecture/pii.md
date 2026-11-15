@@ -143,8 +143,8 @@ use it. The address carries ids
 and enumerated values only. See
 [list-tables.md](list-tables.md#view-state).
 
-**List notices carry product and onboarding text only.** The notices above a list (the daily
-recommendation, onboarding tips such as "Campaign List") come from page config: copy, a link, and
+**List notices carry product text only.** The notices above a list (the daily
+recommendation and system notices) come from page config: copy, a link, and
 the site-wide list of dismissed recommendations. A `ListTableNotice` has no field for a record, and
 a new notice must not put a donor's name, an amount or any other record value in its text. See
 [list-tables.md](list-tables.md#notices).

@@ -15,9 +15,9 @@ const recommendation: RecommendedProductData = {
     innerHtml: 'Get Recurring Donations',
 };
 
-const notice = (id: string, kind: ListTableNotice['kind']): ListTableNotice => ({
+const notice = (id: string): ListTableNotice => ({
     id,
-    kind,
+    kind: 'system',
     title: `Title ${id}`,
     message: `Message ${id}`,
 });
@@ -44,25 +44,25 @@ const names = () =>
     );
 
 describe('ListTableNoticeArea', () => {
-    it('stacks system, onboarding, then the recommendation', async () => {
+    it('stacks the system notices in order, then the recommendation', async () => {
         await act(() =>
             root.render(
                 <ListTableNoticeArea
-                    notices={[notice('a', 'onboarding'), notice('b', 'system'), notice('c', 'onboarding')]}
+                    notices={[notice('a'), notice('b'), notice('c')]}
                     recommendation={recommendation}
                     onDismissRecommendation={jest.fn()}
                 />
             )
         );
 
-        expect(names()).toEqual(['Title b', 'Title a', 'Title c', 'Pro tip']);
+        expect(names()).toEqual(['Title a', 'Title b', 'Title c', 'Pro tip']);
     });
 
     it('puts children (action errors) first and the deprecated slot last', async () => {
         await act(() =>
             root.render(
                 <ListTableNoticeArea
-                    notices={[notice('a', 'system')]}
+                    notices={[notice('a')]}
                     recommendation={recommendation}
                     onDismissRecommendation={jest.fn()}
                     trailing={<p data-testid="old">old</p>}
@@ -142,7 +142,7 @@ describe('ListTableNoticeArea', () => {
                 <ListTableNoticeArea
                     notices={[
                         {
-                            ...notice('a', 'system'),
+                            ...notice('a'),
                             link: {href: 'https://example.test/a', label: 'Read the guide', opensInNewTab: true},
                             onDismiss,
                         },
@@ -165,7 +165,7 @@ describe('ListTableNoticeArea', () => {
         await act(() =>
             root.render(
                 <ListTableNoticeArea
-                    notices={[notice('a', 'system')]}
+                    notices={[notice('a')]}
                     recommendation={null}
                     onDismissRecommendation={jest.fn()}
                 />
@@ -195,7 +195,7 @@ describe('ListTableNoticeArea', () => {
         await act(() =>
             root.render(
                 <ListTableNoticeArea
-                    notices={[notice('a', 'system')]}
+                    notices={[notice('a')]}
                     recommendation={recommendation}
                     onDismissRecommendation={jest.fn()}
                 />
