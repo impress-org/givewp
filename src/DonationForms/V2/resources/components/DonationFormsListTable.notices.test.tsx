@@ -1,5 +1,6 @@
 import {act} from 'react';
 import {createRoot} from 'react-dom/client';
+import apiFetch from '@wordpress/api-fetch';
 
 (globalThis as {IS_REACT_ACT_ENVIRONMENT?: boolean}).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -61,27 +62,30 @@ describe('DonationFormsListTable', () => {
         return () => act(() => root.unmount());
     };
 
-    it('passes the default form notice on a campaign page, with its text and a dismiss handler', async () => {
+    it('shows the default form tip as a balloon on a campaign page, with its text and a dismiss control', async () => {
         const unmount = await render(5);
 
-        const {notices} = mockPageProps.mock.calls[0][0];
-        expect(notices).toHaveLength(1);
-        expect(notices[0]).toMatchObject({
-            id: 'default-form',
-            kind: 'onboarding',
-            title: 'Default campaign form',
-            message:
-                'The default form will always appear at the top of this list. Your campaign page and blocks will collect donations through this form by default. You can change it at any time.',
-        });
-        expect(typeof notices[0].onDismiss).toBe('function');
+        // The page gets no notices: the tip is a child of the page.
+        expect(mockPageProps.mock.calls[0][0].notices).toBeUndefined();
+
+        const heading = container.querySelector('h3') as HTMLElement;
+        expect(heading.textContent).toBe('Default campaign form');
+        expect(container.textContent).toContain(
+            'The default form will always appear at the top of this list. Your campaign page and blocks will collect donations through this form by default. You can change it at any time.'
+        );
+
+        // The close control is the balloon's first child.
+        const balloon = heading.parentElement as HTMLElement;
+        await act(async () => (balloon.firstElementChild as HTMLElement).click());
+        expect(apiFetch).toHaveBeenCalled();
 
         await unmount();
     });
 
-    it('passes no notice on the standalone Forms screen', async () => {
+    it('shows no tip on the standalone Forms screen', async () => {
         const unmount = await render();
 
-        expect(mockPageProps.mock.calls[0][0].notices ?? []).toEqual([]);
+        expect(container.querySelector('h3')).toBeNull();
 
         await unmount();
     });
