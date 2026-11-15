@@ -1,0 +1,67 @@
+@use '../layout/tokens' as *;
+
+// A floating tip in the stock WordPress look. It sets no position: the screen that shows it places it
+// with its own class, so nothing here may set position, inset, z-index or max-inline-size.
+// It also shows on the Campaign details page, outside the list page roots, so it brings its own tokens.
+.givewp-balloon {
+    @include givewp-list-table-tokens;
+
+    box-sizing: border-box;
+    inline-size: 22.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-2);
+    padding: var(--givewp-spacing-4);
+    border: 1px solid var(--givewp-list-table-hairline);
+    border-radius: var(--givewp-rounded-2);
+    background-color: var(--givewp-shades-white);
+    box-shadow: var(--givewp-shadow-md);
+    color: var(--givewp-list-table-text);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: start;
+    white-space: normal;
+
+    // 24px button at 8px from the corner, so its icon lines up with the 16px padding.
+    &__close.components-button {
+        position: absolute;
+        inset-block-start: var(--givewp-spacing-2);
+        inset-inline-end: var(--givewp-spacing-2);
+        color: var(--givewp-list-table-text-secondary);
+
+        &:hover {
+            color: var(--givewp-list-table-text);
+        }
+    }
+
+    // Room for the close button, so a long title never runs under it.
+    &__close + &__title {
+        padding-inline-end: var(--givewp-spacing-6);
+    }
+
+    &__title {
+        margin: 0;
+        color: var(--givewp-list-table-text);
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    &__body,
+    &__link {
+        margin: 0;
+    }
+
+    // The page link look: the admin blue, underlined, from the stock link styles.
+    &__link .components-external-link {
+        text-decoration: underline;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--givewp-spacing-2);
+        margin-block-start: var(--givewp-spacing-2);
+    }
+}
