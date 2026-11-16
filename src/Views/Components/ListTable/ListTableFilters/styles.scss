@@ -17,6 +17,11 @@
     }
 }
 
+// The text button takes the darker link mix, so it passes 4.5:1 in every admin color scheme.
+.givewp-list-table-filters__reset.components-button.is-tertiary {
+    color: var(--givewp-list-table-link);
+}
+
 // At a narrow width a chip may be as wide as the bar, so a long value is cut instead of pushing the page sideways.
 @media (max-width: $givewp-list-table-narrow) {
     .givewp-list-table-filters__item {

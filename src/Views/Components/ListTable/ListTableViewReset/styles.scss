@@ -11,6 +11,7 @@
 
     &__button.components-button {
         white-space: nowrap;
+        color: var(--givewp-list-table-link);
 
         // Above the narrow width the button is as tall as the other toolbar controls (the stock button is
         // 36 px), so the row does not grow when it appears. The installed components package has no

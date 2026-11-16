@@ -35,9 +35,15 @@ describe('action edge across the admin color schemes', () => {
                 scss
             )?.[1]
         ) / 100;
+    const linkShare =
+        Number(
+            /--givewp-list-table-link: color-mix\(in srgb, var\(--wp-admin-theme-color, #[0-9a-f]{6}\) (\d+)%, #000\)/i.exec(
+                scss
+            )?.[1]
+        ) / 100;
     const toHex = (rgb: number[]) => `#${rgb.map((value) => Math.round(value).toString(16).padStart(2, '0')).join('')}`;
-    const mixWithBlack = (hex: string) =>
-        toHex([1, 3, 5].map((index) => parseInt(hex.slice(index, index + 2), 16) * share));
+    const mixWithBlack = (hex: string, amount = share) =>
+        toHex([1, 3, 5].map((index) => parseInt(hex.slice(index, index + 2), 16) * amount));
 
     // WordPress core's scheme colors, and the values newer WordPress versions use for the same schemes.
     const schemes: Record<string, string> = {
@@ -61,6 +67,14 @@ describe('action edge across the admin color schemes', () => {
 
     it('reads the mix share from the tokens file', () => {
         expect(share).toBeGreaterThan(0);
+        expect(linkShare).toBeGreaterThan(0);
+    });
+
+    it.each(Object.entries(schemes))('%s passes 4.5:1 as link text on white and on the hover row', (_name, color) => {
+        const edge = mixWithBlack(color, linkShare);
+
+        expect(contrastRatio(edge, '#ffffff')).toBeGreaterThanOrEqual(4.5);
+        expect(contrastRatio(edge, tokens['--givewp-list-table-row-hover'])).toBeGreaterThanOrEqual(4.5);
     });
 
     it.each(Object.entries(schemes))('%s passes 3:1 on white and on the hover row', (_name, color) => {
