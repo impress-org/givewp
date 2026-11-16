@@ -3,6 +3,7 @@
 namespace Give\Donors;
 
 use Give\DonationForms\Models\DonationForm;
+use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Donors\Actions\CreateUserFromDonor;
 use Give\Donors\Actions\LoadDonorAdminOptions;
 use Give\Donors\Actions\SendDonorUserRegistrationNotification;
@@ -43,12 +44,14 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @inheritDoc
      *
+     * @since TBD Drop the cached totals when a donor changes.
      * @since 4.14.0 move donor page registration to methods to defer conditionals and DB queries to appropriate hooks.
      * @since 3.7.0 Register "AddPhoneColumn" migration and add the "give_admin_donor_details_updating" action
      */
     public function boot()
     {
         $this->registerDonorsAdminPage();
+        $this->flushTotalsOnDonorWrites();
 
         $this->addCustomFieldsToDonorDetails();
         $this->enforceDonorsAsUsers();
@@ -60,6 +63,31 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('give_admin_donor_details_updating', UpdateAdminDonorDetails::class, '__invoke', 10, 2);
 
         $this->loadDonorAdminOptions();
+    }
+
+    /**
+     * The donor counts are cached with the donation totals, so a donor write drops them too. The model
+     * hooks see repository writes; the legacy hooks see writes through Give_Donor and the donor
+     * screen.
+     *
+     * @since TBD
+     */
+    private function flushTotalsOnDonorWrites()
+    {
+        $hooks = [
+            'givewp_donor_created',
+            'givewp_donor_updated',
+            'givewp_donor_deleted',
+            'give_donor_post_create',
+            'give_donor_post_update',
+            'give_pre_delete_donor',
+        ];
+
+        foreach ($hooks as $hook) {
+            add_action($hook, static function () {
+                DonationTotalsCache::flush();
+            });
+        }
     }
 
     /**

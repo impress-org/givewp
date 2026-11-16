@@ -149,8 +149,8 @@ Things to know before touching this:
 
 `Donations/Repositories/DonationTotalsCache` keeps the totals the donation endpoints compute over
 every donation: the donations list count (`ListDonations::getTotalDonationsCount()`), the donations
-stats (`ListDonationsStats`), the subscriptions stats (`ListSubscriptionStats`) and the v3
-`X-WP-Total` (`DonationController::countDonations()`). At a
+stats (`ListDonationsStats`), the subscriptions stats (`ListSubscriptionStats`), the v3
+`X-WP-Total` (`DonationController::countDonations()`) and the v3 donors total (`DonorsQuery::count()`). At a
 million donations each of those reads a meta row per donation and takes tens of seconds.
 
 - **Keyed by the SQL.** `remember($key, $callback)` stores each value under the SQL that computes it,
@@ -166,9 +166,11 @@ million donations each of those reads a meta row per donation and takes tens of 
 - **Bounded and private.** One option, not autoloaded, at most 50 values. It only holds numbers
   and the stats row; no donor data. Every endpoint that reads it checks permissions first, and the
   totals do not depend on who asks.
-- **Subscriptions too.** `ListSubscriptionStats` reads the subscription status, so the
-  subscription model hooks and the legacy `give_subscription_inserted` / `_updated` / `_deleted`
-  hooks flush as well.
+- **Subscriptions and donors too.** `ListSubscriptionStats` reads the subscription status and the
+  donors total reads the donors table, so the subscription and donor model hooks flush as well,
+  with the legacy `give_subscription_inserted` / `_updated` / `_deleted`, `give_donor_post_create`,
+  `give_donor_post_update` and `give_pre_delete_donor` hooks. The last one fires before the delete,
+  so a total computed in that gap can keep the deleted donor until the next write.
 - **One request computes, the others wait.** A miss takes a lock row in `wp_options`
   (`INSERT IGNORE`, so only one request gets it); other requests for the same total poll the cache
   every second for up to two minutes instead of running the same query next to it. Several tabs

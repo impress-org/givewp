@@ -9,8 +9,8 @@ use Give\Framework\Database\DB;
  *
  * At a million donations a total reads one meta row per donation and takes tens of seconds, while
  * the list screens ask for the same totals on every visit. Each total is stored under the SQL that
- * computes it, next to a version. Any write to a donation, its meta or a subscription changes the
- * version, so the next request computes every total again from the database.
+ * computes it, next to a version. Any write to a donation, its meta, a subscription or a donor
+ * changes the version, so the next request computes every total again from the database.
  *
  * Only one request computes a missing total at a time. The others wait for its result instead of
  * running the same slow query next to it, which made each copy slower.
@@ -93,7 +93,7 @@ class DonationTotalsCache
     }
 
     /**
-     * Drops every cached total. Hooked to donation and subscription writes.
+     * Drops every cached total. Hooked to donation, subscription and donor writes.
      *
      * @since TBD
      */
