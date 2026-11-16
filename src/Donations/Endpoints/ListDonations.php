@@ -5,6 +5,7 @@ namespace Give\Donations\Endpoints;
 use Closure;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Repositories\DonationTotalsCache;
+use Give\Donations\Repositories\RecurringDonationCondition;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
@@ -491,19 +492,15 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * Subquery for donation IDs that belong to a subscription. It uses the (meta_key, meta_value)
-     * index, like the test-mode subquery.
+     * Subquery for donation IDs that belong to a subscription, by the same rule as the stats tiles
+     * that link to this filter. It reads only the recurring rows of the (meta_key, meta_value) index.
      *
      * @since TBD
      */
     private function donationIdsWithSubscription(): Closure
     {
         return static function (QueryBuilder $builder) {
-            $builder
-                ->select('donation_id')
-                ->from('give_donationmeta')
-                ->where('meta_key', DonationMetaKeys::SUBSCRIPTION_ID)
-                ->whereNotIn('meta_value', ['', '0']);
+            RecurringDonationCondition::apply($builder->select('donation_id')->from('give_donationmeta'));
         };
     }
 

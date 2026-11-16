@@ -3,8 +3,13 @@
 namespace Give\Donations\Endpoints;
 
 use Give\Donations\Repositories\DonationTotalsCache;
+use Give\Donations\Repositories\RecurringDonationCondition;
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donations\ValueObjects\DonationMode;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\JoinQueryBuilder;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\ListTable\Formatting\StatsFormatter;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -63,62 +68,131 @@ class ListDonationsStats extends Endpoint
     }
 
     /**
-     * Get all donation statistics in a single optimized query
+     * The total, one-time and recurring donation counts for a payment mode.
      *
-     * @since TBD Cache the statistics until a donation changes.
+     * Every count starts from an index: all donations from the posts' type and status index, the
+     * test-mode ones from their mode meta rows and the recurring ones from their subscription meta
+     * rows, each joined to the posts in that order. The live-mode counts are the whole minus the
+     * test-mode part, and one-time is the total minus recurring, so the three always add up. A LEFT
+     * JOIN of both meta rows onto every donation read the meta of each one, a minute or more at a
+     * million donations.
+     *
+     * @since TBD Count from the indexes instead of joining the meta of every donation, and count a donation without a subscription row as one-time.
      * @since 4.10.0
      */
     public function getDonationStatistics(): array
     {
-        $testMode = $this->request->get_param('testMode');
+        $testMode = (bool)$this->request->get_param('testMode');
+        $queries = [$this->getTestModeCountQuery(), $this->getRecurringCountQuery(true)];
 
-        $query = DB::table('posts')
-            ->where('post_type', 'give_payment')
-            ->where('post_status', 'trash', '<>'); // Exclude trash items
+        if (!$testMode) {
+            array_push($queries, $this->getAllCountQuery(), $this->getRecurringCountQuery(false));
+        }
 
-        // Filter by test mode and subscription type
-        $query->attachMeta(
-            'give_donationmeta',
-            'ID',
-            'donation_id',
-            [DonationMetaKeys::MODE()->getValue(), DonationMetaKeys::MODE()->getKeyAsCamelCase()],
-            [DonationMetaKeys::SUBSCRIPTION_ID()->getValue(), DonationMetaKeys::SUBSCRIPTION_ID()->getKeyAsCamelCase()]
-        );
+        $key = __METHOD__ . implode(';', array_map(static function (QueryBuilder $query) {
+            return $query->getSQL();
+        }, $queries));
 
-        if ($testMode) {
-            $query->where('give_donationmeta_attach_meta_mode.meta_value', 'test');
-        } else {
-            $query->where(function ($query) {
-                $query->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
-                    ->orWhere('give_donationmeta_attach_meta_mode.meta_value', 'test', '<>');
+        // Each count still reads one meta row per matching donation: remember them until a donation changes.
+        return DonationTotalsCache::remember($key, static function () use ($testMode, $queries) {
+            $counts = array_map(static function (QueryBuilder $query) {
+                return (int)DB::get_var($query->getSQL());
+            }, $queries);
+
+            if ($testMode) {
+                list($testModeCount, $recurringTestModeCount) = $counts;
+
+                return self::toStatistics($testModeCount, $recurringTestModeCount);
+            }
+
+            list($testModeCount, $recurringTestModeCount, $allCount, $recurringCount) = $counts;
+
+            return self::toStatistics($allCount - $testModeCount, $recurringCount - $recurringTestModeCount);
+        });
+    }
+
+    /**
+     * @since TBD
+     */
+    private static function toStatistics(int $total, int $recurring): array
+    {
+        return [
+            'donationsCount' => $total,
+            'oneTimeDonationsCount' => $total - $recurring,
+            'recurringDonationsCount' => $recurring,
+        ];
+    }
+
+    /**
+     * Counts every donation that is not in the trash, from the posts' type and status index.
+     *
+     * @since TBD
+     */
+    private function getAllCountQuery(): QueryBuilder
+    {
+        return $this->wherePostIsDonation(DB::table('posts')->selectRaw('SELECT COUNT(*)'), '');
+    }
+
+    /**
+     * Counts the test-mode donations, starting from their mode meta rows.
+     *
+     * @since TBD
+     */
+    private function getTestModeCountQuery(): QueryBuilder
+    {
+        $query = DB::table('give_donationmeta', 'mode')
+            ->selectRaw('SELECT STRAIGHT_JOIN COUNT(DISTINCT mode.donation_id)')
+            ->join(static function (JoinQueryBuilder $builder) {
+                $builder
+                    ->innerJoin('posts', 'donation')
+                    ->on('donation.ID', 'mode.donation_id');
+            })
+            ->where('mode.meta_key', DonationMetaKeys::MODE)
+            ->where('mode.meta_value', DonationMode::TEST);
+
+        return $this->wherePostIsDonation($query, 'donation.');
+    }
+
+    /**
+     * Counts the recurring donations, starting from their subscription meta rows. Only the
+     * test-mode ones when asked, through each one's mode row.
+     *
+     * @since TBD
+     */
+    private function getRecurringCountQuery(bool $testModeOnly): QueryBuilder
+    {
+        $query = DB::table('give_donationmeta', 'subscription')
+            ->selectRaw('SELECT STRAIGHT_JOIN COUNT(DISTINCT subscription.donation_id)')
+            ->join(static function (JoinQueryBuilder $builder) {
+                $builder
+                    ->innerJoin('posts', 'donation')
+                    ->on('donation.ID', 'subscription.donation_id');
+            });
+
+        if ($testModeOnly) {
+            $query->join(static function (JoinQueryBuilder $builder) {
+                $builder
+                    ->innerJoin('give_donationmeta', 'mode')
+                    ->on('mode.donation_id', 'subscription.donation_id')
+                    ->andOn('mode.meta_key', DonationMetaKeys::MODE, true)
+                    ->andOn('mode.meta_value', DonationMode::TEST, true);
             });
         }
 
-        // Use CASE WHEN to count different types in a single query
-        $query->selectRaw('
-            COUNT(*) as total_donations,
-            SUM(CASE WHEN give_donationmeta_attach_meta_subscriptionId.meta_value = 0 THEN 1 ELSE 0 END) as one_time_donations,
-            SUM(CASE WHEN give_donationmeta_attach_meta_subscriptionId.meta_value != 0 THEN 1 ELSE 0 END) as recurring_donations
-        ');
+        RecurringDonationCondition::apply($query, 'subscription.');
 
-        // One read of the meta of every donation: remember the result until a donation changes.
-        $result = DonationTotalsCache::remember(__METHOD__ . $query->getSQL(), static function () use ($query) {
-            return $query->get();
-        });
+        return $this->wherePostIsDonation($query, 'donation.');
+    }
 
-        // Handle case when no results are found
-        if (!$result) {
-            return [
-                'donationsCount' => 0,
-                'oneTimeDonationsCount' => 0,
-                'recurringDonationsCount' => 0,
-            ];
-        }
-
-        return [
-            'donationsCount' => (int) $result->total_donations,
-            'oneTimeDonationsCount' => (int) $result->one_time_donations,
-            'recurringDonationsCount' => (int) $result->recurring_donations,
-        ];
+    /**
+     * @since TBD
+     *
+     * @param string $prefix table alias with a trailing dot, or an empty string
+     */
+    private function wherePostIsDonation(QueryBuilder $query, string $prefix): QueryBuilder
+    {
+        return $query
+            ->where("{$prefix}post_type", 'give_payment')
+            ->where("{$prefix}post_status", DonationStatus::TRASH, '<>');
     }
 }

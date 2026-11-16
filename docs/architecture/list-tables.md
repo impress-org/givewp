@@ -277,6 +277,20 @@ Three more rules from the 1M-donation profiling (SOFT-5634):
 - **A count joins only the meta its filters read.** `Model::query()->count()` keeps every
   attach-meta join (32 for donations, 5 for donors). The v3 donations route and `DonorsQuery`
   count with only the joins their conditions name.
+- **Stats count from indexes and derive the rest.** `ListDonationsStats` never joins meta onto every
+  donation. All donations come from the posts' type and status index, test-mode ones from the mode
+  rows (as above) and recurring ones from the subscription rows, each joined to `posts` in that
+  order with `STRAIGHT_JOIN`. Live mode is the whole minus test mode; one-time is the total minus
+  recurring, so the three tiles always add up (a donation with no subscription row is one-time).
+  About 20 seconds cold at a million donations, against 70 to 115 for the old LEFT JOIN of both
+  meta rows. The floor is the mode count: the value index is a prefix index, so MySQL reads each
+  matching row to confirm it, and the rows are spread over the whole table.
+- **Recurring means `subscription_id >= '1'`, in one place.** `RecurringDonationCondition` is shared
+  by the stats and the `donationType` filter the tiles link to. `NOT IN ('', '0')`, `> '0'` and
+  `< '0'` look selective, but on the prefix index they read every `'0'` row, and every donation made
+  through the model stores `subscription_id = 0`: a full pass over the key (the recurring filter
+  took 188 seconds at a million donations; with the range it reads only recurring rows). The range
+  leaves out values no writer stores, such as `'05'` or `'-1'`.
 
 ## The React page: DataViews
 
