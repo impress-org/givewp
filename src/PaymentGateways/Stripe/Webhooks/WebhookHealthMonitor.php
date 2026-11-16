@@ -111,6 +111,18 @@ final class WebhookHealthMonitor
 
         $current = ['mode' => $mode, 'problems' => $problems];
 
+        /*
+         * No problem is new, and a skipped account may still have one, so nothing is emailed. An account that
+         * recovered is dropped from the stored problems, so it is emailed if it breaks again.
+         */
+        if ($skippedSlugs && !array_diff_assoc($problems, $notifiedProblems)) {
+            if ($notified !== $current) {
+                update_option(self::NOTIFIED_OPTION, $current, false);
+            }
+
+            return;
+        }
+
         if ($notified === $current) {
             return;
         }

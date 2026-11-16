@@ -152,6 +152,7 @@ final class WebhookHealthMonitorTest extends TestCase
         give(WebhookHealthMonitor::class)();
 
         $this->assertSame(['acct_first'], array_keys(get_option(self::NOTIFIED_OPTION)['problems']));
+        $this->assertCount(1, $this->emails);
     }
 
     /**
