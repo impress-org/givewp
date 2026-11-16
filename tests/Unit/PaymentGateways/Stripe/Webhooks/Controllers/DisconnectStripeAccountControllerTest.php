@@ -199,6 +199,23 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     /**
      * @since TBD
      */
+    public function testItNamesOnlyTheFailedModeInTheWarning(): void
+    {
+        $account = $this->makeAccount();
+        $this->saveAccounts($account);
+        $this->stripe->queue(401, $this->errorBody('authentication_error', 'Invalid API Key provided.'));
+        $this->stripe->queue(200, $this->listBody([$this->siteEndpoint()]));
+        $this->stripe->queue(200, ['id' => 'we_123', 'object' => 'webhook_endpoint', 'deleted' => true]);
+
+        $response = $this->callController($account->accountSlug);
+
+        $this->assertStringContainsString('test mode', $response['data']['webhookWarning']);
+        $this->assertStringNotContainsString('live mode', $response['data']['webhookWarning']);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testItDoesNotCallStripeWhenTheNonceIsInvalid(): void
     {
         $account = $this->makeAccount();

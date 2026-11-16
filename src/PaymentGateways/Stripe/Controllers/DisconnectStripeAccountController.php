@@ -17,6 +17,8 @@ use Throwable;
  */
 class DisconnectStripeAccountController
 {
+    private const MODES = ['test', 'live'];
+
     /**
      * @var DeleteSiteWebhookEndpoint
      */
@@ -58,9 +60,15 @@ class DisconnectStripeAccountController
         give_stripe_disconnect_account($requestedData->accountSlug);
 
         /* A saved record that cannot be read may still have an endpoint on Stripe, so it counts as a failed delete. */
-        $deleted = !$isSaved || ($account && $this->deleteWebhookEndpoints($account, $this->remainingAccounts()));
+        $failedModes = [];
 
-        wp_send_json_success($deleted ? null : ['webhookWarning' => $this->cleanupWarning()]);
+        if ($isSaved) {
+            $failedModes = $account ?
+                $this->deleteWebhookEndpoints($account, $this->remainingAccounts()) :
+                self::MODES;
+        }
+
+        wp_send_json_success($failedModes ? ['webhookWarning' => $this->cleanupWarning($failedModes)] : null);
     }
 
     /**
@@ -118,9 +126,9 @@ class DisconnectStripeAccountController
      * @param AccountDetail   $account           The account that was just removed, with its key.
      * @param AccountDetail[] $remainingAccounts The accounts still saved; an endpoint one of them uses is kept.
      *
-     * @return bool Whether nothing is left on the account that the admin has to delete.
+     * @return string[] The modes in which the endpoint may still be on the account, empty when nothing is left to delete.
      */
-    private function deleteWebhookEndpoints(AccountDetail $account, array $remainingAccounts): bool
+    private function deleteWebhookEndpoints(AccountDetail $account, array $remainingAccounts): array
     {
         try {
             $results = ($this->deleteSiteWebhookEndpoint)($account, $remainingAccounts);
@@ -130,10 +138,12 @@ class DisconnectStripeAccountController
                 array_merge(['account' => $account->accountSlug], WebhookLogger::failureContext($exception))
             );
 
-            return false;
+            return self::MODES;
         }
 
-        return !in_array(DeleteSiteWebhookEndpoint::FAILED, $results, true);
+        return array_keys(array_filter($results, static function (string $result): bool {
+            return DeleteSiteWebhookEndpoint::FAILED === $result;
+        }));
     }
 
     /**
@@ -163,11 +173,23 @@ class DisconnectStripeAccountController
      * The message the settings page shows when the endpoint may still be on the account.
      *
      * @since TBD
+     *
+     * @param string[] $failedModes The modes in which the endpoint may still be on the account.
      */
-    private function cleanupWarning(): string
+    private function cleanupWarning(array $failedModes): string
     {
         $urls = $this->target->urls();
 
+        return $this->cleanupInstructions($urls) . $this->cleanupModeNote($failedModes);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @param string[] $urls Webhook endpoint URLs of this site.
+     */
+    private function cleanupInstructions(array $urls): string
+    {
         if (1 === count($urls)) {
             return sprintf(
                 /* translators: %s: Webhook endpoint URL of this site. */
@@ -187,6 +209,30 @@ class DisconnectStripeAccountController
             ),
             $urls[0],
             $urls[1]
+        );
+    }
+
+    /**
+     * Names the mode to clean up when only one failed, because the endpoint in the other mode was deleted or
+     * kept for another saved account.
+     *
+     * @since TBD
+     *
+     * @param string[] $failedModes The modes in which the endpoint may still be on the account.
+     */
+    private function cleanupModeNote(array $failedModes): string
+    {
+        if (count($failedModes) !== 1) {
+            return '';
+        }
+
+        return ' ' . sprintf(
+            /* translators: %s: "live mode" or "test mode". */
+            __(
+                'Only %s needs this. Do not delete an endpoint in the other mode, because another saved account may still use it.',
+                'give'
+            ),
+            'live' === $failedModes[0] ? __('live mode', 'give') : __('test mode', 'give')
         );
     }
 }
