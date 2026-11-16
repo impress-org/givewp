@@ -136,6 +136,27 @@ class DonationTotalsCache
     }
 
     /**
+     * Stores an exact value that came from elsewhere (the donation counters) as computed now, so a
+     * request that later falls back to this cache starts from it instead of an older value. Writes
+     * only when the stored value is missing, outdated or different.
+     *
+     * @since TBD
+     *
+     * @param mixed $value
+     */
+    public static function seed(string $key, $value): void
+    {
+        $hash = self::hash($key);
+        $cache = self::read();
+
+        if (array_key_exists($hash, $cache['values']) && $cache['values'][$hash] === $value && !self::isOutdated($cache, $hash)) {
+            return;
+        }
+
+        self::store($hash, $value, microtime(true));
+    }
+
+    /**
      * Records that the totals changed. Hooked to donation, subscription and donor writes.
      *
      * @since TBD

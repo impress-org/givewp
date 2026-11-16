@@ -543,34 +543,40 @@ class ListDonations extends Endpoint
      * the rows sit together in the (meta_key, meta_value) index and in the table, so the database reads
      * them in sequence instead of looking up the meta of every donation. A live-mode total is every
      * matching donation minus the test-mode ones, which is what the list's NOT IN condition selects.
-     * Without a date range the donation counters answer when they can be used.
+     * Without a date range the donation counters answer when they can be used, and the cached
+     * value is kept current with them.
      *
      * @since TBD
      */
     private function countByMode(): int
     {
-        $counted = $this->countFromCounters();
-
-        if ($counted !== null) {
-            return $counted;
-        }
-
         $testModeQuery = $this->getTestModeCountQuery();
 
         if ($this->request->get_param('testMode')) {
-            return (int)$this->rememberTotal(__METHOD__ . $testModeQuery->getSQL(), static function () use ($testModeQuery) {
+            $key = __METHOD__ . $testModeQuery->getSQL();
+            $count = static function () use ($testModeQuery) {
                 return (int)DB::get_var($testModeQuery->getSQL());
-            });
+            };
+        } else {
+            $allQuery = DB::table('posts');
+            $this->applyPostConditions($allQuery, '');
+
+            $key = __METHOD__ . $testModeQuery->getSQL() . (clone $allQuery)->getSQL();
+            $count = static function () use ($testModeQuery, $allQuery) {
+                return $allQuery->count() - (int)DB::get_var($testModeQuery->getSQL());
+            };
         }
 
-        $allQuery = DB::table('posts');
-        $this->applyPostConditions($allQuery, '');
+        $counted = $this->countFromCounters();
 
-        $key = __METHOD__ . $testModeQuery->getSQL() . (clone $allQuery)->getSQL();
+        if ($counted !== null) {
+            // Keep the fallback current, for when the counters are dirty.
+            DonationTotalsCache::seed($key, $counted);
 
-        return (int)$this->rememberTotal($key, static function () use ($testModeQuery, $allQuery) {
-            return $allQuery->count() - (int)DB::get_var($testModeQuery->getSQL());
-        });
+            return $counted;
+        }
+
+        return (int)$this->rememberTotal($key, $count);
     }
 
     /**

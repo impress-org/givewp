@@ -560,6 +560,34 @@ class TestDonationCounters extends TestCase
     }
 
     /**
+     * Reading the counters keeps the totals cache current, so when they turn dirty the screen falls
+     * back to the last counted value, not to an older cached one.
+     *
+     * @since TBD
+     */
+    public function testDirtyFallbackStartsFromTheLastCountedValue(): void
+    {
+        Donation::factory()->count(2)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE()]);
+
+        $off = static function () {
+            return false;
+        };
+        add_filter('givewp_donation_counters_enabled', $off, 100);
+        $this->assertSame(2, $this->statistics(false)['donationsCount']);
+        remove_filter('givewp_donation_counters_enabled', $off, 100);
+        $this->rebuild();
+
+        Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE()]);
+        $this->assertSame(3, $this->statistics(false)['donationsCount']);
+        $this->assertSame(3, $this->listResponse(false, 1, 30)['totalItems']);
+
+        // Something unseen happened; the cached fallback serves (outdated within the max age) the last counted value.
+        DonationCounters::markDirty();
+
+        $this->assertSame(3, $this->statistics(false)['donationsCount']);
+    }
+
+    /**
      * @since TBD
      */
     public function testNegativeBucketIsNotUsedAndMarksDirty(): void

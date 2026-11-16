@@ -81,18 +81,12 @@ class ListDonationsStats extends Endpoint
      * The donation counters answer when they can be used (built, not dirty, enabled); they are
      * updated on every write, so they are exact between recounts.
      *
-     * @since TBD Read the donation counters when they can be used; otherwise count from the indexes instead of joining the meta of every donation, count a donation without a subscription row as one-time, and allow an outdated value within the totals cache's max age.
+     * @since TBD Read the donation counters when they can be used, and keep the cached value current with them; otherwise count from the indexes instead of joining the meta of every donation, count a donation without a subscription row as one-time, and allow an outdated value within the totals cache's max age.
      * @since 4.10.0
      */
     public function getDonationStatistics(): array
     {
         $testMode = (bool)$this->request->get_param('testMode');
-        $counted = DonationCounters::statistics($testMode);
-
-        if ($counted !== null) {
-            return $counted;
-        }
-
         $queries = [$this->getTestModeCountQuery(), $this->getRecurringCountQuery(true)];
 
         if (!$testMode) {
@@ -102,6 +96,15 @@ class ListDonationsStats extends Endpoint
         $key = __METHOD__ . implode(';', array_map(static function (QueryBuilder $query) {
             return $query->getSQL();
         }, $queries));
+
+        $counted = DonationCounters::statistics($testMode);
+
+        if ($counted !== null) {
+            // Keep the fallback current, for when the counters are dirty.
+            DonationTotalsCache::seed($key, $counted);
+
+            return $counted;
+        }
 
         // Each count still reads one meta row per matching donation. The tiles only display them, so
         // an outdated value may be shown within the totals cache's max age.
