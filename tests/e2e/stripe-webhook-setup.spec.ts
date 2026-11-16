@@ -227,6 +227,12 @@ test.describe('Stripe webhook health email setting', () => {
      * The option is one key in `give_settings`. Removing it puts the site back on the default, whatever
      * an earlier run saved.
      */
+    let savedHealthEmailSetting: string | null = null;
+
+    test.beforeAll(() => {
+        savedHealthEmailSetting = readHealthEmailSetting();
+    });
+    test.afterAll(() => restoreHealthEmailSetting(savedHealthEmailSetting));
     test.beforeEach(() => resetHealthEmailSetting());
     test.afterEach(() => resetHealthEmailSetting());
 
@@ -357,4 +363,21 @@ function healthEmailOption(page: Page, label: 'Enabled' | 'Disabled'): Locator {
 
 function resetHealthEmailSetting(): void {
     wp('eval', `give_delete_option('${HEALTH_EMAIL_SETTING}');`);
+}
+
+/**
+ * The saved value, or null when the option is not saved, which is not the same as the default.
+ */
+function readHealthEmailSetting(): string | null {
+    return JSON.parse(wp('eval', `echo wp_json_encode(give_get_option('${HEALTH_EMAIL_SETTING}', null));`));
+}
+
+function restoreHealthEmailSetting(value: string | null): void {
+    if (null === value) {
+        resetHealthEmailSetting();
+
+        return;
+    }
+
+    wp('eval', `give_update_option('${HEALTH_EMAIL_SETTING}', ${JSON.stringify(value)});`);
 }
