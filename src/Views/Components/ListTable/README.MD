@@ -83,7 +83,7 @@ Components added for the A+ look:
 
 Open items for the owner:
 
-- The upgrade tile has a 3 px orange start edge (`#a66710`, passes 3:1) in place of the `#ff7b42` highlight, which fails contrast on white. The orange and the "Upgrade" copy are for the designer to confirm.
+- The upgrade tile has a 3 px orange top edge (`#a66710`, passes 3:1) in place of the `#ff7b42` highlight, which fails contrast on white. The orange and the "Upgrade" copy are for the designer to confirm.
 
 ## `<ListTablePage />` props
 
