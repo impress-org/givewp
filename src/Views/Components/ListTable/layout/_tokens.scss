@@ -27,14 +27,16 @@ $givewp-list-table-page: #f0f0f1;
     --givewp-list-table-page: #{$givewp-list-table-page};
 
     // Our own bars, edges and focus use a darker mix of the site's admin color, so old schemes
-    // (Sunrise, Light) still pass 3:1.
-    --givewp-list-table-action-edge: var(--wp-admin-theme-color, #3858e9);
+    // (Sunrise, Light) still pass 3:1. A browser without `color-mix()` gets the grey control edge instead, which
+    // passes 3:1 on its own; the raw admin color does not in every scheme.
+    --givewp-list-table-action-edge: #757575;
     --givewp-list-table-action-tint: rgb(0 0 0 / 0.04);
     // The edge of the upgrade tile (Give orange 600). 3:1 on white, as a meaningful graphic.
     --givewp-list-table-upgrade-edge: #a66710;
 
     // Link text needs 4.5:1, so it takes a darker mix than the edge (Sunrise, Coffee and Ocean are light colors).
-    --givewp-list-table-link: var(--wp-admin-theme-color, #3858e9);
+    // A browser without `color-mix()` gets the WordPress link blue, which passes 4.5:1 on white.
+    --givewp-list-table-link: #135e96;
 
     @supports (color: color-mix(in srgb, red 50%, blue)) {
         --givewp-list-table-action-edge: color-mix(in srgb, var(--wp-admin-theme-color, #3858e9) 75%, #000);
