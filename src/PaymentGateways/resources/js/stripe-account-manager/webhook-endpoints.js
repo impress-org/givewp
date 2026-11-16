@@ -44,6 +44,16 @@ let openField = null;
 let modalCount = 0;
 
 /**
+ * The number of the latest request sent for each account. The status button shows the state that the latest
+ * request answered, so a slower earlier request cannot put an older state back.
+ *
+ * @since TBD
+ *
+ * @type {WeakMap<HTMLElement, number>}
+ */
+const latestRequests = new WeakMap();
+
+/**
  * @since TBD
  *
  * @param {string} text Plain text.
@@ -488,12 +498,17 @@ function runOperation(operation, formData = new FormData(), form = null) {
         return Promise.resolve();
     }
 
+    const request = (latestRequests.get(field) || 0) + 1;
+    latestRequests.set(field, request);
+
     formData.append('account', field.getAttribute('data-account'));
 
     return post(operation, field.getAttribute('data-manage-nonce'), formData)
         .then(({ html, notices, state, changed }) => {
             /* The status button belongs to the account, so it is updated even after its modal closed. */
-            setState(field, state);
+            if (request === latestRequests.get(field)) {
+                setState(field, state);
+            }
 
             if (modal !== modalCount) {
                 return;
