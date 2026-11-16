@@ -4,6 +4,7 @@ namespace Give\Donations\Endpoints;
 
 use Closure;
 use Give\Donations\ListTable\DonationsListTable;
+use Give\Donations\Repositories\DonationCounters;
 use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Donations\Repositories\RecurringDonationCondition;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -54,6 +55,13 @@ class ListDonations extends Endpoint
      * @var bool
      */
     private $countsLive = false;
+
+    /**
+     * Whether the displayed total came from the donation counters.
+     *
+     * @var bool
+     */
+    private $totalFromCounters = false;
 
     /**
      * How many IDs a page read forward found, and whether a row follows them. Null until then.
@@ -198,7 +206,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD Count live before reading a deep page from the other end, and correct a cached total with what the page read found.
+     * @since TBD Count live before reading a deep page from the other end, and correct a cached or counted total with what the page read found.
      * @since 2.24.0 Change this to use the new ListTable class
      * @since      2.20.0
      *
@@ -212,6 +220,7 @@ class ListDonations extends Endpoint
         $this->request = $request;
         $this->totalDonations = null;
         $this->forwardPage = null;
+        $this->totalFromCounters = false;
 
         $donationsCount = $this->getTotalDonationsCount();
 
@@ -282,7 +291,8 @@ class ListDonations extends Endpoint
     /**
      * A cached total may be outdated. A page read forward is exact, so it bounds the total: a short
      * page ends the list, and a row after a full page means at least one more page. The pager then
-     * always reaches the last rows.
+     * always reaches the last rows. A total from the donation counters that the page contradicts
+     * marks them dirty.
      *
      * @since TBD
      */
@@ -292,6 +302,23 @@ class ListDonations extends Endpoint
             return $total;
         }
 
+        $corrected = $this->boundTotal($total);
+
+        // The page proves the donation counters wrong: recount them soon.
+        if ($corrected !== $total && $this->totalFromCounters) {
+            DonationCounters::markDirty();
+        }
+
+        return $corrected;
+    }
+
+    /**
+     * The total bounded by what the forward page read found.
+     *
+     * @since TBD
+     */
+    private function boundTotal(int $total): int
+    {
         list($found, $hasMore) = $this->forwardPage;
         $offset = ($this->request->get_param('page') - 1) * $this->request->get_param('perPage');
 
@@ -421,7 +448,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD Count from the test-mode meta rows when only post columns and the mode filter apply, and cache the total for display (outdated within the totals cache's max age).
+     * @since TBD Read the donation counters, or count from the test-mode meta rows, when only post columns and the mode filter apply, and cache the total for display (outdated within the totals cache's max age).
      * @since 4.18.0 Drop the GROUP BY on mode, which made count() return the size of one mode group
      * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
@@ -497,11 +524,18 @@ class ListDonations extends Endpoint
      * the rows sit together in the (meta_key, meta_value) index and in the table, so the database reads
      * them in sequence instead of looking up the meta of every donation. A live-mode total is every
      * matching donation minus the test-mode ones, which is what the list's NOT IN condition selects.
+     * Without a date range the donation counters answer when they can be used.
      *
      * @since TBD
      */
     private function countByMode(): int
     {
+        $counted = $this->countFromCounters();
+
+        if ($counted !== null) {
+            return $counted;
+        }
+
         $testModeQuery = $this->getTestModeCountQuery();
 
         if ($this->request->get_param('testMode')) {
@@ -518,6 +552,25 @@ class ListDonations extends Endpoint
         return (int)$this->rememberTotal($key, static function () use ($testModeQuery, $allQuery) {
             return $allQuery->count() - (int)DB::get_var($testModeQuery->getSQL());
         });
+    }
+
+    /**
+     * The total from the donation counters, for a request with no date range that does not count
+     * live. Null when the counters cannot be used. Only for display: rows are never chosen by it.
+     *
+     * @since TBD
+     */
+    private function countFromCounters(): ?int
+    {
+        if ($this->countsLive || $this->request->get_param('start') || $this->request->get_param('end')) {
+            return null;
+        }
+
+        $status = $this->request->get_param('status');
+        $total = DonationCounters::total((bool)$this->request->get_param('testMode'), empty($status) ? null : (array)$status);
+        $this->totalFromCounters = $total !== null;
+
+        return $total;
     }
 
     /**

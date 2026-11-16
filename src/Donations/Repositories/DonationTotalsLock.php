@@ -10,7 +10,7 @@ use Give\Framework\Database\DB;
  *
  * The lock is an options row. INSERT IGNORE adds it only when no request holds it, which
  * add_option() cannot promise. A lock older than EXPIRES_AFTER seconds belongs to a request that
- * died and is taken over.
+ * died and is taken over; a caller that runs longer can pass its own expiry.
  *
  * @since TBD
  */
@@ -27,11 +27,19 @@ class DonationTotalsLock
     private $name;
 
     /**
-     * @since TBD
+     * @var int
      */
-    public function __construct(string $name)
+    private $expiresAfter;
+
+    /**
+     * @since TBD
+     *
+     * @param int $expiresAfter seconds after which a held lock counts as abandoned
+     */
+    public function __construct(string $name, int $expiresAfter = self::EXPIRES_AFTER)
     {
         $this->name = $name;
+        $this->expiresAfter = $expiresAfter;
     }
 
     /**
@@ -80,7 +88,7 @@ class DonationTotalsLock
             $this->name
         ));
 
-        return $lockedAt > time() - self::EXPIRES_AFTER;
+        return $lockedAt > time() - $this->expiresAfter;
     }
 
     /**

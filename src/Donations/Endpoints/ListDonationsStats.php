@@ -2,6 +2,7 @@
 
 namespace Give\Donations\Endpoints;
 
+use Give\Donations\Repositories\DonationCounters;
 use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Donations\Repositories\RecurringDonationCondition;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -77,12 +78,21 @@ class ListDonationsStats extends Endpoint
      * JOIN of both meta rows onto every donation read the meta of each one, a minute or more at a
      * million donations.
      *
-     * @since TBD Count from the indexes instead of joining the meta of every donation, and count a donation without a subscription row as one-time; allow an outdated value within the totals cache's max age.
+     * The donation counters answer when they can be used (built, not dirty, enabled); they are
+     * updated on every write, so they are exact between recounts.
+     *
+     * @since TBD Read the donation counters when they can be used; otherwise count from the indexes instead of joining the meta of every donation, count a donation without a subscription row as one-time, and allow an outdated value within the totals cache's max age.
      * @since 4.10.0
      */
     public function getDonationStatistics(): array
     {
         $testMode = (bool)$this->request->get_param('testMode');
+        $counted = DonationCounters::statistics($testMode);
+
+        if ($counted !== null) {
+            return $counted;
+        }
+
         $queries = [$this->getTestModeCountQuery(), $this->getRecurringCountQuery(true)];
 
         if (!$testMode) {

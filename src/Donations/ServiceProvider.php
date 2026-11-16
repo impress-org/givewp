@@ -3,6 +3,7 @@
 namespace Give\Donations;
 
 use Give\Donations\Actions\LoadDonationAdminOptions;
+use Give\Donations\Commands\DonationCountersCommand;
 use Give\Donations\CustomFields\Controllers\DonationDetailsController;
 use Give\Donations\LegacyListeners\ClearDonationPostCache;
 use Give\Donations\LegacyListeners\DispatchDonationNoteEmailNotification;
@@ -16,6 +17,7 @@ use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
 use Give\Donations\LegacyListeners\UpdateDonationMetaWithLegacyFormCurrencySettings;
 use Give\Donations\Listeners\DonationCreated\UpdateDonationMetaWithCurrencySettings;
 use Give\Donations\Listeners\DonationCreated\UpdateDonorMetaWithLastDonatedCurrency;
+use Give\Donations\Listeners\SyncDonationCounters;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Migrations\AddIndexesToDonationMetaTable;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
@@ -26,11 +28,15 @@ use Give\Donations\Migrations\SetAutomaticFormattingOption;
 use Give\Donations\Migrations\UnserializeTitlePrefix;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationNotesRepository;
+use Give\Donations\Repositories\DonationCounters;
+use Give\Donations\Repositories\DonationCountersRebuild;
+use Give\Donations\Repositories\DonationCountersSchedule;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
+use WP_CLI;
 
 class ServiceProvider implements ServiceProviderInterface
 {
@@ -41,6 +47,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         give()->singleton('donations', DonationRepository::class);
         give()->singleton('donationNotes', DonationNotesRepository::class);
+        give()->singleton(SyncDonationCounters::class);
         give()->singleton(DonationsListTable::class, function () {
             $listTable = new DonationsListTable();
             Hooks::doAction('givewp_donations_list_table', $listTable);
@@ -57,6 +64,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->bootListeners();
         $this->bootLegacyListeners();
         $this->flushTotalsOnDonationWrites();
+        $this->bootDonationCounters();
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
         $this->loadDonationAdminOptions();
@@ -150,7 +158,8 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Marks the cached donation totals outdated whenever a donation or its meta is written. The model hooks
      * see repository writes, which go to the tables directly; the post and meta hooks see writes
-     * through the legacy Give_Payment and the WordPress post and metadata APIs.
+     * through the legacy Give_Payment and the WordPress post and metadata APIs. The model's trash and
+     * untrash write the post status directly, so they have their own hooks.
      *
      * @since TBD
      */
@@ -160,7 +169,7 @@ class ServiceProvider implements ServiceProviderInterface
             DonationTotalsCache::flush();
         };
 
-        foreach (['givewp_donation_created', 'givewp_donation_updated', 'givewp_donation_deleted'] as $hook) {
+        foreach (['givewp_donation_created', 'givewp_donation_updated', 'givewp_donation_deleted', 'givewp_donation_trashed', 'givewp_donation_untrashed'] as $hook) {
             add_action($hook, $flush);
         }
 
@@ -181,6 +190,32 @@ class ServiceProvider implements ServiceProviderInterface
             foreach (['added', 'updated', 'deleted'] as $action) {
                 add_action("{$action}_{$metaType}_meta", $flush);
             }
+        }
+    }
+
+    /**
+     * Keeps the donation counters up to date on every write, recounts them in the background, and
+     * adds the `wp give donation-counters` command.
+     *
+     * @since TBD
+     */
+    private function bootDonationCounters()
+    {
+        give(SyncDonationCounters::class)->register();
+
+        $rebuild = static function () {
+            (new DonationCountersRebuild())();
+        };
+
+        add_action(DonationCountersSchedule::REBUILD_HOOK, $rebuild);
+        add_action(DonationCountersSchedule::RECOUNT_HOOK, $rebuild);
+
+        add_action('action_scheduler_ensure_recurring_actions', static function () {
+            DonationCountersSchedule::ensureScheduled(DonationCounters::read()['builtAt'], true);
+        });
+
+        if (defined('WP_CLI') && WP_CLI) {
+            WP_CLI::add_command('give donation-counters', DonationCountersCommand::class);
         }
     }
 
