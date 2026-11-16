@@ -70,7 +70,7 @@ The A+ look is kept small and in a few known places. Keep it that way.
 - **Narrow screens.** Our own search input, chip toggle and chip remove button are 40 px tall at 782
   px and below (`$givewp-list-table-narrow`). The chip itself is 42 px tall there, because of its 1 px
   border. Stock buttons and selects are not changed.
-- **Balloons.** The floating onboarding tips (the Campaign List tip, the default campaign form tip and the upgraded form tip) all render `Balloon/`: a white box, the stock 2 px radius, a 1 px hairline edge, a small shadow, a 14 px semibold title, 13 px text, the stock link and a 24 px close button. It brings its own tokens, since it also shows outside the list page roots. It sets no position: each screen places it with its own `className`, which must give it a position, since the close button is placed against it.
+- **Onboarding tips.** The Campaign List tip, the default campaign form tip and the upgraded form tip are `onboarding` notices in the notice area: in the page flow, under the tiles and above the table, so they never cover rows or controls. The upgraded form tip is one shared notice, shown when a listed form has the Upgraded status. `Balloon/` is unchanged; the campaign details page tips still use it.
 - **Filter bar height.** "Add filter" and "Reset" (stock buttons) are 32 px tall above 782 px, so the chips, the buttons and the search box share one 32 px line. At 782 px and below they keep the stock size.
 
 Components added for the A+ look:
