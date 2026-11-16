@@ -428,6 +428,7 @@ function giveStripeSetUpWebhooks( nonce, account = null ) {
 	giveStripeSetWebhookButtonsDisabled( true );
 
 	new Give.modal.GiveNoticeAlert( {
+		mainClass: 'give-stripe-webhook-loading-modal',
 		modalContent: {
 			title: __( 'Setting up your Stripe webhook', 'give' ),
 			desc: Give.fn.loader( {}, { show: null, loadingText: Give.fn.getGlobalVar( 'loader_translation' ).processing } ),
@@ -459,8 +460,8 @@ function giveStripeSetUpWebhooks( nonce, account = null ) {
 		} )
 		.catch( () => giveStripeManualWebhookSetupContent( requestStatus ) )
 		.then( ( result ) => {
-			/* The admin closed the loading modal, so do not open it again. */
-			if ( ! document.querySelector( '.mfp-wrap' ) ) {
+			/* The admin closed the loading modal, so do not open it again or replace another modal with the result. */
+			if ( ! document.querySelector( '.give-stripe-webhook-loading-modal' ) ) {
 				return;
 			}
 
