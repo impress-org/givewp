@@ -278,7 +278,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Security - Added additional permission checks to the donor list REST API endpoint.
 * Security - Added additional protection to the donor email access.
 * Security - Improved anonymous donor filtering in the donor search results. Reported by Vũ Quang Huy.
-* Security - improved security on the donation confirmation receipt.
+* Security - Improved security on the donation confirmation receipt.
 * Security - Improved Stripe account data security in the Visual Form Builder. Reported by Pasi Nuwan Senevi.
 
 = [4.19.2] 2026-11-12 =
