@@ -270,10 +270,20 @@ Three more rules from the 1M-donation profiling (SOFT-5634):
   cold at a million rows, against about 50 for the `ID IN (subquery)` form, which probes the meta
   of every post. A live-mode total is all matching posts minus the test-mode ones. A class that
   extends `ListDonations` never takes this path, since it may add conditions.
-- **Read a deep page from the other end.** The total is counted first. When the list is sorted by
-  ID alone and the page is past the middle, `getIdPageWindow()` reads it in the opposite direction
-  with a short offset; the hydrate step re-sorts. The last of 33,334 pages costs what page 1 costs.
-  A page past the last match is not queried at all.
+- **A cached total never picks rows.** An admin must always find the donation they look for, so
+  which rows a page returns may not depend on a total that can be outdated (a write that skipped
+  the hooks, or the max age of the totals cache). The cached total only fills `totalItems` and
+  `totalPages`. Pages in the first half are read forward with an offset, one row more than the
+  page: a short page fixes the total, and a row after a full page raises it, so the pager always
+  reaches the last rows even when the cached total is low.
+- **Read a deep page from the other end, after a live count.** When the list is sorted by ID alone
+  and the page is past the middle of the cached total, or past its end, `ListDonations` counts the
+  matches against the database first (bypassing the cache), then `getIdPageWindow()` reads the
+  page in the opposite direction with a short offset; the hydrate step re-sorts. A page past the
+  live total is not queried. The deep page costs one live count (about 15 to 30 seconds for all
+  test-mode donations at a million, a second or two for a campaign) instead of an offset walk over
+  every skipped row (65 seconds for the last page). A class that extends `ListDonations` always
+  reads forward.
 - **A count joins only the meta its filters read.** `Model::query()->count()` keeps every
   attach-meta join (32 for donations, 5 for donors). The v3 donations route and `DonorsQuery`
   count with only the joins their conditions name.

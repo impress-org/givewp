@@ -39,13 +39,28 @@ class ListDonations extends Endpoint
     protected $listTable;
 
     /**
-     * The number of donations that match the request, once counted.
+     * The number of donations that match the request, counted live for this request. Only an exact
+     * count may choose which rows a page returns; a cached one may be outdated. Null when not counted.
      *
      * @since TBD
      *
      * @var int|null
      */
     protected $totalDonations;
+
+    /**
+     * Whether a count runs against the database instead of reading the totals cache.
+     *
+     * @var bool
+     */
+    private $countsLive = false;
+
+    /**
+     * How many IDs a page read forward found, and whether a row follows them. Null until then.
+     *
+     * @var array{0: int, 1: bool}|null
+     */
+    private $forwardPage;
 
     /**
      * @since 4.12.0 Updated status parameter to accept multiple comma-separated values
@@ -183,7 +198,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD Count first, so a deep page can be read from the other end.
+     * @since TBD Count live before reading a deep page from the other end, and correct a cached total with what the page read found.
      * @since 2.24.0 Change this to use the new ListTable class
      * @since      2.20.0
      *
@@ -195,10 +210,17 @@ class ListDonations extends Endpoint
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $this->request = $request;
+        $this->totalDonations = null;
+        $this->forwardPage = null;
 
         $donationsCount = $this->getTotalDonationsCount();
-        $this->totalDonations = $donationsCount;
+
+        if ($this->needsLiveCount($donationsCount)) {
+            $donationsCount = $this->countLive();
+        }
+
         $donations = $this->getDonations();
+        $donationsCount = $this->correctTotal($donationsCount);
         $totalPages = (int)ceil($donationsCount / $this->request->get_param('perPage'));
 
         if ('model' === $this->request->get_param('return')) {
@@ -218,7 +240,74 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD Skip the query past the last match, and read a page past the middle from the other end when the list is sorted by ID only.
+     * Whether the page needs a live count before its rows are read: it lies past the middle of the
+     * estimated total and the list is sorted by ID alone, so it is read from the other end; or it
+     * lies past the estimated end, where a forward read would walk every donation to find out
+     * whether rows were added. A class that extends this endpoint may count differently, so it
+     * always reads forward.
+     *
+     * @since TBD
+     */
+    private function needsLiveCount(int $estimatedTotal): bool
+    {
+        if (static::class !== self::class) {
+            return false;
+        }
+
+        $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
+        $offset = ($this->request->get_param('page') - 1) * $this->request->get_param('perPage');
+
+        return $offset >= $estimatedTotal || ($sortColumns === ['id'] && $offset > $estimatedTotal / 2);
+    }
+
+    /**
+     * Counts the matching donations against the database, past the totals cache, and keeps the
+     * count for choosing the page's rows.
+     *
+     * @since TBD
+     */
+    private function countLive(): int
+    {
+        $this->countsLive = true;
+
+        try {
+            $this->totalDonations = $this->getTotalDonationsCount();
+        } finally {
+            $this->countsLive = false;
+        }
+
+        return $this->totalDonations;
+    }
+
+    /**
+     * A cached total may be outdated. A page read forward is exact, so it bounds the total: a short
+     * page ends the list, and a row after a full page means at least one more page. The pager then
+     * always reaches the last rows.
+     *
+     * @since TBD
+     */
+    private function correctTotal(int $total): int
+    {
+        if ($this->totalDonations !== null || $this->forwardPage === null) {
+            return $total;
+        }
+
+        list($found, $hasMore) = $this->forwardPage;
+        $offset = ($this->request->get_param('page') - 1) * $this->request->get_param('perPage');
+
+        if ($hasMore) {
+            return max($total, $offset + $found + 1);
+        }
+
+        if ($found > 0 || $offset === 0) {
+            return $offset + $found;
+        }
+
+        return min($total, $offset);
+    }
+
+    /**
+     * @since TBD Skip the query past the last match, and read a page past the middle from the other end when the list is sorted by ID only, both only with a live count; read one row more forward to see whether another page follows.
      * @since 4.18.0 Select the page of IDs first, then hydrate, so deep pages do not join every row
      * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
@@ -264,7 +353,13 @@ class ListDonations extends Endpoint
             $idQuery->orderBy($sortColumn, $idSortDirection);
         }
 
-        $ids = array_column($idQuery->limit($limit)->offset($offset)->getAll() ?: [], 'id');
+        $readsForward = $this->totalDonations === null;
+        $ids = array_column($idQuery->limit($readsForward ? $limit + 1 : $limit)->offset($offset)->getAll() ?: [], 'id');
+
+        if ($readsForward) {
+            $this->forwardPage = [min(count($ids), $limit), count($ids) > $limit];
+            $ids = array_slice($ids, 0, $limit);
+        }
 
         if (!$ids) {
             return [];
@@ -350,9 +445,21 @@ class ListDonations extends Endpoint
             );
         }
 
-        return (int)DonationTotalsCache::remember(__METHOD__ . (clone $query)->getSQL(), static function () use ($query) {
+        return (int)$this->rememberTotal(__METHOD__ . (clone $query)->getSQL(), static function () use ($query) {
             return $query->count();
         });
+    }
+
+    /**
+     * A total from the totals cache, or straight from the database while counting live.
+     *
+     * @since TBD
+     *
+     * @return mixed
+     */
+    private function rememberTotal(string $key, callable $callback)
+    {
+        return $this->countsLive ? $callback() : DonationTotalsCache::remember($key, $callback);
     }
 
     /**
@@ -393,7 +500,7 @@ class ListDonations extends Endpoint
         $testModeQuery = $this->getTestModeCountQuery();
 
         if ($this->request->get_param('testMode')) {
-            return (int)DonationTotalsCache::remember(__METHOD__ . $testModeQuery->getSQL(), static function () use ($testModeQuery) {
+            return (int)$this->rememberTotal(__METHOD__ . $testModeQuery->getSQL(), static function () use ($testModeQuery) {
                 return (int)DB::get_var($testModeQuery->getSQL());
             });
         }
@@ -403,7 +510,7 @@ class ListDonations extends Endpoint
 
         $key = __METHOD__ . $testModeQuery->getSQL() . (clone $allQuery)->getSQL();
 
-        return (int)DonationTotalsCache::remember($key, static function () use ($testModeQuery, $allQuery) {
+        return (int)$this->rememberTotal($key, static function () use ($testModeQuery, $allQuery) {
             return $allQuery->count() - (int)DB::get_var($testModeQuery->getSQL());
         });
     }
