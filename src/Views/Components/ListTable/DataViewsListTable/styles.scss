@@ -202,19 +202,37 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
         }
     }
 
-    // The page number box that replaces the stock page select above 100 pages (`ListTablePagination.tsx`). It
-    // has the look of the stock select: a small control with a 1 px edge and the WordPress radius.
-    &__page-input {
+    // The page number box that replaces the stock page select above 100 pages (`ListTablePagination.tsx`). The stock
+    // select is the "minimal" kind: no edge, the same 11 px text as the words around it, a tint on hover and a ring
+    // on focus. The box looks the same, with a light grey fill at rest so it reads as a field (the select has a
+    // chevron). Its width follows the number of digits in the last page (set in the component), so it does not
+    // change size while a number is typed.
+    // `input[type='number']` is in the selector so it beats the WordPress admin form styles (an edge, a 30 px
+    // height, a blue focus edge), which use that selector.
+    input[type='number']#{&}__page-input {
         appearance: textfield;
-        background: var(--givewp-shades-white);
-        border: 1px solid var(--givewp-list-table-control-edge);
+        background: var(--givewp-list-table-page);
+        border: 0;
         border-radius: 2px;
-        color: var(--givewp-list-table-text);
-        font-size: 0.8125rem;
-        inline-size: 4.5rem;
+        box-shadow: none;
+        box-sizing: border-box;
+        color: inherit;
+        font: inherit;
+        line-height: 1.5;
         min-block-size: 1.5rem;
         padding: 0 var(--givewp-spacing-2);
         text-align: center;
+        text-transform: none;
+
+        &:hover {
+            background: var(--givewp-list-table-hairline);
+        }
+
+        &:focus {
+            background: var(--givewp-shades-white);
+            box-shadow: 0 0 0 1.5px var(--givewp-list-table-action-edge);
+            outline: 2px solid transparent;
+        }
 
         &::-webkit-inner-spin-button,
         &::-webkit-outer-spin-button {

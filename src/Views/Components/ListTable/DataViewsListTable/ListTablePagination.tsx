@@ -77,6 +77,7 @@ export function LargePagination({view, onChangeView, totalPages}: PaginationProp
                                 max={totalPages}
                                 aria-label={__('Current page')}
                                 value={draft}
+                                style={{inlineSize: `calc(${String(totalPages).length}ch + 1.5rem)`}}
                                 onChange={(event: ChangeEvent<HTMLInputElement>) => setDraft(event.target.value)}
                                 onBlur={commit}
                                 onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
