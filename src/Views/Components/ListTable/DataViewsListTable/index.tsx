@@ -16,6 +16,7 @@ import type {Action, Field, View} from '@wordpress/dataviews';
 import type {ListTableItem} from '../ListTablePage/types';
 import ListTableViewReset from '../ListTableViewReset';
 import useHorizontalOverflow from '../hooks/useHorizontalOverflow';
+import ListTablePagination from './ListTablePagination';
 import './styles.scss';
 
 /**
@@ -178,12 +179,16 @@ function ListTableFooter({
     totalItems,
     totalPages,
     hasSelection,
+    view,
+    onChangeView,
 }: {
     actions: Action<ListTableItem>[];
     data: ListTableItem[];
     totalItems: number;
     totalPages: number;
     hasSelection: boolean;
+    view: View;
+    onChangeView: (view: View) => void;
 }) {
     if (totalItems <= 0 || totalPages <= 0 || data.length === 0) {
         return null;
@@ -193,7 +198,7 @@ function ListTableFooter({
         <HStack expanded={false} justify="end" className="dataviews-footer givewp-list-table__footer">
             {hasBulkActions(actions, data) && <DataViews.BulkActionToolbar />}
             {!hasSelection && <ListTableTotal rows={data.length} totalItems={totalItems} />}
-            <DataViews.Pagination />
+            <ListTablePagination view={view} onChangeView={onChangeView} totalPages={totalPages} />
         </HStack>
     );
 }
@@ -226,12 +231,16 @@ function ListTableLayout({
     filterBar,
     layoutMode,
     viewMenu,
+    view,
+    onChangeView,
 }: {
     actions: Action<ListTableItem>[];
     data: ListTableItem[];
     totalItems: number;
     totalPages: number;
     hasSelection: boolean;
+    view: View;
+    onChangeView: (view: View) => void;
     isDefaultLayout: boolean;
     onResetLayout?: () => void;
     searchBox?: ReactNode;
@@ -283,6 +292,8 @@ function ListTableLayout({
                 totalItems={totalItems}
                 totalPages={totalPages}
                 hasSelection={hasSelection}
+                view={view}
+                onChangeView={onChangeView}
             />
         </>
     );
@@ -366,6 +377,8 @@ export default function DataViewsListTable({
                         totalItems={paginationInfo.totalItems}
                         totalPages={paginationInfo.totalPages}
                         hasSelection={selection.length > 0}
+                        view={view}
+                        onChangeView={onChangeView}
                         isDefaultLayout={isDefaultLayout}
                         onResetLayout={onResetLayout}
                         searchBox={searchBox}

@@ -180,6 +180,27 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
         padding-inline-end: var(--givewp-spacing-4);
     }
 
+    // The page number box that replaces the stock page select above 100 pages (`ListTablePagination.tsx`). It
+    // has the look of the stock select: a small control with a 1 px edge and the WordPress radius.
+    &__page-input {
+        appearance: textfield;
+        background: var(--givewp-shades-white);
+        border: 1px solid var(--givewp-list-table-control-edge);
+        border-radius: 2px;
+        color: var(--givewp-list-table-text);
+        font-size: 0.8125rem;
+        inline-size: 4.5rem;
+        min-block-size: 1.5rem;
+        padding: 0 var(--givewp-spacing-2);
+        text-align: center;
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            appearance: none;
+            margin: 0;
+        }
+    }
+
     // Remove the total count rules below with `ListTableFooter` when the `@wordpress/dataviews` pin moves to
     // 12.0.1 or later; see the note on `ListTableFooter`.
     // Which rows are on the page, out of all the rows that match. It looks like the stock count and sits
