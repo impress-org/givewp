@@ -22,14 +22,34 @@ test.describe('Filter bar layout', () => {
             await expect(chip(page, 'Status')).toContainText('Completed');
 
             const group = filterBar(page);
-            const add = await group.locator('.givewp-list-table-filters__add').boundingBox();
-            const lastChip = await group.locator('.givewp-list-table-filters__item').last().boundingBox();
 
-            // "Add filter" is on the last chip's line or below it ...
-            expect(add!.y).toBeGreaterThanOrEqual(lastChip!.y - 1);
-            // ... and when they share a line it comes after the chip, on the inline-end side (LTR).
-            if (Math.abs(add!.y - lastChip!.y) <= 1) {
-                expect(add!.x).toBeGreaterThanOrEqual(lastChip!.x + lastChip!.width);
+            // Read both boxes and the direction in one go, so the check is made on one layout.
+            const {add, lastChip, isRtl} = await group.evaluate((element) => {
+                const box = (target: Element | null) => {
+                    const {left, right, top, height} = target!.getBoundingClientRect();
+
+                    return {left, right, centerY: top + height / 2, height};
+                };
+                const items = element.querySelectorAll('.givewp-list-table-filters__item');
+
+                return {
+                    add: box(element.querySelector('.givewp-list-table-filters__add')),
+                    lastChip: box(items[items.length - 1]),
+                    isRtl: getComputedStyle(element).direction === 'rtl',
+                };
+            });
+            // Rows differ by a whole control height, so half a height tells "same line" from "next line".
+            const halfLine = Math.min(add.height, lastChip.height) / 2;
+
+            // "Add filter" is on the last chip's line or below it (block axis, so the direction does not matter) ...
+            expect(add.centerY).toBeGreaterThanOrEqual(lastChip.centerY - halfLine);
+            // ... and when they share a line it comes after the chip, on the inline-end side.
+            if (Math.abs(add.centerY - lastChip.centerY) < halfLine) {
+                if (isRtl) {
+                    expect(add.right).toBeLessThanOrEqual(lastChip.left + 1);
+                } else {
+                    expect(add.left).toBeGreaterThanOrEqual(lastChip.right - 1);
+                }
             }
 
             // The group never overflows its own box, and the page never scrolls sideways.
