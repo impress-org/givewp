@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Added additional permission checks to the donor list REST API endpoint.
+timestamp: 2026-11-13T19:24:46.900Z

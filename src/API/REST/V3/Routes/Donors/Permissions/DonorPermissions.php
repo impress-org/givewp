@@ -64,39 +64,36 @@ class DonorPermissions
     }
 
     /**
+     * Validates a request for a single donor. The owner of the donor may read their own sensitive data.
+     *
+     * @since TBD Move the shared checks to validateReadAccess().
      * @since 4.14.0
      *
-     * @param WP_REST_Request $request
+     * @param WP_REST_Request $request The request for a single donor.
      *
-     * @return true|WP_Error
+     * @return true|WP_Error True when the request is allowed, otherwise the error to return.
      */
     public static function validationForGetMethods(WP_REST_Request $request)
     {
-        $isAdmin = self::canView();
         $donorId = $request->get_param('id');
         $isOwner = $donorId ? self::isOwner($donorId) : false;
 
-        $includeSensitiveData = $request->get_param('includeSensitiveData');
-        if (!$isAdmin && !$isOwner && $includeSensitiveData) {
-            return new WP_Error(
-                'rest_forbidden',
-                __('You do not have permission to include sensitive data.', 'give'),
-                ['status' => self::authorizationStatusCode()]
-            );
-        }
+        return self::validateReadAccess($request, $isOwner);
+    }
 
-        if ($request->get_param('anonymousDonors') !== null) {
-            $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
-            if (!$isAdmin && !$isOwner && $donorAnonymousMode->isIncluded()) {
-                return new WP_Error(
-                    'rest_forbidden',
-                    __('You do not have permission to include anonymous donors.', 'give'),
-                    ['status' => self::authorizationStatusCode()]
-                );
-            }
-        }
-
-        return true;
+    /**
+     * Validates a request for the donors collection. Owning a donor grants no access here, because the
+     * collection returns other donors.
+     *
+     * @since TBD
+     *
+     * @param WP_REST_Request $request The request for the donors collection.
+     *
+     * @return true|WP_Error True when the request is allowed, otherwise the error to return.
+     */
+    public static function validationForGetCollectionMethod(WP_REST_Request $request)
+    {
+        return self::validateReadAccess($request, false);
     }
 
     /**
@@ -119,6 +116,41 @@ class DonorPermissions
                 __('You do not have permission to update this donor.', 'give'),
                 ['status' => self::authorizationStatusCode()]
             );
+        }
+
+        return true;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @param WP_REST_Request $request The read request.
+     * @param bool            $isOwner Whether the current user owns the requested donor.
+     *
+     * @return true|WP_Error True when the request is allowed, otherwise the error to return.
+     */
+    private static function validateReadAccess(WP_REST_Request $request, bool $isOwner)
+    {
+        $isAdmin = self::canView();
+
+        $includeSensitiveData = $request->get_param('includeSensitiveData');
+        if (!$isAdmin && !$isOwner && $includeSensitiveData) {
+            return new WP_Error(
+                'rest_forbidden',
+                __('You do not have permission to include sensitive data.', 'give'),
+                ['status' => self::authorizationStatusCode()]
+            );
+        }
+
+        if ($request->get_param('anonymousDonors') !== null) {
+            $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
+            if (!$isAdmin && !$isOwner && $donorAnonymousMode->isIncluded()) {
+                return new WP_Error(
+                    'rest_forbidden',
+                    __('You do not have permission to include anonymous donors.', 'give'),
+                    ['status' => self::authorizationStatusCode()]
+                );
+            }
         }
 
         return true;
