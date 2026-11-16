@@ -11,10 +11,43 @@ class EnqueueStripeFormBuilderScriptsTest extends TestCase
     private const HANDLE = 'givewp-stripe-payment-element-form-builder';
 
     /**
+     * Build file the enqueue reads without checking that it exists.
+     */
+    private const ASSET_FILE = GIVE_PLUGIN_DIR . 'build/stripePaymentElementFormBuilder.asset.php';
+
+    /**
+     * @var bool Whether setUp() wrote the placeholder asset file.
+     */
+    private $createdAssetPlaceholder = false;
+
+    /**
+     * The enqueue reads the asset file from the asset build, which the PHP test workflows do not run.
+     * A placeholder is written only when the build has not produced the file.
+     *
+     * @since TBD
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        if (file_exists(self::ASSET_FILE)) {
+            return;
+        }
+
+        wp_mkdir_p(dirname(self::ASSET_FILE));
+        file_put_contents(self::ASSET_FILE, "<?php return ['dependencies' => [], 'version' => '0.0.0'];\n");
+        $this->createdAssetPlaceholder = true;
+    }
+
+    /**
      * @since TBD
      */
     public function tearDown(): void
     {
+        if ($this->createdAssetPlaceholder) {
+            unlink(self::ASSET_FILE);
+        }
+
         wp_dequeue_script(self::HANDLE);
         wp_deregister_script(self::HANDLE);
         wp_dequeue_style(self::HANDLE);
