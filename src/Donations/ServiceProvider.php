@@ -148,7 +148,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * Drops the cached donation totals whenever a donation or its meta is written. The model hooks
+     * Marks the cached donation totals outdated whenever a donation or its meta is written. The model hooks
      * see repository writes, which go to the tables directly; the post and meta hooks see writes
      * through the legacy Give_Payment and the WordPress post and metadata APIs.
      *

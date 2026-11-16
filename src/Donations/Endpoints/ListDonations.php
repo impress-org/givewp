@@ -421,7 +421,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD Count from the test-mode meta rows when only post columns and the mode filter apply, and cache the total until a donation changes.
+     * @since TBD Count from the test-mode meta rows when only post columns and the mode filter apply, and cache the total for display (outdated within the totals cache's max age).
      * @since 4.18.0 Drop the GROUP BY on mode, which made count() return the size of one mode group
      * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
@@ -451,7 +451,8 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * A total from the totals cache, or straight from the database while counting live.
+     * A total from the totals cache, which may be outdated within its max age since it is only
+     * displayed, or straight from the database while counting live (then cached for display).
      *
      * @since TBD
      *
@@ -459,7 +460,11 @@ class ListDonations extends Endpoint
      */
     private function rememberTotal(string $key, callable $callback)
     {
-        return $this->countsLive ? $callback() : DonationTotalsCache::remember($key, $callback);
+        if ($this->countsLive) {
+            return DonationTotalsCache::recompute($key, $callback);
+        }
+
+        return DonationTotalsCache::remember($key, $callback, true);
     }
 
     /**

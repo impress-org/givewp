@@ -77,7 +77,7 @@ class ListDonationsStats extends Endpoint
      * JOIN of both meta rows onto every donation read the meta of each one, a minute or more at a
      * million donations.
      *
-     * @since TBD Count from the indexes instead of joining the meta of every donation, and count a donation without a subscription row as one-time.
+     * @since TBD Count from the indexes instead of joining the meta of every donation, and count a donation without a subscription row as one-time; allow an outdated value within the totals cache's max age.
      * @since 4.10.0
      */
     public function getDonationStatistics(): array
@@ -93,7 +93,8 @@ class ListDonationsStats extends Endpoint
             return $query->getSQL();
         }, $queries));
 
-        // Each count still reads one meta row per matching donation: remember them until a donation changes.
+        // Each count still reads one meta row per matching donation. The tiles only display them, so
+        // an outdated value may be shown within the totals cache's max age.
         return DonationTotalsCache::remember($key, static function () use ($testMode, $queries) {
             $counts = array_map(static function (QueryBuilder $query) {
                 return (int)DB::get_var($query->getSQL());
@@ -108,7 +109,7 @@ class ListDonationsStats extends Endpoint
             list($testModeCount, $recurringTestModeCount, $allCount, $recurringCount) = $counts;
 
             return self::toStatistics($allCount - $testModeCount, $recurringCount - $recurringTestModeCount);
-        });
+        }, true);
     }
 
     /**

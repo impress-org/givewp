@@ -145,7 +145,7 @@ Things to know before touching this:
 - **Full rebuild** is the `Campaigns/Migrations/CacheCampaignsData` migration, which deletes both
   options and repopulates. That's the recovery path when the cache is wrong.
 
-### Donation totals: a versioned option
+### Donation totals: a timed option
 
 `Donations/Repositories/DonationTotalsCache` keeps the totals the donation endpoints compute over
 every donation: the donations list count (`ListDonations::getTotalDonationsCount()`), the donations
@@ -156,28 +156,44 @@ million donations each of those reads a meta row per donation and takes tens of 
 - **Keyed by the SQL.** `remember($key, $callback)` stores each value under the SQL that computes it,
   so two requests with the same filters share one entry and different filters never mix. The
   `%` placeholder that `$wpdb->prepare()` puts in a `LIKE` changes per request, so the key drops it.
-- **Exact, not stale.** The option also holds a version. Any donation write changes the version and
-  empties the values: the model hooks (`givewp_donation_created`, `_updated`, `_deleted`), the
-  legacy hooks (`give_insert_payment`, `give_update_payment_status`, `give_payment_deleted`),
-  `save_post_give_payment`, `deleted_post` for a donation, and the WordPress metadata hooks for the
-  `donation` (and pre-2.2.0 `payment`) meta type. A value computed while a write happened is not
-  stored. A write that bypasses all of these (raw SQL) leaves the totals stale until the next
-  flush.
+- **Writes mark a change, they do not empty the cache.** Each value carries the time its
+  computation started. Any donation write stores the time of the change in its own option
+  (`give_donation_totals_changed_at`): the model hooks (`givewp_donation_created`, `_updated`,
+  `_deleted`), the legacy hooks (`give_insert_payment`, `give_update_payment_status`,
+  `give_payment_deleted`), `save_post_give_payment`, `deleted_post` for a donation, and the
+  WordPress metadata hooks for the `donation` (and pre-2.2.0 `payment`) meta type. A value that
+  started before the last change is outdated. A write that bypasses all of these (raw SQL) leaves
+  the totals outdated without knowing it until the next marked change.
+- **Exact by default, timed for display.** `remember()` never returns an outdated value unless the
+  caller passes `$allowOutdated`. Only totals that are just displayed do: the donations list count,
+  the donations stats and the subscriptions stats. For those, an outdated value is returned at once
+  for up to `givewp_donation_totals_max_age` seconds (default 60; 0 turns it off). Past that, the
+  request still returns the outdated value, and computes it again after its response is sent
+  (`fastcgi_finish_request()` or `litespeed_finish_request()`; a server without either computes it
+  in the request, as on a miss). So a busy site computes each total about once a minute instead of
+  on nearly every page view, and a count can lag by the max age plus one computation. On a quiet
+  site the first page view after a write may still show the old number; the one after it is exact.
+  The v3 `X-WP-Total` and the donors total stay exact, since API clients follow `Link: next` from
+  them.
+- **Never for choosing rows.** See "A cached total never picks rows" below: a displayed count may
+  lag, a donation may never go missing.
 - **Bounded and private.** One option, not autoloaded, at most 50 values. It only holds numbers
   and the stats row; no donor data. Every endpoint that reads it checks permissions first, and the
   totals do not depend on who asks.
 - **Subscriptions and donors too.** `ListSubscriptionStats` reads the subscription status and the
-  donors total reads the donors table, so the subscription and donor model hooks flush as well,
-  with the legacy `give_subscription_inserted` / `_updated` / `_deleted`, `give_donor_post_create`,
-  `give_donor_post_update` and `give_pre_delete_donor` hooks. The last one fires before the delete,
-  so a total computed in that gap can keep the deleted donor until the next write.
+  donors total reads the donors table, so the subscription and donor model hooks mark changes as
+  well, with the legacy `give_subscription_inserted` / `_updated` / `_deleted`,
+  `give_donor_post_create`, `give_donor_post_update` and `give_pre_delete_donor` hooks. The last one
+  fires before the delete, so a total computed in that gap can keep the deleted donor until the
+  next write.
 - **One request computes, the others wait.** A miss takes a lock row in `wp_options`
   (`INSERT IGNORE`, so only one request gets it); other requests for the same total poll the cache
-  every second for up to two minutes instead of running the same query next to it. Several tabs
-  loading the donations screen at once used to start one 70-second stats query each, and the copies
-  slowed each other down. A lock older than five minutes is taken to belong to a request that died.
-- **The cost moves to the first request after a write.** On a site that takes donations all day
-  the cache empties often, so the uncached query still has to be as fast as it can be (see below).
+  every second for up to two minutes instead of running the same query next to it. A refresh after
+  the response takes the same lock and skips if another request holds it. A lock older than five
+  minutes is taken to belong to a request that died.
+- **Date ranges need no rounding.** The filter bar sends whole days (`T00:00:00` to `T23:59:59`), so
+  the same range gives the same key. Rounding on the server would change what an API client asked
+  for.
 
 ### v2 forms list: async columns, not caching
 
