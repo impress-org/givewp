@@ -67,13 +67,13 @@ final class WebhookHealthMonitor
 
         $mode = give_is_test_mode() ? 'test' : 'live';
         $problems = [];
-        $skipped = false;
+        $skippedSlugs = [];
 
         foreach (($this->getAccounts)($mode) as $account) {
             $problem = $this->problemOf($account, $mode);
 
             if (null === $problem) {
-                $skipped = true;
+                $skippedSlugs[] = $account->accountSlug;
             } elseif ('' !== $problem) {
                 /* Keyed by slug because two saved accounts can share a name. */
                 $problems[$account->accountSlug] = $problem;
@@ -85,10 +85,14 @@ final class WebhookHealthMonitor
             (array)($notified['problems'] ?? []) :
             [];
 
-        /* A skipped account may still have the problem the last email listed, so only a new problem counts. */
-        if ($skipped && !array_diff_assoc($problems, $notifiedProblems)) {
-            return;
+        /* A skipped account may still have the problem the last email listed, so that problem stays until a check clears it. */
+        foreach ($skippedSlugs as $slug) {
+            if (isset($notifiedProblems[$slug])) {
+                $problems[$slug] = $notifiedProblems[$slug];
+            }
         }
+
+        ksort($problems);
 
         if (!$problems) {
             /* The stored problems belong to the other mode, which this check says nothing about. */

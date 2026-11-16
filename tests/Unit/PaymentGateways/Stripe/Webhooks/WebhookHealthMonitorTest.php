@@ -108,6 +108,55 @@ final class WebhookHealthMonitorTest extends TestCase
     /**
      * @since TBD
      */
+    public function testItKeepsTheProblemOfASkippedAccountWhenAnotherAccountChanges(): void
+    {
+        $this->saveTwoAccounts();
+        $disabled = $this->endpointBody([
+            'url' => home_url('/?give-listener=stripe'),
+            'enabled_events' => WebhookTarget::REQUIRED_EVENTS,
+            'status' => 'disabled',
+        ]);
+        $this->stripe->queue(200, $this->listBody([]));
+        $this->stripe->queue(200, $this->listBody([]));
+        $this->stripe->queue(429, $this->errorBody('invalid_request_error', 'Too many requests.'));
+        $this->stripe->queue(200, $this->listBody([$disabled]));
+        $this->stripe->queue(200, $this->listBody([]));
+        $this->stripe->queue(200, $this->listBody([$disabled]));
+
+        give(WebhookHealthMonitor::class)();
+        give(WebhookHealthMonitor::class)();
+        $notifiedAfterSkip = get_option(self::NOTIFIED_OPTION);
+        give(WebhookHealthMonitor::class)();
+
+        $this->assertCount(2, $this->emails);
+        $this->assertSame(['acct_first', 'acct_second'], array_keys($notifiedAfterSkip['problems']));
+        $this->assertStringContainsString('First account', $this->emails[1]['message']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testItDropsTheProblemOfAnAccountThatRecoveredWhileAnotherWasSkipped(): void
+    {
+        $this->saveTwoAccounts();
+        $healthy = $this->endpointBody([
+            'url' => home_url('/?give-listener=stripe'),
+            'enabled_events' => WebhookTarget::REQUIRED_EVENTS,
+        ]);
+        $this->stripe->queue(200, $this->listBody([]));
+        $this->stripe->queue(200, $this->listBody([]));
+        $this->stripe->queue(429, $this->errorBody('invalid_request_error', 'Too many requests.'));
+        $this->stripe->queue(200, $this->listBody([$healthy]));
+
+        give(WebhookHealthMonitor::class)();
+        give(WebhookHealthMonitor::class)();
+
+        $this->assertSame(['acct_first'], array_keys(get_option(self::NOTIFIED_OPTION)['problems']));
+    }
+
+    /**
+     * @since TBD
+     */
     public function testItEmailsAgainWhenTheProblemMovesToAnotherAccountWithTheSameName(): void
     {
         $first = $this->makeAccount(['account_slug' => 'acct_first', 'account_name' => 'Shop']);
@@ -331,5 +380,18 @@ final class WebhookHealthMonitorTest extends TestCase
 
         $this->assertSame([], $this->stripe->requests);
         $this->assertSame([], $this->emails);
+    }
+
+    /**
+     * @since TBD
+     */
+    private function saveTwoAccounts(): void
+    {
+        $first = $this->makeAccount(['account_slug' => 'acct_first', 'account_name' => 'First account']);
+        $second = $this->makeAccount(['account_slug' => 'acct_second', 'account_name' => 'Second account']);
+        give_update_option('_give_stripe_get_all_accounts', [
+            $first->accountSlug => $first->toArray(),
+            $second->accountSlug => $second->toArray(),
+        ]);
     }
 }
