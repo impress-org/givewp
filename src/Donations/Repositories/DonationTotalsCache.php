@@ -2,13 +2,18 @@
 
 namespace Give\Donations\Repositories;
 
+use Give\Framework\Database\DB;
+
 /**
  * Remembers totals computed over the donations (list counts and stats) until a donation changes.
  *
  * At a million donations a total reads one meta row per donation and takes tens of seconds, while
  * the list screens ask for the same totals on every visit. Each total is stored under the SQL that
- * computes it, next to a version. Any write to a donation or its meta changes the version, so the
- * next request computes every total again from the database.
+ * computes it, next to a version. Any write to a donation, its meta or a subscription changes the
+ * version, so the next request computes every total again from the database.
+ *
+ * Only one request computes a missing total at a time. The others wait for its result instead of
+ * running the same slow query next to it, which made each copy slower.
  *
  * All values live in one option that is not autoloaded and holds at most MAX_ENTRIES totals.
  *
@@ -25,6 +30,20 @@ class DonationTotalsCache
      * @since TBD
      */
     public const MAX_ENTRIES = 50;
+
+    /**
+     * How long a request waits for another one to compute the same total, in seconds.
+     *
+     * @since TBD
+     */
+    public const WAIT_SECONDS = 120;
+
+    /**
+     * After this many seconds a computing lock is taken to belong to a request that died.
+     *
+     * @since TBD
+     */
+    public const LOCK_SECONDS = 300;
 
     /**
      * The version that this request already set, so a burst of writes in one request saves once.
@@ -55,34 +74,32 @@ class DonationTotalsCache
             return $cache['values'][$hash];
         }
 
-        $value = $callback();
+        if (!self::lock($hash)) {
+            $cache = self::waitForOtherRequest($hash);
 
-        // Read again: a donation may have changed while the value was computed.
-        $current = self::read();
-
-        if ($current['version'] !== $cache['version']) {
-            return $value;
+            if (array_key_exists($hash, $cache['values'])) {
+                return $cache['values'][$hash];
+            }
         }
 
-        $current['values'][$hash] = $value;
-
-        if (count($current['values']) > self::MAX_ENTRIES) {
-            $current['values'] = array_slice($current['values'], -self::MAX_ENTRIES, null, true);
+        try {
+            $value = $callback();
+            self::store($hash, $value, $cache['version']);
+        } finally {
+            self::unlock($hash);
         }
-
-        update_option(self::OPTION, $current, false);
 
         return $value;
     }
 
     /**
-     * Drops every cached total. Hooked to donation writes.
+     * Drops every cached total. Hooked to donation and subscription writes.
      *
      * @since TBD
      */
     public static function flush(): void
     {
-        $cache = self::read();
+        $cache = self::read(true);
 
         // Nothing was cached since this request last flushed, so there is nothing to drop.
         if (self::$flushedVersion !== null && self::$flushedVersion === $cache['version'] && !$cache['values']) {
@@ -96,13 +113,134 @@ class DonationTotalsCache
     }
 
     /**
+     * Saves a value, unless a donation changed since the version the computation started from.
+     *
+     * @since TBD
+     *
+     * @param mixed $value
+     */
+    private static function store(string $hash, $value, string $version): void
+    {
+        $current = self::read(true);
+
+        if ($current['version'] !== $version) {
+            return;
+        }
+
+        $current['values'][$hash] = $value;
+
+        if (count($current['values']) > self::MAX_ENTRIES) {
+            $current['values'] = array_slice($current['values'], -self::MAX_ENTRIES, null, true);
+        }
+
+        update_option(self::OPTION, $current, false);
+    }
+
+    /**
+     * Polls the cache while another request computes the total. Returns the last cache read, which
+     * holds the value unless the wait ran out or the other request stopped without saving it.
+     *
      * @since TBD
      *
      * @return array{version: string, values: array}
      */
-    private static function read(): array
+    private static function waitForOtherRequest(string $hash): array
     {
-        $cache = get_option(self::OPTION);
+        $deadline = time() + self::WAIT_SECONDS;
+
+        do {
+            sleep(1);
+            $cache = self::read(true);
+        } while (!array_key_exists($hash, $cache['values']) && self::isLocked($hash) && time() < $deadline);
+
+        return $cache;
+    }
+
+    /**
+     * Claims the computation of a total. The lock is an options row: INSERT IGNORE adds it only when
+     * no request holds it, which add_option() cannot promise. A lock older than LOCK_SECONDS is taken
+     * over.
+     *
+     * @since TBD
+     */
+    private static function lock(string $hash): bool
+    {
+        global $wpdb;
+
+        $name = self::lockName($hash);
+
+        $inserted = DB::query(DB::prepare(
+            "INSERT IGNORE INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, %s, 'off')",
+            $name,
+            (string)time()
+        ));
+
+        if ($inserted) {
+            return true;
+        }
+
+        if (self::isLocked($hash)) {
+            return false;
+        }
+
+        DB::query(DB::prepare("UPDATE {$wpdb->options} SET option_value = %s WHERE option_name = %s", (string)time(), $name));
+
+        return true;
+    }
+
+    /**
+     * @since TBD
+     */
+    private static function isLocked(string $hash): bool
+    {
+        return (int)self::readRaw(self::lockName($hash)) > time() - self::LOCK_SECONDS;
+    }
+
+    /**
+     * @since TBD
+     */
+    private static function unlock(string $hash): void
+    {
+        global $wpdb;
+
+        DB::query(DB::prepare("DELETE FROM {$wpdb->options} WHERE option_name = %s", self::lockName($hash)));
+    }
+
+    /**
+     * @since TBD
+     */
+    private static function lockName(string $hash): string
+    {
+        return self::OPTION . '_lock_' . $hash;
+    }
+
+    /**
+     * An option's value straight from the table, past the copies WordPress keeps for the request,
+     * so a request sees what other requests wrote.
+     *
+     * @since TBD
+     *
+     * @return mixed
+     */
+    private static function readRaw(string $name)
+    {
+        global $wpdb;
+
+        $value = DB::get_var(DB::prepare("SELECT option_value FROM {$wpdb->options} WHERE option_name = %s", $name));
+
+        return $value === null ? false : maybe_unserialize($value);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @param bool $fresh skip the copy WordPress keeps for this request, to see other requests' writes
+     *
+     * @return array{version: string, values: array}
+     */
+    private static function read(bool $fresh = false): array
+    {
+        $cache = $fresh ? self::readRaw(self::OPTION) : get_option(self::OPTION);
 
         if (!is_array($cache) || !isset($cache['version'], $cache['values']) || !is_array($cache['values'])) {
             return ['version' => '', 'values' => []];

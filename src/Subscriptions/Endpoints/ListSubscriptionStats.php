@@ -4,6 +4,7 @@ namespace Give\Subscriptions\Endpoints;
 
 use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Formatting\StatsFormatter;
+use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -64,6 +65,7 @@ class ListSubscriptionStats extends Endpoint
     /**
      * Get subscription statistics for total contributions and active subscriptions
      *
+     * @since TBD Cache the statistics until a donation or subscription changes.
      * @since 4.12.0
      */
     public function getSubscriptionStatistics(): array
@@ -108,7 +110,10 @@ class ListSubscriptionStats extends Endpoint
             COUNT(DISTINCT CASE WHEN s.status = "active" THEN s.id END) as active_subscriptions
         ');
 
-        $result = $query->get();
+        // One read of the meta of every published donation: remember it until a donation or subscription changes.
+        $result = DonationTotalsCache::remember(__METHOD__ . $query->getSQL(), static function () use ($query) {
+            return $query->get();
+        });
 
         if (!$result) {
              return [
