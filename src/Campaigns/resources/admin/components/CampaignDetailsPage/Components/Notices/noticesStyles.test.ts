@@ -1,39 +1,31 @@
 import {readFileSync} from 'fs';
 import {join} from 'path';
 
-describe('Campaign List balloon position', () => {
-    it('hangs from the bottom edge of the page header, at the inline end', () => {
-        const styles = readFileSync(join(__dirname, 'Notices.module.scss'), 'utf8');
-        const start = styles.indexOf('.campaignList {');
-        const block = styles.slice(start, styles.indexOf('}', start));
+const styles = readFileSync(join(__dirname, 'Notices.module.scss'), 'utf8');
 
-        expect(block).toContain('inset-block-start: 100%');
-        expect(block).toContain('inset-inline-end: 24px');
-        expect(block).not.toMatch(/\b(left|right|top):/);
+describe('Campaign notice placement', () => {
+    it('keeps the details page tips where they were: absolute, at their own spots', () => {
+        const tooltip = styles.slice(styles.indexOf('.tooltip {'), styles.indexOf('}', styles.indexOf('.tooltip {')));
+        const settings = styles.slice(
+            styles.indexOf('.campaignSettings {'),
+            styles.indexOf('}', styles.indexOf('.campaignSettings {'))
+        );
+        const form = styles.slice(
+            styles.indexOf('.campaignForm {'),
+            styles.indexOf('}', styles.indexOf('.campaignForm {'))
+        );
+
+        expect(tooltip).toContain('position: absolute');
+        expect(tooltip).toContain('z-index: 11');
+        expect(settings).toContain('right: 20px');
+        expect(settings).toContain('top: 20px');
+        expect(form).toContain('left: 250px');
+        expect(form).toContain('top: 20px');
     });
 
-    it('floats at the bottom end corner of the window below 1280px, inside the viewport', () => {
-        const styles = readFileSync(join(__dirname, 'Notices.module.scss'), 'utf8');
-        const list = styles.indexOf('.campaignList {');
-        const start = styles.indexOf('@media (max-width: 1279px) {', list);
-        const media = styles.slice(start, styles.indexOf('}', start));
-
-        expect(media).toContain('position: fixed');
-        expect(media).toContain('inset-block: auto 24px');
-        expect(media).toContain('max-inline-size: calc(100vw - 48px)');
-        expect(list).toBeLessThan(start);
-    });
-
-    it('floats the default form balloon at the bottom end corner at every width', () => {
-        const styles = readFileSync(join(__dirname, 'Notices.module.scss'), 'utf8');
-        const start = styles.indexOf('.defaultForm {');
-        const block = styles.slice(start, styles.indexOf('}', start));
-
-        expect(block).toContain('position: fixed');
-        expect(block).toContain('inset-block: auto 24px');
-        expect(block).toContain('inset-inline: auto 24px');
-        expect(block).toContain('max-inline-size: calc(100vw - 48px)');
-        expect(block).not.toMatch(/\b(left|right|top):/);
-        expect(block).not.toContain('@media');
+    it('has no placement left for the list screens, which show their tips as notices', () => {
+        expect(styles).not.toContain('.campaignList');
+        expect(styles).not.toContain('.defaultForm');
+        expect(styles).not.toContain('position: fixed');
     });
 });

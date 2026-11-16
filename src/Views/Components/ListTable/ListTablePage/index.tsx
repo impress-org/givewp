@@ -101,6 +101,7 @@ export const ShowConfirmModalContext = createContext(
  * itself (with its stat tiles at the top of the sheet) through the WordPress list engine
  * (`@wordpress/dataviews`). It accepts the same props as before the engine change, so every screen and add-on keeps rendering without changes.
  *
+ * @since TBD Add `onItemsChange`: the rows on the page, for a notice that depends on them.
  * @since TBD Add `legacyView`: "Switch to Legacy View" in the list's "More view options" menu.
  * @since TBD At 782 px and below, show the records as cards built from the screen's field roles.
  * @since TBD Keep the stat tiles mounted with a status, name their region by the screen, and render them at the top of the list sheet.
@@ -142,6 +143,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             scope: fixedScope,
             testModeToggle,
             legacyView,
+            onItemsChange,
         }: ListTablePageProps,
         ref
     ) => {
@@ -371,6 +373,10 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             refresh,
             clearSelection,
         });
+
+        useEffect(() => {
+            onItemsChange?.(data?.items ?? []);
+        }, [data?.items]);
 
         const {recommendation, dismiss: dismissRecommendation} = useDailyRecommendation(recommendations);
 

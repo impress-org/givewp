@@ -6,7 +6,7 @@ import {createRoot} from 'react-dom/client';
 const mockDismiss = jest.fn();
 const mockPageProps = jest.fn();
 
-// A stand-in for the page: it renders its children, where the Campaign List balloon sits.
+// A stand-in for the page: it records its props, where the Campaign List notice is passed.
 jest.mock('@givewp/components', () => ({
     ListTablePage: (props: {children?: React.ReactNode}) => {
         mockPageProps(props);
@@ -26,7 +26,7 @@ jest.mock('@givewp/campaigns/admin/components/ExistingUserIntroModal', () => () 
 jest.mock('./CampaignsRowActions', () => ({campaignsRowActions: []}));
 
 describe('CampaignsListTable', () => {
-    it('shows the Campaign List tip as a floating balloon, and dismisses it', async () => {
+    it('passes the Campaign List tip as an onboarding notice for the notice area, and dismisses it', async () => {
         (window as unknown as Record<string, unknown>).GiveCampaignsListTable = {pluginUrl: ''};
         const {default: CampaignsListTable} = await import('./index');
         const container = document.createElement('div');
@@ -35,21 +35,22 @@ describe('CampaignsListTable', () => {
 
         await act(() => root.render(<CampaignsListTable />));
 
-        // The page gets no notices: the tip is a child of the page, not an entry in the notice area.
-        expect(mockPageProps.mock.calls[0][0].notices).toBeUndefined();
+        // The tip is no longer a floating balloon inside the page.
+        expect(container.querySelector('.givewp-balloon')).toBeNull();
 
-        const heading = container.querySelector('h3') as HTMLElement;
-        expect(heading.textContent).toBe('Campaign List');
-        const balloon = heading.closest('.givewp-balloon') as HTMLElement;
-        expect(balloon.querySelector('a')?.getAttribute('href')).toBe('https://docs.givewp.com/campaigns-docs');
-        expect(balloon.querySelector('[role="group"]')).toBeNull();
+        const {notices} = mockPageProps.mock.calls[0][0];
+        expect(notices).toHaveLength(1);
+        expect(notices[0]).toMatchObject({
+            id: 'campaign-list',
+            kind: 'onboarding',
+            title: 'Campaign List',
+            link: {href: 'https://docs.givewp.com/campaigns-docs', opensInNewTab: true},
+        });
 
-        const close = balloon.querySelector('button[aria-label="Dismiss"]') as HTMLButtonElement;
-        expect(close).toBe(balloon.firstElementChild);
-        await act(() => close.click());
+        await act(() => notices[0].onDismiss());
 
         expect(mockDismiss).toHaveBeenCalledWith('givewp_campaign_listtable_notice');
-        expect(container.querySelector('h3')).toBeNull();
+        expect(mockPageProps.mock.calls.at(-1)[0].notices).toEqual([]);
 
         await act(() => root.unmount());
         container.remove();

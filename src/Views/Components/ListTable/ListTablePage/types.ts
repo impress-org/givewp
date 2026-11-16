@@ -326,6 +326,13 @@ export interface ListTablePageProps {
     productRecommendation?: ReactNode;
     /** @since TBD */
     notices?: ListTableNotice[];
+    /**
+     * Called with the rows on the page whenever they change. A screen reads them to show a notice that depends on
+     * the records (the notice itself must carry no record data).
+     *
+     * @since TBD
+     */
+    onItemsChange?: (items: ListTableItem[]) => void;
     /** @since TBD */
     recommendations?: ListTableRecommendations;
     columnFilters?: Array<ColumnFilterConfig>;

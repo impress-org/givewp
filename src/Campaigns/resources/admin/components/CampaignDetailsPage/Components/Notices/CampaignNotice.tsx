@@ -6,7 +6,7 @@ interface NoticeProps {
     title: string;
     description: string;
     handleDismiss?: () => void;
-    type: 'campaignSettings' | 'campaignList' | 'campaignForm';
+    type: 'campaignSettings' | 'campaignForm';
     linkText?: string;
     linkHref?: string;
 }

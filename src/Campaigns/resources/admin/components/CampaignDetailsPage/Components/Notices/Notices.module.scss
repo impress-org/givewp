@@ -5,34 +5,9 @@
     z-index: 11;
 }
 
-// The default form tip floats at the bottom end corner of the window at every width. Anywhere in the page it
-// would land on the rows of the Forms tab, whatever their number; the corner is always in view.
-.defaultForm {
-    position: fixed;
-    inset-block: auto 24px;
-    inset-inline: auto 24px;
-    max-inline-size: calc(100vw - 48px);
-}
-
 .campaignSettings {
     right: 20px;
     top: 20px;
-}
-
-// The Campaign List tip is a child of the list page header (the sticky box it is placed against), so it
-// hangs from the bottom edge of the header, at the end edge of the page.
-.campaignList {
-    inset-block-start: 100%;
-    inset-inline-end: 24px;
-
-    // Below this width the balloon would reach the search row (the filters and the view options), and under
-    // 783px the header is not sticky, so it would hang at the end of the page. It floats at the bottom
-    // corner of the window instead: always in view, never over the search row, the filters or the header.
-    @media (max-width: 1279px) {
-        position: fixed;
-        inset-block: auto 24px;
-        max-inline-size: calc(100vw - 48px);
-    }
 }
 
 .campaignForm {

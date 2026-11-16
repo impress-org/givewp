@@ -325,10 +325,13 @@ the toolbar. Nothing renders inside the table: its body holds records only.
 - **Dismissals are site-wide.** The recommendation dismissals are options
   (`givewp_donations_*_recommendation_dismissed`), as before, so one admin's dismissal hides the tip
   for every admin. Dismissing hides it at once; no other tip appears until the next load.
-- **Onboarding tips are balloons, not notices.** The Campaigns "Campaign List" tip and the "Default
-  campaign form" tip on a campaign's Forms tab are floating balloons (`CampaignNotice`,
-  `DefaultFormNotice`), passed to the page as children. They are not part of the notice area. The
-  screen owns the "shown" flag (user meta).
+- **Onboarding tips are notices in the area.** The Campaigns "Campaign List" tip, the "Default campaign
+  form" tip on a campaign's Forms tab and the Donation Forms "upgraded form" tip are `ListTableNotice`
+  entries of kind `onboarding`: dismissible rows in the flow, under the stat tiles and above the table,
+  after the `system` notices. Nothing floats over the list. The upgraded form tip is one notice for the
+  list, shown while a row on the page has the Upgraded status (the page reports its rows through
+  `onItemsChange`). The screen owns the "shown" flag (user meta, or the tip's own request). The
+  campaign details page tips (Settings and Overview tabs) are still floating balloons (`CampaignNotice`).
 - **Accessible.** A notice with a title is a `group` named by its heading; the recommendation is
   named "Pro tip". Dismiss buttons read "Dismiss notice" or "Dismiss tip", and a link that opens a
   new tab says so.

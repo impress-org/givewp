@@ -45,13 +45,13 @@ function NoticeLink({href, label, opensInNewTab}: {href: string; label: string; 
 }
 
 /**
- * The one place above a list table where notices and the daily product recommendation render.
- * Everything comes from page config, so there is no loading state. When
+ * The one place above a list table where notices, onboarding tips and the daily product recommendation
+ * render. Everything comes from page config, so there is no loading state. When
  * there is nothing to show, the wrapper is hidden by the `:empty` rule in the stylesheet, so it takes
  * no space. (It returns null when there is also no `children` at all; the page always passes the
  * action notification placeholder, so there the wrapper is what gets hidden.)
  *
- * Order: `children`, system notices, the recommendation, then `trailing`.
+ * Order: `children`, system notices, onboarding tips, the recommendation, then `trailing`.
  *
  * @since TBD
  */
@@ -62,7 +62,12 @@ export default function ListTableNoticeArea({
     children,
     trailing,
 }: ListTableNoticeAreaProps) {
-    if (notices.length === 0 && !recommendation && Children.toArray(children).length === 0 && !trailing) {
+    const ordered = [
+        ...notices.filter((notice) => notice.kind === 'system'),
+        ...notices.filter((notice) => notice.kind === 'onboarding'),
+    ];
+
+    if (ordered.length === 0 && !recommendation && Children.toArray(children).length === 0 && !trailing) {
         return null;
     }
 
@@ -70,7 +75,7 @@ export default function ListTableNoticeArea({
         <div className="givewp-list-table-notice-area">
             {children}
 
-            {notices.map(({id, title, message, link, onDismiss}) => (
+            {ordered.map(({id, title, message, link, onDismiss}) => (
                 <Notice key={id} type="info" className={NOTICE_CLASS} title={title} dismissHandleClick={onDismiss}>
                     <p className="givewp-list-table-notice-area__message">
                         {message}

@@ -61,25 +61,6 @@
     }
 }
 
-// The upgrade tip: the shared Balloon. The table scrolls sideways and clips what sticks out of the status
-// cell, so the tip floats at the window corner, like the other welcome balloons. Its look lives in the Balloon.
-.upgradedForm {
-    width: max(7.5rem, 120px);
-    position: relative;
-
-    .tooltip {
-        position: fixed;
-        z-index: 11;
-        inset-block-end: 24px;
-        inset-inline-end: 24px;
-        width: min(18rem, calc(100vw - 48px));
-    }
-
-    .tooltipContainer {
-        position: relative;
-    }
-}
-
 // The "Uses the Visual Form Builder" hover tip next to the cube icon.
 .migratedForm {
     .tooltip {

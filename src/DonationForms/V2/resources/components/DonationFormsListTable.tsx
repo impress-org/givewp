@@ -2,7 +2,6 @@ import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
 import {useDonationFormsRowActions} from './DonationFormsRowActions';
-import UpgradedFormTooltip from './UpgradedFormTooltip';
 import Onboarding, {OnboardingContext, OnboardingStateProps} from './Onboarding';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import formStyles from './DonationFormsListTable.module.scss';
@@ -12,7 +11,7 @@ import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import {CubeIcon} from '@givewp/components/AdminUI/Icons';
 import AddCampaignFormModal from './AddCampaignFormModal';
-import DefaultFormNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DefaultFormNotice';
+import type {ListTableNotice} from '@givewp/components/ListTable/notices/types';
 import apiFetch from '@wordpress/api-fetch';
 import {CampaignEntity} from '@givewp/campaigns/admin/components/types';
 import type {StatusVocabularyEntry} from '@givewp/components/ListTable/filters/types';
@@ -86,23 +85,6 @@ const columnFilters: Array<ColumnFilterConfig> = [
             );
         },
     },
-    {
-        column: 'status',
-        filter: (item, column) => {
-            if (window.GiveDonationForms.showUpgradedTooltip && item?.status_raw === 'upgraded') {
-                return (
-                    <div className={formStyles.upgradedForm}>
-                        <UpgradedFormTooltip
-                            onDismiss={() => fetch(window.GiveDonationForms.tooltipActionUrl, {method: 'POST'})}
-                        />
-                        <InterweaveSSR column={column} item={item} />
-                    </div>
-                );
-            }
-
-            return <InterweaveSSR column={column} item={item} />;
-        },
-    },
 ];
 
 /**
@@ -119,6 +101,7 @@ const ListTableBlankSlate = (
 );
 
 /**
+ * @since TBD Show the default form and upgraded form tips as notices above the list, not floating balloons.
  * @since TBD Offer "Switch to Legacy View" in the list's view menu, not in the header.
  * @since TBD Take the campaign as a prop: it fixes the request's campaign and replaces the Campaign filter, in place of reading the address.
  * @since TBD Pass the filter declaration in place of the filter settings.
@@ -154,6 +137,43 @@ export default function DonationFormsListTable({
         });
     };
 
+    // The upgraded form tip is one notice for the whole list, shown while a form on the page is upgraded.
+    const [hasUpgradedForm, setHasUpgradedForm] = useState(false);
+    const [isUpgradedTipDismissed, setUpgradedTipDismissed] = useState(false);
+
+    const dismissUpgradedTip = () => {
+        setUpgradedTipDismissed(true);
+        fetch(window.GiveDonationForms.tooltipActionUrl, {method: 'POST'});
+    };
+
+    const notices: ListTableNotice[] = [
+        ...(state.showDefaultFormTooltip && isCampaignDetailsPage
+            ? [
+                  {
+                      id: 'default-form',
+                      kind: 'onboarding' as const,
+                      title: __('Default campaign form', 'give'),
+                      message: __(
+                          'The default form will always appear at the top of this list. Your campaign page and blocks will collect donations through this form by default. You can change it at any time.',
+                          'give'
+                      ),
+                      onDismiss: handleDefaultFormTooltipDismiss,
+                  },
+              ]
+            : []),
+        ...(window.GiveDonationForms.showUpgradedTooltip && hasUpgradedForm && !isUpgradedTipDismissed
+            ? [
+                  {
+                      id: 'upgraded-form',
+                      kind: 'onboarding' as const,
+                      title: __('Upgraded forms', 'give'),
+                      message: __('A form with Upgraded status can be deleted safely.', 'give'),
+                      onDismiss: dismissUpgradedTip,
+                  },
+              ]
+            : []),
+    ];
+
     const rowActions = useDonationFormsRowActions(entity, isCampaignDetailsPage);
     const [isOpen, setOpen] = useState<boolean>(false);
     const openModal = () => setOpen(true);
@@ -172,6 +192,8 @@ export default function DonationFormsListTable({
                 listTableBlankSlate={ListTableBlankSlate}
                 columnFilters={columnFilters}
                 banner={Onboarding}
+                notices={notices}
+                onItemsChange={(items) => setHasUpgradedForm(items.some((item) => item?.status_raw === 'upgraded'))}
                 contentMode={isCampaignDetailsPage}
                 screen={screen ?? (isCampaignDetailsPage ? undefined : donationFormsListTableScreen)}
                 legacyView={
@@ -212,9 +234,6 @@ export default function DonationFormsListTable({
                     <a href={window.GiveDonationForms.newFormUrl} className={`button button-primary ${styles.button}`}>
                         {__('Add form', 'give')}
                     </a>
-                )}
-                {state.showDefaultFormTooltip && isCampaignDetailsPage && (
-                    <DefaultFormNotice handleClick={handleDefaultFormTooltipDismiss} />
                 )}
             </ListTablePage>
         </OnboardingContext.Provider>

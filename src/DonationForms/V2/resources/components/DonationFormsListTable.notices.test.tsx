@@ -16,7 +16,6 @@ jest.mock('@givewp/components', () => ({
 jest.mock('@givewp/components/ListTable/BlankSlate', () => () => null);
 jest.mock('./DonationFormsRowActions', () => ({useDonationFormsRowActions: () => []}));
 jest.mock('./AddCampaignFormModal', () => () => null);
-jest.mock('./UpgradedFormTooltip', () => () => null);
 jest.mock('./Onboarding', () => ({
     __esModule: true,
     default: () => null,
@@ -62,33 +61,69 @@ describe('DonationFormsListTable', () => {
         return () => act(() => root.unmount());
     };
 
-    it('shows the default form tip as a balloon on a campaign page, with its text and a dismiss control', async () => {
+    it('passes the default form tip as an onboarding notice on a campaign page, and dismisses it', async () => {
         const unmount = await render(5);
 
-        // The page gets no notices: the tip is a child of the page.
-        expect(mockPageProps.mock.calls[0][0].notices).toBeUndefined();
+        expect(container.querySelector('.givewp-balloon')).toBeNull();
+        const {notices} = mockPageProps.mock.calls[0][0];
+        expect(notices).toHaveLength(1);
+        expect(notices[0]).toMatchObject({
+            id: 'default-form',
+            kind: 'onboarding',
+            title: 'Default campaign form',
+            message:
+                'The default form will always appear at the top of this list. Your campaign page and blocks will collect donations through this form by default. You can change it at any time.',
+        });
 
-        const heading = container.querySelector('h3') as HTMLElement;
-        expect(heading.textContent).toBe('Default campaign form');
-        expect(container.textContent).toContain(
-            'The default form will always appear at the top of this list. Your campaign page and blocks will collect donations through this form by default. You can change it at any time.'
-        );
-
-        const balloon = heading.closest('.givewp-balloon') as HTMLElement;
-        const close = balloon.querySelector('button[aria-label="Dismiss"]') as HTMLButtonElement;
-        expect(close).toBe(balloon.firstElementChild);
-        await act(async () => close.click());
+        await act(async () => notices[0].onDismiss());
         expect(apiFetch).toHaveBeenCalled();
 
         await unmount();
     });
 
-    it('shows no tip on the standalone Forms screen', async () => {
+    it('passes no tip on the standalone Forms screen', async () => {
         const unmount = await render();
 
-        expect(container.querySelector('h3')).toBeNull();
+        expect(mockPageProps.mock.calls[0][0].notices).toEqual([]);
 
         await unmount();
+    });
+
+    it('passes one upgraded form notice when a form on the page is upgraded, and dismisses it once', async () => {
+        const fetchMock = jest.fn(() => Promise.resolve());
+        (globalThis as {fetch?: unknown}).fetch = fetchMock;
+        const unmount = await render(undefined, {showUpgradedTooltip: true, tooltipActionUrl: '/tooltip'});
+
+        const lastProps = () => mockPageProps.mock.calls.at(-1)[0];
+        expect(lastProps().notices).toEqual([]);
+
+        await act(() => lastProps().onItemsChange([{id: 1, status_raw: 'publish'}, {id: 2, status_raw: 'upgraded'}]));
+
+        expect(lastProps().notices).toHaveLength(1);
+        expect(lastProps().notices[0]).toMatchObject({
+            id: 'upgraded-form',
+            kind: 'onboarding',
+            message: 'A form with Upgraded status can be deleted safely.',
+        });
+
+        await act(() => lastProps().notices[0].onDismiss());
+
+        expect(fetchMock).toHaveBeenCalledWith('/tooltip', {method: 'POST'});
+        expect(lastProps().notices).toEqual([]);
+
+        await unmount();
+    });
+
+    it('passes no upgraded notice when no form is upgraded, or when the tip is switched off', async () => {
+        const unmount = await render(undefined, {showUpgradedTooltip: true});
+        await act(() => mockPageProps.mock.calls.at(-1)[0].onItemsChange([{id: 1, status_raw: 'publish'}]));
+        expect(mockPageProps.mock.calls.at(-1)[0].notices).toEqual([]);
+        await unmount();
+
+        const second = await render(undefined, {showUpgradedTooltip: false});
+        await act(() => mockPageProps.mock.calls.at(-1)[0].onItemsChange([{id: 2, status_raw: 'upgraded'}]));
+        expect(mockPageProps.mock.calls.at(-1)[0].notices).toEqual([]);
+        await second();
     });
 
     it('offers "Switch to Legacy View" in the view menu when the option-based editor is on', async () => {

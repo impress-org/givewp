@@ -15,9 +15,9 @@ const recommendation: RecommendedProductData = {
     innerHtml: 'Get Recurring Donations',
 };
 
-const notice = (id: string): ListTableNotice => ({
+const notice = (id: string, kind: ListTableNotice['kind'] = 'system'): ListTableNotice => ({
     id,
-    kind: 'system',
+    kind,
     title: `Title ${id}`,
     message: `Message ${id}`,
 });
@@ -44,6 +44,20 @@ const names = () =>
     );
 
 describe('ListTableNoticeArea', () => {
+    it('puts the system notices before the onboarding tips, then the recommendation', async () => {
+        await act(() =>
+            root.render(
+                <ListTableNoticeArea
+                    notices={[notice('a', 'onboarding'), notice('b'), notice('c', 'onboarding')]}
+                    recommendation={recommendation}
+                    onDismissRecommendation={jest.fn()}
+                />
+            )
+        );
+
+        expect(names()).toEqual(['Title b', 'Title a', 'Title c', 'Pro tip']);
+    });
+
     it('stacks the system notices in order, then the recommendation', async () => {
         await act(() =>
             root.render(
