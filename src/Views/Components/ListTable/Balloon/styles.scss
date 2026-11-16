@@ -8,6 +8,9 @@
 
     box-sizing: border-box;
     inline-size: 22.5rem;
+    // On a short or zoomed window the balloon scrolls inside itself, so its top edge never leaves the window.
+    max-block-size: calc(100vh - 48px);
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: var(--givewp-spacing-2);

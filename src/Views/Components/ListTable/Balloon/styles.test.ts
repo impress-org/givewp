@@ -27,6 +27,11 @@ describe('Balloon styles', () => {
         expect(root).not.toMatch(/\b(position|inset[\w-]*|top|right|bottom|left|z-index|max-inline-size):/);
     });
 
+    it('caps its height to the window and scrolls inside, so the close button stays reachable when zoomed', () => {
+        expect(root).toContain('max-block-size: calc(100vh - 48px)');
+        expect(root).toContain('overflow-y: auto');
+    });
+
     it('uses 13px body text and a 14px semibold title', () => {
         expect(root).toContain('font-size: 0.8125rem');
         expect(block('&__title')).toContain('font-size: 0.875rem');

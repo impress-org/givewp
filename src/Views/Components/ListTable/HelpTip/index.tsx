@@ -18,7 +18,7 @@ const CLOSE_DELAY_MS = 150;
 
 /**
  * An icon button that shows a help text in a popover. The text opens on hover and on keyboard focus,
- * stays open while the pointer is over the button or the text, and closes on Esc or blur
+ * stays open while the pointer or the focus is on the button, or the pointer is over the text, and closes on Esc
  * (WCAG 1.4.13: dismissible, hoverable, persistent).
  *
  * @since TBD
@@ -26,24 +26,31 @@ const CLOSE_DELAY_MS = 150;
 export default function HelpTip({label, text}: HelpTipProps) {
     const tipId = useId();
     const [anchor, setAnchor] = useState<HTMLButtonElement | null>(null);
-    const [isOpen, setIsOpen] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
+    const [isDismissed, setIsDismissed] = useState(false);
     const closeTimer = useRef<number>();
+
+    // Open while the pointer or the focus is on the button, or the pointer is on the text. Esc hides it until
+    // the next hover or focus.
+    const isOpen = (isHovered || isFocused) && !isDismissed;
 
     const clearCloseTimer = () => window.clearTimeout(closeTimer.current);
 
-    const open = () => {
+    const hover = () => {
         clearCloseTimer();
-        setIsOpen(true);
+        setIsDismissed(false);
+        setIsHovered(true);
     };
 
-    const close = () => {
+    const leave = () => {
         clearCloseTimer();
-        setIsOpen(false);
+        closeTimer.current = window.setTimeout(() => setIsHovered(false), CLOSE_DELAY_MS);
     };
 
-    const closeSoon = () => {
-        clearCloseTimer();
-        closeTimer.current = window.setTimeout(() => setIsOpen(false), CLOSE_DELAY_MS);
+    const focus = () => {
+        setIsDismissed(false);
+        setIsFocused(true);
     };
 
     useEffect(() => clearCloseTimer, []);
@@ -56,7 +63,7 @@ export default function HelpTip({label, text}: HelpTipProps) {
 
         const closeOnEscape = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
-                close();
+                setIsDismissed(true);
             }
         };
 
@@ -74,10 +81,10 @@ export default function HelpTip({label, text}: HelpTipProps) {
                 aria-label={label}
                 aria-expanded={isOpen}
                 aria-describedby={isOpen ? tipId : undefined}
-                onFocus={open}
-                onBlur={close}
-                onMouseEnter={open}
-                onMouseLeave={closeSoon}
+                onFocus={focus}
+                onBlur={() => setIsFocused(false)}
+                onMouseEnter={hover}
+                onMouseLeave={leave}
             />
             {isOpen && (
                 <Popover
@@ -92,8 +99,8 @@ export default function HelpTip({label, text}: HelpTipProps) {
                         id={tipId}
                         role="tooltip"
                         className="givewp-help-tip__content"
-                        onMouseEnter={open}
-                        onMouseLeave={closeSoon}
+                        onMouseEnter={hover}
+                        onMouseLeave={leave}
                     >
                         {text}
                     </div>

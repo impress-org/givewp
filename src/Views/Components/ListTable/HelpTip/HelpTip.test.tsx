@@ -91,6 +91,34 @@ describe('HelpTip', () => {
         expect(document.activeElement).toBe(button());
     });
 
+    it('stays open on focus when the pointer enters and leaves the button', async () => {
+        await focus();
+        await hover(button(), 'mouseover');
+        await hover(button(), 'mouseout');
+        await act(() => jest.advanceTimersByTime(500));
+
+        expect(content()).not.toBeNull();
+    });
+
+    it('stays open on hover when the focus leaves the button', async () => {
+        await hover(button(), 'mouseover');
+        await focus();
+        await act(() => button().blur());
+
+        expect(content()).not.toBeNull();
+    });
+
+    it('opens again on the next hover after Esc', async () => {
+        await focus();
+        await act(() => {
+            document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true}));
+        });
+        await act(() => button().blur());
+        await hover(button(), 'mouseover');
+
+        expect(content()).not.toBeNull();
+    });
+
     it('closes on blur', async () => {
         await focus();
         await act(() => button().blur());
