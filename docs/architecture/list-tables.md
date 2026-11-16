@@ -97,7 +97,7 @@ on a 100-row page writes 100 log entries per page view, into the database. Sites
 log tables this way. If you're debugging slow admin pages and the log table is huge, suspect a
 throwing column before anything else.
 
-## Three caches, three designs
+## Caches and counters
 
 ### Campaigns: an options-table cache
 
@@ -159,7 +159,8 @@ million donations each of those reads a meta row per donation and takes tens of 
 - **Writes mark a change, they do not empty the cache.** Each value carries the time its
   computation started. Any donation write stores the time of the change in its own option
   (`give_donation_totals_changed_at`): the model hooks (`givewp_donation_created`, `_updated`,
-  `_deleted`), the legacy hooks (`give_insert_payment`, `give_update_payment_status`,
+  `_deleted`, `_trashed`, `_untrashed`; the model's trash and untrash write the post status
+  directly, so before TBD an untrash did not mark a change), the legacy hooks (`give_insert_payment`, `give_update_payment_status`,
   `give_payment_deleted`), `save_post_give_payment`, `deleted_post` for a donation, and the
   WordPress metadata hooks for the `donation` (and pre-2.2.0 `payment`) meta type. A value that
   started before the last change is outdated. A write that bypasses all of these (raw SQL) leaves
@@ -194,6 +195,84 @@ million donations each of those reads a meta row per donation and takes tens of 
 - **Date ranges need no rounding.** The filter bar sends whole days (`T00:00:00` to `T23:59:59`), so
   the same range gives the same key. Rounding on the server would change what an API client asked
   for.
+
+### Donation counters: updated on every write
+
+`Donations/Repositories/DonationCounters` answers the Donations screen's displayed numbers without a
+query over the donations: the three stat tiles (`ListDonationsStats`) and the list count when the
+request has no date range and filters only on status and mode (`ListDonations::countByMode()`).
+Everything else (search, campaign, form, donor, dates, subscriptions stats, v3 `X-WP-Total`) still
+uses the totals cache above.
+
+- **One bucket per donation.** Each donation is in exactly one bucket named after its mode (test when
+  it has a `_give_payment_mode = test` row), its type (recurring when it has a `subscription_id` row
+  of `'1'` or more, the `RecurringDonationCondition` rule) and its post status:
+  `give_donation_count_{live|test}_{onetime|recurring}_{status}`. Tiles and counts are sums of buckets
+  (every status but `trash` unless the request names statuses).
+- **Storage.** One `wp_options` row per bucket, not autoloaded, only ever changed with
+  `INSERT ... ON DUPLICATE KEY UPDATE option_value = option_value + delta` (one statement per write,
+  rows in a fixed order). The option name is a unique key, so concurrent writers never lose an
+  update (20 parallel processes measured). Rows are read with one direct `SELECT`, never through
+  `get_option()`, so a persistent object cache cannot serve an old copy. Numbers only, no donor data.
+- **Every write moves the donation.** `Donations/Listeners/SyncDonationCounters` reads the donation's
+  bucket from the database in each write path's before hook and again in its after hook, and moves
+  it. Hooks covered: the model (`givewp_donation_creating`/`created`, `updating`/`updated`,
+  `deleting`/`deleted`, `trashing`/`trashed`, `untrashing`/`untrashed`), the post API
+  (`wp_insert_post_data` + `save_post_give_payment` for inserts, `pre_post_update`/`post_updated`,
+  `before_delete_post`/`deleted_post`, which also cover `wp_trash_post` and `wp_untrash_post`), the
+  `donation` and `payment` metadata hooks for the mode and subscription keys, and the legacy
+  `give_insert_payment`, `give_update_payment_status` and `give_payment_deleted`. Since the handler
+  re-reads the bucket, the same change seen by several hooks (model hook, then the legacy hook the
+  bridge dispatches, then the post hooks) moves the donation once. Old state is never guessed: an after
+  hook with no before hook in the same request moves the donation only for a create; otherwise the
+  counters are marked dirty. A model write changes its meta inside a database transaction, so its meta
+  hooks are skipped and the model's after hook counts the donation once committed (a counter update
+  inside that transaction could deadlock and roll back the donation write).
+- **A counter update never fails a write.** Every handler catches its own errors and marks the
+  counters dirty instead. Measured cost per write: see the spike report (a few indexed queries).
+- **Dirty means not used.** `give_donation_counters_dirty` grows on a write that could not be counted
+  exactly, on a page read that contradicts a counted total, and on a negative bucket;
+  `give_donation_counters_clean` is the dirty value the last recount covered. While dirty (or never
+  built, or turned off) the endpoints use the totals cache path, and a recount runs about a minute
+  later (one Action Scheduler action, `givewp_donation_counters_recount`, however many writes asked).
+- **The full rebuild.** `DonationCountersRebuild` recounts every bucket with the index-driven counts
+  of the stats endpoint grouped by status (3 million rows read at 1M donations, 11-22 s), inside one
+  `REPEATABLE READ` snapshot that also reads the counters. Each bucket then gets
+  `count + (recount - counter in the snapshot)` atomically, so writes that land while it counts are
+  kept. The one unsafe moment is a write whose data is committed but whose counter update is not: each
+  request holds a `give_donation_counters_writing_*` row between its before and after hooks, and the
+  rebuild starts only a snapshot that sees none (it retries for about ten seconds, then applies its
+  result and marks the counters dirty). Runs one at a time (`DonationTotalsLock`). On demand:
+  `wp give donation-counters rebuild`; `status` shows the counters and `verify` compares them with a
+  direct recount.
+- **Never for choosing rows.** Same rule as the totals cache: a page read forward bounds the displayed
+  total, a deep page counts live. A page that contradicts a counted total also marks the counters
+  dirty.
+
+Filters:
+
+| Filter | Default | Meaning |
+|:--|:--|:--|
+| `givewp_donation_counters_rebuild_interval` | `3600` | Seconds between scheduled full rebuilds. Read on every scheduling decision (reads check at most every 10 minutes, and Action Scheduler's daily `action_scheduler_ensure_recurring_actions`), and a scheduled action with another interval is replaced. `0` or less turns the scheduled rebuild off: the counters then rely on the writes, the recount after a dirty write and the command, so drift from raw SQL stays until the next dirty mark or a manual rebuild. Values under `60` are raised to `60`; a value that is not a number falls back to `3600`. |
+| `givewp_donation_counters_enabled` | `true` | `false` stops reading and updating the counters; the screens use the totals cache path (round 2 behavior). The first write while off marks the counters dirty, so turning them back on recounts before they are used. |
+
+```php
+// Recount every 15 minutes.
+add_filter('givewp_donation_counters_rebuild_interval', static function () {
+    return 15 * MINUTE_IN_SECONDS;
+});
+
+// Turn the counters off.
+add_filter('givewp_donation_counters_enabled', '__return_false');
+```
+
+What is not covered, so only the next rebuild (or a dirty mark) fixes it: raw SQL writes to
+`wp_posts` or `wp_give_donationmeta`; a `delete_metadata()` call for every donation at once; a
+change to the same donation made by two requests at the same moment (each moves it from the bucket it
+read); mode or subscription meta changes made in a request while a model create in it is unfinished (a
+create that threw): they are skipped and the counters are marked dirty at the end of the request; a database proxy that sends
+the rebuild's reads to a replica (the snapshot then does not hold). A deleted or recreated
+`give_donation_counters_*` row is detected as "never built" or dirty.
 
 ### v2 forms list: async columns, not caching
 
