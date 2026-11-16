@@ -188,11 +188,14 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
     /**
      * @inheritDoc
      *
+     * @since TBD Delete the test-mode options too.
      * @since 4.8.0
      */
     public function reverse(): void
     {
         delete_option('give_campaigns_data');
         delete_option('give_campaigns_subscriptions_data');
+        delete_option('give_campaigns_data_test');
+        delete_option('give_campaigns_subscriptions_data_test');
     }
 }

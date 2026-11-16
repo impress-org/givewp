@@ -5,6 +5,7 @@ namespace Give\Campaigns\Repositories;
 use Give\Campaigns\CampaignsDataQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\ListTable\Formatting\MoneyFormatter;
 
 /**
@@ -44,9 +45,9 @@ class CampaignsDataRepository
      * Cached stats for the given campaigns. Campaigns missing from the cache are queried and added
      * to it, so a warm cache never hides a campaign that arrived after it was built.
      *
-     * The cache holds live-mode stats only. The queries filter by the site's payment mode, and the
-     * options carry no mode, so test mode reads straight from the database and never writes.
+     * The queries filter by the site's payment mode, so each mode has its own options.
      *
+     * @since TBD Cache test-mode stats in their own options instead of querying them on every request.
      * @since 4.18.0 Query and cache campaigns that are missing from the cache; read subscriptions from the option they are written to; bypass the cache in test mode.
      * @since 4.8.0 added data caching layer
      *
@@ -58,13 +59,9 @@ class CampaignsDataRepository
     {
         $self = new self();
         $emptyCache = ['amounts' => [], 'donationsCount' => [], 'donorsCount' => []];
-        $useCache = ! give_is_test_mode();
-        $campaignsData = $useCache
-            ? array_merge($emptyCache, (array)get_option('give_campaigns_data', []))
-            : $emptyCache;
-        $campaignsSubscriptionData = $useCache
-            ? array_merge($emptyCache, (array)get_option('give_campaigns_subscriptions_data', []))
-            : $emptyCache;
+        $mode = give_is_test_mode() ? DonationMode::TEST : DonationMode::LIVE;
+        $campaignsData = array_merge($emptyCache, (array)get_option(self::donationsOption($mode), []));
+        $campaignsSubscriptionData = array_merge($emptyCache, (array)get_option(self::subscriptionsOption($mode), []));
 
         $uncachedIds = self::missingIds($campaignsData, $ids);
 
@@ -77,9 +74,7 @@ class CampaignsDataRepository
                 'donorsCount' => array_merge($campaignsData['donorsCount'], self::withZeroRows($donations->collectDonors(), $uncachedIds, 'count')),
             ];
 
-            if ($useCache) {
-                update_option('give_campaigns_data', $campaignsData);
-            }
+            update_option(self::donationsOption($mode), $campaignsData);
         }
 
         // The subscriptions cache can lag the donations cache, for example when Recurring is activated later
@@ -96,9 +91,7 @@ class CampaignsDataRepository
                 'donorsCount' => array_merge($campaignsSubscriptionData['donorsCount'], self::withZeroRows($subscriptions->collectDonors(), $uncachedSubscriptionIds, 'count')),
             ];
 
-            if ($useCache) {
-                update_option('give_campaigns_subscriptions_data', $campaignsSubscriptionData);
-            }
+            update_option(self::subscriptionsOption($mode), $campaignsSubscriptionData);
         }
 
         $self->amounts = $campaignsData['amounts'];
@@ -112,6 +105,45 @@ class CampaignsDataRepository
         }
 
         return $self;
+    }
+
+    /**
+     * The stats rows, in the shape the CampaignsDataQuery collect methods return them.
+     *
+     * @since TBD
+     *
+     * @return array<string, array>
+     */
+    public function getRows(): array
+    {
+        return [
+            'amounts' => $this->amounts,
+            'donationsCount' => $this->donationsCount,
+            'donorsCount' => $this->donorsCount,
+            'subscriptionAmounts' => $this->subscriptionAmounts,
+            'subscriptionDonationsCount' => $this->subscriptionDonationsCount,
+            'subscriptionDonorsCount' => $this->subscriptionDonorsCount,
+        ];
+    }
+
+    /**
+     * The option that caches the donation stats of a payment mode.
+     *
+     * @since TBD
+     */
+    public static function donationsOption(string $mode): string
+    {
+        return $mode === DonationMode::TEST ? 'give_campaigns_data_test' : 'give_campaigns_data';
+    }
+
+    /**
+     * The option that caches the subscription stats of a payment mode.
+     *
+     * @since TBD
+     */
+    public static function subscriptionsOption(string $mode): string
+    {
+        return $mode === DonationMode::TEST ? 'give_campaigns_subscriptions_data_test' : 'give_campaigns_subscriptions_data';
     }
 
     /**

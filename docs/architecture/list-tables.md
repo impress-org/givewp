@@ -121,12 +121,19 @@ Things to know before touching this:
   donations gets a zero row so it counts as cached and is not re-queried on every page load.
   Before this, a warm cache returned early and a campaign absent from it showed no stats until
   `CacheCampaignData` ran for it.
-- **The cache is live-mode only.** `CampaignsDataQuery` filters by `give_is_test_mode()` but the
-  options carry no mode, so a test-mode write would poison the live figures. In test mode
-  `campaigns()` queries every id directly and writes nothing. `CacheCampaignData` and the
-  `CacheCampaignsData` migration force live mode through the `give_is_test_mode` filter while they
-  run, so a refresh queued by a live donation still lands even if test mode was switched on before
-  Action Scheduler picked it up.
+- **Each payment mode has its own options.** `CampaignsDataQuery` filters by `give_is_test_mode()`,
+  so test-mode stats live in `give_campaigns_data_test` and `give_campaigns_subscriptions_data_test`
+  (`CampaignsDataRepository::donationsOption()` / `subscriptionsOption()` name them). Until TBD the
+  cache was live-only and test mode queried every campaign on every request, which took minutes at
+  a million donations. `CacheCampaignData` refreshes the mode of the donation that changed; a
+  campaign-level change (`dispatch()` without a mode, such as a merge or a form change) refreshes
+  both. The job forces its mode through the `give_is_test_mode` filter, so a refresh lands in the
+  right option even if the site's mode was switched before Action Scheduler picked it up. The
+  `CacheCampaignsData` migration still rebuilds the live options only; the test options fill on
+  first read.
+- **The v2 forms list reads campaign goals through this cache** (`DonationFormDataRepository::
+  setFormsCampaignGoals()`), so a form with a campaign goal shows the same figures as its campaign
+  row in the campaigns list, with the same lag.
 - **Both readers and all writers use `give_campaigns_subscriptions_data`.** Until the fix, the two
   readers used a singular key, so the subscriptions cache never hit. The
   `Campaigns/Migrations/FlushCampaignsDataCache` migration drops both options once so no site
@@ -142,7 +149,8 @@ Things to know before touching this:
 
 `Donations/Repositories/DonationTotalsCache` keeps the totals the donation endpoints compute over
 every donation: the donations list count (`ListDonations::getTotalDonationsCount()`), the donations
-stats (`ListDonationsStats`) and the v3 `X-WP-Total` (`DonationController::countDonations()`). At a
+stats (`ListDonationsStats`), the subscriptions stats (`ListSubscriptionStats`) and the v3
+`X-WP-Total` (`DonationController::countDonations()`). At a
 million donations each of those reads a meta row per donation and takes tens of seconds.
 
 - **Keyed by the SQL.** `remember($key, $callback)` stores each value under the SQL that computes it,
@@ -158,6 +166,14 @@ million donations each of those reads a meta row per donation and takes tens of 
 - **Bounded and private.** One option, not autoloaded, at most 50 values. It only holds numbers
   and the stats row; no donor data. Every endpoint that reads it checks permissions first, and the
   totals do not depend on who asks.
+- **Subscriptions too.** `ListSubscriptionStats` reads the subscription status, so the
+  subscription model hooks and the legacy `give_subscription_inserted` / `_updated` / `_deleted`
+  hooks flush as well.
+- **One request computes, the others wait.** A miss takes a lock row in `wp_options`
+  (`INSERT IGNORE`, so only one request gets it); other requests for the same total poll the cache
+  every second for up to two minutes instead of running the same query next to it. Several tabs
+  loading the donations screen at once used to start one 70-second stats query each, and the copies
+  slowed each other down. A lock older than five minutes is taken to belong to a request that died.
 - **The cost moves to the first request after a write.** On a site that takes donations all day
   the cache empties often, so the uncached query still has to be as fast as it can be (see below).
 
