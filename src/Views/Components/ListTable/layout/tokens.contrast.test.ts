@@ -15,6 +15,7 @@ describe('list table tokens', () => {
         ['tag text on the neutral status fill', T('tag-text'), T('status-neutral-bg'), 4.5],
         ['test badge text on its fill', T('text'), T('test-badge-bg'), 4.5],
         ['test badge edge on white (UI edge)', T('test-badge-edge'), '#ffffff', 3],
+        ['upgrade tile edge on white (UI edge)', T('upgrade-edge'), '#ffffff', 3],
     ])('%s passes', (_label, fg, bg, minimum) => {
         expect(fg).toBeDefined();
         expect(contrastRatio(fg, bg)).toBeGreaterThanOrEqual(minimum);

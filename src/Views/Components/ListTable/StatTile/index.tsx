@@ -115,6 +115,7 @@ export default function StatTile({
     const className = cx('givewp-stat-tile', {
         'givewp-stat-tile--toggle': Boolean(onToggle) && state !== 'upgrade',
         'givewp-stat-tile--pressed': isPressed,
+        'givewp-stat-tile--upgrade': state === 'upgrade',
     });
 
     if (onToggle && state !== 'upgrade') {

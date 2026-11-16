@@ -70,26 +70,33 @@
     }
 
     &__upgrade-message {
-        color: var(--givewp-neutral-700);
+        color: var(--givewp-list-table-text);
         font-size: var(--givewp-font-size-paragraph-md);
     }
 
+    // A stock WordPress secondary button: white, a 1 px edge, 2 px radius, no uppercase. The edge and text use
+    // the scheme tokens that already pass contrast in every admin color scheme.
     &__upgrade-link {
         padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
-        border-radius: var(--givewp-rounded-full);
-        background: var(--givewp-green-500);
-        color: var(--givewp-shades-white);
+        border: 1px solid var(--givewp-list-table-action-edge);
+        border-radius: 2px;
+        background: var(--givewp-shades-white);
+        color: var(--givewp-list-table-link);
         font-size: var(--givewp-font-size-paragraph-md);
         text-decoration: none;
-        text-transform: uppercase;
 
         &:hover,
         &:focus,
         &:active,
         &:visited {
-            background: var(--givewp-green-600);
-            color: var(--givewp-shades-white);
+            background: var(--givewp-list-table-action-tint);
+            color: var(--givewp-list-table-link);
         }
+    }
+
+    // The upgrade tile carries a small orange edge at its start, so it reads as an offer, not a count. It flips in RTL.
+    &--upgrade {
+        border-inline-start: 3px solid var(--givewp-list-table-upgrade-edge);
     }
 
     // The funnel follows the admin color scheme, as in the design: an outline on hover and focus, filled when
