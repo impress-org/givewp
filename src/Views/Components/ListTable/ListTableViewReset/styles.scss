@@ -20,6 +20,11 @@
         }
     }
 
+    // Hidden, not removed: it keeps its width in the toolbar row, so the filter chips never wrap when it shows.
+    &__button--hidden.components-button {
+        visibility: hidden;
+    }
+
     &__message {
         margin: 0;
         color: var(--givewp-neutral-700);
