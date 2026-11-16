@@ -58,7 +58,7 @@ jobs:
         runs-on: blacksmith-4vcpu-ubuntu-2404
         # The same gate as release.yml. The environment's branch policy has to allow the release/*
         # branches the dashboard dispatches on, or the job is refused before it starts.
-        environment: live
+        environment: nx1
         needs: tests
         permissions:
             contents: write # the action writes the merges and publishes the release; the zip is attached to it
