@@ -90,6 +90,11 @@ final class WebhookHealthMonitor
         }
 
         if (!$problems) {
+            /* The stored problems belong to the other mode, which this check says nothing about. */
+            if (isset($notified['mode']) && $mode !== $notified['mode']) {
+                return;
+            }
+
             if ($notified) {
                 WebhookLogger::info('Stripe webhook health problems are resolved.', ['mode' => $mode]);
             }

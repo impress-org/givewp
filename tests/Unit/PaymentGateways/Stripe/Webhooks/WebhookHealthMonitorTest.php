@@ -88,6 +88,26 @@ final class WebhookHealthMonitorTest extends TestCase
     /**
      * @since TBD
      */
+    public function testItKeepsTheStoredProblemsOfTheOtherModeAfterAHealthyCheck(): void
+    {
+        $healthy = $this->endpointBody([
+            'url' => home_url('/?give-listener=stripe'),
+            'enabled_events' => WebhookTarget::REQUIRED_EVENTS,
+        ]);
+        $notified = ['mode' => 'live', 'problems' => ['Stripe: no webhook endpoint points at this site.']];
+        update_option(self::NOTIFIED_OPTION, $notified, false);
+        $this->makeAccount();
+        $this->stripe->queue(200, $this->listBody([$healthy]));
+
+        give(WebhookHealthMonitor::class)();
+
+        $this->assertSame($notified, get_option(self::NOTIFIED_OPTION));
+        $this->assertSame([], $this->emails);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testItDoesNothingWhenTheEmailSettingIsDisabled(): void
     {
         give_update_option(WebhookHealthMonitor::EMAIL_SETTING, 'disabled');
