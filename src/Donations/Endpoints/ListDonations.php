@@ -4,11 +4,13 @@ namespace Give\Donations\Endpoints;
 
 use Closure;
 use Give\Donations\ListTable\DonationsListTable;
+use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
+use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\QueryBuilder\WhereQueryBuilder;
 use WP_REST_Request;
@@ -34,6 +36,15 @@ class ListDonations extends Endpoint
      * @var DonationsListTable
      */
     protected $listTable;
+
+    /**
+     * The number of donations that match the request, once counted.
+     *
+     * @since TBD
+     *
+     * @var int|null
+     */
+    protected $totalDonations;
 
     /**
      * @since 4.12.0 Updated status parameter to accept multiple comma-separated values
@@ -171,6 +182,7 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @since TBD Count first, so a deep page can be read from the other end.
      * @since 2.24.0 Change this to use the new ListTable class
      * @since      2.20.0
      *
@@ -183,8 +195,9 @@ class ListDonations extends Endpoint
     {
         $this->request = $request;
 
-        $donations = $this->getDonations();
         $donationsCount = $this->getTotalDonationsCount();
+        $this->totalDonations = $donationsCount;
+        $donations = $this->getDonations();
         $totalPages = (int)ceil($donationsCount / $this->request->get_param('perPage'));
 
         if ('model' === $this->request->get_param('return')) {
@@ -204,6 +217,7 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @since TBD Skip the query past the last match, and read a page past the middle from the other end when the list is sorted by ID only.
      * @since 4.18.0 Select the page of IDs first, then hydrate, so deep pages do not join every row
      * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
@@ -214,6 +228,12 @@ class ListDonations extends Endpoint
     {
         $page = $this->request->get_param('page');
         $perPage = $this->request->get_param('perPage');
+
+        // Past the last match there is nothing to read, and looking would walk every donation.
+        if ($this->totalDonations !== null && ($page - 1) * $perPage >= $this->totalDonations) {
+            return [];
+        }
+
         $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
         $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
@@ -237,11 +257,13 @@ class ListDonations extends Endpoint
             );
         }
 
+        list($offset, $limit, $idSortDirection) = $this->getIdPageWindow($page, $perPage, $sortColumns, $sortDirection);
+
         foreach ($sortColumns as $sortColumn) {
-            $idQuery->orderBy($sortColumn, $sortDirection);
+            $idQuery->orderBy($sortColumn, $idSortDirection);
         }
 
-        $ids = array_column($idQuery->limit($perPage)->offset(($page - 1) * $perPage)->getAll() ?: [], 'id');
+        $ids = array_column($idQuery->limit($limit)->offset($offset)->getAll() ?: [], 'id');
 
         if (!$ids) {
             return [];
@@ -254,6 +276,34 @@ class ListDonations extends Endpoint
         }
 
         return $query->getAll() ?: [];
+    }
+
+    /**
+     * The offset, limit and direction that read the requested page of IDs.
+     *
+     * An offset makes the database walk every skipped row, and each one needs a meta lookup for the
+     * filters. IDs are unique, so when the list is sorted by ID alone a page past the middle is the
+     * same rows read from the other end with a short offset. The caller re-sorts the rows it hydrates.
+     *
+     * @since TBD
+     *
+     * @param string[] $sortColumns
+     *
+     * @return array{0: int, 1: int, 2: string}
+     */
+    private function getIdPageWindow(int $page, int $perPage, array $sortColumns, string $sortDirection): array
+    {
+        $offset = ($page - 1) * $perPage;
+        $total = $this->totalDonations;
+
+        if ($total === null || $sortColumns !== ['id'] || $offset <= $total / 2 || $offset >= $total) {
+            return [$offset, $perPage, $sortDirection];
+        }
+
+        $limit = min($perPage, $total - $offset);
+        $reverseDirection = strtolower($sortDirection) === 'asc' ? 'desc' : 'asc';
+
+        return [$total - $offset - $limit, $limit, $reverseDirection];
     }
 
     /**
@@ -275,6 +325,7 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @since TBD Count from the test-mode meta rows when only post columns and the mode filter apply, and cache the total until a donation changes.
      * @since 4.18.0 Drop the GROUP BY on mode, which made count() return the size of one mode group
      * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
@@ -283,6 +334,10 @@ class ListDonations extends Endpoint
      */
     public function getTotalDonationsCount(): int
     {
+        if ($this->isFilteredByPostColumnsOnly()) {
+            return $this->countByMode();
+        }
+
         list($query, $dependencies) = $this->getWhereConditions(DB::table('posts'));
 
         if ($dependencies) {
@@ -294,7 +349,114 @@ class ListDonations extends Endpoint
             );
         }
 
-        return $query->count();
+        return (int)DonationTotalsCache::remember(__METHOD__ . (clone $query)->getSQL(), static function () use ($query) {
+            return $query->count();
+        });
+    }
+
+    /**
+     * Whether the request filters only on post columns (status and dates) besides the mode. A class
+     * that extends this endpoint may add conditions in getWhereConditions(), so it never qualifies.
+     *
+     * @since TBD
+     */
+    private function isFilteredByPostColumnsOnly(): bool
+    {
+        if (static::class !== self::class) {
+            return false;
+        }
+
+        foreach (['search', 'donor', 'campaignId', 'formId', 'donationType', 'subscriptionId'] as $param) {
+            $value = $this->request->get_param($param);
+
+            if ($value !== null && $value !== '' && $value !== []) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * The total for a request that filters only on post columns besides the mode.
+     *
+     * The test-mode donations are counted from their mode meta rows, joined to the posts in that order:
+     * the rows sit together in the (meta_key, meta_value) index and in the table, so the database reads
+     * them in sequence instead of looking up the meta of every donation. A live-mode total is every
+     * matching donation minus the test-mode ones, which is what the list's NOT IN condition selects.
+     *
+     * @since TBD
+     */
+    private function countByMode(): int
+    {
+        $testModeQuery = $this->getTestModeCountQuery();
+
+        if ($this->request->get_param('testMode')) {
+            return (int)DonationTotalsCache::remember(__METHOD__ . $testModeQuery->getSQL(), static function () use ($testModeQuery) {
+                return (int)DB::get_var($testModeQuery->getSQL());
+            });
+        }
+
+        $allQuery = DB::table('posts');
+        $this->applyPostConditions($allQuery, '');
+
+        $key = __METHOD__ . $testModeQuery->getSQL() . (clone $allQuery)->getSQL();
+
+        return (int)DonationTotalsCache::remember($key, static function () use ($testModeQuery, $allQuery) {
+            return $allQuery->count() - (int)DB::get_var($testModeQuery->getSQL());
+        });
+    }
+
+    /**
+     * Counts the test-mode donations that match the post conditions, starting from their mode meta rows.
+     *
+     * @since TBD
+     */
+    private function getTestModeCountQuery(): QueryBuilder
+    {
+        $query = DB::table('give_donationmeta', 'mode')
+            ->selectRaw('SELECT STRAIGHT_JOIN COUNT(DISTINCT mode.donation_id) AS count')
+            ->join(static function (JoinQueryBuilder $builder) {
+                $builder
+                    ->innerJoin('posts', 'donation')
+                    ->on('donation.ID', 'mode.donation_id');
+            })
+            ->where('mode.meta_key', DonationMetaKeys::MODE)
+            ->where('mode.meta_value', DonationMode::TEST);
+
+        $this->applyPostConditions($query, 'donation.');
+
+        return $query;
+    }
+
+    /**
+     * Adds the conditions on post columns: the post type, the status and the date range.
+     *
+     * @since TBD
+     *
+     * @param string $prefix table alias with a trailing dot, or an empty string
+     */
+    private function applyPostConditions(QueryBuilder $query, string $prefix): void
+    {
+        $status = $this->request->get_param('status');
+        $start = $this->request->get_param('start');
+        $end = $this->request->get_param('end');
+
+        $query->where("{$prefix}post_type", 'give_payment');
+
+        if (!empty($status)) {
+            $query->whereIn("{$prefix}post_status", $status);
+        } else {
+            $query->where("{$prefix}post_status", DonationStatus::TRASH, '<>');
+        }
+
+        if ($start && $end) {
+            $query->whereBetween("{$prefix}post_date", $start, $end);
+        } elseif ($start) {
+            $query->where("{$prefix}post_date", $start, '>=');
+        } elseif ($end) {
+            $query->where("{$prefix}post_date", $end, '<=');
+        }
     }
 
     /**

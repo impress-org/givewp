@@ -27,6 +27,7 @@ use Give\Donations\Migrations\UnserializeTitlePrefix;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationNotesRepository;
 use Give\Donations\Repositories\DonationRepository;
+use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -55,6 +56,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         $this->bootListeners();
         $this->bootLegacyListeners();
+        $this->flushTotalsOnDonationWrites();
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
         $this->loadDonationAdminOptions();
@@ -143,6 +145,43 @@ class ServiceProvider implements ServiceProviderInterface
             // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renders the full donation details page; its view escapes its own values.
             echo (new DonationDetailsController())->show($donationId);
         });
+    }
+
+    /**
+     * Drops the cached donation totals whenever a donation or its meta is written. The model hooks
+     * see repository writes, which go to the tables directly; the post and meta hooks see writes
+     * through the legacy Give_Payment and the WordPress post and metadata APIs.
+     *
+     * @since TBD
+     */
+    private function flushTotalsOnDonationWrites()
+    {
+        $flush = static function () {
+            DonationTotalsCache::flush();
+        };
+
+        foreach (['givewp_donation_created', 'givewp_donation_updated', 'givewp_donation_deleted'] as $hook) {
+            add_action($hook, $flush);
+        }
+
+        foreach (['give_insert_payment', 'give_update_payment_status', 'give_payment_deleted'] as $hook) {
+            add_action($hook, $flush);
+        }
+
+        add_action('save_post_give_payment', $flush);
+
+        add_action('deleted_post', static function ($postId, $post = null) {
+            if ($post && 'give_payment' === $post->post_type) {
+                DonationTotalsCache::flush();
+            }
+        }, 10, 2);
+
+        // The donation meta type is "payment" until the 2.2.0 rename upgrade has run.
+        foreach (['donation', 'payment'] as $metaType) {
+            foreach (['added', 'updated', 'deleted'] as $action) {
+                add_action("{$action}_{$metaType}_meta", $flush);
+            }
+        }
     }
 
     /**

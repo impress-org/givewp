@@ -2,6 +2,7 @@
 
 namespace Give\Donations\Endpoints;
 
+use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Formatting\StatsFormatter;
@@ -64,6 +65,7 @@ class ListDonationsStats extends Endpoint
     /**
      * Get all donation statistics in a single optimized query
      *
+     * @since TBD Cache the statistics until a donation changes.
      * @since 4.10.0
      */
     public function getDonationStatistics(): array
@@ -99,7 +101,10 @@ class ListDonationsStats extends Endpoint
             SUM(CASE WHEN give_donationmeta_attach_meta_subscriptionId.meta_value != 0 THEN 1 ELSE 0 END) as recurring_donations
         ');
 
-        $result = $query->get();
+        // One read of the meta of every donation: remember the result until a donation changes.
+        $result = DonationTotalsCache::remember(__METHOD__ . $query->getSQL(), static function () use ($query) {
+            return $query->get();
+        });
 
         // Handle case when no results are found
         if (!$result) {
