@@ -151,11 +151,11 @@ describe('StatTile', () => {
         }
     });
 
-    it('colors the funnel with the theme color, and with a system color in forced colors', () => {
+    it('colors the funnel with the scheme-tied action edge, and with a system color in forced colors', () => {
         const styles = readFileSync(join(__dirname, 'styles.scss'), 'utf8');
         const icon = styles.slice(styles.indexOf('&__filter-icon {'));
 
-        expect(icon.slice(0, icon.indexOf('}'))).toContain('color: var(--wp-admin-theme-color)');
+        expect(icon.slice(0, icon.indexOf('}'))).toContain('color: var(--givewp-list-table-action-edge)');
         expect(styles.slice(styles.indexOf('@media (forced-colors: active)'))).toMatch(
             /filter-icon \{\s*color: CanvasText;/
         );

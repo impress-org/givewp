@@ -92,11 +92,13 @@
         }
     }
 
-    // The funnel uses the theme color, as in the design: an outline on hover and focus, filled when pressed.
-    // It is redundant, so it need not carry the state alone: the bottom bar, the words "Filtering the list"
-    // and `aria-pressed` carry it too, and the icon is hidden from screen readers. The words keep the text color.
+    // The funnel follows the admin color scheme, as in the design: an outline on hover and focus, filled when
+    // pressed. It uses the same darker mix as the selected bar, because the plain theme color is under 3:1 on
+    // white in some schemes (Sunrise, Light); the mix passes in all of them (`tokens.contrast.test.ts`). The
+    // bar, the words "Filtering the list" and `aria-pressed` carry the state too, and the icon is hidden from
+    // screen readers. The words keep the text color.
     &__filter-icon {
-        color: var(--wp-admin-theme-color);
+        color: var(--givewp-list-table-action-edge);
         opacity: 0;
         pointer-events: none;
     }
