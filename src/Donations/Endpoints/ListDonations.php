@@ -447,6 +447,7 @@ class ListDonations extends Endpoint
         if (!empty($status)) {
             $query->whereIn("{$prefix}post_status", $status);
         } else {
+            // Default behavior: exclude trash donations
             $query->where("{$prefix}post_status", DonationStatus::TRASH, '<>');
         }
 
@@ -507,7 +508,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD Accept several campaign and form IDs, and filter by donationType.
+     * @since TBD Accept several campaign and form IDs, filter by donationType, and share the post column conditions with the mode count.
      * @since 4.19.0 Filter by formId, and by campaignId "none" for donations that have no campaign.
      * @since 4.18.0 Match name and email searches by prefix through indexed subqueries, and filter test mode the same way instead of HAVING
      * @since 4.12.0 Updated status filtering to accept multiple comma-separated values
@@ -525,25 +526,15 @@ class ListDonations extends Endpoint
     protected function getWhereConditions(QueryBuilder $query): array
     {
         $search = $this->request->get_param('search');
-        $start = $this->request->get_param('start');
-        $end = $this->request->get_param('end');
         $donor = $this->request->get_param('donor');
         $testMode = $this->request->get_param('testMode');
         $campaignId = $this->request->get_param('campaignId');
         $formIds = array_values(array_filter(array_map('intval', (array)$this->request->get_param('formId'))));
         $donationType = $this->request->get_param('donationType');
         $subscriptionId = $this->request->get_param('subscriptionId');
-        $status = $this->request->get_param('status');
         $dependencies = [];
 
-        $query->where('post_type', 'give_payment');
-
-        if (!empty($status)) {
-            $query->whereIn('post_status', $status);
-        } else {
-            // Default behavior: exclude trash donations
-            $query->where('post_status', DonationStatus::TRASH, '<>');
-        }
+        $this->applyPostConditions($query, '');
 
         if ($search) {
             if (ctype_digit($search)) {
@@ -599,14 +590,6 @@ class ListDonations extends Endpoint
             $query
                 ->where('give_donationmeta_attach_meta_subscriptionId.meta_value', $subscriptionId);
             $dependencies[] = DonationMetaKeys::SUBSCRIPTION_ID();
-        }
-
-        if ($start && $end) {
-            $query->whereBetween('post_date', $start, $end);
-        } elseif ($start) {
-            $query->where('post_date', $start, '>=');
-        } elseif ($end) {
-            $query->where('post_date', $end, '<=');
         }
 
         // Test-mode donations carry a mode meta row; live donations may have none. A subquery on

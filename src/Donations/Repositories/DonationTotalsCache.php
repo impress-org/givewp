@@ -39,13 +39,6 @@ class DonationTotalsCache
     public const WAIT_SECONDS = 120;
 
     /**
-     * After this many seconds a computing lock is taken to belong to a request that died.
-     *
-     * @since TBD
-     */
-    public const LOCK_SECONDS = 300;
-
-    /**
      * The version that this request already set, so a burst of writes in one request saves once.
      *
      * @var string|null
@@ -74,8 +67,10 @@ class DonationTotalsCache
             return $cache['values'][$hash];
         }
 
-        if (!self::lock($hash)) {
-            $cache = self::waitForOtherRequest($hash);
+        $lock = new DonationTotalsLock(self::OPTION . '_lock_' . $hash);
+
+        if (!$lock->acquire()) {
+            $cache = self::waitForOtherRequest($hash, $lock);
 
             if (array_key_exists($hash, $cache['values'])) {
                 return $cache['values'][$hash];
@@ -86,7 +81,7 @@ class DonationTotalsCache
             $value = $callback();
             self::store($hash, $value, $cache['version']);
         } finally {
-            self::unlock($hash);
+            $lock->release();
         }
 
         return $value;
@@ -144,89 +139,31 @@ class DonationTotalsCache
      *
      * @return array{version: string, values: array}
      */
-    private static function waitForOtherRequest(string $hash): array
+    private static function waitForOtherRequest(string $hash, DonationTotalsLock $lock): array
     {
         $deadline = time() + self::WAIT_SECONDS;
 
         do {
             sleep(1);
             $cache = self::read(true);
-        } while (!array_key_exists($hash, $cache['values']) && self::isLocked($hash) && time() < $deadline);
+        } while (!array_key_exists($hash, $cache['values']) && $lock->isHeld() && time() < $deadline);
 
         return $cache;
     }
 
     /**
-     * Claims the computation of a total. The lock is an options row: INSERT IGNORE adds it only when
-     * no request holds it, which add_option() cannot promise. A lock older than LOCK_SECONDS is taken
-     * over.
-     *
-     * @since TBD
-     */
-    private static function lock(string $hash): bool
-    {
-        global $wpdb;
-
-        $name = self::lockName($hash);
-
-        $inserted = DB::query(DB::prepare(
-            "INSERT IGNORE INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, %s, 'off')",
-            $name,
-            (string)time()
-        ));
-
-        if ($inserted) {
-            return true;
-        }
-
-        if (self::isLocked($hash)) {
-            return false;
-        }
-
-        DB::query(DB::prepare("UPDATE {$wpdb->options} SET option_value = %s WHERE option_name = %s", (string)time(), $name));
-
-        return true;
-    }
-
-    /**
-     * @since TBD
-     */
-    private static function isLocked(string $hash): bool
-    {
-        return (int)self::readRaw(self::lockName($hash)) > time() - self::LOCK_SECONDS;
-    }
-
-    /**
-     * @since TBD
-     */
-    private static function unlock(string $hash): void
-    {
-        global $wpdb;
-
-        DB::query(DB::prepare("DELETE FROM {$wpdb->options} WHERE option_name = %s", self::lockName($hash)));
-    }
-
-    /**
-     * @since TBD
-     */
-    private static function lockName(string $hash): string
-    {
-        return self::OPTION . '_lock_' . $hash;
-    }
-
-    /**
-     * An option's value straight from the table, past the copies WordPress keeps for the request,
-     * so a request sees what other requests wrote.
+     * The cache straight from the table, past the copy WordPress keeps for the request, so a request
+     * sees what other requests wrote.
      *
      * @since TBD
      *
      * @return mixed
      */
-    private static function readRaw(string $name)
+    private static function readFromTable()
     {
         global $wpdb;
 
-        $value = DB::get_var(DB::prepare("SELECT option_value FROM {$wpdb->options} WHERE option_name = %s", $name));
+        $value = DB::get_var(DB::prepare("SELECT option_value FROM {$wpdb->options} WHERE option_name = %s", self::OPTION));
 
         return $value === null ? false : maybe_unserialize($value);
     }
@@ -240,7 +177,7 @@ class DonationTotalsCache
      */
     private static function read(bool $fresh = false): array
     {
-        $cache = $fresh ? self::readRaw(self::OPTION) : get_option(self::OPTION);
+        $cache = $fresh ? self::readFromTable() : get_option(self::OPTION);
 
         if (!is_array($cache) || !isset($cache['version'], $cache['values']) || !is_array($cache['values'])) {
             return ['version' => '', 'values' => []];
