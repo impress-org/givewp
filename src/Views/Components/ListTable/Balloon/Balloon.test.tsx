@@ -75,4 +75,26 @@ describe('Balloon', () => {
 
         await unmount();
     });
+
+    it('calls onDismiss on Esc while it can be dismissed, and not when it cannot', async () => {
+        const onDismiss = jest.fn();
+        const press = () =>
+            act(() => {
+                document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true}));
+            });
+
+        const dismissible = await render(
+            <Balloon title="Tip" onDismiss={onDismiss}>
+                The message.
+            </Balloon>
+        );
+        await press();
+        expect(onDismiss).toHaveBeenCalledTimes(1);
+        await dismissible.unmount();
+
+        const fixed = await render(<Balloon title="Tip">The message.</Balloon>);
+        await press();
+        expect(onDismiss).toHaveBeenCalledTimes(1);
+        await fixed.unmount();
+    });
 });

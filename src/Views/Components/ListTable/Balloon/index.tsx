@@ -4,6 +4,7 @@ import cx from 'classnames';
 import {__} from '@wordpress/i18n';
 import {Button, ExternalLink} from '@wordpress/components';
 import {close} from '@wordpress/icons';
+import useEscapeKey from '../hooks/useEscapeKey';
 import './styles.scss';
 
 /**
@@ -16,7 +17,7 @@ export interface BalloonProps {
     children: ReactNode;
     /** An optional "read more" link under the message. */
     link?: {href: string; text: string};
-    /** Shows the close button in the top end corner. */
+    /** Shows the close button in the top end corner. Esc calls it too. */
     onDismiss?: () => void;
     /** Text buttons under the message, like "Got it". */
     actions?: ReactNode;
@@ -33,6 +34,9 @@ export interface BalloonProps {
  */
 export default function Balloon({title, children, link, onDismiss, actions, className}: BalloonProps) {
     const titleId = useId();
+
+    // Esc closes a balloon that can be dismissed, with focus inside it or anywhere on the page.
+    useEscapeKey(() => onDismiss?.(), Boolean(onDismiss));
 
     return (
         <div
