@@ -63,6 +63,9 @@ export default function HelpTip({label, text}: HelpTipProps) {
 
         const closeOnEscape = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
+                // Clear hover too: the text unmounts without a `mouseleave`, so it would stay set.
+                clearCloseTimer();
+                setIsHovered(false);
                 setIsDismissed(true);
             }
         };

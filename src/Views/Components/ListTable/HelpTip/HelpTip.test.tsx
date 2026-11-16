@@ -119,6 +119,17 @@ describe('HelpTip', () => {
         expect(content()).not.toBeNull();
     });
 
+    it('forgets the hover when Esc closes it, so a later focus and blur closes it again', async () => {
+        await hover(button(), 'mouseover');
+        await act(() => {
+            document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true}));
+        });
+        await focus();
+        await act(() => button().blur());
+
+        expect(content()).toBeNull();
+    });
+
     it('closes on blur', async () => {
         await focus();
         await act(() => button().blur());
