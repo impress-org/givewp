@@ -24,20 +24,16 @@ describe('Campaign List balloon position', () => {
         expect(list).toBeLessThan(start);
     });
 
-    it('floats the default form balloon at the bottom end corner below 1280px, past the physical top and left', () => {
+    it('floats the default form balloon at the bottom end corner at every width', () => {
         const styles = readFileSync(join(__dirname, 'Notices.module.scss'), 'utf8');
-        const form = styles.indexOf('.defaultForm {');
-        const start = styles.indexOf('@media (max-width: 1279px) {', form);
-        const media = styles.slice(start, styles.indexOf('}', start));
+        const start = styles.indexOf('.defaultForm {');
+        const block = styles.slice(start, styles.indexOf('}', start));
 
-        // Still the physical placement above 1279px, and the media block comes inside the same rule.
-        expect(styles.slice(form, start)).toContain('top: 420px');
-        expect(styles.slice(form, start)).toContain('left: 100px');
-        expect(start).toBeLessThan(styles.indexOf('.campaignSettings {'));
-        expect(media).toContain('position: fixed');
-        expect(media).toContain('inset-block: auto 24px');
-        expect(media).toContain('inset-inline: auto 24px');
-        expect(media).toContain('max-inline-size: calc(100vw - 48px)');
-        expect(media).not.toMatch(/\b(left|right|top):/);
+        expect(block).toContain('position: fixed');
+        expect(block).toContain('inset-block: auto 24px');
+        expect(block).toContain('inset-inline: auto 24px');
+        expect(block).toContain('max-inline-size: calc(100vw - 48px)');
+        expect(block).not.toMatch(/\b(left|right|top):/);
+        expect(block).not.toContain('@media');
     });
 });

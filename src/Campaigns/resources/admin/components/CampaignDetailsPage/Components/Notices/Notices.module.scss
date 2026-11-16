@@ -5,18 +5,13 @@
     z-index: 11;
 }
 
+// The default form tip floats at the bottom end corner of the window at every width. Anywhere in the page it
+// would land on the rows of the Forms tab, whatever their number; the corner is always in view.
 .defaultForm {
-    top: 420px;
-    left: 100px;
-
-    // Below this width it would land on a form row of the Forms tab. It floats at the bottom corner of the
-    // window instead, with the physical top and left above put aside (logical, so right-to-left follows).
-    @media (max-width: 1279px) {
-        position: fixed;
-        inset-block: auto 24px;
-        inset-inline: auto 24px;
-        max-inline-size: calc(100vw - 48px);
-    }
+    position: fixed;
+    inset-block: auto 24px;
+    inset-inline: auto 24px;
+    max-inline-size: calc(100vw - 48px);
 }
 
 .campaignSettings {
