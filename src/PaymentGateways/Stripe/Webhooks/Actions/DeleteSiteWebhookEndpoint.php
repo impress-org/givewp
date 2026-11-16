@@ -163,6 +163,8 @@ final class DeleteSiteWebhookEndpoint
      * @param string          $mode              "live" or "test".
      *
      * @return string[]|null Endpoint ids to keep, or null to keep every endpoint of this site.
+     *
+     * @throws Throwable When another saved account cannot be listed.
      */
     private function endpointIdsUsedByOthers(AccountDetail $account, array $remainingAccounts, string $mode): ?array
     {
@@ -194,7 +196,8 @@ final class DeleteSiteWebhookEndpoint
                     )
                 );
 
-                return null;
+                /* The endpoint stays, and the mode is reported as failed so the admin is told to check it. */
+                throw $exception;
             }
         }
 

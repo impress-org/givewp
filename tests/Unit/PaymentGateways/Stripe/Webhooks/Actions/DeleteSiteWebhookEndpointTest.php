@@ -188,7 +188,7 @@ final class DeleteSiteWebhookEndpointTest extends TestCase
     /**
      * @since TBD
      */
-    public function testItKeepsTheEndpointWhenAnotherRecordCannotBeChecked(): void
+    public function testItReportsFailureAndKeepsTheEndpointWhenAnotherRecordCannotBeChecked(): void
     {
         $manual = $this->makeAccount(['account_slug' => 'account_1', 'account_id' => '', 'live_secret_key' => '']);
         $other = $this->makeAccount(['account_slug' => 'acct_other', 'account_id' => 'acct_other']);
@@ -197,7 +197,7 @@ final class DeleteSiteWebhookEndpointTest extends TestCase
 
         $result = (give(DeleteSiteWebhookEndpoint::class))($manual, [$other]);
 
-        $this->assertSame(['test' => DeleteSiteWebhookEndpoint::KEPT], $result);
+        $this->assertSame(['test' => DeleteSiteWebhookEndpoint::FAILED], $result);
         $this->assertSame(['get', 'get'], array_column($this->stripe->requests, 'method'));
     }
 
