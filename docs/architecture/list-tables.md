@@ -246,8 +246,14 @@ uses the totals cache above.
   `wp give donation-counters rebuild`; `status` shows the counters and `verify` compares them with a
   direct recount.
 - **Never for choosing rows.** Same rule as the totals cache: a page read forward bounds the displayed
-  total, a deep page counts live. A page that contradicts a counted total also marks the counters
-  dirty.
+  total, a deep page counts live. A forward page that contradicts a counted total marks the counters
+  dirty, and so does a deep page's live count that differs from a counter that did not move while it
+  ran (if it moved, a write happened meanwhile and the two cannot be compared).
+- **The fallback stays current.** Each time the counters answer, the same value is stored in the
+  totals cache under the key the fallback path reads (`DonationTotalsCache::seed()`, written only
+  when it changed). `markDirty()` also marks the totals cache outdated. So while the counters are
+  dirty, the screen shows the last counted value (then a value computed after the response), never
+  a total cached before the counters existed.
 
 Filters:
 
