@@ -35,12 +35,17 @@ describe('text size in the list cells and the search label', () => {
         ['type badge text', sliceBlock(cellStyles, '.badge {')],
         ['goal progress status', sliceBlock(cellStyles, '&__status {')],
         ['Default form pill', sliceBlock(formsStyles, '.defaultFormPill {')],
+        ['subscription status hover message', sliceBlock(cellStyles, '&__message {')],
+        [
+            'Enter donations hover message',
+            sliceBlock(
+                read('..', '..', '..', '..', 'Donations', 'resources', 'components', 'ListTable.module.scss'),
+                '.manualDonationsMessage {'
+            ),
+        ],
         [
             'search label',
-            sliceBlock(
-                read('..', 'ListTableSearch', 'styles.scss'),
-                '& &__control .components-base-control__label,'
-            ),
+            sliceBlock(read('..', 'ListTableSearch', 'styles.scss'), '& &__control .components-base-control__label,'),
         ],
     ])('%s is 13px', (_name, block) => {
         expect(block).not.toBe('');
