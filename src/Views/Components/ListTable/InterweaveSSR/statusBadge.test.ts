@@ -23,12 +23,12 @@ const badge = sliceBlock(scss, '.statusBadge {');
 const TONE_VALUE = /^var\(--givewp-list-table-status-(success|warning|info|error|neutral)-(text|bg)\)$/;
 
 // Every status the list columns can print as `statusBadge--<status>` (PHP StatusColumn classes).
-const NEUTRAL_BY_DEFAULT = ['refunded', 'abandoned', 'draft', 'archived', 'inactive', 'upgraded', 'give_subscription'];
+const NEUTRAL_BY_DEFAULT = ['refunded', 'abandoned', 'draft', 'archived', 'inactive', 'trash', 'trashed', 'upgraded', 'give_subscription'];
 const EXPECTED_TONES: Record<string, string[]> = {
     success: ['completed', 'complete', 'active', 'publish', 'published'],
-    warning: ['pending'],
+    warning: ['pending', 'expired'],
     info: ['processing'],
-    error: ['failed', 'failing', 'revoked', 'cancelled', 'expired', 'trash', 'trashed'],
+    error: ['failed', 'failing', 'revoked', 'cancelled'],
 };
 
 const toneGroups = () => {

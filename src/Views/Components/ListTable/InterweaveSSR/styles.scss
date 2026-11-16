@@ -36,7 +36,8 @@
             --bg-color: var(--givewp-list-table-status-success-bg);
         }
 
-        &--pending {
+        &--pending,
+        &--expired {
             --color: var(--givewp-list-table-status-warning-text);
             --bg-color: var(--givewp-list-table-status-warning-bg);
         }
@@ -49,15 +50,12 @@
         &--failed,
         &--failing,
         &--revoked,
-        &--cancelled,
-        &--expired,
-        &--trash,
-        &--trashed {
+        &--cancelled {
             --color: var(--givewp-list-table-status-error-text);
             --bg-color: var(--givewp-list-table-status-error-bg);
         }
 
-        // refunded, abandoned, draft, archived, inactive, upgraded and give_subscription use the neutral default.
+        // refunded, abandoned, draft, archived, inactive, trash, trashed, upgraded and give_subscription use the neutral default.
     }
 
     .subscriptionStatus {
