@@ -24,7 +24,7 @@ class EnqueueStripeFormBuilderScriptsTest extends TestCase
      * The enqueue reads the asset file from the asset build, which the PHP test workflows do not run.
      * A placeholder is written only when the build has not produced the file.
      *
-     * @since TBD
+     * @since 4.19.2.1
      */
     public function setUp(): void
     {
@@ -40,7 +40,7 @@ class EnqueueStripeFormBuilderScriptsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.1
      */
     public function tearDown(): void
     {
@@ -60,7 +60,7 @@ class EnqueueStripeFormBuilderScriptsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.1
      */
     public function testLocalizedAccountsContainOnlyAccountIdAndName()
     {
@@ -83,7 +83,7 @@ class EnqueueStripeFormBuilderScriptsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.1
      */
     public function testLocalizedDataDoesNotContainStoredAccountCredentials()
     {
@@ -103,7 +103,7 @@ class EnqueueStripeFormBuilderScriptsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.1
      */
     public function testNothingIsLocalizedWhenStripePaymentElementIsDisabled()
     {
@@ -116,7 +116,7 @@ class EnqueueStripeFormBuilderScriptsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.1
      *
      * @return array<string, array<string, string>>
      */
@@ -149,7 +149,7 @@ class EnqueueStripeFormBuilderScriptsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.1
      */
     private function extractAllAccounts(string $localizedData): array
     {

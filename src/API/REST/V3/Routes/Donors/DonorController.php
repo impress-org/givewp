@@ -109,7 +109,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Get list of donors.
      *
-     * @since TBD Group the search conditions so anonymous donor filters apply to name and email matches.
+     * @since 4.19.2.1 Group the search conditions so anonymous donor filters apply to name and email matches.
      * @since 4.19.0.1 Exclude anonymous donors when the with-donations filter is disabled.
      * @since 4.14.0 Use Headers::addPagination() helper for pagination headers
      * @since 4.8.0 Add support for search parameter
@@ -287,7 +287,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @since TBD Use DonorPermissions::validationForGetCollectionMethod(), which ignores donor ownership.
+     * @since 4.19.2.1 Use DonorPermissions::validationForGetCollectionMethod(), which ignores donor ownership.
      * @since 4.14.0 Use DonorPermissions class
      * @since 4.0.0
      *

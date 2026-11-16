@@ -66,7 +66,7 @@ class DonorPermissions
     /**
      * Validates a request for a single donor. The owner of the donor may read their own sensitive data.
      *
-     * @since TBD Move the shared checks to validateReadAccess().
+     * @since 4.19.2.1 Move the shared checks to validateReadAccess().
      * @since 4.14.0
      *
      * @param WP_REST_Request $request The request for a single donor.
@@ -85,7 +85,7 @@ class DonorPermissions
      * Validates a request for the donors collection. Owning a donor grants no access here, because the
      * collection returns other donors.
      *
-     * @since TBD
+     * @since 4.19.2.1
      *
      * @param WP_REST_Request $request The request for the donors collection.
      *
@@ -122,7 +122,7 @@ class DonorPermissions
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.1
      *
      * @param WP_REST_Request $request The read request.
      * @param bool            $isOwner Whether the current user owns the requested donor.

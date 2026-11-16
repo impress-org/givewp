@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.19.2
+Stable tag: 4.19.2.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,14 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= [4.19.2.1] 2026-11-16 =
+
+* Security - Added additional permission checks to the donor list REST API endpoint.
+* Security - Added additional protection to the donor email access.
+* Security - Improved anonymous donor filtering in the donor search results. Reported by Vũ Quang Huy.
+* Security - improved security on the donation confirmation receipt.
+* Security - Improved Stripe account data security in the Visual Form Builder. Reported by Pasi Nuwan Senevi.
+
 = [4.19.2] 2026-11-12 =
 
 * Fix - Allowed PayPal Donations on v2 forms to accept a donation at the form's maximum amount when Fee Recovery adds its fee.

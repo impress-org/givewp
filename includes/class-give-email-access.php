@@ -235,7 +235,7 @@ class Give_Email_Access {
 	/**
 	 * Has the user authenticated?
 	 *
-	 * @since TBD Set the give_nl cookie with HttpOnly, Secure (on HTTPS) and SameSite=Lax.
+	 * @since 4.19.2.1 Set the give_nl cookie with HttpOnly, Secure (on HTTPS) and SameSite=Lax.
 	 * @since  1.0
 	 * @access public
 	 *

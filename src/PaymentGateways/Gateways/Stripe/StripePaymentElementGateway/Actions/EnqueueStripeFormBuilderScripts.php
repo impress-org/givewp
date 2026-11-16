@@ -13,7 +13,7 @@ class EnqueueStripeFormBuilderScripts
     /**
      * Enqueues the Stripe scripts and styles for the Form Builder.
      *
-     * @since TBD Localize only the account ID and name of each Stripe account.
+     * @since 4.19.2.1 Localize only the account ID and name of each Stripe account.
      * @since 4.19.1 Set an explicit version on the script and style.
      *
      * @return void
@@ -60,7 +60,7 @@ class EnqueueStripeFormBuilderScripts
     /**
      * Returns the stored Stripe accounts reduced to the fields the account picker uses.
      *
-     * @since TBD
+     * @since 4.19.2.1
      *
      * @return array<string, array{account_id: string, account_name: string}>
      */
