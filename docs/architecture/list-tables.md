@@ -97,7 +97,7 @@ on a 100-row page writes 100 log entries per page view, into the database. Sites
 log tables this way. If you're debugging slow admin pages and the log table is huge, suspect a
 throwing column before anything else.
 
-## Two caches, two designs
+## Three caches, three designs
 
 ### Campaigns: an options-table cache
 
@@ -137,6 +137,29 @@ Things to know before touching this:
   `wp_options.autoload` for these two keys before assuming.
 - **Full rebuild** is the `Campaigns/Migrations/CacheCampaignsData` migration, which deletes both
   options and repopulates. That's the recovery path when the cache is wrong.
+
+### Donation totals: a versioned option
+
+`Donations/Repositories/DonationTotalsCache` keeps the totals the donation endpoints compute over
+every donation: the donations list count (`ListDonations::getTotalDonationsCount()`), the donations
+stats (`ListDonationsStats`) and the v3 `X-WP-Total` (`DonationController::countDonations()`). At a
+million donations each of those reads a meta row per donation and takes tens of seconds.
+
+- **Keyed by the SQL.** `remember($key, $callback)` stores each value under the SQL that computes it,
+  so two requests with the same filters share one entry and different filters never mix. The
+  `%` placeholder that `$wpdb->prepare()` puts in a `LIKE` changes per request, so the key drops it.
+- **Exact, not stale.** The option also holds a version. Any donation write changes the version and
+  empties the values: the model hooks (`givewp_donation_created`, `_updated`, `_deleted`), the
+  legacy hooks (`give_insert_payment`, `give_update_payment_status`, `give_payment_deleted`),
+  `save_post_give_payment`, `deleted_post` for a donation, and the WordPress metadata hooks for the
+  `donation` (and pre-2.2.0 `payment`) meta type. A value computed while a write happened is not
+  stored. A write that bypasses all of these (raw SQL) leaves the totals stale until the next
+  flush.
+- **Bounded and private.** One option, not autoloaded, at most 50 values. It only holds numbers
+  and the stats row; no donor data. Every endpoint that reads it checks permissions first, and the
+  totals do not depend on who asks.
+- **The cost moves to the first request after a write.** On a site that takes donations all day
+  the cache empties often, so the uncached query still has to be as fast as it can be (see below).
 
 ### v2 forms list: async columns, not caching
 
@@ -219,6 +242,23 @@ at a million rows without code changes. They do nothing for `ORDER BY` on a meta
 expression over several (sorting the list by amount is still a full scan), and nothing for
 aggregates that must touch every row; those remain the case for moving donations into their own
 table.
+
+Three more rules from the 1M-donation profiling (SOFT-5634):
+
+- **Count from the mode rows when nothing else touches meta.** With only status and date filters,
+  `ListDonations::countByMode()` counts test-mode donations by joining *from* the
+  `_give_payment_mode = test` rows to `posts` (`STRAIGHT_JOIN`). Those rows sit together in the
+  `(meta_key, meta_value)` index and in the table, so the read is sequential: about 5 to 20 seconds
+  cold at a million rows, against about 50 for the `ID IN (subquery)` form, which probes the meta
+  of every post. A live-mode total is all matching posts minus the test-mode ones. A class that
+  extends `ListDonations` never takes this path, since it may add conditions.
+- **Read a deep page from the other end.** The total is counted first. When the list is sorted by
+  ID alone and the page is past the middle, `getIdPageWindow()` reads it in the opposite direction
+  with a short offset; the hydrate step re-sorts. The last of 33,334 pages costs what page 1 costs.
+  A page past the last match is not queried at all.
+- **A count joins only the meta its filters read.** `Model::query()->count()` keeps every
+  attach-meta join (32 for donations, 5 for donors). The v3 donations route and `DonorsQuery`
+  count with only the joins their conditions name.
 
 ## The React page: DataViews
 
