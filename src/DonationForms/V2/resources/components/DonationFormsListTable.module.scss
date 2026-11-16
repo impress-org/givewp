@@ -7,6 +7,11 @@
     min-width: 0;
 }
 
+// The stock table style makes a link a block, which would push the pill under the title.
+.titleContainer .migratedForm a {
+    display: inline;
+}
+
 .defaultFormPill {
     display: inline-block;
     margin-inline-start: var(--givewp-spacing-2);
