@@ -75,7 +75,8 @@ final class WebhookHealthMonitor
             if (null === $problem) {
                 $skipped = true;
             } elseif ('' !== $problem) {
-                $problems[] = $problem;
+                /* Keyed by slug because two saved accounts can share a name. */
+                $problems[$account->accountSlug] = $problem;
             }
         }
 
@@ -85,7 +86,7 @@ final class WebhookHealthMonitor
             [];
 
         /* A skipped account may still have the problem the last email listed, so only a new problem counts. */
-        if ($skipped && !array_diff($problems, $notifiedProblems)) {
+        if ($skipped && !array_diff_assoc($problems, $notifiedProblems)) {
             return;
         }
 
@@ -182,7 +183,7 @@ final class WebhookHealthMonitor
     /**
      * @since TBD
      *
-     * @param string[] $problems
+     * @param string[] $problems One line for each account with a problem.
      */
     private function sendEmail(array $problems, string $mode): bool
     {

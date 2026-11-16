@@ -108,6 +108,32 @@ final class WebhookHealthMonitorTest extends TestCase
     /**
      * @since TBD
      */
+    public function testItEmailsAgainWhenTheProblemMovesToAnotherAccountWithTheSameName(): void
+    {
+        $first = $this->makeAccount(['account_slug' => 'acct_first', 'account_name' => 'Shop']);
+        $second = $this->makeAccount(['account_slug' => 'acct_second', 'account_name' => 'Shop']);
+        give_update_option('_give_stripe_get_all_accounts', [
+            $first->accountSlug => $first->toArray(),
+            $second->accountSlug => $second->toArray(),
+        ]);
+        $healthy = $this->endpointBody([
+            'url' => home_url('/?give-listener=stripe'),
+            'enabled_events' => WebhookTarget::REQUIRED_EVENTS,
+        ]);
+        $this->stripe->queue(200, $this->listBody([]));
+        $this->stripe->queue(200, $this->listBody([$healthy]));
+        $this->stripe->queue(200, $this->listBody([$healthy]));
+        $this->stripe->queue(200, $this->listBody([]));
+
+        give(WebhookHealthMonitor::class)();
+        give(WebhookHealthMonitor::class)();
+
+        $this->assertCount(2, $this->emails);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testItDoesNothingWhenTheEmailSettingIsDisabled(): void
     {
         give_update_option(WebhookHealthMonitor::EMAIL_SETTING, 'disabled');
@@ -190,9 +216,9 @@ final class WebhookHealthMonitorTest extends TestCase
         give(WebhookHealthMonitor::class)();
 
         $this->assertCount(1, $this->emails);
-        $this->assertSame(['first', 'second'], array_map(static function (string $problem) {
+        $this->assertSame(['first', 'second'], array_values(array_map(static function (string $problem) {
             return strtolower(explode(' ', $problem)[0]);
-        }, get_option(self::NOTIFIED_OPTION)['problems']));
+        }, get_option(self::NOTIFIED_OPTION)['problems'])));
     }
 
     /**
