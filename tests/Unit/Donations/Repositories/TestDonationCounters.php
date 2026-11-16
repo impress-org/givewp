@@ -623,6 +623,38 @@ class TestDonationCounters extends TestCase
     }
 
     /**
+     * A deep page counts live; a live count that differs from an unchanged counter marks it dirty,
+     * and the response carries the live total.
+     *
+     * @since TBD
+     */
+    public function testDeepPageLiveCountMarksAWrongCounterDirty(): void
+    {
+        Donation::factory()->count(10)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::TEST()]);
+        $this->rawInsertDonation('publish', DonationMode::TEST);
+        $this->rawInsertDonation('publish', DonationMode::TEST);
+
+        $response = $this->listResponse(true, 4, 3);
+
+        $this->assertSame(12, $response['totalItems']);
+        $this->assertCount(3, $response['items']);
+        $this->assertDirty();
+    }
+
+    /**
+     * A deep page whose live count agrees with the counter leaves it clean.
+     *
+     * @since TBD
+     */
+    public function testDeepPageLiveCountKeepsARightCounterClean(): void
+    {
+        Donation::factory()->count(10)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::TEST()]);
+
+        $this->assertSame(10, $this->listResponse(true, 4, 3)['totalItems']);
+        $this->assertNotDirty();
+    }
+
+    /**
      * Rows are chosen from a live count, never from a counter or a cached total: with counters that
      * are too high or too low, every page still holds exactly the expected donations.
      *

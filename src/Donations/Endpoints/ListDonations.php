@@ -206,7 +206,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD Count live before reading a deep page from the other end, and correct a cached or counted total with what the page read found.
+     * @since TBD Count live before reading a deep page from the other end, correct a cached or counted total with what the page read found, and mark the donation counters dirty when a live count proves them wrong.
      * @since 2.24.0 Change this to use the new ListTable class
      * @since      2.20.0
      *
@@ -225,7 +225,9 @@ class ListDonations extends Endpoint
         $donationsCount = $this->getTotalDonationsCount();
 
         if ($this->needsLiveCount($donationsCount)) {
+            $countedTotal = $this->totalFromCounters ? $donationsCount : null;
             $donationsCount = $this->countLive();
+            $this->checkCountersAgainstLiveCount($countedTotal, $donationsCount);
         }
 
         $donations = $this->getDonations();
@@ -286,6 +288,23 @@ class ListDonations extends Endpoint
         }
 
         return $this->totalDonations;
+    }
+
+    /**
+     * A live count that differs from the donation counters proves them wrong, unless a write changed
+     * the counters while it ran: then the two cannot be compared, and nothing is marked.
+     *
+     * @since TBD
+     */
+    private function checkCountersAgainstLiveCount(?int $countedTotal, int $liveTotal): void
+    {
+        if ($countedTotal === null || $countedTotal === $liveTotal) {
+            return;
+        }
+
+        if ($this->countFromCounters() === $countedTotal) {
+            DonationCounters::markDirty();
+        }
     }
 
     /**

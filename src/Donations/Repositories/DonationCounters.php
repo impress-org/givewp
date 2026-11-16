@@ -145,7 +145,8 @@ class DonationCounters
 
     /**
      * Records that a change could not be counted exactly. The counters are not used until a recount
-     * that started after this, which is scheduled here.
+     * that started after this, which is scheduled here. The same unseen change can be in the totals
+     * cache the screens fall back to, so it is marked outdated too.
      *
      * @since TBD
      */
@@ -154,6 +155,8 @@ class DonationCounters
         global $wpdb;
 
         try {
+            DonationTotalsCache::flush();
+
             DB::query(DB::prepare(
                 "INSERT INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, '1', 'off')
                  ON DUPLICATE KEY UPDATE option_value = CAST(option_value AS SIGNED) + 1",
