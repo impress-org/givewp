@@ -9,7 +9,7 @@ import {
     useRef,
 } from 'react';
 import cx from 'classnames';
-import {CheckboxControl, __experimentalHStack as HStack} from '@wordpress/components';
+import {CheckboxControl, __experimentalHStack as HStack, Spinner} from '@wordpress/components';
 import {DataViews} from '@wordpress/dataviews';
 import {__, _n, sprintf} from '@wordpress/i18n';
 import type {Action, Field, View} from '@wordpress/dataviews';
@@ -162,6 +162,25 @@ function ListTableTotal({rows, totalItems}: {rows: number; totalItems: number}) 
 }
 
 /**
+ * Says, next to the page control, that a page is loading. The old rows stay on screen until the new ones
+ * arrive (and are dimmed, see styles.scss), and the stock spinner sits under the table, out of sight when the
+ * list is long, so a slow page looked like a frozen one. The status region stays in the footer so a screen
+ * reader hears it start, and the spinner and text only show while loading.
+ */
+function ListTableLoading({isLoading}: {isLoading: boolean}) {
+    return (
+        <span className="givewp-list-table__loading" role="status">
+            {isLoading && (
+                <>
+                    <Spinner />
+                    {__('Loading…', 'give')}
+                </>
+            )}
+        </span>
+    );
+}
+
+/**
  * The stock DataViews footer with one change. The stock footer counts only the rows on the page ("30
  * Items"), which reads as the total, so this one shows the total next to the selection checkbox
  * instead. While rows are selected, the stock count of the selection ("2 Items selected") shows.
@@ -179,6 +198,7 @@ function ListTableFooter({
     totalItems,
     totalPages,
     hasSelection,
+    isLoading,
     view,
     onChangeView,
 }: {
@@ -187,6 +207,7 @@ function ListTableFooter({
     totalItems: number;
     totalPages: number;
     hasSelection: boolean;
+    isLoading: boolean;
     view: View;
     onChangeView: (view: View) => void;
 }) {
@@ -198,6 +219,7 @@ function ListTableFooter({
         <HStack expanded={false} justify="end" className="dataviews-footer givewp-list-table__footer">
             {hasBulkActions(actions, data) && <DataViews.BulkActionToolbar />}
             {!hasSelection && <ListTableTotal rows={data.length} totalItems={totalItems} />}
+            <ListTableLoading isLoading={isLoading} />
             <ListTablePagination view={view} onChangeView={onChangeView} totalPages={totalPages} />
         </HStack>
     );
@@ -224,6 +246,7 @@ function ListTableLayout({
     totalItems,
     totalPages,
     hasSelection,
+    isLoading,
     isDefaultLayout,
     onResetLayout,
     searchBox,
@@ -239,6 +262,7 @@ function ListTableLayout({
     totalItems: number;
     totalPages: number;
     hasSelection: boolean;
+    isLoading: boolean;
     view: View;
     onChangeView: (view: View) => void;
     isDefaultLayout: boolean;
@@ -292,6 +316,7 @@ function ListTableLayout({
                 totalItems={totalItems}
                 totalPages={totalPages}
                 hasSelection={hasSelection}
+                isLoading={isLoading}
                 view={view}
                 onChangeView={onChangeView}
             />
@@ -377,6 +402,7 @@ export default function DataViewsListTable({
                         totalItems={paginationInfo.totalItems}
                         totalPages={paginationInfo.totalPages}
                         hasSelection={selection.length > 0}
+                        isLoading={isLoading}
                         view={view}
                         onChangeView={onChangeView}
                         isDefaultLayout={isDefaultLayout}

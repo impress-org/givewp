@@ -180,6 +180,28 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
         padding-inline-end: var(--givewp-spacing-4);
     }
 
+    // While a page loads, the old rows stay until the new ones arrive. They are dimmed so the list does not look
+    // stuck; the footer says "Loading…" next to the page control (`ListTableLoading`). DataViews sets
+    // `aria-busy` on the table and on the cards.
+    .dataviews-view-table[aria-busy='true'],
+    .dataviews-view-grid[aria-busy='true'] {
+        opacity: 0.5;
+        transition: opacity 150ms ease-in;
+    }
+
+    // The status text sits right before the page control. It is empty, and takes no room, when nothing loads.
+    &__loading {
+        align-items: center;
+        color: var(--givewp-list-table-text-secondary);
+        display: inline-flex;
+        font-size: 0.8125rem;
+        gap: var(--givewp-spacing-2);
+
+        .components-spinner {
+            margin: 0;
+        }
+    }
+
     // The page number box that replaces the stock page select above 100 pages (`ListTablePagination.tsx`). It
     // has the look of the stock select: a small control with a 1 px edge and the WordPress radius.
     &__page-input {

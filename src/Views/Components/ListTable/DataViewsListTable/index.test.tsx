@@ -15,7 +15,7 @@ const view = (page: number): View => ({type: 'table', page, perPage: 30, fields:
 let container: HTMLDivElement;
 let root: Root;
 
-const render = (props: {page: number; rows: ListTableItem[]; totalItems: number; layout?: object}) =>
+const render = (props: {page: number; rows: ListTableItem[]; totalItems: number; layout?: object; isLoading?: boolean}) =>
     act(async () => {
         root.render(
             <DataViewsListTable
@@ -25,7 +25,7 @@ const render = (props: {page: number; rows: ListTableItem[]; totalItems: number;
                 actions={[]}
                 data={props.rows}
                 paginationInfo={{totalItems: props.totalItems, totalPages: Math.ceil(props.totalItems / 30)}}
-                isLoading={false}
+                isLoading={props.isLoading ?? false}
                 selection={[]}
                 onChangeSelection={() => undefined}
                 empty={null}
@@ -70,6 +70,27 @@ describe('DataViewsListTable total', () => {
         await render({page: 1, rows: [], totalItems: 0});
 
         expect(container.querySelector('.givewp-list-table__total')).toBeNull();
+    });
+});
+
+describe('DataViewsListTable page loading', () => {
+    it('says a page is loading next to the page control, and is silent otherwise', async () => {
+        await render({page: 2, rows: items, totalItems: 462, isLoading: true});
+
+        const status = container.querySelector('.givewp-list-table__footer .givewp-list-table__loading');
+        expect(status?.getAttribute('role')).toBe('status');
+        expect(status?.textContent).toBe('Loading…');
+
+        await render({page: 2, rows: items, totalItems: 462, isLoading: false});
+
+        expect(container.querySelector('.givewp-list-table__loading')?.textContent).toBe('');
+    });
+
+    it('keeps the old rows on screen while the next page loads, marked busy', async () => {
+        await render({page: 2, rows: items, totalItems: 462, isLoading: true});
+
+        expect(container.querySelector('.dataviews-view-table')?.getAttribute('aria-busy')).toBe('true');
+        expect(container.querySelectorAll('tbody tr').length).toBe(30);
     });
 });
 
