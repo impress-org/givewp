@@ -68,6 +68,18 @@ describe('useEscapeKey', () => {
         expect(onEscape).not.toHaveBeenCalled();
     });
 
+    it('ignores menus that are always in the page, like the admin bar', async () => {
+        await act(() => root.render(<Probe enabled />));
+
+        const menu = document.createElement('ul');
+        menu.setAttribute('role', 'menu');
+        document.body.appendChild(menu);
+        await press();
+        menu.remove();
+
+        expect(onEscape).toHaveBeenCalledTimes(1);
+    });
+
     it('stops listening after unmount', async () => {
         await act(() => root.render(<Probe enabled />));
         await act(() => root.render(<div />));

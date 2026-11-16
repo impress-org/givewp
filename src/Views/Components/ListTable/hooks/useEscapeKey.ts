@@ -1,7 +1,10 @@
 import {useEffect, useRef} from 'react';
 
-/** What counts as an open popover, menu or dialog: Esc belongs to it first. */
-const OVERLAY = '[role="dialog"], [role="menu"], [role="listbox"], .components-popover';
+/**
+ * What counts as an open popover, menu or dialog: Esc belongs to it first. Menus and lists render inside a
+ * popover, so only those are named: the admin bar keeps `role="menu"` lists in the page all the time.
+ */
+const OVERLAY = '[role="dialog"], .components-popover, .components-modal__screen-overlay';
 
 /**
  * Runs `onEscape` when Esc is pressed anywhere on the page while `enabled`. It stays out of the way of
