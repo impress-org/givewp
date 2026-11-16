@@ -15,7 +15,7 @@ const view = (page: number): View => ({type: 'table', page, perPage: 30, fields:
 let container: HTMLDivElement;
 let root: Root;
 
-const render = (props: {page: number; rows: ListTableItem[]; totalItems: number; layout?: object; isLoading?: boolean}) =>
+const render = (props: {page: number; rows: ListTableItem[]; totalItems: number; layout?: object; isLoading?: boolean; hasError?: boolean}) =>
     act(async () => {
         root.render(
             <DataViewsListTable
@@ -26,6 +26,7 @@ const render = (props: {page: number; rows: ListTableItem[]; totalItems: number;
                 data={props.rows}
                 paginationInfo={{totalItems: props.totalItems, totalPages: Math.ceil(props.totalItems / 30)}}
                 isLoading={props.isLoading ?? false}
+                hasError={props.hasError}
                 selection={[]}
                 onChangeSelection={() => undefined}
                 empty={null}
@@ -74,23 +75,114 @@ describe('DataViewsListTable total', () => {
 });
 
 describe('DataViewsListTable page loading', () => {
-    it('says a page is loading next to the page control, and is silent otherwise', async () => {
-        await render({page: 2, rows: items, totalItems: 462, isLoading: true});
+    beforeEach(() => jest.useFakeTimers());
+    afterEach(() => jest.useRealTimers());
 
-        const status = container.querySelector('.givewp-list-table__footer .givewp-list-table__loading');
-        expect(status?.getAttribute('role')).toBe('status');
-        expect(status?.textContent).toBe('Loading…');
+    const visibleLoading = () => container.querySelector('.givewp-list-table__footer .givewp-list-table__loading');
+    const progress = () => container.querySelector('.givewp-list-table__progress');
+    const statusText = () => container.querySelector('.give-visually-hidden[role="status"]')?.textContent;
+
+    it('shows nothing for a fast page', async () => {
+        await render({page: 2, rows: items, totalItems: 462, isLoading: true});
+        await act(() => jest.advanceTimersByTime(299));
+
+        expect(visibleLoading()).toBeNull();
+        expect(progress()).toBeNull();
+        expect(statusText()).toBe('');
+
+        await render({page: 2, rows: items, totalItems: 462, isLoading: false});
+        await act(() => jest.advanceTimersByTime(2000));
+
+        expect(visibleLoading()).toBeNull();
+        expect(statusText()).toBe('');
+    });
+
+    it('shows the bar and the footer text after 300 ms, hidden from screen readers', async () => {
+        await render({page: 2, rows: items, totalItems: 462, isLoading: true});
+        await act(() => jest.advanceTimersByTime(300));
+
+        expect(visibleLoading()?.textContent).toBe('Loading…');
+        expect(visibleLoading()?.getAttribute('aria-hidden')).toBe('true');
+        expect(progress()?.getAttribute('aria-hidden')).toBe('true');
+        expect(statusText()).toBe('');
+    });
+
+    it('gives screen readers the words after 1 s, and removes everything when the page arrives', async () => {
+        await render({page: 2, rows: items, totalItems: 462, isLoading: true});
+        await act(() => jest.advanceTimersByTime(1000));
+
+        expect(statusText()).toBe('Loading…');
 
         await render({page: 2, rows: items, totalItems: 462, isLoading: false});
 
-        expect(container.querySelector('.givewp-list-table__loading')?.textContent).toBe('');
+        expect(visibleLoading()).toBeNull();
+        expect(progress()).toBeNull();
+        expect(statusText()).toBe('');
     });
 
-    it('keeps the old rows on screen while the next page loads, marked busy', async () => {
+    it('keeps the old rows on screen while the next page loads, marked busy and on the loading class', async () => {
         await render({page: 2, rows: items, totalItems: 462, isLoading: true});
 
         expect(container.querySelector('.dataviews-view-table')?.getAttribute('aria-busy')).toBe('true');
+        expect(container.querySelector('.givewp-list-table')?.classList.contains('givewp-list-table--loading')).toBe(true);
         expect(container.querySelectorAll('tbody tr').length).toBe(30);
+    });
+});
+
+describe('DataViewsListTable selection while a page loads', () => {
+    const rowCheckbox = () => container.querySelector<HTMLInputElement>('tbody input[type="checkbox"]');
+    const actions = [{id: 'x', label: 'X', supportsBulk: true, callback: () => undefined}];
+
+    const renderWithSelection = (isLoading: boolean, onChangeSelection: (ids: string[]) => void) =>
+        act(async () => {
+            root.render(
+                <DataViewsListTable
+                    view={view(1)}
+                    onChangeView={() => undefined}
+                    fields={fields}
+                    actions={actions}
+                    data={items}
+                    paginationInfo={{totalItems: 462, totalPages: 16}}
+                    isLoading={isLoading}
+                    selection={[]}
+                    onChangeSelection={onChangeSelection}
+                    empty={null}
+                    perPageSizes={[30]}
+                />
+            );
+        });
+
+    it('passes a selection change on while the rows are not loading', async () => {
+        const onChange = jest.fn();
+        await renderWithSelection(false, onChange);
+        await act(() => rowCheckbox()?.click());
+
+        expect(onChange).toHaveBeenCalled();
+    });
+
+    it('ignores a selection change while the next page loads', async () => {
+        const onChange = jest.fn();
+        await renderWithSelection(true, onChange);
+        await act(() => rowCheckbox()?.click());
+
+        expect(onChange).not.toHaveBeenCalled();
+    });
+});
+
+describe('DataViewsListTable after a failed request', () => {
+    it('keeps the page control, with the last known pages, so the user can go back', async () => {
+        await render({page: 3, rows: items, totalItems: 462});
+        await render({page: 3, rows: [], totalItems: 0, hasError: true});
+
+        expect(container.querySelector('.dataviews-pagination')).not.toBeNull();
+        expect(container.textContent).toContain('of 16');
+        expect(container.querySelector('.givewp-list-table__total')).toBeNull();
+    });
+
+    it('shows no page control when the first request fails', async () => {
+        await render({page: 1, rows: [], totalItems: 0, hasError: true});
+
+        expect(container.querySelector('.dataviews-pagination')).toBeNull();
     });
 });
 

@@ -10,6 +10,16 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
 
 .givewp-list-table {
     @include givewp-list-table-tokens;
+
+    // When a new page arrives and the table top is above the window, it scrolls to the edge of the sticky page
+    // header (the WordPress admin bar and the Give header), not under it. The root takes the focus (no ring)
+    // only when the rows the user was on are gone.
+    scroll-margin-block-start: calc(var(--wp-admin--admin-bar--height, 32px) + 5.5rem);
+
+    &:focus {
+        outline: none;
+    }
+
     position: relative;
     background-color: var(--givewp-shades-white);
     border-radius: var(--givewp-rounded-8);
@@ -180,16 +190,80 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
         padding-inline-end: var(--givewp-spacing-4);
     }
 
-    // While a page loads, the old rows stay until the new ones arrive. They are dimmed so the list does not look
-    // stuck; the footer says "Loading…" next to the page control (`ListTableLoading`). DataViews sets
-    // `aria-busy` on the table and on the cards.
-    .dataviews-view-table[aria-busy='true'],
-    .dataviews-view-grid[aria-busy='true'] {
-        opacity: 0.5;
-        transition: opacity 150ms ease-in;
+    // While a page loads, the old rows stay until the new ones arrive. After 300 ms (the transition delay, the
+    // same wait the bar and the footer text use, so a fast page shows nothing) they are dimmed. DataViews sets
+    // `aria-busy` on the table and on the cards. The stock spinner under the table is hidden: it sits out of
+    // sight below a long page, and the footer and the bar say the same thing where the user is looking.
+    .dataviews-view-table,
+    .dataviews-view-grid {
+        transition: opacity 100ms ease-out;
     }
 
-    // The status text sits right before the page control. It is empty, and takes no room, when nothing loads.
+    .dataviews-view-table[aria-busy='true'],
+    .dataviews-view-grid[aria-busy='true'] {
+        opacity: 0.6;
+        transition: opacity 150ms ease-in 300ms;
+    }
+
+    .dataviews-loading-more {
+        display: none;
+    }
+
+    // Selection waits for the new rows (the table ignores changes while it loads, see `DataViewsListTable`): the
+    // checkboxes and the bulk actions do not react to the pointer either, so they do not look usable.
+    &--loading {
+        .dataviews-selection-checkbox,
+        .givewp-list-table__card-checkbox,
+        .dataviews-bulk-actions-footer__container,
+        .dataviews-bulk-actions-toolbar {
+            pointer-events: none;
+        }
+    }
+
+    // The thin bar on the top edge of the table while a page loads slowly. The anchor has no height, so the bar
+    // sits on the edge between the toolbar and the table.
+    &__progress-anchor {
+        block-size: 0;
+        inline-size: 100%;
+        position: relative;
+        z-index: 2;
+    }
+
+    &__progress {
+        background: color-mix(in srgb, var(--givewp-list-table-action-edge) 25%, transparent);
+        block-size: 2px;
+        inset-block-start: 0;
+        inset-inline: 0;
+        overflow: hidden;
+        position: absolute;
+
+        &::before {
+            animation: givewp-list-table-progress 1.4s ease-in-out infinite;
+            background: var(--givewp-list-table-action-edge);
+            block-size: 100%;
+            content: '';
+            inline-size: 40%;
+            inset-block-start: 0;
+            inset-inline-start: 0;
+            position: absolute;
+        }
+
+        // Left to right, and right to left in a right to left language.
+        [dir='rtl'] &::before {
+            animation-name: givewp-list-table-progress-rtl;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            &::before {
+                animation: none;
+                inline-size: 100%;
+                opacity: 0.6;
+            }
+        }
+    }
+
+    // The visible "Loading…" in the footer, right before the page control. It appears after 300 ms (the
+    // component renders it then) and is hidden from screen readers, which get their own words later.
     &__loading {
         align-items: center;
         color: var(--givewp-list-table-text-secondary);
@@ -304,5 +378,25 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
         .dataviews-footer {
             padding-inline: 0;
         }
+    }
+}
+
+@keyframes givewp-list-table-progress {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(250%);
+    }
+}
+
+@keyframes givewp-list-table-progress-rtl {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-250%);
     }
 }

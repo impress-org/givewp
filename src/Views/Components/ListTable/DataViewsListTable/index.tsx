@@ -4,7 +4,9 @@ import {
     createElement,
     type MutableRefObject,
     type ReactNode,
+    useCallback,
     useContext,
+    useEffect,
     useMemo,
     useRef,
 } from 'react';
@@ -15,6 +17,7 @@ import {__, _n, sprintf} from '@wordpress/i18n';
 import type {Action, Field, View} from '@wordpress/dataviews';
 import type {ListTableItem} from '../ListTablePage/types';
 import ListTableViewReset from '../ListTableViewReset';
+import useDelayedFlag from '../hooks/useDelayedFlag';
 import useHorizontalOverflow from '../hooks/useHorizontalOverflow';
 import ListTablePagination from './ListTablePagination';
 import './styles.scss';
@@ -41,6 +44,8 @@ export interface DataViewsListTableProps {
     data: ListTableItem[];
     paginationInfo: {totalItems: number; totalPages: number};
     isLoading: boolean;
+    /** True when the request failed. The page control stays, with the last known pages, so the user can go back. */
+    hasError?: boolean;
     selection: string[];
     onChangeSelection: (ids: string[]) => void;
     empty: ReactNode;
@@ -164,19 +169,25 @@ function ListTableTotal({rows, totalItems}: {rows: number; totalItems: number}) 
 /**
  * Says, next to the page control, that a page is loading. The old rows stay on screen until the new ones
  * arrive (and are dimmed, see styles.scss), and the stock spinner sits under the table, out of sight when the
- * list is long, so a slow page looked like a frozen one. The status region stays in the footer so a screen
- * reader hears it start, and the spinner and text only show while loading.
+ * list is long, so a slow page looked like a frozen one.
+ *
+ * It shows only after a short wait (`isSlow`), so a fast page shows nothing. The words for screen readers
+ * come later still (`announce`), so a fast page only announces its result count and the two do not talk over
+ * each other. The visible text is hidden from them, so nothing is read twice.
  */
-function ListTableLoading({isLoading}: {isLoading: boolean}) {
+function ListTableLoading({isSlow, announce}: {isSlow: boolean; announce: boolean}) {
     return (
-        <span className="givewp-list-table__loading" role="status">
-            {isLoading && (
-                <>
+        <>
+            {isSlow && (
+                <span className="givewp-list-table__loading" aria-hidden="true">
                     <Spinner />
                     {__('Loading…', 'give')}
-                </>
+                </span>
             )}
-        </span>
+            <span className="give-visually-hidden" role="status">
+                {announce ? __('Loading…', 'give') : ''}
+            </span>
+        </>
     );
 }
 
@@ -198,7 +209,9 @@ function ListTableFooter({
     totalItems,
     totalPages,
     hasSelection,
-    isLoading,
+    isSlow,
+    announce,
+    hasError,
     view,
     onChangeView,
 }: {
@@ -207,10 +220,21 @@ function ListTableFooter({
     totalItems: number;
     totalPages: number;
     hasSelection: boolean;
-    isLoading: boolean;
+    isSlow: boolean;
+    announce: boolean;
+    hasError: boolean;
     view: View;
     onChangeView: (view: View) => void;
 }) {
+    // After a failed request there are no rows, but the user can still go to another page.
+    if (hasError) {
+        return totalPages > 1 ? (
+            <HStack expanded={false} justify="end" className="dataviews-footer givewp-list-table__footer">
+                <ListTablePagination view={view} onChangeView={onChangeView} totalPages={totalPages} />
+            </HStack>
+        ) : null;
+    }
+
     if (totalItems <= 0 || totalPages <= 0 || data.length === 0) {
         return null;
     }
@@ -219,7 +243,7 @@ function ListTableFooter({
         <HStack expanded={false} justify="end" className="dataviews-footer givewp-list-table__footer">
             {hasBulkActions(actions, data) && <DataViews.BulkActionToolbar />}
             {!hasSelection && <ListTableTotal rows={data.length} totalItems={totalItems} />}
-            <ListTableLoading isLoading={isLoading} />
+            <ListTableLoading isSlow={isSlow} announce={announce} />
             <ListTablePagination view={view} onChangeView={onChangeView} totalPages={totalPages} />
         </HStack>
     );
@@ -246,7 +270,9 @@ function ListTableLayout({
     totalItems,
     totalPages,
     hasSelection,
-    isLoading,
+    isSlow,
+    announce,
+    hasError,
     isDefaultLayout,
     onResetLayout,
     searchBox,
@@ -262,7 +288,9 @@ function ListTableLayout({
     totalItems: number;
     totalPages: number;
     hasSelection: boolean;
-    isLoading: boolean;
+    isSlow: boolean;
+    announce: boolean;
+    hasError: boolean;
     view: View;
     onChangeView: (view: View) => void;
     isDefaultLayout: boolean;
@@ -309,6 +337,10 @@ function ListTableLayout({
                 {searchHint && <div className="givewp-list-table__hint">{searchHint}</div>}
             </div>
             {isNarrow && <div className="givewp-list-table__view-controls-row">{viewControls}</div>}
+            {/* A zero-height box right above the table: the bar sits on the table's top edge. */}
+            <div className="givewp-list-table__progress-anchor">
+                {isSlow && <span className="givewp-list-table__progress" aria-hidden="true" />}
+            </div>
             <DataViews.Layout />
             <ListTableFooter
                 actions={actions}
@@ -316,7 +348,9 @@ function ListTableLayout({
                 totalItems={totalItems}
                 totalPages={totalPages}
                 hasSelection={hasSelection}
-                isLoading={isLoading}
+                isSlow={isSlow}
+                announce={announce}
+                hasError={hasError}
                 view={view}
                 onChangeView={onChangeView}
             />
@@ -341,10 +375,11 @@ export default function DataViewsListTable({
     fields,
     actions,
     data,
-    paginationInfo,
+    paginationInfo: loadedPagination,
     isLoading,
+    hasError = false,
     selection,
-    onChangeSelection,
+    onChangeSelection: changeSelection,
     empty,
     perPageSizes,
     isDefaultLayout = true,
@@ -363,15 +398,69 @@ export default function DataViewsListTable({
         () => (isNarrow && hasBulkActions ? withCardCheckbox(fields, view.titleField) : fields),
         [isNarrow, hasBulkActions, fields, view.titleField]
     );
+
+    // A failed request has no pages of its own. The page control keeps the last known ones.
+    const lastPagination = useRef(loadedPagination);
+    if (!hasError && loadedPagination.totalPages > 0) {
+        lastPagination.current = loadedPagination;
+    }
+    const paginationInfo = hasError && lastPagination.current.totalPages > 0 ? lastPagination.current : loadedPagination;
+
+    // While the next page loads, the rows on screen are about to be replaced: a selection made now would be
+    // thrown away, and DataViews counts it against the new rows. So selection waits for the new rows.
+    const onChangeSelection = useCallback(
+        (ids: string[]) => {
+            if (!isLoading) {
+                changeSelection(ids);
+            }
+        },
+        [isLoading, changeSelection]
+    );
     const cardSelection = useMemo(
         () => ({selection, onChangeSelection, actions}),
         [selection, onChangeSelection, actions]
     );
 
+    // A fast page shows nothing; a slow one gets the bar and the visible text after 300 ms, and the words for
+    // screen readers after 1 s.
+    const isSlow = useDelayedFlag(isLoading, 300);
+    const announce = useDelayedFlag(isLoading, 1000);
+
+    // After a new page arrives, bring the top of the table into view if the user had scrolled past it (for
+    // example after "Next" at the bottom of a long page). If the rows the user was on are gone and nothing
+    // has the focus, the list takes it, so the keyboard does not start over from the top of the page.
+    const page = view.page ?? 1;
+    const pageChanged = useRef(false);
+    const lastPage = useRef(page);
+    useEffect(() => {
+        if (lastPage.current !== page) {
+            lastPage.current = page;
+            pageChanged.current = true;
+        }
+    }, [page]);
+    useEffect(() => {
+        const root = rootRef.current;
+        if (isLoading || !pageChanged.current || !root) {
+            return;
+        }
+
+        pageChanged.current = false;
+
+        if (root.getBoundingClientRect().top < 0) {
+            root.scrollIntoView({block: 'start'});
+        }
+
+        if (document.activeElement === document.body) {
+            root.focus({preventScroll: true});
+        }
+    }, [isLoading, data]);
+
     return (
         <div
             ref={rootRef}
+            tabIndex={-1}
             className={cx('givewp-list-table', {
+                'givewp-list-table--loading': isLoading,
                 'givewp-list-table--more-start': hasMoreStart,
                 'givewp-list-table--more-end': hasMoreEnd,
                 'givewp-list-table--narrow': isNarrow,
@@ -402,7 +491,9 @@ export default function DataViewsListTable({
                         totalItems={paginationInfo.totalItems}
                         totalPages={paginationInfo.totalPages}
                         hasSelection={selection.length > 0}
-                        isLoading={isLoading}
+                        isSlow={isSlow}
+                        announce={announce}
+                        hasError={hasError}
                         view={view}
                         onChangeView={onChangeView}
                         isDefaultLayout={isDefaultLayout}

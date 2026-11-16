@@ -436,6 +436,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                         totalPages: data?.totalPages ?? 0,
                     }}
                     isLoading={isLoading}
+                    hasError={Boolean(error)}
                     selection={selection}
                     onChangeSelection={onChangeSelection}
                     empty={
