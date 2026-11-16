@@ -155,14 +155,17 @@ class ListDonationsStats extends Endpoint
 
     /**
      * Counts the recurring donations, starting from their subscription meta rows. Only the
-     * test-mode ones when asked, through each one's mode row.
+     * test-mode ones when asked, through their mode rows: then the join order is left to the
+     * database, which starts from whichever set of rows is smaller (few test donations on a live
+     * site, few recurring ones on a test site).
      *
      * @since TBD
      */
     private function getRecurringCountQuery(bool $testModeOnly): QueryBuilder
     {
+        $select = $testModeOnly ? 'SELECT' : 'SELECT STRAIGHT_JOIN';
         $query = DB::table('give_donationmeta', 'subscription')
-            ->selectRaw('SELECT STRAIGHT_JOIN COUNT(DISTINCT subscription.donation_id)')
+            ->selectRaw("{$select} COUNT(DISTINCT subscription.donation_id)")
             ->join(static function (JoinQueryBuilder $builder) {
                 $builder
                     ->innerJoin('posts', 'donation')
