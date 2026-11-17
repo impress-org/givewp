@@ -5,6 +5,7 @@ namespace Give\Tests\Unit\DonorDashboards;
 use Exception;
 use Give\DonorDashboards\Helpers;
 use Give\Donors\Models\Donor;
+use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -53,6 +54,39 @@ class TestHelpers extends TestCase
 
     /**
      * @since TBD
+     * @dataProvider missingNameMetadata
+     *
+     * @throws Exception
+     */
+    public function testShouldLinkLegacyDonorWithMissingNameMetadata(string $metaKey, string $property): void
+    {
+        $user = $this->factory()->user->create_and_get();
+        $donor = Donor::factory()->create(['userId' => null, 'email' => $user->user_email]);
+        give()->donor_meta->delete_meta($donor->id, $metaKey);
+        $this->assertNull(Donor::find($donor->id)->$property);
+        $this->requestWithToken($donor, $user->ID);
+
+        $this->assertSame($donor->id, Helpers::getCurrentDonorId());
+        $this->assertSame($user->ID, Donor::find($donor->id)->userId);
+        $this->assertSame('', give()->donor_meta->get_meta($donor->id, $metaKey, true));
+
+        unset($_GET['give_nl']);
+        $this->assertEquals($donor->id, Helpers::getCurrentDonorId());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function missingNameMetadata(): array
+    {
+        return [
+            'missing first name' => [DonorMetaKeys::FIRST_NAME, 'firstName'],
+            'missing last name' => [DonorMetaKeys::LAST_NAME, 'lastName'],
+        ];
+    }
+
+    /**
+     * @since TBD
      *
      * @throws Exception
      */
@@ -62,7 +96,7 @@ class TestHelpers extends TestCase
         $donor = Donor::factory()->create(['userId' => null]);
         $this->requestWithToken($donor, $user->ID);
 
-        Helpers::getCurrentDonorId();
+        $this->assertEquals($donor->id, Helpers::getCurrentDonorId());
 
         $this->assertEmpty(Donor::find($donor->id)->userId);
     }

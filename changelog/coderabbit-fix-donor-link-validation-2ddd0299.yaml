@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Fixed donor dashboard email access linking for legacy donors with missing
+  first or last name metadata.
+timestamp: 2026-11-17T16:21:15.098Z

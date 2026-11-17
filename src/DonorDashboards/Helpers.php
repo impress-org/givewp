@@ -79,7 +79,7 @@ class Helpers
      * Connects an unlinked donor to a logged-in user. The emailed access token proves control of the donor's
      * mailbox, so the link is made only when the token's email is also the user's account email.
      *
-     * @since TBD
+     * @since TBD Persist only the user association so legacy donors can have missing name metadata.
      *
      * @throws Exception
      */
@@ -108,8 +108,8 @@ class Helpers
             return null;
         }
 
+        give()->donors->updateLegacyColumns($donor->id, ['user_id' => $userId]);
         $donor->userId = $userId;
-        $donor->save();
 
         return $donor;
     }
