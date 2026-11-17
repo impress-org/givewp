@@ -1,4 +1,4 @@
 significance: patch
 type: fix
-entry: Resolved an issue where legacy donation forms showed a PHP error when the login field was sent in an unexpected format.
+entry: Continued the Plugin Check compatibility cleanup in the donation checkout.
 timestamp: 2026-11-04T19:12:18.476Z
