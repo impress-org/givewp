@@ -117,6 +117,8 @@ class ServiceProvider implements ServiceProviderInterface
             'givewp_subscription_created',
             'givewp_subscription_updated',
             'givewp_subscription_deleted',
+            'givewp_subscription_trashed',
+            'givewp_subscription_untrashed',
             'give_subscription_inserted',
             'give_subscription_updated',
             'give_subscription_deleted',
