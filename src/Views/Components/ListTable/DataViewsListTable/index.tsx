@@ -9,6 +9,7 @@ import {
     useEffect,
     useMemo,
     useRef,
+    useState,
 } from 'react';
 import cx from 'classnames';
 import {CheckboxControl, __experimentalHStack as HStack, Spinner} from '@wordpress/components';
@@ -427,15 +428,23 @@ export default function DataViewsListTable({
         [isNarrow, hasBulkActions, fields, view.titleField]
     );
 
-    // A failed request has no pages of its own. The page control keeps the last known ones.
-    const lastPagination = useRef(loadedPagination);
-    if (!hasError && loadedPagination && loadedPagination.totalPages > 0) {
-        lastPagination.current = loadedPagination;
+    // A failed request has no pages of its own. The page control keeps the last known ones, for the same
+    // search and filters only: another list's pages must not show. Kept in state, adjusted while rendering,
+    // so nothing is written during a render that React may discard.
+    const filterKey = JSON.stringify([view.search, view.filters]);
+    const [lastPagination, setLastPagination] = useState<{key: string; pagination: NonNullable<typeof loadedPagination>} | null>(null);
+    if (
+        !hasError &&
+        loadedPagination &&
+        loadedPagination.totalPages > 0 &&
+        (lastPagination?.key !== filterKey ||
+            lastPagination.pagination.totalPages !== loadedPagination.totalPages ||
+            lastPagination.pagination.totalItems !== loadedPagination.totalItems)
+    ) {
+        setLastPagination({key: filterKey, pagination: loadedPagination});
     }
-    const knownPagination =
-        hasError && lastPagination.current && lastPagination.current.totalPages > 0
-            ? lastPagination.current
-            : loadedPagination;
+    const lastKnownPagination = lastPagination?.key === filterKey ? lastPagination.pagination : null;
+    const knownPagination = hasError && lastKnownPagination ? lastKnownPagination : loadedPagination;
     // DataViews needs numbers. Its own page control is never used without a total (see `ListTableFooter`).
     const paginationInfo = knownPagination ?? {totalItems: 0, totalPages: 0};
 

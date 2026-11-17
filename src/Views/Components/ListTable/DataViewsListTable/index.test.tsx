@@ -15,11 +15,11 @@ const view = (page: number): View => ({type: 'table', page, perPage: 30, fields:
 let container: HTMLDivElement;
 let root: Root;
 
-const render = (props: {page: number; rows: ListTableItem[]; totalItems: number | null; hasNextPage?: boolean; layout?: object; isLoading?: boolean; hasError?: boolean}) =>
+const render = (props: {page: number; rows: ListTableItem[]; totalItems: number | null; hasNextPage?: boolean; layout?: object; isLoading?: boolean; hasError?: boolean; viewExtras?: object; search?: string}) =>
     act(async () => {
         root.render(
             <DataViewsListTable
-                view={view(props.page)}
+                view={{...view(props.page), search: props.search, ...props.viewExtras}}
                 onChangeView={() => undefined}
                 fields={fields}
                 actions={[]}
@@ -188,6 +188,36 @@ describe('DataViewsListTable after a failed request', () => {
         await render({page: 1, rows: [], totalItems: 0, hasError: true});
 
         expect(container.querySelector('.dataviews-pagination')).toBeNull();
+    });
+});
+
+describe('DataViewsListTable after a failed request for other filters', () => {
+    it('does not show the pages of the previous search', async () => {
+        await render({page: 3, rows: items, totalItems: 462, search: 'smith'});
+        await render({page: 1, rows: [], totalItems: null, hasError: true, search: 'jones'});
+
+        expect(container.textContent).not.toContain('of 16');
+    });
+});
+
+describe('DataViewsListTable page control switch', () => {
+    const pageInput = () => container.querySelector('.givewp-list-table__page-input');
+
+    it('uses the stock control at 100 pages and the number box at 101', async () => {
+        await render({page: 1, rows: items, totalItems: 3000});
+
+        expect(pageInput()).toBeNull();
+        expect(container.querySelector('.dataviews-pagination')).not.toBeNull();
+
+        await render({page: 1, rows: items, totalItems: 3030});
+
+        expect(pageInput()).not.toBeNull();
+    });
+
+    it('keeps the stock control above 100 pages when infinite scroll is on', async () => {
+        await render({page: 1, rows: items, totalItems: 3030, viewExtras: {infiniteScrollEnabled: true}});
+
+        expect(pageInput()).toBeNull();
     });
 });
 

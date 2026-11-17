@@ -1,7 +1,7 @@
 import {act} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
 import type {View} from '@wordpress/dataviews';
-import ListTablePagination, {LargePagination, MANY_PAGES} from './ListTablePagination';
+import {LargePagination} from './ListTablePagination';
 
 (globalThis as {IS_REACT_ACT_ENVIRONMENT?: boolean}).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -22,6 +22,11 @@ const type = (value: string) =>
 const enter = () =>
     act(() => {
         input().dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter', bubbles: true}));
+    });
+
+const blur = () =>
+    act(() => {
+        input().dispatchEvent(new FocusEvent('focusout', {bubbles: true}));
     });
 
 const render = (totalPages: number, page = 1) =>
@@ -112,18 +117,22 @@ describe('LargePagination', () => {
         expect(buttons()[1].getAttribute('aria-disabled')).toBe('true');
     });
 
+    it('goes to the typed page when the box loses focus', async () => {
+        await render(500);
+        await type('42');
+
+        expect(onChangeView).not.toHaveBeenCalled();
+
+        await blur();
+
+        expect(onChangeView).toHaveBeenCalledTimes(1);
+        expect(onChangeView).toHaveBeenCalledWith(expect.objectContaining({page: 42}));
+    });
+
     it('follows a page change that comes from outside', async () => {
         await render(500, 1);
         await render(500, 40);
 
         expect(input().value).toBe('40');
-    });
-});
-
-describe('ListTablePagination', () => {
-    it('is stock up to the limit and swaps the select for the box above it', () => {
-        expect(MANY_PAGES).toBe(100);
-        // The stock control needs the DataViews context, so only the switch is checked here.
-        expect(ListTablePagination).toBeDefined();
     });
 });
