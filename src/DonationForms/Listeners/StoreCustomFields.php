@@ -104,11 +104,32 @@ class StoreCustomFields
 
 
     /**
+     * A blank value is treated as an omitted field, so it must not erase existing donor meta.
+     *
+     * @since TBD
+     *
+     * @param mixed $value
+     */
+    protected function isBlankValue($value): bool
+    {
+        if (is_string($value)) {
+            return trim($value) === '';
+        }
+
+        return $value === null || $value === [];
+    }
+
+    /**
+     * @since TBD Skip blank values for donor scoped fields so they do not overwrite existing donor meta.
      * @since 3.0.0
      */
     protected function persistFieldScope(Field $field, $value, Donation $donation, ?Subscription $subscription): void
     {
         if ($field->getScope()->isDonor()) {
+            if ($this->isBlankValue($value)) {
+                return;
+            }
+
             $this->storeAsDonorMeta($donation->donorId, $field->getMetaKey() ?? $field->getName(), $value);
         } elseif ($field->getScope()->isDonation()) {
             $this->storeAsDonationMeta($donation->id, $field->getMetaKey() ?? $field->getName(), $value);
