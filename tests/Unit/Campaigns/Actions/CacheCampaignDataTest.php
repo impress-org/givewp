@@ -78,4 +78,27 @@ final class CacheCampaignDataTest extends TestCase
 
         $this->assertEquals(1, CampaignsDataRepository::campaigns([$campaign->id])->getDonationsCount($campaign));
     }
+
+    /**
+     * @since TBD
+     */
+    public function testARefundRefreshesTheCampaignStats()
+    {
+        $campaign = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        $donation = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'formId' => $campaign->defaultFormId,
+            'status' => DonationStatus::REFUNDED(),
+            'mode' => DonationMode::LIVE(),
+            'amount' => new Money(1000, 'USD'),
+        ]);
+        as_unschedule_all_actions('givewp_cache_campaign_data');
+
+        // A refunded donation is not a complete one: only the old status says the stats changed.
+        give(CacheCampaignData::class)($donation->id, 'refunded', 'pending');
+        $this->assertFalse(as_has_scheduled_action('givewp_cache_campaign_data', [$campaign->id], 'givewp_campaigns_cache'));
+
+        give(CacheCampaignData::class)($donation->id, 'refunded', 'publish');
+        $this->assertTrue(as_has_scheduled_action('givewp_cache_campaign_data', [$campaign->id], 'givewp_campaigns_cache'));
+    }
 }

@@ -7,6 +7,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMode;
+use Give\Donations\ValueObjects\DonationStatus;
 
 /**
  * @since 4.8.0
@@ -22,11 +23,11 @@ use Give\Donations\ValueObjects\DonationMode;
 class CacheCampaignData
 {
     /**
-     * @since TBD Refresh the cache of the donation's payment mode only.
+     * @since TBD Refresh the cache of the donation's payment mode only, also when the donation leaves the complete statuses.
      * @since 4.13.1 added dispatch method
      * @since 4.8.0
      */
-    public function __invoke(int $donationId): void
+    public function __invoke(int $donationId, $newStatus = '', $oldStatus = ''): void
     {
         $donation = Donation::find($donationId);
 
@@ -34,7 +35,10 @@ class CacheCampaignData
             return;
         }
 
-        if ($donation->status->isComplete() || $donation->status->isRenewal()) {
+        // A donation that leaves the complete statuses (a refund) also changes the stats.
+        $wasCounted = in_array($oldStatus, [DonationStatus::COMPLETE, DonationStatus::RENEWAL], true);
+
+        if ($wasCounted || $donation->status->isComplete() || $donation->status->isRenewal()) {
             $this->dispatch($donation->campaignId, self::modeOf($donation));
         }
     }

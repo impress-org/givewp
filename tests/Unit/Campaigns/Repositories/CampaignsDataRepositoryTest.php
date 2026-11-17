@@ -210,6 +210,62 @@ final class CampaignsDataRepositoryTest extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testFillingMissingCampaignsDoesNotUndoARefreshThatFinishedMeanwhile()
+    {
+        $cached = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        $missing = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        update_option('give_campaigns_data', [
+            'amounts' => [['campaign_id' => (string)$cached->id, 'sum' => 0]],
+            'donationsCount' => [['campaign_id' => (string)$cached->id, 'count' => 0]],
+            'donorsCount' => [['campaign_id' => (string)$cached->id, 'count' => 0]],
+        ]);
+
+        // A refresh stores new numbers for the cached campaign while the missing one is queried.
+        $done = false;
+        $refresh = function ($query) use (&$done, $cached) {
+            if (!$done && stripos($query, 'give_donationmeta') !== false && stripos($query, 'SELECT') === 0) {
+                $done = true;
+                update_option('give_campaigns_data', [
+                    'amounts' => [['campaign_id' => (string)$cached->id, 'sum' => 70]],
+                    'donationsCount' => [['campaign_id' => (string)$cached->id, 'count' => 7]],
+                    'donorsCount' => [['campaign_id' => (string)$cached->id, 'count' => 3]],
+                ]);
+            }
+
+            return $query;
+        };
+
+        add_filter('query', $refresh, 1);
+        $campaignsData = CampaignsDataRepository::campaigns([$cached->id, $missing->id]);
+        remove_filter('query', $refresh, 1);
+
+        $this->assertTrue($done, 'the refresh ran while the missing campaign was queried');
+        $this->assertEquals(7, $campaignsData->getDonationsCount($cached));
+        $this->assertEquals(
+            ['7', '0'],
+            array_map('strval', array_column(get_option('give_campaigns_data')['donationsCount'], 'count'))
+        );
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testGetRowsHoldsOnlyTheRequestedCampaigns()
+    {
+        $first = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        $second = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        CampaignsDataRepository::campaigns([$first->id, $second->id]);
+
+        $rows = CampaignsDataRepository::campaigns([$second->id])->getRows();
+
+        $this->assertSame([(string)$second->id], array_column($rows['donationsCount'], 'campaign_id'));
+        $this->assertSame([(string)$second->id], array_column($rows['amounts'], 'campaign_id'));
+        $this->assertCount(2, get_option('give_campaigns_data')['donationsCount'], 'the stored option keeps both');
+    }
+
+    /**
      * @since 4.2.0
      */
     public function testCountCampaignDonors()
