@@ -1,5 +1,4 @@
 significance: patch
 type: fix
-entry: Legacy form editing, settings and shortcode screens now pass Plugin
-  Check, and form category and tag lists use the current get_terms() format.
+entry: Resolved an issue where the donor name got a stray leading space when a WordPress user profile was saved with a first name that holds only HTML tags.
 timestamp: 2026-11-04T21:27:57.980Z
