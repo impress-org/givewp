@@ -100,6 +100,10 @@ class PayPalOrder
      *
      * @see https://developer.paypal.com/docs/api/orders/v2
      *
+     * @since TBD Send payment_source.card only for card fields payments. When it accompanies payment_source.paypal,
+     *            PayPal ignores the NO_SHIPPING preference and collects a shipping address on every order, which
+     *            fails guest card payments with SHIPPING_ADDRESS_MISSING. Also move shipping_preference and
+     *            user_action from the deprecated application_context to payment_source.paypal.experience_context.
      * @since 4.1.0 updated to include 3d secure params for card payments
      * @since 3.4.2 Extract the amount parameters to a separate method
      * @since 3.1.0 "payer" argument is deprecated, using payment_source/paypal.
@@ -143,26 +147,31 @@ class PayPalOrder
                         "surname" => $array['payer']['lastName'],
                     ],
                     "email_address" => $array['payer']['email'],
+                    'experience_context' => [
+                        'shipping_preference' => 'NO_SHIPPING',
+                        'user_action' => 'PAY_NOW',
+                    ],
                 ],
-                'card' => [
-                    'attributes' => [
-                        'verification' => [
-                            'method' => 'SCA_WHEN_REQUIRED'
-                        ]
-                    ]
-                ]
             ],
             'purchase_units' => [
                 $purchaseUnits
-            ],
-            'application_context' => [
-                'shipping_preference' => 'NO_SHIPPING',
-                'user_action' => 'PAY_NOW',
             ],
         ];
 
         if (!empty($array['payer']['address'])){
             $requestBody['payment_source']['paypal']['address'] = $array['payer']['address'];
+        }
+
+        // 3D Secure for the advanced card fields. Smart buttons, including the guest card form, must not
+        // receive this block: with both sources present PayPal requires a shipping address on the order.
+        if (!empty($array['cardFields'])) {
+            $requestBody['payment_source']['card'] = [
+                'attributes' => [
+                    'verification' => [
+                        'method' => 'SCA_WHEN_REQUIRED',
+                    ],
+                ],
+            ];
         }
 
         $request->body = $requestBody;
