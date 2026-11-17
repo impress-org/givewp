@@ -1,0 +1,47 @@
+{
+    "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+    "meta": {
+        "description": "Debug output is on."
+    },
+    "landingPage": "/wp-admin/edit.php?post_type=give_forms&page=give-campaigns",
+    "preferredVersions": {
+        "php": "8.3",
+        "wp": "latest"
+    },
+    "features": {
+        "networking": true
+    },
+    "steps": [
+        {
+            "step": "defineWpConfigConsts",
+            "consts": {
+                "WP_DEBUG": true,
+                "WP_DEBUG_DISPLAY": true
+            }
+        },
+        {
+            "step": "login",
+            "username": "admin"
+        },
+        {
+            "step": "installTheme",
+            "themeData": {
+                "resource": "wordpress.org/themes",
+                "slug": "kadence"
+            },
+            "options": {
+                "activate": true
+            }
+        },
+        {
+            "step": "installPlugin",
+            "pluginData": {
+                "resource": "url",
+                "url": "{{ZIP_URL}}"
+            },
+            "options": {
+                "activate": true
+            }
+        }
+    ]
+}
