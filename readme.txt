@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.19.1.1
+Stable tag: 4.19.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= [4.19.2] 2026-11-12 =
+
+* Fix - Allowed PayPal Donations on v2 forms to accept a donation at the form's maximum amount when Fee Recovery adds its fee.
+* Fix - Resolved an issue where Stripe ACH donations that require microdeposit verification stayed in a Processing state with no donor instructions. Donors were emailed a hosted verification link and the verification was recorded on the donation.
+
 = [4.19.1.1] 2026-11-03 =
 
 * Feature - Added support for Nexcess Plugin Stack licenses
