@@ -240,7 +240,8 @@ class DonationCountersRebuild
             $dirtyGeneration
         ));
 
-        $builtAt = (string)microtime(true);
+        // Six decimals: a plain string cast keeps 14 digits on PHP 7.4, which rounds away the microseconds.
+        $builtAt = number_format(microtime(true), 6, '.', '');
 
         DB::query(DB::prepare(
             "INSERT INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, %s, 'off')

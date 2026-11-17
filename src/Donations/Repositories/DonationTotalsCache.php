@@ -182,7 +182,8 @@ class DonationTotalsCache
 
         self::$changeRecordedAt = microtime(true);
 
-        update_option(self::CHANGED_AT_OPTION, (string)self::$changeRecordedAt, false);
+        // Six decimals: a plain string cast keeps 14 digits on PHP 7.4, which rounds away the microseconds.
+        update_option(self::CHANGED_AT_OPTION, number_format(self::$changeRecordedAt, 6, '.', ''), false);
     }
 
     /**
@@ -196,7 +197,8 @@ class DonationTotalsCache
     {
         self::$changeRecordedAt = microtime(true);
 
-        update_option(self::CHANGED_AT_OPTION, (string)self::$changeRecordedAt, false);
+        // Six decimals: a plain string cast keeps 14 digits on PHP 7.4, which rounds away the microseconds.
+        update_option(self::CHANGED_AT_OPTION, number_format(self::$changeRecordedAt, 6, '.', ''), false);
     }
 
     /**
