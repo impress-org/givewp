@@ -61,17 +61,31 @@ class DonationTotalsLock
             return true;
         }
 
-        if ($this->isHeld()) {
-            return false;
-        }
-
-        DB::query(DB::prepare(
-            "UPDATE {$wpdb->options} SET option_value = %s WHERE option_name = %s",
-            (string)time(),
+        $lockedAt = DB::get_var(DB::prepare(
+            "SELECT option_value FROM {$wpdb->options} WHERE option_name = %s",
             $this->name
         ));
 
-        return true;
+        if ($lockedAt === null) {
+            // Released between the INSERT IGNORE and this read: insert again, there is no row to update.
+            return (bool)DB::query(DB::prepare(
+                "INSERT IGNORE INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, %s, 'off')",
+                $this->name,
+                (string)time()
+            ));
+        }
+
+        if ((int)$lockedAt > time() - $this->expiresAfter) {
+            return false;
+        }
+
+        // Only one request can change the row from the expired value it read.
+        return (int)DB::query(DB::prepare(
+            "UPDATE {$wpdb->options} SET option_value = %s WHERE option_name = %s AND option_value = %s",
+            (string)time(),
+            $this->name,
+            (string)$lockedAt
+        )) === 1;
     }
 
     /**

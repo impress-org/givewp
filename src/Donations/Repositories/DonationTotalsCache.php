@@ -106,18 +106,26 @@ class DonationTotalsCache
 
         $lock = new DonationTotalsLock(self::OPTION . '_lock_' . $hash);
 
-        if (!$lock->acquire()) {
+        $owned = $lock->acquire();
+
+        if (!$owned) {
             $cache = self::waitForOtherRequest($hash, $lock, $maxAge);
 
             if (self::isServable($cache, $hash, $maxAge)) {
                 return $cache['values'][$hash];
             }
+
+            // The holder finished without a value or died: try to take over. If it is still live,
+            // compute anyway so the page is never empty, but leave its lock alone.
+            $owned = $lock->acquire();
         }
 
         try {
             $value = self::compute($hash, $callback);
         } finally {
-            $lock->release();
+            if ($owned) {
+                $lock->release();
+            }
         }
 
         return $value;
