@@ -629,7 +629,11 @@ class ListDonations extends Endpoint
 
             $key = __METHOD__ . $testModeQuery->getSQL() . (clone $allQuery)->getSQL();
             $count = static function () use ($testModeQuery, $allQuery) {
-                return $allQuery->count() - (int)DB::get_var($testModeQuery->getSQL());
+                // One statement, so both counts read the same snapshot: a test-mode write between two
+                // statements could make the difference too small and hide live donations.
+                $allQuery->selectRaw('SELECT COUNT(1) AS count');
+
+                return (int)DB::get_var("SELECT ({$allQuery->getSQL()}) - ({$testModeQuery->getSQL()})");
             };
         }
 

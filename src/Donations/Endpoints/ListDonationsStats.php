@@ -109,9 +109,20 @@ class ListDonationsStats extends Endpoint
         // Each count still reads one meta row per matching donation. The tiles only display them, so
         // an outdated value may be shown within the totals cache's max age.
         return DonationTotalsCache::remember($key, static function () use ($testMode, $queries) {
-            $counts = array_map(static function (QueryBuilder $query) {
-                return (int)DB::get_var($query->getSQL());
-            }, $queries);
+            // One statement, so every count reads the same snapshot: counts read one after the other
+            // could see different donations after a write and subtract to a negative number.
+            $selects = [];
+
+            foreach (array_values($queries) as $index => $query) {
+                $selects[] = "({$query->getSQL()}) AS count_{$index}";
+            }
+
+            $row = DB::get_row('SELECT ' . implode(', ', $selects), ARRAY_A);
+            $counts = [];
+
+            foreach (array_keys(array_values($queries)) as $index) {
+                $counts[] = (int)($row["count_{$index}"] ?? 0);
+            }
 
             if ($testMode) {
                 list($testModeCount, $recurringTestModeCount) = $counts;

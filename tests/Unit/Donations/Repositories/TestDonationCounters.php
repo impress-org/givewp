@@ -893,6 +893,124 @@ class TestDonationCounters extends TestCase
     }
 
     // -----------------------------------------------------------------------------------------
+    // Review fixes
+    // -----------------------------------------------------------------------------------------
+
+    /**
+     * @since TBD
+     */
+    public function testAWriteReadsTheBucketAgainWhenAnotherRequestMovedTheDonation(): void
+    {
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE()]);
+
+        // Another request moves the donation to refunded and moves the counters with it.
+        global $wpdb;
+        $wpdb->update($wpdb->posts, ['post_status' => 'refunded'], ['ID' => $donation->id]);
+        DonationCounters::add([
+            DonationCounters::bucket('live', 'onetime', 'publish') => -1,
+            DonationCounters::bucket('live', 'onetime', 'refunded') => 1,
+        ]);
+        clean_post_cache($donation->id);
+
+        // This request still remembers the donation as complete, and writes it again.
+        $donation = Donation::find($donation->id);
+        $donation->status = DonationStatus::PENDING();
+        $donation->save();
+
+        $this->assertBucket('live_onetime_publish', 0);
+        $this->assertBucket('live_onetime_refunded', 0);
+        $this->assertBucket('live_onetime_pending', 1);
+        $this->assertExactEverywhere();
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testAThrowingEnabledFilterDoesNotFailTheWrite(): void
+    {
+        $this->addTestFilter('givewp_donation_counters_enabled', static function () {
+            throw new \RuntimeException('filter failed');
+        });
+
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE()]);
+        $donation->status = DonationStatus::REFUNDED();
+        $donation->save();
+        give(SyncDonationCounters::class)->releaseAll();
+
+        $this->assertNotNull(Donation::find($donation->id));
+        $this->assertSame('refunded', Donation::find($donation->id)->status->getValue());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testTheLiveListCountIsOneStatementWithTheCountersOff(): void
+    {
+        $this->addTestFilter('givewp_donation_counters_enabled', '__return_false');
+        $this->addTestFilter('givewp_donation_totals_max_age', '__return_zero');
+        Donation::factory()->count(2)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE()]);
+        Donation::factory()->count(3)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::TEST()]);
+
+        $queries = $this->recordQueries(function () use (&$response) {
+            $response = $this->listResponse(false, 1, 30);
+        });
+
+        $this->assertSame(2, (int)$response['totalItems']);
+        $this->assertCount(1, array_filter($queries, static function ($query) {
+            return stripos($query, 'COUNT(') !== false;
+        }), 'both counts must be read by one statement');
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testTheStatisticsAreOneStatementWithTheCountersOff(): void
+    {
+        $this->addTestFilter('givewp_donation_counters_enabled', '__return_false');
+        $this->addTestFilter('givewp_donation_totals_max_age', '__return_zero');
+        Donation::factory()->count(2)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE()]);
+        Donation::factory()->count(3)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::TEST(), 'type' => DonationType::SUBSCRIPTION(), 'subscriptionId' => 4]);
+
+        $queries = $this->recordQueries(function () use (&$live, &$test) {
+            $live = $this->statistics(false);
+            $test = $this->statistics(true);
+        });
+
+        $this->assertSame(['donationsCount' => 2, 'oneTimeDonationsCount' => 2, 'recurringDonationsCount' => 0], $live);
+        $this->assertSame(['donationsCount' => 3, 'oneTimeDonationsCount' => 0, 'recurringDonationsCount' => 3], $test);
+        $this->assertCount(2, array_filter($queries, static function ($query) {
+            return stripos($query, 'COUNT(') !== false;
+        }), 'each mode reads its counts with one statement');
+    }
+
+    /**
+     * The statements run while the callback runs.
+     *
+     * @since TBD
+     *
+     * @return string[]
+     */
+    private function recordQueries(callable $callback): array
+    {
+        $queries = [];
+        $record = static function ($query) use (&$queries) {
+            $queries[] = $query;
+
+            return $query;
+        };
+
+        add_filter('query', $record, 1000);
+
+        try {
+            $callback();
+        } finally {
+            remove_filter('query', $record, 1000);
+        }
+
+        return $queries;
+    }
+
+    // -----------------------------------------------------------------------------------------
     // The totals cache (round 2) sees the same writes
     // -----------------------------------------------------------------------------------------
 

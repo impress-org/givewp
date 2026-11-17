@@ -354,9 +354,14 @@ class SyncDonationCounters
      */
     private function before(int $donationId): void
     {
+        $isNested = isset($this->open[(string)$donationId]);
+
         $this->open((string)$donationId);
 
-        if (!array_key_exists($donationId, $this->known)) {
+        // The bucket this request remembers can be old: another request may have moved the donation
+        // since (a long-running process such as a CLI or Action Scheduler run). Read it again at the
+        // start of each outermost write; nested hooks of the same write reuse it.
+        if (!$isNested || !array_key_exists($donationId, $this->known)) {
             $this->known[$donationId] = $this->classify($donationId);
         }
     }
@@ -529,7 +534,7 @@ class SyncDonationCounters
      */
     public function releaseAll(): void
     {
-        if ($this->skippedDuringCreate && DonationCounters::isEnabled()) {
+        if ($this->skippedDuringCreate && $this->isEnabledSafely()) {
             $this->skippedDuringCreate = [];
             DonationCounters::markDirty();
         }
@@ -554,7 +559,16 @@ class SyncDonationCounters
      */
     private function guard(callable $handler): void
     {
-        if (!DonationCounters::isEnabled()) {
+        try {
+            $enabled = DonationCounters::isEnabled();
+        } catch (Throwable $exception) {
+            // A filter callback threw: this write may go uncounted. markDirty() never throws.
+            DonationCounters::markDirty();
+
+            return;
+        }
+
+        if (!$enabled) {
             // Writes made while the counters are off are not counted; mark them dirty once, so turning
             // them back on recounts before they are used.
             if (!$this->markedDirtyWhileDisabled) {
@@ -569,6 +583,21 @@ class SyncDonationCounters
             $handler();
         } catch (Throwable $exception) {
             DonationCounters::markDirty();
+        }
+    }
+
+    /**
+     * Whether the counters are enabled; false when a filter callback throws, so a shutdown hook
+     * never fails on it.
+     *
+     * @since TBD
+     */
+    private function isEnabledSafely(): bool
+    {
+        try {
+            return DonationCounters::isEnabled();
+        } catch (Throwable $exception) {
+            return false;
         }
     }
 
