@@ -88,6 +88,13 @@ class ServiceProvider implements ServiceProviderInterface
                 DonationTotalsCache::flush();
             });
         }
+
+        // The legacy donor delete has no hook after it removes the row, so a count taken after the
+        // flush above could still include the donor. Flush again when the request ends; the callable
+        // is added once, however many donors the request deletes.
+        add_action('give_pre_delete_donor', static function () {
+            add_action('shutdown', [DonationTotalsCache::class, 'flush']);
+        });
     }
 
     /**

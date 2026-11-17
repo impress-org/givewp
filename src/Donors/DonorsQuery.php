@@ -52,7 +52,7 @@ class DonorsQuery
      * Delegates methods not defined locally to the underlying query. A where clause is applied to
      * the count query too.
      *
-     * @since TBD Repeat where clauses on the count query.
+     * @since TBD Repeat where clauses on the count query and return this query, so a chained where clause is repeated too.
      * @since 4.4.0
      *
      * @return mixed
@@ -65,9 +65,13 @@ class DonorsQuery
 
         if (preg_match('/^(or)?where/i', $method)) {
             $this->countQuery->$method(...$args);
-        } else {
-            $this->countQueryIsIncomplete = true;
+            $this->query->$method(...$args);
+
+            // Return this wrapper, so a chained where clause also reaches the count query.
+            return $this;
         }
+
+        $this->countQueryIsIncomplete = true;
 
         return $this->query->$method(...$args);
     }
