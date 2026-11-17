@@ -1,7 +1,0 @@
-significance: patch
-type: fix
-entry: Prevented a fatal error and an empty Donor Dashboard Donation History
-  when a donation's subscription had been permanently deleted, and kept a
-  donation whose receipt fails to build from stopping the donor's other
-  donations from loading.
-timestamp: 2026-11-17T17:35:40.502Z

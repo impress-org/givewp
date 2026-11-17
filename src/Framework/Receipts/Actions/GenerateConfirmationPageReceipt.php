@@ -247,7 +247,6 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since TBD Skip subscription details when the donation's subscription no longer exists.
      * @since 3.0.0
      *
      * @return void
@@ -256,11 +255,6 @@ class GenerateConfirmationPageReceipt
     {
         if ($receipt->donation->subscriptionId) {
             $subscription = $receipt->donation->subscription;
-
-            if (!$subscription) {
-                return;
-            }
-
             $subscriptionAmountLabel = sprintf(
                 $subscription->period->label($subscription->frequency),
                 $subscription->frequency

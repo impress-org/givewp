@@ -3,7 +3,6 @@
 namespace Give\DonorDashboards\Repositories;
 
 use Give\Framework\Database\DB;
-use Give\Log\Log;
 use Give\Receipt\DonationReceipt;
 use Give\Receipt\LineItem;
 use Give\ValueObjects\Money;
@@ -137,7 +136,6 @@ class Donations
     /**
      * Get all donations by donor ID
      *
-     * @since TBD Return an empty receipt for a donation whose receipt fails to build, instead of failing the whole list.
      * @since 2.12.2 return null if donation ids is empty
      * @since 2.10.0
      *
@@ -168,41 +166,11 @@ class Donations
                 'form' => $this->getFormInfo($payment),
                 'payment' => $this->getPaymentInfo($payment),
                 'donor' => $this->getDonorInfo($payment),
-                'receipt' => $this->getReceiptInfoSafely($payment, $donorId),
+                'receipt' => $this->getReceiptInfo($payment),
             ];
         }
 
         return $donations;
-    }
-
-    /**
-     * Receipt line items come from add-ons through the give_new_receipt action, so a failure in one
-     * donation's receipt must not stop the donor's other donations from loading.
-     *
-     * @since TBD
-     *
-     * @param Give_Payment $payment
-     * @param int          $donorId
-     *
-     * @return array Receipt sections, or an empty array when the receipt could not be built.
-     */
-    protected function getReceiptInfoSafely($payment, $donorId): array
-    {
-        try {
-            return $this->getReceiptInfo($payment);
-        } catch (\Throwable $e) {
-            Log::error(
-                esc_html__('An error occurred while building a donation receipt', 'give'),
-                [
-                    'source' => 'Donor Dashboard',
-                    'Donor ID' => $donorId,
-                    'Donation ID' => $payment->ID,
-                    'Error' => $e->getMessage(),
-                ]
-            );
-
-            return [];
-        }
     }
 
     /**
