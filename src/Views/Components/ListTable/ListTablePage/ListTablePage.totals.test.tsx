@@ -193,9 +193,50 @@ describe('ListTablePage totals', () => {
     it('moves a page above the counted total to the last page', async () => {
         window.history.replaceState(null, '', `${PATH}&give-paged=40`);
         await render();
-        await answer(rowRequests()[0], rows());
+        await answer(rowRequests()[0], rows({items: [], hasNextPage: false}));
         await answer(countRequests()[0], {totalItems: 464, totalPages: 16});
 
         expect(lastTable().view.page).toBe(16);
+    });
+
+    it('does not move a page that has rows, whatever the count says', async () => {
+        window.history.replaceState(null, '', `${PATH}&give-paged=401`);
+        await render();
+        await answer(rowRequests()[0], rows({hasNextPage: false}));
+        await answer(countRequests()[0], {totalItems: 12000, totalPages: 400});
+
+        expect(lastTable().view.page).toBe(401);
+        expect(lastTable().data).toEqual([{id: 1}]);
+    });
+
+    it('does not move the page while its rows load, even when the count is older', async () => {
+        await render();
+        await answer(rowRequests()[0], rows());
+        await answer(countRequests()[0], {totalItems: 12000, totalPages: 400});
+        await changeView((view) => ({...view, page: 401}));
+
+        expect(rowRequests()).toHaveLength(2);
+        expect(lastTable().view.page).toBe(401);
+
+        await answer(rowRequests()[1], rows({hasNextPage: false}));
+
+        expect(lastTable().view.page).toBe(401);
+    });
+
+    it('keeps the arrows when a counted total says the list ends but the rows have a next page', async () => {
+        await render();
+        await answer(rowRequests()[0], rows({hasNextPage: true}));
+        await answer(countRequests()[0], {totalItems: 30, totalPages: 1});
+
+        expect(lastTable().paginationInfo).toBeNull();
+        expect(lastTable().hasNextPage).toBe(true);
+    });
+
+    it('keeps a counted total that agrees with the rows', async () => {
+        await render();
+        await answer(rowRequests()[0], rows({hasNextPage: true}));
+        await answer(countRequests()[0], {totalItems: 61, totalPages: 3});
+
+        expect(lastTable().paginationInfo).toEqual({totalItems: 61, totalPages: 3});
     });
 });

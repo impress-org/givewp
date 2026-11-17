@@ -40,7 +40,8 @@ function toTotals(response: {totalItems?: number | string; totalPages?: number} 
  *    of another request, so a response for earlier filters never shows,
  * 3. else the totals of an earlier rows response for the same filters.
  *
- * A failed count request leaves the total `null`: the table keeps working with its arrows.
+ * A failed count request leaves the total `null`: the table keeps working with its arrows. So does a
+ * counted total that the current rows contradict (see `contradictsRows`).
  *
  * `hasNextPage` comes from the rows response; until the first one it is `true`.
  *
@@ -73,10 +74,18 @@ export default function useListTableTotals({
         remembered.current = {key: countKey, totals: fromRows};
     }
 
-    const totals =
-        fromRows ??
-        toTotals(count) ??
-        (remembered.current?.key === countKey ? remembered.current.totals : null);
+    const counted = fromRows ?? toTotals(count) ?? (remembered.current?.key === countKey ? remembered.current.totals : null);
+
+    // The rows are the evidence: a counted total that says there is no page after this one (or one more)
+    // while the rows say the opposite is out of date. Showing it would hide the rest of the list behind a
+    // numbered pager, so the table keeps its arrows until the count agrees with the rows.
+    const contradictsRows =
+        !fromRows &&
+        !!counted &&
+        !isLoading &&
+        typeof data?.hasNextPage === 'boolean' &&
+        data.hasNextPage !== page < counted.totalPages;
+    const totals = contradictsRows ? null : counted;
 
     const hasNextPage = data?.hasNextPage ?? (totals && data ? page < totals.totalPages : true);
 

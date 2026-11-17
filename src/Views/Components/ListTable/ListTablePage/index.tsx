@@ -280,12 +280,15 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         useImperativeHandle(ref, () => ({refresh}), [refresh]);
 
         // After records are removed, or with a page typed in the address, the current page can be past
-        // the last one. This waits for the total.
+        // the last one. This waits for the total and for the rows of the current page: a page that has
+        // rows exists, whatever an older count says, and while it loads the count may be the old one.
+        const isEmptyPage = !isLoading && data?.items.length === 0;
+
         useEffect(() => {
-            if (totals && totals.totalPages > 0 && view.page > totals.totalPages) {
+            if (isEmptyPage && totals && totals.totalPages > 0 && view.page > totals.totalPages) {
                 replaceView({...view, page: totals.totalPages}, 'correction');
             }
-        }, [totals?.totalPages, view.page]);
+        }, [totals?.totalPages, view.page, isEmptyPage]);
 
         const legacyRowActionsField = useLegacyRowActionsField(legacyRowActions, {
             data,
