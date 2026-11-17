@@ -1,4 +1,4 @@
 significance: minor
 type: enhancement
-entry: Made the Donations, Donors, Subscriptions and Campaigns lists load in seconds on sites with a million donations. Totals are counted from indexes and kept until a donation changes (or for a short time you can set with a filter), long lists get a page number box in place of a page menu with thousands of entries, and a page shows that it is loading.
+entry: Made the Donations, Donors, Subscriptions and Campaigns lists load in seconds on sites with a million donations. Totals are counted from indexes and kept until a donation changes (or for a short time you can set with a filter), long lists get a page number box in place of a page menu with thousands of entries, and a page shows that it is loading. The rows of a list now appear first, and the totals follow from a separate count request.
 timestamp: 2026-11-16T22:00:00.000Z

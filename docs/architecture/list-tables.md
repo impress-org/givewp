@@ -403,6 +403,31 @@ Three more rules from the 1M-donation profiling (SOFT-5634):
   took 188 seconds at a million donations; with the range it reads only recurring rows). The range
   leaves out values no writer stores, such as `'05'` or `'-1'`.
 
+## Rows first, totals apart: `withCount=false` and `/count`
+
+A list request used to wait for its total. The total is the slow part on a large site (the first
+request, a search, the Live tab, the last page), and it only feeds numbers on screen. So the six v3
+list routes (donations, donors, subscriptions, donation forms, campaigns, events) can send them
+apart. The shared helper is `Framework/ListTable/ListCount`.
+
+- **Rows request.** `GET <route>?...&withCount=false` returns the same keys as before, without
+  `totalItems` and `totalPages`, and with `hasNextPage` (the endpoint reads `perPage + 1` rows and
+  drops the extra one). Without `withCount=false` the response is exactly what it was, so add-ons
+  and the legacy tables are not affected.
+- **Count request.** `GET <route>/count?...` takes the same filter and search parameters (page and
+  sort are ignored, `perPage` decides `totalPages`) and returns `{"totalItems": int, "totalPages": int}`.
+  It has the same permission check as the list, and it reads the total through the same method the
+  list uses (`getTotal...Count()`, with the donation counters, the timed totals cache, the lock and
+  the live count above), so the two numbers cannot disagree.
+- **Deep donation pages still count.** Reading a page from the other end needs the total. A donations
+  rows request that begins at row 10,000 or later (`DEEP_PAGE_OFFSET`) therefore counts first, as the
+  list does, and then also sends `totalItems` and `totalPages`. A client uses them when present.
+- **Rows never come from a total.** A cached or counted number only feeds what is displayed and the
+  page jumps. The rows request reads the rows from the database every time, so a stale total can
+  hide nothing. Tested by adding a donation after the count was cached.
+- **A new filter needs no extra work.** The count route and the list share `getWhereConditions()`, so
+  a filter added there is in both.
+
 ## The React page: DataViews
 
 Every list screen renders through `ListTablePage`, which hands the rows to `@wordpress/dataviews`.
@@ -423,6 +448,15 @@ searching and paging stay on the server.
   screens](#narrow-screens)). Where the pinned DataViews lags
   the current WordPress release, a short commented CSS rule in `DataViewsListTable/styles.scss`
   matches the newer behavior (row checkboxes always visible).
+- **Rows and total are two requests.** `ListTablePage` asks for the rows with `withCount=false` and
+  reads `hasNextPage`, and asks `<root>/count` for the total on its own (`hooks/useListTableTotals`).
+  The count is keyed without page and sort, so paging does not count again, and it never keeps the
+  answer of another request, so a count for old filters never shows. While the total is unknown, the
+  footer has only the previous and next arrows (Next follows `hasNextPage`, and is on until the first
+  rows response); the "N found" text and the footer total wait too. When it arrives, the stock page
+  control (or the page number box above 100 pages) shows, and a page above the total is moved to the
+  last page. If a rows response has `totalItems` and `totalPages`, they are used. If the count request
+  fails, the arrows and the table stay. A page typed in the URL loads its rows at once.
 - **One layout change: the selection bar sits above the table.** In the Site Editor the list fills
   the window, so the footer with the selection bar is always in view. On Give's pages the list is
   part of a longer page, and the footer ends up below the last row. `DataViewsListTable` uses the

@@ -493,7 +493,7 @@ class SyncDonationCounters
         global $wpdb;
 
         if ($this->writingRow === null) {
-            $this->writingRow = DonationCounters::WRITING_PREFIX . md5(uniqid((string)mt_rand(), true));
+            $this->writingRow = DonationCounters::WRITING_PREFIX . md5(wp_generate_uuid4());
             add_action('shutdown', [$this, 'releaseAll'], 0);
         }
 

@@ -12,6 +12,7 @@ use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
+use Give\Framework\ListTable\ListCount;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\QueryBuilder\WhereQueryBuilder;
@@ -24,6 +25,14 @@ use WP_REST_Response;
  */
 class ListDonations extends Endpoint
 {
+    /**
+     * A request that skips the total reads forward from the start, unless its page begins at this many
+     * rows or more: only then does it count first, to read the page from the other end when it can.
+     *
+     * @since TBD
+     */
+    private const DEEP_PAGE_OFFSET = 10000;
+
     /**
      * @var string
      */
@@ -84,13 +93,115 @@ class ListDonations extends Endpoint
     /**
      * @inheritDoc
      *
-     * @since TBD Accept a comma list of campaign IDs and a list of form IDs (at most 50 each), and add the donationType parameter.
+     * @since TBD Accept a comma list of campaign IDs and a list of form IDs (at most 50 each), and add the donationType parameter, the withCount parameter and the count route.
      * @since 4.19.0 Add formId parameter and accept "none" for campaignId
      * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      * @since 3.4.0
      */
     public function registerRoute()
     {
+        $args = [
+            'page' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 1,
+                'minimum' => 1
+            ],
+            'perPage' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 30,
+                'minimum' => 1
+            ],
+            'campaignId' => [
+                'type' => 'string',
+                'required' => false,
+                'default' => '',
+                'pattern' => '^(none|\\d*|\\d+(,\\d+){1,49})$',
+                'description' => 'Filter donations by campaign ID or a comma-separated list of up to 50 campaign IDs, or "none" for donations that have no campaign.',
+            ],
+            'formId' => [
+                'type' => 'array',
+                'required' => false,
+                'default' => [],
+                'maxItems' => 50,
+                'items' => [
+                    'type' => 'integer',
+                ],
+                'description' => 'Filter donations by one or more form IDs. At most 50.',
+            ],
+            'donationType' => [
+                'type' => 'string',
+                'required' => false,
+                'enum' => [
+                    'one-time',
+                    'recurring',
+                ],
+                'description' => 'Filter donations by type. Recurring donations have a subscription ID.',
+            ],
+            'search' => [
+                'type' => 'string',
+                'required' => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'start' => [
+                'type' => 'string',
+                'required' => false,
+                'format' => 'date-time'
+            ],
+            'end' => [
+                'type' => 'string',
+                'required' => false,
+                'format' => 'date-time'
+            ],
+            'donor' => [
+                'type' => 'string',
+                'required' => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'sortColumn' => [
+                'type' => 'string',
+                'required' => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'sortDirection' => [
+                'type' => 'string',
+                'required' => false,
+                'enum' => [
+                    'asc',
+                    'desc',
+                ],
+            ],
+            'locale' => [
+                'type' => 'string',
+                'required' => false,
+                'default' => get_locale(),
+            ],
+            'testMode' => [
+                'type' => 'boolean',
+                'required' => false,
+                'default' => give_is_test_mode(),
+            ],
+            'return' => [
+                'type' => 'string',
+                'required' => false,
+                'default' => 'columns',
+                'enum' => [
+                    'model',
+                    'columns',
+                ],
+            ],
+            'status' => [
+                'type' => 'array',
+                'required' => false,
+                'items' => [
+                    'type' => 'string',
+                    'enum' => array_values(DonationStatus::toArray()),
+                ],
+                'description' => 'Filter donations by status. Accepts comma-separated list of DonationStatus values (e.g., "pending,publish,trash"). If not provided, excludes trash donations by default.'
+            ],
+        ];
+
         register_rest_route(
             'give-api/v2',
             $this->endpoint,
@@ -100,113 +211,26 @@ class ListDonations extends Endpoint
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
-                'args' => [
-                    'page' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 1,
-                        'minimum' => 1
-                    ],
-                    'perPage' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 30,
-                        'minimum' => 1
-                    ],
-                    'campaignId' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => '',
-                        'pattern' => '^(none|\\d*|\\d+(,\\d+){1,49})$',
-                        'description' => 'Filter donations by campaign ID or a comma-separated list of up to 50 campaign IDs, or "none" for donations that have no campaign.',
-                    ],
-                    'formId' => [
-                        'type' => 'array',
-                        'required' => false,
-                        'default' => [],
-                        'maxItems' => 50,
-                        'items' => [
-                            'type' => 'integer',
-                        ],
-                        'description' => 'Filter donations by one or more form IDs. At most 50.',
-                    ],
-                    'donationType' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'enum' => [
-                            'one-time',
-                            'recurring',
-                        ],
-                        'description' => 'Filter donations by type. Recurring donations have a subscription ID.',
-                    ],
-                    'search' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'start' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'format' => 'date-time'
-                    ],
-                    'end' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'format' => 'date-time'
-                    ],
-                    'donor' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'sortColumn' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'sortDirection' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'enum' => [
-                            'asc',
-                            'desc',
-                        ],
-                    ],
-                    'locale' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => get_locale(),
-                    ],
-                    'testMode' => [
-                        'type' => 'boolean',
-                        'required' => false,
-                        'default' => give_is_test_mode(),
-                    ],
-                    'return' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => 'columns',
-                        'enum' => [
-                            'model',
-                            'columns',
-                        ],
-                    ],
-                    'status' => [
-                        'type' => 'array',
-                        'required' => false,
-                        'items' => [
-                            'type' => 'string',
-                            'enum' => array_values(DonationStatus::toArray()),
-                        ],
-                        'description' => 'Filter donations by status. Accepts comma-separated list of DonationStatus values (e.g., "pending,publish,trash"). If not provided, excludes trash donations by default.'
-                    ],
+                'args' => $args + ListCount::arguments(),
+            ]
+        );
+
+        register_rest_route(
+            'give-api/v2',
+            $this->endpoint . '/count',
+            [
+                [
+                    'methods' => 'GET',
+                    'callback' => [$this, 'handleCountRequest'],
+                    'permission_callback' => [$this, 'permissionsCheck'],
                 ],
+                'args' => $args,
             ]
         );
     }
 
     /**
-     * @since TBD Count live before reading a deep page from the other end, correct a cached or counted total with what the page read found, and mark the donation counters dirty when a live count proves them wrong.
+     * @since TBD Skip the total when the request sends withCount=false, and count live before reading a deep page from the other end, correct a cached or counted total with what the page read found, and mark the donation counters dirty when a live count proves them wrong.
      * @since 2.24.0 Change this to use the new ListTable class
      * @since      2.20.0
      *
@@ -222,17 +246,20 @@ class ListDonations extends Endpoint
         $this->forwardPage = null;
         $this->totalFromCounters = false;
 
-        $donationsCount = $this->getTotalDonationsCount();
+        // A request that skips the total only counts for a deep page, which needs it to be read from the other end.
+        $donationsCount = ListCount::isRequested($request) || $this->isDeepPage() ? $this->getTotalDonationsCount() : null;
 
-        if ($this->needsLiveCount($donationsCount)) {
+        if ($donationsCount !== null && $this->needsLiveCount($donationsCount)) {
             $countedTotal = $this->totalFromCounters ? $donationsCount : null;
             $donationsCount = $this->countLive();
             $this->checkCountersAgainstLiveCount($countedTotal, $donationsCount);
         }
 
         $donations = $this->getDonations();
-        $donationsCount = $this->correctTotal($donationsCount);
-        $totalPages = (int)ceil($donationsCount / $this->request->get_param('perPage'));
+
+        if ($donationsCount !== null) {
+            $donationsCount = $this->correctTotal($donationsCount);
+        }
 
         if ('model' === $this->request->get_param('return')) {
             $items = $donations;
@@ -241,13 +268,52 @@ class ListDonations extends Endpoint
             $items = $this->listTable->getItems();
         }
 
-        return new WP_REST_Response(
-            [
-                'items' => $items,
-                'totalItems' => $donationsCount,
-                'totalPages' => $totalPages,
-            ]
-        );
+        // A total that was read anyway is sent even when the request skipped it.
+        $paging = $donationsCount === null
+            ? ['hasNextPage' => $this->forwardPage[1] ?? false]
+            : ListCount::totals($donationsCount, $request);
+
+        if ($donationsCount !== null && !ListCount::isRequested($request)) {
+            $paging['hasNextPage'] = $this->hasNextPage($donationsCount);
+        }
+
+        return new WP_REST_Response(['items' => $items] + $paging);
+    }
+
+    /**
+     * The total for the same filters as the list, without its rows. It reads the total the same
+     * way the list does, so the two cannot disagree.
+     *
+     * @since TBD
+     */
+    public function handleCountRequest(WP_REST_Request $request): WP_REST_Response
+    {
+        $this->request = $request;
+        $this->totalDonations = null;
+        $this->forwardPage = null;
+        $this->totalFromCounters = false;
+
+        return ListCount::response($this->getTotalDonationsCount(), $request);
+    }
+
+    /**
+     * Whether the page begins so deep that reading it forward would walk a long way.
+     *
+     * @since TBD
+     */
+    private function isDeepPage(): bool
+    {
+        return ($this->request->get_param('page') - 1) * $this->request->get_param('perPage') >= self::DEEP_PAGE_OFFSET;
+    }
+
+    /**
+     * Whether rows follow the requested page, once the total is known.
+     *
+     * @since TBD
+     */
+    private function hasNextPage(int $total): bool
+    {
+        return $this->request->get_param('page') * $this->request->get_param('perPage') < $total;
     }
 
     /**
