@@ -273,7 +273,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= [4.19.2.1] 2026-11-16 =
+= [4.19.2.1] 2026-11-17 =
 
 * Security - Added additional permission checks to the donor list REST API endpoint.
 * Security - Added additional protection to the donor email access.
