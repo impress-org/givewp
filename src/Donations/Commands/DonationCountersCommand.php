@@ -62,7 +62,14 @@ class DonationCountersCommand
             $rows[] = ['bucket' => substr($bucket, strlen(DonationCounters::BUCKET_PREFIX)), 'count' => $count];
         }
 
-        WP_CLI\Utils\format_items($assocArgs['format'] ?? 'table', $rows, ['bucket', 'count']);
+        $format = $assocArgs['format'] ?? 'table';
+
+        WP_CLI\Utils\format_items($format, $rows, ['bucket', 'count']);
+
+        // The summary is plain text: keep it out of json, csv and yaml output so it still parses.
+        if ('table' !== $format) {
+            return;
+        }
 
         WP_CLI::log(sprintf(
             'enabled: %s; built at: %s; dirty: %d; clean: %d; interval: %d s; last rebuild: %s',
