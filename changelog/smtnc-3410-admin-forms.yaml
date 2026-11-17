@@ -1,4 +1,4 @@
 significance: patch
 type: fix
-entry: Resolved an issue where the donor name got a stray leading space when a WordPress user profile was saved with a first name that holds only HTML tags.
+entry: Continued the Plugin Check compatibility cleanup in the legacy form and settings screens.
 timestamp: 2026-11-04T21:27:57.980Z
