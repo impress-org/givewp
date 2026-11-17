@@ -95,8 +95,10 @@ rely on anything upstream having validated the request. It does not trust it:
 - for v3 forms, the total sent to PayPal (`give-amount`, fee recovery included) must be at least
   the `amount` the form validated; `createPayment()` reconciles the order to the donation before
   capture, so that is the only bound the handler needs
-- for v2 forms, the final amount after the `give_donation_total` filter is checked again: positive
-  and within the form's configured maximum
+- for v2 forms, the final amount after the `give_donation_total` filter is checked again for being
+  positive. It is not held to the form's maximum: the form layer already holds the posted amount to
+  it, and fee recovery adds its fee in that filter, so a donation at the maximum plus a fee is valid
+  here as it is on the donate route
 
 The donor then approves the order inside PayPal's UI. **At this point no money has moved.** An
 approved PayPal order is an authorization, not a payment.

@@ -14,7 +14,7 @@ Releases are prepared continuously as features and fixes are merged:
 Normal releases follow a [gitflow](https://nvie.com/posts/a-successful-git-branching-model/) pattern: features and fixes land in `develop`, and releases are cut from there.
 
 1. Make sure everything intended for the release is merged into `develop` and CI is green.
-2. Create a release branch off `develop` (`release/x.y.z`).
+2. Create a release branch off `develop` (`release/M26.jigglypuff`: the name carries no version, the files do).
 3. Run the release prep command with the new version number:
 
    ```bash
@@ -35,17 +35,17 @@ Normal releases follow a [gitflow](https://nvie.com/posts/a-successful-git-branc
 5. Review the diff carefully — version strings, replaced TBD tags, and the new changelog entry.
 6. Validate `readme.txt` with the [WordPress readme validator](https://wordpress.org/plugins/developers/readme-validator/) and preview it on [WPReadme.com](https://wpreadme.com/).
 7. Run the test suite (`composer test`) and let CI pass on the release branch.
-8. Build a release candidate ZIP for QA by running the [Generate Plugin Zip](.github/workflows/generate-zip.yml) GitHub Action against the release branch. Attach the ZIP to the release ticket and wait for QA approval.
+8. Build a release candidate ZIP for QA by running the [Generate Zip](.github/workflows/zip.yml) GitHub Action against the release branch, with `prerelease` set to `rc` (see [Building a zip with the Generate Zip workflow](#building-a-zip-with-the-generate-zip-workflow)). Attach the ZIP to the release ticket and wait for QA approval.
 9. Open a PR for the release branch against `master` and get it reviewed.
 
 ## Preparing a release with the Release Prep workflow
 
-Step 3 above can also run in CI, through the [Release Prep](.github/workflows/release-prep.yml) GitHub Action. It runs the same three steps as `composer run release:prep`, with the same `.puprc`, changelog entries and changelogger configuration, through the shared [release-prep action](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/release-prep) in stellarwp/plugin-toolbox. It then commits the result to the release branch as one commit, `Prepare release/x.y.z (x.y.z)`. Nothing needs to be installed locally.
+Step 3 above can also run in CI, through the [Release Prep](.github/workflows/release-prep.yml) GitHub Action. It runs the same three steps as `composer run release:prep`, with the same `.puprc`, changelog entries and changelogger configuration, through the shared [release-prep action](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/release-prep) in stellarwp/plugin-toolbox. It then commits the result to the release branch as one commit, `Prepare release/M26.jigglypuff (4.16.0)`. Nothing needs to be installed locally.
 
 The NX1 release dashboard uses this workflow for a release's prepare step. To run it by hand once the release branch exists:
 
 ```bash
-gh workflow run release-prep.yml -f branch=release/4.16.0 -f version=4.16.0
+gh workflow run release-prep.yml -f branch=release/M26.jigglypuff -f version=4.16.0
 ```
 
 * `-f date=YYYY-MM-DD` sets the changelog date; it defaults to today, in UTC.
@@ -56,12 +56,49 @@ gh workflow run release-prep.yml -f branch=release/4.16.0 -f version=4.16.0
 
 After it runs, continue from step 4 above. It works the same for a `hotfix/x.y.z` branch.
 
+## Building a zip with the Generate Zip workflow
+
+Step 8 above runs through the [Generate Zip](.github/workflows/zip.yml) GitHub Action, which builds the plugin with pup and names the zip after the version the checkout holds, through the shared [zip-name](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/zip-name) and [release-zip](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/release-zip) actions in stellarwp/plugin-toolbox. The build steps are the ones `.puprc` lists under `build`, the same ones `release.yml` runs, and the POT file is generated after the build, so `languages/give.pot` ends up in the zip. The zip is uploaded to the S3 bucket, announced on Slack when the packaging bot asked for it, and attached to the run as an artifact.
+
+The packaging bot (`bot package <branch> for givewp`) and the NX1 release dashboard dispatch this workflow with `ref` and `production`. To run it by hand:
+
+```bash
+gh workflow run zip.yml -f ref=release/4.16.0 -f prerelease=rc
+```
+
+| `production` | `prerelease` | `sequence` | Zip |
+|---|---|---|---|
+| `no` | `dev` (the default) | | `give.4.16.0-dev-<timestamp>-<hash>.zip`, the name a dev build had before, skipped when the bucket already has it |
+| `no` | `rc` (or `alpha`, `beta`) | | `give.4.16.0-rc-<timestamp>-<hash>.zip`, always built |
+| `no` | `rc` | `2` | `give.4.16.0-rc-2.zip` |
+| `yes` | ignored | ignored | `give.4.16.0.zip`, the version files untouched |
+
+* The version inside the zipped files is the same string as the zip name; the branch keeps the clean version.
+* `-f expected_version=4.16.0` refuses a build whose files hold another version, before anything is built.
+* A production build runs `pup check` strict, so a `TBD` left behind fails it; a QA build only warns.
+
 ## Publishing
 
 1. Merge the release branch into `master`.
 2. Manually merge the release branch back into `develop` — this keeps `develop` in sync with the version bumps, compiled changelog, and replaced TBD tags from the release. If there are merge conflicts, resolve them and send a fresh release candidate back through QA.
 3. Draft a new GitHub release using the version as the tag and title, with the target branch set to `master`. Generate release notes, double-check everything, and publish.
 4. Monitor the release GitHub Action and the Slack notifications — publishing the release kicks off the deploy to WordPress.org and pushes the pot file to the [translations server](https://translations.stellarwp.com/).
+
+## Publishing from the release dashboard
+
+The NX1 release dashboard runs the publishing steps above in one GitHub Action, [Deploy to WordPress.org from the release dashboard](.github/workflows/release-dashboard-deploy.yml), dispatched on the release branch. It merges the release branch into `master` and `master` back into `develop`, then builds, deploys to WordPress.org, publishes the GitHub release with the version as tag and title, GitHub's generated notes and the zip attached, and announces on Slack, the same steps as the release Action. The release is published last, so a failed build or deploy leaves no release behind. The merges run through the shared [release-merge action](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/release-merge) in stellarwp/plugin-toolbox and the release through its [release-publish action](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/release-publish).
+
+To run it by hand once the release branch is prepared, start it on that branch: the first step refuses a run started anywhere else, since the `live` environment's branch policy covers the branch the run was started on.
+
+```bash
+gh workflow run release-dashboard-deploy.yml --ref release/M26.jigglypuff -f branch=release/M26.jigglypuff -f version=4.16.0
+```
+
+* `branch` is the release branch to merge; `version` becomes the tag and has to be the version the branch's files hold.
+* A version already released, a tag without a release, or a pre-release such as `4.16.0-beta.1` is refused before anything is merged.
+* A merge conflict fails the run with nothing published. Resolve it on the branch named in the log (`master` or `develop`), push, and run it again: the merges already done are kept.
+* Running it again after a later failure is safe: the merges find nothing to do, the deploy finds the version on WordPress.org and only rebuilds the zip, and an existing release is kept. A retry made after `master` moved on to a later release is refused before anything is built, so that release's code is never published under this version.
+* The release it publishes does not start the release Action, so the deploy happens once.
 
 ## Hotfixes
 
@@ -81,8 +118,10 @@ this repository, because the conversion command is in this repository. impress-o
 is an example to follow.
 
 1. A `.puprc` with `paths.versions` (plugin header, version constant, `Stable tag` in
-   `readme.txt`) and `checks.tbd.dirs`. The shape is in the
-   [release-prep action's README](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/release-prep#what-the-repository-needs).
+   `readme.txt`), `checks.tbd.dirs`, the `build` commands and a `zip_name` (the slug the zip is
+   named after, `give-recurring` for Recurring). The shape is in the
+   [release-prep action's README](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/release-prep#what-the-repository-needs)
+   and the [zip-name action's README](https://github.com/stellarwp/plugin-toolbox/tree/main/.github/actions/zip-name#what-the-repository-needs).
 2. A `changelogger` section in `package.json`: copy core's, with `files` pointing at the
    add-on's `readme.txt` and `"strategy": "stellarwp-readme"`, and a `changelog/` directory
    with a `.gitkeep`. If `readme.txt` already lists the changes of an unreleased version under
@@ -90,7 +129,12 @@ is an example to follow.
    (`npx @stellarwp/changelogger add`) and delete the block: the workflow writes those entries
    at release time.
 3. `.github/workflows/release-prep.yml`, copied from core as it is.
-4. The changelog history converted. The changelogger writes entries as
+4. `.github/workflows/zip.yml`, copied from core with the POT path changed to the add-on's
+   (`languages/give-recurring.pot`). Keep the file name: the packaging bot looks for `zip.yml`
+   first and only falls back to `generate-zip.yml` when there is none, so adding the file switches
+   the bot over and deleting it switches it back; `generate-zip.yml` can stay during the
+   transition.
+5. The changelog history converted. The changelogger writes entries as
    `= [2.20.3] 2026-10-14 =` and `* Fix - …`; an add-on's history is in Give's earlier form,
    `= 2.20.3: October 14th, 2026 =` and `* Fix: …`, so convert it once, or the file carries both
    formats from the next release on. From the add-on's root:
@@ -104,17 +148,33 @@ is an example to follow.
    `116 header(s) and 369 bullet(s) converted; verified against the original: 126 version(s) and 372 entries match`.
    When something does not verify, nothing is written and the problems are listed. Commit the
    conversion on its own, so the reviewer can skim it.
-5. The same check, with the original taken from git, to quote in the pull request:
+6. The same check, with the original taken from git, to quote in the pull request:
 
    ```bash
    git show HEAD~1:readme.txt > /tmp/readme-before.txt
    node ../give/bin/convert-changelog-format.js --verify /tmp/readme-before.txt readme.txt
    ```
 
-6. The workflow can only be dispatched once it is on the add-on's default branch. After the
-   merge, run it once on a throwaway branch
-   (`gh workflow run release-prep.yml -f branch=<branch> -f version=<next>`) and check the
-   `Prepare <branch> (<version>)` commit.
+7. The workflows can only be dispatched once they are on the add-on's default branch. After
+   the merge, run each once on a throwaway branch
+   (`gh workflow run release-prep.yml -f branch=<branch> -f version=<next>`, then
+   `gh workflow run zip.yml -f ref=<branch> -f prerelease=rc`) and check the
+   `Prepare <branch> (<version>)` commit and the `-rc-` zip on the run.
+
+For the deploy step, an add-on does not copy core's `release-dashboard-deploy.yml`: its deploy
+goes to GiveWP.com through the shared `givewp-release.yml` in impress-org/givewp-github-actions,
+and that repository has a second reusable workflow next to it,
+[`release-dashboard-deploy.yml`](https://github.com/impress-org/givewp-github-actions/blob/master/.github/workflows/release-dashboard-deploy.yml),
+with the same steps for a release the dashboard deploys (merge, build, deploy, publish the release
+with the zip attached, translations, Slack). The add-on adds a thin caller of it, also named
+`release-dashboard-deploy.yml`, with `workflow_dispatch` inputs `branch` and `version` and
+`secrets: inherit`; impress-org/give-recurring#1256 is the one to copy, with `plugin_slug` and
+`zip_name` changed. Its `release.yml` keeps running on the `release` event for a release
+published by hand, and gets the same `concurrency` group as the caller. Once the caller is on
+the add-on's default branch, point the dashboard's deploy step at it: Releases → Repositories →
+the add-on → Release Actions → Change on "Release — Deploy", pick `release-dashboard-deploy.yml`.
+Until then the dashboard dispatches `release.yml`, and GitHub refuses it: the file has no
+`workflow_dispatch` trigger.
 
 ## Notes
 

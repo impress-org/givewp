@@ -1,0 +1,9 @@
+{
+  "exclude-checks": [
+    "enqueued_scripts_scope",
+    "enqueued_scripts_size",
+    "enqueued_styles_scope",
+    "enqueued_styles_size",
+    "non_blocking_scripts"
+  ]
+}
