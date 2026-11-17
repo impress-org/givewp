@@ -33,7 +33,7 @@ class TestDonorsQuery extends TestCase
      */
     public function tearDown(): void
     {
-        remove_action('shutdown', [DonationTotalsCache::class, 'flush']);
+        remove_action('shutdown', [DonationTotalsCache::class, 'flushFinal']);
 
         parent::tearDown();
     }
@@ -73,11 +73,11 @@ class TestDonorsQuery extends TestCase
      */
     public function testALegacyDonorDeleteFlushesTheTotalsAgainWhenTheRequestEnds(): void
     {
-        $this->assertFalse(has_action('shutdown', [DonationTotalsCache::class, 'flush']));
+        $this->assertFalse(has_action('shutdown', [DonationTotalsCache::class, 'flushFinal']));
 
         do_action('give_pre_delete_donor', 1, true, false);
         do_action('give_pre_delete_donor', 2, true, false);
 
-        $this->assertNotFalse(has_action('shutdown', [DonationTotalsCache::class, 'flush']));
+        $this->assertNotFalse(has_action('shutdown', [DonationTotalsCache::class, 'flushFinal']));
     }
 }

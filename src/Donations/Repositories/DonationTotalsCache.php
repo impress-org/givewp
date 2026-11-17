@@ -186,6 +186,20 @@ class DonationTotalsCache
     }
 
     /**
+     * Records that the totals changed, always. For the end of a request that already flushed: a count
+     * that started after the first flush may finish with a value from before the change, and only a
+     * newer record marks it outdated.
+     *
+     * @since TBD
+     */
+    public static function flushFinal(): void
+    {
+        self::$changeRecordedAt = microtime(true);
+
+        update_option(self::CHANGED_AT_OPTION, (string)self::$changeRecordedAt, false);
+    }
+
+    /**
      * Seconds an outdated total is served before it is computed again. 0 never serves one.
      *
      * @since TBD
