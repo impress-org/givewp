@@ -1,6 +1,4 @@
 significance: patch
 type: fix
-entry: Add a License header to the main plugin file, move the Event Tickets form
-  builder block to block API version 3, and use plain strings and prefixed names
-  in legacy code flagged by Plugin Check.
+entry: Added a License line to the plugin header and updated the Event Tickets block to the current block editor API.
 timestamp: 2026-11-04T22:30:15.057Z
