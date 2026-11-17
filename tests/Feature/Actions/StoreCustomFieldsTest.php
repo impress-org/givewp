@@ -80,44 +80,24 @@ class StoreCustomFieldsTest extends TestCase
      */
     public function testShouldNotOverwriteExistingDonorMetaWithBlankValue($blankValue): void
     {
-        /** @var DonationForm $form */
-        $form = DonationForm::factory()->create();
-
-        $customFieldBlockModel = BlockModel::make([
-            'name' => 'givewp/section',
-            'attributes' => ['title' => '', 'description' => ''],
-            'innerBlocks' => [
-                [
-                    'name' => 'givewp/text',
-                    'attributes' => [
-                        'fieldName' => 'custom_text_block_meta',
-                        'storeAsDonorMeta' => true,
-                        'title' => 'Custom Text Field',
-                        'description' => ''
-                    ],
-                ]
-            ]
-        ]);
-
-        $form->blocks = BlockCollection::make(
-            array_merge([$customFieldBlockModel], $form->blocks->getBlocks())
-        );
-
-        $form->save();
-
-        /** @var Donation $donation */
-        $donation = Donation::factory()->create(['formId' => $form->id]);
-
         $existingValue = 'Existing Donor Meta Value';
-        give()->donor_meta->update_meta($donation->donorId, 'custom_text_block_meta', $existingValue);
 
-        $action = new StoreCustomFields();
-
-        $action($form, $donation, null, ['custom_text_block_meta' => $blankValue]);
-
-        $storedValue = give()->donor_meta->get_meta($donation->donorId, 'custom_text_block_meta', true);
+        $storedValue = $this->storeOverExistingDonorMeta($existingValue, $blankValue);
 
         $this->assertSame($existingValue, $storedValue);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testShouldOverwriteExistingDonorMetaWithZeroString(): void
+    {
+        $storedValue = $this->storeOverExistingDonorMeta('Existing Donor Meta Value', '0');
+
+        $this->assertSame('0', $storedValue);
     }
 
     /**
@@ -220,5 +200,52 @@ class StoreCustomFieldsTest extends TestCase
             ->get();
 
         $this->assertSame($field->getDefaultValue(), $query->meta_value);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @param mixed $submittedValue
+     *
+     * @return mixed The donor meta value after the field is stored.
+     * @throws Exception
+     */
+    private function storeOverExistingDonorMeta(string $existingValue, $submittedValue)
+    {
+        /** @var DonationForm $form */
+        $form = DonationForm::factory()->create();
+
+        $customFieldBlockModel = BlockModel::make([
+            'name' => 'givewp/section',
+            'attributes' => ['title' => '', 'description' => ''],
+            'innerBlocks' => [
+                [
+                    'name' => 'givewp/text',
+                    'attributes' => [
+                        'fieldName' => 'custom_text_block_meta',
+                        'storeAsDonorMeta' => true,
+                        'title' => 'Custom Text Field',
+                        'description' => ''
+                    ],
+                ]
+            ]
+        ]);
+
+        $form->blocks = BlockCollection::make(
+            array_merge([$customFieldBlockModel], $form->blocks->getBlocks())
+        );
+
+        $form->save();
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create(['formId' => $form->id]);
+
+        give()->donor_meta->update_meta($donation->donorId, 'custom_text_block_meta', $existingValue);
+
+        $action = new StoreCustomFields();
+
+        $action($form, $donation, null, ['custom_text_block_meta' => $submittedValue]);
+
+        return give()->donor_meta->get_meta($donation->donorId, 'custom_text_block_meta', true);
     }
 }
