@@ -53,6 +53,10 @@ The A+ look is kept small and in a few known places. Keep it that way.
   The total count rules are to be removed "with `ListTableFooter` when the `@wordpress/dataviews` pin
   moves to 12.0.1 or later". `wpLookScope.test.ts` guards only `_wp-look.scss`, not the whole
   stylesheet.
+- **Totals.** The rows do not wait for the total. `ListTablePage` requests rows with `withCount=false`
+  (answer: `items`, `hasNextPage`) and the total from `<apiRoot>/count` (`hooks/useListTableTotals`).
+  `DataViewsListTable` takes `paginationInfo={null}` while the total is unknown and then shows only
+  the previous and next arrows (`ArrowsPagination`); Next follows `hasNextPage`.
 - **The pin.** `@wordpress/dataviews` is pinned to `10.1.7` in `package.json`. The overrides in
   `_wp-look.scss` were written for that version. When the pin moves, check them again in the browser.
 - **Rows.** Rows keep the stock DataViews height on purpose.

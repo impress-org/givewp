@@ -321,7 +321,9 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
     // where the stock count sits: right after the selection checkbox, with the pagination on the right.
     // The footer puts a gap between its children; the negative margin takes it back, so the count
     // starts where the stock one does.
-    &__total {
+    // `__spacer` stands in for the count while the total is unknown, so the controls keep their place.
+    &__total,
+    &__spacer {
         margin-inline: calc(-1 * var(--givewp-spacing-2)) auto;
     }
 

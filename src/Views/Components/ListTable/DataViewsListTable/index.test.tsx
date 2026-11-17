@@ -15,7 +15,7 @@ const view = (page: number): View => ({type: 'table', page, perPage: 30, fields:
 let container: HTMLDivElement;
 let root: Root;
 
-const render = (props: {page: number; rows: ListTableItem[]; totalItems: number; layout?: object; isLoading?: boolean; hasError?: boolean}) =>
+const render = (props: {page: number; rows: ListTableItem[]; totalItems: number | null; hasNextPage?: boolean; layout?: object; isLoading?: boolean; hasError?: boolean}) =>
     act(async () => {
         root.render(
             <DataViewsListTable
@@ -24,7 +24,12 @@ const render = (props: {page: number; rows: ListTableItem[]; totalItems: number;
                 fields={fields}
                 actions={[]}
                 data={props.rows}
-                paginationInfo={{totalItems: props.totalItems, totalPages: Math.ceil(props.totalItems / 30)}}
+                paginationInfo={
+                    props.totalItems === null
+                        ? null
+                        : {totalItems: props.totalItems, totalPages: Math.ceil(props.totalItems / 30)}
+                }
+                hasNextPage={props.hasNextPage}
                 isLoading={props.isLoading ?? false}
                 hasError={props.hasError}
                 selection={[]}
@@ -205,5 +210,99 @@ describe('DataViewsListTable view controls', () => {
         );
 
         expect(labels).toEqual(['Reset view', 'View options', 'More view options']);
+    });
+});
+
+describe('DataViewsListTable while the total is not known', () => {
+    const arrows = () => [...container.querySelectorAll<HTMLButtonElement>('.givewp-list-table__footer button')];
+
+    it('shows only the previous and next arrows, with no page box, no "of N" and no total', async () => {
+        await render({page: 1, rows: items, totalItems: null});
+
+        expect(arrows().map((button) => button.getAttribute('aria-label'))).toEqual(['Previous page', 'Next page']);
+        expect(container.querySelector('.givewp-list-table__page-input, select')).toBeNull();
+        expect(container.querySelector('.givewp-list-table__footer')?.textContent).not.toContain(' of ');
+        expect(container.querySelector('.givewp-list-table__total')).toBeNull();
+    });
+
+    it('turns Previous off on page 1 and on above it', async () => {
+        await render({page: 1, rows: items, totalItems: null});
+
+        expect(arrows()[0].getAttribute('aria-disabled')).toBe('true');
+
+        await render({page: 4, rows: items, totalItems: null});
+
+        expect(arrows()[0].getAttribute('aria-disabled')).toBe('false');
+    });
+
+    it('follows hasNextPage for Next, and treats it as on by default', async () => {
+        await render({page: 1, rows: items, totalItems: null});
+
+        expect(arrows()[1].getAttribute('aria-disabled')).toBe('false');
+
+        await render({page: 1, rows: items, totalItems: null, hasNextPage: false});
+
+        expect(arrows()[1].getAttribute('aria-disabled')).toBe('true');
+    });
+
+    it('goes to the next and previous page', async () => {
+        const onChangeView = jest.fn();
+        await act(async () => {
+            root.render(
+                <DataViewsListTable
+                    view={view(2)}
+                    onChangeView={onChangeView}
+                    fields={fields}
+                    actions={[]}
+                    data={items}
+                    paginationInfo={null}
+                    isLoading={false}
+                    selection={[]}
+                    onChangeSelection={() => undefined}
+                    empty={null}
+                    perPageSizes={[30]}
+                />
+            );
+        });
+
+        await act(() => arrows()[1].click());
+        await act(() => arrows()[0].click());
+
+        expect(onChangeView.mock.calls.map(([next]) => next.page)).toEqual([3, 1]);
+    });
+
+    it('shows no footer for an empty first page, and Previous for an empty page past it', async () => {
+        await render({page: 1, rows: [], totalItems: null});
+
+        expect(container.querySelector('.givewp-list-table__footer')).toBeNull();
+
+        await render({page: 5, rows: [], totalItems: null});
+
+        expect(arrows()[0].getAttribute('aria-disabled')).toBe('false');
+    });
+
+    it('shows the normal control and the total when the count arrives', async () => {
+        await render({page: 1, rows: items, totalItems: null});
+        await render({page: 1, rows: items, totalItems: 462});
+
+        expect(container.querySelector('.givewp-list-table__total')?.textContent).toBe('30 of 462 Items');
+        expect(container.querySelector('.dataviews-pagination')?.textContent).toContain('of 16');
+    });
+
+    it('keeps the dim, the bar and the loading text working', async () => {
+        jest.useFakeTimers();
+        await render({page: 2, rows: items, totalItems: null, isLoading: true});
+        await act(() => jest.advanceTimersByTime(300));
+
+        expect(container.querySelector('.givewp-list-table--loading')).not.toBeNull();
+        expect(container.querySelector('.givewp-list-table__progress')).not.toBeNull();
+        expect(container.querySelector('.givewp-list-table__footer .givewp-list-table__loading')).not.toBeNull();
+        jest.useRealTimers();
+    });
+
+    it('keeps Previous after a failed request on a later page', async () => {
+        await render({page: 3, rows: [], totalItems: null, hasError: true});
+
+        expect(arrows()[0].getAttribute('aria-disabled')).toBe('false');
     });
 });

@@ -19,7 +19,7 @@ import type {ListTableItem} from '../ListTablePage/types';
 import ListTableViewReset from '../ListTableViewReset';
 import useDelayedFlag from '../hooks/useDelayedFlag';
 import useHorizontalOverflow from '../hooks/useHorizontalOverflow';
-import ListTablePagination from './ListTablePagination';
+import ListTablePagination, {ArrowsPagination} from './ListTablePagination';
 import './styles.scss';
 
 /**
@@ -42,7 +42,10 @@ export interface DataViewsListTableProps {
     fields: Field<ListTableItem>[];
     actions: Action<ListTableItem>[];
     data: ListTableItem[];
-    paginationInfo: {totalItems: number; totalPages: number};
+    /** The total, or `null` while it is not known: the footer then shows only the previous and next arrows. */
+    paginationInfo: {totalItems: number; totalPages: number} | null;
+    /** Whether a page after this one has rows. Used while the total is not known; `true` until the first answer. */
+    hasNextPage?: boolean;
     isLoading: boolean;
     /** True when the request failed. The page control stays, with the last known pages, so the user can go back. */
     hasError?: boolean;
@@ -208,6 +211,7 @@ function ListTableFooter({
     data,
     totalItems,
     totalPages,
+    hasNextPage,
     hasSelection,
     isSlow,
     announce,
@@ -217,8 +221,10 @@ function ListTableFooter({
 }: {
     actions: Action<ListTableItem>[];
     data: ListTableItem[];
-    totalItems: number;
-    totalPages: number;
+    /** `null` while the total is not known. */
+    totalItems: number | null;
+    totalPages: number | null;
+    hasNextPage: boolean;
     hasSelection: boolean;
     isSlow: boolean;
     announce: boolean;
@@ -226,6 +232,23 @@ function ListTableFooter({
     view: View;
     onChangeView: (view: View) => void;
 }) {
+    // The total is not known yet: only the arrows, and no total. A page past the first with no rows
+    // (after an error, or past the end) still offers Previous.
+    if (totalItems === null || totalPages === null) {
+        if (data.length === 0 && (view.page ?? 1) <= 1) {
+            return null;
+        }
+
+        return (
+            <HStack expanded={false} justify="end" className="dataviews-footer givewp-list-table__footer">
+                {!hasError && hasBulkActions(actions, data) && <DataViews.BulkActionToolbar />}
+                <span className="givewp-list-table__spacer" />
+                {!hasError && <ListTableLoading isSlow={isSlow} announce={announce} />}
+                <ArrowsPagination view={view} onChangeView={onChangeView} hasNextPage={hasNextPage} />
+            </HStack>
+        );
+    }
+
     // After a failed request there are no rows, but the user can still go to another page.
     if (hasError) {
         return totalPages > 1 ? (
@@ -269,6 +292,7 @@ function ListTableLayout({
     data,
     totalItems,
     totalPages,
+    hasNextPage,
     hasSelection,
     isSlow,
     announce,
@@ -285,8 +309,9 @@ function ListTableLayout({
 }: {
     actions: Action<ListTableItem>[];
     data: ListTableItem[];
-    totalItems: number;
-    totalPages: number;
+    totalItems: number | null;
+    totalPages: number | null;
+    hasNextPage: boolean;
     hasSelection: boolean;
     isSlow: boolean;
     announce: boolean;
@@ -347,6 +372,7 @@ function ListTableLayout({
                 data={data}
                 totalItems={totalItems}
                 totalPages={totalPages}
+                hasNextPage={hasNextPage}
                 hasSelection={hasSelection}
                 isSlow={isSlow}
                 announce={announce}
@@ -362,6 +388,7 @@ function ListTableLayout({
  * Renders the stock DataViews table for an admin list screen. No data fetching and no
  * Give-specific behavior inside the DataViews area.
  *
+ * @since TBD Accept a `null` total and `hasNextPage`: the footer then shows only the arrows.
  * @since TBD Add the `viewMenu` slot.
  * @since TBD Add `layoutMode`: the cards at 782 px and below, the table above.
  * @since TBD Add the `--more-start` and `--more-end` modifiers while the list hides content at that edge.
@@ -376,6 +403,7 @@ export default function DataViewsListTable({
     actions,
     data,
     paginationInfo: loadedPagination,
+    hasNextPage = true,
     isLoading,
     hasError = false,
     selection,
@@ -401,10 +429,15 @@ export default function DataViewsListTable({
 
     // A failed request has no pages of its own. The page control keeps the last known ones.
     const lastPagination = useRef(loadedPagination);
-    if (!hasError && loadedPagination.totalPages > 0) {
+    if (!hasError && loadedPagination && loadedPagination.totalPages > 0) {
         lastPagination.current = loadedPagination;
     }
-    const paginationInfo = hasError && lastPagination.current.totalPages > 0 ? lastPagination.current : loadedPagination;
+    const knownPagination =
+        hasError && lastPagination.current && lastPagination.current.totalPages > 0
+            ? lastPagination.current
+            : loadedPagination;
+    // DataViews needs numbers. Its own page control is never used without a total (see `ListTableFooter`).
+    const paginationInfo = knownPagination ?? {totalItems: 0, totalPages: 0};
 
     // While the next page loads, the rows on screen are about to be replaced: a selection made now would be
     // thrown away, and DataViews counts it against the new rows. So selection waits for the new rows.
@@ -488,8 +521,9 @@ export default function DataViewsListTable({
                     <ListTableLayout
                         actions={actions}
                         data={data}
-                        totalItems={paginationInfo.totalItems}
-                        totalPages={paginationInfo.totalPages}
+                        totalItems={knownPagination ? knownPagination.totalItems : null}
+                        totalPages={knownPagination ? knownPagination.totalPages : null}
+                        hasNextPage={hasNextPage}
                         hasSelection={selection.length > 0}
                         isSlow={isSlow}
                         announce={announce}
