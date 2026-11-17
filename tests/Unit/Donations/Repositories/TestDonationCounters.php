@@ -950,6 +950,8 @@ class TestDonationCounters extends TestCase
     /**
      * Counters equal a direct recount, are used, and both screens (through the counters and through
      * the totals cache with max age 0) show the recount.
+     *
+     * @since TBD
      */
     private function assertExactEverywhere(): void
     {
@@ -962,6 +964,8 @@ class TestDonationCounters extends TestCase
     /**
      * The stats and list endpoints show the recount, with the counters as they are and with the
      * counters off and the totals cache exact (max age 0).
+     *
+     * @since TBD
      */
     private function assertScreensShowRecount(): void
     {
@@ -996,6 +1000,9 @@ class TestDonationCounters extends TestCase
         }
     }
 
+    /**
+     * @since TBD
+     */
     private function expectedStatistics(array $recount, bool $testMode): array
     {
         $mode = $testMode ? 'test' : 'live';
@@ -1015,6 +1022,9 @@ class TestDonationCounters extends TestCase
         return ['donationsCount' => $total, 'oneTimeDonationsCount' => $total - $recurring, 'recurringDonationsCount' => $recurring];
     }
 
+    /**
+     * @since TBD
+     */
     private function statistics(bool $testMode): array
     {
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/donations/stats');
@@ -1024,6 +1034,9 @@ class TestDonationCounters extends TestCase
         return array_intersect_key($data, array_flip(['donationsCount', 'oneTimeDonationsCount', 'recurringDonationsCount']));
     }
 
+    /**
+     * @since TBD
+     */
     private function listResponse(bool $testMode, int $page, int $perPage): array
     {
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/donations');
@@ -1045,6 +1058,8 @@ class TestDonationCounters extends TestCase
      * Buckets counted with plain SQL, independent of the rebuild's queries.
      *
      * @return array<string, int>
+     *
+     * @since TBD
      */
     private function recount(): array
     {
@@ -1068,6 +1083,9 @@ class TestDonationCounters extends TestCase
         return $buckets;
     }
 
+    /**
+     * @since TBD
+     */
     private function nonZero(array $buckets): array
     {
         $buckets = array_filter($buckets);
@@ -1076,28 +1094,43 @@ class TestDonationCounters extends TestCase
         return $buckets;
     }
 
+    /**
+     * @since TBD
+     */
     private function assertBucket(string $bucket, int $expected): void
     {
         $this->assertSame($expected, DonationCounters::read()['buckets'][DonationCounters::BUCKET_PREFIX . $bucket] ?? 0, $bucket);
     }
 
+    /**
+     * @since TBD
+     */
     private function assertDirty(): void
     {
         $state = DonationCounters::read();
         $this->assertGreaterThan($state['clean'], $state['dirty'], 'counters should be dirty');
     }
 
+    /**
+     * @since TBD
+     */
     private function assertNotDirty(): void
     {
         $state = DonationCounters::read();
         $this->assertLessThanOrEqual($state['clean'], $state['dirty'], 'counters should not be dirty');
     }
 
+    /**
+     * @since TBD
+     */
     private function rebuild(): array
     {
         return (new DonationCountersRebuild(1, 0))();
     }
 
+    /**
+     * @since TBD
+     */
     private function bulk(string $action, array $ids, array $params = []): void
     {
         $request = new WP_REST_Request(WP_REST_Server::DELETABLE, "/give-api/v2/admin/donations/{$action}");
@@ -1115,6 +1148,8 @@ class TestDonationCounters extends TestCase
     /**
      * Inserts a copy of the latest donation with SQL only, so no hook fires, then sets its status
      * and mode the same way.
+     *
+     * @since TBD
      */
     private function rawInsertDonation(string $status, string $mode): int
     {
@@ -1142,6 +1177,8 @@ class TestDonationCounters extends TestCase
     /**
      * Runs the callback with a second database connection as $wpdb, so its writes commit on their
      * own while the first connection holds a snapshot.
+     *
+     * @since TBD
      */
     private function onAnotherConnection(callable $callback): void
     {
@@ -1164,6 +1201,9 @@ class TestDonationCounters extends TestCase
         }
     }
 
+    /**
+     * @since TBD
+     */
     private function insertWritingRow(int $time): string
     {
         $name = DonationCounters::WRITING_PREFIX . 'test' . $time;
@@ -1176,6 +1216,9 @@ class TestDonationCounters extends TestCase
         return $name;
     }
 
+    /**
+     * @since TBD
+     */
     private function countWritingRows(): int
     {
         return (int)DB::get_var(DB::prepare(
@@ -1184,6 +1227,9 @@ class TestDonationCounters extends TestCase
         ));
     }
 
+    /**
+     * @since TBD
+     */
     private function scheduledIntervals(): array
     {
         $intervals = [];
@@ -1195,12 +1241,18 @@ class TestDonationCounters extends TestCase
         return $intervals;
     }
 
+    /**
+     * @since TBD
+     */
     private function addTestFilter(string $hook, callable $callback): void
     {
         add_filter($hook, $callback, 99);
         $this->filters[] = [$hook, $callback];
     }
 
+    /**
+     * @since TBD
+     */
     private function deleteCounterRows(): void
     {
         DB::query(DB::prepare(

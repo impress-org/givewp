@@ -41,6 +41,7 @@ use WP_CLI;
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
+     * @since TBD Register the donation counters listener as a singleton.
      * @inheritDoc
      */
     public function register()
@@ -57,6 +58,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since TBD Boot the donation counters.
      * @inheritDoc
      */
     public function boot()
