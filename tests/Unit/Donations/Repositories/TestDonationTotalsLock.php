@@ -96,6 +96,18 @@ class TestDonationTotalsLock extends TestCase
     /**
      * @since TBD
      */
+    public function testALockThatIsAlreadyExpiredWhenTheWriteReturnsIsNotReportedAsTaken(): void
+    {
+        $lock = new DonationTotalsLock(self::NAME, 0);
+
+        $this->assertFalse($lock->acquire());
+        $this->assertFalse($lock->isHeld());
+        $this->assertTrue((new DonationTotalsLock(self::NAME, 300))->acquire(), 'and the row was not left behind');
+    }
+
+    /**
+     * @since TBD
+     */
     public function testAnExpiredLockIsTakenOverOnce(): void
     {
         $this->setLockedAt(time() - 1000);

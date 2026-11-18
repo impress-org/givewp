@@ -64,7 +64,15 @@ class DonationTotalsLock
             return false;
         }
 
+        // A write that stalled past the lease leaves a lock another request may take over at once: give
+        // it up instead of reporting a lock this request may not have.
         $this->token = $token;
+
+        if ((int)$token <= time() - $this->expiresAfter) {
+            $this->release();
+
+            return false;
+        }
 
         return true;
     }
