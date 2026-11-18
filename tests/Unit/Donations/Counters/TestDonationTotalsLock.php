@@ -1,9 +1,9 @@
 <?php
 
-namespace Give\Tests\Unit\Donations\Repositories;
+namespace Give\Tests\Unit\Donations\Counters;
 
 use Give\Donations\Repositories\DonationTotalsCache;
-use Give\Donations\Repositories\DonationTotalsLock;
+use Give\Donations\Counters\DonationTotalsLock;
 use Give\Tests\TestCase;
 
 /**

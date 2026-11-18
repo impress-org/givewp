@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Donations\Repositories;
+namespace Give\Donations\Counters;
 
 use Give\Framework\Database\DB;
 

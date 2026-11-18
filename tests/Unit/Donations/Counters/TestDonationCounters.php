@@ -1,15 +1,15 @@
 <?php
 
-namespace Give\Tests\Unit\Donations\Repositories;
+namespace Give\Tests\Unit\Donations\Counters;
 
 use Give\Donations\Endpoints\DonationActions;
 use Give\Donations\Endpoints\ListDonations;
 use Give\Donations\Endpoints\ListDonationsStats;
-use Give\Donations\Listeners\SyncDonationCounters;
+use Give\Donations\Counters\SyncDonationCounters;
 use Give\Donations\Models\Donation;
-use Give\Donations\Repositories\DonationCounters;
-use Give\Donations\Repositories\DonationCountersRebuild;
-use Give\Donations\Repositories\DonationCountersSchedule;
+use Give\Donations\Counters\DonationCounters;
+use Give\Donations\Counters\DonationCountersRebuild;
+use Give\Donations\Counters\DonationCountersSchedule;
 use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
@@ -793,7 +793,7 @@ class TestDonationCounters extends TestCase
      */
     public function testRebuildRunsOneAtATime(): void
     {
-        $lock = new \Give\Donations\Repositories\DonationTotalsLock(DonationCountersRebuild::LOCK);
+        $lock = new \Give\Donations\Counters\DonationTotalsLock(DonationCountersRebuild::LOCK);
         $lock->acquire();
 
         try {

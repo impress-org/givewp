@@ -1,9 +1,8 @@
 <?php
 
-namespace Give\Donations\Listeners;
+namespace Give\Donations\Counters;
 
 use Give\Donations\Models\Donation;
-use Give\Donations\Repositories\DonationCounters;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\Database\DB;

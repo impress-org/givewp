@@ -4,9 +4,8 @@ namespace Give\Donations\Endpoints;
 
 use Closure;
 use Give\Donations\ListTable\DonationsListTable;
-use Give\Donations\Repositories\DonationCounters;
-use Give\Donations\Repositories\DonationTotals;
-use Give\Donations\Repositories\RecurringDonationCondition;
+use Give\Donations\Counters\DonationCounters;
+use Give\Donations\Counters\DonationTotals;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;

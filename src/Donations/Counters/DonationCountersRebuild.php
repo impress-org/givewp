@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Donations\Repositories;
+namespace Give\Donations\Counters;
 
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;

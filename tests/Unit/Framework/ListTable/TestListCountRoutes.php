@@ -4,9 +4,9 @@ namespace Give\Tests\Unit\Framework\ListTable;
 
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\V2\Models\DonationForm;
-use Give\Donations\Listeners\SyncDonationCounters;
+use Give\Donations\Counters\SyncDonationCounters;
 use Give\Donations\Models\Donation;
-use Give\Donations\Repositories\DonationCountersRebuild;
+use Give\Donations\Counters\DonationCountersRebuild;
 use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;

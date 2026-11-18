@@ -1,7 +1,8 @@
 <?php
 
-namespace Give\Donations\Repositories;
+namespace Give\Donations\Counters;
 
+use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Throwable;

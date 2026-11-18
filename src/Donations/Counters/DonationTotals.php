@@ -1,6 +1,8 @@
 <?php
 
-namespace Give\Donations\Repositories;
+namespace Give\Donations\Counters;
+
+use Give\Donations\Repositories\DonationTotalsCache;
 
 /**
  * The one place the donation list endpoints ask for a total (list count and stats).

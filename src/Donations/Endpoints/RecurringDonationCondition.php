@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Donations\Repositories;
+namespace Give\Donations\Endpoints;
 
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\QueryBuilder\QueryBuilder;

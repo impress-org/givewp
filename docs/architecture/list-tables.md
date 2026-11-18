@@ -155,7 +155,7 @@ and the Donations stats (`ListDonationsStats`). At a million donations each read
 donation and takes tens of seconds. Everything else is live: the donor and subscription counts and
 the subscriptions stats are indexed, so caching them would only push out the entries above.
 
-The endpoints ask one place for a total, `Donations/Repositories/DonationTotals::resolve()`. It
+The endpoints ask one place for a total, `Donations/Counters/DonationTotals::resolve()`. It
 picks a counted value, a live computation or the cache. Counts from the `give_donations` table
 replace the counters and the cache, and this is the one spot that changes. All of this (cache,
 counters, helpers) is `@internal` and temporary until donations read from that table (SOFT-5015).
@@ -196,7 +196,7 @@ Do not build on it.
 
 ### Donation counters: updated on every write
 
-`Donations/Repositories/DonationCounters` answers the Donations screen's displayed numbers without a
+`Donations/Counters/DonationCounters` answers the Donations screen's displayed numbers without a
 query over the donations: the three stat tiles (`ListDonationsStats`) and the list count when the
 request has no date range and filters only on status and mode (`ListDonations::countByMode()`).
 Everything else (search, campaign, form, donor, dates) still uses the totals cache above.
@@ -216,7 +216,7 @@ recounts and the CLI command are not registered, because counts from `give_donat
   rows in a fixed order). The option name is a unique key, so concurrent writers never lose an
   update (20 parallel processes measured). Rows are read with one direct `SELECT`, never through
   `get_option()`, so a persistent object cache cannot serve an old copy. Numbers only, no donor data.
-- **Every write moves the donation.** `Donations/Listeners/SyncDonationCounters` reads the donation's
+- **Every write moves the donation.** `Donations/Counters/SyncDonationCounters` reads the donation's
   bucket from the database in each write path's before hook and again in its after hook, and moves
   it. Hooks covered: the model (`givewp_donation_creating`/`created`, `updating`/`updated`,
   `deleting`/`deleted`, `trashing`/`trashed`, `untrashing`/`untrashed`), the post API

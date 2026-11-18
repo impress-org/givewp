@@ -1,10 +1,7 @@
 <?php
 
-namespace Give\Donations\Commands;
+namespace Give\Donations\Counters;
 
-use Give\Donations\Repositories\DonationCounters;
-use Give\Donations\Repositories\DonationCountersRebuild;
-use Give\Donations\Repositories\DonationCountersSchedule;
 use WP_CLI;
 
 /**

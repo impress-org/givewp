@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\Tests\Unit\Donations\Repositories;
+namespace Give\Tests\Unit\Donations\Counters;
 
-use Give\Donations\Repositories\DonationTotals;
+use Give\Donations\Counters\DonationTotals;
 use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Tests\TestCase;
 
