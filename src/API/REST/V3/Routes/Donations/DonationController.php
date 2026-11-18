@@ -12,18 +12,14 @@ use Give\API\REST\V3\Support\CURIE;
 use Give\API\REST\V3\Support\Item;
 use Give\API\REST\V3\Support\Schema\SchemaTypes;
 use Give\Donations\Models\Donation;
-use Give\Donations\Repositories\DonationTotalsCache;
-use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\API\REST\V3\Routes\Donations\ViewModels\DonationViewModel;
-use Give\Framework\Database\DB;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;
 use Give\Framework\Permissions\Facades\UserPermissions;
-use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -189,7 +185,6 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @since TBD Count the donations with the request's filters and only the meta those filters read.
      * @since 4.6.0
      */
     public function get_items($request)
@@ -200,9 +195,36 @@ class DonationController extends WP_REST_Controller
         $perPage = $request->get_param('per_page');
         $sortColumn = $this->getSortColumn($request->get_param('sort'));
         $sortDirection = $request->get_param('direction');
+        $mode = $request->get_param('mode');
+        $status = $request->get_param('status');
 
         $query = Donation::query();
-        $this->applyFilters($query, $request, $donationAnonymousMode);
+
+        if ($campaignId = $request->get_param('campaignId')) {
+            // Filter by CampaignId
+            $query->where('give_donationmeta_attach_meta_campaignId.meta_value', $campaignId);
+        }
+
+        if ($donorId = $request->get_param('donorId')) {
+            $query->where('give_donationmeta_attach_meta_donorId.meta_value', $donorId);
+        }
+
+        if ($subscriptionId = $request->get_param('subscriptionId')) {
+            $query->where('give_donationmeta_attach_meta_subscriptionId.meta_value', $subscriptionId);
+        }
+
+        if ($donationAnonymousMode->isExcluded()) {
+            // Exclude anonymous donations from results
+            $query->where('give_donationmeta_attach_meta_anonymous.meta_value', 0);
+        }
+
+        // Include only current payment "mode"
+        $query->where('give_donationmeta_attach_meta_mode.meta_value', $mode);
+
+        // Filter by status if not 'any'
+        if (!in_array('any', (array)$status, true)) {
+            $query->whereIn('post_status', (array)$status);
+        }
 
         $query
             ->limit($perPage)
@@ -221,7 +243,7 @@ class DonationController extends WP_REST_Controller
             );
         }, $donations);
 
-        $totalDonations = empty($donations) ? 0 : $this->countDonations($request, $donationAnonymousMode);
+        $totalDonations = empty($donations) ? 0 : Donation::query()->count();
         $totalPages = (int)ceil($totalDonations / $perPage);
 
         $response = rest_ensure_response($donations);
@@ -255,78 +277,6 @@ class DonationController extends WP_REST_Controller
         }
 
         return $response;
-    }
-
-    /**
-     * Adds the request's filters to a donations query and returns the meta keys they read. The
-     * conditions name the attach-meta aliases, so the query must attach those keys.
-     *
-     * @since TBD
-     *
-     * @return DonationMetaKeys[]
-     */
-    private function applyFilters(QueryBuilder $query, WP_REST_Request $request, DonationAnonymousMode $anonymousMode): array
-    {
-        $metaKeys = [];
-
-        if ($campaignId = $request->get_param('campaignId')) {
-            // Filter by CampaignId
-            $query->where('give_donationmeta_attach_meta_campaignId.meta_value', $campaignId);
-            $metaKeys[] = DonationMetaKeys::CAMPAIGN_ID();
-        }
-
-        if ($donorId = $request->get_param('donorId')) {
-            $query->where('give_donationmeta_attach_meta_donorId.meta_value', $donorId);
-            $metaKeys[] = DonationMetaKeys::DONOR_ID();
-        }
-
-        if ($subscriptionId = $request->get_param('subscriptionId')) {
-            $query->where('give_donationmeta_attach_meta_subscriptionId.meta_value', $subscriptionId);
-            $metaKeys[] = DonationMetaKeys::SUBSCRIPTION_ID();
-        }
-
-        if ($anonymousMode->isExcluded()) {
-            // Exclude anonymous donations from results
-            $query->where('give_donationmeta_attach_meta_anonymous.meta_value', 0);
-            $metaKeys[] = DonationMetaKeys::ANONYMOUS();
-        }
-
-        // Include only current payment "mode"
-        $query->where('give_donationmeta_attach_meta_mode.meta_value', $request->get_param('mode'));
-        $metaKeys[] = DonationMetaKeys::MODE();
-
-        // Filter by status if not 'any'
-        $status = $request->get_param('status');
-
-        if (!in_array('any', (array)$status, true)) {
-            $query->whereIn('post_status', (array)$status);
-        }
-
-        return $metaKeys;
-    }
-
-    /**
-     * The number of donations that match the request's filters. The model query joins every
-     * donation meta key; a count joins only the keys the filters read. The total is cached until a
-     * donation changes.
-     *
-     * @since TBD
-     */
-    private function countDonations(WP_REST_Request $request, DonationAnonymousMode $anonymousMode): int
-    {
-        $query = DB::table('posts')->where('post_type', 'give_payment');
-        $metaKeys = $this->applyFilters($query, $request, $anonymousMode);
-
-        $query->attachMeta(
-            'give_donationmeta',
-            'ID',
-            'donation_id',
-            ...DonationMetaKeys::getColumnsForAttachMetaQueryFromArray($metaKeys)
-        );
-
-        return (int)DonationTotalsCache::remember(__METHOD__ . (clone $query)->getSQL(), static function () use ($query) {
-            return $query->count();
-        });
     }
 
     /**

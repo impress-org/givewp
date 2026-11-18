@@ -2,41 +2,19 @@
 
 namespace Give\Tests\Unit\Donors;
 
-use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Donors\DonorsQuery;
 use Give\Donors\Models\Donor;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * The donors count follows every where clause of the query, also chained ones, and a legacy donor
- * delete drops the cached count once the donor is gone.
+ * The donors count follows every where clause of the query, also chained ones.
  *
  * @since TBD
  */
 class TestDonorsQuery extends TestCase
 {
     use RefreshDatabase;
-
-    /**
-     * @since TBD
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        delete_option(DonationTotalsCache::OPTION);
-    }
-
-    /**
-     * @since TBD
-     */
-    public function tearDown(): void
-    {
-        remove_action('shutdown', [DonationTotalsCache::class, 'flushFinal']);
-
-        parent::tearDown();
-    }
 
     /**
      * @since TBD
@@ -66,18 +44,5 @@ class TestDonorsQuery extends TestCase
         $query->groupBy('id');
 
         $this->assertSame(2, $query->count());
-    }
-
-    /**
-     * @since TBD
-     */
-    public function testALegacyDonorDeleteFlushesTheTotalsAgainWhenTheRequestEnds(): void
-    {
-        $this->assertFalse(has_action('shutdown', [DonationTotalsCache::class, 'flushFinal']));
-
-        do_action('give_pre_delete_donor', 1, true, false);
-        do_action('give_pre_delete_donor', 2, true, false);
-
-        $this->assertNotFalse(has_action('shutdown', [DonationTotalsCache::class, 'flushFinal']));
     }
 }

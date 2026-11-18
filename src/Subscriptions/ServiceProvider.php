@@ -2,7 +2,6 @@
 
 namespace Give\Subscriptions;
 
-use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -41,13 +40,11 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @inheritDoc
      *
-     * @since TBD Drop the cached totals when a subscription changes.
      * @since 4.14.0 move subscription page registration to method to defer conditionals and DB queries to appropriate hooks.
      */
     public function boot()
     {
         $this->bootLegacyListeners();
-        $this->flushTotalsOnSubscriptionWrites();
         $this->registerMigrations();
         $this->registerSubscriptionAdminOptions();
         $this->registerSubscriptionsAdminPage();
@@ -102,33 +99,6 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('givewp_subscription_creating', DispatchGiveSubscriptionPreCreate::class);
         Hooks::addAction('givewp_subscription_created', DispatchGiveSubscriptionPostCreate::class);
-    }
-
-    /**
-     * The subscriptions stats read the subscription status, so a subscription write drops the cached
-     * totals as a donation write does. The model hooks see repository writes; the legacy hooks see
-     * writes through Give_Subscription.
-     *
-     * @since TBD
-     */
-    private function flushTotalsOnSubscriptionWrites()
-    {
-        $hooks = [
-            'givewp_subscription_created',
-            'givewp_subscription_updated',
-            'givewp_subscription_deleted',
-            'givewp_subscription_trashed',
-            'givewp_subscription_untrashed',
-            'give_subscription_inserted',
-            'give_subscription_updated',
-            'give_subscription_deleted',
-        ];
-
-        foreach ($hooks as $hook) {
-            add_action($hook, static function () {
-                DonationTotalsCache::flush();
-            });
-        }
     }
 
     /**

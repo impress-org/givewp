@@ -2,7 +2,6 @@
 
 namespace Give\Donors;
 
-use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
@@ -206,9 +205,9 @@ class DonorsQuery
 
     /**
      * The number of donors that match the filters. It counts the donors table alone, because the
-     * model query joins five donor meta rows per donor that a count does not read, and caches the
-     * total until a donation or donor changes. When a call reached the model query that the count
-     * query does not repeat, the model query counts.
+     * model query joins five donor meta rows per donor that a count does not read. The count is
+     * live: the donor lookups are indexed, so it is not cached. When a call reached the model query
+     * that the count query does not repeat, the model query counts.
      *
      * @since TBD
      */
@@ -218,11 +217,7 @@ class DonorsQuery
             return $this->query->count();
         }
 
-        $query = clone $this->countQuery;
-
-        return (int)DonationTotalsCache::remember(__METHOD__ . (clone $query)->getSQL(), static function () use ($query) {
-            return $query->count();
-        });
+        return (int)(clone $this->countQuery)->count();
     }
 
     /**

@@ -21,16 +21,21 @@ use Give\Framework\Database\DB;
  *   site that takes donations every second this runs one computation per total per max age,
  *   instead of one on nearly every page view.
  *
- * Only one request computes a total at a time. On a miss the others wait for its result instead of
- * running the same slow query next to it, which made each copy slower.
- *
  * A total that chooses rows (which page holds which donation) must never come from here: an admin
  * has to find every donation, and only the displayed count may lag.
+ *
+ * Only the Donations list count and stats use it. The donor and subscription counts are indexed and
+ * read live. On a miss every request computes the total itself: nothing waits on another request.
  *
  * All values live in one option that is not autoloaded and holds at most MAX_ENTRIES totals. The
  * change time has its own option, so a write never rewrites the values.
  *
+ * Temporary: a stopgap until the donation lists read their counts from the give_donations table
+ * (SOFT-5015), where they are index scans.
+ *
  * @since TBD
+ *
+ * @internal
  */
 class DonationTotalsCache
 {
@@ -50,13 +55,6 @@ class DonationTotalsCache
      * @since TBD
      */
     public const MAX_ENTRIES = 50;
-
-    /**
-     * How long a request waits for another one to compute the same total, in seconds.
-     *
-     * @since TBD
-     */
-    public const WAIT_SECONDS = 120;
 
     /**
      * How long an outdated total is served before it is computed again, in seconds.
@@ -104,31 +102,7 @@ class DonationTotalsCache
             return $cache['values'][$hash];
         }
 
-        $lock = new DonationTotalsLock(self::OPTION . '_lock_' . $hash);
-
-        $owned = $lock->acquire();
-
-        if (!$owned) {
-            $cache = self::waitForOtherRequest($hash, $lock, $maxAge);
-
-            if (self::isServable($cache, $hash, $maxAge)) {
-                return $cache['values'][$hash];
-            }
-
-            // The holder finished without a value or died: try to take over. If it is still live,
-            // compute anyway so the page is never empty, but leave its lock alone.
-            $owned = $lock->acquire();
-        }
-
-        try {
-            $value = self::compute($hash, $callback);
-        } finally {
-            if ($owned) {
-                $lock->release();
-            }
-        }
-
-        return $value;
+        return self::compute($hash, $callback);
     }
 
     /**
@@ -187,21 +161,6 @@ class DonationTotalsCache
     }
 
     /**
-     * Records that the totals changed, always. For the end of a request that already flushed: a count
-     * that started after the first flush may finish with a value from before the change, and only a
-     * newer record marks it outdated.
-     *
-     * @since TBD
-     */
-    public static function flushFinal(): void
-    {
-        self::$changeRecordedAt = microtime(true);
-
-        // Six decimals: a plain string cast keeps 14 digits on PHP 7.4, which rounds away the microseconds.
-        update_option(self::CHANGED_AT_OPTION, number_format(self::$changeRecordedAt, 6, '.', ''), false);
-    }
-
-    /**
      * Seconds an outdated total is served before it is computed again. 0 never serves one.
      *
      * @since TBD
@@ -211,6 +170,9 @@ class DonationTotalsCache
         /**
          * Filters how long, in seconds, an outdated donation total is served while it is computed
          * again in the background. 0 computes it again on the next request, so totals are exact.
+         *
+         * Temporary stopgap, do not rely on it: it goes away when donations read from the
+         * give_donations table (SOFT-5015).
          *
          * @since TBD
          *
@@ -270,7 +232,7 @@ class DonationTotalsCache
         }
 
         if (!self::canFinishResponseEarly()) {
-            return self::refreshNow($hash, $callback, $staleValue);
+            return self::refreshNow($hash, $callback);
         }
 
         if (!self::$pendingRefreshes) {
@@ -298,40 +260,28 @@ class DonationTotalsCache
         self::finishResponse();
 
         foreach ($refreshes as $hash => $callback) {
-            self::refreshNow($hash, $callback, null);
+            self::refreshNow($hash, $callback);
         }
 
         self::$pendingRefreshes = [];
     }
 
     /**
-     * Computes a due value unless another request is already doing it, or did it meanwhile.
+     * Computes a due value unless another request already did it meanwhile.
      *
      * @since TBD
      *
-     * @param mixed $staleValue returned when nothing was computed
-     *
      * @return mixed
      */
-    private static function refreshNow(string $hash, callable $callback, $staleValue)
+    private static function refreshNow(string $hash, callable $callback)
     {
-        $lock = new DonationTotalsLock(self::OPTION . '_lock_' . $hash);
+        $cache = self::read(true);
 
-        if (!$lock->acquire()) {
-            return $staleValue;
+        if (array_key_exists($hash, $cache['values']) && !self::isDue($cache, $hash, self::maxAge())) {
+            return $cache['values'][$hash];
         }
 
-        try {
-            $cache = self::read(true);
-
-            if (array_key_exists($hash, $cache['values']) && !self::isDue($cache, $hash, self::maxAge())) {
-                return $cache['values'][$hash];
-            }
-
-            return self::compute($hash, $callback);
-        } finally {
-            $lock->release();
-        }
+        return self::compute($hash, $callback);
     }
 
     /**
@@ -370,26 +320,6 @@ class DonationTotalsCache
         }
 
         update_option(self::OPTION, $current, false);
-    }
-
-    /**
-     * Polls the cache while another request computes the total. Returns the last cache read, which
-     * holds the value unless the wait ran out or the other request stopped without saving it.
-     *
-     * @since TBD
-     *
-     * @return array{values: array, computedAt: array}
-     */
-    private static function waitForOtherRequest(string $hash, DonationTotalsLock $lock, int $maxAge): array
-    {
-        $deadline = time() + self::WAIT_SECONDS;
-
-        do {
-            sleep(1);
-            $cache = self::read(true);
-        } while (!self::isServable($cache, $hash, $maxAge) && $lock->isHeld() && time() < $deadline);
-
-        return $cache;
     }
 
     /**
