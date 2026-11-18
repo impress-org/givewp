@@ -1,7 +1,10 @@
-import {Admin, expect, Locator, Page} from '@wordpress/e2e-test-utils-playwright';
+import type {Locator, Page, Response} from '@playwright/test';
+import {Admin, expect, RequestUtils, test} from '@wordpress/e2e-test-utils-playwright';
+import {wp} from './wp-cli';
 
 /**
- * Helpers for the admin list screens, which render through `@wordpress/dataviews`.
+ * Helpers for the admin list screens, which render through `@wordpress/dataviews` with Give's own
+ * search box and filter bar.
  *
  * DataViews gives rows no accessible name, so a row is found by its ID badge, the one cell every
  * list renders the same way.
@@ -44,9 +47,39 @@ export async function runRowAction(page: Page, row: Locator, action: string | Re
 }
 
 /**
- * Applies a filter through the DataViews toolbar: picks `filter` in "Add filter" (or opens its
- * chip when it is already applied), searches for `search` when the filter has a search box, and picks
- * the option reading `label`.
+ * Give's filter bar above the list. It takes the place of the stock DataViews filter row.
+ */
+export function filterBar(page: Page): Locator {
+    return page.getByRole('group', {name: 'Filters', exact: true});
+}
+
+/**
+ * The chip of a filter in the bar, found by the text it starts with ("Status", "Status: Pending").
+ */
+export function chip(page: Page, label: string): Locator {
+    return filterBar(page).locator('.givewp-filter-chip__toggle', {hasText: new RegExp(`^${label}`)});
+}
+
+/**
+ * The open popover of a filter chip.
+ */
+export function popover(page: Page): Locator {
+    return page.locator('.givewp-filter-chip__content');
+}
+
+/**
+ * Adds a secondary filter from "Add filter". Its popover opens at once.
+ */
+export async function addFilter(page: Page, label: string): Promise<void> {
+    await filterBar(page).getByRole('button', {name: 'Add filter'}).click();
+    await page.getByRole('menuitem', {name: label, exact: true}).click();
+    await expect(popover(page)).toBeVisible();
+}
+
+/**
+ * Applies a filter through the filter bar: opens its chip (or adds it from "Add filter"), types
+ * `search` into the popover's search box when it has one (campaign, form and donor options are
+ * searched on the server), and picks the option reading `label`.
  */
 export async function applyFilter(
     page: Page,
@@ -54,36 +87,25 @@ export async function applyFilter(
     search: string,
     label: string | RegExp = search
 ): Promise<void> {
-    const list = listTable(page);
-    const chip = list.locator('.dataviews-filters__summary-chip', {hasText: new RegExp(`^${filter}( |$)`)});
-    const addFilter = list.getByRole('button', {name: 'Add filter', exact: true});
-    const menuItem = page.getByRole('menuitem', {name: filter, exact: true});
+    const filterChip = chip(page, filter);
 
-    if (!(await chip.isVisible()) && !(await addFilter.isVisible())) {
-        // With no filter applied, "Filter" opens the "Add filter" menu itself; otherwise it shows the bar.
-        await list.getByRole('button', {name: 'Filter', exact: true}).click();
-        await expect(menuItem.or(addFilter).first()).toBeVisible();
-    }
-
-    if (await chip.isVisible()) {
-        await chip.click();
+    if (await filterChip.isVisible()) {
+        await filterChip.click();
+        await expect(popover(page)).toBeVisible();
     } else {
-        if (!(await menuItem.isVisible())) {
-            await addFilter.click();
-        }
-        await menuItem.click();
+        await addFilter(page, filter);
     }
 
-    // A long list of options comes with a search box; a short one is shown whole.
-    const popover = page.locator('.dataviews-filters__summary-popover');
-    const option = popover.getByRole('option', {name: label}).or(popover.getByRole('radio', {name: label}));
-    await expect(option.or(popover.getByRole('combobox')).first()).toBeVisible();
+    const searchBox = popover(page).getByRole('searchbox');
 
-    if (await popover.getByRole('combobox').isVisible()) {
-        await popover.getByRole('combobox').fill(search);
+    if (await searchBox.isVisible()) {
+        await searchBox.fill(search);
     }
 
-    await option.first().click();
+    const name = typeof label === 'string' ? {name: label, exact: true} : {name: label};
+    const option = popover(page).getByRole('checkbox', name).or(popover(page).getByRole('radio', name));
+
+    await option.first().check();
     await page.keyboard.press('Escape');
 }
 
@@ -111,4 +133,112 @@ export async function expectListMounts(page: Page, admin: Admin, query: string, 
     });
     await expect(listTable(page).getByRole('alert')).toHaveCount(0);
     expect(pageErrors).toEqual([]);
+}
+
+/**
+ * Fails the test when a browser dialog (alert, confirm, prompt) opens, and dismisses it so it cannot
+ * block the run. Call it inside a `test.describe` whose tests should never open one.
+ */
+export function expectNoBrowserDialogs(): void {
+    let dialogs: string[] = [];
+
+    test.beforeEach(async ({page}) => {
+        // No test opens a browser dialog; one that shows up is a bug, and it must not block the run.
+        dialogs = [];
+        page.on('dialog', (dialog) => {
+            dialogs.push(dialog.message());
+            void dialog.dismiss();
+        });
+    });
+
+    test.afterEach(() => {
+        expect(dialogs).toEqual([]);
+    });
+}
+
+/**
+ * Opens a list screen and waits for its table or its empty state.
+ */
+export async function visitList(page: Page, admin: Admin, query: string): Promise<void> {
+    await admin.visitAdminPage('edit.php', query);
+    await expect(listTable(page).locator('.dataviews-view-table, .dataviews-no-results').first()).toBeVisible({
+        timeout: 20_000,
+    });
+}
+
+/**
+ * The list request the page sends next whose URL passes `matches`.
+ */
+export function nextListRequest(
+    page: Page,
+    endpoint: RegExp,
+    matches: (url: URL) => boolean = () => true
+): Promise<Response> {
+    return page.waitForResponse((response) => {
+        const url = new URL(response.url());
+
+        return endpoint.test(response.url()) && matches(url);
+    });
+}
+
+/**
+ * Every record of a v3 collection, page by page. The v3 donations route reports a wrong total, so
+ * this reads until a page comes back short.
+ */
+export async function allRecords<T>(
+    requestUtils: RequestUtils,
+    path: string,
+    params: Record<string, unknown>
+): Promise<T[]> {
+    const records: T[] = [];
+
+    for (let page = 1; page <= 50; page++) {
+        const batch = (await requestUtils.rest({path, params: {...params, per_page: 100, page}})) as T[];
+
+        records.push(...batch);
+
+        if (batch.length < 100) {
+            break;
+        }
+    }
+
+    return records;
+}
+
+/**
+ * Turns the Donations list's test-mode switch to `isOn` when it is not there yet, and waits for the
+ * list to reload.
+ */
+export async function setTestMode(page: Page, isOn: boolean): Promise<void> {
+    const toggle = page.getByRole('switch');
+
+    if ((await toggle.getAttribute('aria-checked')) === String(isOn)) {
+        return;
+    }
+
+    const reloaded = nextListRequest(
+        page,
+        /give-api\/v2\/admin\/donations\?/,
+        (url) => url.searchParams.get('testMode') === String(isOn)
+    );
+    await toggle.click();
+    await reloaded;
+}
+
+let siteToday: string | undefined;
+
+/**
+ * `YYYY-MM-DD` of a day in the month before today, in the site's calendar. The seeded `createdAt` and
+ * the list's day bounds are in the site's time zone, so the browser's clock must not choose the month.
+ */
+export function dayOfLastMonth(day: number): string {
+    siteToday ??= wp('eval', 'echo wp_date("Y-m-d");');
+
+    const [year, month] = siteToday.split('-').map(Number);
+    // `month` is 1-based, so `month - 2` is last month in the 0-based Date API. Only the year and month are read.
+    const date = new Date(Date.UTC(year, month - 2, 1));
+
+    return [date.getUTCFullYear(), String(date.getUTCMonth() + 1).padStart(2, '0'), String(day).padStart(2, '0')].join(
+        '-'
+    );
 }

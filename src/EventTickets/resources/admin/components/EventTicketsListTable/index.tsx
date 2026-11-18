@@ -1,27 +1,18 @@
 import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
-import {FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import {eventTicketsRowActions} from './EventTicketsRowActions';
 import styles from './EventTicketsListTable.module.scss';
 import {GiveEventTickets} from './types';
 import CreateEventModal from '../CreateEventModal';
 import Feedback from '../../feedback';
 import listTableScreen from './listTableScreen';
+import {eventTicketFilters} from './filters';
 
 declare global {
     interface Window {
         GiveEventTickets: GiveEventTickets;
     }
 }
-
-export const filters: Array<FilterConfig> = [
-    {
-        name: 'search',
-        type: 'search',
-        text: __('Search by keyword', 'give'),
-        ariaLabel: __('search events', 'give'),
-    },
-];
 
 /**
  * Displays a blank slate for the EventTickets table.
@@ -50,6 +41,7 @@ const ListTableBlankSlate = () => {
 /**
  * EventTicketsListTable
  *
+ * @since TBD Pass the filter declaration in place of the filter settings.
  * @since TBD Pass the actions as data and the screen config; Delete serves both the row menu and the selection bar.
  * @since 3.20.0 Add wrapper class for the EventTicketsListTable
  * @since 3.6.0
@@ -63,7 +55,7 @@ export default function EventTicketsListTable() {
                 singleName={__('event', 'give')}
                 pluralName={__('events', 'give')}
                 apiSettings={window.GiveEventTickets}
-                filterSettings={filters}
+                filters={eventTicketFilters}
                 rowActions={eventTicketsRowActions}
                 listTableBlankSlate={ListTableBlankSlate()}
                 screen={listTableScreen}

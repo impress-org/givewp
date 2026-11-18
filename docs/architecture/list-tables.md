@@ -203,7 +203,7 @@ Two rules that fall out of the same profiling, and apply to any endpoint that fi
   `ID NOT IN (SELECT donation_id FROM give_donationmeta WHERE meta_key = '_give_payment_mode' AND
   meta_value = 'test')`, and name or email search is `ID IN (... WHERE meta_key IN (first, last)
   AND meta_value LIKE 'term%')`. A `LEFT JOIN ... WHERE meta IS NULL OR meta <> 'test'`, or a
-  `HAVING` on a joined column, forces the full join to materialise first. And group any `OR` you
+  `HAVING` on a joined column, forces the full join to materialize first. And group any `OR` you
   do write with a closure `where(function ($q) { ... })`: an ungrouped `orWhere()` binds looser
   than the preceding `AND`s and silently drops them, which is how trashed donations once leaked
   into the live list.
@@ -222,17 +222,18 @@ table.
 
 ## The React page: DataViews
 
-Every list screen renders through `ListTablePage`, which hands the rows to `@wordpress/dataviews`. The
-screen's settings stay the same shape (columns from `ModelColumn::toArray()`, filter settings, bulk
-actions); small pure functions in `ListTable/adapters/` turn them into DataViews fields, default
-filters and actions, and turn the view back into the endpoint's request parameters
-(`viewToParameters` is the only place that knows those names). The view itself is assembled in
-`ListTable/state/` (see [View state](#view-state)). Sorting, filtering, searching and paging stay on
-the server.
+Every list screen renders through `ListTablePage`, which hands the rows to `@wordpress/dataviews`.
+Columns come from `ModelColumn::toArray()`; small pure functions in `ListTable/adapters/` turn them
+and the actions into DataViews fields and actions, and turn the view back into the endpoint's request
+parameters (`viewToParameters`). Filters are declared per entity (see [Filters](#filters)). The view
+itself is assembled in `ListTable/state/` (see [View state](#view-state)). Sorting, filtering,
+searching and paging stay on the server.
 
-- **Stock behavior inside the list.** Toolbar, filter chips, row menu, selection bar, loading state
+- **Stock behavior inside the list.** Toolbar, view options, row menu, selection bar, loading state
   and pagination are DataViews' own, as WordPress core uses them. Give adds the page header, stat
-  tiles, empty states, confirm bodies and action notices around it. Where the pinned DataViews lags
+  tiles, empty states, confirm bodies and action notices around it. **The one exception is the
+  search box and the filter row**, which are Give components (see [Why the filter bar is
+  Give's](#why-the-filter-bar-is-gives)). Where the pinned DataViews lags
   the current WordPress release, a short commented CSS rule in `DataViewsListTable/styles.scss`
   matches the newer behavior (row checkboxes always visible).
 - **One layout change: the selection bar sits above the table.** In the Site Editor the list fills
@@ -264,6 +265,129 @@ the server.
   screen's globals.
 - **No preloaded rows.** The list fetches its own first page; do not localize rows into the page (see
   [pii.md](pii.md)).
+
+## Filters
+
+### One declaration per entity
+
+Each entity declares its filters once, in a typed file next to its screen (`filters.ts`:
+`campaignFilters`, `donationFormFilters({withCampaign})`, `donationsFilters`, `donorsFilters`,
+`subscriptionFilters`, and the Event Tickets one). The screen passes it to `ListTablePage` as
+`filters`. The shell, the filter bar, the URL code and the request builder all read that one list,
+and no shared code has a branch for one screen. The types are in `ListTable/filters/types.ts`.
+
+| Kind | Control | Value in the view | Sent as |
+|:--|:--|:--|:--|
+| `options` | A fixed list: checkboxes when `multiple`, radios when not. `options: 'statuses'` takes the entity's status vocabulary. | The chosen values | `parameter`, a list when `multiple` |
+| `entity` | Campaigns, forms or donors searched on the server (`source`). | Ids | `parameter`; "No campaign" as `none` |
+| `date` | Six presets and a start and end day. | A preset (`30`, `this-month`) or `start_end` days | `parameters.start` and `parameters.end` as whole days |
+| `search` | The labeled search box with its hint. Never in the bar. | `view.search` | `parameter` |
+
+- **Primary and secondary.** A filter with `isPrimary` always shows as a chip. The others are in the
+  "Add filter" menu and show as a chip once added. With no secondary filter there is no "Add filter".
+- **`whenEmpty`.** Parameters an `options` filter sends while it holds nothing. Campaigns sends
+  `status=any`, which keeps archived campaigns out of the default view.
+- **`exclusiveValues`.** Values that cannot be combined with any other: Trash on the Status filters.
+  Choosing one clears the rest, and choosing another value clears it. An `entity` filter with
+  `allowNone` adds "No campaign", which works the same way.
+- **`legacyUrlKey`.** A bare name that links made before view state used, such as `donor` or
+  `campaignId`. It is read on load, applied, and rewritten to the `give-` name.
+- **Fixed filters (`scope`).** A list inside a details page tab gets fixed request parameters from
+  its host page, such as the campaign of a campaign's "Forms" tab. They are sent with every request
+  and are never a chip, a URL parameter or something Reset clears. That tab also leaves the Campaign
+  filter out of its declaration (`donationFormFilters({withCampaign: false})`).
+- **Link-driven filters.** Some filters are mostly set by a link from another screen, such as Donor
+  on Donations (`?donor=12` from a donor's page). They are ordinary declarations with a
+  `legacyUrlKey`; the link applies them and the chip names the record.
+- **Test mode** is not a declaration. A screen passes `testModeToggle`; the header switch edits the
+  view filter. It has no chip in the filter bar, so the switch is the one place to turn it on or off.
+
+### The filter bar
+
+`ListTableFilters` renders the primary chips, the added secondary chips, "Add filter"
+and Reset, from `FilterChip`, `OptionsFilterControl`, `EntityFilterControl` and
+`DateRangeFilterControl`. `ListTableSearch` is the labeled search box with its hint, announced with
+the field. A chip lists up to three names and then says how many are chosen ("Status: 4 selected");
+its accessible name starts with the visible text and then lists the names ("Status: 4 selected.
+Active, Pending, Draft, Archived"), so a voice command that says the visible words still finds it.
+The tooltip shows the same text: newer `@wordpress/components` Tooltips add the tooltip as a
+description when it differs from the name, which would read the list twice.
+
+- **Reset shows only when the filters differ from the screen's defaults.** The defaults are no
+  filters, plus test mode on a site in test mode, plus, on a screen that still passes the old
+  `filterSettings`, a `hidden` setting with an option on its own page. So an untouched list on a test site shows no Reset,
+  and Reset puts test mode back on instead of turning it off. A search term, or a secondary filter
+  added with no value yet, counts as a change. Reset never clears `scope`.
+- **The date range** counts in whole days in the site's time zone. A preset is kept as a preset and
+  worked out again from the site's day, so "Last 30 days" in a bookmark still means the last 30 days.
+  An end day before the start day is explained and cannot be applied.
+- **The result count is announced.** `ResultCountStatus` is one visually hidden polite status region
+  in the shell. After the admin changes the filters, the search, the sort or the page, and the list
+  settles, it says how many records match ("12 donations found"). It says nothing on the first load,
+  nothing while loading, and adds no request.
+
+### Why the filter bar is Give's
+
+The rest of the list is stock DataViews (spec 1, rule R0). The search box and the filter row are the
+exception, because the pinned DataViews cannot do what the filters need: it searches a filter's
+options in the browser (so every option must be loaded first), shows no error or retry when options
+fail to load, joins every value into the chip, prints raw ids for options it has not loaded, has no
+preset-based date range, no exclusive values, and hides the search label. The Give bar is built from
+the same `@wordpress/components` parts, so it looks and works like the stock row. **[Judgement]**
+When a newer DataViews supports server-searched options and custom chip text, swap back to the stock
+row.
+
+### The option route
+
+`givewp/v3/list-table-filter-options/<source>` (`campaign`, `form` or `donor`) feeds the `entity`
+filters (`ListTableFilterOptionsController`).
+
+- **Permissions, in this order:** signed in (401); a known source (403 for any other); with
+  `screen`, a known screen (404) that offers this source (400) and the screen's view capability
+  (403); without `screen`, the source's own view capability (403).
+- **Parameters:** `search` (up to 100 characters; matches the start of any word of the label),
+  `page` (20 options a page, at most page 10000) and `include` (up to 50 ids, whose labels are
+  returned; search and page are ignored). The client asks for labels in chunks of 50.
+- **What it returns:** `{options: [{value, label}], hasMore}`. Each query selects the id and the
+  label column; the form source also selects `post_status`, only to add "(Draft)" to a draft form's
+  label. The donor query reads only the id and the name, so a donor option is never an email or
+  anything else.
+- **Cost.** A word-start match (`LIKE 'term%' OR LIKE '% term%'`) cannot use an index, so a donor or
+  campaign search scans its table. It runs only while someone types, one page at a time, and the
+  Donors list search already scans the same way. The contract accepts this.
+
+### One status vocabulary
+
+Each entity's statuses come from one server source, a `StatusVocabulary` built by the value object
+(`CampaignStatus::vocabulary()` and the others): every value with its translated label, and which of
+them the Status filter offers. `ListTable::toArray()` sends it as `table.statuses`. The status badge
+and the Status filter both read it, so they always use the same words. Campaigns offers Active and
+Archived, the two statuses an admin can set in the interface; Inactive, Draft, Pending, Processing and
+Failed show as badges only.
+
+### Parameters the endpoints accept
+
+The changes are additive; old callers get the same results.
+
+- Campaigns: a `statuses` list of stored values, which wins when set. The old `status` stays and is
+  marked deprecated: `status=inactive` still means archived and `status=any` still hides archived.
+- Forms, Donations, Donors and Subscriptions take lists for status, campaign and form where the
+  filter allows several values. Every list with a date filter (all but Event Tickets) takes `start`
+  and `end` days.
+- **Search now respects the other filters on Donors and Campaigns.** Their search was built as
+  `a LIKE … OR b LIKE …` without brackets, so half its matches ignored every other filter. The two
+  `LIKE`s are now grouped. What a search matches has not changed. This is the one exception to "the
+  same results as before" (SC-005), and only when a filter is on together with a search.
+
+### Old filter settings
+
+`filterSettings` (`FilterConfig[]`) is deprecated and kept only so add-ons that pass it keep working.
+No core screen uses it. `filterSettingsToDeclarations()` in `filters/legacyFilterSettings.ts` maps it
+onto declarations, so it renders through the same bar, URL rules and request builder: `select`
+becomes a single `options` filter (its first option is sent while empty), `campaignselect` and
+`formselect` single `entity` filters, `search` the search box, the `toggle` checkbox the test-mode
+switch, and `hidden` fixed scope in a tab or a one-choice filter on by default on its own page. The
+grouped "Filter by" type (`filterby`) is gone and is skipped.
 
 ## View state
 
@@ -304,8 +428,8 @@ entry, so Back does not undo it. Only a `user` change to the layout, or a reset,
 `viewQuery.ts` is the only code that knows the parameter names.
 
 - **Every written parameter has the `give-` prefix**, in kebab case: `give-paged`, `give-per-page`,
-  `give-orderby`, `give-order`, `give-test-mode`, `give-search`, and one per filter (`parameterName()`, for example
-  `give-campaign-id` for `campaignId`). The WordPress admin uses the bare names (`page`, `paged`,
+  `give-orderby`, `give-order`, `give-test-mode`, `give-search`, and one per bar filter, named from its declaration
+  id (`parameterName()`: `give-campaign`, `give-donation-type`). The WordPress admin uses the bare names (`page`, `paged`,
   `s`, `post_type`) itself, and the details pages that embed a list use `page`, `tab` and `id`.
 - **Only what differs from the defaults is written.** A view equal to the defaults leaves the
   address bare. Test mode is written only when it differs from the site's payment mode, so a link
@@ -314,19 +438,15 @@ entry, so Back does not undo it. Only a `user` change to the layout, or a reset,
   bare (and adds no history entry if nothing else changed), and a reload or a shared link brings the
   default back. No core filter has a default value today.
 - **Only ids and enumerated values.** Each value must match `[A-Za-z0-9_-]{1,64}` and be one the
-  screen offers (a sortable column, a filter option, a page size in `PER_PAGE_SIZES`, an id for a
-  campaign or form filter). Anything else is dropped, the result is marked `corrected`, and the
-  address is replaced. **The exception is a hidden filter** (such as `donor`): it has no list of
-  offered values, so it accepts any token that matches the pattern, and `give-donor=Jane` is applied
-  as typed. The app itself only writes ids there; the address is not a privacy boundary for what a
-  person types into it by hand. Nothing read from the address is rendered as markup. "Filter by" options whose
-  real value is a moment in time keep a stable option value (`7`, `30`, `90` for "Period") and turn
-  it into the request value with `toApiValue`, fixed per view so the request does not change on
-  every render.
-- **Legacy bare names are read on load and rewritten.** Links made before the prefix used the filter's
-  own name for `select`, `campaignselect`, `formselect` and `hidden` filters (`?campaignId=4`). Those
-  are read with the same rules when the `give-` form is missing (the prefixed one wins), and the
-  address is then rewritten with `replaceState`, so no history entry is added. A bare `search` is
+  screen offers (a sortable column, an option or status the filter offers, a page size in
+  `PER_PAGE_SIZES`, a positive id for an `entity` filter, a valid date token). Anything else is
+  dropped, the result is marked `corrected`, and the address is replaced. The writer applies the same
+  pattern. Nothing read from the address is rendered as markup. A date preset keeps its token (`30`,
+  `this-month`) and is turned into days per request, from the site's day.
+- **Legacy bare names are read on load and rewritten.** A declaration's `legacyUrlKey`
+  (`?campaignId=4`, `?donor=12`) is read with the same rules when the `give-` form is missing (the
+  prefixed one wins), and the address is then rewritten with `replaceState`, so no history entry is
+  added. A bare `search` is
   not read either: it is only removed. A standalone page without a `screen` config reads the same
   recognized filter parameters (bare and `give-` names) for its first view and first request, but
   never rewrites the address and ignores the page, sort and page size.
@@ -442,5 +562,7 @@ config it still resets the layout for the current page view; nothing is stored.
 - `src/Views/Components/ListTable/` — the React side ([README](../../src/Views/Components/ListTable/README.MD))
 - `src/Framework/ListTable/Actions/RegisterListTableAssets.php` — the shared `givewp-list-table` script handle
 - `src/Framework/ListTable/Layouts/` — the stored layout: screens, store, validator, route and the printed bootstrap
+- `src/Framework/ListTable/FilterOptions/` — the filter option route and its sources
+- `src/Framework/ListTable/StatusVocabulary.php` — the status list a badge and a Status filter share
 - `src/Framework/ListTable/Views/GoalProgress.php` — the goal cell the Campaigns and Donation Forms lists share
 - `src/Framework/QueryBuilder/` — what the endpoints build queries with ([README](../../src/Framework/QueryBuilder/README.md))

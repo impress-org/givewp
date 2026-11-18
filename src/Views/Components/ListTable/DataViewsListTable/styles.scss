@@ -10,6 +10,71 @@
         min-height: calc(2 * var(--givewp-spacing-8));
     }
 
+    // The filter bar and the view options (layout, columns, reset view) share one row, so the options
+    // sit with the filters and not beside the search box.
+    &__filter-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: var(--givewp-spacing-2);
+
+        > .givewp-list-table-filters {
+            flex: 1;
+            min-inline-size: 0;
+        }
+    }
+
+    &__view-controls {
+        flex-shrink: 0;
+    }
+
+    // On a phone the search box takes the whole row. DataViews sizes its search slot to the content, so the
+    // slot must fill the row before the box can.
+    @media (max-width: 782px) {
+        .dataviews__search {
+            flex: 1 1 100%;
+            min-inline-size: 0;
+        }
+    }
+
+    // The DataViews wrapper scrolls sideways as a whole when the table is wider than the screen. Pin the
+    // rows around the table to the start edge, so the search, the filters, the settings button and the
+    // pagination stay in view while only the table moves.
+    .dataviews__view-actions,
+    &__filter-row,
+    .dataviews-footer {
+        position: sticky;
+        inset-inline-start: 0;
+    }
+
+    // The page's white container already pads everything inside it, the banner included. DataViews
+    // adds its own 48px at the sides of the toolbar, the footer and the outer table cells, which
+    // pushed the list in from the banner above it. Take that padding out so the container is the
+    // only gutter, and the search and the filters line up with the banner.
+    .dataviews__view-actions,
+    .dataviews-filters__container,
+    .dataviews-loading,
+    .dataviews-no-results {
+        padding-inline: 0;
+    }
+
+    // The table and its footer keep a small inset of their own, so the row borders and the row hover
+    // background do not touch the edge of the container. The search and the filter bar have none, and
+    // start at the edge.
+    .dataviews-footer {
+        padding-inline: var(--givewp-spacing-4);
+    }
+
+    .dataviews-view-table tr th:first-child,
+    .dataviews-view-table tr td:first-child {
+        padding-inline-start: var(--givewp-spacing-4);
+    }
+
+    .dataviews-view-table tr th:last-child,
+    .dataviews-view-table tr td:last-child {
+        padding-inline-end: var(--givewp-spacing-4);
+    }
+
     // Remove the total count rules below with `ListTableFooter` when the `@wordpress/dataviews` pin moves to
     // 12.0.1 or later; see the note on `ListTableFooter`.
     // Which rows are on the page, out of all the rows that match. It looks like the stock count and sits

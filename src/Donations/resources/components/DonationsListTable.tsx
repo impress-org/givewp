@@ -6,14 +6,14 @@ import {idsOf} from '@givewp/components/ListTable/adapters/idsOf';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import styles from './ListTable.module.scss';
-import {BulkActionsConfig, FilterConfig, ListTableRowAction} from '@givewp/components/ListTable/ListTablePage';
+import {BulkActionsConfig, ListTableRowAction} from '@givewp/components/ListTable/ListTablePage';
 import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
 import {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
 import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
-import filterByOptions from '../constants/filterByOptions';
 import listTableScreen from './listTableScreen';
+import {donationsFilters} from './filters';
 
 declare global {
     interface Window {
@@ -35,44 +35,6 @@ declare global {
 }
 
 const API = new ListTableApi(window.GiveDonations);
-
-export const filters: Array<FilterConfig> = [
-    {
-        name: 'campaignId',
-        type: 'campaignselect',
-        text: __('Select Campaign', 'give'),
-        ariaLabel: __('filter donations by campaign', 'give'),
-        options: [{value: 'none', text: __('No campaign', 'give')}],
-    },
-    {
-        name: 'formId',
-        type: 'formselect',
-        text: __('Select Form', 'give'),
-        ariaLabel: __('filter donations by form', 'give'),
-    },
-    {
-        name: 'search',
-        type: 'search',
-        text: __('Name, Email, or Donation ID', 'give'),
-        ariaLabel: __('search donations', 'give'),
-    },
-    {
-        name: 'toggle',
-        type: 'checkbox',
-        text: __('Test', 'give'),
-        ariaLabel: __('View Test Donations', 'give'),
-    },
-    {
-        name: 'donor',
-        type: 'hidden',
-        text: __('Donor', 'give'),
-    },
-    {
-        name: 'filterBy',
-        type: 'filterby',
-        groupedOptions: filterByOptions,
-    },
-];
 
 /**
  * The statuses an admin can set from the list, in the order the old "Set To …" actions had.
@@ -200,6 +162,12 @@ const statsConfig: Record<string, StatConfig> = {
 };
 
 /**
+ * The test-mode switch in the header and the "Test" badge next to the title.
+ */
+const testModeToggle = {label: __('Test', 'give'), ariaLabel: __('View Test Donations', 'give')};
+
+/**
+ * @since TBD Use the shared filter declarations and the test-mode switch in place of the "Filter by" settings.
  * @since TBD Pass the actions as data, the screen config, and the add-ons' bulk actions (the shared list page no longer reads them).
  * @since 4.10.0 Update button class names and add aria attributes.
  * @since 2.24.0
@@ -214,7 +182,8 @@ export default function DonationsListTable() {
             // Add-ons add their bulk actions to `addonsBulkActions` before the screen mounts.
             bulkActions={window.GiveDonations.addonsBulkActions ?? []}
             apiSettings={window.GiveDonations}
-            filterSettings={filters}
+            filters={donationsFilters}
+            testModeToggle={testModeToggle}
             paymentMode={!!window.GiveDonations.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={rotatingRecommendation}

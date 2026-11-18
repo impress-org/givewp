@@ -3,6 +3,8 @@
 namespace Give\Framework\ListTable;
 
 use Give\Framework\ListTable\Actions\RegisterListTableAssets;
+use Give\Framework\ListTable\FilterOptions\FilterOptionSources;
+use Give\Framework\ListTable\FilterOptions\ListTableFilterOptionsController;
 use Give\Framework\ListTable\Layouts\ListTableLayoutController;
 use Give\Framework\ListTable\Layouts\ListTableLayoutStore;
 use Give\Framework\ListTable\Layouts\ListTableLayoutValidator;
@@ -24,6 +26,7 @@ class ServiceProvider implements ServiceProviderInterface
         give()->singleton(ListTableScreens::class);
         give()->singleton(ListTableLayoutStore::class);
         give()->singleton(ListTableLayoutValidator::class);
+        give()->singleton(FilterOptionSources::class);
     }
 
     /**
@@ -36,5 +39,6 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('admin_enqueue_scripts', RegisterListTableAssets::class, '__invoke', 5);
         Hooks::addAction('admin_enqueue_scripts', PrintListTableLayouts::class, '__invoke', 6);
         Hooks::addAction('rest_api_init', ListTableLayoutController::class, 'registerRoutes');
+        Hooks::addAction('rest_api_init', ListTableFilterOptionsController::class, 'registerRoutes');
     }
 }

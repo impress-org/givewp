@@ -13,8 +13,11 @@ use Give\Donations\ListTable\Columns\PaymentTypeColumn;
 use Give\Donations\ListTable\Columns\StatusColumn;
 use Give\Donations\ListTable\Columns\SubscriptionDonationTypeColumn;
 use Give\Framework\ListTable\ListTable;
+use Give\Framework\ListTable\StatusVocabulary;
+use Give\Donations\ValueObjects\DonationStatus;
 
 /**
+ * @since TBD Send the status vocabulary.
  * @since 4.3.0 show campaign title instead of form title
  * @since 2.24.0
  */
@@ -72,5 +75,13 @@ class DonationsListTable extends ListTable
             FormColumn::getId(),
             StatusColumn::getId(),
         ];
+    }
+
+    /**
+     * @since TBD
+     */
+    protected function statuses(): ?StatusVocabulary
+    {
+        return DonationStatus::vocabulary();
     }
 }

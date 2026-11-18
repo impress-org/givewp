@@ -56,7 +56,7 @@ recorded?" If the answer is "nobody, it's just what the query returned," that's 
 or not the field looks sensitive.
 
 Note the asymmetry: the two consent layers cover *identity display* — name, company, avatar. They
-have never been a licence for contact details. Email, address, phone, and IP have no display
+have never been a license for contact details. Email, address, phone, and IP have no display
 configuration, and adding one would be a product decision rather than a code change.
 
 ## The v3 REST API is the intended data layer
@@ -169,6 +169,16 @@ model straight into a response.
 
 A new field on a ViewModel is a disclosure decision. Ask which callers reach that route
 unauthenticated before adding one.
+
+**The list filter option route returns names, never emails.**
+`givewp/v3/list-table-filter-options/donor` feeds the Donor filter on Donations. Each query selects
+only the donor id and the `name` column, so an option can never carry an email, phone or address,
+and a donor filter is sent to the list as an id, not as a name or an email. The route needs a
+signed-in user with the list screen's view capability (or the donor view capability without a
+screen). The campaign and form sources work the same way with their title columns.
+
+**The status vocabulary is configuration.** `table.statuses` (status values, translated labels and
+which ones the filter offers) is localized with the column schema. It holds no record.
 
 ### 3. Server-rendered templates
 

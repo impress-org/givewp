@@ -7,12 +7,15 @@ use Give\Subscriptions\ListTable\Columns\DonorColumn;
 use Give\Subscriptions\ListTable\Columns\FormColumn;
 use Give\Subscriptions\ListTable\Columns\IdColumn;
 use Give\Framework\ListTable\ListTable;
+use Give\Framework\ListTable\StatusVocabulary;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Subscriptions\ListTable\Columns\BillingPeriodColumn;
 use Give\Subscriptions\ListTable\Columns\CampaignColumn;
 use Give\Subscriptions\ListTable\Columns\RenewalDateColumn;
 use Give\Subscriptions\ListTable\Columns\StatusColumn;
 
 /**
+ * @since TBD Send the status vocabulary.
  * @since 2.24.0
  */
 class SubscriptionsListTable extends ListTable
@@ -61,5 +64,13 @@ class SubscriptionsListTable extends ListTable
             RenewalDateColumn::getId(),
             StatusColumn::getId(),
         ];
+    }
+
+    /**
+     * @since TBD
+     */
+    protected function statuses(): ?StatusVocabulary
+    {
+        return SubscriptionStatus::vocabulary();
     }
 }

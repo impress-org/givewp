@@ -8,12 +8,15 @@ use Give\Campaigns\Models\Campaign;
 use Give\Donations\Endpoints\ListDonations;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Database\DB;
 use Give\Framework\ListTable\ModelColumn;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -617,6 +620,285 @@ class TestListDonations extends TestCase
         $this->assertCount(1, $response->data['items']);
         $this->assertEquals($wanted->id, $response->data['items'][0]['id']);
         $this->assertEquals(1, $response->data['totalItems']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFiltersByTwoCampaigns()
+    {
+        $campaignA = Campaign::factory()->create();
+        $campaignB = Campaign::factory()->create();
+        $campaignC = Campaign::factory()->create();
+        $a = Donation::factory()->count(2)->create(['campaignId' => $campaignA->id]);
+        $b = Donation::factory()->create(['campaignId' => $campaignB->id]);
+        Donation::factory()->create(['campaignId' => $campaignC->id]);
+
+        $response = $this->listDonations(['campaignId' => $campaignA->id . ',' . $campaignB->id]);
+
+        $expected = array_merge(array_column($a, 'id'), [$b->id]);
+        $this->assertEqualsCanonicalizing($expected, array_map('intval', array_column($response->data['items'], 'id')));
+        $this->assertSame(3, $response->data['totalItems']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testSingleCampaignIdKeepsItsResult()
+    {
+        $campaignA = Campaign::factory()->create();
+        $campaignB = Campaign::factory()->create();
+        Donation::factory()->count(2)->create(['campaignId' => $campaignA->id]);
+        Donation::factory()->create(['campaignId' => $campaignB->id]);
+
+        $response = $this->listDonations(['campaignId' => (string)$campaignA->id]);
+
+        $this->assertCount(2, $response->data['items']);
+        $this->assertSame(2, $response->data['totalItems']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testNoCampaignStillWorks()
+    {
+        $campaign = Campaign::factory()->create();
+        Donation::factory()->create(['campaignId' => $campaign->id]);
+        $standalone = Donation::factory()->create(['campaignId' => null, 'formId' => 999999]);
+
+        $response = $this->listDonations(['campaignId' => 'none']);
+
+        $this->assertCount(1, $response->data['items']);
+        $this->assertEquals($standalone->id, $response->data['items'][0]['id']);
+        $this->assertSame(1, $response->data['totalItems']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFiltersByTwoForms()
+    {
+        $campaign = Campaign::factory()->create();
+        $formFive = Donation::factory()->create(['campaignId' => $campaign->id, 'formId' => 5]);
+        $formNine = Donation::factory()->create(['campaignId' => $campaign->id, 'formId' => 9]);
+        Donation::factory()->create(['campaignId' => $campaign->id, 'formId' => 11]);
+
+        $response = $this->listDonations(['formId' => [5, 9]]);
+
+        $this->assertEqualsCanonicalizing(
+            [$formFive->id, $formNine->id],
+            array_map('intval', array_column($response->data['items'], 'id'))
+        );
+        $this->assertSame(2, $response->data['totalItems']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testSingleFormIdKeepsItsResult()
+    {
+        $campaign = Campaign::factory()->create();
+        $match = Donation::factory()->create(['campaignId' => $campaign->id, 'formId' => 5]);
+        Donation::factory()->create(['campaignId' => $campaign->id, 'formId' => 9]);
+
+        $response = $this->listDonations(['formId' => 5]);
+
+        $this->assertCount(1, $response->data['items']);
+        $this->assertEquals($match->id, $response->data['items'][0]['id']);
+        $this->assertSame(1, $response->data['totalItems']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFiltersRecurringDonations()
+    {
+        $campaign = Campaign::factory()->create();
+        $first = $this->createRecurringDonation($campaign->id);
+        $renewal = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'type' => DonationType::RENEWAL(),
+            'subscriptionId' => $first->subscriptionId,
+            'mode' => DonationMode::TEST(),
+        ]);
+        Donation::factory()->create(['campaignId' => $campaign->id, 'subscriptionId' => 0]);
+
+        $response = $this->listDonations(['donationType' => 'recurring']);
+
+        $this->assertEqualsCanonicalizing(
+            [$first->id, $renewal->id],
+            array_map('intval', array_column($response->data['items'], 'id'))
+        );
+        $this->assertSame(2, $response->data['totalItems']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFiltersOneTimeDonationsIncludingRowsWithoutSubscriptionMeta()
+    {
+        $campaign = Campaign::factory()->create();
+        $this->createRecurringDonation($campaign->id);
+        $zero = Donation::factory()->create(['campaignId' => $campaign->id, 'subscriptionId' => 0]);
+        $withoutMeta = Donation::factory()->create(['campaignId' => $campaign->id, 'subscriptionId' => 0]);
+
+        DB::table('give_donationmeta')
+            ->where('donation_id', $withoutMeta->id)
+            ->where('meta_key', DonationMetaKeys::SUBSCRIPTION_ID)
+            ->delete();
+
+        $this->assertSame(
+            0,
+            DB::table('give_donationmeta')
+                ->where('donation_id', $withoutMeta->id)
+                ->where('meta_key', DonationMetaKeys::SUBSCRIPTION_ID)
+                ->count()
+        );
+
+        $response = $this->listDonations(['donationType' => 'one-time']);
+
+        $this->assertEqualsCanonicalizing(
+            [$zero->id, $withoutMeta->id],
+            array_map('intval', array_column($response->data['items'], 'id'))
+        );
+        $this->assertSame(2, $response->data['totalItems']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testAcceptsStartAndEndWithoutOffset()
+    {
+        $response = $this->dispatch([
+            'start' => '2026-09-01T00:00:00',
+            'end' => '2026-09-15T23:59:59',
+        ]);
+
+        $this->assertSame(200, $response->get_status());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testEndBoundIncludesTheWholeLastDay()
+    {
+        $campaign = Campaign::factory()->create();
+        $inside = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2026-09-15 23:30:00', wp_timezone()),
+        ]);
+        Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2026-09-16 00:00:00', wp_timezone()),
+        ]);
+
+        $response = $this->listDonations([
+            'start' => '2026-09-01T00:00:00',
+            'end' => '2026-09-15T23:59:59',
+        ]);
+
+        $this->assertCount(1, $response->data['items']);
+        $this->assertEquals($inside->id, $response->data['items'][0]['id']);
+        $this->assertSame(1, $response->data['totalItems']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFiftyCampaignIdsAreAccepted()
+    {
+        $ids = implode(',', range(1001, 1050));
+
+        $response = $this->dispatch(['campaignId' => $ids]);
+
+        $this->assertSame(200, $response->get_status());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFiftyFormIdsAreAccepted()
+    {
+        $response = $this->dispatch(['formId' => implode(',', range(1001, 1050))]);
+
+        $this->assertSame(200, $response->get_status());
+    }
+
+    /**
+     * @since TBD
+     *
+     * @dataProvider invalidParamsProvider
+     */
+    public function testRejectsInvalidValues(array $params)
+    {
+        $response = $this->dispatch($params);
+
+        $this->assertSame(400, $response->get_status());
+        $this->assertSame('rest_invalid_param', $response->get_data()['code']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function invalidParamsProvider(): array
+    {
+        return [
+            'non-numeric campaign' => [['campaignId' => 'abc']],
+            'non-numeric campaign in a list' => [['campaignId' => '1,abc']],
+            'none inside a list' => [['campaignId' => 'none,1']],
+            'non-numeric form' => [['formId' => 'abc']],
+            'unknown donation type' => [['donationType' => 'x']],
+            'fifty-one campaigns' => [['campaignId' => implode(',', range(1001, 1051))]],
+            'fifty-one forms' => [['formId' => implode(',', range(1001, 1051))]],
+        ];
+    }
+
+    /**
+     * @since TBD
+     */
+    private function createRecurringDonation(int $campaignId): Donation
+    {
+        $subscription = Subscription::factory()->createWithDonation(
+            ['mode' => SubscriptionMode::TEST()],
+            ['campaignId' => $campaignId, 'mode' => DonationMode::TEST()]
+        );
+
+        return Donation::find($subscription->initialDonation()->id);
+    }
+
+    /**
+     * Calls the endpoint class directly with already-parsed params.
+     *
+     * @since TBD
+     */
+    private function listDonations(array $params): \WP_REST_Response
+    {
+        $request = $this->getMockRequest();
+        $request->set_param('page', 1);
+        $request->set_param('perPage', 30);
+        $request->set_param('locale', 'en-US');
+        $request->set_param('testMode', true);
+
+        foreach ($params as $key => $value) {
+            $request->set_param($key, $value);
+        }
+
+        return give(ListDonations::class)->handleRequest($request);
+    }
+
+    /**
+     * Sends the request through the REST server, so the route schema validates it.
+     *
+     * @since TBD
+     */
+    private function dispatch(array $params): \WP_REST_Response
+    {
+        wp_set_current_user($this->factory()->user->create(['role' => 'administrator']));
+
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, '/give-api/v2/admin/donations');
+        $request->set_query_params(array_merge(['testMode' => 'true'], $params));
+
+        return rest_do_request($request);
     }
 
     /**

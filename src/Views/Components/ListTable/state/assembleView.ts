@@ -1,6 +1,5 @@
 import type {Filter} from '@wordpress/dataviews';
-import {TEST_MODE_FILTER} from '../adapters/filterSettingsToFields';
-import {filterFieldId} from '../adapters/viewToParameters';
+import {filterFieldId, TEST_MODE_FILTER} from '../adapters/viewToParameters';
 import type {ListTableView, ScreenDefaults, ViewLayoutPart, ViewQuery} from './types';
 
 /**

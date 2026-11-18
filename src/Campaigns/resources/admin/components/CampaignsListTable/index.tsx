@@ -1,6 +1,6 @@
 import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
-import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import {BulkActionsConfig} from '@givewp/components/ListTable/ListTablePage';
 import {campaignsRowActions} from './CampaignsRowActions';
 import styles from './CampaignsListTable.module.scss';
 import {GiveCampaignsListTable} from './types';
@@ -12,6 +12,7 @@ import {getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 import {useCampaignNoticeHook} from '@givewp/campaigns/hooks';
 import CampaignNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/CampaignNotice';
 import listTableScreen from './listTableScreen';
+import {campaignFilters} from './filters';
 
 declare const window: {
     GiveCampaignsListTable: GiveCampaignsListTable;
@@ -34,37 +35,6 @@ const shouldShowExistingUserIntroModal = getCampaignOptionsWindowData().admin.sh
 export function getGiveCampaignsListTableWindowData() {
     return window.GiveCampaignsListTable;
 }
-
-const campaignStatus = [
-    {
-        value: 'any',
-        text: __('All Status', 'give'),
-    },
-    {
-        value: 'active',
-        text: __('Active', 'give'),
-    },
-    {
-        value: 'inactive',
-        text: __('Archived', 'give'),
-    },
-];
-
-export const filters: Array<FilterConfig> = [
-    {
-        name: 'status',
-        type: 'select',
-        text: __('status', 'give'),
-        ariaLabel: __('Filter campaign by status', 'give'),
-        options: campaignStatus,
-    },
-    {
-        name: 'search',
-        type: 'search',
-        text: __('Search by name or ID', 'give'),
-        ariaLabel: __('Search donation forms', 'give'),
-    },
-];
 
 const bulkActions: Array<BulkActionsConfig> = [
     {
@@ -92,6 +62,7 @@ const bulkActions: Array<BulkActionsConfig> = [
 ];
 
 /**
+ * @since TBD Pass the filter declaration in place of the filter settings.
  * @since TBD Pass the row actions as data and the screen config; Merge needs two selected campaigns and reloads the list.
  * @since 4.0.0
  */
@@ -137,7 +108,7 @@ export default function CampaignsListTable() {
                 singleName={__('campaign', 'give')}
                 pluralName={__('campaigns', 'give')}
                 apiSettings={getGiveCampaignsListTableWindowData()}
-                filterSettings={filters}
+                filters={campaignFilters}
                 bulkActions={bulkActions}
                 rowActions={campaignsRowActions}
                 listTableBlankSlate={ListTableBlankSlate()}

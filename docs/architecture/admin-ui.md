@@ -126,6 +126,15 @@ URL and the search in the tab (`useListTableUrlState`), the per-user stored layo
 button (`ListTableViewReset`). The pure functions behind them are in `ListTable/state/`. See
 [list-tables.md](list-tables.md#view-state).
 
+Filters are shared too. A screen declares its filters once (`filters.ts` next to the screen) and
+`ListTablePage` renders them in one filter bar (`ListTableFilters`). The bar is built from small
+molecules in the same folder that any admin screen can reuse: `ListTableSearch` (a search box with a
+visible label and a hint), `FilterChip` (a chip that opens a popover, with a remove button),
+`OptionsFilterControl` (checkboxes or radios), `EntityFilterControl` (options searched on the
+server, with loading, error and "Load more") and `DateRangeFilterControl` (presets and a start and
+end day). The hooks `useFilterOptions` and `useFilterOptionLabels` load options and chip names from
+`givewp/v3/list-table-filter-options`. See [list-tables.md](list-tables.md#filters).
+
 Styling uses the design system foundation tokens rather than hardcoded values — see the Styles
 section of [AGENTS.md](../../AGENTS.md).
 

@@ -161,6 +161,285 @@ class TestListDonationForms extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    private function listForms(array $params): \WP_REST_Response
+    {
+        $request = $this->getMockRequest();
+        $request->set_param('page', 1);
+        $request->set_param('perPage', 30);
+        $request->set_param('locale', 'en-US');
+        $request->set_param('status', 'any');
+
+        foreach ($params as $key => $value) {
+            $request->set_param($key, $value);
+        }
+
+        return (new ListDonationForms())->handleRequest($request);
+    }
+
+    /**
+     * @since TBD
+     */
+    private function setFormStatus(int $id, string $status): void
+    {
+        wp_update_post(['ID' => $id, 'post_status' => $status]);
+    }
+
+    /**
+     * @since TBD
+     */
+    private function setFormDate(int $id, string $date): void
+    {
+        wp_update_post(['ID' => $id, 'post_date' => $date, 'post_date_gmt' => get_gmt_from_date($date)]);
+    }
+
+    /**
+     * @since TBD
+     */
+    private function assertListedIds(array $expected, \WP_REST_Response $response): void
+    {
+        $ids = array_map('intval', array_column($response->data['items'], 'id'));
+        sort($ids);
+        sort($expected);
+
+        $this->assertSame($expected, $ids);
+        $this->assertSame(count($expected), $response->data['totalItems']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFiltersByTwoStatuses()
+    {
+        $this->setFormStatus($this->donationForms[0]->id, 'draft');
+        $this->setFormStatus($this->donationForms[1]->id, 'pending');
+        $this->setFormStatus($this->donationForms[2]->id, 'trash');
+
+        $response = $this->listForms(['status' => ['draft', 'pending']]);
+
+        $this->assertListedIds([$this->donationForms[0]->id, $this->donationForms[1]->id], $response);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testSingleStatusKeepsItsResult()
+    {
+        $this->setFormStatus($this->donationForms[0]->id, 'draft');
+        $this->setFormStatus($this->donationForms[1]->id, 'trash');
+
+        $this->assertListedIds([$this->donationForms[0]->id], $this->listForms(['status' => 'draft']));
+        $this->assertListedIds([$this->donationForms[1]->id], $this->listForms(['status' => ['trash']]));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testAnyStatusKeepsItsResult()
+    {
+        $this->setFormStatus($this->donationForms[0]->id, 'trash');
+
+        $expected = array_slice(array_column($this->donationForms, 'id'), 1);
+
+        $this->assertListedIds($expected, $this->listForms(['status' => 'any']));
+        $this->assertListedIds($expected, $this->listForms(['status' => ['any']]));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFiltersByTwoCampaigns()
+    {
+        $first = Campaign::factory()->create();
+        $second = Campaign::factory()->create();
+        $third = Campaign::factory()->create();
+        give(CampaignRepository::class)->addCampaignForm($first, $this->donationForms[0]->id);
+        give(CampaignRepository::class)->addCampaignForm($second, $this->donationForms[1]->id);
+        give(CampaignRepository::class)->addCampaignForm($third, $this->donationForms[2]->id);
+
+        $response = $this->listForms(['campaign' => $first->id . ',' . $second->id]);
+
+        $this->assertListedIds([
+            $this->donationForms[0]->id,
+            $this->donationForms[1]->id,
+            $first->defaultFormId,
+            $second->defaultFormId,
+        ], $response);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFiltersByCreatedDateRange()
+    {
+        $this->setFormDate($this->donationForms[0]->id, '2026-08-31 23:59:59');
+        $this->setFormDate($this->donationForms[1]->id, '2026-09-01 00:00:00');
+        $this->setFormDate($this->donationForms[2]->id, '2026-09-15 23:30:00');
+        $this->setFormDate($this->donationForms[3]->id, '2026-09-16 00:00:00');
+        $this->setFormDate($this->donationForms[4]->id, '2026-09-10 12:00:00');
+
+        $response = $this->listForms(['start' => '2026-09-01T00:00:00', 'end' => '2026-09-15T23:59:59']);
+
+        $this->assertListedIds(
+            [$this->donationForms[1]->id, $this->donationForms[2]->id, $this->donationForms[4]->id],
+            $response
+        );
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFiltersByStartDateOnly()
+    {
+        $this->setFormDate($this->donationForms[0]->id, '2026-08-31 23:59:59');
+        $this->setFormDate($this->donationForms[1]->id, '2026-09-01 00:00:00');
+        $this->setFormDate($this->donationForms[2]->id, '2026-09-15 23:30:00');
+        $this->setFormDate($this->donationForms[3]->id, '2026-08-01 00:00:00');
+        $this->setFormDate($this->donationForms[4]->id, '2026-07-01 00:00:00');
+
+        $response = $this->listForms(['start' => '2026-09-01T00:00:00']);
+
+        $this->assertListedIds([$this->donationForms[1]->id, $this->donationForms[2]->id], $response);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @dataProvider ignoredCampaignValuesProvider
+     */
+    public function testIgnoredCampaignValuesStayAcceptedAndUnfiltered(string $value)
+    {
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, '/give-api/v2/admin/forms');
+        $request->set_query_params(['campaign' => $value]);
+        wp_set_current_user($this->factory()->user->create(['role' => 'administrator']));
+        $response = rest_do_request($request);
+
+        $this->assertSame(200, $response->get_status());
+        $this->assertSame(count($this->donationForms), $response->get_data()['totalItems']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function ignoredCampaignValuesProvider(): array
+    {
+        return [
+            'letters' => ['abc'],
+            'negative' => ['-1'],
+            'trailing space' => ['12 '],
+            'empty' => [''],
+            'zero' => ['0'],
+        ];
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testRejectsCampaignSentAsAnArray()
+    {
+        wp_set_current_user($this->factory()->user->create(['role' => 'administrator']));
+
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, '/give-api/v2/admin/forms');
+        $request->set_query_params(['campaign' => ['1']]);
+        $response = rest_do_request($request);
+
+        $this->assertSame(400, $response->get_status());
+        $this->assertSame('rest_invalid_param', $response->get_data()['code']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testCampaignValidatorRejectsAnArrayAndKeepsTheStringRule()
+    {
+        $endpoint = new ListDonationForms();
+
+        $this->assertFalse($endpoint->validateCampaignListSize(['1']));
+        $this->assertFalse($endpoint->validateCampaignListSize(implode(',', range(1, 51))));
+        $this->assertTrue($endpoint->validateCampaignListSize(implode(',', range(1, 50))));
+        $this->assertTrue($endpoint->validateCampaignListSize(''));
+        $this->assertTrue($endpoint->validateCampaignListSize('abc'));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testCampaignListWithOneJunkItemUsesOnlyTheValidId()
+    {
+        $campaign = Campaign::factory()->create();
+
+        $response = $this->listForms(['campaign' => $campaign->id . ',x']);
+
+        $this->assertListedIds([$campaign->defaultFormId], $response);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testNoneAndSingleCampaignIdKeepTheirResult()
+    {
+        $campaign = Campaign::factory()->create();
+        give(CampaignRepository::class)->addCampaignForm($campaign, $this->donationForms[0]->id);
+
+        $this->assertListedIds(
+            array_slice(array_column($this->donationForms, 'id'), 1),
+            $this->listForms(['campaign' => 'none'])
+        );
+        $this->assertListedIds(
+            [$this->donationForms[0]->id, $campaign->defaultFormId],
+            $this->listForms(['campaign' => (string)$campaign->id])
+        );
+    }
+
+    /**
+     * @since TBD
+     *
+     * @dataProvider listLimitProvider
+     */
+    public function testListArgsAcceptFiftyAndRejectFiftyOne(string $param, $fifty, $fiftyOne)
+    {
+        wp_set_current_user($this->factory()->user->create(['role' => 'administrator']));
+
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, '/give-api/v2/admin/forms');
+        $request->set_query_params([$param => $fifty]);
+        $this->assertSame(200, rest_do_request($request)->get_status());
+
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, '/give-api/v2/admin/forms');
+        $request->set_query_params([$param => $fiftyOne]);
+        $response = rest_do_request($request);
+
+        $this->assertSame(400, $response->get_status());
+        $this->assertSame('rest_invalid_param', $response->get_data()['code']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function listLimitProvider(): array
+    {
+        return [
+            'statuses' => ['status', array_fill(0, 50, 'draft'), array_fill(0, 51, 'draft')],
+            'campaigns' => ['campaign', implode(',', range(1001, 1050)), implode(',', range(1001, 1051))],
+        ];
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testRejectsAnUnknownStatus()
+    {
+        wp_set_current_user($this->factory()->user->create(['role' => 'administrator']));
+
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, '/give-api/v2/admin/forms');
+        $request->set_query_params(['status' => 'nope']);
+        $response = rest_do_request($request);
+
+        $this->assertSame(400, $response->get_status());
+        $this->assertSame('rest_invalid_param', $response->get_data()['code']);
+    }
+
+    /**
      * @since 4.0.0 Add support to isDefaultCampaignForm key
      * @since 2.25.0
      *

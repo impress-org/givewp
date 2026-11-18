@@ -1,0 +1,8 @@
+significance: minor
+type: enhancement
+entry: List screens share one filter model, with a real date range, labeled
+  search with hints, and a Campaign status filter that matches the badges. The
+  list endpoints accept a "statuses" list on Campaigns, "start" and "end" dates,
+  and lists of campaigns, forms and statuses, and a new route loads filter
+  options by name only.
+timestamp: 2026-11-02T21:02:33.969Z

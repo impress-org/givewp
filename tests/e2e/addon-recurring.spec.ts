@@ -1,8 +1,9 @@
 import {expect, test} from '@wordpress/e2e-test-utils-playwright';
 import {donationForm, expectReceipt, fillDonorDetails, payWithTestGateway, waitForForm} from './utils/donation-form';
 import {editForm} from './utils/form';
-import {expectListMounts} from './utils/list-table';
+import {chip, expectListMounts, expectNoBrowserDialogs, popover, visitList} from './utils/list-table';
 import {createStandaloneForm} from './utils/standalone-form';
+import {resetLayout} from './utils/user';
 import {wp} from './utils/wp-cli';
 
 /**
@@ -15,6 +16,7 @@ import {wp} from './utils/wp-cli';
  * a lookup that returns nothing would show.
  */
 const SLUG = 'give-recurring';
+const SUBSCRIPTIONS = 'post_type=give_forms&page=give-subscriptions';
 
 test.describe('Recurring add-on', () => {
     test.skip(!(process.env.E2E_ADDONS ?? '').split(/\s+/).includes(SLUG), `E2E_ADDONS does not name ${SLUG}`);
@@ -68,5 +70,38 @@ test.describe('Recurring add-on', () => {
         );
 
         expect(subscription).toBe('active:0');
+    });
+});
+
+/**
+ * The shared list filters on Subscriptions. This needs Give Recurring active, not only named in
+ * `E2E_ADDONS`, so it checks for the plugin itself and skips without it.
+ */
+test.describe('Subscriptions list filters @recurring', () => {
+    expectNoBrowserDialogs();
+
+    test('Status keeps Trash alone', async ({page, admin, requestUtils}) => {
+        const plugins = (await requestUtils.rest({path: '/wp/v2/plugins', params: {status: 'active'}})) as Array<{
+            plugin: string;
+        }>;
+        test.skip(
+            !plugins.some((plugin) => plugin.plugin.startsWith('give-recurring/')),
+            'Give Recurring is not active.'
+        );
+
+        await resetLayout(requestUtils, 'subscriptions');
+        await visitList(page, admin, SUBSCRIPTIONS);
+        await chip(page, 'Status').click();
+
+        const first = popover(page)
+            .locator('.givewp-options-filter-control__option')
+            .filter({hasNotText: /^Trash$/})
+            .first()
+            .getByRole('checkbox');
+        await first.check();
+        await popover(page).getByRole('checkbox', {name: 'Trash', exact: true}).check();
+
+        await expect(first).not.toBeChecked();
+        await expect(popover(page).getByRole('checkbox', {checked: true})).toHaveCount(1);
     });
 });

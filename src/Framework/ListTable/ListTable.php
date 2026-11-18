@@ -67,16 +67,36 @@ abstract class ListTable implements Arrayable
     /**
      * Get table definitions
      *
+     * @since TBD Add the status vocabulary when the table has one.
      * @since 2.24.0
      *
      * @return array
      */
     public function toArray(): array
     {
-        return [
+        $schema = [
             'id' => $this->id(),
             'columns' => $this->getColumnsArray(),
         ];
+
+        $statuses = $this->statuses();
+
+        if ($statuses !== null) {
+            $schema['statuses'] = $statuses->toArray();
+        }
+
+        return $schema;
+    }
+
+    /**
+     * The statuses of the table's entity, for the status badge and the Status filter. Null when the
+     * entity has no status.
+     *
+     * @since TBD
+     */
+    protected function statuses(): ?StatusVocabulary
+    {
+        return null;
     }
 
     /**
