@@ -1,5 +1,6 @@
 import {useId, useRef, useState} from 'react';
 import {__} from '@wordpress/i18n';
+import cx from 'classnames';
 import {Button} from '@wordpress/components';
 import ConfirmationDialog from '../../AdminDetailsPage/ConfirmationDialog';
 import './styles.scss';
@@ -15,7 +16,8 @@ export interface ListTableViewResetProps {
 }
 
 /**
- * A "Reset view" button for the list table, shown while the layout differs from the defaults. It asks
+ * A "Reset view" button for the list table, shown while the layout differs from the defaults (hidden but
+ * still taking its room otherwise, so the toolbar does not change size when it shows). It asks
  * before resetting. Cancel returns focus to the button; after a reset the button goes away, so focus
  * stays on this element and a status message says what happened.
  *
@@ -47,22 +49,24 @@ export default function ListTableViewReset({isDefault, onConfirm}: ListTableView
 
     return (
         <div ref={rootRef} tabIndex={-1} className="givewp-list-table-view-reset">
+            {/* Always in the layout, so the toolbar keeps its width and height when it shows. While the layout is
+                the default it is hidden (also from keyboard and screen readers). */}
+            <Button
+                ref={buttonRef}
+                variant="tertiary"
+                className={cx('givewp-list-table-view-reset__button', {
+                    'givewp-list-table-view-reset__button--hidden': isDefault,
+                })}
+                aria-haspopup="dialog"
+                aria-describedby={isDefault ? undefined : descriptionId}
+                onClick={open}
+            >
+                {__('Reset view', 'give')}
+            </Button>
             {!isDefault && (
-                <>
-                    <Button
-                        ref={buttonRef}
-                        variant="tertiary"
-                        className="givewp-list-table-view-reset__button"
-                        aria-haspopup="dialog"
-                        aria-describedby={descriptionId}
-                        onClick={open}
-                    >
-                        {__('Reset view', 'give')}
-                    </Button>
-                    <span id={descriptionId} className="screen-reader-text">
-                        {__('The columns, density or page size differ from the defaults.', 'give')}
-                    </span>
-                </>
+                <span id={descriptionId} className="screen-reader-text">
+                    {__('The columns, density or page size differ from the defaults.', 'give')}
+                </span>
             )}
             <span role="status" className="screen-reader-text">
                 {status}

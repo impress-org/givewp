@@ -24,7 +24,7 @@ export interface StatTileProps {
     onToggle?: () => void;
 }
 
-/** A small funnel in the tile corner. It shows on hover and focus, and stays on while the filter is on. */
+/** A small funnel in the cue row. It shows on hover and focus, and stays on while the filter is on. */
 function FilterIcon() {
     return (
         <svg
@@ -97,9 +97,16 @@ export default function StatTile({
     announcePressed = true,
     onToggle,
 }: StatTileProps) {
+    const showCue = isPressed && announcePressed && state !== 'loading' && state !== 'error' && state !== 'upgrade';
     const content = (
         <>
-            <span className="givewp-stat-tile__label">{label}</span>
+            <span className="givewp-stat-tile__head">
+                <span className="givewp-stat-tile__label">{label}</span>
+                <span className="givewp-stat-tile__filter-cue" aria-hidden="true">
+                    {onToggle && announcePressed && <FilterIcon />}
+                    {showCue && __('Filtering the list', 'give')}
+                </span>
+            </span>
             <span className="givewp-stat-tile__body">
                 <Value state={state} value={value} upgrade={upgrade} />
             </span>
@@ -108,6 +115,7 @@ export default function StatTile({
     const className = cx('givewp-stat-tile', {
         'givewp-stat-tile--toggle': Boolean(onToggle) && state !== 'upgrade',
         'givewp-stat-tile--pressed': isPressed,
+        'givewp-stat-tile--upgrade': state === 'upgrade',
     });
 
     if (onToggle && state !== 'upgrade') {
@@ -119,7 +127,6 @@ export default function StatTile({
                 onClick={onToggle}
             >
                 {content}
-                {announcePressed && <FilterIcon />}
             </button>
         );
     }

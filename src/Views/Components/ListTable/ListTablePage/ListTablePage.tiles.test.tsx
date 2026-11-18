@@ -136,7 +136,7 @@ describe('ListTablePage stat tiles that filter', () => {
         await act(async () => tile('One-Time Donations').click());
 
         expect(lastRequest()).toMatchObject({donationType: 'one-time', page: '1'});
-        expect(pressed()).toEqual(['One-Time Donations6']);
+        expect(pressed()).toEqual(['One-Time DonationsFiltering the list6']);
 
         const bar = await renderSlot(lastTable().filterBar);
 
@@ -154,7 +154,7 @@ describe('ListTablePage stat tiles that filter', () => {
         );
 
         expect(lastRequest()).toMatchObject({donationType: 'recurring'});
-        expect(pressed()).toEqual(['Recurring Donations3']);
+        expect(pressed()).toEqual(['Recurring DonationsFiltering the list3']);
 
         await act(async () => lastTable().onChangeView({...lastTable().view, filters: []}));
 

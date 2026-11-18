@@ -1,4 +1,7 @@
 .givewp-list-table-empty-state {
+    // A decorative grey with no token. It carries no meaning.
+    --givewp-list-table-empty-state-mark-color: #949494;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,5 +11,9 @@
 
     p {
         margin: 0;
+    }
+
+    &__mark .givewp-give-mark {
+        color: var(--givewp-list-table-empty-state-mark-color);
     }
 }

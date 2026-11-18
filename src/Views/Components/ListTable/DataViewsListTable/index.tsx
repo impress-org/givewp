@@ -29,7 +29,7 @@ export type ListTableLayoutMode = 'wide' | 'narrow';
  * @since TBD Add the `viewMenu` slot.
  * @since TBD Add `layoutMode`.
  * @since TBD Drop `search` and `searchLabel`: the search box and the filter bar are always Give's.
- * @since TBD Add the `searchBox` and `filterBar` slots.
+ * @since TBD Add the `searchBox`, `searchHint` and `filterBar` slots.
  * @since TBD
  */
 export interface DataViewsListTableProps {
@@ -50,6 +50,8 @@ export interface DataViewsListTableProps {
     onResetLayout?: () => void;
     /** Give's labeled search box, in place of the DataViews one. None when the list has no search. */
     searchBox?: ReactNode;
+    /** The search box's hint line, under the search and the filters. Hidden with the search box. */
+    searchHint?: ReactNode;
     /** Give's filter bar, in place of the DataViews filter toggle and filter row. */
     filterBar?: ReactNode;
     /** `narrow` shows the cards (the view must be a grid view). Default `wide`. */
@@ -197,16 +199,17 @@ function ListTableFooter({
 }
 
 /**
- * The stock DataViews layout, with these changes: the footer shows the total row count; while rows are
- * selected, the bulk actions also take the place of the search row above the table, so they show where
- * the selection starts (the stock footer keeps its own copy next to the pagination); and a "Reset view"
- * button sits after the view options, which this DataViews version does not offer. Give's search box and filter bar always take
- * the place of the stock search and filter row.
+ * The stock DataViews layout, with these changes: the footer shows the total row count; Give's search
+ * box, filter bar and view options share one toolbar row above the table, with the search hint under
+ * it; while rows are selected, the bulk actions show in the search box's place, where the selection
+ * starts (the stock footer keeps its own copy next to the pagination), and the search box, its hint and
+ * the view options stay there, hidden, so the table does not move; and a "Reset view" button sits after
+ * the view options, which this DataViews version does not offer.
  *
  * @since TBD Render the `viewMenu` slot after "Reset view", in both layouts.
  * @since TBD In the narrow layout, put the view options on their own row under the filters, with no layout switcher.
  * @since TBD Always render the `searchBox` and `filterBar` slots; no stock search or filter row.
- * @since TBD Show the view options on the filter bar's row instead of next to the search box.
+ * @since TBD Put the search box, the filter bar and the view options in one row, with the search hint under it; keep them in place while rows are selected.
  * @since TBD Render the `searchBox` and `filterBar` slots in place of the stock search and filters.
  * @since TBD
  */
@@ -219,6 +222,7 @@ function ListTableLayout({
     isDefaultLayout,
     onResetLayout,
     searchBox,
+    searchHint,
     filterBar,
     layoutMode,
     viewMenu,
@@ -231,14 +235,18 @@ function ListTableLayout({
     isDefaultLayout: boolean;
     onResetLayout?: () => void;
     searchBox?: ReactNode;
+    searchHint?: ReactNode;
     filterBar?: ReactNode;
     layoutMode: ListTableLayoutMode;
     viewMenu?: ReactNode;
 }) {
-    const viewControls = !hasSelection && (
+    // While rows are selected, the view options, the search box and its hint stay in the layout, hidden
+    // (styles.scss), so the table does not move when the selection starts or ends. Reset view comes and
+    // goes, so it sits first: the view options and the menu keep their place at the end edge.
+    const viewControls = (
         <HStack spacing={1} expanded={false} className="givewp-list-table__view-controls">
-            <DataViews.ViewConfig />
             {onResetLayout && <ListTableViewReset isDefault={isDefaultLayout} onConfirm={onResetLayout} />}
+            <DataViews.ViewConfig />
             {viewMenu}
         </HStack>
     );
@@ -246,22 +254,28 @@ function ListTableLayout({
 
     return (
         <>
-            {hasSelection ? (
-                <HStack justify="start" className="dataviews__view-actions givewp-list-table__bulk-actions">
-                    <DataViews.BulkActionToolbar />
-                </HStack>
-            ) : (
-                <HStack alignment="top" justify="start" className="dataviews__view-actions" spacing={1}>
-                    <HStack justify="start" className="dataviews__search">
-                        {searchBox}
-                    </HStack>
-                </HStack>
-            )}
-            <div className="givewp-list-table__filter-row">
-                {filterBar}
-                {!isNarrow && viewControls}
+            <div className="givewp-list-table__toolbar">
+                <div
+                    className={cx('givewp-list-table__toolbar-row', {
+                        'givewp-list-table__toolbar-row--labeled': searchBox,
+                    })}
+                >
+                    {(searchBox || hasSelection) && (
+                        <div className="givewp-list-table__search">
+                            {searchBox && <div className="givewp-list-table__search-box">{searchBox}</div>}
+                            {hasSelection && (
+                                <HStack justify="start" expanded={false} className="givewp-list-table__bulk-actions">
+                                    <DataViews.BulkActionToolbar />
+                                </HStack>
+                            )}
+                        </div>
+                    )}
+                    {filterBar}
+                    {!isNarrow && viewControls}
+                </div>
+                {searchHint && <div className="givewp-list-table__hint">{searchHint}</div>}
             </div>
-            {isNarrow && viewControls && <div className="givewp-list-table__view-controls-row">{viewControls}</div>}
+            {isNarrow && <div className="givewp-list-table__view-controls-row">{viewControls}</div>}
             <DataViews.Layout />
             <ListTableFooter
                 actions={actions}
@@ -282,7 +296,7 @@ function ListTableLayout({
  * @since TBD Add `layoutMode`: the cards at 782 px and below, the table above.
  * @since TBD Add the `--more-start` and `--more-end` modifiers while the list hides content at that edge.
  * @since TBD Drop `search` and `searchLabel`; DataViews' own search is always off.
- * @since TBD Accept the `searchBox` and `filterBar` slots.
+ * @since TBD Accept the `searchBox`, `searchHint` and `filterBar` slots.
  * @since TBD
  */
 export default function DataViewsListTable({
@@ -300,6 +314,7 @@ export default function DataViewsListTable({
     isDefaultLayout = true,
     onResetLayout,
     searchBox,
+    searchHint,
     filterBar,
     layoutMode = 'wide',
     viewMenu,
@@ -354,6 +369,7 @@ export default function DataViewsListTable({
                         isDefaultLayout={isDefaultLayout}
                         onResetLayout={onResetLayout}
                         searchBox={searchBox}
+                        searchHint={searchHint}
                         filterBar={filterBar}
                         layoutMode={layoutMode}
                         viewMenu={viewMenu}

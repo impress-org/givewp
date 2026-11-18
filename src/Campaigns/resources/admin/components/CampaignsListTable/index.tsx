@@ -62,7 +62,7 @@ const bulkActions: Array<BulkActionsConfig> = [
 ];
 
 /**
- * @since TBD Show the "Campaign List" tip as a notice above the list, not a floating tooltip.
+ * @since TBD Show the "Campaign List" tip as a notice above the list, not a floating balloon.
  * @since TBD Pass the filter declaration in place of the filter settings.
  * @since TBD Pass the row actions as data and the screen config; Merge needs two selected campaigns and reloads the list.
  * @since 4.0.0
@@ -102,6 +102,7 @@ export default function CampaignsListTable() {
         );
     };
 
+    // The "Campaign List" tip: a dismissible notice above the table, not a floating balloon.
     const notices: ListTableNotice[] =
         !isExistingUserIntroModalOpen && showTooltip
             ? [

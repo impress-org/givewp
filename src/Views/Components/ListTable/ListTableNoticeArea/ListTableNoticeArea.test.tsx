@@ -15,7 +15,7 @@ const recommendation: RecommendedProductData = {
     innerHtml: 'Get Recurring Donations',
 };
 
-const notice = (id: string, kind: ListTableNotice['kind']): ListTableNotice => ({
+const notice = (id: string, kind: ListTableNotice['kind'] = 'system'): ListTableNotice => ({
     id,
     kind,
     title: `Title ${id}`,
@@ -44,11 +44,11 @@ const names = () =>
     );
 
 describe('ListTableNoticeArea', () => {
-    it('stacks system, onboarding, then the recommendation', async () => {
+    it('puts the system notices before the onboarding tips, then the recommendation', async () => {
         await act(() =>
             root.render(
                 <ListTableNoticeArea
-                    notices={[notice('a', 'onboarding'), notice('b', 'system'), notice('c', 'onboarding')]}
+                    notices={[notice('a', 'onboarding'), notice('b'), notice('c', 'onboarding')]}
                     recommendation={recommendation}
                     onDismissRecommendation={jest.fn()}
                 />
@@ -58,11 +58,25 @@ describe('ListTableNoticeArea', () => {
         expect(names()).toEqual(['Title b', 'Title a', 'Title c', 'Pro tip']);
     });
 
+    it('stacks the system notices in order, then the recommendation', async () => {
+        await act(() =>
+            root.render(
+                <ListTableNoticeArea
+                    notices={[notice('a'), notice('b'), notice('c')]}
+                    recommendation={recommendation}
+                    onDismissRecommendation={jest.fn()}
+                />
+            )
+        );
+
+        expect(names()).toEqual(['Title a', 'Title b', 'Title c', 'Pro tip']);
+    });
+
     it('puts children (action errors) first and the deprecated slot last', async () => {
         await act(() =>
             root.render(
                 <ListTableNoticeArea
-                    notices={[notice('a', 'system')]}
+                    notices={[notice('a')]}
                     recommendation={recommendation}
                     onDismissRecommendation={jest.fn()}
                     trailing={<p data-testid="old">old</p>}
@@ -142,7 +156,7 @@ describe('ListTableNoticeArea', () => {
                 <ListTableNoticeArea
                     notices={[
                         {
-                            ...notice('a', 'system'),
+                            ...notice('a'),
                             link: {href: 'https://example.test/a', label: 'Read the guide', opensInNewTab: true},
                             onDismiss,
                         },
@@ -165,7 +179,7 @@ describe('ListTableNoticeArea', () => {
         await act(() =>
             root.render(
                 <ListTableNoticeArea
-                    notices={[notice('a', 'system')]}
+                    notices={[notice('a')]}
                     recommendation={null}
                     onDismissRecommendation={jest.fn()}
                 />
@@ -173,5 +187,37 @@ describe('ListTableNoticeArea', () => {
         );
 
         expect(container.querySelector('button')).toBeNull();
+    });
+
+    it('keeps a long tip with a link readable: one dismiss button, a safe link, no alert role', async () => {
+        await act(() =>
+            root.render(
+                <ListTableNoticeArea
+                    notices={[]}
+                    recommendation={{...recommendation, message: 'A '.repeat(200)}}
+                    onDismissRecommendation={jest.fn()}
+                />
+            )
+        );
+
+        expect(container.querySelectorAll('button[aria-label="Dismiss tip"]')).toHaveLength(1);
+        expect(container.querySelector('a[target="_blank"]')?.getAttribute('rel')).toContain('noopener');
+        expect(container.querySelector('[role="alert"]')).toBeNull();
+    });
+
+    it('gives every notice the list table notice class so the area can restyle it', async () => {
+        await act(() =>
+            root.render(
+                <ListTableNoticeArea
+                    notices={[notice('a')]}
+                    recommendation={recommendation}
+                    onDismissRecommendation={jest.fn()}
+                />
+            )
+        );
+
+        const groups = container.querySelectorAll('[role="group"]');
+        expect(groups).toHaveLength(2);
+        groups.forEach((group) => expect(group.classList.contains('givewp-list-table-notice')).toBe(true));
     });
 });

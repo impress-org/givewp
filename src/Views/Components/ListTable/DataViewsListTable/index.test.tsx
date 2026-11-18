@@ -15,7 +15,7 @@ const view = (page: number): View => ({type: 'table', page, perPage: 30, fields:
 let container: HTMLDivElement;
 let root: Root;
 
-const render = (props: {page: number; rows: ListTableItem[]; totalItems: number}) =>
+const render = (props: {page: number; rows: ListTableItem[]; totalItems: number; layout?: object}) =>
     act(async () => {
         root.render(
             <DataViewsListTable
@@ -31,6 +31,7 @@ const render = (props: {page: number; rows: ListTableItem[]; totalItems: number}
                 empty={null}
                 perPageSizes={[30]}
                 search={false}
+                {...props.layout}
             />
         );
     });
@@ -69,5 +70,27 @@ describe('DataViewsListTable total', () => {
         await render({page: 1, rows: [], totalItems: 0});
 
         expect(container.querySelector('.givewp-list-table__total')).toBeNull();
+    });
+});
+
+describe('DataViewsListTable view controls', () => {
+    // Reset view comes and goes, so it sits before the controls that must not move.
+    it('orders Reset view, then the view options, then the more options menu', async () => {
+        await render({
+            page: 1,
+            rows: items,
+            totalItems: 30,
+            layout: {
+                isDefaultLayout: false,
+                onResetLayout: () => undefined,
+                viewMenu: <button aria-label="More view options" />,
+            },
+        });
+
+        const labels = Array.from(container.querySelectorAll('.givewp-list-table__view-controls button')).map(
+            (button) => button.getAttribute('aria-label') ?? button.textContent
+        );
+
+        expect(labels).toEqual(['Reset view', 'View options', 'More view options']);
     });
 });

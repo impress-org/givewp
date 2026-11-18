@@ -1,5 +1,7 @@
 import {act} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
+import {readFileSync} from 'fs';
+import {join} from 'path';
 import ListTableViewReset from './index';
 
 (globalThis as {IS_REACT_ACT_ENVIRONMENT?: boolean}).IS_REACT_ACT_ENVIRONMENT = true;
@@ -37,10 +39,18 @@ afterEach(async () => {
 });
 
 describe('ListTableViewReset', () => {
-    it('shows no button while the table has its default layout', async () => {
+    it('keeps the button in the layout but hidden while the table has its default layout', async () => {
         await render(true);
 
-        expect(resetButton()).toBeNull();
+        const button = resetButton();
+        expect(button?.className).toContain('givewp-list-table-view-reset__button--hidden');
+        expect(button?.hasAttribute('aria-describedby')).toBe(false);
+        expect(readFileSync(join(__dirname, 'styles.scss'), 'utf8')).toMatch(
+            /&__button--hidden\.components-button \{\s*visibility: hidden;/
+        );
+
+        await render(false);
+        expect(resetButton()?.className).not.toContain('--hidden');
     });
 
     it('shows a "Reset view" button with a description once the layout changed', async () => {
@@ -71,10 +81,10 @@ describe('ListTableViewReset', () => {
         expect(dialog()).toBeNull();
         expect(status()?.textContent).toBe('The table view is back to its defaults.');
 
-        // The layout is now the default, so the button goes away and focus stays in its place.
+        // The layout is now the default, so the button is hidden and focus stays in its place.
         await render(true);
 
-        expect(resetButton()).toBeNull();
+        expect(resetButton()?.className).toContain('--hidden');
         expect(document.activeElement).toBe(container.querySelector('.givewp-list-table-view-reset'));
     });
 
@@ -110,6 +120,14 @@ describe('ListTableViewReset', () => {
 
         expect(document.activeElement).toBe(input);
         input.remove();
+    });
+
+    it('is 32px tall above the narrow width, like the other toolbar controls', () => {
+        const styles = readFileSync(join(__dirname, 'styles.scss'), 'utf8');
+
+        expect(styles).toMatch(
+            /@media \(min-width: #\{\$givewp-list-table-narrow \+ 1px\}\) \{\s*block-size: 2rem;/
+        );
     });
 });
 

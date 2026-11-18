@@ -20,6 +20,9 @@ export interface ListTableNoticeAreaProps {
     trailing?: ReactNode;
 }
 
+/** The shared Notice has hashed class names, so the area styles it through this class. */
+const NOTICE_CLASS = 'givewp-list-table-notice';
+
 /**
  * @since TBD
  */
@@ -42,13 +45,13 @@ function NoticeLink({href, label, opensInNewTab}: {href: string; label: string; 
 }
 
 /**
- * The one place above a list table where notices, onboarding tips and the daily product
- * recommendation render. Everything comes from page config, so there is no loading state. When
+ * The one place above a list table where notices, onboarding tips and the daily product recommendation
+ * render. Everything comes from page config, so there is no loading state. When
  * there is nothing to show, the wrapper is hidden by the `:empty` rule in the stylesheet, so it takes
  * no space. (It returns null when there is also no `children` at all; the page always passes the
  * action notification placeholder, so there the wrapper is what gets hidden.)
  *
- * Order: `children`, system notices, onboarding notices, the recommendation, then `trailing`.
+ * Order: `children`, system notices, onboarding tips, the recommendation, then `trailing`.
  *
  * @since TBD
  */
@@ -73,7 +76,7 @@ export default function ListTableNoticeArea({
             {children}
 
             {ordered.map(({id, title, message, link, onDismiss}) => (
-                <Notice key={id} type="info" title={title} dismissHandleClick={onDismiss}>
+                <Notice key={id} type="info" className={NOTICE_CLASS} title={title} dismissHandleClick={onDismiss}>
                     <p className="givewp-list-table-notice-area__message">
                         {message}
                         {link && (
@@ -89,6 +92,7 @@ export default function ListTableNoticeArea({
             {recommendation && (
                 <Notice
                     type="info"
+                    className={NOTICE_CLASS}
                     ariaLabel={__('Pro tip', 'give')}
                     dismissLabel={__('Dismiss tip', 'give')}
                     dismissHandleClick={onDismissRecommendation}

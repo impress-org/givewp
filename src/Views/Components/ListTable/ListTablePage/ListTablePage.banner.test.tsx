@@ -65,4 +65,10 @@ describe('ListTablePage banner', () => {
 
         expect(container.querySelector('[data-testid="banner"]')).toBeNull();
     });
+
+    it('renders no banner landmark when the banner returns nothing', async () => {
+        await act(() => root.render(<ListTablePage {...props} banner={() => null} />));
+
+        expect(container.querySelector('section[role="banner"]')).toBeNull();
+    });
 });

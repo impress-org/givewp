@@ -1,36 +1,17 @@
 import {act} from 'react';
 import {createRoot} from 'react-dom/client';
-import MockNoticeArea from '@givewp/components/ListTable/ListTableNoticeArea';
-import type {ListTableNotice} from '@givewp/components/ListTable/notices/types';
 
 (globalThis as {IS_REACT_ACT_ENVIRONMENT?: boolean}).IS_REACT_ACT_ENVIRONMENT = true;
 
 const mockDismiss = jest.fn();
 const mockPageProps = jest.fn();
 
-// A stand-in for the page: the real notice area, then a list root with a select-all checkbox.
+// A stand-in for the page: it records its props, where the Campaign List notice is passed.
 jest.mock('@givewp/components', () => ({
-    ListTablePage: (props: {notices?: ListTableNotice[]; children?: React.ReactNode}) => {
+    ListTablePage: (props: {children?: React.ReactNode}) => {
         mockPageProps(props);
-        const {notices, children} = props;
 
-        return (
-            <div>
-                <MockNoticeArea notices={notices ?? []} recommendation={null} onDismissRecommendation={() => {}} />
-                <div data-testid="list-root">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>
-                                    <input type="checkbox" data-testid="select-all" />
-                                </th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-                {children}
-            </div>
-        );
+        return <div>{props.children}</div>;
     },
 }));
 jest.mock('@givewp/campaigns/utils', () => ({
@@ -45,7 +26,7 @@ jest.mock('@givewp/campaigns/admin/components/ExistingUserIntroModal', () => () 
 jest.mock('./CampaignsRowActions', () => ({campaignsRowActions: []}));
 
 describe('CampaignsListTable', () => {
-    it('shows the Campaign List tip as a notice outside the list, and dismisses it', async () => {
+    it('passes the Campaign List tip as an onboarding notice for the notice area, and dismisses it', async () => {
         (window as unknown as Record<string, unknown>).GiveCampaignsListTable = {pluginUrl: ''};
         const {default: CampaignsListTable} = await import('./index');
         const container = document.createElement('div');
@@ -54,19 +35,22 @@ describe('CampaignsListTable', () => {
 
         await act(() => root.render(<CampaignsListTable />));
 
-        const group = container.querySelector('[role="group"]') as HTMLElement;
-        expect(group).not.toBeNull();
-        expect(group.textContent).toContain('Campaign List');
-        expect(group.querySelector('a')?.getAttribute('href')).toBe('https://docs.givewp.com/campaigns-docs');
-        expect(group.closest('table')).toBeNull();
-        expect(group.contains(container.querySelector('[data-testid="select-all"]'))).toBe(false);
-        expect(container.querySelector('[data-testid="list-root"]')?.contains(group)).toBe(false);
+        // The tip is no longer a floating balloon inside the page.
+        expect(container.querySelector('.givewp-balloon')).toBeNull();
 
-        const dismiss = group.querySelector('button') as HTMLButtonElement;
-        await act(() => dismiss.click());
+        const {notices} = mockPageProps.mock.calls[0][0];
+        expect(notices).toHaveLength(1);
+        expect(notices[0]).toMatchObject({
+            id: 'campaign-list',
+            kind: 'onboarding',
+            title: 'Campaign List',
+            link: {href: 'https://docs.givewp.com/campaigns-docs', opensInNewTab: true},
+        });
+
+        await act(() => notices[0].onDismiss());
 
         expect(mockDismiss).toHaveBeenCalledWith('givewp_campaign_listtable_notice');
-        expect(container.querySelector('[role="group"]')).toBeNull();
+        expect(mockPageProps.mock.calls.at(-1)[0].notices).toEqual([]);
 
         await act(() => root.unmount());
         container.remove();

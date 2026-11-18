@@ -1,4 +1,5 @@
 import {Button} from '@wordpress/components';
+import GiveMark from '../GiveMark';
 import './styles.scss';
 
 /**
@@ -26,6 +27,9 @@ export default function ListTableEmptyState({
 }: ListTableEmptyStateProps) {
     return (
         <div className="givewp-list-table-empty-state" role={isError ? 'alert' : 'status'}>
+            <span className="givewp-list-table-empty-state__mark">
+                <GiveMark size={40} />
+            </span>
             <p>{message}</p>
             <Button variant="secondary" onClick={onAction}>
                 {actionLabel}

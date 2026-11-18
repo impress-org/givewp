@@ -1,6 +1,11 @@
 @use '../layout/breakpoints' as *;
+@use '../layout/tokens' as *;
+
+// The bottom padding of `#wpbody-content`: the room WordPress keeps for its admin footer below the content.
+$givewp-list-table-wp-footer-space: 65px;
 
 :global {
+    // Kept for custom site CSS. No list table code reads it.
     :root {
         --give-primary-color: #86b785;
     }
@@ -12,6 +17,14 @@
         & > a {
             text-decoration: underline;
         }
+    }
+
+    // The Give admin paints `#wpbody` a lighter grey, which shows in the room under the page. The full list
+    // page paints it the page color. Only the full page carries this class, so an embedded list and the other
+    // Give admin pages keep their wrapper. The extra class beats `.post-type-give_forms #wpbody { background-color: #f9fafb }` in
+    // `AdminDetailsPage/AdminDetailsPage.module.scss` without `!important`.
+    .post-type-give_forms #wpbody:has(.givewp-list-table-page) {
+        background-color: $givewp-list-table-page;
     }
 
     .post-type-give_forms #wpbody-content {
@@ -40,14 +53,20 @@
 }
 
 .page {
-    background-color: var(--givewp-neutral-25);
+    @include givewp-list-table-tokens;
+    background-color: var(--givewp-list-table-page);
     box-sizing: border-box;
-    color: var(--givewp-neutral-900);
+    color: var(--givewp-list-table-text);
     display: flex;
     flex-direction: column;
-    font-family: Inter, system-ui, sans-serif;
-    font-size: 1rem;
+    // The WP admin font stack.
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+        'Helvetica Neue', sans-serif;
+    font-size: 0.8125rem;
     gap: var(--givewp-spacing-4);
+    // The grey page reaches the bottom of the window, down to the WordPress footer, also when the list is
+    // short. It then does not scroll.
+    min-block-size: calc(100vh - var(--wp-admin--admin-bar--height, 32px) - $givewp-list-table-wp-footer-space);
 
     *,
     ::before,
@@ -56,15 +75,26 @@
     }
 }
 
+// An embedded list keeps the host page look and size. Only the full page gets the WP admin shell and fills the window.
+// Same specificity as .page and defined after it, so it wins without !important.
+.pageEmbedded {
+    background-color: var(--givewp-neutral-25);
+    color: var(--givewp-neutral-900);
+    font-family: Inter, system-ui, sans-serif;
+    font-size: 1rem;
+    min-block-size: auto;
+}
+
 .pageHeader {
     align-items: center;
     background-color: var(--givewp-shades-white);
-    border-bottom: 1px solid var(--givewp-neutral-100);
+    border-bottom: 1px solid var(--givewp-list-table-hairline);
     display: flex;
     flex-wrap: wrap;
     gap: var(--givewp-spacing-4);
     justify-content: space-between;
-    padding: var(--givewp-spacing-7) var(--givewp-spacing-6);
+    min-block-size: 4.5rem;
+    padding: var(--givewp-spacing-3) var(--givewp-spacing-6);
     position: sticky;
     top: 2rem;
     z-index: 1000;
@@ -76,98 +106,28 @@
     + :global(.wp-header-end) + :global(.give-notice) {
         margin: 0 var(--givewp-spacing-6);
     }
-
-    .testModeBadge {
-        align-items: center;
-        background: var(--givewp-orange-400);
-        border-radius: var(--givewp-rounded-full);
-        border: 1px solid var(--statusBadgeBorderColor);
-        color: var(--givewp-shades-white);
-        display: flex;
-        font-size: 0.75rem;
-        font-weight: 600;
-        gap: var(--givewp-spacing-1);
-        justify-content: center;
-        padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
-        text-align: center;
-        text-transform: uppercase;
-    }
 }
 
-.pageHeader,
-.pageContent {
-    .primaryActionButton,
-    .secondaryActionButton {
-        display: flex;
-        align-items: center;
-        border-radius: var(--givewp-rounded-4);
-        font-size: 0.875rem;
-        font-weight: 500;
-        line-height: 1.43;
-        text-align: center;
-        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
-
-        svg {
-            margin: 3px 0 0 8px !important;
-        }
-    }
-
-    .secondaryActionButton {
-        color: var(--givewp-neutral-900);
-        background-color: var(--givewp-neutral-100);
-        border-color: var(--givewp-neutral-100);
-
-        &:hover {
-            background-color: var(--givewp-neutral-200);
-            border-color: var(--givewp-neutral-200);
-            color: var(--givewp-neutral-900);
-        }
-    }
-}
-
-.filtersRow {
+.testModeSwitch {
     align-items: center;
-    background-color: var(--givewp-neutral-50);
     display: flex;
-    height: 3.25rem;
-    justify-content: space-between;
-    margin-inline: var(--givewp-spacing-6);
-    padding: var(--givewp-spacing-2) {
-        left: var(--givewp-spacing-6);
-    }
+    gap: var(--givewp-spacing-2);
+    min-block-size: 1.5rem;
 }
 
+// A header group: the title with its mark and badge, and the switch, divider and buttons. 12px between
+// the items, as in the design.
 .flexRow {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: var(--givewp-spacing-2);
+    gap: var(--givewp-spacing-3);
     flex-wrap: wrap;
 }
 
 .flexRow:not(:first-child) {
     flex: 1;
     justify-content: flex-end;
-}
-
-ul[role='document'] + .flexRow,
-ul[role='document'] + .flexRow + .flexRow {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: var(--givewp-spacing-2);
-    margin-bottom: var(--givewp-spacing-4);
-
-    select {
-        min-width: 100%;
-        height: 48px;
-        padding: 0 var(--givewp-spacing-4);
-        font-size: 1rem;
-    }
-}
-
-ul[role='document'] + .flexRow {
-    margin: var(--givewp-spacing-6) 0;
 }
 
 .justifyContentEnd {
@@ -177,9 +137,9 @@ ul[role='document'] + .flexRow {
 
 .pageTitle {
     color: var(--givewp-neutral-900);
-    font-size: 1.5rem;
-    font-weight: 700;
-    line-height: 1.5;
+    font-size: 1.4375rem;
+    font-weight: 600;
+    line-height: 1.3;
     margin: 0;
 }
 
@@ -188,8 +148,45 @@ ul[role='document'] + .flexRow {
     display: flex;
     flex-direction: column;
     gap: var(--givewp-spacing-2);
-    margin-inline: var(--givewp-spacing-6);
     padding: var(--givewp-spacing-6);
+}
+
+// The outermost box under the page holds the side gutter: the sheet on the full page, the content
+// itself when embedded.
+.sheet,
+.page > .pageContent {
+    margin-inline: var(--givewp-spacing-6);
+}
+
+// On the full page the content has no block padding: the sheet's gap puts 24px between the tile band and the
+// content, and the notices sit 12px above the list. The gap only exists while the notice area renders something:
+// an empty one is `display: none`. The toolbar adds no space above itself here. An embedded list keeps its
+// block padding and the toolbar's own padding.
+.sheet > .pageContent {
+    gap: var(--givewp-spacing-3);
+    padding-block: 0;
+
+    :global(.givewp-list-table__toolbar) {
+        padding-block-start: 0;
+    }
+
+    // With no tile band above it, the content gets the band's 24px at the top of the sheet.
+    &:first-child {
+        padding-block-start: var(--givewp-spacing-6);
+    }
+}
+
+// The full page's list sheet: one white box with the stat tiles at its top and the notices and the
+// list under them. `overflow: clip` rounds the corners of the tiles without making a scroll
+// container, so nothing sticky inside changes what it sticks to.
+.sheet {
+    background-color: var(--givewp-shades-white);
+    border: 1px solid var(--givewp-list-table-hairline);
+    border-radius: var(--givewp-rounded-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-6);
+    overflow: clip;
 }
 
 .button:is(:global(.button)) {
@@ -241,58 +238,9 @@ ul[role='document'] + .flexRow {
     }
 }
 
-.addFormButton {
-    $depth: 0px 1px 0px rgba(0, 0, 0, 0.25);
-
-    background-color: #f7f7f7;
-    border: 1px solid #ddd;
-    border-radius: 0.1875rem;
-    box-shadow: $depth;
-    color: #888;
-    font-family: inherit;
-    font-size: 0.875rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    block-size: 2.5rem;
-    padding-inline: 1rem;
-    transition-property: filter, color, outline;
-    transition-duration: 180ms;
-    transition-timing-function: ease-in;
-    cursor: pointer;
-
-    &:is(a) {
-        text-decoration: none;
-    }
-
-    &:is(:hover, :active, :focus) {
-        color: #777;
-    }
-
-    &:hover {
-        filter: contrast(110%);
-    }
-
-    &:active {
-        filter: contrast(90%);
-    }
-
-    &:focus {
-        box-shadow: $depth;
-        outline: 0.125rem solid var(--give-primary-color);
-        outline-offset: 0.25em;
-    }
-}
-
-.tryNewFormBuilderBtnContainer {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0);
-}
-
 // The narrow page, at and below 782 px. This is the only place the list pages change layout by width
 // (with the list's own styles, which read the same breakpoint), so every screen stacks the same way:
-// title, header buttons (primary first), test-mode toggle, tiles, notices, then the list. The regions
+// title, header buttons (primary first), test-mode toggle (last, by `order`), tiles, notices, then the list. The regions
 // already come in that order in the DOM; this block only undoes what keeps them side by side.
 @media (max-width: $givewp-list-table-narrow) {
     .page {
@@ -309,13 +257,18 @@ ul[role='document'] + .flexRow {
             justify-content: flex-start;
         }
 
-        .primaryActionButton,
         :global(.button-primary) {
             order: -1;
         }
-    }
 
-    .filtersRow {
-        height: auto;
+        // The switch comes first in the DOM (the design puts it first on wide screens) but last here.
+        .testModeSwitch {
+            min-block-size: 2.75rem;
+            order: 1;
+        }
+
+        :global(.givewp-header-divider) {
+            display: none;
+        }
     }
 }

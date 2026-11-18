@@ -300,10 +300,15 @@ describe('ListTablePage with filter declarations', () => {
         expect(lastTable().fields.map((field) => field.id)).toEqual(['id', 'title']);
     });
 
-    it("the search box shows the declaration's label and hint", async () => {
+    it("the search box shows the declaration's label, and its hint slot describes it", async () => {
         await render();
 
-        const box = await renderSlot(lastTable().searchBox);
+        const box = await renderSlot(
+            <>
+                {lastTable().searchBox}
+                {lastTable().searchHint}
+            </>
+        );
         const input = box.querySelector('input')!;
         const label = box.querySelector(`label[for="${input.id}"]`);
         const hint = document.getElementById(input.getAttribute('aria-describedby') ?? '');

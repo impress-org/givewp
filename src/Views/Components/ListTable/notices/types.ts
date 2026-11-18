@@ -8,7 +8,7 @@ import type {RecommendedProductData} from '@givewp/promotions/hooks/useRecommend
 export type ListTableNotice = {
     /** A stable key, for example `campaign-list` or `default-form`. */
     id: string;
-    /** Area order: action errors, `system`, `onboarding`, then the recommendation. */
+    /** Area order: action errors, `system` notices, `onboarding` tips, then the recommendation. */
     kind: 'system' | 'onboarding';
     /** The visible heading and the accessible name. */
     title: string;
