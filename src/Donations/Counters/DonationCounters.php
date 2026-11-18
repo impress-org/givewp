@@ -2,7 +2,6 @@
 
 namespace Give\Donations\Counters;
 
-use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Throwable;
@@ -85,7 +84,7 @@ class DonationCounters
     public const TYPES = ['onetime', 'recurring'];
 
     /**
-     * Whether the counters are on. Off, the screens use the computed and cached totals. Always off on
+     * Whether the counters are on. Off, the screens use the computed totals. Always off on
      * table storage.
      *
      * @since TBD
@@ -100,7 +99,7 @@ class DonationCounters
         /**
          * Filters whether the Donations screen reads its stat tiles and list count from the donation
          * counters. When false the counters are neither read nor kept up to date, and the screen
-         * computes the totals (cached by the donation totals cache).
+         * computes the totals (kept for a short time in a transient).
          *
          * Temporary stopgap, do not rely on it: it goes away when donations read from the
          * give_donations table (SOFT-5015).
@@ -170,8 +169,7 @@ class DonationCounters
 
     /**
      * Records that a change could not be counted exactly. The counters are not used until a recount
-     * that started after this, which is scheduled here. The same unseen change can be in the totals
-     * cache the screens fall back to, so it is marked outdated too.
+     * that started after this, which is scheduled here.
      *
      * @since TBD
      */
@@ -180,8 +178,6 @@ class DonationCounters
         global $wpdb;
 
         try {
-            DonationTotalsCache::flush();
-
             DB::query(DB::prepare(
                 "INSERT INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, '1', 'off')
                  ON DUPLICATE KEY UPDATE option_value = CAST(option_value AS SIGNED) + 1",

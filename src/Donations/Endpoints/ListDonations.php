@@ -58,7 +58,7 @@ class ListDonations extends Endpoint
     protected $totalDonations;
 
     /**
-     * Whether a count runs against the database instead of reading the totals cache.
+     * Whether a count runs against the database instead of reading the kept total.
      *
      * @var bool
      */
@@ -337,7 +337,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * Counts the matching donations against the database, past the totals cache, and keeps the
+     * Counts the matching donations against the database, past the kept total, and keeps the
      * count for choosing the page's rows.
      *
      * @since TBD
@@ -532,7 +532,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @since TBD Read the donation counters, or count from the test-mode meta rows, when only post columns and the mode filter apply, and cache the total for display (outdated within the totals cache's max age).
+     * @since TBD Read the donation counters, or count from the test-mode meta rows, when only post columns and the mode filter apply, and keep the total for a short time for display (60 seconds by default).
      * @since 4.18.0 Drop the GROUP BY on mode, which made count() return the size of one mode group
      * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
@@ -591,8 +591,7 @@ class ListDonations extends Endpoint
      * the rows sit together in the (meta_key, meta_value) index and in the table, so the database reads
      * them in sequence instead of looking up the meta of every donation. A live-mode total is every
      * matching donation minus the test-mode ones, which is what the list's NOT IN condition selects.
-     * Without a date range the donation counters answer when they can be used, and the cached
-     * value is kept current with them.
+     * Without a date range the donation counters answer when they can be used.
      *
      * @since TBD
      */

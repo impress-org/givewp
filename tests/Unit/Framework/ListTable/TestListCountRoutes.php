@@ -4,10 +4,10 @@ namespace Give\Tests\Unit\Framework\ListTable;
 
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\V2\Models\DonationForm;
+use Give\Donations\Counters\DonationTotals;
 use Give\Donations\Counters\SyncDonationCounters;
 use Give\Donations\Models\Donation;
 use Give\Donations\Counters\DonationCountersRebuild;
-use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
@@ -53,10 +53,10 @@ class TestListCountRoutes extends TestCase
         DB::query('DELETE FROM ' . DB::prefix('give_subscriptions'));
         DB::query('DELETE FROM ' . DB::prefix('give_donors'));
 
-        // Earlier tests may leave counters and cached totals behind for donations that are gone, and the
+        // Earlier tests may leave counters and kept totals behind for donations that are gone, and the
         // listener remembers the bucket of every donation id it has seen. The tables are reset between
         // tests, so ids repeat, and a remembered bucket would hide a new donation from the counters.
-        delete_option(DonationTotalsCache::OPTION);
+        $this->deleteDonationTotals();
         give(SyncDonationCounters::class)->reset();
         (new DonationCountersRebuild(1, 0))();
     }
@@ -69,6 +69,19 @@ class TestListCountRoutes extends TestCase
         give_delete_option('enable_event_tickets');
 
         parent::tearDown();
+    }
+
+    /**
+     * @since TBD
+     */
+    private function deleteDonationTotals(): void
+    {
+        DB::query(DB::prepare(
+            'DELETE FROM ' . DB::prefix('options') . ' WHERE option_name LIKE %s OR option_name LIKE %s',
+            DB::esc_like('_transient_' . DonationTotals::TRANSIENT_PREFIX) . '%',
+            DB::esc_like('_transient_timeout_' . DonationTotals::TRANSIENT_PREFIX) . '%'
+        ));
+        wp_cache_flush();
     }
 
     /**

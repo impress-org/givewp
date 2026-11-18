@@ -2,7 +2,6 @@
 
 namespace Give\Tests\Unit\Donations\Counters;
 
-use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Donations\Counters\DonationTotalsLock;
 use Give\Tests\TestCase;
 
@@ -150,35 +149,6 @@ class TestDonationTotalsLock extends TestCase
         $this->assertTrue($lock->acquire());
         $this->assertTrue($lock->isHeld(), 'a row exists, so a third request cannot take the lock');
         $this->assertFalse((new DonationTotalsLock(self::NAME))->acquire());
-    }
-
-    /**
-     * @since TBD
-     */
-    public function testRememberTakesOverAndReleasesTheLockWhenTheHolderStopsWithoutAValue(): void
-    {
-        $key = 'givewp-test-key';
-        $hash = md5($key);
-        $lockName = DonationTotalsCache::OPTION . '_lock_' . $hash;
-        $holder = new DonationTotalsLock($lockName);
-        $holder->acquire();
-
-        // The holder dies during the first wait without storing a value.
-        // The first read is the lock's own (it finds the live holder); the second is the wait loop's.
-        $this->onceBefore('SELECT option_value', static function () use ($holder) {
-            $holder->release();
-        }, 2);
-
-        $isLockedWhileComputing = null;
-        $value = DonationTotalsCache::remember($key, static function () use (&$isLockedWhileComputing, $holder) {
-            $isLockedWhileComputing = $holder->isHeld();
-
-            return 42;
-        });
-
-        $this->assertSame(42, $value);
-        $this->assertTrue($isLockedWhileComputing, 'the request took the lock before it computed');
-        $this->assertFalse($holder->isHeld(), 'and released its own lock');
     }
 
     /**
