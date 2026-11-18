@@ -27,6 +27,8 @@ module.exports = {
     // The Form Builder test predates this config, was never run, and needs the builder's window data.
     testPathIgnorePatterns: ['/node_modules/', '<rootDir>/src/FormBuilder/'],
     moduleNameMapper: {
+        // First, so a style imported through an `@givewp/*` alias is stubbed like any other style.
+        '\\.(scss|css)$': require.resolve('@wordpress/jest-preset-default/scripts/style-mock.js'),
         '^@givewp/forms/types$': srcPath('DonationForms/resources/types.ts'),
         '^@givewp/forms/propTypes$': srcPath('DonationForms/resources/propTypes.ts'),
         '^@givewp/forms/app(.*)$': srcPath('DonationForms/resources/app$1'),

@@ -8,6 +8,7 @@ import { donationRowActions } from "@givewp/donations/components/DonationRowActi
 import ListTableApi from "@givewp/components/ListTable/api";
 import BlankSlate from "@givewp/components/ListTable/BlankSlate";
 import apiSettings from './apiSettings';
+import listTableScreen from './listTableScreen';
 import AddRenewalDialog from "./AddRenewalModal";
 import { useState, useRef } from "react";
 import { useDispatch } from "@wordpress/data";
@@ -31,7 +32,7 @@ const ListTableBlankSlate = (
 );
 
 /**
- * @since TBD Pass the donation actions as data.
+ * @since TBD Pass the donation actions as data and the screen config.
  * @since 4.8.0
  */
 export default function SubscriptionDetailsPageDonationsTab() {
@@ -97,6 +98,7 @@ export default function SubscriptionDetailsPageDonationsTab() {
                     paymentMode={mode === 'test'}
                     contentMode={true}
                     rowActions={rowActions}
+                    screen={listTableScreen}
                 />
             </div>
 

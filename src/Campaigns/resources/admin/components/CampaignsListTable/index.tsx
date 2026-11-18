@@ -11,6 +11,7 @@ import ExistingUserIntroModal from '@givewp/campaigns/admin/components/ExistingU
 import {getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 import {useCampaignNoticeHook} from '@givewp/campaigns/hooks';
 import CampaignNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/CampaignNotice';
+import listTableScreen from './listTableScreen';
 
 declare const window: {
     GiveCampaignsListTable: GiveCampaignsListTable;
@@ -49,7 +50,7 @@ const campaignStatus = [
     },
 ];
 
-const filters: Array<FilterConfig> = [
+export const filters: Array<FilterConfig> = [
     {
         name: 'status',
         type: 'select',
@@ -91,7 +92,7 @@ const bulkActions: Array<BulkActionsConfig> = [
 ];
 
 /**
- * @since TBD Pass the row actions as data; Merge needs two selected campaigns and reloads the list.
+ * @since TBD Pass the row actions as data and the screen config; Merge needs two selected campaigns and reloads the list.
  * @since 4.0.0
  */
 export default function CampaignsListTable() {
@@ -140,6 +141,7 @@ export default function CampaignsListTable() {
                 bulkActions={bulkActions}
                 rowActions={campaignsRowActions}
                 listTableBlankSlate={ListTableBlankSlate()}
+                screen={listTableScreen}
             >
                 <CreateCampaignModal isOpen={isCreateCampaignModalOpen} setOpen={setCreateCampaignModalOpen} />
                 <ExistingUserIntroModal isOpen={isExistingUserIntroModalOpen} setOpen={setExistingUserIntroModalOpen} />

@@ -2,7 +2,8 @@ import {expect, Locator, Page, test} from '@wordpress/e2e-test-utils-playwright'
 import {chooseOption, openOptions} from './utils/async-select';
 import {createCampaignWithForm} from './utils/campaign';
 import {createStandaloneForm} from './utils/standalone-form';
-import {expectListMounts, rowWithText, runRowAction} from './utils/list-table';
+import {expectListMounts, listRows, listTable, rowWithText, runRowAction} from './utils/list-table';
+import {isLayoutWrite, resetLayout} from './utils/user';
 
 /**
  * Moving a form between campaigns, from the Forms list and from a campaign's Forms tab.
@@ -172,6 +173,52 @@ test.describe('Forms list', () => {
 
         // The form is no longer one of this campaign's, so its row leaves the tab.
         await expect(row).toHaveCount(0);
+    });
+});
+
+/**
+ * The campaign Forms tab is the Forms list embedded in another page. It remembers its layout under
+ * its own screen key, starts with the Campaign column hidden (every form there is the campaign's),
+ * and never reads or writes the address, which belongs to the details page (`page`, `id`, `tab`).
+ */
+test.describe('Campaign Forms tab', () => {
+    test.beforeEach(async ({requestUtils}) => {
+        await resetLayout(requestUtils, 'campaign-forms');
+    });
+
+    test.afterEach(async ({requestUtils}) => {
+        await resetLayout(requestUtils, 'campaign-forms');
+    });
+
+    test('hides the Campaign column by default and leaves the address untouched', async ({
+        page,
+        admin,
+        requestUtils,
+    }) => {
+        const campaign = await createCampaignWithForm(requestUtils);
+        const query = `post_type=give_forms&page=give-campaigns&id=${campaign.campaignId}&tab=forms`;
+
+        await admin.visitAdminPage('edit.php', query);
+        await expect(listRows(page).first()).toBeVisible({timeout: 15_000});
+        const address = page.url();
+
+        await expect(page.locator('.dataviews-view-table thead th', {hasText: /^Campaign$/})).toHaveCount(0);
+
+        // A page size change is stored as the tab's layout, not as the standalone Forms list's.
+        const stored = page.waitForResponse(
+            (response) => response.url().includes('list-table-layouts/campaign-forms') && isLayoutWrite(response.request())
+        );
+        await listTable(page).getByRole('button', {name: 'View options'}).click();
+        await page.getByRole('radio', {name: '10', exact: true}).click();
+        await page.keyboard.press('Escape');
+        expect((await stored).ok()).toBe(true);
+
+        expect(page.url()).toBe(address);
+        const params = new URL(page.url()).searchParams;
+        expect(params.get('page')).toBe('give-campaigns');
+        expect(params.get('id')).toBe(String(campaign.campaignId));
+        expect(params.get('tab')).toBe('forms');
+        expect(Array.from(params.keys()).filter((key) => key.startsWith('give-'))).toEqual([]);
     });
 });
 

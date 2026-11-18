@@ -2,6 +2,7 @@ import type {ReactElement, ReactNode} from 'react';
 import type {RenderModalProps} from '@wordpress/dataviews';
 import type {StatConfig} from '../ListTableStats/ListTableStats';
 import type ListTableApi from '../api';
+import type {ListTableScreen} from '../state/types';
 
 /**
  * A column of a list table, as `ModelColumn::toArray()` sends it.
@@ -71,6 +72,14 @@ export interface FilterByGroupedOptions {
     defaultValue?: string | string[];
     isVisible?: (values: Record<string, string[]>) => boolean;
     showTitle?: boolean;
+    /**
+     * Turns an option value into the value the endpoint receives, so the option can keep a stable value
+     * in the URL ("Period" keeps `30` and sends the ISO date 30 days before `now`). `now` is fixed per
+     * view, so the request stays the same while the view does not change.
+     *
+     * @since TBD
+     */
+    toApiValue?: (value: string, now: Date) => string;
 }
 
 interface FilterConfigWithGroupedOptions extends FilterConfigBase {
@@ -262,6 +271,16 @@ export interface ListTablePageProps {
     contentMode?: boolean;
     perPage?: number;
     statsConfig?: Record<string, StatConfig>;
+    /**
+     * The screen's config. It turns on view state:
+     *
+     * - absent: the view lives in memory only, as before. Add-on pages that do not pass it do not change.
+     * - present on a standalone page: the view is kept in the URL and the search term in the tab's history.
+     * - present with `contentMode` (a list in a details page tab): the URL and history are never touched.
+     *
+     * @since TBD
+     */
+    screen?: ListTableScreen;
 }
 
 export interface ListTablePageRef {
