@@ -121,8 +121,8 @@ class InvoicePaymentFailedTest extends TestCase
     }
 
     /**
-     * Subscriptions created before Give Recurring stopped activating them at creation are still
-     * active when their first invoice fails.
+     * Give Recurring sets the subscription to active when it creates it, before the browser
+     * confirms the first payment, so it is still active when the first invoice fails.
      *
      * @since TBD
      *
