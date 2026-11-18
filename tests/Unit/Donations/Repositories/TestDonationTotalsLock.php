@@ -64,6 +64,38 @@ class TestDonationTotalsLock extends TestCase
     /**
      * @since TBD
      */
+    public function testARequestThatOutlivedItsLockDoesNotReleaseTheNewHoldersLock(): void
+    {
+        $slow = new DonationTotalsLock(self::NAME, 300);
+        $this->assertTrue($slow->acquire());
+
+        // The slow request runs past the expiry and another request takes the lock over.
+        $this->setLockedAtKeepingToken(time() - 1000);
+        $newHolder = new DonationTotalsLock(self::NAME, 300);
+        $this->assertTrue($newHolder->acquire());
+
+        $slow->release();
+
+        $this->assertTrue($newHolder->isHeld(), 'the slow request left the new holder\'s lock alone');
+        $this->assertFalse((new DonationTotalsLock(self::NAME, 300))->acquire());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testReleasingALockThisInstanceDoesNotHoldChangesNothing(): void
+    {
+        $holder = new DonationTotalsLock(self::NAME);
+        $this->assertTrue($holder->acquire());
+
+        (new DonationTotalsLock(self::NAME))->release();
+
+        $this->assertTrue($holder->isHeld());
+    }
+
+    /**
+     * @since TBD
+     */
     public function testAnExpiredLockIsTakenOverOnce(): void
     {
         $this->setLockedAt(time() - 1000);
@@ -135,6 +167,20 @@ class TestDonationTotalsLock extends TestCase
         $this->assertSame(42, $value);
         $this->assertTrue($isLockedWhileComputing, 'the request took the lock before it computed');
         $this->assertFalse($holder->isHeld(), 'and released its own lock');
+    }
+
+    /**
+     * @since TBD
+     */
+    private function setLockedAtKeepingToken(int $time): void
+    {
+        global $wpdb;
+
+        $wpdb->query($wpdb->prepare(
+            "UPDATE {$wpdb->options} SET option_value = CONCAT(%s, SUBSTRING(option_value, LOCATE(':', option_value))) WHERE option_name = %s",
+            (string)$time,
+            self::NAME
+        ));
     }
 
     /**
