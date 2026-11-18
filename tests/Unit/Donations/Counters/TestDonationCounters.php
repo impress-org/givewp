@@ -10,7 +10,7 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Counters\DonationCounters;
 use Give\Donations\Counters\DonationCountersRebuild;
 use Give\Donations\Counters\DonationCountersSchedule;
-use Give\Donations\Repositories\DonationTotalsCache;
+use Give\Donations\Counters\DonationTotals;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
@@ -25,7 +25,7 @@ use WP_REST_Server;
 /**
  * The donation counters must equal a direct recount after every write path, and the stats and list
  * endpoints must show the new numbers right after the write, through the counters and through the
- * totals cache alike.
+ * computed totals alike.
  *
  * @since TBD
  */
@@ -48,7 +48,7 @@ class TestDonationCounters extends TestCase
         // The trait truncates after each test; a run that stopped early leaves rows behind.
         $this->refreshDatabase();
         $this->deleteCounterRows();
-        delete_option(DonationTotalsCache::OPTION);
+        $this->deleteTotalTransients();
         give(SyncDonationCounters::class)->reset();
         DonationCountersSchedule::reset();
         as_unschedule_all_actions(DonationCountersSchedule::RECOUNT_HOOK);
@@ -560,34 +560,6 @@ class TestDonationCounters extends TestCase
     }
 
     /**
-     * Reading the counters keeps the totals cache current, so when they turn dirty the screen falls
-     * back to the last counted value, not to an older cached one.
-     *
-     * @since TBD
-     */
-    public function testDirtyFallbackStartsFromTheLastCountedValue(): void
-    {
-        Donation::factory()->count(2)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE()]);
-
-        $off = static function () {
-            return false;
-        };
-        add_filter('givewp_donation_counters_enabled', $off, 100);
-        $this->assertSame(2, $this->statistics(false)['donationsCount']);
-        remove_filter('givewp_donation_counters_enabled', $off, 100);
-        $this->rebuild();
-
-        Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE()]);
-        $this->assertSame(3, $this->statistics(false)['donationsCount']);
-        $this->assertSame(3, $this->listResponse(false, 1, 30)['totalItems']);
-
-        // Something unseen happened; the cached fallback serves (outdated within the max age) the last counted value.
-        DonationCounters::markDirty();
-
-        $this->assertSame(3, $this->statistics(false)['donationsCount']);
-    }
-
-    /**
      * @since TBD
      */
     public function testNegativeBucketIsNotUsedAndMarksDirty(): void
@@ -992,7 +964,7 @@ class TestDonationCounters extends TestCase
     public function testTheLiveListCountIsOneStatementWithTheCountersOff(): void
     {
         $this->addTestFilter('givewp_donation_counters_enabled', '__return_false');
-        $this->addTestFilter('givewp_donation_totals_max_age', '__return_zero');
+        $this->addTestFilter('givewp_donation_totals_ttl', '__return_zero');
         Donation::factory()->count(2)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE()]);
         Donation::factory()->count(3)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::TEST()]);
 
@@ -1012,7 +984,7 @@ class TestDonationCounters extends TestCase
     public function testTheStatisticsAreOneStatementWithTheCountersOff(): void
     {
         $this->addTestFilter('givewp_donation_counters_enabled', '__return_false');
-        $this->addTestFilter('givewp_donation_totals_max_age', '__return_zero');
+        $this->addTestFilter('givewp_donation_totals_ttl', '__return_zero');
         Donation::factory()->count(2)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE()]);
         Donation::factory()->count(3)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::TEST(), 'type' => DonationType::SUBSCRIPTION(), 'subscriptionId' => 4]);
 
@@ -1056,63 +1028,12 @@ class TestDonationCounters extends TestCase
     }
 
     // -----------------------------------------------------------------------------------------
-    // The totals cache (round 2) sees the same writes
-    // -----------------------------------------------------------------------------------------
-
-    /**
-     * @since TBD
-     */
-    public function testEveryWritePathMarksTheTotalsCacheOutdated(): void
-    {
-        $steps = [
-            'model create' => static function () {
-                return Donation::factory()->create(['status' => DonationStatus::PENDING(), 'mode' => DonationMode::LIVE()]);
-            },
-            'model status' => static function (Donation $donation) {
-                $donation->status = DonationStatus::COMPLETE();
-                $donation->save();
-            },
-            'model trash' => static function (Donation $donation) {
-                $donation->trash();
-            },
-            'model untrash' => static function (Donation $donation) {
-                $donation->unTrash();
-            },
-            'legacy status' => static function (Donation $donation) {
-                give_update_payment_status($donation->id, 'refunded');
-            },
-            'meta mode' => static function (Donation $donation) {
-                give_update_meta($donation->id, DonationMetaKeys::MODE, DonationMode::TEST);
-            },
-            'model delete' => static function (Donation $donation) {
-                $donation->delete();
-            },
-        ];
-
-        $donation = null;
-
-        foreach ($steps as $name => $step) {
-            $before = (float)get_option(DonationTotalsCache::CHANGED_AT_OPTION, 0);
-            DonationTotalsCache::remember('test-key-' . $name, static function () {
-                return 1;
-            });
-            usleep(2000);
-
-            $result = $donation ? $step(Donation::find($donation->id) ?: $donation) : $step();
-            $donation = $result instanceof Donation ? $result : $donation;
-
-            $this->assertGreaterThan($before, (float)get_option(DonationTotalsCache::CHANGED_AT_OPTION, 0), $name);
-            $this->assertScreensShowRecount();
-        }
-    }
-
-    // -----------------------------------------------------------------------------------------
     // Helpers
     // -----------------------------------------------------------------------------------------
 
     /**
      * Counters equal a direct recount, are used, and both screens (through the counters and through
-     * the totals cache with max age 0) show the recount.
+     * the computed totals with the transient off) show the recount.
      *
      * @since TBD
      */
@@ -1126,7 +1047,7 @@ class TestDonationCounters extends TestCase
 
     /**
      * The stats and list endpoints show the recount, with the counters as they are and with the
-     * counters off and the totals cache exact (max age 0).
+     * counters off and the transient off.
      *
      * @since TBD
      */
@@ -1148,7 +1069,7 @@ class TestDonationCounters extends TestCase
             return 0;
         };
         add_filter('givewp_donation_counters_enabled', $off, 100);
-        add_filter('givewp_donation_totals_max_age', $exact, 100);
+        add_filter('givewp_donation_totals_ttl', $exact, 100);
 
         try {
             foreach ([true, false] as $testMode) {
@@ -1159,7 +1080,7 @@ class TestDonationCounters extends TestCase
             }
         } finally {
             remove_filter('givewp_donation_counters_enabled', $off, 100);
-            remove_filter('givewp_donation_totals_max_age', $exact, 100);
+            remove_filter('givewp_donation_totals_ttl', $exact, 100);
         }
     }
 
@@ -1411,6 +1332,19 @@ class TestDonationCounters extends TestCase
     {
         add_filter($hook, $callback, 99);
         $this->filters[] = [$hook, $callback];
+    }
+
+    /**
+     * @since TBD
+     */
+    private function deleteTotalTransients(): void
+    {
+        DB::query(DB::prepare(
+            'DELETE FROM ' . DB::prefix('options') . ' WHERE option_name LIKE %s OR option_name LIKE %s',
+            DB::esc_like('_transient_' . DonationTotals::TRANSIENT_PREFIX) . '%',
+            DB::esc_like('_transient_timeout_' . DonationTotals::TRANSIENT_PREFIX) . '%'
+        ));
+        wp_cache_flush();
     }
 
     /**

@@ -80,7 +80,7 @@ class ListDonationsStats extends Endpoint
      * The donation counters answer when they can be used (built, not dirty, enabled); they are
      * updated on every write, so they are exact between recounts.
      *
-     * @since TBD Read the donation counters when they can be used, and keep the cached value current with them; otherwise count from the indexes instead of joining the meta of every donation, count a donation without a subscription row as one-time, and allow an outdated value within the totals cache's max age.
+     * @since TBD Read the donation counters when they can be used; otherwise count from the indexes instead of joining the meta of every donation, count a donation without a subscription row as one-time, and keep the computed value for a short time.
      * @since 4.10.0
      */
     public function getDonationStatistics(): array
@@ -97,7 +97,7 @@ class ListDonationsStats extends Endpoint
         }, $queries));
 
         // Each count still reads one meta row per matching donation. The tiles only display them, so
-        // an outdated value may be shown within the totals cache's max age.
+        // the value may be kept for a short time (60 seconds by default).
         return DonationTotals::resolve($key, static function () use ($testMode, $queries) {
             // One statement, so every count reads the same snapshot: counts read one after the other
             // could see different donations after a write and subtract to a negative number.
