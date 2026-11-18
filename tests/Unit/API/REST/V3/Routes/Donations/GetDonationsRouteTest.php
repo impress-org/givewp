@@ -759,6 +759,30 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testTotalHeadersCountOnlyTheFilteredDonations()
+    {
+        Donation::query()->delete();
+
+        Donation::factory()->count(3)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE()]);
+        Donation::factory()->count(2)->create(['status' => DonationStatus::PENDING(), 'mode' => DonationMode::LIVE()]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(['page' => 1, 'per_page' => 2, 'status' => ['publish']]);
+
+        $response = $this->dispatchRequest($request);
+        $headers = $response->get_headers();
+
+        fwrite(STDERR, 'DBG ' . json_encode($headers) . ' ' . count($response->get_data()) . ' ' . json_encode(array_column($response->get_data(), 'status')) . "\n");
+        $this->assertEquals(3, $headers['X-WP-Total']);
+        $this->assertEquals(2, $headers['X-WP-TotalPages']);
+    }
+
+    /**
      * Get expected value for comparison with API response
      *
      * @since 4.6.0
