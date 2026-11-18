@@ -311,8 +311,6 @@ class InvoicePaymentSucceededTest extends TestCase
             function (MockBuilder $mockBuilder) {
                 /* Stub the Stripe API call so the test makes no network request. */
                 $mockBuilder->setMethods(['updateStripeInvoiceMetaData']);
-
-                return $mockBuilder->getMock();
             }
         );
 

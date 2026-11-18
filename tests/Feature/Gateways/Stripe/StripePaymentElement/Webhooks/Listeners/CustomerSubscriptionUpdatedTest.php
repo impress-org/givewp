@@ -326,8 +326,6 @@ class CustomerSubscriptionUpdatedTest extends TestCase
             CustomerSubscriptionUpdated::class,
             function (MockBuilder $mockBuilder) {
                 $mockBuilder->setMethods(['getStripeSubscriptionFromStripe']);
-
-                return $mockBuilder->getMock();
             }
         );
 

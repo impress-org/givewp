@@ -206,8 +206,6 @@ class InvoicePaymentFailedTest extends TestCase
             InvoicePaymentFailed::class,
             function (MockBuilder $mockBuilder) {
                 $mockBuilder->setMethods(['getCompleteInvoiceFromStripe', 'triggerLegacyFailedEmailNotificationEvent']);
-
-                return $mockBuilder->getMock();
             }
         );
 
