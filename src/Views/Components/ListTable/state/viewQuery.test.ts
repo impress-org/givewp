@@ -6,6 +6,7 @@ import {
     MAX_ADDRESS_LENGTH,
     parameterName,
     MAX_SEARCH_LENGTH,
+    urlSearchTerm,
     parseViewQuery,
     serializeViewQuery,
     viewQueryKeys,
@@ -271,6 +272,24 @@ describe('serializeViewQuery', () => {
     it('writes the search term, trimmed, and nothing for an empty one', () => {
         expect(serializeViewQuery(view({search: '  smith '}), donations)).toEqual({'give-search': 'smith'});
         expect(serializeViewQuery(view({search: '   '}), donations)).toEqual({});
+    });
+
+    it('does not split an emoji when it cuts the search term', () => {
+        const term = 'a'.repeat(MAX_SEARCH_LENGTH - 1) + '😀😀';
+        const written = serializeViewQuery(view({search: term}), donations)['give-search'];
+
+        expect(written).toBe('a'.repeat(MAX_SEARCH_LENGTH - 1) + '😀');
+        expect(() => encodeURIComponent(written)).not.toThrow();
+        expect(urlSearchTerm(term)).toBe(written);
+    });
+
+    it('gives the same term after a round trip when the cut ends on a space', () => {
+        const term = 'a'.repeat(MAX_SEARCH_LENGTH - 1) + ' b';
+        const written = serializeViewQuery(view({search: term}), donations)['give-search'];
+
+        expect(written).toBe('a'.repeat(MAX_SEARCH_LENGTH - 1));
+        expect(urlSearchTerm(term)).toBe(written);
+        expect(parse(`give-search=${encodeURIComponent(written)}`).query.search).toBe(written);
     });
 
     it('cuts a long search term to the limit', () => {
@@ -684,6 +703,19 @@ describe('declared filters in the URL', () => {
             'give-per-page',
         ]);
         expect(new Set(keys).size).toBe(keys.length);
+    });
+
+    it('writes only the values the reader would accept', () => {
+        const [campaign] = declarations.filter(
+            (declaration): declaration is BarFilterDeclaration => declaration.kind !== 'search'
+        );
+        const status = declarations.find((declaration) => declaration.id === 'status') as BarFilterDeclaration;
+
+        // An entity filter takes ids, and "none" where it allows it. A status filter takes what it offers.
+        expect(declarationUrlParameter(campaign, statuses).write('abc')).toBeUndefined();
+        expect(declarationUrlParameter(campaign, statuses).write(['12', 'abc', '14'])).toBe('12,14');
+        expect(declarationUrlParameter(status, statuses).write(['publish', 'processing'])).toBe('publish');
+        expect(declarationUrlParameter(status, statuses).write(['processing'])).toBeUndefined();
     });
 
     it('gives a declaration the operator of its kind', () => {

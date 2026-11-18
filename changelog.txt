@@ -1,5 +1,18 @@
 == Changelog ==
 
+= [4.19.2.1] 2026-11-17 =
+
+* Security - Added additional permission checks to the donor list REST API endpoint.
+* Security - Added additional protection to the donor email access.
+* Security - Improved anonymous donor filtering in the donor search results. Reported by Vũ Quang Huy.
+* Security - Improved security on the donation confirmation receipt.
+* Security - Improved Stripe account data security in the Visual Form Builder. Reported by Pasi Nuwan Senevi.
+
+= [4.19.2] 2026-11-12 =
+
+* Fix - Allowed PayPal Donations on v2 forms to accept a donation at the form's maximum amount when Fee Recovery adds its fee.
+* Fix - Resolved an issue where Stripe ACH donations that require microdeposit verification stayed in a Processing state with no donor instructions. Donors were emailed a hosted verification link and the verification was recorded on the donation.
+
 = [4.19.1.1] 2026-11-03 =
 
 * Feature - Added support for Nexcess Plugin Stack licenses

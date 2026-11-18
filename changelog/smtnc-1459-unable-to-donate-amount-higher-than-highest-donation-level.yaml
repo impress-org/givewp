@@ -1,5 +1,0 @@
-significance: patch
-type: fix
-entry: Allowed PayPal Donations on v2 forms to accept a donation at the form's
-  maximum amount when Fee Recovery adds its fee.
-timestamp: 2026-11-06T20:40:28.427Z

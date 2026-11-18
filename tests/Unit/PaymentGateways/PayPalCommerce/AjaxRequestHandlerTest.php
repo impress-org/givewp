@@ -273,7 +273,7 @@ class AjaxRequestHandlerTest extends TestCase
      * The form's maximum applies to the donation amount, as on the donate route; a fee recovery
      * total above it still reaches PayPal.
      *
-     * @since TBD
+     * @since 4.19.2
      */
     public function testCreateOrderAcceptsV2FeeTotalAboveFormMaximum(): void
     {
@@ -306,7 +306,7 @@ class AjaxRequestHandlerTest extends TestCase
     /**
      * The handler no longer checks the maximum itself; the form layer holds the posted amount to it.
      *
-     * @since TBD
+     * @since 4.19.2
      */
     public function testCreateOrderRejectsV2AmountAboveFormMaximumBeforeCallingPayPal(): void
     {
@@ -512,7 +512,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2
      */
     private function createV2FormWithCustomAmountMaximum(int $maximum): int
     {

@@ -98,10 +98,15 @@ const AuthModal = () => {
                 <div className="give-donor-dashboard__auth-modal-content">
                     {loggedInWithoutDonor && (
                         <div className="give-donor-dashboard__auth-modal-notice">
-                            {__(
-                                'The account you are currently logged into the site with does not have any donations associated with it. Donate now or contact the site administrator to associate this WordPress user with an existing donor.',
-                                'give'
-                            )}
+                            {emailAccessEnabled
+                                ? __(
+                                      'The account you are currently logged into the site with does not have any donations associated with it. To connect this account to an existing donor, enter your account email address below and open the link we send you. You can also donate now or contact the site administrator.',
+                                      'give'
+                                  )
+                                : __(
+                                      'The account you are currently logged into the site with does not have any donations associated with it. Donate now or contact the site administrator to associate this WordPress user with an existing donor.',
+                                      'give'
+                                  )}
                         </div>
                     )}
                     {emailAccessEnabled && (
