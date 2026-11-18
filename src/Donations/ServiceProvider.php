@@ -199,10 +199,17 @@ class ServiceProvider implements ServiceProviderInterface
      * Keeps the donation counters up to date on every write, recounts them in the background, and
      * adds the `wp give donation-counters` command.
      *
+     * Not registered on table storage: the counters read wp_posts and give_donationmeta directly,
+     * and counts from give_donations replace them there.
+     *
      * @since TBD
      */
     private function bootDonationCounters()
     {
+        if (DonationCounters::usesTableStorage()) {
+            return;
+        }
+
         give(SyncDonationCounters::class)->register();
 
         $rebuild = static function () {

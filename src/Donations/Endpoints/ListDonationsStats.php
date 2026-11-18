@@ -3,7 +3,7 @@
 namespace Give\Donations\Endpoints;
 
 use Give\Donations\Repositories\DonationCounters;
-use Give\Donations\Repositories\DonationTotalsCache;
+use Give\Donations\Repositories\DonationTotals;
 use Give\Donations\Repositories\RecurringDonationCondition;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
@@ -97,18 +97,9 @@ class ListDonationsStats extends Endpoint
             return $query->getSQL();
         }, $queries));
 
-        $counted = DonationCounters::statistics($testMode);
-
-        if ($counted !== null) {
-            // Keep the fallback current, for when the counters are dirty.
-            DonationTotalsCache::seed($key, $counted);
-
-            return $counted;
-        }
-
         // Each count still reads one meta row per matching donation. The tiles only display them, so
         // an outdated value may be shown within the totals cache's max age.
-        return DonationTotalsCache::remember($key, static function () use ($testMode, $queries) {
+        return DonationTotals::resolve($key, static function () use ($testMode, $queries) {
             // One statement, so every count reads the same snapshot: counts read one after the other
             // could see different donations after a write and subtract to a negative number.
             $selects = [];
@@ -133,7 +124,7 @@ class ListDonationsStats extends Endpoint
             list($testModeCount, $recurringTestModeCount, $allCount, $recurringCount) = $counts;
 
             return self::toStatistics($allCount - $testModeCount, $recurringCount - $recurringTestModeCount);
-        }, true);
+        }, DonationCounters::statistics($testMode));
     }
 
     /**

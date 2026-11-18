@@ -10,7 +10,11 @@ use WP_CLI;
 /**
  * Rebuilds, shows and checks the donation counters behind the Donations screen's stats and count.
  *
+ * Temporary: a stopgap until donations read from the give_donations table (SOFT-5015)
+ *
  * @since TBD
+ *
+ * @internal
  */
 class DonationCountersCommand
 {

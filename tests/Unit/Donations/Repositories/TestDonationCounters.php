@@ -804,6 +804,51 @@ class TestDonationCounters extends TestCase
     }
 
     // -----------------------------------------------------------------------------------------
+    // Donation storage flag
+    // -----------------------------------------------------------------------------------------
+
+    /**
+     * @since TBD
+     */
+    public function testCountersAreOffAndDoNotCountOnTableStorage(): void
+    {
+        update_option('give_donation_storage', 'table');
+
+        try {
+            $this->assertFalse(DonationCounters::isEnabled());
+            $this->assertTrue(DonationCounters::usesTableStorage());
+
+            $before = DonationCounters::read();
+            Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE()]);
+
+            $this->assertSame($before['buckets'], DonationCounters::read()['buckets']);
+        } finally {
+            delete_option('give_donation_storage');
+        }
+    }
+
+    /**
+     * Only the syncing state is testable here: the table sync class is not in this branch, so a
+     * test that runs the counters together with it cannot be written yet.
+     *
+     * @since TBD
+     */
+    public function testCountersStayOnWhileStorageIsSyncing(): void
+    {
+        update_option('give_donation_storage', 'syncing');
+
+        try {
+            $this->assertTrue(DonationCounters::isEnabled());
+
+            Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE()]);
+
+            $this->assertBucket('live_onetime_publish', 1);
+        } finally {
+            delete_option('give_donation_storage');
+        }
+    }
+
+    // -----------------------------------------------------------------------------------------
     // Filters
     // -----------------------------------------------------------------------------------------
 

@@ -5,7 +5,7 @@ namespace Give\Donations\Endpoints;
 use Closure;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Repositories\DonationCounters;
-use Give\Donations\Repositories\DonationTotalsCache;
+use Give\Donations\Repositories\DonationTotals;
 use Give\Donations\Repositories\RecurringDonationCondition;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
@@ -557,26 +557,9 @@ class ListDonations extends Endpoint
             );
         }
 
-        return (int)$this->rememberTotal(__METHOD__ . (clone $query)->getSQL(), static function () use ($query) {
+        return (int)DonationTotals::resolve(__METHOD__ . (clone $query)->getSQL(), static function () use ($query) {
             return $query->count();
-        });
-    }
-
-    /**
-     * A total from the totals cache, which may be outdated within its max age since it is only
-     * displayed, or straight from the database while counting live (then cached for display).
-     *
-     * @since TBD
-     *
-     * @return mixed
-     */
-    private function rememberTotal(string $key, callable $callback)
-    {
-        if ($this->countsLive) {
-            return DonationTotalsCache::recompute($key, $callback);
-        }
-
-        return DonationTotalsCache::remember($key, $callback, true);
+        }, null, $this->countsLive);
     }
 
     /**
@@ -637,16 +620,7 @@ class ListDonations extends Endpoint
             };
         }
 
-        $counted = $this->countFromCounters();
-
-        if ($counted !== null) {
-            // Keep the fallback current, for when the counters are dirty.
-            DonationTotalsCache::seed($key, $counted);
-
-            return $counted;
-        }
-
-        return (int)$this->rememberTotal($key, $count);
+        return (int)DonationTotals::resolve($key, $count, $this->countFromCounters(), $this->countsLive);
     }
 
     /**

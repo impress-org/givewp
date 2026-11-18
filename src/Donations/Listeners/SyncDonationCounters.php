@@ -38,7 +38,11 @@ use WP_Post;
  * Between a write's before and after hooks the request holds a "writing" options row, so the
  * rebuild never takes its snapshot while a write is committed but not yet counted.
  *
+ * Temporary: a stopgap until donations read from the give_donations table (SOFT-5015)
+ *
  * @since TBD
+ *
+ * @internal
  */
 class SyncDonationCounters
 {

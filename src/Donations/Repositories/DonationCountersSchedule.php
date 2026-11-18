@@ -16,7 +16,11 @@ use Throwable;
  * - The recount after a dirty write: one single action about a minute later, however many writes
  *   asked for it (debounced), and never two rebuilds at once (the rebuild holds a lock).
  *
+ * Temporary: a stopgap until donations read from the give_donations table (SOFT-5015)
+ *
  * @since TBD
+ *
+ * @internal
  */
 class DonationCountersSchedule
 {
@@ -82,6 +86,9 @@ class DonationCountersSchedule
          * Filters how often, in seconds, the donation counters are recounted in full in the
          * background to fix any drift. 0 or less turns the scheduled recount off. Values under 60
          * are raised to 60, and a value that is not a number falls back to 3600.
+         *
+         * Temporary stopgap, do not rely on it: it goes away when donations read from the
+         * give_donations table (SOFT-5015).
          *
          * @since TBD
          *

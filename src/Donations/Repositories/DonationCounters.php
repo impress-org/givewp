@@ -27,7 +27,11 @@ use Throwable;
  * exactly, and the clean generation the last recount covered. Counters are used only when they were
  * built at least once, are not dirty, are enabled, and no bucket is negative.
  *
+ * Temporary: a stopgap until donations read from the give_donations table (SOFT-5015)
+ *
  * @since TBD
+ *
+ * @internal
  */
 class DonationCounters
 {
@@ -80,22 +84,42 @@ class DonationCounters
     public const TYPES = ['onetime', 'recurring'];
 
     /**
-     * Whether the counters are on. Off, the screens use the computed and cached totals.
+     * Whether the counters are on. Off, the screens use the computed and cached totals. Always off on
+     * table storage.
      *
      * @since TBD
      */
     public static function isEnabled(): bool
     {
+        // On table storage the counts come from give_donations, and the counters read wp_posts.
+        if (self::usesTableStorage()) {
+            return false;
+        }
+
         /**
          * Filters whether the Donations screen reads its stat tiles and list count from the donation
          * counters. When false the counters are neither read nor kept up to date, and the screen
          * computes the totals (cached by the donation totals cache).
+         *
+         * Temporary stopgap, do not rely on it: it goes away when donations read from the
+         * give_donations table (SOFT-5015).
          *
          * @since TBD
          *
          * @param bool $enabled
          */
         return (bool)apply_filters('givewp_donation_counters_enabled', true);
+    }
+
+    /**
+     * Whether the donation storage flag (give_donation_storage) says the give_donations table is
+     * the source of donations. Counts from that table replace the counters.
+     *
+     * @since TBD
+     */
+    public static function usesTableStorage(): bool
+    {
+        return get_option('give_donation_storage', 'posts') === 'table';
     }
 
     /**

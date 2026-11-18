@@ -22,7 +22,11 @@ use Throwable;
  *
  * Counting uses the same index-driven queries as the stats endpoint, grouped by post status.
  *
+ * Temporary: a stopgap until donations read from the give_donations table (SOFT-5015)
+ *
  * @since TBD
+ *
+ * @internal
  */
 class DonationCountersRebuild
 {
