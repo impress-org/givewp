@@ -5,8 +5,6 @@ namespace Give\Campaigns\Repositories;
 use Give\Campaigns\CampaignsDataQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
-use Give\Donations\ValueObjects\DonationMode;
-use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Formatting\MoneyFormatter;
 
 /**
@@ -17,13 +15,6 @@ use Give\Framework\ListTable\Formatting\MoneyFormatter;
  */
 class CampaignsDataRepository
 {
-    /**
-     * How many times a cache fill reads and writes again when a refresh changed the option in between.
-     *
-     * @since TBD
-     */
-    private const STORE_ATTEMPTS = 5;
-
     /**
      * @var array
      */
@@ -57,9 +48,12 @@ class CampaignsDataRepository
      * Cached stats for the given campaigns. Campaigns missing from the cache are queried and added
      * to it, so a warm cache never hides a campaign that arrived after it was built.
      *
-     * The queries filter by the site's payment mode, so each mode has its own options.
+     * The cache holds live-mode stats only. The queries filter by the site's payment mode, and the
+     * options carry no mode, so test mode reads straight from the database and never writes. (The
+     * Delete Test Transactions tool removes donations without firing the hooks that refresh the
+     * cache, so a test-mode cache would go stale.)
      *
-     * @since TBD Cache test-mode stats in their own options instead of querying them on every request, and add missing campaigns to the freshly read option so a finished refresh is not undone.
+     * @since TBD Add missing campaigns to the freshly read option, so a finished refresh is not undone.
      * @since 4.18.0 Query and cache campaigns that are missing from the cache; read subscriptions from the option they are written to; bypass the cache in test mode.
      * @since 4.8.0 added data caching layer
      *
@@ -72,20 +66,24 @@ class CampaignsDataRepository
         $self = new self();
         $self->requestedIds = array_map('strval', $ids);
         $emptyCache = ['amounts' => [], 'donationsCount' => [], 'donorsCount' => []];
-        $mode = give_is_test_mode() ? DonationMode::TEST : DonationMode::LIVE;
-        $campaignsData = array_merge($emptyCache, (array)get_option(self::donationsOption($mode), []));
-        $campaignsSubscriptionData = array_merge($emptyCache, (array)get_option(self::subscriptionsOption($mode), []));
+        $useCache = ! give_is_test_mode();
+        $campaignsData = $useCache
+            ? array_merge($emptyCache, (array)get_option('give_campaigns_data', []))
+            : $emptyCache;
+        $campaignsSubscriptionData = $useCache
+            ? array_merge($emptyCache, (array)get_option('give_campaigns_subscriptions_data', []))
+            : $emptyCache;
 
         $uncachedIds = self::missingIds($campaignsData, $ids);
 
         if ($uncachedIds) {
             $donations = CampaignsDataQuery::donations($uncachedIds);
 
-            $campaignsData = self::store(self::donationsOption($mode), [
+            $campaignsData = self::addRows('give_campaigns_data', $campaignsData, [
                 'amounts' => self::withZeroRows($donations->collectIntendedAmounts(), $uncachedIds, 'sum'),
                 'donationsCount' => self::withZeroRows($donations->collectDonations(), $uncachedIds, 'count'),
                 'donorsCount' => self::withZeroRows($donations->collectDonors(), $uncachedIds, 'count'),
-            ]);
+            ], $useCache);
         }
 
         // The subscriptions cache can lag the donations cache, for example when Recurring is activated later
@@ -96,11 +94,11 @@ class CampaignsDataRepository
         if ($uncachedSubscriptionIds) {
             $subscriptions = CampaignsDataQuery::subscriptions($uncachedSubscriptionIds);
 
-            $campaignsSubscriptionData = self::store(self::subscriptionsOption($mode), [
+            $campaignsSubscriptionData = self::addRows('give_campaigns_subscriptions_data', $campaignsSubscriptionData, [
                 'amounts' => self::withZeroRows($subscriptions->collectInitialAmounts(), $uncachedSubscriptionIds, 'sum'),
                 'donationsCount' => self::withZeroRows($subscriptions->collectDonations(), $uncachedSubscriptionIds, 'count'),
                 'donorsCount' => self::withZeroRows($subscriptions->collectDonors(), $uncachedSubscriptionIds, 'count'),
-            ]);
+            ], $useCache);
         }
 
         $self->amounts = $campaignsData['amounts'];
@@ -119,7 +117,12 @@ class CampaignsDataRepository
     /**
      * The stats rows of the requested campaigns, in the shape the CampaignsDataQuery collect methods return them.
      *
+     * Temporary: this cache is replaced by live goals (SOFT-5098), so this method goes away without
+     * a deprecation. Not part of the public API.
+     *
      * @since TBD
+     *
+     * @internal
      *
      * @return array<string, array>
      */
@@ -148,82 +151,33 @@ class CampaignsDataRepository
     }
 
     /**
-     * The option that caches the donation stats of a payment mode.
+     * Adds the rows of newly queried campaigns to the cache and returns the result. In test mode
+     * nothing is stored.
      *
-     * @since TBD
-     */
-    public static function donationsOption(string $mode): string
-    {
-        return $mode === DonationMode::TEST ? 'give_campaigns_data_test' : 'give_campaigns_data';
-    }
-
-    /**
-     * The option that caches the subscription stats of a payment mode.
-     *
-     * @since TBD
-     */
-    public static function subscriptionsOption(string $mode): string
-    {
-        return $mode === DonationMode::TEST ? 'give_campaigns_subscriptions_data_test' : 'give_campaigns_subscriptions_data';
-    }
-
-    /**
-     * Adds the rows of newly queried campaigns to the stored cache and returns the result.
-     *
-     * The stored option is read again from the database just before the write, and only campaigns
-     * it has no row for are added. The write only succeeds while the option still holds what was
-     * read (a refresh that lands in between changes it), and then the rows are merged again with the
-     * new value, a few times at most. If it keeps changing, the merged rows are returned without
-     * being stored: this request still shows them, and the next one queries them again.
+     * Just before the write the option is read again, and only campaigns it has no row for are
+     * added, so a row a refresh wrote in the meantime is never overwritten.
      *
      * @since TBD
      *
+     * @param array<string, array> $cache   the cache as this request read it
      * @param array<string, array> $newRows rows by cache key, for campaigns that were missing
      *
      * @return array<string, array>
      */
-    private static function store(string $option, array $newRows): array
+    private static function addRows(string $option, array $cache, array $newRows, bool $store): array
     {
-        global $wpdb;
-
-        $cache = [];
-
-        for ($attempt = 0; $attempt < self::STORE_ATTEMPTS; $attempt++) {
-            $stored = DB::get_var(DB::prepare("SELECT option_value FROM {$wpdb->options} WHERE option_name = %s", $option));
-            $cache = self::withNewRows(
-                $stored === null ? [] : (array)maybe_unserialize($stored),
-                $newRows
-            );
-            $serialized = maybe_serialize($cache);
-
-            if ($serialized === $stored) {
-                return $cache;
-            }
-
-            $written = $stored === null
-                ? DB::query(DB::prepare(
-                    "INSERT IGNORE INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, %s, 'off')",
-                    $option,
-                    $serialized
-                ))
-                : DB::query(DB::prepare(
-                    "UPDATE {$wpdb->options} SET option_value = %s WHERE option_name = %s AND option_value = %s",
-                    $serialized,
-                    $option,
-                    $stored
-                ));
-
-            if ((int)$written === 1) {
-                // The raw write skips WordPress's own option caches.
-                wp_cache_delete($option, 'options');
-                wp_cache_delete('alloptions', 'options');
-                wp_cache_delete('notoptions', 'options');
-
-                return $cache;
-            }
+        if (!$store) {
+            return self::withNewRows($cache, $newRows);
         }
 
-        return $cache;
+        // Past the copy WordPress keeps for this request, so a refresh from another request shows.
+        wp_cache_delete($option, 'options');
+
+        $merged = self::withNewRows((array)get_option($option, []), $newRows);
+
+        update_option($option, $merged, false);
+
+        return $merged;
     }
 
     /**

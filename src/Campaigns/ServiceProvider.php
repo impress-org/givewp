@@ -32,7 +32,6 @@ use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -250,22 +249,22 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since TBD Refresh the cache of the payment mode the job names, and when a donation leaves the complete statuses.
+     * @since TBD Refresh the cache when a donation leaves the complete statuses.
      * @since 4.14.0 dispatch cache campaign data action when donation is deleted
      * @since 4.13.1 added givewp_campaigns_merged hook
      * @since 4.8.0
      */
     private function registerCampaignCache(): void
     {
-        add_action('givewp_cache_campaign_data', function (int $campaignId, string $mode = DonationMode::LIVE) {
-            give(CacheCampaignData::class)->handleCache($campaignId, $mode);
-        }, 10, 2);
+        add_action('givewp_cache_campaign_data', function (int $campaignId) {
+            give(CacheCampaignData::class)->handleCache($campaignId);
+        });
 
         Hooks::addAction('give_insert_payment', CacheCampaignData::class, '__invoke', 11, 1);
         Hooks::addAction('give_update_payment_status', CacheCampaignData::class, '__invoke', 11, 3);
 
         add_action('givewp_donation_deleted', function (Donation $donation) {
-            give(CacheCampaignData::class)->dispatch($donation->campaignId, CacheCampaignData::modeOf($donation));
+            give(CacheCampaignData::class)->dispatch($donation->campaignId);
         });
 
         add_action('give_recurring_add_subscription_payment', function (Give_Payment $legacyPayment) {

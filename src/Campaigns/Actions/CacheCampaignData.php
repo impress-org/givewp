@@ -4,9 +4,7 @@ namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\CampaignsDataQuery;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 
 /**
@@ -23,7 +21,7 @@ use Give\Donations\ValueObjects\DonationStatus;
 class CacheCampaignData
 {
     /**
-     * @since TBD Refresh the cache of the donation's payment mode only, also when the donation leaves the complete statuses.
+     * @since TBD Refresh the cache also when the donation leaves the complete statuses.
      * @since 4.13.1 added dispatch method
      * @since 4.8.0
      */
@@ -39,67 +37,42 @@ class CacheCampaignData
         $wasCounted = in_array($oldStatus, [DonationStatus::COMPLETE, DonationStatus::RENEWAL], true);
 
         if ($wasCounted || $donation->status->isComplete() || $donation->status->isRenewal()) {
-            $this->dispatch($donation->campaignId, self::modeOf($donation));
+            $this->dispatch($donation->campaignId);
         }
     }
 
     /**
-     * Dispatch the cache campaign data action. Without a mode, both modes are refreshed. The test-mode
-     * cache is refreshed only once it exists: until test mode is viewed, the first read builds it.
-     *
-     * @since TBD Accept the payment mode to refresh.
+     * Dispatch the cache campaign data action
      * @since 4.13.1
      */
-    public function dispatch(int $campaignId, string $mode = ''): void
+    public function dispatch(int $campaignId): void
     {
-        if ($mode !== DonationMode::TEST) {
-            as_enqueue_async_action('givewp_cache_campaign_data', [$campaignId], 'givewp_campaigns_cache');
-        }
-
-        $hasTestCache = get_option(CampaignsDataRepository::donationsOption(DonationMode::TEST)) !== false
-            || get_option(CampaignsDataRepository::subscriptionsOption(DonationMode::TEST)) !== false;
-
-        if ($mode !== DonationMode::LIVE && $hasTestCache) {
-            as_enqueue_async_action('givewp_cache_campaign_data', [$campaignId, DonationMode::TEST], 'givewp_campaigns_cache');
-        }
+        as_enqueue_async_action('givewp_cache_campaign_data', [$campaignId], 'givewp_campaigns_cache');
     }
 
     /**
      * Handle campaign cache
      *
-     * @since TBD Refresh the cache of the given payment mode.
      * @since 4.18.0 Read the subscriptions cache from the option it is written to; always compute live stats, keep zero rows when a campaign has no donations.
      * @since 4.8.0
      */
-    public function handleCache(int $campaignId, string $mode = DonationMode::LIVE): void
+    public function handleCache(int $campaignId): void
     {
-        // The queries follow the site's payment mode, so force the mode of the cache for the
-        // duration of the job in case the site's mode was switched before it ran.
-        $isTestMode = $mode === DonationMode::TEST ? '__return_true' : '__return_false';
-        add_filter('give_is_test_mode', $isTestMode, PHP_INT_MAX);
+        // The cache holds live stats only. The queries follow the site's payment mode, so force
+        // live for the duration of the job in case test mode was switched on before it ran.
+        add_filter('give_is_test_mode', '__return_false', PHP_INT_MAX);
 
         try {
-            $this->refresh($campaignId, $mode);
+            $this->refresh($campaignId);
         } finally {
-            remove_filter('give_is_test_mode', $isTestMode, PHP_INT_MAX);
+            remove_filter('give_is_test_mode', '__return_false', PHP_INT_MAX);
         }
     }
 
     /**
-     * The payment mode of a donation, live when it has none.
-     *
-     * @since TBD
-     */
-    public static function modeOf(Donation $donation): string
-    {
-        return $donation->mode && $donation->mode->isTest() ? DonationMode::TEST : DonationMode::LIVE;
-    }
-
-    /**
-     * @since TBD Read and write the options of the given payment mode.
      * @since 4.18.0
      */
-    private function refresh(int $campaignId, string $mode): void
+    private function refresh(int $campaignId): void
     {
         $campaign = Campaign::find($campaignId);
 
@@ -107,10 +80,8 @@ class CacheCampaignData
             return;
         }
 
-        $donationsOption = CampaignsDataRepository::donationsOption($mode);
-        $subscriptionsOption = CampaignsDataRepository::subscriptionsOption($mode);
-        $campaignsData = get_option($donationsOption, []);
-        $campaignsSubscriptionData = get_option($subscriptionsOption, []);
+        $campaignsData = get_option('give_campaigns_data', []);
+        $campaignsSubscriptionData = get_option('give_campaigns_subscriptions_data', []);
 
         // Prefill cache structure to ensure keys exist
         $campaignsData = array_merge([
@@ -186,18 +157,18 @@ class CacheCampaignData
 
         // Save updated cache
         if ($isCached) {
-            update_option($donationsOption, $campaignsData);
+            update_option('give_campaigns_data', $campaignsData);
         }
 
         if ($isSubscriptionCached) {
-            update_option($subscriptionsOption, $campaignsSubscriptionData);
+            update_option('give_campaigns_subscriptions_data', $campaignsSubscriptionData);
         }
 
         if ($isCached || $isSubscriptionCached) {
             return;
         }
 
-        update_option($donationsOption, [
+        update_option('give_campaigns_data', [
             'amounts' => array_merge(
                 $campaignsData['amounts'] ?? [],
                 $donations->collectIntendedAmounts()
@@ -213,7 +184,7 @@ class CacheCampaignData
         ]);
 
         if (defined('GIVE_RECURRING_VERSION')) {
-            update_option($subscriptionsOption, [
+            update_option('give_campaigns_subscriptions_data', [
                 'amounts' => array_merge(
                     $campaignsSubscriptionData['amounts'] ?? [],
                     $subscriptions->collectInitialAmounts()

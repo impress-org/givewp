@@ -10,7 +10,6 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
-use Give\Framework\Database\DB;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -223,7 +222,8 @@ final class CampaignsDataRepositoryTest extends TestCase
             'donorsCount' => [['campaign_id' => (string)$cached->id, 'count' => 0]],
         ]);
 
-        // A refresh stores new numbers for the cached campaign while the missing one is queried.
+        // A refresh stores new numbers for the cached campaign after the fill read the option and
+        // while the missing campaign is queried, so before the fill's write.
         $done = false;
         $refresh = function ($query) use (&$done, $cached) {
             if (!$done && stripos($query, 'give_donationmeta') !== false && stripos($query, 'SELECT') === 0) {
@@ -243,51 +243,6 @@ final class CampaignsDataRepositoryTest extends TestCase
         remove_filter('query', $refresh, 1);
 
         $this->assertTrue($done, 'the refresh ran while the missing campaign was queried');
-        $this->assertEquals(7, $campaignsData->getDonationsCount($cached));
-        $this->assertEquals(
-            ['7', '0'],
-            array_map('strval', array_column(get_option('give_campaigns_data')['donationsCount'], 'count'))
-        );
-    }
-
-    /**
-     * @since TBD
-     */
-    public function testFillingMissingCampaignsDoesNotUndoARefreshThatLandsBetweenItsReadAndItsWrite()
-    {
-        $cached = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
-        $missing = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
-        update_option('give_campaigns_data', [
-            'amounts' => [['campaign_id' => (string)$cached->id, 'sum' => 0]],
-            'donationsCount' => [['campaign_id' => (string)$cached->id, 'count' => 0]],
-            'donorsCount' => [['campaign_id' => (string)$cached->id, 'count' => 0]],
-        ]);
-
-        // A refresh lands right before the first write of the fill, after the fill read the option.
-        $done = false;
-        $refresh = function ($query) use (&$done, $cached) {
-            if (!$done && stripos($query, 'UPDATE') === 0 && strpos($query, 'give_campaigns_data') !== false) {
-                $done = true;
-                DB::query(DB::prepare(
-                    "UPDATE {$GLOBALS['wpdb']->options} SET option_value = %s WHERE option_name = 'give_campaigns_data'",
-                    maybe_serialize([
-                        'amounts' => [['campaign_id' => (string)$cached->id, 'sum' => 70]],
-                        'donationsCount' => [['campaign_id' => (string)$cached->id, 'count' => 7]],
-                        'donorsCount' => [['campaign_id' => (string)$cached->id, 'count' => 3]],
-                    ])
-                ));
-                wp_cache_delete('give_campaigns_data', 'options');
-                wp_cache_delete('alloptions', 'options');
-            }
-
-            return $query;
-        };
-
-        add_filter('query', $refresh, 1);
-        $campaignsData = CampaignsDataRepository::campaigns([$cached->id, $missing->id]);
-        remove_filter('query', $refresh, 1);
-
-        $this->assertTrue($done, 'the refresh landed before the write');
         $this->assertEquals(7, $campaignsData->getDonationsCount($cached));
         $this->assertEquals(
             ['7', '0'],
