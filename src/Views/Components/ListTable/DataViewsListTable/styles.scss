@@ -10,6 +10,16 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
 
 .givewp-list-table {
     @include givewp-list-table-tokens;
+
+    // When a new page arrives and the table top is above the window, it scrolls to the edge of the sticky page
+    // header (the WordPress admin bar and the Give header), not under it. The root takes the focus (no ring)
+    // only when the rows the user was on are gone.
+    scroll-margin-block-start: calc(var(--wp-admin--admin-bar--height, 32px) + 5.5rem);
+
+    &:focus {
+        outline: none;
+    }
+
     position: relative;
     background-color: var(--givewp-shades-white);
     border-radius: var(--givewp-rounded-8);
@@ -180,13 +190,140 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
         padding-inline-end: var(--givewp-spacing-4);
     }
 
+    // While a page loads, the old rows stay until the new ones arrive. After 300 ms (the transition delay, the
+    // same wait the bar and the footer text use, so a fast page shows nothing) they are dimmed. DataViews sets
+    // `aria-busy` on the table and on the cards. The stock spinner under the table is hidden: it sits out of
+    // sight below a long page, and the footer and the bar say the same thing where the user is looking.
+    .dataviews-view-table,
+    .dataviews-view-grid {
+        transition: opacity 100ms ease-out;
+    }
+
+    .dataviews-view-table[aria-busy='true'],
+    .dataviews-view-grid[aria-busy='true'] {
+        opacity: 0.6;
+        transition: opacity 150ms ease-in 300ms;
+    }
+
+    .dataviews-loading-more {
+        display: none;
+    }
+
+    // Selection waits for the new rows (the table ignores changes while it loads, see `DataViewsListTable`): the
+    // checkboxes and the bulk actions do not react to the pointer either, so they do not look usable.
+    &--loading {
+        .dataviews-selection-checkbox,
+        .givewp-list-table__card-checkbox,
+        .dataviews-bulk-actions-footer__container,
+        .dataviews-bulk-actions-toolbar {
+            pointer-events: none;
+        }
+    }
+
+    // The thin bar on the top edge of the table while a page loads slowly. The anchor has no height, so the bar
+    // sits on the edge between the toolbar and the table.
+    &__progress-anchor {
+        block-size: 0;
+        inline-size: 100%;
+        position: relative;
+        z-index: 2;
+    }
+
+    &__progress {
+        background: color-mix(in srgb, var(--givewp-list-table-action-edge) 25%, transparent);
+        block-size: 2px;
+        inset-block-start: 0;
+        inset-inline: 0;
+        overflow: hidden;
+        position: absolute;
+
+        &::before {
+            animation: givewp-list-table-progress 1.4s ease-in-out infinite;
+            background: var(--givewp-list-table-action-edge);
+            block-size: 100%;
+            content: '';
+            inline-size: 40%;
+            inset-block-start: 0;
+            inset-inline-start: 0;
+            position: absolute;
+        }
+
+        // Left to right, and right to left in a right to left language.
+        [dir='rtl'] &::before {
+            animation-name: givewp-list-table-progress-rtl;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            &::before {
+                animation: none;
+                inline-size: 100%;
+                opacity: 0.6;
+            }
+        }
+    }
+
+    // The visible "Loading…" in the footer, right before the page control. It appears after 300 ms (the
+    // component renders it then) and is hidden from screen readers, which get their own words later.
+    &__loading {
+        align-items: center;
+        color: var(--givewp-list-table-text-secondary);
+        display: inline-flex;
+        font-size: 0.8125rem;
+        gap: var(--givewp-spacing-2);
+
+        .components-spinner {
+            margin: 0;
+        }
+    }
+
+    // The page number box that replaces the stock page select above 100 pages (`ListTablePagination.tsx`). The stock
+    // select is the "minimal" kind: no edge, the same 11 px text as the words around it, a tint on hover and a ring
+    // on focus. The box looks the same, with a light grey fill at rest so it reads as a field (the select has a
+    // chevron). Its width follows the number of digits in the last page (set in the component), so it does not
+    // change size while a number is typed.
+    // `input[type='number']` is in the selector so it beats the WordPress admin form styles (an edge, a 30 px
+    // height, a blue focus edge), which use that selector.
+    input[type='number']#{&}__page-input {
+        appearance: textfield;
+        background: var(--givewp-list-table-page);
+        border: 0;
+        border-radius: 2px;
+        box-shadow: none;
+        box-sizing: border-box;
+        color: inherit;
+        font: inherit;
+        line-height: 1.5;
+        min-block-size: 1.5rem;
+        padding: 0 var(--givewp-spacing-2);
+        text-align: center;
+        text-transform: none;
+
+        &:hover {
+            background: var(--givewp-list-table-hairline);
+        }
+
+        &:focus {
+            background: var(--givewp-shades-white);
+            box-shadow: 0 0 0 1.5px var(--givewp-list-table-action-edge);
+            outline: 2px solid transparent;
+        }
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            appearance: none;
+            margin: 0;
+        }
+    }
+
     // Remove the total count rules below with `ListTableFooter` when the `@wordpress/dataviews` pin moves to
     // 12.0.1 or later; see the note on `ListTableFooter`.
     // Which rows are on the page, out of all the rows that match. It looks like the stock count and sits
     // where the stock count sits: right after the selection checkbox, with the pagination on the right.
     // The footer puts a gap between its children; the negative margin takes it back, so the count
     // starts where the stock one does.
-    &__total {
+    // `__spacer` stands in for the count while the total is unknown, so the controls keep their place.
+    &__total,
+    &__spacer {
         margin-inline: calc(-1 * var(--givewp-spacing-2)) auto;
     }
 
@@ -243,5 +380,25 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
         .dataviews-footer {
             padding-inline: 0;
         }
+    }
+}
+
+@keyframes givewp-list-table-progress {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(250%);
+    }
+}
+
+@keyframes givewp-list-table-progress-rtl {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-250%);
     }
 }

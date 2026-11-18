@@ -10,6 +10,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Campaigns\ValueObjects\CampaignStatus;
+use Give\Framework\ListTable\ListCount;
 use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\QueryBuilder\WhereQueryBuilder;
@@ -39,11 +40,73 @@ class GetCampaignsListTable implements RestRoute
     protected $listTable;
 
     /**
-     * @since TBD Add the statuses, start and end parameters, and deprecate status
+     * @since TBD Add the statuses, start and end parameters, deprecate status, and add the withCount parameter and the count route.
      * @since 4.0.0
      */
     public function registerRoute(): void
     {
+        $args = [
+            'page' => [
+                'type' => 'integer',
+                'default' => 1,
+                'minimum' => 1,
+            ],
+            'perPage' => [
+                'type' => 'integer',
+                'default' => 30,
+                'minimum' => 1,
+            ],
+            'search' => [
+                'type' => 'string',
+                'required' => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'status' => [
+                'type' => 'string',
+                'required' => false,
+                'sanitize_callback' => 'sanitize_text_field',
+                'description' => 'Deprecated: use "statuses". "any" hides archived campaigns and "inactive" means archived.',
+            ],
+            'statuses' => [
+                'type' => 'array',
+                'required' => false,
+                'default' => [],
+                'maxItems' => 50,
+                'items' => [
+                    'type' => 'string',
+                    'enum' => array_column(CampaignStatus::vocabulary()->toArray(), 'value'),
+                ],
+                'description' => 'Filter campaigns by one or more stored statuses. At most 50. When set, "status" is ignored.',
+            ],
+            'start' => [
+                'type' => 'string',
+                'required' => false,
+                'format' => 'date-time',
+                'description' => 'Only campaigns created on or after this date and time. Send the site\'s local time with seconds and no offset, such as 2025-04-10T14:30:00: it is compared as stored.',
+            ],
+            'end' => [
+                'type' => 'string',
+                'required' => false,
+                'format' => 'date-time',
+                'description' => 'Only campaigns created on or before this date and time. Send the site\'s local time with seconds and no offset, such as 2025-04-10T14:30:00: it is compared as stored.',
+            ],
+            'sortColumn' => [
+                'type' => 'string',
+                'default' => 'id',
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'sortDirection' => [
+                'type' => 'string',
+                'default' => 'asc',
+                'enum' => ['asc', 'desc'],
+            ],
+            'locale' => [
+                'type' => 'string',
+                'required' => false,
+                'default' => get_locale(),
+            ],
+        ];
+
         register_rest_route(
             CampaignRoute::NAMESPACE,
             $this->endpoint,
@@ -53,72 +116,26 @@ class GetCampaignsListTable implements RestRoute
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
-                'args' => [
-                    'page' => [
-                        'type' => 'integer',
-                        'default' => 1,
-                        'minimum' => 1,
-                    ],
-                    'perPage' => [
-                        'type' => 'integer',
-                        'default' => 30,
-                        'minimum' => 1,
-                    ],
-                    'search' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'status' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                        'description' => 'Deprecated: use "statuses". "any" hides archived campaigns and "inactive" means archived.',
-                    ],
-                    'statuses' => [
-                        'type' => 'array',
-                        'required' => false,
-                        'default' => [],
-                        'maxItems' => 50,
-                        'items' => [
-                            'type' => 'string',
-                            'enum' => array_column(CampaignStatus::vocabulary()->toArray(), 'value'),
-                        ],
-                        'description' => 'Filter campaigns by one or more stored statuses. At most 50. When set, "status" is ignored.',
-                    ],
-                    'start' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'format' => 'date-time',
-                        'description' => 'Only campaigns created on or after this date and time. Send the site\'s local time with seconds and no offset, such as 2025-04-10T14:30:00: it is compared as stored.',
-                    ],
-                    'end' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'format' => 'date-time',
-                        'description' => 'Only campaigns created on or before this date and time. Send the site\'s local time with seconds and no offset, such as 2025-04-10T14:30:00: it is compared as stored.',
-                    ],
-                    'sortColumn' => [
-                        'type' => 'string',
-                        'default' => 'id',
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'sortDirection' => [
-                        'type' => 'string',
-                        'default' => 'asc',
-                        'enum' => ['asc', 'desc'],
-                    ],
-                    'locale' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => get_locale(),
-                    ],
+                'args' => $args + ListCount::arguments(),
+            ]
+        );
+
+        register_rest_route(
+            CampaignRoute::NAMESPACE,
+            $this->endpoint . '/count',
+            [
+                [
+                    'methods' => WP_REST_Server::READABLE,
+                    'callback' => [$this, 'handleCountRequest'],
+                    'permission_callback' => [$this, 'permissionsCheck'],
                 ],
+                'args' => $args,
             ]
         );
     }
 
     /**
+     * @since TBD Skip the total when the request sends withCount=false.
      * @since 4.12.0 add support for sorting by revenue column
      * @since 4.0.0
      */
@@ -129,20 +146,18 @@ class GetCampaignsListTable implements RestRoute
         $sortColumns = $this->listTable->getSortColumnById($request->get_param('sortColumn') ?: 'id');
         $sortDirection = $request->get_param('sortDirection') ?: 'desc';
 
-        $campaignsCount = $this->getTotalCampaignsCount();
+        // Nothing matching ends the request early, so the total is read first when it is asked for.
+        $campaignsCount = ListCount::isRequested($request) ? $this->getTotalCampaignsCount() : null;
 
         if ($campaignsCount === 0) {
             return new WP_REST_Response(
                 [
                     'items' => [],
-                    'totalItems' => 0,
-                    'totalPages' => 0,
-                ]
+                ] + ListCount::totals(0, $request)
             );
         }
 
-        $campaigns = $this->getCampaigns();
-        $pageCount = (int)ceil($campaignsCount / $request->get_param('perPage'));
+        list($campaigns, $hasNextPage) = ListCount::trim($request, $this->getCampaigns());
 
         $ids = array_map(function (Campaign $campaign) {
             return $campaign->id;
@@ -172,13 +187,39 @@ class GetCampaignsListTable implements RestRoute
         return new WP_REST_Response(
             [
                 'items' => $items,
-                'totalItems' => $campaignsCount,
-                'totalPages' => $pageCount,
-            ]
+            ] + $this->getPaging($campaignsCount, $hasNextPage)
         );
     }
 
     /**
+     * The total and page count, or only whether another page follows when the request skips the total.
+     *
+     * @since TBD
+     */
+    private function getPaging(?int $total, bool $hasNextPage): array
+    {
+        if ($total === null) {
+            return ['hasNextPage' => $hasNextPage];
+        }
+
+        return ListCount::totals($total, $this->request);
+    }
+
+    /**
+     * The total for the same filters as the list, without its rows. It reads the total the same
+     * way the list does, so the two cannot disagree.
+     *
+     * @since TBD
+     */
+    public function handleCountRequest(WP_REST_Request $request): WP_REST_Response
+    {
+        $this->request = $request;
+
+        return ListCount::response($this->getTotalCampaignsCount(), $request);
+    }
+
+    /**
+     * @since TBD Read one more row when the request skips the total.
      * @since 4.12.0 remove revenue column from sort
      * @since 4.0.0
      */
@@ -200,7 +241,7 @@ class GetCampaignsListTable implements RestRoute
             $query->orderBy($sortColumn, $sortDirection);
         }
 
-        $query->limit($perPage)
+        $query->limit(ListCount::limit($this->request))
             ->offset(($page - 1) * $perPage);
 
         $campaigns = $query->getAll();

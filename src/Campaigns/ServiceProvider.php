@@ -249,6 +249,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since TBD Refresh the cache when a donation leaves the complete statuses.
      * @since 4.14.0 dispatch cache campaign data action when donation is deleted
      * @since 4.13.1 added givewp_campaigns_merged hook
      * @since 4.8.0
@@ -260,7 +261,7 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         Hooks::addAction('give_insert_payment', CacheCampaignData::class, '__invoke', 11, 1);
-        Hooks::addAction('give_update_payment_status', CacheCampaignData::class, '__invoke', 11, 1);
+        Hooks::addAction('give_update_payment_status', CacheCampaignData::class, '__invoke', 11, 3);
 
         add_action('givewp_donation_deleted', function (Donation $donation) {
             give(CacheCampaignData::class)->dispatch($donation->campaignId);

@@ -1,0 +1,400 @@
+<?php
+
+namespace Give\Donations\Repositories;
+
+use Give\Framework\Database\DB;
+
+/**
+ * Remembers totals computed over the donations (list counts and stats).
+ *
+ * At a million donations a total reads one meta row per donation and takes tens of seconds, while
+ * the list screens ask for the same totals on every visit. Each total is stored under the SQL that
+ * computes it, with the time its computation started. A write to a donation, its meta, a
+ * subscription or a donor records the time of the change; a total computed before it is outdated.
+ *
+ * By default an outdated total is never returned: the next request computes it again, so totals
+ * are exact. A caller that only displays the total may allow outdated ones, and then the max age
+ * decides (the `givewp_donation_totals_max_age` filter, 60 seconds by default):
+ * - 0: as by default.
+ * - more: the outdated total is returned at once. Once it is older than the max age, the request
+ *   also computes it again after its response is sent, so the next request gets the new value. On a
+ *   site that takes donations every second this runs one computation per total per max age,
+ *   instead of one on nearly every page view.
+ *
+ * A total that chooses rows (which page holds which donation) must never come from here: an admin
+ * has to find every donation, and only the displayed count may lag.
+ *
+ * Only the Donations list count and stats use it. The donor and subscription counts are indexed and
+ * read live. On a miss every request computes the total itself: nothing waits on another request.
+ *
+ * All values live in one option that is not autoloaded and holds at most MAX_ENTRIES totals. The
+ * change time has its own option, so a write never rewrites the values.
+ *
+ * Temporary: a stopgap until the donation lists read their counts from the give_donations table
+ * (SOFT-5015), where they are index scans.
+ *
+ * @since TBD
+ *
+ * @internal
+ */
+class DonationTotalsCache
+{
+    /**
+     * @since TBD
+     */
+    public const OPTION = 'give_donation_totals_cache';
+
+    /**
+     * The time of the last write that changes the totals, as microtime(true).
+     *
+     * @since TBD
+     */
+    public const CHANGED_AT_OPTION = 'give_donation_totals_changed_at';
+
+    /**
+     * @since TBD
+     */
+    public const MAX_ENTRIES = 50;
+
+    /**
+     * How long an outdated total is served before it is computed again, in seconds.
+     *
+     * @since TBD
+     */
+    public const DEFAULT_MAX_AGE = 60;
+
+    /**
+     * When this request last recorded a change, as microtime(true).
+     *
+     * @var float|null
+     */
+    private static $changeRecordedAt;
+
+    /**
+     * Totals this request will compute again after its response, by hash.
+     *
+     * @var array<string, callable>
+     */
+    private static $pendingRefreshes = [];
+
+    /**
+     * Returns the cached value for the key, or computes and stores it.
+     *
+     * @since TBD
+     *
+     * @param string   $key            what the value depends on, usually the SQL that computes it
+     * @param callable $callback       computes the value; the result must be serializable
+     * @param bool     $allowOutdated  return an outdated value within the max age, for a total that is only displayed
+     *
+     * @return mixed
+     */
+    public static function remember(string $key, callable $callback, bool $allowOutdated = false)
+    {
+        $hash = self::hash($key);
+        $maxAge = $allowOutdated ? self::maxAge() : 0;
+        $cache = self::read();
+
+        if (self::isServable($cache, $hash, $maxAge)) {
+            if (self::isDue($cache, $hash, $maxAge)) {
+                return self::refresh($hash, $callback, $cache['values'][$hash]);
+            }
+
+            return $cache['values'][$hash];
+        }
+
+        return self::compute($hash, $callback);
+    }
+
+    /**
+     * Computes the value now, past the cache, and stores it for the requests that read the cache.
+     *
+     * @since TBD
+     *
+     * @return mixed
+     */
+    public static function recompute(string $key, callable $callback)
+    {
+        return self::compute(self::hash($key), $callback);
+    }
+
+    /**
+     * Stores an exact value that came from elsewhere (the donation counters) as computed now, so a
+     * request that later falls back to this cache starts from it instead of an older value. Writes
+     * only when the stored value is missing, outdated or different.
+     *
+     * @since TBD
+     *
+     * @param mixed $value
+     */
+    public static function seed(string $key, $value): void
+    {
+        $hash = self::hash($key);
+        $cache = self::read();
+
+        if (array_key_exists($hash, $cache['values']) && $cache['values'][$hash] === $value && !self::isOutdated($cache, $hash)) {
+            return;
+        }
+
+        self::store($hash, $value, microtime(true));
+    }
+
+    /**
+     * Records that the totals changed. Hooked to donation, subscription and donor writes.
+     *
+     * @since TBD
+     */
+    public static function flush(): void
+    {
+        // A burst of writes in one request records one change, unless a total was stored since.
+        if (self::$changeRecordedAt !== null) {
+            $computedAt = self::read(true)['computedAt'];
+
+            if (!$computedAt || max($computedAt) < self::$changeRecordedAt) {
+                return;
+            }
+        }
+
+        self::$changeRecordedAt = microtime(true);
+
+        // Six decimals: a plain string cast keeps 14 digits on PHP 7.4, which rounds away the microseconds.
+        update_option(self::CHANGED_AT_OPTION, number_format(self::$changeRecordedAt, 6, '.', ''), false);
+    }
+
+    /**
+     * Seconds an outdated total is served before it is computed again. 0 never serves one.
+     *
+     * @since TBD
+     */
+    public static function maxAge(): int
+    {
+        /**
+         * Filters how long, in seconds, an outdated donation total is served while it is computed
+         * again in the background. 0 computes it again on the next request, so totals are exact.
+         *
+         * Temporary stopgap, do not rely on it: it goes away when donations read from the
+         * give_donations table (SOFT-5015).
+         *
+         * @since TBD
+         *
+         * @param int $maxAge
+         */
+        return max(0, (int)apply_filters('givewp_donation_totals_max_age', self::DEFAULT_MAX_AGE));
+    }
+
+    /**
+     * Whether the cache holds a value for the hash that may be returned: any value when outdated
+     * values are allowed, else only one computed after the last change.
+     *
+     * @since TBD
+     */
+    private static function isServable(array $cache, string $hash, int $maxAge): bool
+    {
+        if (!array_key_exists($hash, $cache['values'])) {
+            return false;
+        }
+
+        return $maxAge > 0 || !self::isOutdated($cache, $hash);
+    }
+
+    /**
+     * Whether an outdated value has been served for longer than the max age.
+     *
+     * @since TBD
+     */
+    private static function isDue(array $cache, string $hash, int $maxAge): bool
+    {
+        return self::isOutdated($cache, $hash) && microtime(true) - $cache['computedAt'][$hash] >= $maxAge;
+    }
+
+    /**
+     * @since TBD
+     */
+    private static function isOutdated(array $cache, string $hash): bool
+    {
+        return ($cache['computedAt'][$hash] ?? 0.0) <= self::changedAt();
+    }
+
+    /**
+     * Computes a due value again after the response is sent, and returns the old one now. A server
+     * that cannot finish the response early computes it now, as on a miss. Another request that is
+     * already computing it is left to finish.
+     *
+     * @since TBD
+     *
+     * @param mixed $staleValue
+     *
+     * @return mixed
+     */
+    private static function refresh(string $hash, callable $callback, $staleValue)
+    {
+        if (isset(self::$pendingRefreshes[$hash])) {
+            return $staleValue;
+        }
+
+        if (!self::canFinishResponseEarly()) {
+            return self::refreshNow($hash, $callback);
+        }
+
+        if (!self::$pendingRefreshes) {
+            add_action('shutdown', [self::class, 'runPendingRefreshes'], PHP_INT_MAX);
+        }
+
+        self::$pendingRefreshes[$hash] = $callback;
+
+        return $staleValue;
+    }
+
+    /**
+     * Sends the response, then computes the totals this request found due.
+     *
+     * @since TBD
+     */
+    public static function runPendingRefreshes(): void
+    {
+        $refreshes = self::$pendingRefreshes;
+
+        if (!$refreshes) {
+            return;
+        }
+
+        self::finishResponse();
+
+        foreach ($refreshes as $hash => $callback) {
+            self::refreshNow($hash, $callback);
+        }
+
+        self::$pendingRefreshes = [];
+    }
+
+    /**
+     * Computes a due value unless another request already did it meanwhile.
+     *
+     * @since TBD
+     *
+     * @return mixed
+     */
+    private static function refreshNow(string $hash, callable $callback)
+    {
+        $cache = self::read(true);
+
+        if (array_key_exists($hash, $cache['values']) && !self::isDue($cache, $hash, self::maxAge())) {
+            return $cache['values'][$hash];
+        }
+
+        return self::compute($hash, $callback);
+    }
+
+    /**
+     * Runs the computation and stores the value with the time it started, so a write during the
+     * computation leaves it outdated.
+     *
+     * @since TBD
+     *
+     * @return mixed
+     */
+    private static function compute(string $hash, callable $callback)
+    {
+        $startedAt = microtime(true);
+        $value = $callback();
+        self::store($hash, $value, $startedAt);
+
+        return $value;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @param mixed $value
+     */
+    private static function store(string $hash, $value, float $computedAt): void
+    {
+        $current = self::read(true);
+
+        unset($current['values'][$hash], $current['computedAt'][$hash]);
+        $current['values'][$hash] = $value;
+        $current['computedAt'][$hash] = $computedAt;
+
+        if (count($current['values']) > self::MAX_ENTRIES) {
+            $current['values'] = array_slice($current['values'], -self::MAX_ENTRIES, null, true);
+            $current['computedAt'] = array_intersect_key($current['computedAt'], $current['values']);
+        }
+
+        update_option(self::OPTION, $current, false);
+    }
+
+    /**
+     * @since TBD
+     */
+    private static function hash(string $key): string
+    {
+        global $wpdb;
+
+        // A prepared LIKE carries a placeholder for "%" that changes on every request.
+        return md5($wpdb->remove_placeholder_escape($key));
+    }
+
+    /**
+     * @since TBD
+     */
+    private static function changedAt(): float
+    {
+        return (float)get_option(self::CHANGED_AT_OPTION, 0);
+    }
+
+    /**
+     * Whether the server can send the response and keep running PHP afterwards.
+     *
+     * @since TBD
+     */
+    private static function canFinishResponseEarly(): bool
+    {
+        return function_exists('fastcgi_finish_request') || function_exists('litespeed_finish_request');
+    }
+
+    /**
+     * @since TBD
+     */
+    private static function finishResponse(): void
+    {
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        } elseif (function_exists('litespeed_finish_request')) {
+            litespeed_finish_request();
+        }
+    }
+
+    /**
+     * The cache straight from the table, past the copy WordPress keeps for the request, so a request
+     * sees what other requests wrote.
+     *
+     * @since TBD
+     *
+     * @return mixed
+     */
+    private static function readFromTable()
+    {
+        global $wpdb;
+
+        $value = DB::get_var(DB::prepare("SELECT option_value FROM {$wpdb->options} WHERE option_name = %s", self::OPTION));
+
+        return $value === null ? false : maybe_unserialize($value);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @param bool $fresh skip the copy WordPress keeps for this request, to see other requests' writes
+     *
+     * @return array{values: array, computedAt: array}
+     */
+    private static function read(bool $fresh = false): array
+    {
+        $cache = $fresh ? self::readFromTable() : get_option(self::OPTION);
+
+        if (!is_array($cache) || !isset($cache['values'], $cache['computedAt']) || !is_array($cache['values']) || !is_array($cache['computedAt'])) {
+            return ['values' => [], 'computedAt' => []];
+        }
+
+        return $cache;
+    }
+}

@@ -5,6 +5,7 @@ namespace Give\Subscriptions\Endpoints;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
+use Give\Framework\ListTable\ListCount;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
@@ -32,11 +33,96 @@ class ListSubscriptions extends Endpoint
     /**
      * @inheritDoc
      *
-     * @since TBD Accept a list of campaign IDs.
+     * @since TBD Accept a list of campaign IDs, and add the withCount parameter and the count route.
      * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      */
     public function registerRoute()
     {
+        $args = [
+            'page' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 1,
+                'minimum' => 1
+            ],
+            'perPage' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 30,
+                'minimum' => 1
+            ],
+            'donations' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 0
+            ],
+            'search' => [
+                'type' => 'string',
+                'required' => false
+            ],
+            'start' => [
+                'type' => 'string',
+                'required' => false,
+                'format' => 'date-time'
+            ],
+            'campaignId' => [
+                'type' => 'array',
+                'required' => false,
+                'default' => [],
+                'maxItems' => 50,
+                'items' => [
+                    'type' => 'integer',
+                ],
+                'description' => 'Filter subscriptions by one or more campaign IDs, at most 50. A 0 is ignored.',
+            ],
+            'end' => [
+                'type' => 'string',
+                'required' => false,
+                'format' => 'date-time'
+            ],
+            'sortColumn' => [
+                'type' => 'string',
+                'required' => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'sortDirection' => [
+                'type' => 'string',
+                'required' => false,
+                'enum' => [
+                    'asc',
+                    'desc',
+                ],
+            ],
+            'locale' => [
+                'type' => 'string',
+                'required' => false,
+                'default' => get_locale(),
+            ],
+            'testMode' => [
+                'type' => 'boolean',
+                'required' => false,
+                'default' => give_is_test_mode(),
+            ],
+            'return' => [
+                'type' => 'string',
+                'required' => false,
+                'default' => 'columns',
+                'enum' => [
+                    'model',
+                    'columns',
+                ],
+            ],
+            'status' => [
+                'type' => 'array',
+                'required' => false,
+                'items' => [
+                    'type' => 'string',
+                    'enum' => array_values(SubscriptionStatus::toArray()),
+                ],
+                'description' => 'Filter subscriptions by status. Accepts comma-separated list of SubscriptionStatus values (e.g., "active,expired,pending"). If not provided, excludes trash subscriptions by default.'
+            ],
+        ];
+
         register_rest_route(
             'give-api/v2',
             $this->endpoint,
@@ -46,95 +132,26 @@ class ListSubscriptions extends Endpoint
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
-                'args' => [
-                    'page' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 1,
-                        'minimum' => 1
-                    ],
-                    'perPage' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 30,
-                        'minimum' => 1
-                    ],
-                    'donations' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 0
-                    ],
-                    'search' => [
-                        'type' => 'string',
-                        'required' => false
-                    ],
-                    'start' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'format' => 'date-time'
-                    ],
-                    'campaignId' => [
-                        'type' => 'array',
-                        'required' => false,
-                        'default' => [],
-                        'maxItems' => 50,
-                        'items' => [
-                            'type' => 'integer',
-                        ],
-                        'description' => 'Filter subscriptions by one or more campaign IDs, at most 50. A 0 is ignored.',
-                    ],
-                    'end' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'format' => 'date-time'
-                    ],
-                    'sortColumn' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'sortDirection' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'enum' => [
-                            'asc',
-                            'desc',
-                        ],
-                    ],
-                    'locale' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => get_locale(),
-                    ],
-                    'testMode' => [
-                        'type' => 'boolean',
-                        'required' => false,
-                        'default' => give_is_test_mode(),
-                    ],
-                    'return' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => 'columns',
-                        'enum' => [
-                            'model',
-                            'columns',
-                        ],
-                    ],
-                    'status' => [
-                        'type' => 'array',
-                        'required' => false,
-                        'items' => [
-                            'type' => 'string',
-                            'enum' => array_values(SubscriptionStatus::toArray()),
-                        ],
-                        'description' => 'Filter subscriptions by status. Accepts comma-separated list of SubscriptionStatus values (e.g., "active,expired,pending"). If not provided, excludes trash subscriptions by default.'
-                    ],
+                'args' => $args + ListCount::arguments(),
+            ]
+        );
+
+        register_rest_route(
+            'give-api/v2',
+            $this->endpoint . '/count',
+            [
+                [
+                    'methods' => 'GET',
+                    'callback' => [$this, 'handleCountRequest'],
+                    'permission_callback' => [$this, 'permissionsCheck'],
                 ],
+                'args' => $args,
             ]
         );
     }
 
     /**
+     * @since TBD Skip the total when the request sends withCount=false.
      * @since 2.24.0
      *
      * @param WP_REST_Request $request
@@ -146,9 +163,7 @@ class ListSubscriptions extends Endpoint
         $this->request = $request;
         $this->listTable = give(SubscriptionsListTable::class);
 
-        $subscriptions = $this->getSubscriptions();
-        $subscriptionsCount = $this->getTotalSubscriptionsCount();
-        $pageCount = (int)ceil($subscriptionsCount / $request->get_param('perPage'));
+        list($subscriptions, $hasNextPage) = ListCount::trim($request, $this->getSubscriptions());
 
         if ('model' === $this->request->get_param('return')) {
             $items = $subscriptions;
@@ -160,13 +175,39 @@ class ListSubscriptions extends Endpoint
         return new WP_REST_Response(
             [
                 'items' => $items,
-                'totalItems' => $subscriptionsCount,
-                'totalPages' => $pageCount,
-            ]
+            ] + $this->getPaging($hasNextPage)
         );
     }
 
     /**
+     * The total and page count, or only whether another page follows when the request skips the total.
+     *
+     * @since TBD
+     */
+    private function getPaging(bool $hasNextPage): array
+    {
+        if (!ListCount::isRequested($this->request)) {
+            return ['hasNextPage' => $hasNextPage];
+        }
+
+        return ListCount::totals($this->getTotalSubscriptionsCount(), $this->request);
+    }
+
+    /**
+     * The total for the same filters as the list, without its rows. It reads the total the same
+     * way the list does, so the two cannot disagree.
+     *
+     * @since TBD
+     */
+    public function handleCountRequest(WP_REST_Request $request): WP_REST_Response
+    {
+        $this->request = $request;
+
+        return ListCount::response($this->getTotalSubscriptionsCount(), $request);
+    }
+
+    /**
+     * @since TBD Read one more row when the request skips the total.
      * @since 4.12.0 add sort by donor name
      * @since 2.24.0
      *
@@ -198,7 +239,7 @@ class ListSubscriptions extends Endpoint
             $query->orderBy($sortColumn, $sortDirection);
         }
 
-        $query->limit($perPage)
+        $query->limit(ListCount::limit($this->request))
             ->offset(($page - 1) * $perPage);
 
         $subscriptions = $query->getAll();

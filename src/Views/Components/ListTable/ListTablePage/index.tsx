@@ -41,6 +41,7 @@ import useListTableUrlState, {readInitialUrlState} from '../hooks/useListTableUr
 import useListTableLayoutPreferences, {readInitialLayout} from '../hooks/useListTableLayoutPreferences';
 import useListTableSelection from '../hooks/useListTableSelection';
 import useListTableQuery from '../hooks/useListTableQuery';
+import useListTableTotals from '../hooks/useListTableTotals';
 import useListTableStats from '../hooks/useListTableStats';
 import useListTableActionNotices from '../hooks/useListTableActionNotices';
 import useListTableActions from '../hooks/useListTableActions';
@@ -101,6 +102,7 @@ export const ShowConfirmModalContext = createContext(
  * itself (with its stat tiles at the top of the sheet) through the WordPress list engine
  * (`@wordpress/dataviews`). It accepts the same props as before the engine change, so every screen and add-on keeps rendering without changes.
  *
+ * @since TBD Request the rows with `withCount=false` and the total on its own, so the rows show without waiting for the count.
  * @since TBD Add `onItemsChange`: the rows on the page, for a notice that depends on them.
  * @since TBD Add `legacyView`: "Switch to Legacy View" in the list's "More view options" menu.
  * @since TBD At 782 px and below, show the records as cards built from the screen's field roles.
@@ -248,13 +250,23 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             [view, declarations, scope, testMode, today]
         );
 
+        // The rows never wait for the total: `withCount=false` asks the server for the rows and
+        // `hasNextPage` only, and the total comes from its own request (see `useListTableTotals`).
+        const rowsParameters = useMemo(() => ({...parameters, withCount: 'false'}), [parameters]);
         const {
             data,
             error,
             isLoading,
             isValidating,
             refresh: refreshList,
-        } = useListTableQuery<ListTableResponse>(apiRoot, parameters);
+        } = useListTableQuery<ListTableResponse>(apiRoot, rowsParameters);
+        const {totals, hasNextPage, refreshTotals} = useListTableTotals({
+            apiRoot,
+            parameters,
+            page: view.page ?? 1,
+            data,
+            isLoading,
+        });
         const {
             stats,
             status: statsStatus,
@@ -262,17 +274,21 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
         } = useListTableStats(statsConfig ? `${apiRoot}/stats` : null, testMode);
 
         const refresh = useCallback(async () => {
-            await Promise.all([refreshList(), statsConfig && refreshStats()]);
-        }, [refreshList, refreshStats, statsConfig]);
+            await Promise.all([refreshList(), refreshTotals(), statsConfig && refreshStats()]);
+        }, [refreshList, refreshTotals, refreshStats, statsConfig]);
 
         useImperativeHandle(ref, () => ({refresh}), [refresh]);
 
-        // After records are removed, the current page can be past the last one.
+        // After records are removed, or with a page typed in the address, the current page can be past
+        // the last one. This waits for the total and for the rows of the current page: a page that has
+        // rows exists, whatever an older count says, and while it loads the count may be the old one.
+        const isEmptyPage = !isLoading && data?.items.length === 0;
+
         useEffect(() => {
-            if (data && data.totalPages > 0 && view.page > data.totalPages) {
-                replaceView({...view, page: data.totalPages}, 'correction');
+            if (isEmptyPage && totals && totals.totalPages > 0 && view.page > totals.totalPages) {
+                replaceView({...view, page: totals.totalPages}, 'correction');
             }
-        }, [data]);
+        }, [totals?.totalPages, view.page, isEmptyPage]);
 
         const legacyRowActionsField = useLegacyRowActionsField(legacyRowActions, {
             data,
@@ -431,11 +447,10 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                     fields={fields}
                     actions={actions}
                     data={error ? [] : data?.items ?? []}
-                    paginationInfo={{
-                        totalItems: Number(data?.totalItems ?? 0),
-                        totalPages: data?.totalPages ?? 0,
-                    }}
+                    paginationInfo={totals}
+                    hasNextPage={hasNextPage}
                     isLoading={isLoading}
+                    hasError={Boolean(error)}
                     selection={selection}
                     onChangeSelection={onChangeSelection}
                     empty={
@@ -498,7 +513,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
                     requestKey={JSON.stringify(parameters)}
                     isLoading={isLoading}
                     isValidating={isValidating}
-                    totalItems={error || !data ? undefined : Number(data.totalItems ?? 0)}
+                    totalItems={error || !data || !totals ? undefined : totals.totalItems}
                     singleName={singleName}
                     pluralName={pluralName}
                 />

@@ -3,7 +3,7 @@
 namespace Give\DonationForms\Repositories;
 
 
-use Give\Campaigns\CampaignsDataQuery;
+use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\DonationForms\DonationFormDataQuery;
 use Give\DonationForms\V2\Models\DonationForm;
@@ -154,6 +154,7 @@ class DonationFormDataRepository
     }
 
     /**
+     * @since TBD Read the stats through the campaigns stats cache, as the campaigns list does.
      * @since 4.3.0
      */
     public function setFormsCampaignGoals(array $ids): void
@@ -168,19 +169,17 @@ class DonationFormDataRepository
             return (int)$campaign->id;
         }, $campaigns);
 
-        $donations = CampaignsDataQuery::donations($ids);
+        $rows = CampaignsDataRepository::campaigns($ids)->getRows();
 
-        $this->campaignAmounts = $donations->collectIntendedAmounts();
-        $this->campaignDonationsCount = $donations->collectDonations();
-        $this->campaignDonorsCount = $donations->collectDonors();
+        $this->campaignAmounts = $rows['amounts'];
+        $this->campaignDonationsCount = $rows['donationsCount'];
+        $this->campaignDonorsCount = $rows['donorsCount'];
 
         // Set subscriptions data
         if (defined('GIVE_RECURRING_VERSION')) {
-            $subscriptions = CampaignsDataQuery::subscriptions($ids);
-
-            $this->campaignSubscriptionAmounts = $subscriptions->collectInitialAmounts();
-            $this->campaignSubscriptionDonationsCount = $subscriptions->collectDonations();
-            $this->campaignSubscriptionDonorsCount = $subscriptions->collectDonors();
+            $this->campaignSubscriptionAmounts = $rows['subscriptionAmounts'];
+            $this->campaignSubscriptionDonationsCount = $rows['subscriptionDonationsCount'];
+            $this->campaignSubscriptionDonorsCount = $rows['subscriptionDonorsCount'];
         }
     }
 

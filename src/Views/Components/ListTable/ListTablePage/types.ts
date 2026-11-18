@@ -40,8 +40,11 @@ export type ListTableItem = {id: string | number; [columnId: string]: unknown};
  */
 export type ListTableResponse = {
     items: ListTableItem[];
-    totalItems: number | string;
-    totalPages: number;
+    /** Missing in a `withCount=false` response, unless the server had the total already. */
+    totalItems?: number | string;
+    totalPages?: number;
+    /** Sent with `withCount=false`: whether a page after this one has rows. */
+    hasNextPage?: boolean;
     [key: string]: unknown;
 };
 

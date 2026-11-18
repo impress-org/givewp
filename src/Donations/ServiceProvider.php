@@ -3,6 +3,7 @@
 namespace Give\Donations;
 
 use Give\Donations\Actions\LoadDonationAdminOptions;
+use Give\Donations\Counters\DonationCountersCommand;
 use Give\Donations\CustomFields\Controllers\DonationDetailsController;
 use Give\Donations\LegacyListeners\ClearDonationPostCache;
 use Give\Donations\LegacyListeners\DispatchDonationNoteEmailNotification;
@@ -16,6 +17,7 @@ use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
 use Give\Donations\LegacyListeners\UpdateDonationMetaWithLegacyFormCurrencySettings;
 use Give\Donations\Listeners\DonationCreated\UpdateDonationMetaWithCurrencySettings;
 use Give\Donations\Listeners\DonationCreated\UpdateDonorMetaWithLastDonatedCurrency;
+use Give\Donations\Counters\SyncDonationCounters;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Migrations\AddIndexesToDonationMetaTable;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
@@ -26,20 +28,27 @@ use Give\Donations\Migrations\SetAutomaticFormattingOption;
 use Give\Donations\Migrations\UnserializeTitlePrefix;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationNotesRepository;
+use Give\Donations\Counters\DonationCounters;
+use Give\Donations\Counters\DonationCountersRebuild;
+use Give\Donations\Counters\DonationCountersSchedule;
 use Give\Donations\Repositories\DonationRepository;
+use Give\Donations\Repositories\DonationTotalsCache;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
+use WP_CLI;
 
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
+     * @since TBD Register the donation counters listener as a singleton.
      * @inheritDoc
      */
     public function register()
     {
         give()->singleton('donations', DonationRepository::class);
         give()->singleton('donationNotes', DonationNotesRepository::class);
+        give()->singleton(SyncDonationCounters::class);
         give()->singleton(DonationsListTable::class, function () {
             $listTable = new DonationsListTable();
             Hooks::doAction('givewp_donations_list_table', $listTable);
@@ -49,12 +58,15 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since TBD Boot the donation counters.
      * @inheritDoc
      */
     public function boot()
     {
         $this->bootListeners();
         $this->bootLegacyListeners();
+        $this->flushTotalsOnDonationWrites();
+        $this->bootDonationCounters();
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
         $this->loadDonationAdminOptions();
@@ -143,6 +155,77 @@ class ServiceProvider implements ServiceProviderInterface
             // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renders the full donation details page; its view escapes its own values.
             echo (new DonationDetailsController())->show($donationId);
         });
+    }
+
+    /**
+     * Marks the cached donation totals outdated whenever a donation or its meta is written. The model hooks
+     * see repository writes, which go to the tables directly; the post and meta hooks see writes
+     * through the legacy Give_Payment and the WordPress post and metadata APIs. The model's trash and
+     * untrash write the post status directly, so they have their own hooks.
+     *
+     * @since TBD
+     */
+    private function flushTotalsOnDonationWrites()
+    {
+        $flush = static function () {
+            DonationTotalsCache::flush();
+        };
+
+        foreach (['givewp_donation_created', 'givewp_donation_updated', 'givewp_donation_deleted', 'givewp_donation_trashed', 'givewp_donation_untrashed'] as $hook) {
+            add_action($hook, $flush);
+        }
+
+        foreach (['give_insert_payment', 'give_update_payment_status', 'give_payment_deleted'] as $hook) {
+            add_action($hook, $flush);
+        }
+
+        add_action('save_post_give_payment', $flush);
+
+        add_action('deleted_post', static function ($postId, $post = null) {
+            if ($post && 'give_payment' === $post->post_type) {
+                DonationTotalsCache::flush();
+            }
+        }, 10, 2);
+
+        // The donation meta type is "payment" until the 2.2.0 rename upgrade has run.
+        foreach (['donation', 'payment'] as $metaType) {
+            foreach (['added', 'updated', 'deleted'] as $action) {
+                add_action("{$action}_{$metaType}_meta", $flush);
+            }
+        }
+    }
+
+    /**
+     * Keeps the donation counters up to date on every write, recounts them in the background, and
+     * adds the `wp give donation-counters` command.
+     *
+     * Not registered on table storage: the counters read wp_posts and give_donationmeta directly,
+     * and counts from give_donations replace them there.
+     *
+     * @since TBD
+     */
+    private function bootDonationCounters()
+    {
+        if (DonationCounters::usesTableStorage()) {
+            return;
+        }
+
+        give(SyncDonationCounters::class)->register();
+
+        $rebuild = static function () {
+            (new DonationCountersRebuild())();
+        };
+
+        add_action(DonationCountersSchedule::REBUILD_HOOK, $rebuild);
+        add_action(DonationCountersSchedule::RECOUNT_HOOK, $rebuild);
+
+        add_action('action_scheduler_ensure_recurring_actions', static function () {
+            DonationCountersSchedule::ensureScheduled(DonationCounters::read()['builtAt'], true);
+        });
+
+        if (defined('WP_CLI') && WP_CLI) {
+            WP_CLI::add_command('give donation-counters', DonationCountersCommand::class);
+        }
     }
 
     /**

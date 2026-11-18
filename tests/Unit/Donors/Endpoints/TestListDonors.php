@@ -304,6 +304,130 @@ class TestListDonors extends TestCase
     }
 
     /**
+     * The campaign filter compares the campaign IDs as text so the meta index finds them. It must
+     * return the same donors as the number comparison it replaced, whatever state the donations are in.
+     *
+     * @since TBD
+     */
+    public function testCampaignFilterMatchesTheNumberComparisonForEveryDonationState()
+    {
+        $campaignA = Campaign::factory()->create();
+        $campaignB = Campaign::factory()->create();
+        $campaignC = Campaign::factory()->create();
+
+        $statuses = [
+            DonationStatus::COMPLETE(),
+            DonationStatus::PENDING(),
+            DonationStatus::REFUNDED(),
+            DonationStatus::TRASH(),
+            DonationStatus::RENEWAL(),
+        ];
+
+        foreach ($statuses as $status) {
+            $donor = Donor::factory()->create();
+            Donation::factory()->create(['donorId' => $donor->id, 'campaignId' => $campaignA->id, 'status' => $status]);
+        }
+
+        $testDonor = Donor::factory()->create();
+        Donation::factory()->create(['donorId' => $testDonor->id, 'campaignId' => $campaignA->id, 'mode' => \Give\Donations\ValueObjects\DonationMode::TEST()]);
+
+        $anonymous = Donor::factory()->create();
+        Donation::factory()->create(['donorId' => $anonymous->id, 'campaignId' => $campaignA->id, 'anonymous' => true]);
+
+        $several = Donor::factory()->create();
+        Donation::factory()->create(['donorId' => $several->id, 'campaignId' => $campaignA->id]);
+        Donation::factory()->create(['donorId' => $several->id, 'campaignId' => $campaignA->id]);
+        Donation::factory()->create(['donorId' => $several->id, 'campaignId' => $campaignB->id]);
+
+        Donor::factory()->create();
+
+        foreach ([[$campaignA->id], [$campaignB->id], [$campaignC->id], [$campaignA->id, $campaignB->id]] as $campaignIds) {
+            $this->assertSame(
+                $this->donorIdsWithNumberComparison($campaignIds),
+                $this->donorIdsForCampaigns($campaignIds)
+            );
+        }
+
+        // A donor with donations in two campaigns shows once in each.
+        $this->assertSame([$several->id], $this->donorIdsForCampaigns([$campaignB->id]));
+        $this->assertSame(1, count(array_keys($this->donorIdsForCampaigns([$campaignA->id]), $several->id, true)));
+    }
+
+    /**
+     * A donation added, trashed, moved or deleted after a first request shows in the next one.
+     *
+     * @since TBD
+     */
+    public function testCampaignFilterFollowsDonationChangesAfterTheFirstRequest()
+    {
+        $campaign = Campaign::factory()->create();
+        $other = Campaign::factory()->create();
+        $first = $this->createDonorWithDonation($campaign->id);
+
+        $this->assertSame([$first->id], $this->donorIdsForCampaigns([$campaign->id]));
+
+        $second = Donor::factory()->create();
+        $donation = Donation::factory()->create(['donorId' => $second->id, 'campaignId' => $campaign->id]);
+        $this->assertSame([$second->id, $first->id], $this->donorIdsForCampaigns([$campaign->id]));
+
+        $donation->campaignId = $other->id;
+        $donation->save();
+        $this->assertSame([$first->id], $this->donorIdsForCampaigns([$campaign->id]));
+        $this->assertSame([$second->id], $this->donorIdsForCampaigns([$other->id]));
+
+        $donation->delete();
+        $this->assertSame([], $this->donorIdsForCampaigns([$other->id]));
+        $this->assertSame($this->donorIdsWithNumberComparison([$other->id]), $this->donorIdsForCampaigns([$other->id]));
+    }
+
+    /**
+     * @since TBD
+     *
+     * @return int[]
+     */
+    private function donorIdsForCampaigns(array $campaignIds): array
+    {
+        $response = $this->listDonors(['campaignId' => $campaignIds, 'return' => 'model']);
+
+        return array_map(static function (Donor $donor) {
+            return $donor->id;
+        }, $response->get_data()['items']);
+    }
+
+    /**
+     * The query the filter used before: the campaign IDs compared as numbers.
+     *
+     * @since TBD
+     *
+     * @return int[]
+     */
+    private function donorIdsWithNumberComparison(array $campaignIds): array
+    {
+        $ids = implode(',', array_map('intval', $campaignIds));
+        $donors = DB::table('give_donors')
+            ->whereIn('id', static function ($builder) use ($ids) {
+                $builder
+                    ->from('give_donationmeta')
+                    ->distinct()
+                    ->select('meta_value')
+                    ->where('meta_key', '_give_payment_donor_id')
+                    ->whereIn('donation_id', static function ($builder) use ($ids) {
+                        $builder
+                            ->from('give_donationmeta')
+                            ->select('donation_id')
+                            ->where('meta_key', '_give_campaign_id')
+                            ->whereRaw("AND meta_value IN ($ids)");
+                    });
+            })
+            ->orderBy('id', 'DESC')
+            ->getAll();
+
+        return array_map(static function ($row) {
+            return (int)$row->id;
+        }, $donors ?: []);
+    }
+
+    /**
      * @since TBD
      */
     private function listDonors(array $params): WP_REST_Response
