@@ -777,7 +777,6 @@ class GetDonationsRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
         $headers = $response->get_headers();
 
-        fwrite(STDERR, 'DBG ' . json_encode($headers) . ' ' . count($response->get_data()) . ' ' . json_encode(array_column($response->get_data(), 'status')) . "\n");
         $this->assertEquals(3, $headers['X-WP-Total']);
         $this->assertEquals(2, $headers['X-WP-TotalPages']);
     }
