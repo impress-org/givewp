@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\Framework\ListTable;
 
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\V2\Models\DonationForm;
+use Give\Donations\Listeners\SyncDonationCounters;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationCountersRebuild;
 use Give\Donations\Repositories\DonationTotalsCache;
@@ -52,8 +53,11 @@ class TestListCountRoutes extends TestCase
         DB::query('DELETE FROM ' . DB::prefix('give_subscriptions'));
         DB::query('DELETE FROM ' . DB::prefix('give_donors'));
 
-        // Earlier tests may leave counters and cached totals behind for donations that are gone.
+        // Earlier tests may leave counters and cached totals behind for donations that are gone, and the
+        // listener remembers the bucket of every donation id it has seen. The tables are reset between
+        // tests, so ids repeat, and a remembered bucket would hide a new donation from the counters.
         delete_option(DonationTotalsCache::OPTION);
+        give(SyncDonationCounters::class)->reset();
         (new DonationCountersRebuild(1, 0))();
     }
 
@@ -78,24 +82,6 @@ class TestListCountRoutes extends TestCase
         return rest_do_request($request);
     }
 
-    // TEMP-DIAG
-    private function diagnose(): string
-    {
-        global $wpdb;
-
-        $rows = $wpdb->get_results(
-            "SELECT option_name, LEFT(option_value, 80) AS v FROM {$wpdb->options} WHERE option_name LIKE 'give_donation_count%' OR option_name LIKE 'give_donation_counters%' OR option_name LIKE 'give_donation_totals%'",
-            ARRAY_A
-        );
-
-        return json_encode([
-            'enabled' => \Give\Donations\Repositories\DonationCounters::isEnabled(),
-            'posts' => $wpdb->get_results("SELECT post_status, COUNT(*) c FROM {$wpdb->posts} WHERE post_type='give_payment' GROUP BY post_status", ARRAY_A),
-            'options' => $rows,
-            'prefix' => $wpdb->prefix,
-        ]);
-    }
-
     /**
      * Asks for every page of the list, with and without the total, and for the count, and checks
      * that the three agree.
@@ -109,7 +95,7 @@ class TestListCountRoutes extends TestCase
         $count = $this->get($route . '/count', $params);
         $this->assertSame(200, $count->get_status());
         $this->assertSame(['totalItems', 'totalPages'], array_keys($count->get_data()));
-        $this->assertSame($expectedTotal, $count->get_data()['totalItems'], $this->diagnose()); // TEMP-DIAG
+        $this->assertSame($expectedTotal, $count->get_data()['totalItems']);
         $this->assertSame((int)ceil($expectedTotal / $params['perPage']), $count->get_data()['totalPages']);
 
         $lastPage = max(1, (int)ceil($expectedTotal / $params['perPage'])) + 1;
