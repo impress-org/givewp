@@ -243,7 +243,7 @@ recounts and the CLI command are not registered, because counts from `give_donat
   total transients that sit in the options table) and the scheduled actions, so afterwards the counters
   read as never built and the screens compute the totals until a recount runs. With an external
   object cache the transients live there, not in the options table, so Reset Stats does not remove
-  them: a total there lasts until its 60 seconds end. A campaign merge or form migration changes
+  them: a total there lasts until its lifetime ends (60 seconds by default, set with `givewp_donation_totals_ttl`). A campaign merge or form migration changes
   neither mode, type nor status, so the counters stay right, and filtered totals catch up within the
   transient's 60 seconds.
 
