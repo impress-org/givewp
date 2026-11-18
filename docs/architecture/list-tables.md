@@ -239,9 +239,11 @@ recounts and the CLI command are not registered, because counts from `give_donat
   total, a deep page counts live. A forward page that contradicts a counted total marks the counters
   dirty, and so does a deep page's live count that differs from a counter that did not move while it
   ran (if it moved, a write happened meanwhile and the two cannot be compared).
-- **Writes that skip the hooks.** Reset Stats deletes every `%give%` option (the counter rows and the
-  transients included) and the scheduled actions, so afterwards the counters read as never built and
-  the screens compute the totals until a recount runs. A campaign merge or form migration changes
+- **Writes that skip the hooks.** Reset Stats deletes every `%give%` option (the counter rows, and the
+  total transients that sit in the options table) and the scheduled actions, so afterwards the counters
+  read as never built and the screens compute the totals until a recount runs. With an external
+  object cache the transients live there, not in the options table, so Reset Stats does not remove
+  them: a total there lasts until its 60 seconds end. A campaign merge or form migration changes
   neither mode, type nor status, so the counters stay right, and filtered totals catch up within the
   transient's 60 seconds.
 
