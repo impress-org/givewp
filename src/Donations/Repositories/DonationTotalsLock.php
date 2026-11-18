@@ -58,9 +58,9 @@ class DonationTotalsLock
      */
     public function acquire(): bool
     {
-        $token = time() . ':' . wp_generate_uuid4();
+        $token = $this->take();
 
-        if (!$this->take($token)) {
+        if ($token === null) {
             return false;
         }
 
@@ -70,12 +70,26 @@ class DonationTotalsLock
     }
 
     /**
+     * A new token: the time of the write it is made for, and a random part that tells holders apart.
+     * Made again for every write attempt, so a read that stalls cannot leave an old time in the lease.
+     *
      * @since TBD
      */
-    private function take(string $token): bool
+    private function newToken(): string
+    {
+        return time() . ':' . wp_generate_uuid4();
+    }
+
+    /**
+     * The token written when the lock was taken, null when another request holds it.
+     *
+     * @since TBD
+     */
+    private function take(): ?string
     {
         global $wpdb;
 
+        $token = $this->newToken();
         $inserted = DB::query(DB::prepare(
             "INSERT IGNORE INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, %s, 'off')",
             $this->name,
@@ -83,7 +97,7 @@ class DonationTotalsLock
         ));
 
         if ($inserted) {
-            return true;
+            return $token;
         }
 
         $lockedAt = DB::get_var(DB::prepare(
@@ -93,24 +107,28 @@ class DonationTotalsLock
 
         if ($lockedAt === null) {
             // Released between the INSERT IGNORE and this read: insert again, there is no row to update.
-            return (bool)DB::query(DB::prepare(
+            $token = $this->newToken();
+
+            return DB::query(DB::prepare(
                 "INSERT IGNORE INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, %s, 'off')",
                 $this->name,
                 $token
-            ));
+            )) ? $token : null;
         }
 
         if ((int)$lockedAt > time() - $this->expiresAfter) {
-            return false;
+            return null;
         }
 
         // Only one request can change the row from the expired value it read.
+        $token = $this->newToken();
+
         return (int)DB::query(DB::prepare(
             "UPDATE {$wpdb->options} SET option_value = %s WHERE option_name = %s AND option_value = %s",
             $token,
             $this->name,
             (string)$lockedAt
-        )) === 1;
+        )) === 1 ? $token : null;
     }
 
     /**
