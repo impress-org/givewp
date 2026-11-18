@@ -117,6 +117,10 @@ anything from scratch:
 - `fields/` — `Status`, `AssociatedDonor`, `DateTimeLocalField`, `LockedTextInput`
 - `hooks/`, `providers/` (including the Emotion styles provider)
 
+Admin list screens share `src/Views/Components/ListTable/`: `ListTablePage` renders the list through
+`@wordpress/dataviews`, with shared pieces for confirm bodies (`BulkActionConfirm`), empty and error
+states, and a `SetStatusDialog`. See [list-tables.md](list-tables.md#the-react-page-dataviews).
+
 Styling uses the design system foundation tokens rather than hardcoded values — see the Styles
 section of [AGENTS.md](../../AGENTS.md).
 

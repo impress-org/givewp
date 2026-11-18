@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Grey text in the admin list screens, including the text of selected rows, is darker so it meets the 4.5:1 color contrast minimum.
+timestamp: 2026-11-11T20:30:00.000Z

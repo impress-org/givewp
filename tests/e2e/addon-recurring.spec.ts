@@ -1,6 +1,7 @@
 import {expect, test} from '@wordpress/e2e-test-utils-playwright';
 import {donationForm, expectReceipt, fillDonorDetails, payWithTestGateway, waitForForm} from './utils/donation-form';
 import {editForm} from './utils/form';
+import {expectListMounts} from './utils/list-table';
 import {createStandaloneForm} from './utils/standalone-form';
 import {wp} from './utils/wp-cli';
 
@@ -23,9 +24,7 @@ test.describe('Recurring add-on', () => {
     });
 
     test('subscriptions admin page mounts', async ({page, admin}) => {
-        await admin.visitAdminPage('edit.php', 'post_type=give_forms&page=give-subscriptions');
-
-        await expect(page.getByRole('heading', {level: 1, name: 'Subscriptions'})).toBeVisible({timeout: 15_000});
+        await expectListMounts(page, admin, 'post_type=give_forms&page=give-subscriptions', 'Subscriptions');
     });
 
     test('a form with no campaign takes a monthly subscription', async ({page, admin, requestUtils}) => {

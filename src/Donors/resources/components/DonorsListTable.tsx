@@ -1,9 +1,8 @@
 import {__} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
-import {DonorsRowActions} from './DonorsRowActions';
-import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
-import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
-import {Interweave} from 'interweave';
+import {donorsRowActions} from './DonorsRowActions';
+import {FilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
 import './style.scss';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
@@ -38,7 +37,6 @@ const donorsFilters: Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',
-        inlineSize: '14rem',
         text: __('Name, Email, or Donor ID', 'give'),
         ariaLabel: __('Search donors', 'give'),
     },
@@ -47,37 +45,6 @@ const donorsFilters: Array<FilterConfig> = [
         type: 'filterby',
         groupedOptions: filterByOptions,
     }
-];
-
-const donorsBulkActions: Array<BulkActionsConfig> = [
-    {
-        label: __('Delete', 'give'),
-        value: 'delete',
-        type: 'danger',
-        action: async (selected) => {
-            const deleteDonations = document.querySelector('#giveDonorsTableDeleteDonations') as HTMLInputElement;
-            const args = {ids: selected.join(','), deleteDonationsAndRecords: deleteDonations.checked};
-            const response = await API.fetchWithArgs('/delete', args, 'DELETE');
-            return response;
-        },
-        confirm: (selected, names) => (
-            <>
-                <p>{__('Are you sure you want to delete the following donors?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((id, index) => (
-                        <li key={id}>
-                            <Interweave attributes={{className: 'donorBulkModalContent'}} content={names[index]} />
-                        </li>
-                    ))}
-                </ul>
-                <br></br>
-                <label htmlFor="giveDonorsTableDeleteDonations">
-                    <input id="giveDonorsTableDeleteDonations" type="checkbox" defaultChecked={true} />
-                    {__('Delete all associated donations and records', 'give')}
-                </label>
-            </>
-        ),
-    },
 ];
 
 /**
@@ -141,28 +108,24 @@ const statsConfig: Record<string, StatConfig> = {
     },
 };
 
+/**
+ * @since TBD Pass the actions as data.
+ */
 export default function DonorsListTable() {
     return (
         <ListTablePage
             title={__('Donors', 'give')}
             singleName={__('donors', 'give')}
             pluralName={__('donors', 'give')}
-            rowActions={DonorsRowActions}
-            bulkActions={donorsBulkActions}
+            rowActions={donorsRowActions}
             apiSettings={window.GiveDonors}
             filterSettings={donorsFilters}
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={recommendation}
             statsConfig={statsConfig}
         >
-            <button className={`button button-tertiary ${styles.secondaryActionButton}`} onClick={showLegacyDonors}>
-                {__('Switch to Legacy View', 'give')}
-            </button>
+            <SwitchToLegacyViewButton api={API} />
         </ListTablePage>
     );
 }
 
-const showLegacyDonors = async (event) => {
-    await API.fetchWithArgs('/view', {isLegacy: 1});
-    window.location.reload();
-};

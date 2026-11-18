@@ -122,6 +122,27 @@ const legacyScriptsEntry = {
 };
 
 /**
+ * Entries that render an admin list table and load the shared `givewp-list-table` chunk.
+ */
+const LIST_TABLE_ENTRIES = [
+    'campaignListTable',
+    'campaignDetails',
+    'subscriptionDetails',
+    'assets/dist/js/give-admin-donation-forms',
+    'assets/dist/js/give-admin-donations',
+    'assets/dist/js/give-admin-donors',
+    'assets/dist/js/give-admin-event-tickets',
+    'assets/dist/js/give-admin-subscriptions',
+];
+
+/**
+ * Modules that go into the shared list table chunk: DataViews, the packages it bundles, and the
+ * shared list table components.
+ */
+const LIST_TABLE_SHARED_MODULES =
+    /[\\/](node_modules[\\/](@wordpress[\\/](dataviews|icons|primitives)|@ariakit|@floating-ui|date-fns|remove-accents|deepmerge|fast-deep-equal|colord|clsx)|src[\\/]Views[\\/]Components[\\/]ListTable)[\\/]/;
+
+/**
  * Alias
  * @see https://webpack.js.org/configuration/resolve/#resolvealias
  */
@@ -329,6 +350,21 @@ module.exports = {
             ...defaultConfig.optimization.splitChunks,
             cacheGroups: {
                 ...defaultConfig.optimization.splitChunks.cacheGroups,
+                /**
+                 * One shared chunk for the admin list screens: the DataViews engine and the shared
+                 * list table components. Registered by hand in PHP as the `givewp-list-table`
+                 * handle, because dependency extraction writes asset files for entries only.
+                 * Extracted CSS stays with each screen's own stylesheet, so no shared style handle
+                 * is needed.
+                 */
+                listTable: {
+                    name: 'givewp-list-table',
+                    test: (module) =>
+                        module.type !== 'css/mini-extract' &&
+                        LIST_TABLE_SHARED_MODULES.test(module.nameForCondition() || ''),
+                    chunks: (chunk) => LIST_TABLE_ENTRIES.includes(chunk.name),
+                    enforce: true,
+                },
                 style: {
                     ...defaultConfig.optimization.splitChunks.cacheGroups.style,
                     /**

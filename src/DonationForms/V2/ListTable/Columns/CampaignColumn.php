@@ -42,6 +42,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Drop the aria-label so the link is named by its visible text.
      * @since 4.19.0
      *
      * @inheritDoc
@@ -64,9 +65,8 @@ class CampaignColumn extends ModelColumn
         }
 
         return sprintf(
-            '<a href="%s" aria-label="%s" class="campaignLink">%s</a>',
+            '<a href="%s" class="campaignLink">%s</a>',
             admin_url("edit.php?post_type=give_forms&page=give-campaigns&id={$campaign->id}&tab=overview&action=edit"),
-            __('Visit campaign page', 'give'),
             esc_html($campaign->title)
         );
     }

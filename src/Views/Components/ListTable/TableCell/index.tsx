@@ -1,18 +1,9 @@
 import styles from './TableCell.module.scss';
 import cx from 'classnames';
 
-export default function TableCell({className = '', children = null, heading = false, columnId = null}) {
-    if (heading) {
-        return (
-            <th className={cx(styles.tableCell, styles.tableRowHeader, className)} scope="row">
-                {children}
-            </th>
-        );
-    }
-
-    return <td className={cx(styles.tableCell, className)} data-column-id={columnId}>{children}</td>;
-}
-
+/**
+ * @since TBD The table cell component is gone with the old table; the badge stays for confirm lists.
+ */
 export function IdBadge({id, addClass = ''}) {
     return <div className={cx(styles.idBadge, addClass)}>{id}</div>;
 }

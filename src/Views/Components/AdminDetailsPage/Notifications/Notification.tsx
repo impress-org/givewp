@@ -1,3 +1,4 @@
+import {__} from '@wordpress/i18n';
 import {useEffect} from '@wordpress/element';
 import {dispatch} from '@wordpress/data';
 import cx from 'classnames';
@@ -11,12 +12,13 @@ const Snackbar = ({notification, onDismiss}: { notification: Notification, onDis
 
         <div
             className={cx(styles.snackbar, styles[`type-${notification.type}-snackbar`])}
+            role={notification.type === 'error' ? 'alert' : 'status'}
         >
             <div>
                 {typeof notification.content === 'function' ? notification.content(onDismiss, notification) : notification.content}
             </div>
             {notification.isDismissible && (
-                <a href="#" onClick={onDismiss}>
+                <a href="#" onClick={onDismiss} aria-label={__('Dismiss', 'give')}>
                     <CloseIcon />
                 </a>
             )}
@@ -30,12 +32,13 @@ const Notice = ({notification, onDismiss}: { notification: Notification, onDismi
 
         <div
             className={cx(styles.notice, styles[`type-${notification.type}`])}
+            role={notification.type === 'error' ? 'alert' : 'status'}
         >
             <div className={styles.notificationContent}>
                 {typeof notification.content === 'function' ? notification.content(onDismiss, notification) : notification.content}
             </div>
             {notification.isDismissible && (
-                <a href="#" onClick={onDismiss}>
+                <a href="#" onClick={onDismiss} aria-label={__('Dismiss', 'give')}>
                     <CloseIcon />
                 </a>
             )}
@@ -44,6 +47,9 @@ const Notice = ({notification, onDismiss}: { notification: Notification, onDismi
     );
 };
 
+/**
+ * @since TBD Announce notifications to assistive technology and label the dismiss control.
+ */
 export default ({notification}: { notification: Notification }) => {
 
     useEffect(() => {

@@ -1,0 +1,6 @@
+significance: minor
+type: enhancement
+entry: Rebuilt the Give admin list screens on the WordPress list engine, so every list has the same
+  toolbar, removable filter chips, a page size choice, a selection bar with the number of selected rows,
+  row actions in a menu that is always visible, and on-page messages instead of browser alerts.
+timestamp: 2026-10-21T03:30:00.000Z
