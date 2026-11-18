@@ -148,7 +148,10 @@ trait StripeWebhookListenerRepository
      * active before its payment was confirmed back to pending.
      *
      * Only a pending or processing donation is changed, so a redelivered event, or a second failure
-     * event for the same payment, changes nothing.
+     * event for the same payment, adds no second note. The subscription is checked whenever the
+     * first donation is failed: Stripe sends both invoice.payment_failed and
+     * payment_intent.payment_failed for one decline, and the second event finishes the change when
+     * the first one failed the donation but could not save the subscription.
      *
      * @since TBD
      *
@@ -158,15 +161,17 @@ trait StripeWebhookListenerRepository
      */
     protected function handleInitialSubscriptionPaymentFailed(Donation $initialDonation): void
     {
-        if (!$initialDonation->status->isPending() && !$initialDonation->status->isProcessing()) {
-            return;
+        if ($initialDonation->status->isPending() || $initialDonation->status->isProcessing()) {
+            (new UpdateDonationStatus())(
+                $initialDonation,
+                DonationStatus::FAILED(),
+                __('The first subscription payment failed in Stripe.', 'give')
+            );
         }
 
-        (new UpdateDonationStatus())(
-            $initialDonation,
-            DonationStatus::FAILED(),
-            __('The first subscription payment failed in Stripe.', 'give')
-        );
+        if (!$initialDonation->status->isFailed()) {
+            return;
+        }
 
         $subscription = $initialDonation->subscription;
 

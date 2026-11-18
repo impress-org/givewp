@@ -106,6 +106,33 @@ class PaymentIntentFailedTest extends TestCase
     }
 
     /**
+     * An earlier failure event failed the donation but could not save the subscription; this event
+     * finishes the change without adding a second donation note.
+     *
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testShouldMoveActiveSubscriptionToPendingWhenInitialDonationAlreadyFailed()
+    {
+        $subscription = $this->createStripePaymentElementSubscription(
+            SubscriptionStatus::ACTIVE(),
+            DonationStatus::FAILED()
+        );
+        $expectedNoteCount = $subscription->initialDonation()->notes()->count();
+
+        (new PaymentIntentPaymentFailed())->processEvent(
+            $this->createPaymentFailedEvent($subscription->initialDonation())
+        );
+
+        $subscription = Subscription::find($subscription->id);
+
+        $this->assertTrue($subscription->status->isPending());
+        $this->assertTrue($subscription->initialDonation()->status->isFailed());
+        $this->assertSame($expectedNoteCount, $subscription->initialDonation()->notes()->count());
+    }
+
+    /**
      * @since TBD
      */
     private function createPaymentFailedEvent(Donation $donation): Event
