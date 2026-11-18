@@ -18,6 +18,13 @@ use Give\Framework\ListTable\Formatting\MoneyFormatter;
 class CampaignsDataRepository
 {
     /**
+     * How many times a cache fill reads and writes again when a refresh changed the option in between.
+     *
+     * @since TBD
+     */
+    private const STORE_ATTEMPTS = 5;
+
+    /**
      * @var array
      */
     private $amounts;
@@ -164,8 +171,10 @@ class CampaignsDataRepository
      * Adds the rows of newly queried campaigns to the stored cache and returns the result.
      *
      * The stored option is read again from the database just before the write, and only campaigns
-     * it has no row for are added. Writing back the copy read at the start of the request could undo
-     * a refresh that finished while the missing campaigns were queried.
+     * it has no row for are added. The write only succeeds while the option still holds what was
+     * read (a refresh that lands in between changes it), and then the rows are merged again with the
+     * new value, a few times at most. If it keeps changing, the merged rows are returned without
+     * being stored: this request still shows them, and the next one queries them again.
      *
      * @since TBD
      *
@@ -177,11 +186,58 @@ class CampaignsDataRepository
     {
         global $wpdb;
 
-        $stored = DB::get_var(DB::prepare("SELECT option_value FROM {$wpdb->options} WHERE option_name = %s", $option));
-        $cache = array_merge(
-            ['amounts' => [], 'donationsCount' => [], 'donorsCount' => []],
-            $stored === null ? [] : (array)maybe_unserialize($stored)
-        );
+        $cache = [];
+
+        for ($attempt = 0; $attempt < self::STORE_ATTEMPTS; $attempt++) {
+            $stored = DB::get_var(DB::prepare("SELECT option_value FROM {$wpdb->options} WHERE option_name = %s", $option));
+            $cache = self::withNewRows(
+                $stored === null ? [] : (array)maybe_unserialize($stored),
+                $newRows
+            );
+            $serialized = maybe_serialize($cache);
+
+            if ($serialized === $stored) {
+                return $cache;
+            }
+
+            $written = $stored === null
+                ? DB::query(DB::prepare(
+                    "INSERT IGNORE INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, %s, 'off')",
+                    $option,
+                    $serialized
+                ))
+                : DB::query(DB::prepare(
+                    "UPDATE {$wpdb->options} SET option_value = %s WHERE option_name = %s AND option_value = %s",
+                    $serialized,
+                    $option,
+                    $stored
+                ));
+
+            if ((int)$written === 1) {
+                // The raw write skips WordPress's own option caches.
+                wp_cache_delete($option, 'options');
+                wp_cache_delete('alloptions', 'options');
+                wp_cache_delete('notoptions', 'options');
+
+                return $cache;
+            }
+        }
+
+        return $cache;
+    }
+
+    /**
+     * The cache with the rows of the campaigns it has no row for added.
+     *
+     * @since TBD
+     *
+     * @param array<string, array> $newRows rows by cache key
+     *
+     * @return array<string, array>
+     */
+    private static function withNewRows(array $cache, array $newRows): array
+    {
+        $cache = array_merge(['amounts' => [], 'donationsCount' => [], 'donorsCount' => []], $cache);
         $cachedIds = array_map('strval', array_column($cache['donationsCount'], 'campaign_id'));
 
         foreach ($newRows as $key => $rows) {
@@ -191,8 +247,6 @@ class CampaignsDataRepository
                 }
             }
         }
-
-        update_option($option, $cache);
 
         return $cache;
     }
