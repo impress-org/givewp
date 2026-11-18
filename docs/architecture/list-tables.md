@@ -245,7 +245,7 @@ recounts and the CLI command are not registered, because counts from `give_donat
   object cache the transients live there, not in the options table, so Reset Stats does not remove
   them: a total there lasts until its lifetime ends (60 seconds by default, set with `givewp_donation_totals_ttl`). A campaign merge or form migration changes
   neither mode, type nor status, so the counters stay right, and filtered totals catch up within the
-  transient's 60 seconds.
+  transient's lifetime (60 seconds by default).
 
 Filters:
 
@@ -365,7 +365,7 @@ Three more rules from the 1M-donation profiling (SOFT-5634):
   extends `ListDonations` never takes this path, since it may add conditions.
 - **A cached total never picks rows.** An admin must always find the donation they look for, so
   which rows a page returns may not depend on a total that can be outdated (a write that skipped
-  the hooks, or the transient's 60 seconds). The cached total only fills `totalItems` and
+  the hooks, or the transient's lifetime, 60 seconds by default). The cached total only fills `totalItems` and
   `totalPages`. Pages in the first half are read forward with an offset, one row more than the
   page: a short page fixes the total, and a row after a full page raises it, so the pager always
   reaches the last rows even when the cached total is low.
