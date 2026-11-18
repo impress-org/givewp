@@ -99,7 +99,8 @@ class AdditiveContractTest extends TestCase
             $this->assertNotEmpty($schema['columns'], $table);
 
             foreach ($schema['columns'] as $column) {
-                $this->assertSame(['id', 'label', 'sortable', 'visible'], array_keys($column), $table);
+                // "kind" is optional for clients.
+                $this->assertSame(['id', 'label', 'sortable', 'visible', 'kind'], array_keys($column), $table);
             }
         }
     }

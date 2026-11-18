@@ -1,13 +1,22 @@
 import type {ReactElement, ReactNode} from 'react';
 import type {RenderModalProps} from '@wordpress/dataviews';
-import type {StatConfig} from '../ListTableStats/ListTableStats';
 import type ListTableApi from '../api';
 import type {ListTableScreen} from '../state/types';
+import type {ListTableNotice, ListTableRecommendations} from '../notices/types';
 import type {FilterDeclaration, StatusVocabularyEntry} from '../filters/types';
+
+/**
+ * What a column holds, as `ColumnKind` names it on the server. The narrow layout reads it to pick the
+ * card fields of a screen that declares no field roles.
+ *
+ * @since TBD
+ */
+export type ColumnKind = 'money' | 'date' | 'count' | 'text' | 'status';
 
 /**
  * A column of a list table, as `ModelColumn::toArray()` sends it.
  *
+ * @since TBD Add `kind`.
  * @since TBD
  */
 export interface Column {
@@ -15,6 +24,7 @@ export interface Column {
     label: string;
     sortable: boolean;
     visible?: boolean;
+    kind?: ColumnKind;
 }
 
 /**
@@ -226,6 +236,32 @@ export type LegacyRowActionArgs = {
 export type LegacyRowActions = (args: LegacyRowActionArgs) => ReactNode;
 
 /**
+ * One stat tile of a list screen, keyed in `statsConfig` by the key the stats endpoint sends.
+ * The server formats the value, so there is no currency here.
+ *
+ * @since TBD Move here from `ListTableStats`; remove `currency`; add `filter`; `upgrade` also accepts `false`.
+ * @since 4.10.0
+ */
+export type StatConfig = {
+    label: string;
+    /**
+     * The list filter this tile toggles. No `value` makes the tile the "Total" of that filter's
+     * group. Ignored when the screen does not declare the filter, and on an `upgrade` tile.
+     */
+    filter?: {filterId: string; value?: string};
+    /**
+     * Set when the add-on is missing: the tile shows this message and link instead of a number.
+     * `false` means the add-on is active, so the screens can pass `!enabled && {...}`.
+     */
+    upgrade?:
+        | false
+        | {
+              href: string;
+              tooltip: string;
+          };
+};
+
+/**
  * The test-mode switch in the page header, and the badge next to the title while it is on.
  *
  * @since TBD
@@ -238,6 +274,19 @@ export type TestModeToggle = {
 };
 
 /**
+ * "Switch to Legacy View" in the list's "More view options" menu, for a screen that has a legacy screen.
+ *
+ * @since TBD
+ */
+export type LegacyViewSwitch = {
+    /** The accessible name of the menu item, when it should say more than "Switch to Legacy View". */
+    ariaLabel?: string;
+    /** Where to go once the choice is saved. Reloads the page by default. */
+    onSwitched?: () => void;
+};
+
+/**
+ * @since TBD Add `legacyView`.
  * @since TBD Deprecate `filterSettings`; it is mapped onto filter declarations.
  * @since TBD Add `filters`, `scope`, `testModeToggle` and `apiSettings.table.statuses`.
  * @since 2.24.0
@@ -270,7 +319,15 @@ export interface ListTablePageProps {
     filterSettings?: FilterConfig[];
     paymentMode?: boolean;
     listTableBlankSlate: ReactNode;
+    /**
+     * @deprecated Pass `recommendations`. If given, it renders last in the notice area, in its old wrapper.
+     * @since TBD
+     */
     productRecommendation?: ReactNode;
+    /** @since TBD */
+    notices?: ListTableNotice[];
+    /** @since TBD */
+    recommendations?: ListTableRecommendations;
     columnFilters?: Array<ColumnFilterConfig>;
     banner?: () => ReactNode;
     contentMode?: boolean;
@@ -309,6 +366,13 @@ export interface ListTablePageProps {
      * @since TBD
      */
     testModeToggle?: TestModeToggle;
+    /**
+     * Offers "Switch to Legacy View" in the list's "More view options" menu. Only for a screen that
+     * has a legacy screen; never in the page header.
+     *
+     * @since TBD
+     */
+    legacyView?: LegacyViewSwitch;
 }
 
 export interface ListTablePageRef {

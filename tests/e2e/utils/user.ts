@@ -70,3 +70,13 @@ export function isLayoutWrite(request: Request): boolean {
 
     return method.toUpperCase() === 'PUT';
 }
+
+/**
+ * The user id of the admin the suite is signed in as. Read it rather than assume it is 1: a
+ * developer site can sign the suite in as any admin.
+ */
+export async function signedInAdminId(requestUtils: RequestUtils): Promise<number> {
+    const user = (await requestUtils.rest({path: '/wp/v2/users/me'})) as {id: number};
+
+    return Number(user.id);
+}

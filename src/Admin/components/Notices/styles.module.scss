@@ -30,6 +30,13 @@
         }
     }
 
+    .title {
+        margin: 0;
+        font-size: inherit;
+        font-weight: 600;
+        line-height: inherit;
+    }
+
     .dismissButton {
         display: flex;
         align-items: center;

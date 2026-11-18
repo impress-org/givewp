@@ -6,6 +6,7 @@ namespace Give\DonationForms\V2\ListTable\Columns;
 
 use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Models\DonationForm;
+use Give\Framework\ListTable\ColumnKind;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -61,5 +62,32 @@ class DonationCountColumn extends ModelColumn
             '<div class="donationCount"><span>%s</span></div>',
             $totalDonations
         );
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::COUNT;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @param DonationForm $model
+     */
+    public function getRawValue($model)
+    {
+        /**
+         * @var DonationFormDataRepository $donationFormData
+         */
+        $donationFormData = $this->getListTableData();
+
+        return $donationFormData->getDonationsCount($model);
     }
 }

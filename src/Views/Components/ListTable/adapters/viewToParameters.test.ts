@@ -43,18 +43,24 @@ const is = (id: string, value: unknown) => ({field: filterFieldId(id), operator:
 
 describe('viewToParameters', () => {
     it('matches the old request for the default Donations view, without empty values', () => {
-        expect(viewToParameters(view(), donationFilters, {}, {locale: 'en-US', testMode: false})).toEqual({
+        expect(viewToParameters(view(), donationFilters, {}, {testMode: false})).toEqual({
             page: 1,
             perPage: 30,
             sortColumn: 'id',
             sortDirection: 'desc',
-            locale: 'en-US',
             testMode: false,
         });
     });
 
+    it('never sends a locale', () => {
+        // A caller that still passes a locale must not get it sent.
+        const options = {testMode: false, locale: 'pt-BR'};
+
+        expect(viewToParameters(view(), [], {}, options)).not.toHaveProperty('locale');
+    });
+
     it('leaves out an undefined test mode instead of sending "undefined"', () => {
-        expect(viewToParameters(view(), donationFilters, {}, {locale: 'en-US'})).not.toHaveProperty('testMode');
+        expect(viewToParameters(view(), donationFilters, {}, {})).not.toHaveProperty('testMode');
     });
 
     it('reads sort, page, search and filters from the view', () => {
@@ -73,7 +79,7 @@ describe('viewToParameters', () => {
             }),
             donationFilters,
             {},
-            {locale: 'en-US', testMode: true, today: '2026-10-28'}
+            {testMode: true, today: '2026-10-28'}
         );
 
         expect(parameters).toEqual({
@@ -81,7 +87,6 @@ describe('viewToParameters', () => {
             perPage: 50,
             sortColumn: 'amount',
             sortDirection: 'asc',
-            locale: 'en-US',
             testMode: true,
             search: 'jane',
             campaignId: ['4'],
@@ -93,13 +98,13 @@ describe('viewToParameters', () => {
     });
 
     it('merges the table scope into every request', () => {
-        expect(viewToParameters(view(), donationFilters, {campaignId: 7}, {locale: 'en-US'})).toMatchObject({
+        expect(viewToParameters(view(), donationFilters, {campaignId: 7}, {})).toMatchObject({
             campaignId: 7,
         });
     });
 
     it('caps the page size at 100', () => {
-        expect(viewToParameters(view({perPage: 500}), [], {}, {locale: 'en-US'})).toMatchObject({perPage: 100});
+        expect(viewToParameters(view({perPage: 500}), [], {}, {})).toMatchObject({perPage: 100});
     });
 
     it('gives the same parameters for the same view and day', () => {
@@ -108,7 +113,7 @@ describe('viewToParameters', () => {
                 view({filters: [is('date', '30')]}),
                 donationFilters,
                 {},
-                {locale: 'en-US', today: '2026-10-28'}
+                {today: '2026-10-28'}
             );
 
         expect(build()).toEqual(build());
@@ -133,7 +138,7 @@ describe('viewToParameters', () => {
         const {filters} = filterSettingsToDeclarations(settings, false);
 
         it('sends the first select option while the select is not applied, as the old default', () => {
-            expect(viewToParameters(view(), filters, {}, {locale: 'en-US'})).toMatchObject({status: 'any'});
+            expect(viewToParameters(view(), filters, {}, {})).toMatchObject({status: 'any'});
         });
 
         it('sends the old parameter names with the chosen values', () => {
@@ -144,7 +149,7 @@ describe('viewToParameters', () => {
                 }),
                 filters,
                 {},
-                {locale: 'en-US', testMode: true}
+                {testMode: true}
             );
 
             expect(parameters).toMatchObject({campaignId: '4', status: 'active', search: 'jane', testMode: true});
@@ -152,7 +157,7 @@ describe('viewToParameters', () => {
 
         it('sends "No campaign" as none', () => {
             expect(
-                viewToParameters(view({filters: [is('campaignId', 'none')]}), filters, {}, {locale: 'en-US'})
+                viewToParameters(view({filters: [is('campaignId', 'none')]}), filters, {}, {})
             ).toMatchObject({campaignId: 'none'});
         });
     });
@@ -182,8 +187,8 @@ describe('snapPerPage', () => {
     });
 
     it('sends the nearest offered page size in the request', () => {
-        expect(viewToParameters({type: 'table', perPage: 25}, [], {}, {locale: 'en'}).perPage).toBe(20);
-        expect(viewToParameters({type: 'table'}, [], {}, {locale: 'en'}).perPage).toBe(30);
+        expect(viewToParameters({type: 'table', perPage: 25}, [], {}, {}).perPage).toBe(20);
+        expect(viewToParameters({type: 'table'}, [], {}, {}).perPage).toBe(30);
     });
 });
 

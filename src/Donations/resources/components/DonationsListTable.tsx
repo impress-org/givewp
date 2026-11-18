@@ -6,12 +6,10 @@ import {idsOf} from '@givewp/components/ListTable/adapters/idsOf';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import styles from './ListTable.module.scss';
-import {BulkActionsConfig, ListTableRowAction} from '@givewp/components/ListTable/ListTablePage';
-import SwitchToLegacyViewButton from '@givewp/components/ListTable/ListTablePage/SwitchToLegacyViewButton';
+import {BulkActionsConfig, ListTableRowAction, StatConfig} from '@givewp/components/ListTable/ListTablePage';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
-import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
-import {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
-import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
+import type {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
+import type {ListTableRecommendations} from '@givewp/components/ListTable/notices/types';
 import listTableScreen from './listTableScreen';
 import {donationsFilters} from './filters';
 
@@ -28,6 +26,7 @@ declare global {
             recurringDonationsEnabled: boolean;
             pluginUrl: string;
             dismissedRecommendations: Array<string>;
+            canDismissRecommendations?: boolean;
             addonsBulkActions: Array<BulkActionsConfig>;
             donationStatuses: {[statusCode: string]: string};
         };
@@ -39,7 +38,17 @@ const API = new ListTableApi(window.GiveDonations);
 /**
  * The statuses an admin can set from the list, in the order the old "Set To …" actions had.
  */
-const DONATION_STATUSES = ['publish', 'pending', 'processing', 'refunded', 'revoked', 'failed', 'cancelled', 'abandoned', 'preapproval'];
+const DONATION_STATUSES = [
+    'publish',
+    'pending',
+    'processing',
+    'refunded',
+    'revoked',
+    'failed',
+    'cancelled',
+    'abandoned',
+    'preapproval',
+];
 
 /**
  * The Donations actions: the ones shared with the subscription details tab, plus "Set status" and
@@ -121,16 +130,17 @@ const RecommendationConfig: DonationTableRecommendations = {
     },
 };
 
-const rotatingRecommendation = (
-    <ProductRecommendations
-        options={[
-            RecommendationConfig.recurring,
-            RecommendationConfig.feeRecovery,
-            RecommendationConfig.designatedFunds,
-        ]}
-        apiSettings={window.GiveDonations}
-    />
-);
+/**
+ * The recommendation data the notice area rotates through, in this screen's order.
+ *
+ * @since TBD
+ */
+const recommendations: ListTableRecommendations = {
+    options: [RecommendationConfig.recurring, RecommendationConfig.feeRecovery, RecommendationConfig.designatedFunds],
+    dismissed: window.GiveDonations.dismissedRecommendations ?? [],
+    apiNonce: window.GiveDonations.apiNonce,
+    canDismiss: window.GiveDonations.canDismissRecommendations ?? true,
+};
 
 /**
  * Configuration for the statistic tiles rendered above the ListTable.
@@ -147,17 +157,22 @@ const rotatingRecommendation = (
  * then this config must use those same keys: "donationsCount", "oneTimeDonationsCount", "recurringDonationsCount".
  * Missing or mismatched keys will result in empty/undefined values in the UI.
  *
+ * @since TBD Map each tile to the list filter it toggles.
  * @since 4.10.0
  */
 const statsConfig: Record<string, StatConfig> = {
-    donationsCount: { label: __('Total Donations', 'give')},
-    oneTimeDonationsCount: { label: __('One-Time Donations', 'give')},
+    donationsCount: {label: __('Total Donations', 'give'), filter: {filterId: 'donationType'}},
+    oneTimeDonationsCount: {
+        label: __('One-Time Donations', 'give'),
+        filter: {filterId: 'donationType', value: 'one-time'},
+    },
     recurringDonationsCount: {
         label: __('Recurring Donations', 'give'),
+        filter: {filterId: 'donationType', value: 'recurring'},
         upgrade: !window.GiveDonations.recurringDonationsEnabled && {
             href: 'https://docs.givewp.com/recurring-stat',
-            tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
-        }
+            tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give'),
+        },
     },
 };
 
@@ -167,6 +182,8 @@ const statsConfig: Record<string, StatConfig> = {
 const testModeToggle = {label: __('Test', 'give'), ariaLabel: __('View Test Donations', 'give')};
 
 /**
+ * @since TBD Offer "Switch to Legacy View" in the list's view menu, not in the header.
+ * @since TBD Pass the recommendation options as data for the notice area.
  * @since TBD Use the shared filter declarations and the test-mode switch in place of the "Filter by" settings.
  * @since TBD Pass the actions as data, the screen config, and the add-ons' bulk actions (the shared list page no longer reads them).
  * @since 4.10.0 Update button class names and add aria attributes.
@@ -186,14 +203,11 @@ export default function DonationsListTable() {
             testModeToggle={testModeToggle}
             paymentMode={!!window.GiveDonations.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
-            productRecommendation={rotatingRecommendation}
+            recommendations={recommendations}
             statsConfig={statsConfig}
             screen={listTableScreen}
+            legacyView={{ariaLabel: __('Switch to the legacy donations table view', 'give')}}
         >
-            <SwitchToLegacyViewButton
-                api={API}
-                ariaLabel={__('Switch to the legacy donations table view', 'give')}
-            />
             {window.GiveDonations.manualDonations ? (
                 <a
                     className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
@@ -234,4 +248,3 @@ export default function DonationsListTable() {
         </ListTablePage>
     );
 }
-

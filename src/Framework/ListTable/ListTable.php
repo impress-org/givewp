@@ -102,6 +102,7 @@ abstract class ListTable implements Arrayable
     /**
      * Set table items
      *
+     * @since TBD Add the "rawValues" key to rows that have raw values.
      * @since 2.24.0
      *
      * @param array $items
@@ -117,12 +118,22 @@ abstract class ListTable implements Arrayable
 
         foreach ($items as $model) {
             $row = [];
+            $rawValues = [];
 
             foreach ($columns as $column) {
                 if ($column->isUsingListTableData()) {
                     $column->setListTableData($this->getData());
                 }
-                $row[$column::getId()] = $this->safelyGetCellValue($column, $model, $locale);;
+
+                $row[$column::getId()] = $this->safelyGetCellValue($column, $model, $locale, $rawValue);
+
+                if ($rawValue !== null) {
+                    $rawValues[$column::getId()] = $rawValue;
+                }
+            }
+
+            if ($rawValues) {
+                $row['rawValues'] = $rawValues;
             }
 
             $data[] = $row;
@@ -169,13 +180,18 @@ abstract class ListTable implements Arrayable
      * Safely retrieves the cell value for a column. If an exception is thrown, it will be logged and the cell value
      * will be a human-readable error message. This is to prevent fatal errors from breaking the entire table.
      *
+     * @since TBD Read the raw value in the same try, so a throwing column has neither.
      * @since 4.19.0 Catch Throwable so a TypeError from a third-party cell filter costs one cell, not the request.
      * @since 2.24.1
      *
+     * @param mixed $rawValue Set to the column's raw value, or null when it has none.
+     *
      * @return mixed
      */
-    private function safelyGetCellValue(ModelColumn $column, Model $model, string $locale)
+    private function safelyGetCellValue(ModelColumn $column, Model $model, string $locale, &$rawValue = null)
     {
+        $rawValue = null;
+
         try {
             /**
              * @since 3.16.0
@@ -192,6 +208,8 @@ abstract class ListTable implements Arrayable
                 $model,
                 $locale
             );
+
+            $rawValue = $column->getRawValue($model);
         } catch (Throwable $exception) {
             Log::error(
                 sprintf(
@@ -206,6 +224,8 @@ abstract class ListTable implements Arrayable
                     'exception' => $exception->getMessage(),
                 ]
             );
+
+            $rawValue = null;
 
             $cellValue = sprintf(
                 /* translators: %s: URL of the logs page */

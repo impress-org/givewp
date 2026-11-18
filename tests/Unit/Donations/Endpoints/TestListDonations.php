@@ -914,6 +914,8 @@ class TestListDonations extends TestCase
     }
 
     /**
+     * @since TBD Include the raw values of each column.
+     *
      * @param string $sortDirection
      *
      * @return array
@@ -926,8 +928,18 @@ class TestListDonations extends TestCase
         $expectedItems = [];
         foreach ($donations as $donation) {
             $expectedItem = [];
+            $expectedRawValues = [];
             foreach ($columns as $column) {
                 $expectedItem[$column::getId()] = $column->getCellValue($donation, 'en-US');
+                $rawValue = $column->getRawValue($donation);
+
+                if ($rawValue !== null) {
+                    $expectedRawValues[$column::getId()] = $rawValue;
+                }
+            }
+
+            if ($expectedRawValues) {
+                $expectedItem['rawValues'] = $expectedRawValues;
             }
             $expectedItems[] = $expectedItem;
         }

@@ -38,13 +38,31 @@ export type ListTableScreenKey = (typeof LIST_TABLE_SCREEN_KEYS)[number];
 export type ListTableDensity = Density;
 
 /**
+ * Which columns a card shows in the narrow layout (782 px and below). Every other column is hidden
+ * there, and the ID column always shows as a small badge.
+ *
+ * @since TBD
+ */
+export type ListTableFieldRoles = {
+    /** Shown first and large: the card's title. */
+    primary: string;
+    /** Shown right under the title. */
+    description?: string;
+    /** Shown beneath, each with its label, in this order. */
+    secondary: string[];
+};
+
+/**
  * One config object per screen, kept next to the screen. The server column schema is the base; the
  * defaults here only override it.
  *
+ * @since TBD Add `fieldRoles`.
  * @since TBD
  */
 export interface ListTableScreen {
     key: ListTableScreenKey;
+    /** The card fields of the narrow layout. Without them the column kinds pick the fields. */
+    fieldRoles?: ListTableFieldRoles;
     defaults?: {
         /** Default 30, snapped to the offered page sizes. */
         perPage?: number;

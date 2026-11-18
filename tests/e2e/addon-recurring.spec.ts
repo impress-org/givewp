@@ -1,10 +1,17 @@
 import {expect, test} from '@wordpress/e2e-test-utils-playwright';
 import {donationForm, expectReceipt, fillDonorDetails, payWithTestGateway, waitForForm} from './utils/donation-form';
 import {editForm} from './utils/form';
-import {chip, expectListMounts, expectNoBrowserDialogs, popover, visitList} from './utils/list-table';
+import {
+    chip,
+    expectListMounts,
+    expectNoBrowserDialogs,
+    expectStacksOnNarrowScreens,
+    popover,
+    visitList,
+} from './utils/list-table';
 import {createStandaloneForm} from './utils/standalone-form';
 import {resetLayout} from './utils/user';
-import {wp} from './utils/wp-cli';
+import {isPluginActive, wp} from './utils/wp-cli';
 
 /**
  * The Recurring add-on, installed from its latest GitHub release by the E2E workflow.
@@ -103,5 +110,23 @@ test.describe('Subscriptions list filters @recurring', () => {
 
         await expect(first).not.toBeChecked();
         await expect(popover(page).getByRole('checkbox', {checked: true})).toHaveCount(1);
+    });
+});
+
+/**
+ * The Subscriptions list on narrow screens. Like the filters above, this needs Give Recurring active.
+ */
+test.describe('Subscriptions blank slate on narrow screens @recurring', () => {
+    expectNoBrowserDialogs();
+
+    test('blank slate fits 782 px and 375 px with no page overflow', async ({page, admin, requestUtils}) => {
+        test.skip(!isPluginActive(SLUG), 'Give Recurring is not active.');
+
+        // A test site may have no subscriptions, and then shows a blank slate rather than cards.
+        await expectStacksOnNarrowScreens(page, admin, requestUtils, {
+            query: SUBSCRIPTIONS,
+            key: 'subscriptions',
+            hasRecords: false,
+        });
     });
 });

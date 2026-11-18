@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Give\Donors\ListTable\Columns;
 
 use Give\Donors\Models\Donor;
+use Give\Framework\ListTable\ColumnKind;
+use Give\Framework\ListTable\Formatting\MoneyFormatter;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -38,6 +40,7 @@ class DonationRevenueColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Format with the shared money formatter; $locale is kept for add-on filters and no longer used.
      * @since 2.24.0
      *
      * @inheritDoc
@@ -48,7 +51,29 @@ class DonationRevenueColumn extends ModelColumn
     {
         return sprintf(
             '<div class="amount"><span>%s</span></div>',
-            $model->totalAmountDonated->formatToLocale($locale)
+            MoneyFormatter::format($model->totalAmountDonated)
         );
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::MONEY;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @param Donor $model
+     */
+    public function getRawValue($model)
+    {
+        return MoneyFormatter::raw($model->totalAmountDonated);
     }
 }

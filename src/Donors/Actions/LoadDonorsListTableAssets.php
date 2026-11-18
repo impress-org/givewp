@@ -40,6 +40,7 @@ class LoadDonorsListTableAssets
             'adminUrl' => admin_url(),
             'pluginUrl' => GIVE_PLUGIN_URL,
             'dismissedRecommendations' => $this->getDismissedRecommendations(),
+            'canDismissRecommendations' => current_user_can('manage_options'),
             'recurringDonationsEnabled' => Utils::isPluginActive('give-recurring/give-recurring.php'),
         ]);
 

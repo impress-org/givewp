@@ -1,0 +1,4 @@
+significance: minor
+type: enhancement
+entry: Product recommendations and onboarding tips on the list screens now show as notices above the table, and an empty list with only Test Mode changed shows the screen's blank slate.
+timestamp: 2026-11-05T01:20:00.000Z

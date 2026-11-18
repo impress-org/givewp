@@ -143,6 +143,12 @@ use it. The address carries ids
 and enumerated values only. See
 [list-tables.md](list-tables.md#view-state).
 
+**List notices carry product and onboarding text only.** The notices above a list (the daily
+recommendation, onboarding tips such as "Campaign List") come from page config: copy, a link, and
+the site-wide list of dismissed recommendations. A `ListTableNotice` has no field for a record, and
+a new notice must not put a donor's name, an amount or any other record value in its text. See
+[list-tables.md](list-tables.md#notices).
+
 **Admin and public localization are separate classes on purpose.** Campaigns has
 `LoadCampaignAdminOptions` and `LoadCampaignPublicOptions`, and the public one is deliberately
 minimal — currency and an `isAdmin` flag. Don't merge them, and don't add a field to the public one
@@ -176,6 +182,13 @@ only the donor id and the `name` column, so an option can never carry an email, 
 and a donor filter is sent to the list as an id, not as a name or an email. The route needs a
 signed-in user with the list screen's view capability (or the donor view capability without a
 screen). The campaign and form sources work the same way with their title columns.
+
+**List stats return aggregates only.** The Donations, Donors and Subscriptions stats endpoints
+return counts and totals, and a `formatted` map with the display text of those same numbers. No
+row, name or email is in the response, and a stat tile shows nothing else. Keep it that way when
+adding a tile: a figure about one donor is a record, not a statistic. Row `rawValues` (unformatted
+money and dates) go out with the row they belong to, through the same list endpoint and its
+permission check.
 
 **The status vocabulary is configuration.** `table.statuses` (status values, translated labels and
 which ones the filter offers) is localized with the column schema. It holds no record.
