@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners;
 
 use Exception;
+use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Stripe\Event;
 use Stripe\Invoice;
@@ -39,6 +40,7 @@ class InvoicePaymentFailed
     }
 
     /**
+     * @since TBD Fail the first donation when the invoice that creates the subscription is not paid.
      * @since 4.8.0 Add support for Stripe API version 2025-03-31.basil and later versions
      * @since 3.0.4 Return a bool value.
      * @since 3.0.0
@@ -58,6 +60,17 @@ class InvoicePaymentFailed
             return false;
         }
 
+        /*
+         * Stripe does not retry the first invoice of a subscription created with
+         * payment_behavior=default_incomplete, so next_payment_attempt is null and the renewal
+         * branch below never matches it.
+         */
+        if ($invoice->billing_reason === 'subscription_create') {
+            $this->handleFirstInvoicePaymentFailed($subscription, $invoice);
+
+            return true;
+        }
+
         if (
             $invoice->attempted &&
             !$invoice->paid &&
@@ -70,6 +83,34 @@ class InvoicePaymentFailed
         }
 
         return true;
+    }
+
+    /**
+     * Fail the first donation of a subscription whose first invoice was not paid.
+     *
+     * The invoice is fetched from Stripe first, because the payload the Give Recurring add-on passes
+     * on is not re-fetched.
+     *
+     * @since TBD
+     *
+     * @param Subscription $subscription The GiveWP subscription the invoice belongs to
+     * @param Invoice $invoice The invoice from the webhook payload
+     *
+     * @throws Exception
+     */
+    protected function handleFirstInvoicePaymentFailed(Subscription $subscription, Invoice $invoice): void
+    {
+        $invoice = $this->getCompleteInvoiceFromStripe($invoice->id, $subscription->donationFormId);
+
+        if ($invoice->billing_reason !== 'subscription_create' || $invoice->status === 'paid') {
+            return;
+        }
+
+        $initialDonation = $subscription->initialDonation();
+
+        if ($initialDonation) {
+            $this->handleInitialSubscriptionPaymentFailed($initialDonation);
+        }
     }
 
     /**

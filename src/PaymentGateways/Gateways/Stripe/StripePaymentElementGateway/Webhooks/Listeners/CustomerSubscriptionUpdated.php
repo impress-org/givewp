@@ -3,6 +3,10 @@
 namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners;
 
 use Exception;
+use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateDonationStatus;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateSubscriptionStatus;
+use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Stripe\Event;
 use Stripe\Subscription as StripeSubscription;
@@ -46,6 +50,7 @@ class CustomerSubscriptionUpdated
     }
 
     /**
+     * @since TBD Activate a pending subscription, and cancel one that Stripe expired before its first payment.
      * @since 4.16.7
      * @throws Exception
      */
@@ -61,16 +66,71 @@ class CustomerSubscriptionUpdated
             return false;
         }
 
-        // When Stripe reports the subscription as active but GiveWP still has it as failing or
-        // paused, the subscription was recovered (e.g. the donor updated their payment method).
+        if ($stripeSubscription->status === 'incomplete_expired') {
+            $this->handleIncompleteSubscriptionExpired($subscription);
+
+            return true;
+        }
+
+        /*
+         * When Stripe reports the subscription as active but GiveWP still has it as failing or
+         * paused, the subscription was recovered (e.g. the donor updated their payment method).
+         * A pending subscription that Stripe reports as active has had its first payment succeed.
+         */
         if (
             $stripeSubscription->status === 'active' &&
-            ($subscription->status->isFailing() || $subscription->status->isPaused())
+            (
+                $subscription->status->isFailing() ||
+                $subscription->status->isPaused() ||
+                $subscription->status->isPending()
+            )
         ) {
             $subscription->status = SubscriptionStatus::ACTIVE();
             $subscription->save();
         }
 
         return true;
+    }
+
+    /**
+     * Fail the unpaid first donation and cancel the subscription once Stripe confirms it expired.
+     *
+     * Stripe sends no customer.subscription.deleted event for incomplete_expired, so the
+     * cancellation happens here. The gateway's cancelSubscription() is not called, because the
+     * Stripe subscription can no longer be changed. The subscription is fetched from Stripe first,
+     * because the payload the Give Recurring add-on passes on is not re-fetched.
+     *
+     * @since TBD
+     *
+     * @param Subscription $subscription The GiveWP subscription Stripe expired
+     *
+     * @throws Exception
+     */
+    protected function handleIncompleteSubscriptionExpired(Subscription $subscription): void
+    {
+        $stripeSubscription = $this->getStripeSubscriptionFromStripe(
+            $subscription->gatewaySubscriptionId,
+            $subscription->donationFormId
+        );
+
+        if ($stripeSubscription->status !== 'incomplete_expired') {
+            return;
+        }
+
+        $message = __('Stripe expired the subscription because its first payment was not completed.', 'give');
+
+        $initialDonation = $subscription->initialDonation();
+
+        /*
+         * The first donation is marked failed before the subscription is cancelled, because the
+         * cancellation emails in the Give Recurring add-on check the first donation's status.
+         */
+        if ($initialDonation && ($initialDonation->status->isPending() || $initialDonation->status->isProcessing())) {
+            (new UpdateDonationStatus())($initialDonation, DonationStatus::FAILED(), $message);
+        }
+
+        if ($subscription->status->isPending() || $subscription->status->isActive()) {
+            (new UpdateSubscriptionStatus())($subscription, SubscriptionStatus::CANCELLED(), $message);
+        }
     }
 }

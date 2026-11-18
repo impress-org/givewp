@@ -4,12 +4,17 @@ namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webho
 
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateDonationStatus;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateSubscriptionStatus;
 use Give\Log\Log;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Stripe\Event;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Invoice;
+use Stripe\Subscription as StripeSubscription;
 
 trait StripeWebhookListenerRepository
 {
@@ -86,6 +91,7 @@ trait StripeWebhookListenerRepository
      *
      * For Stripe Connect accounts, we need to pass the connected account ID to retrieve the invoice from the correct account, not the platform account.
      *
+     * @since TBD Read the request options from getStripeRequestOptions().
      * @since 4.19.1 Escape exception message.
      * @since 4.15.3 Added support for using a secret key when retrieving invoices for non-default accounts
      * 4.14.1 Added $formId parameter and stripe_account option for Stripe Connect support
@@ -98,21 +104,7 @@ trait StripeWebhookListenerRepository
     protected function getCompleteInvoiceFromStripe(string $invoiceId, ?int $formId = null): Invoice
     {
         try {
-            $options = [];
-
-            if ($formId) {
-                $connectedAccountId = give_stripe_get_connected_account_id($formId);
-                if (!empty($connectedAccountId)) {
-                    $options = ['stripe_account' => $connectedAccountId];
-                }
-
-                $secretKey = give_stripe_get_secret_key($formId);
-                if (!empty($secretKey)) {
-                    $options['api_key'] = $secretKey;
-                }
-            }
-
-            return \Stripe\Invoice::retrieve($invoiceId, $options);
+            return \Stripe\Invoice::retrieve($invoiceId, $this->getStripeRequestOptions($formId));
         } catch (ApiErrorException $exception) {
             throw new Exception(
                 sprintf(
@@ -122,5 +114,96 @@ trait StripeWebhookListenerRepository
                 )
             );
         }
+    }
+
+    /**
+     * Retrieve a subscription from the Stripe API, so the status a webhook payload reports can be
+     * confirmed before GiveWP acts on it.
+     *
+     * @since TBD
+     *
+     * @param string $subscriptionId The Stripe subscription ID
+     * @param int|null $formId Form ID to determine the connected account
+     *
+     * @return StripeSubscription The subscription as Stripe currently holds it
+     * @throws Exception If the API call fails
+     */
+    protected function getStripeSubscriptionFromStripe(string $subscriptionId, ?int $formId = null): StripeSubscription
+    {
+        try {
+            return StripeSubscription::retrieve($subscriptionId, $this->getStripeRequestOptions($formId));
+        } catch (ApiErrorException $exception) {
+            throw new Exception(
+                sprintf(
+                    'Failed to retrieve subscription %s: %s',
+                    esc_html($subscriptionId),
+                    $exception->getMessage() // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by CustomerSubscriptionUpdated and only logged via Log::error(), never displayed.
+                )
+            );
+        }
+    }
+
+    /**
+     * Mark the first donation of a subscription as failed, and move a subscription that was set to
+     * active before its payment was confirmed back to pending.
+     *
+     * Only a pending or processing donation is changed, so a redelivered event, or a second failure
+     * event for the same payment, changes nothing.
+     *
+     * @since TBD
+     *
+     * @param Donation $initialDonation The first donation of the subscription
+     *
+     * @throws Exception
+     */
+    protected function handleInitialSubscriptionPaymentFailed(Donation $initialDonation): void
+    {
+        if (!$initialDonation->status->isPending() && !$initialDonation->status->isProcessing()) {
+            return;
+        }
+
+        (new UpdateDonationStatus())(
+            $initialDonation,
+            DonationStatus::FAILED(),
+            __('The first subscription payment failed in Stripe.', 'give')
+        );
+
+        $subscription = $initialDonation->subscription;
+
+        if ($subscription && $subscription->status->isActive()) {
+            (new UpdateSubscriptionStatus())(
+                $subscription,
+                SubscriptionStatus::PENDING(),
+                __('The subscription was moved to pending because its first payment failed in Stripe.', 'give')
+            );
+        }
+    }
+
+    /**
+     * Build the options for a Stripe API request made with the account the form uses.
+     *
+     * @since TBD
+     *
+     * @param int|null $formId Form ID to determine the connected account
+     *
+     * @return array{stripe_account?: string, api_key?: string} The form's connected account and secret key, if set
+     */
+    protected function getStripeRequestOptions(?int $formId = null): array
+    {
+        $options = [];
+
+        if ($formId) {
+            $connectedAccountId = give_stripe_get_connected_account_id($formId);
+            if ($connectedAccountId) {
+                $options = ['stripe_account' => $connectedAccountId];
+            }
+
+            $secretKey = give_stripe_get_secret_key($formId);
+            if ($secretKey) {
+                $options['api_key'] = $secretKey;
+            }
+        }
+
+        return $options;
     }
 }
