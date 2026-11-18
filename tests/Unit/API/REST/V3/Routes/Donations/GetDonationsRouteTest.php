@@ -767,8 +767,8 @@ class GetDonationsRouteTest extends RestApiTestCase
     {
         Donation::query()->delete();
 
-        Donation::factory()->count(3)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE()]);
-        Donation::factory()->count(2)->create(['status' => DonationStatus::PENDING(), 'mode' => DonationMode::LIVE()]);
+        Donation::factory()->count(3)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE(), 'anonymous' => false]);
+        Donation::factory()->count(2)->create(['status' => DonationStatus::PENDING(), 'mode' => DonationMode::LIVE(), 'anonymous' => false]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
         $request = $this->createRequest(WP_REST_Server::READABLE, $route);
