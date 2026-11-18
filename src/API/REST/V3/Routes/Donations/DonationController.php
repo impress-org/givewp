@@ -220,7 +220,7 @@ class DonationController extends WP_REST_Controller
             );
         }, $donations);
 
-        $totalDonations = empty($donations) ? 0 : $this->countDonations($request, $donationAnonymousMode);
+        $totalDonations = $this->countDonations($request, $donationAnonymousMode);
         $totalPages = (int)ceil($totalDonations / $perPage);
 
         $response = rest_ensure_response($donations);

@@ -779,6 +779,16 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(3, $headers['X-WP-Total']);
         $this->assertEquals(2, $headers['X-WP-TotalPages']);
+
+        // A page past the end is empty, but the totals still describe the filtered set.
+        $request->set_query_params(['page' => 9, 'per_page' => 2, 'status' => ['publish']]);
+
+        $response = $this->dispatchRequest($request);
+        $headers = $response->get_headers();
+
+        $this->assertEquals([], $response->get_data());
+        $this->assertEquals(3, $headers['X-WP-Total']);
+        $this->assertEquals(2, $headers['X-WP-TotalPages']);
     }
 
     /**
