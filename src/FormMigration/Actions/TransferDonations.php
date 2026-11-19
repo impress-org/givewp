@@ -3,6 +3,8 @@
 namespace Give\FormMigration\Actions;
 
 use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\Donations\Repositories\DonationTableRepository;
+use Give\Donations\Storage\DonationStorageFlag;
 use Give\Framework\Database\DB;
 
 class TransferDonations
@@ -24,6 +26,9 @@ class TransferDonations
         $this->__invoke($destinationId);
     }
 
+    /**
+     * @since TBD Move the donations in the give_donations table as well.
+     */
     public function __invoke($destinationId)
     {
         DB::transaction(function() use ($destinationId) {
@@ -37,6 +42,13 @@ class TransferDonations
                 ->where('meta_key', '_give_payment_form_id')
                 ->where('meta_value', $this->sourceId)
                 ->update(['meta_value' => $destinationId]); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Column name in an update of the donation meta table, not a query filter.
+
+            // Bypasses the meta hooks, so the donations table is moved here too.
+            if (!DonationStorageFlag::get()->isPosts()) {
+                DB::table(DonationTableRepository::TABLE)
+                    ->where('form_id', $this->sourceId)
+                    ->update(['form_id' => $destinationId]);
+            }
 
             DB::table('give_revenue')
                 ->where('form_id', $this->sourceId)

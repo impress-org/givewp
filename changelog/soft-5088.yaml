@@ -1,0 +1,4 @@
+significance: minor
+type: feature
+entry: Added a daily check that reports whether the existing donation records and the new donations storage table agree, listing any donations that differ.
+timestamp: 2026-10-20T18:00:00.000Z

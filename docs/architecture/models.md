@@ -119,6 +119,45 @@ Practically, for new work:
   Every write that goes through the repository is one more event the model hooks can see, which is
   how coverage improves.
 
+## Donation storage: the `give_donations` table
+
+While Phase 1 is on, donations live in two places: the `give_payment` posts with their meta,
+which stay authoritative for reads, and the `give_donations` table, kept in step with every
+write. One option says which is authoritative (`posts`, `syncing`, `table`). It only moves
+forward; `table` can fall back to `syncing`, never to `posts`.
+
+What the code does not tell you:
+
+- **One mapping, from the model to the row.** `DonationTableRepository` is the only thing that
+  writes rows, and only from a `Donation`. `DonationRepository` calls it inside its own
+  transaction, so a failed table write rolls the donation back. Everything else (legacy
+  functions, the importer, add-on meta writes) is caught by post and meta hooks, queued, loaded
+  through the model once per request, and handed to the same five verbs. Never add a second
+  way to build a row, and never make a raw-row method public: every public method on that
+  repository is add-on API the day it ships.
+- **Bulk SQL on donation storage must be mirrored by hand.** A bulk `UPDATE` or `DELETE` on
+  `give_donationmeta` or `wp_posts` bypasses both paths. Campaign merge, form transfer and Reset
+  Stats each carry a matching statement behind the storage flag, because the table may not exist
+  while the flag is `posts`; a new one needs the same, plus a test in
+  `tests/Unit/Donations/Storage`.
+- **`post_status` is overloaded, and the model is the decoder.** `give_subscription` means
+  complete plus renewal, a status the model does not know reads as pending, and the type comes
+  from subscription meta. The table stores what the model reads, never the raw post value, so
+  anything that writes rows loads the model first. The drift check's SQL mirrors the model's
+  hydration rules; change them in both places.
+- **Duplicate meta rows exist.** Legacy `add_meta()` is not unique. Everything that reads meta for
+  the table takes the lowest `meta_id`, which is what `get_metadata()` returns; the drift check
+  must do the same or it reports ghosts.
+- **The table's shape is deliberate.** `id` is the post ID with no `AUTO_INCREMENT`, so there is
+  one ID space. The intended-amount columns are generated and signed, because a total can be
+  edited below its fee. `sequential_number` is indexed but not unique: the upsert is
+  `ON DUPLICATE KEY UPDATE`, and a second unique key could merge two donations. `dbDelta()`
+  cannot parse generated columns, so the migration is raw SQL.
+
+The daily drift check never corrects. It stores its last report in an option and logs a warning
+when anything differs; until the migration screen exists, that log and the WP-CLI command are
+the only places to see it.
+
 ## Checklist
 
 - Listening for a donation/donor/subscription event? Model hook by default; legacy hook only if you
