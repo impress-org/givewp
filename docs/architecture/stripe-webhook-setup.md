@@ -57,7 +57,8 @@ The modal lists only endpoints whose URL has a `give-listener` query argument
 (`WebhookTarget::onlyListeners()`), whichever site they deliver to, so an admin cannot edit an endpoint
 that belongs to another application on the same Stripe account. Other endpoints still count toward
 Stripe's limit of 16 per account, so the create check counts the unfiltered list. The `update`
-and `delete` operations do not apply the filter.
+and `delete` operations look the endpoint up in the filtered list and answer "The webhook endpoint was
+not found." for a hidden endpoint id; `delete` makes one extra list call for that.
 
 The modal also shows a warning notice when the account has endpoints and none of them sends events to
 this site's listener URL, and with zero endpoints the add form renders expanded with an

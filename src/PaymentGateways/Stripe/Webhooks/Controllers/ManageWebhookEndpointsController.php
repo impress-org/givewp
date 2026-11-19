@@ -292,7 +292,7 @@ final class ManageWebhookEndpointsController
             return $this->notice('error', __('Enter a valid URL.', 'give'));
         }
 
-        $existing = $this->find(($this->listEndpoints)($account, $mode), $endpointId);
+        $existing = $this->find($this->target->onlyListeners(($this->listEndpoints)($account, $mode)), $endpointId);
 
         if (!$existing) {
             return $this->notice('error', __('The webhook endpoint was not found.', 'give'));
@@ -331,6 +331,11 @@ final class ManageWebhookEndpointsController
     private function delete(AccountDetail $account, string $mode): array
     {
         $endpointId = $this->input('endpoint_id');
+
+        /* The list hides endpoints that are not GiveWP's, so the request cannot delete one either. */
+        if (!$this->find($this->target->onlyListeners(($this->listEndpoints)($account, $mode)), $endpointId)) {
+            return $this->notice('error', __('The webhook endpoint was not found.', 'give'));
+        }
 
         ($this->deleteEndpoint)($account, $mode, $endpointId);
 

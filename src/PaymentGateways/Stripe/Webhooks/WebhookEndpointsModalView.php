@@ -73,7 +73,13 @@ final class WebhookEndpointsModalView
 
             <?php if (!$endpoints) : ?>
                 <p class="give-stripe-webhooks__empty">
-                    <?php esc_html_e('This account has no webhook endpoints.', 'give'); ?>
+                    <?php
+                    echo esc_html(
+                        $accountTotal
+                            ? __('This account has no GiveWP webhook endpoints.', 'give')
+                            : __('This account has no webhook endpoints.', 'give')
+                    );
+                    ?>
                     <?php esc_html_e('GiveWP needs an endpoint pointing to this site to receive donation notifications.', 'give'); ?>
                 </p>
             <?php endif; ?>
