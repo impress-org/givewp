@@ -33,11 +33,14 @@ final class WebhookEndpointsModalView
     /**
      * @since TBD
      *
-     * @param WebhookEndpointDto[]                 $endpoints
-     * @param array{level: string, message: string} $notice   Result of the last action; empty for none.
+     * @param WebhookEndpointDto[]                 $endpoints    The endpoints to list.
+     * @param array{level: string, message: string} $notice       Result of the last action; empty for none.
+     * @param int|null                              $accountTotal Every endpoint on the account, listed or not. Defaults
+     *                                                            to the number of listed endpoints.
      */
-    public function render(array $endpoints, string $mode, array $notice = []): string
+    public function render(array $endpoints, string $mode, array $notice = [], ?int $accountTotal = null): string
     {
+        $accountTotal = $accountTotal ?? count($endpoints);
         $hasSiteEndpoint = false;
 
         foreach ($endpoints as $endpoint) {
@@ -61,7 +64,7 @@ final class WebhookEndpointsModalView
                 echo esc_html(sprintf(
                     /* translators: 1: Number of webhook endpoints. 2: Maximum number of webhook endpoints. 3: "live mode" or "test mode". */
                     __('%1$d of %2$d endpoints on this account (%3$s).', 'give'),
-                    count($endpoints),
+                    $accountTotal,
                     WebhookTarget::MAX_ENDPOINTS_PER_ACCOUNT,
                     'live' === $mode ? __('live mode', 'give') : __('test mode', 'give')
                 ));
@@ -70,7 +73,13 @@ final class WebhookEndpointsModalView
 
             <?php if (!$endpoints) : ?>
                 <p class="give-stripe-webhooks__empty">
-                    <?php esc_html_e('This account has no webhook endpoints.', 'give'); ?>
+                    <?php
+                    echo esc_html(
+                        $accountTotal
+                            ? __('This account has no GiveWP webhook endpoints.', 'give')
+                            : __('This account has no webhook endpoints.', 'give')
+                    );
+                    ?>
                     <?php esc_html_e('GiveWP needs an endpoint pointing to this site to receive donation notifications.', 'give'); ?>
                 </p>
             <?php endif; ?>
@@ -81,7 +90,7 @@ final class WebhookEndpointsModalView
                 <?php endforeach; ?>
             </ul>
 
-            <?php echo $this->createForm(count($endpoints), !$endpoints); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Markup from a private method that escapes where it builds it. ?>
+            <?php echo $this->createForm($accountTotal, !$endpoints); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Markup from a private method that escapes where it builds it. ?>
         </div>
         <?php
 

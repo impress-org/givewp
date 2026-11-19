@@ -164,8 +164,15 @@ final class ManageWebhookEndpointsController
             ]);
         }
 
+        /*
+         * Only GiveWP listener endpoints are shown, and the health state is computed from that list. The account
+         * total still counts every endpoint, because Stripe's limit does.
+         */
+        $accountTotal = count($endpoints);
+        $endpoints = $this->target->onlyListeners($endpoints);
+
         wp_send_json_success([
-            'html' => $this->view->render($endpoints, $mode, $notice),
+            'html' => $this->view->render($endpoints, $mode, $notice, $accountTotal),
             'state' => $this->checkHealth->fromEndpoints($endpoints)->getValue(),
         ]);
     }
@@ -285,7 +292,7 @@ final class ManageWebhookEndpointsController
             return $this->notice('error', __('Enter a valid URL.', 'give'));
         }
 
-        $existing = $this->find(($this->listEndpoints)($account, $mode), $endpointId);
+        $existing = $this->find($this->target->onlyListeners(($this->listEndpoints)($account, $mode)), $endpointId);
 
         if (!$existing) {
             return $this->notice('error', __('The webhook endpoint was not found.', 'give'));
@@ -324,6 +331,11 @@ final class ManageWebhookEndpointsController
     private function delete(AccountDetail $account, string $mode): array
     {
         $endpointId = $this->input('endpoint_id');
+
+        /* The list hides endpoints that are not GiveWP's, so the request cannot delete one either. */
+        if (!$this->find($this->target->onlyListeners(($this->listEndpoints)($account, $mode)), $endpointId)) {
+            return $this->notice('error', __('The webhook endpoint was not found.', 'give'));
+        }
 
         ($this->deleteEndpoint)($account, $mode, $endpointId);
 

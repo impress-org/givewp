@@ -234,6 +234,47 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     /**
      * @since TBD
      */
+    public function testListOmitsEndpointsWithoutTheListenerArgument(): void
+    {
+        $account = $this->makeAccount();
+        $foreign = $this->endpointBody(['id' => 'we_foreign', 'url' => 'https://webhook.site/abc']);
+        $this->saveAccounts($account);
+        $this->stripe->queue(200, $this->listBody([$this->siteEndpoint(), $foreign]));
+
+        $response = $this->callController('list', ['account' => $account->accountSlug]);
+
+        $this->assertTrue($response['success']);
+        $this->assertStringNotContainsString('we_foreign', $response['data']['html']);
+        $this->assertStringNotContainsString('webhook.site', $response['data']['html']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testListCountsHiddenEndpointsTowardTheAccountLimit(): void
+    {
+        $account = $this->makeAccount();
+        $foreign = [];
+
+        for ($i = 0; $i < WebhookTarget::MAX_ENDPOINTS_PER_ACCOUNT - 1; $i++) {
+            $foreign[] = $this->endpointBody(['id' => 'we_foreign_' . $i, 'url' => 'https://hooks.example.com/' . $i]);
+        }
+
+        $this->saveAccounts($account);
+        $this->stripe->queue(200, $this->listBody(array_merge([$this->siteEndpoint()], $foreign)));
+
+        $response = $this->callController('list', ['account' => $account->accountSlug]);
+
+        $this->assertStringContainsString(
+            sprintf('%1$d of %1$d endpoints', WebhookTarget::MAX_ENDPOINTS_PER_ACCOUNT),
+            $response['data']['html']
+        );
+        $this->assertStringContainsString('has the maximum of', $response['data']['html']);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testListLabelsTheSubmitButtonOfTheCollapsedFormDifferentlyFromItsToggle(): void
     {
         $account = $this->makeAccount();
@@ -493,7 +534,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     {
         $account = $this->makeAccount();
         $this->saveAccounts($account);
-        $url = 'https://hooks.example.com/x?token=a%2Bb%3D';
+        $url = 'https://hooks.example.com/x?give-listener=stripe&token=a%2Bb%3D';
         $existing = $this->endpointBody(['id' => 'we_other', 'url' => $url]);
         $this->stripe->queue(200, $this->listBody([$existing]));
         $this->stripe->queue(200, $this->endpointBody(['id' => 'we_other', 'url' => $url, 'status' => 'disabled']));
@@ -604,10 +645,71 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     /**
      * @since TBD
      */
+    public function testUpdateAnswersWithANotFoundNoticeForAHiddenEndpoint(): void
+    {
+        $account = $this->makeAccount();
+        $this->saveAccounts($account);
+        $foreign = $this->endpointBody(['id' => 'we_foreign', 'url' => 'https://webhook.site/abc']);
+        $this->stripe->queue(200, $this->listBody([$foreign]));
+        $this->stripe->queue(200, $this->listBody([$foreign]));
+
+        $response = $this->callController('update', [
+            'account' => $account->accountSlug,
+            'endpoint_id' => 'we_foreign',
+            'url' => 'https://example.com/?give-listener=stripe',
+            'events' => ['charge.refunded'],
+        ]);
+
+        $this->assertSame(['get', 'get'], array_column($this->stripe->requests, 'method'));
+        $this->assertStringContainsString('The webhook endpoint was not found.', $response['data']['html']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDeleteAnswersWithANotFoundNoticeForAHiddenEndpoint(): void
+    {
+        $account = $this->makeAccount();
+        $this->saveAccounts($account);
+        $foreign = $this->endpointBody(['id' => 'we_foreign', 'url' => 'https://webhook.site/abc']);
+        $this->stripe->queue(200, $this->listBody([$foreign]));
+        $this->stripe->queue(200, $this->listBody([$foreign]));
+
+        $response = $this->callController('delete', [
+            'account' => $account->accountSlug,
+            'endpoint_id' => 'we_foreign',
+        ]);
+
+        $this->assertSame(['get', 'get'], array_column($this->stripe->requests, 'method'));
+        $this->assertStringContainsString('The webhook endpoint was not found.', $response['data']['html']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testListSaysThereAreNoGiveWpEndpointsWhenOnlyOtherEndpointsExist(): void
+    {
+        $account = $this->makeAccount();
+        $this->saveAccounts($account);
+        $this->stripe->queue(
+            200,
+            $this->listBody([$this->endpointBody(['id' => 'we_foreign', 'url' => 'https://webhook.site/abc'])])
+        );
+
+        $response = $this->callController('list', ['account' => $account->accountSlug]);
+
+        $this->assertStringContainsString('1 of 16 endpoints', $response['data']['html']);
+        $this->assertStringContainsString('This account has no GiveWP webhook endpoints.', $response['data']['html']);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testDeleteRemovesTheEndpointAndAnswersWithTheRefreshedList(): void
     {
         $account = $this->makeAccount();
         $this->saveAccounts($account);
+        $this->stripe->queue(200, $this->listBody([$this->endpointBody(['id' => 'we_123'])]));
         $this->stripe->queue(200, ['id' => 'we_123', 'object' => 'webhook_endpoint', 'deleted' => true]);
         $this->stripe->queue(200, $this->listBody([]));
 
@@ -617,8 +719,8 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
         ]);
 
         $this->assertTrue($response['success']);
-        $this->assertSame(['delete', 'get'], array_column($this->stripe->requests, 'method'));
-        $this->assertStringEndsWith('/v1/webhook_endpoints/we_123', $this->stripe->requests[0]['absUrl']);
+        $this->assertSame(['get', 'delete', 'get'], array_column($this->stripe->requests, 'method'));
+        $this->assertStringEndsWith('/v1/webhook_endpoints/we_123', $this->stripe->requests[1]['absUrl']);
         $this->assertSame(WebhookHealthStatus::MISSING, $response['data']['state']);
         $this->assertStringContainsString('Webhook endpoint deleted.', $response['data']['html']);
         $this->assertStringContainsString('This account has no webhook endpoints.', $response['data']['html']);
@@ -684,7 +786,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
             'delete' => [
                 'delete',
                 ['endpoint_id' => 'we_123'],
-                [],
+                [$this->listBody([$existing])],
             ],
         ];
     }
@@ -697,6 +799,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
         $account = $this->makeAccount();
         $this->saveAccounts($account);
         $this->stripe->queue(200, $this->listBody([]));
+        $this->stripe->queue(200, $this->listBody([]));
 
         $response = $this->callController('delete', [
             'account' => $account->accountSlug,
@@ -704,7 +807,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
         ]);
 
         $this->assertTrue($response['success']);
-        $this->assertSame(['get'], array_column($this->stripe->requests, 'method'));
+        $this->assertSame(['get', 'get'], array_column($this->stripe->requests, 'method'));
         $this->assertStringContainsString('give-stripe-webhooks__notice--error', $response['data']['html']);
     }
 
