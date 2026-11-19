@@ -1,0 +1,5 @@
+significance: patch
+type: security
+entry: Added additional protection to the admin requests that load the donation
+  form text editor and the donation level dropdown. Reported by Santh.
+timestamp: 2026-11-19T16:48:20.871Z
