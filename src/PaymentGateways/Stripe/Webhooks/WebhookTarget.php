@@ -103,6 +103,27 @@ final class WebhookTarget
     }
 
     /**
+     * The endpoints whose URL carries the give-listener query argument, whichever site they deliver to.
+     *
+     * Endpoints that GiveWP did not create, such as those of other applications on the same Stripe account,
+     * are left out.
+     *
+     * @since TBD
+     *
+     * @param WebhookEndpointDto[] $endpoints
+     *
+     * @return WebhookEndpointDto[]
+     */
+    public function onlyListeners(array $endpoints): array
+    {
+        return array_values(
+            array_filter($endpoints, function (WebhookEndpointDto $endpoint) {
+                return $this->hasListenerArg($endpoint->url);
+            })
+        );
+    }
+
+    /**
      * The endpoint on the list that delivers to this site, preferring one that is enabled and complete.
      *
      * @since TBD
@@ -157,6 +178,22 @@ final class WebhookTarget
             add_query_arg(self::LISTENER_ARG, self::LISTENER_VALUE, trailingslashit($baseUrl)),
             'https'
         );
+    }
+
+    /**
+     * @since TBD
+     */
+    private function hasListenerArg(string $url): bool
+    {
+        $query = wp_parse_url($url, PHP_URL_QUERY);
+
+        if (!is_string($query)) {
+            return false;
+        }
+
+        wp_parse_str($query, $args);
+
+        return isset($args[self::LISTENER_ARG]);
     }
 
     /**

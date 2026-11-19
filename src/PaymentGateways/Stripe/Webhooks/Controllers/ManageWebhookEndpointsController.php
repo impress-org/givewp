@@ -164,6 +164,9 @@ final class ManageWebhookEndpointsController
             ]);
         }
 
+        /* Only GiveWP listener endpoints are shown; the health state is computed from the same list. */
+        $endpoints = $this->target->onlyListeners($endpoints);
+
         wp_send_json_success([
             'html' => $this->view->render($endpoints, $mode, $notice),
             'state' => $this->checkHealth->fromEndpoints($endpoints)->getValue(),

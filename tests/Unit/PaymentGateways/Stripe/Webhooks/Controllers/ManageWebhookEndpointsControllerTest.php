@@ -234,6 +234,23 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     /**
      * @since TBD
      */
+    public function testListOmitsEndpointsWithoutTheListenerArgument(): void
+    {
+        $account = $this->makeAccount();
+        $foreign = $this->endpointBody(['id' => 'we_foreign', 'url' => 'https://webhook.site/abc']);
+        $this->saveAccounts($account);
+        $this->stripe->queue(200, $this->listBody([$this->siteEndpoint(), $foreign]));
+
+        $response = $this->callController('list', ['account' => $account->accountSlug]);
+
+        $this->assertTrue($response['success']);
+        $this->assertStringNotContainsString('we_foreign', $response['data']['html']);
+        $this->assertStringNotContainsString('webhook.site', $response['data']['html']);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testListReportsAnErrorStateAndLogsAWarningWhenStripeCannotBeRead(): void
     {
         $account = $this->makeAccount();

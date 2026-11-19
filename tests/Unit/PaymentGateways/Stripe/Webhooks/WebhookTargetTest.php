@@ -107,6 +107,26 @@ final class WebhookTargetTest extends TestCase
     /**
      * @since TBD
      */
+    public function testItKeepsOnlyEndpointsWithTheListenerArgument(): void
+    {
+        $listeners = [
+            $this->endpoint(['id' => 'we_site', 'url' => home_url('/?give-listener=stripe')]),
+            $this->endpoint(['id' => 'we_renamed', 'url' => 'https://old-name.example/?give-listener=stripe']),
+            $this->endpoint(['id' => 'we_extra', 'url' => 'https://example.org/?a=1&give-listener=stripe']),
+        ];
+        $others = [
+            $this->endpoint(['id' => 'we_plain', 'url' => 'https://webhook.site/abc']),
+            $this->endpoint(['id' => 'we_other_arg', 'url' => 'https://example.org/?listener=stripe']),
+        ];
+
+        $filtered = (new WebhookTarget())->onlyListeners(array_merge($others, $listeners));
+
+        $this->assertSame(array_column($listeners, 'id'), array_column($filtered, 'id'));
+    }
+
+    /**
+     * @since TBD
+     */
     public function testItPrefersTheEnabledCompleteEndpointForThisSite(): void
     {
         $url = home_url('/?give-listener=stripe');

@@ -53,6 +53,12 @@ GiveWP does not change its event list, and its event list is not changed. A new 
 events checked, `EnsureWebhookEndpoint::API_VERSION`
 and the description `GiveWP`. API version, description and metadata are not shown.
 
+The modal lists only endpoints whose URL has a `give-listener` query argument
+(`WebhookTarget::onlyListeners()`), whichever site they deliver to, so an admin cannot edit an endpoint
+that belongs to another application on the same Stripe account. Other endpoints still count toward
+Stripe's limit of 16 per account, so the create check counts the unfiltered list. The `update`
+and `delete` operations do not apply the filter.
+
 The modal also shows a warning notice when the account has endpoints and none of them sends events to
 this site's listener URL, and with zero endpoints the add form renders expanded with an
 "Add your first endpoint" button.
