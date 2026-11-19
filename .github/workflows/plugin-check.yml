@@ -28,7 +28,7 @@ on:
 # A new push to a pull request cancels the run still going for the older commit. Manual runs of
 # different branches have their own groups, so they do not cancel each other.
 concurrency:
-    group: plugin-check-${{ github.event.pull_request.number || (github.event_name == 'workflow_dispatch' && format('{0}-{1}-{2}', github.ref, inputs.head-ref, inputs.base-ref)) || github.ref }}
+    group: plugin-check-${{ github.event.pull_request.number || (github.event_name == 'workflow_dispatch' && format('{0}:{1}:{2}', github.ref, inputs.head-ref, inputs.base-ref)) || github.ref }}
     cancel-in-progress: true
 
 permissions:
@@ -44,7 +44,7 @@ jobs:
         # publishes a release. To take a toolbox change, bump the commit here.
         # TODO: this commit is on the unmerged plugin-toolbox branch plugin-check-manual-refs. Bump it to
         # the commit of the merged change before this pull request is merged.
-        uses: stellarwp/plugin-toolbox/.github/workflows/plugin-check.yml@0325ec86c69e2c06135f0172af729259cca4bed7
+        uses: stellarwp/plugin-toolbox/.github/workflows/plugin-check.yml@95afba6dfd16d70cbe0255939569858432867861
         with:
             plugin-slug: give
             # The pup release the release build uses (composer.json), so the check builds the same way.
