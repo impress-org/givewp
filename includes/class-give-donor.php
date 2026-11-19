@@ -390,6 +390,7 @@ class Give_Donor {
 	/**
 	 * Creates a donor.
 	 *
+	 * @since  TBD Store the sanitized values instead of the raw input.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -430,7 +431,7 @@ class Give_Donor {
 		$created = false;
 
 		// The DB class 'add' implies an update if the donor being asked to be created already exists
-		if ( $this->db->add( $data ) ) {
+		if ( $this->db->add( $args ) ) {
 
 			// We've successfully added/updated the donor, reset the class vars with the new data
 			$donor = $this->db->get_donor_by( 'email', $args['email'] );
