@@ -14,7 +14,6 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Stripe\Event;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Invoice;
-use Stripe\Subscription as StripeSubscription;
 
 trait StripeWebhookListenerRepository
 {
@@ -117,41 +116,12 @@ trait StripeWebhookListenerRepository
     }
 
     /**
-     * Retrieve a subscription from the Stripe API, so the status a webhook payload reports can be
-     * confirmed before GiveWP acts on it.
-     *
-     * @since TBD
-     *
-     * @param string $subscriptionId The Stripe subscription ID
-     * @param int|null $formId Form ID to determine the connected account
-     *
-     * @return StripeSubscription The subscription as Stripe currently holds it
-     * @throws Exception If the API call fails
-     */
-    protected function getStripeSubscriptionFromStripe(string $subscriptionId, ?int $formId = null): StripeSubscription
-    {
-        try {
-            return StripeSubscription::retrieve($subscriptionId, $this->getStripeRequestOptions($formId));
-        } catch (ApiErrorException $exception) {
-            throw new Exception(
-                sprintf(
-                    'Failed to retrieve subscription %s: %s',
-                    esc_html($subscriptionId),
-                    $exception->getMessage() // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by CustomerSubscriptionUpdated and only logged via Log::error(), never displayed.
-                )
-            );
-        }
-    }
-
-    /**
      * Mark the first donation of a subscription as failed, and move a subscription that was set to
      * active before its payment was confirmed back to pending.
      *
-     * Only a pending or processing donation is changed, so a redelivered event, or a second failure
-     * event for the same payment, adds no second note. The subscription is checked whenever the
-     * first donation is failed: Stripe sends both invoice.payment_failed and
-     * payment_intent.payment_failed for one decline, and the second event finishes the change when
-     * the first one failed the donation but could not save the subscription.
+     * Only a pending or processing donation is changed, so a redelivered event adds no second note.
+     * A subscription that is still active is moved to pending even when its first donation was
+     * already failed.
      *
      * @since TBD
      *
