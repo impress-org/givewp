@@ -164,11 +164,15 @@ final class ManageWebhookEndpointsController
             ]);
         }
 
-        /* Only GiveWP listener endpoints are shown; the health state is computed from the same list. */
+        /*
+         * Only GiveWP listener endpoints are shown, and the health state is computed from that list. The account
+         * total still counts every endpoint, because Stripe's limit does.
+         */
+        $accountTotal = count($endpoints);
         $endpoints = $this->target->onlyListeners($endpoints);
 
         wp_send_json_success([
-            'html' => $this->view->render($endpoints, $mode, $notice),
+            'html' => $this->view->render($endpoints, $mode, $notice, $accountTotal),
             'state' => $this->checkHealth->fromEndpoints($endpoints)->getValue(),
         ]);
     }

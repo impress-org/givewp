@@ -251,6 +251,30 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     /**
      * @since TBD
      */
+    public function testListCountsHiddenEndpointsTowardTheAccountLimit(): void
+    {
+        $account = $this->makeAccount();
+        $foreign = [];
+
+        for ($i = 0; $i < WebhookTarget::MAX_ENDPOINTS_PER_ACCOUNT - 1; $i++) {
+            $foreign[] = $this->endpointBody(['id' => 'we_foreign_' . $i, 'url' => 'https://hooks.example.com/' . $i]);
+        }
+
+        $this->saveAccounts($account);
+        $this->stripe->queue(200, $this->listBody(array_merge([$this->siteEndpoint()], $foreign)));
+
+        $response = $this->callController('list', ['account' => $account->accountSlug]);
+
+        $this->assertStringContainsString(
+            sprintf('%1$d of %1$d endpoints', WebhookTarget::MAX_ENDPOINTS_PER_ACCOUNT),
+            $response['data']['html']
+        );
+        $this->assertStringContainsString('has the maximum of', $response['data']['html']);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testListReportsAnErrorStateAndLogsAWarningWhenStripeCannotBeRead(): void
     {
         $account = $this->makeAccount();
