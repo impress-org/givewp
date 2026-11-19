@@ -43,6 +43,7 @@ class InvoicePaymentSucceeded
     }
 
     /**
+     * @since TBD Ignore invoices that are not linked to a subscription.
      * 4.14.1 Added $formId parameter and stripe_account option for Stripe Connect support
      * @since 4.8.0 Add support for Stripe API version 2025-03-31.basil and later versions
      * @since 4.3.0 Update Stripe Invoice metadata
@@ -56,6 +57,11 @@ class InvoicePaymentSucceeded
         $invoice = $event->data->object;
 
         $gatewaySubscriptionId = $this->getGatewaySubscriptionId($invoice);
+
+        // A Stripe account also sends invoices that no subscription created, such as one-off invoices.
+        if (!$gatewaySubscriptionId) {
+            return false;
+        }
 
         $subscription = give()->subscriptions->queryByGatewaySubscriptionId($gatewaySubscriptionId)->get();
 

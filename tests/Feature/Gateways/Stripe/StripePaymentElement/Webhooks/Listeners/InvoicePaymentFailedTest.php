@@ -89,4 +89,84 @@ class InvoicePaymentFailedTest extends TestCase
 
         $this->assertTrue($subscription->status->isFailing());
     }
+
+    /**
+     * @since TBD
+     *
+     * @dataProvider invoiceWithoutSubscriptionProvider
+     *
+     * @throws Exception
+     */
+    public function testShouldIgnoreInvoiceWithoutSubscription(array $invoiceData)
+    {
+        $this->addMockStripeAccounts();
+
+        // A subscription saved without a gateway subscription ID must not be matched to the invoice.
+        $subscription = Subscription::factory()->createWithDonation([
+            'status' => SubscriptionStatus::ACTIVE(),
+            'gatewaySubscriptionId' => '',
+            'gatewayId' => StripePaymentElementGateway::id(),
+        ]);
+
+        $mockEvent = Event::constructFrom([
+            'data' => [
+                'object' => Invoice::constructFrom(array_merge([
+                    'id' => 'stripe-invoice-id',
+                    'attempted' => true,
+                    'paid' => false,
+                    'next_payment_attempt' => time(),
+                ], $invoiceData))
+            ]
+        ]);
+
+        $listener = $this->createMockWithCallback(
+            InvoicePaymentFailed::class,
+            function (MockBuilder $mockBuilder) {
+                $mockBuilder->setMethods(['triggerLegacyFailedEmailNotificationEvent']);
+
+                return $mockBuilder->getMock();
+            }
+        );
+
+        /** @var MockObject $listener */
+        $listener->expects($this->never())
+            ->method('triggerLegacyFailedEmailNotificationEvent');
+
+        $this->assertFalse($listener->processEvent($mockEvent));
+        $this->assertTrue(Subscription::find($subscription->id)->status->isActive());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function invoiceWithoutSubscriptionProvider(): array
+    {
+        return [
+            'subscription is null' => [['subscription' => null]],
+            'subscription is an empty string' => [['subscription' => '']],
+            'parent is null' => [['parent' => null]],
+            'parent has no subscription details' => [
+                ['parent' => ['type' => 'quote_details', 'subscription_details' => null]],
+            ],
+        ];
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testHookShouldNotFailForInvoiceWithoutSubscription()
+    {
+        $mockEvent = Event::constructFrom([
+            'data' => [
+                'object' => Invoice::constructFrom([
+                    'id' => 'stripe-invoice-id',
+                    'subscription' => null,
+                ])
+            ]
+        ]);
+
+        $this->assertTrue(has_action('give_recurring_stripe_processing_invoice_payment_failed'));
+
+        do_action('give_recurring_stripe_processing_invoice_payment_failed', $mockEvent);
+    }
 }

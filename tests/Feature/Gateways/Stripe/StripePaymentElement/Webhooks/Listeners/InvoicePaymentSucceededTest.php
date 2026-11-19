@@ -80,6 +80,85 @@ class InvoicePaymentSucceededTest extends TestCase
     }
 
     /**
+     * @since TBD
+     *
+     * @dataProvider invoiceWithoutSubscriptionProvider
+     *
+     * @throws Exception
+     */
+    public function testShouldIgnoreInvoiceWithoutSubscription(array $invoiceData)
+    {
+        $this->addMockStripeAccounts();
+
+        // A subscription saved without a gateway subscription ID must not be matched to the invoice.
+        $subscription = Subscription::factory()->createWithDonation([
+            'status' => SubscriptionStatus::ACTIVE(),
+            'installments' => 0,
+            'gatewaySubscriptionId' => '',
+            'gatewayId' => StripePaymentElementGateway::id(),
+        ]);
+
+        $mockEvent = Event::constructFrom([
+            'data' => [
+                'object' => Invoice::constructFrom(array_merge([
+                    'id' => 'stripe-invoice-id',
+                    'payment_intent' => 'new-stripe-payment-intent-id',
+                ], $invoiceData))
+            ]
+        ]);
+
+        $listener = $this->createMockWithCallback(
+            InvoicePaymentSucceeded::class,
+            function (MockBuilder $mockBuilder) {
+                $mockBuilder->setMethods(['updateStripeInvoiceMetaData']);
+
+                return $mockBuilder->getMock();
+            }
+        );
+
+        /** @var MockObject $listener */
+        $listener->expects($this->never())
+            ->method('updateStripeInvoiceMetaData');
+
+        $this->assertFalse($listener->processEvent($mockEvent));
+        $this->assertCount(1, Subscription::find($subscription->id)->donations);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function invoiceWithoutSubscriptionProvider(): array
+    {
+        return [
+            'subscription is null' => [['subscription' => null]],
+            'subscription is an empty string' => [['subscription' => '']],
+            'parent is null' => [['parent' => null]],
+            'parent has no subscription details' => [
+                ['parent' => ['type' => 'quote_details', 'subscription_details' => null]],
+            ],
+        ];
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testHookShouldNotFailForInvoiceWithoutSubscription()
+    {
+        $mockEvent = Event::constructFrom([
+            'data' => [
+                'object' => Invoice::constructFrom([
+                    'id' => 'stripe-invoice-id',
+                    'subscription' => null,
+                ])
+            ]
+        ]);
+
+        $this->assertTrue(has_action('give_recurring_stripe_processing_invoice_payment_succeeded'));
+
+        do_action('give_recurring_stripe_processing_invoice_payment_succeeded', $mockEvent);
+    }
+
+    /**
      * @since 4.3.0 Update Stripe Invoice metadata
      * @since 3.0.0
      *
