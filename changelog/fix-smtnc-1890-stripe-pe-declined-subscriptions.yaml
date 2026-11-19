@@ -1,6 +1,5 @@
 significance: patch
 type: fix
-entry: Marked the first donation of a Stripe Payment Element subscription as
-  failed and moved the subscription to pending when the first payment is
-  declined, and cancelled the subscription when Stripe expires it unpaid.
+entry: Resolved an issue where recurring donations declined by Stripe still
+  showed as active subscriptions.
 timestamp: 2026-11-18T05:53:31.357Z
