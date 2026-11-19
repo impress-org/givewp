@@ -263,7 +263,7 @@ final class WebhookEndpointsModalView
             );
         }
 
-        $submitLabel = $expanded ? __('Add your first endpoint', 'give') : __('Add endpoint', 'give');
+        $submitLabel = $expanded ? __('Add your first endpoint', 'give') : __('Create endpoint', 'give');
 
         if ($expanded) {
             return sprintf(
@@ -275,7 +275,7 @@ final class WebhookEndpointsModalView
         return sprintf(
             '<details class="give-stripe-webhooks__create"><summary class="button">%s</summary>%s</details>',
             esc_html__('Add endpoint', 'give'),
-            $this->createFormBody(__('Add endpoint', 'give'))
+            $this->createFormBody(__('Create endpoint', 'give'))
         );
     }
 

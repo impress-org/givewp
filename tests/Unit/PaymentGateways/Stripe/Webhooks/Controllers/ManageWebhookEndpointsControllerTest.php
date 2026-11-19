@@ -275,6 +275,21 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     /**
      * @since TBD
      */
+    public function testListLabelsTheSubmitButtonOfTheCollapsedFormDifferentlyFromItsToggle(): void
+    {
+        $account = $this->makeAccount();
+        $this->saveAccounts($account);
+        $this->stripe->queue(200, $this->listBody([$this->siteEndpoint()]));
+
+        $response = $this->callController('list', ['account' => $account->accountSlug]);
+
+        $this->assertStringContainsString('class="button">Add endpoint</summary>', $response['data']['html']);
+        $this->assertStringContainsString('Create endpoint', $response['data']['html']);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testListReportsAnErrorStateAndLogsAWarningWhenStripeCannotBeRead(): void
     {
         $account = $this->makeAccount();
