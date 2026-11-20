@@ -276,6 +276,7 @@ class AjaxRequestHandler
     }
 
     /**
+     * @since TBD Flag card fields payments so the order carries the 3D Secure card source.
      * @since 4.19.2 Stop holding the v2 post-filter amount to the form's maximum, so fee recovery totals reach PayPal.
      * @since 4.19.0 Describe v3 orders with the form title and the donor's selected level.
      * @since 4.16.7.1 Validate the request through the form layer before building order data. v3 forms must
@@ -339,6 +340,7 @@ class AjaxRequestHandler
                 'email' => $postData['give_email'],
                 'address' => $donorAddress,
             ],
+            'cardFields' => !empty($postData['give-paypal-commerce-card-fields']),
         ];
     }
 
