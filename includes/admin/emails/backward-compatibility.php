@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return string
  */
-function _give_bc_offline_donation_instruction_notification_status( $notification_status, $email, $form_id ) {
+function _give_bc_offline_donation_instruction_notification_status( $notification_status, $email, $form_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- 2.0 backward-compat filter callback; add-ons may remove it by this name with remove_filter().
 	// Bailout.
 	if ( ! $form_id ) {
 		return $notification_status;
@@ -46,7 +46,7 @@ add_filter( 'give__give_offline-donation-instruction_get_notification_status', '
  *
  * @return mixed
  */
-function _give_bc_offline_donation_instruction_email_setting_values( $option_value, $option_name, $email, $form_id ) {
+function _give_bc_offline_donation_instruction_email_setting_values( $option_value, $option_name, $email, $form_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- 2.0 backward-compat filter callback; add-ons may remove it by this name with remove_filter().
 	// Bailout.
 	if ( empty( $form_id ) || 'offline-donation-instruction' !== $email->config['id'] ) {
 		return $option_value;
@@ -83,7 +83,7 @@ add_filter( 'give_email_setting_value', '_give_bc_offline_donation_instruction_e
  *
  * @return string
  */
-function _give_bc_offline_instruction_status_setting_value( $field_value, $field, $form_id ) {
+function _give_bc_offline_instruction_status_setting_value( $field_value, $field, $form_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- 2.0 backward-compat filter callback; add-ons may remove it by this name with remove_filter().
 	if ( ! get_post_meta( $form_id, $field['id'], true ) ) {
 		$old_value   = get_post_meta( $form_id, '_give_customize_offline_donations', true );
 		$field_value = give_is_setting_enabled( $old_value, array( 'enabled', 'global' ) )
@@ -108,7 +108,7 @@ add_filter( '_give_offline-donation-instruction_notification_field_value', '_giv
  *
  * @return string
  */
-function _offline_donation_instruction_email_subject_setting_value( $field_value, $field, $form_id ) {
+function _offline_donation_instruction_email_subject_setting_value( $field_value, $field, $form_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- 2.0 backward-compat filter callback; add-ons may remove it by this name with remove_filter().
 	if ( ! get_post_meta( $form_id, $field['id'], true ) ) {
 		$field_value = get_post_meta( $form_id, '_give_offline_donation_subject', true );
 	}
@@ -130,7 +130,7 @@ add_filter( '_give_offline-donation-instruction_email_subject_field_value', '_of
  *
  * @return string
  */
-function _give_bc_offline_donation_instruction_email_message_setting_value( $field_value, $field, $form_id ) {
+function _give_bc_offline_donation_instruction_email_message_setting_value( $field_value, $field, $form_id ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- 2.0 backward-compat filter callback; add-ons may remove it by this name with remove_filter().
 	if ( ! get_post_meta( $form_id, $field['id'], true ) ) {
 		$field_value = get_post_meta( $form_id, '_give_offline_donation_email', true );
 	}

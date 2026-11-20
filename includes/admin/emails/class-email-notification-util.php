@@ -289,7 +289,7 @@ class Give_Email_Notification_Util {
 		// Ensure that emails sent to donors can be translated using WPML
 		// Registering only the emails sent to the donors.
 		if ( defined( 'ICL_SITEPRESS_VERSION' ) && ! is_array( $option_value ) ) {
-			$option_value = apply_filters( 'wpml_translate_single_string', $option_value, 'admin_texts_give_settings', '[give_settings]' . $global_option_name );
+			$option_value = apply_filters( 'wpml_translate_single_string', $option_value, 'admin_texts_give_settings', '[give_settings]' . $global_option_name ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WPML's own filter; Give must call it by this exact name so WPML translates the email text.
 		}
 
 		if (
