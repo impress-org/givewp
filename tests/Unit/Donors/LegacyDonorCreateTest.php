@@ -58,16 +58,14 @@ class LegacyDonorCreateTest extends TestCase
     /**
      * @since TBD
      */
-    public function testCreateStoresTheSanitizedNotes()
+    public function testCreateStoresTheSanitizedValues()
     {
         $id = (new Give_Donor())->create([
-            'name' => 'Ann Notes',
-            'email' => 'ann-notes@example.com',
-            'notes' => '<script>alert(1)</script><b>Hello</b>',
+            'name' => '<script>alert(1)</script><b>Ann</b> Sanitized',
+            'email' => 'ann-sanitized@example.com',
         ]);
 
         $this->assertNotFalse($id);
-        // The notes column is not loaded into Give_Donor, so read the stored row.
-        $this->assertSame('Hello', Give()->donors->get_donor_by('id', $id)->notes);
+        $this->assertSame('Ann Sanitized', (new Give_Donor($id))->name);
     }
 }

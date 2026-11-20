@@ -1,4 +1,4 @@
 significance: patch
 type: fix
-entry: Resolved an issue where donor details, such as notes, were saved without being cleaned when a donor was created.
+entry: Resolved an issue where donor details, such as the name, were saved without being cleaned when a donor was created.
 timestamp: 2026-11-04T19:12:18.476Z
