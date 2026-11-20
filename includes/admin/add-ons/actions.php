@@ -744,6 +744,7 @@ function give_show_update_notification_on_multisite( $file, $plugin ) {
 			);
 		}
 
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WordPress core's own hook name (wp_plugin_update_row() fires it); fired on purpose so code that listens for a plugin's update message still runs on Give's custom multisite update row.
 		do_action( "in_plugin_update_message-{$file}", $plugin, $plugin );
 
 		echo '</p></div></td></tr>';
