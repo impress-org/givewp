@@ -12,6 +12,7 @@ use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\Feature\Gateways\Stripe\TestTraits\HasMockStripeAccounts;
+use Give\Tests\Feature\Gateways\Stripe\TestTraits\HasStripePaymentElementSubscriptions;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use PHPUnit\Framework\MockObject\MockBuilder;
@@ -22,6 +23,7 @@ use Stripe\Invoice;
 class InvoicePaymentSucceededTest extends TestCase
 {
     use HasMockStripeAccounts;
+    use HasStripePaymentElementSubscriptions;
     use RefreshDatabase;
 
     /**
@@ -276,5 +278,47 @@ class InvoicePaymentSucceededTest extends TestCase
 
         $this->assertCount(2, $subscription->donations);
         $this->assertTrue($subscription->status->isCompleted());
+    }
+
+    /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testShouldActivatePendingSubscriptionWhenInitialDonationCompletes()
+    {
+        $subscription = $this->createStripePaymentElementSubscription(
+            SubscriptionStatus::PENDING(),
+            DonationStatus::PROCESSING()
+        );
+
+        $donation = $subscription->initialDonation();
+
+        $mockEvent = Event::constructFrom([
+            'data' => [
+                'object' => Invoice::constructFrom([
+                    'id' => 'stripe-invoice-id',
+                    'total' => $donation->amount->formatToMinorAmount(),
+                    'currency' => $donation->amount->getCurrency()->getCode(),
+                    'subscription' => $subscription->gatewaySubscriptionId,
+                    'payment_intent' => $donation->gatewayTransactionId,
+                ])
+            ]
+        ]);
+
+        $listener = $this->createMockWithCallback(
+            InvoicePaymentSucceeded::class,
+            function (MockBuilder $mockBuilder) {
+                /* Stub the Stripe API call so the test makes no network request. */
+                $mockBuilder->setMethods(['updateStripeInvoiceMetaData']);
+            }
+        );
+
+        $listener->processEvent($mockEvent);
+
+        $subscription = Subscription::find($subscription->id);
+
+        $this->assertTrue($subscription->initialDonation()->status->isComplete());
+        $this->assertTrue($subscription->status->isActive());
     }
 }
