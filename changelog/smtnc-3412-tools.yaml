@@ -1,4 +1,0 @@
-significance: patch
-type: fix
-entry: Resolved an issue where the Legacy Reports tab on the Reports page linked to a development URL instead of this site.
-timestamp: 2026-11-04T21:37:38.933Z
