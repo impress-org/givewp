@@ -1,4 +1,0 @@
-significance: patch
-type: fix
-entry: Resolved an issue where plain text emails showed leftover style or script text, and blank lines at the start or end.
-timestamp: 2026-11-04T18:06:51.322Z
