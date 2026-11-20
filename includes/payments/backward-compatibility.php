@@ -242,7 +242,7 @@ function _give_20_bc_give_payment_meta_value($object_id, $meta_value) { // phpcs
  *
  * @return mixed
  */
-function _give_20_bc_saving_old_payment_meta( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
+function _give_20_bc_saving_old_payment_meta( $check, $object_id, $meta_key, $meta_value, $prev_value ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- 2.0 backward-compat callback on a hook, added and removed by this name here; add-ons may remove it by name.
 	// Bailout.
 	if ( 'give_payment' !== get_post_type( $object_id ) ) {
 		return $check;
@@ -294,7 +294,7 @@ add_filter( 'update_post_metadata', '_give_20_bc_saving_old_payment_meta', 10, 5
  *
  * @return mixed
  */
-function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $single ) {
+function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $single ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- 2.0 backward-compat callback on a hook, added and removed by this name here; add-ons may remove it by name.
 	global $wpdb;
 
 	// Early exit.
@@ -397,7 +397,7 @@ add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
  *
  * @return mixed
  */
-function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $single ) {
+function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $single ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- 2.0 backward-compat callback on a hook, added and removed by this name here; add-ons may remove it by name.
 	global $wpdb;
 
 	// Early exit.
@@ -572,7 +572,7 @@ if ( ! give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
  *
  * @return void
  */
-function _give_20_bc_support_deprecated_meta_key_query( $query ) {
+function _give_20_bc_support_deprecated_meta_key_query( $query ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- 2.0 backward-compat callback on a hook, added and removed by this name here; add-ons may remove it by name.
 	$new_meta_keys = array(
 		'_give_payment_customer_id' => '_give_payment_donor_id',
 		'_give_payment_user_email'  => '_give_payment_donor_email',
@@ -666,7 +666,7 @@ if ( ! give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
  * @param Give_Payment $payment
  * @param string       $key
  */
-function _give_20_bc_payment_save( $payment, $key ) {
+function _give_20_bc_payment_save( $payment, $key ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- 2.0 backward-compat callback on a hook, added and removed by this name here; add-ons may remove it by name.
 	switch ( $key ) {
 		case 'user_info':
 			if ( empty( $payment->user_info ) ) {

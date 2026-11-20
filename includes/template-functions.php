@@ -119,7 +119,7 @@ function give_get_template_part( $slug, $name = null, $load = true ) {
 	 * @param string $slug Template part file slug {slug}.php.
 	 * @param string $name Template part file name {slug}-{name}.php.
 	 */
-	do_action( "get_template_part_{$slug}", $slug, $name );
+	do_action( "get_template_part_{$slug}", $slug, $name ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- same name as the WordPress core get_template_part_{$slug} action, on purpose; themes may listen to it.
 
 	// Setup possible parts
 	$templates = [];
@@ -496,7 +496,7 @@ if ( ! function_exists( 'is_give_form' ) ) {
 	 *
 	 * @return bool
 	 */
-	function is_give_form() {
+	function is_give_form() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- public conditional tag since 1.6; themes call it and may define it first (function_exists).
 		return is_singular( [ 'give_forms' ] );
 	}
 }
@@ -516,7 +516,7 @@ if ( ! function_exists( 'is_give_category' ) ) {
 	 *
 	 * @return bool
 	 */
-	function is_give_category( $term = '' ) {
+	function is_give_category( $term = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- public conditional tag since 1.6; themes call it and may define it first (function_exists).
 		return is_tax( 'give_forms_category', $term );
 	}
 }
@@ -536,7 +536,7 @@ if ( ! function_exists( 'is_give_tag' ) ) {
 	 *
 	 * @return bool
 	 */
-	function is_give_tag( $term = '' ) {
+	function is_give_tag( $term = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- public conditional tag since 1.6; themes call it and may define it first (function_exists).
 		return is_tax( 'give_forms_tag', $term );
 	}
 }
@@ -552,7 +552,7 @@ if ( ! function_exists( 'is_give_taxonomy' ) ) {
 	 *
 	 * @return bool
 	 */
-	function is_give_taxonomy() {
+	function is_give_taxonomy() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- public conditional tag since 1.6; themes call it and may define it first (function_exists).
 		return is_tax( get_object_taxonomies( 'give_form' ) );
 	}
 }

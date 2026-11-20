@@ -1028,6 +1028,7 @@ function give_donation_form_validate_new_user() {
  * Donation Form Validate User Login
  *
  * @access private
+ * @since  TBD Use wp_strip_all_tags() instead of strip_tags().
  * @since  4.16.7 Authenticate via wp_authenticate() and return a single generic error.
  * @since  1.0
  *
@@ -1051,7 +1052,7 @@ function give_donation_form_validate_user_login() {
 		return $valid_user_data;
 	}
 
-	$give_user_login = strip_tags( $post_data['give_user_login'] );
+	$give_user_login = wp_strip_all_tags( $post_data['give_user_login'] );
 
 	// Bailout, if Password is empty.
 	if ( empty( $post_data['give_user_pass'] ) ) {
@@ -1246,6 +1247,7 @@ function give_register_and_login_new_user( $user_data = [] ) {
 /**
  * Get Donation Form User
  *
+ * @since   TBD Use wp_strip_all_tags() instead of strip_tags() on the name fields.
  * @since   4.19.1 Read the AJAX flag from the sanitized post data.
  * @since   1.0
  * @since 2.17.1 Do not run validation check for ajax request expect donation validation ajax request.
@@ -1304,17 +1306,17 @@ function give_get_donation_form_user( $valid_data = [] ) {
 
 	// Get user first name.
 	if ( ! isset( $user['user_first'] ) || strlen( trim( $user['user_first'] ) ) < 1 ) {
-		$user['user_first'] = isset( $post_data['give_first'] ) ? strip_tags( trim( $post_data['give_first'] ) ) : '';
+		$user['user_first'] = isset( $post_data['give_first'] ) ? wp_strip_all_tags( trim( $post_data['give_first'] ) ) : '';
 	}
 
 	// Get user last name.
 	if ( ! isset( $user['user_last'] ) || strlen( trim( $user['user_last'] ) ) < 1 ) {
-		$user['user_last'] = isset( $post_data['give_last'] ) ? strip_tags( trim( $post_data['give_last'] ) ) : '';
+		$user['user_last'] = isset( $post_data['give_last'] ) ? wp_strip_all_tags( trim( $post_data['give_last'] ) ) : '';
 	}
 
 	// Add Title Prefix to user information.
 	if ( empty( $user['user_title'] ) || strlen( trim( $user['user_title'] ) ) < 1 ) {
-		$user['user_title'] = ! empty( $post_data['give_title'] ) ? strip_tags( trim( $post_data['give_title'] ) ) : '';
+		$user['user_title'] = ! empty( $post_data['give_title'] ) ? wp_strip_all_tags( trim( $post_data['give_title'] ) ) : '';
 	}
 
 	// Get the user's billing address details.
