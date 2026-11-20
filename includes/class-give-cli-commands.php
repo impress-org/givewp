@@ -367,6 +367,7 @@ class GIVE_CLI_COMMAND {
 	 * wp give donors --number=1000
 	 * wp give donors --form-id=1024
 	 *
+	 * @since TBD Use wp_is_writable() to check the CSV file.
 	 * @since 4.19.1 Use gmdate() and wp_date() instead of date(), and add translators comments.
 	 * @since         1.7
 	 * @access        public
@@ -553,13 +554,15 @@ class GIVE_CLI_COMMAND {
 
 				case 'csv':
 					$file_path = trailingslashit( WP_CONTENT_DIR ) . 'uploads/give_donors_' . wp_date( 'Y_m_d_s', current_time( 'timestamp' ), new DateTimeZone( 'UTC' ) ) . '.csv';
+					// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- WP-CLI only; fputcsv() below needs a file handle, and WP_Filesystem has no handle API.
 					$fp        = fopen( $file_path, 'w' );
 
-					if ( is_writable( $file_path ) ) {
+					if ( wp_is_writable( $file_path ) ) {
 						foreach ( $table_data as $fields ) {
 							fputcsv( $fp, $fields );
 						}
 
+						// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- closes the handle opened above for fputcsv().
 						fclose( $fp );
 
 						WP_CLI::success( "Donors list csv created successfully: {$file_path}" );
@@ -950,6 +953,7 @@ class GIVE_CLI_COMMAND {
 	/**
 	 * Get random user name
 	 *
+	 * @since TBD Use wp_rand() to pick the names.
 	 * @since 1.8.17
 	 * @return string
 	 */
@@ -983,10 +987,10 @@ class GIVE_CLI_COMMAND {
 		);
 
 		// Generate a random forename.
-		$random_name = $names[ mt_rand( 0, sizeof( $names ) - 1 ) ];
+		$random_name = $names[ wp_rand( 0, sizeof( $names ) - 1 ) ];
 
 		// Generate a random surname.
-		$random_surname = $surnames[ mt_rand( 0, sizeof( $surnames ) - 1 ) ];
+		$random_surname = $surnames[ wp_rand( 0, sizeof( $surnames ) - 1 ) ];
 
 		// Generate name.
 		$name = "{$random_name} {$random_surname}";
@@ -1181,6 +1185,7 @@ class GIVE_CLI_COMMAND {
 			 * Take the latest pull of the current branch, i.e.;
 			 * sync it with origin.
 			 */
+			// phpcs:ignore Generic.PHP.ForbiddenFunctions.Found -- developer-only WP-CLI command (wp give add-on-update): runs git pull in a local add-on checkout and streams git's output; no WordPress API does this.
 			passthru( "cd $give_addon_path[0] && git pull origin $branch_name", $return_var );
 
 			/**
@@ -1258,6 +1263,7 @@ class GIVE_CLI_COMMAND {
 			 * remote `origin`.
 			 */
 			if ( ! empty( $branch_name ) ) {
+				// phpcs:ignore Generic.PHP.ForbiddenFunctions.Found -- developer-only WP-CLI command (wp give add-on-update): runs git pull in a local add-on checkout and streams git's output; no WordPress API does this.
 				passthru( "cd $repo && git pull origin $branch_name", $return_var );
 			}
 

@@ -137,6 +137,7 @@ abstract class WPAsyncRequest
             'blocking' => false,
             'body' => $this->data,
             'cookies' => $_COOKIE,
+            // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- https_local_ssl_verify is a WordPress core filter, applied on purpose like core does for its own loopback requests.
             'sslverify' => apply_filters('https_local_ssl_verify', false),
         ];
     }

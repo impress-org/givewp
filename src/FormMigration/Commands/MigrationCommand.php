@@ -48,6 +48,9 @@ class MigrationCommand
             });
     }
 
+    /**
+     * @since TBD Write the continue prompt with WP_CLI::out().
+     */
     public function afterEach($stepClass, FormMigrationPayload $payload, $_payload)
     {
         WP_CLI::log('Processed ' . $stepClass);
@@ -83,7 +86,7 @@ class MigrationCommand
             })
             ->diff($payload->formV3->blocks);
 
-        fwrite( STDOUT, 'Continue?' . ' [enter] ' );
+        WP_CLI::out( 'Continue?' . ' [enter] ' );
         fgets( STDIN );
         $this->clearOutput();
     }
