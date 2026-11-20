@@ -1,19 +1,24 @@
 import {useState} from 'react';
 import {__} from '@wordpress/i18n';
-import {ListTableApi, ListTablePage} from '@givewp/components';
-import {DonationFormsRowActions} from './DonationFormsRowActions';
+import {ListTablePage} from '@givewp/components';
+import {useDonationFormsRowActions} from './DonationFormsRowActions';
+import UpgradedFormTooltip from './UpgradedFormTooltip';
 import Onboarding, {OnboardingContext, OnboardingStateProps} from './Onboarding';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
-import {BulkActionsConfig, ColumnFilterConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
-import Select from '@givewp/components/ListTable/Select';
+import formStyles from './DonationFormsListTable.module.scss';
+import {ColumnFilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import {CubeIcon} from '@givewp/components/AdminUI/Icons';
 import AddCampaignFormModal from './AddCampaignFormModal';
-import DefaultFormNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DefaultFormNotice';
 import apiFetch from '@wordpress/api-fetch';
 import {CampaignEntity} from '@givewp/campaigns/admin/components/types';
+import type {StatusVocabularyEntry} from '@givewp/components/ListTable/filters/types';
+import type {ListTableNotice} from '@givewp/components/ListTable/notices/types';
+import type {ListTableScreen} from '@givewp/components/ListTable/state/types';
+import donationFormsListTableScreen from './listTableScreen';
+import {donationFormFilters} from './filters';
 
 declare global {
     interface Window {
@@ -25,7 +30,7 @@ declare global {
             defaultFormActionUrl: string;
             apiRoot: string;
             authors: Array<{id: string | number; name: string}>;
-            table: {columns: Array<object>};
+            table: {columns: Array<object>; statuses?: StatusVocabularyEntry[]};
             pluginUrl: string;
             showUpgradedTooltip: boolean;
             isMigrated: boolean;
@@ -37,82 +42,16 @@ declare global {
             showDefaultFormTooltip: boolean;
             campaignUrl: string;
             newFormUrl: string;
+            adminUrl: string;
         };
     }
 }
 
-const API = new ListTableApi(window.GiveDonationForms);
-
-const donationStatus = [
-    {
-        value: 'any',
-        text: __('All Status', 'give'),
-    },
-    {
-        value: 'publish',
-        text: __('Published', 'give'),
-    },
-    {
-        value: 'pending',
-        text: __('Pending', 'give'),
-    },
-    {
-        value: 'draft',
-        text: __('Draft', 'give'),
-    },
-    {
-        value: 'trash',
-        text: __('Trash', 'give'),
-    },
-    {
-        value: 'upgraded',
-        text: __('Upgraded', 'give'),
-    },
-];
-
-const urlParams = new URLSearchParams(window.location.search);
-
-const isCampaignDetailsPage = urlParams.get('id') && 'give-campaigns' === urlParams.get('page');
-const campaignId = urlParams.get('id');
-
-const donationFormsFilters: Array<FilterConfig> = [
-    {
-        name: 'status',
-        type: 'select',
-        text: __('status', 'give'),
-        ariaLabel: __('Filter donation forms by status', 'give'),
-        options: donationStatus,
-    },
-    {
-        name: 'search',
-        type: 'search',
-        text: __('Search by name or ID', 'give'),
-        ariaLabel: __('Search donation forms', 'give'),
-    },
-];
-
-if (!isCampaignDetailsPage) {
-    donationFormsFilters.unshift({
-        name: 'campaign',
-        type: 'campaignselect',
-        text: __('All campaigns', 'give'),
-        ariaLabel: __('Filter donation forms by campaign', 'give'),
-        options: [{value: 'none', text: __('No campaign', 'give')}],
-    });
-}
-
-if (isCampaignDetailsPage) {
-    donationFormsFilters.push({
-        name: 'campaignId',
-        type: 'hidden',
-        options: [
-            {
-                value: campaignId,
-                text: __('All Campaign Forms', 'give'),
-            },
-        ],
-    });
-}
+/**
+ * Built once: a new array on every render would recompute everything that depends on it.
+ */
+const standaloneFilters = donationFormFilters({withCampaign: true});
+const campaignFormFilters = donationFormFilters({withCampaign: false});
 
 /**
  * @since 4.6.0 add option based form editor enabled check.
@@ -122,21 +61,25 @@ const columnFilters: Array<ColumnFilterConfig> = [
         column: 'title',
         filter: (item) => {
             const CubeTooltip = () => (
-                <div className={styles.tooltipContainer}>
+                <div className={formStyles.tooltipContainer}>
                     <CubeIcon />
-                    <div className={styles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
+                    <div className={formStyles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
                 </div>
             );
 
             return (
                 <>
-                    <div className={styles.titleContainer}>
-                        <div className={styles.migratedForm}>
-                            {item?.v3form && window?.GiveDonationForms?.isOptionBasedFormEditorEnabled && <CubeTooltip />}
-                            <Interweave attributes={{className: 'interweave'}} content={item?.title} />
+                    <div className={formStyles.titleContainer}>
+                        <div className={formStyles.migratedForm}>
+                            {item?.v3form && window?.GiveDonationForms?.isOptionBasedFormEditorEnabled && (
+                                <CubeTooltip />
+                            )}
+                            <Interweave attributes={{className: 'interweave'}} content={String(item?.title ?? '')} />
                         </div>
                         {item?.isDefaultCampaignForm && (
-                            <div className={`${styles.defaultFormPill} givewp-default-form-pill`}>{__('Default')}</div>
+                            <div className={`${formStyles.defaultFormPill} givewp-default-form-pill`}>
+                                {__('Default', 'give')}
+                            </div>
                         )}
                     </div>
                 </>
@@ -148,25 +91,10 @@ const columnFilters: Array<ColumnFilterConfig> = [
         filter: (item, column) => {
             if (window.GiveDonationForms.showUpgradedTooltip && item?.status_raw === 'upgraded') {
                 return (
-                    <div className={styles.upgradedForm}>
-                        <div className={styles.tooltipContainer}>
-                            <div className={styles.tooltip}>
-                                {__(
-                                    'The name of this form is already associated with an upgraded form. You can safely delete this form',
-                                    'give'
-                                )}
-                                .
-                                <div
-                                    className={styles.link}
-                                    onClick={(e) => {
-                                        e.currentTarget.parentElement.remove();
-                                        fetch(window.GiveDonationForms.tooltipActionUrl, {method: 'POST'});
-                                    }}
-                                >
-                                    {__('Got it', 'give')}
-                                </div>
-                            </div>
-                        </div>
+                    <div className={formStyles.upgradedForm}>
+                        <UpgradedFormTooltip
+                            onDismiss={() => fetch(window.GiveDonationForms.tooltipActionUrl, {method: 'POST'})}
+                        />
                         <InterweaveSSR column={column} item={item} />
                     </div>
                 );
@@ -174,114 +102,6 @@ const columnFilters: Array<ColumnFilterConfig> = [
 
             return <InterweaveSSR column={column} item={item} />;
         },
-    },
-];
-
-const donationFormsBulkActions: Array<BulkActionsConfig> = [
-    {
-        label: __('Edit', 'give'),
-        value: 'edit',
-        action: async (selected) => {
-            const authorSelect = document.getElementById('giveDonationFormsTableSetAuthor') as HTMLSelectElement;
-            const author = authorSelect.value;
-            const statusSelect = document.getElementById('giveDonationFormsTableSetStatus') as HTMLSelectElement;
-            const status = statusSelect.value;
-            if (!(author || status)) {
-                return {errors: [], successes: []};
-            }
-            const editParams = {
-                ids: selected.join(','),
-                author,
-                status,
-            };
-            return await API.fetchWithArgs('/edit', editParams, 'UPDATE');
-        },
-        confirm: (selected, names) => (
-            <>
-                <p>{__('  Below are the donation forms to be edited.', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((id, index) => (
-                        <li key={id}>
-                            <Interweave content={names[index]} />
-                        </li>
-                    ))}
-                </ul>
-                <div className={styles.flexRow}>
-                    <label htmlFor="giveDonationFormsTableSetAuthor">{__('Set form author', 'give')}</label>
-                    <Select id="giveDonationFormsTableSetAuthor" style={{paddingInlineEnd: '2rem'}}>
-                        <option value="">{__('Keep current author', 'give')}</option>
-                        {window.GiveDonationForms.authors.map((author) => (
-                            <option key={author.id} value={author.id}>
-                                {author.name}
-                            </option>
-                        ))}
-                    </Select>
-                </div>
-                <div className={styles.flexRow}>
-                    <label htmlFor="giveDonationFormsTableSetStatus">{__('Set form status', 'give')}</label>
-                    <Select id="giveDonationFormsTableSetStatus" style={{paddingInlineEnd: '2rem'}}>
-                        <option value="">{__('Keep current status')}</option>
-                        <option value="publish">{__('Published', 'give')}</option>
-                        <option value="private">{__('Private', 'give')}</option>
-                        <option value="pending">{__('Pending Review', 'give')}</option>
-                        <option value="draft">{__('Draft', 'give')}</option>
-                    </Select>
-                </div>
-            </>
-        ),
-    },
-    {
-        label: __('Delete', 'give'),
-        value: 'delete',
-        type: 'danger',
-        isVisible: (data, parameters) => parameters.status === 'trash' || !data?.trash,
-        action: async (selected) => {
-            try {
-                return await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
-            } catch (error) {
-                const errorData = JSON.parse(error.message.replace('Error: ', ''));
-                alert(errorData.message);
-            }
-        },
-        confirm: (selected, names) => (
-            <div>
-                <p>{__('Really delete the following donation forms?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((id, index) => (
-                        <li key={id}>
-                            <Interweave content={names[index]} />
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        ),
-    },
-    {
-        label: __('Trash', 'give'),
-        value: 'trash',
-        type: 'danger',
-        isVisible: (data, parameters) => parameters.status !== 'trash' && data?.trash,
-        isIdSelectable: (id, data) => !(typeof data?.defaultForm === 'number') || data.defaultForm !== Number(id),
-        action: async (selected) => {
-            try {
-                return await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE');
-            } catch (error) {
-                const errorData = JSON.parse(error.message.replace('Error: ', ''));
-                alert(errorData.message);
-            }
-        },
-        confirm: (selected, names) => (
-            <div>
-                <p>{__('Are you sure you want to trash the following donation forms?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((id, index) => (
-                        <li key={id}>
-                            <Interweave content={names[index]} />
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        ),
     },
 ];
 
@@ -298,7 +118,24 @@ const ListTableBlankSlate = (
     />
 );
 
-export default function DonationFormsListTable({entity}: {entity?: CampaignEntity}) {
+/**
+ * @since TBD Offer "Switch to Legacy View" in the list's view menu, not in the header.
+ * @since TBD Show the default form notice above the list, not as a floating tooltip.
+ * @since TBD Take the campaign as a prop: it fixes the request's campaign and replaces the Campaign filter, in place of reading the address.
+ * @since TBD Pass the filter declaration in place of the filter settings.
+ * @since TBD Pass the actions as data; Trash, Delete and Edit author or status move from bulk actions into them. Take the screen config: the standalone list uses its own, an embedded list only the one it is given.
+ */
+export default function DonationFormsListTable({
+    entity,
+    screen,
+    campaignId,
+}: {
+    entity?: CampaignEntity;
+    screen?: ListTableScreen;
+    campaignId?: number;
+}) {
+    const isCampaignDetailsPage = Boolean(campaignId);
+
     const [state, setState] = useState<OnboardingStateProps>({
         showFeatureNoticeDialog: false,
         showDefaultFormTooltip: window.GiveDonationForms.showDefaultFormTooltip,
@@ -318,6 +155,23 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
         });
     };
 
+    const notices: ListTableNotice[] =
+        state.showDefaultFormTooltip && isCampaignDetailsPage
+            ? [
+                  {
+                      id: 'default-form',
+                      kind: 'onboarding',
+                      title: __('Default campaign form', 'give'),
+                      message: __(
+                          'The default form will always appear at the top of this list. Your campaign page and blocks will collect donations through this form by default. You can change it at any time.',
+                          'give'
+                      ),
+                      onDismiss: handleDefaultFormTooltipDismiss,
+                  },
+              ]
+            : [];
+
+    const rowActions = useDonationFormsRowActions(entity, isCampaignDetailsPage);
     const [isOpen, setOpen] = useState<boolean>(false);
     const openModal = () => setOpen(true);
     const closeModal = () => setOpen(false);
@@ -328,24 +182,24 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
                 title={__('Donation Forms', 'give')}
                 singleName={__('donation form', 'give')}
                 pluralName={__('donation forms', 'give')}
-                rowActions={({data, item, removeRow, addRow, setUpdateErrors, parameters}) => {
-                    return DonationFormsRowActions({
-                        data,
-                        item,
-                        removeRow,
-                        addRow,
-                        setUpdateErrors,
-                        parameters,
-                        entity,
-                    });
-                }}
-                bulkActions={donationFormsBulkActions}
+                rowActions={rowActions}
                 apiSettings={window.GiveDonationForms}
-                filterSettings={donationFormsFilters}
+                filters={isCampaignDetailsPage ? campaignFormFilters : standaloneFilters}
+                scope={campaignId ? {campaignId} : undefined}
                 listTableBlankSlate={ListTableBlankSlate}
                 columnFilters={columnFilters}
                 banner={Onboarding}
+                notices={notices}
                 contentMode={isCampaignDetailsPage}
+                screen={screen ?? (isCampaignDetailsPage ? undefined : donationFormsListTableScreen)}
+                legacyView={
+                    window.GiveDonationForms.isOptionBasedFormEditorEnabled && !isCampaignDetailsPage
+                        ? {
+                              onSwitched: () =>
+                                  (window.location.href = `${window.GiveDonationForms.adminUrl}edit.php?post_type=give_forms`),
+                          }
+                        : undefined
+                }
             >
                 {isCampaignDetailsPage ? (
                     <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
@@ -358,7 +212,7 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
                                     isOpen={isOpen}
                                     handleClose={closeModal}
                                     title={__('Choose how you want to edit your campaign form', 'give')}
-                                    campaignId={campaignId}
+                                    campaignId={String(campaignId)}
                                 />
                             </>
                         ) : (
@@ -373,29 +227,11 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
                         )}
                     </div>
                 ) : (
-                    <>
-                        <a href={window.GiveDonationForms.newFormUrl} className={`button button-primary ${styles.button}`}>
-                            {__('Add form', 'give')}
-                        </a>
-                        {window.GiveDonationForms.isOptionBasedFormEditorEnabled && (
-                            <button
-                                className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
-                                onClick={showLegacyDonationForms}
-                            >
-                                {__('Switch to Legacy View', 'give')}
-                            </button>
-                        )}
-                    </>
-                )}
-                {state.showDefaultFormTooltip && isCampaignDetailsPage && (
-                    <DefaultFormNotice handleClick={handleDefaultFormTooltipDismiss} />
+                    <a href={window.GiveDonationForms.newFormUrl} className={`button button-primary ${styles.button}`}>
+                        {__('Add form', 'give')}
+                    </a>
                 )}
             </ListTablePage>
         </OnboardingContext.Provider>
     );
 }
-
-const showLegacyDonationForms = async (event) => {
-    await API.fetchWithArgs('/view', {isLegacy: 1});
-    window.location.href = '/wp-admin/edit.php?post_type=give_forms';
-};

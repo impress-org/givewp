@@ -1,0 +1,36 @@
+.givewp-filter-chip {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--givewp-neutral-300);
+    border-radius: 2px;
+    background: var(--givewp-neutral-25);
+
+    &--has-value {
+        border-color: var(--givewp-blue-400);
+        background: var(--givewp-blue-50);
+    }
+
+    &__toggle.components-button {
+        padding-inline: var(--givewp-spacing-3);
+        max-inline-size: 16rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: var(--givewp-font-size-paragraph-md);
+    }
+
+    &__remove.components-button {
+        min-inline-size: 0;
+        margin-inline-end: var(--givewp-spacing-1);
+        padding: 0;
+        color: var(--givewp-neutral-500);
+    }
+
+    // The popover content sits outside the chip, so it is styled by its own class.
+    &__content {
+        .components-popover__content {
+            min-inline-size: 16rem;
+            padding: var(--givewp-spacing-3);
+        }
+    }
+}

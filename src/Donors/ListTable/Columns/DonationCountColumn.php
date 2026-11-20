@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Give\Donors\ListTable\Columns;
 
 use Give\Donors\Models\Donor;
+use Give\Framework\ListTable\ColumnKind;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -53,5 +54,27 @@ class DonationCountColumn extends ModelColumn
             '<div class="donationCount"><span>%s</span></div>',
             $totalDonations
         );
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::COUNT;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @param Donor $model
+     */
+    public function getRawValue($model)
+    {
+        return (int) $model->totalNumberOfDonations;
     }
 }

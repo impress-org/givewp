@@ -53,6 +53,32 @@ abstract class ModelColumn implements Arrayable
     abstract public function getCellValue($model);
 
     /**
+     * Returns what the column holds, one of the ColumnKind constants. Clients use it to lay out the column.
+     *
+     * @since TBD
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::TEXT;
+    }
+
+    /**
+     * Returns the unformatted value of the cell, or null when the column has none. Sent next to the formatted
+     * cell in the row's "rawValues" key: money as ['amount' => '1331.28', 'currency' => 'USD'], a date as an
+     * ISO 8601 string in UTC, a count as an int.
+     *
+     * @since TBD
+     *
+     * @param M $model
+     *
+     * @return mixed
+     */
+    public function getRawValue($model)
+    {
+        return null;
+    }
+
+    /**
      * @since 2.24.0
      *
      * @return bool
@@ -99,6 +125,7 @@ abstract class ModelColumn implements Arrayable
     }
 
     /**
+     * @since TBD Add the column kind.
      * @since 2.24.0
      *
      * @return array
@@ -110,6 +137,7 @@ abstract class ModelColumn implements Arrayable
             'label' => $this->getLabel(),
             'sortable' => $this->isSortable(),
             'visible' => $this->isVisible(),
+            'kind' => $this->getKind(),
         ];
     }
 }

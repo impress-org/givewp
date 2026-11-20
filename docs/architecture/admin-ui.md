@@ -117,6 +117,44 @@ anything from scratch:
 - `fields/` — `Status`, `AssociatedDonor`, `DateTimeLocalField`, `LockedTextInput`
 - `hooks/`, `providers/` (including the Emotion styles provider)
 
+Admin list screens share `src/Views/Components/ListTable/`: `ListTablePage` renders the list through
+`@wordpress/dataviews`, with shared pieces for confirm bodies (`BulkActionConfirm`), empty and error
+states, and a `SetStatusDialog`. See [list-tables.md](list-tables.md#the-react-page-dataviews).
+A screen that passes a `screen` config also gets view state from the same folder: the view in the
+URL and the search in the tab (`useListTableUrlState`), the per-user stored layout
+(`useListTableLayoutPreferences`, saved through `givewp/v3/list-table-layouts`), and a "Reset view"
+button (`ListTableViewReset`). The pure functions behind them are in `ListTable/state/`. See
+[list-tables.md](list-tables.md#view-state).
+
+Filters are shared too. A screen declares its filters once (`filters.ts` next to the screen) and
+`ListTablePage` renders them in one filter bar (`ListTableFilters`). The bar is built from small
+molecules in the same folder that any admin screen can reuse: `ListTableSearch` (a search box with a
+visible label and a hint), `FilterChip` (a chip that opens a popover, with a remove button),
+`OptionsFilterControl` (checkboxes or radios), `EntityFilterControl` (options searched on the
+server, with loading, error and "Load more") and `DateRangeFilterControl` (presets and a start and
+end day). The hooks `useFilterOptions` and `useFilterOptionLabels` load options and chip names from
+`givewp/v3/list-table-filter-options`. See [list-tables.md](list-tables.md#filters).
+
+The rest of the list page is built from small shared pieces in the same folder, also free to reuse:
+
+- `Skeleton` — the one placeholder block for content that is still loading. It is hidden from
+  screen readers; the component that uses it says "Loading" where that matters. Use it instead of a
+  spinner in the list area (the stock DataViews table keeps its own loading state).
+- `DashPlaceholder` — an empty value: a "—" for sighted users and a label ("No value") for screen
+  readers. Same markup as the PHP `Placeholder::dash()`.
+- `StatTile` and `StatTiles` — one figure and the row of figures above a list, with `loading`,
+  `ready`, `refreshing`, `error` and `upgrade` states. A tile with a filter is a toggle button. See
+  [list-tables.md](list-tables.md#stat-tiles).
+- `ListTableNoticeArea` — the one place for notices above a list, in a fixed order. See
+  [list-tables.md](list-tables.md#notices).
+- `ListTableViewMenu` — the "More view options" (⋮) menu next to the stock view options. Today it
+  holds only "Switch to Legacy View". See [list-tables.md](list-tables.md#switch-to-legacy-view).
+
+`src/Admin/components/Notices` takes three optional props besides `type`, `children` and
+`dismissHandleClick`: `title` (a visible heading that also names the notice as a `group`),
+`ariaLabel` (the name when there is no heading) and `dismissLabel` (the dismiss button's name,
+"Dismiss notice" by default).
+
 Styling uses the design system foundation tokens rather than hardcoded values — see the Styles
 section of [AGENTS.md](../../AGENTS.md).
 

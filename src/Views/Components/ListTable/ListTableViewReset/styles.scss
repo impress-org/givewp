@@ -1,0 +1,19 @@
+.givewp-list-table-view-reset {
+    display: flex;
+    align-items: center;
+
+    // Holds focus only after a reset removes the button; no ring for an element that is not a control.
+    &:focus {
+        outline: none;
+    }
+
+    &__button.components-button {
+        white-space: nowrap;
+    }
+
+    &__message {
+        margin: 0;
+        color: var(--givewp-neutral-700);
+        font-size: var(--givewp-font-size-paragraph-lg);
+    }
+}

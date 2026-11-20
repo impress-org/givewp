@@ -1,14 +1,13 @@
 import {__} from '@wordpress/i18n';
-import {ListTableApi, ListTablePage} from '@givewp/components';
-import {DonorsRowActions} from './DonorsRowActions';
-import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
-import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
-import {Interweave} from 'interweave';
+import {ListTablePage} from '@givewp/components';
+import {donorsRowActions} from './DonorsRowActions';
 import './style.scss';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
-import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
-import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
-import filterByOptions from '../constants/filterByOptions';
+import type {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
+import type {ListTableRecommendations} from '@givewp/components/ListTable/notices/types';
+import {StatConfig} from '@givewp/components/ListTable/ListTablePage';
+import listTableScreen from './listTableScreen';
+import {donorsFilters} from './filters';
 
 declare global {
     interface Window {
@@ -19,66 +18,12 @@ declare global {
             table: {columns: Array<object>};
             adminUrl: string;
             pluginUrl: string;
-            dissedRecommendations: Array<string>;
+            dismissedRecommendations: Array<string>;
+            canDismissRecommendations?: boolean;
             recurringDonationsEnabled: boolean;
         };
     }
 }
-
-const API = new ListTableApi(window.GiveDonors);
-
-const donorsFilters: Array<FilterConfig> = [
-    {
-        name: 'campaignId',
-        type: 'campaignselect',
-        text: __('All Campaigns', 'give'),
-        ariaLabel: __('Filter donors by campaign', 'give'),
-        options: window.GiveDonors.forms,
-    },
-    {
-        name: 'search',
-        type: 'search',
-        inlineSize: '14rem',
-        text: __('Name, Email, or Donor ID', 'give'),
-        ariaLabel: __('Search donors', 'give'),
-    },
-    {
-        name: 'filterBy',
-        type: 'filterby',
-        groupedOptions: filterByOptions,
-    }
-];
-
-const donorsBulkActions: Array<BulkActionsConfig> = [
-    {
-        label: __('Delete', 'give'),
-        value: 'delete',
-        type: 'danger',
-        action: async (selected) => {
-            const deleteDonations = document.querySelector('#giveDonorsTableDeleteDonations') as HTMLInputElement;
-            const args = {ids: selected.join(','), deleteDonationsAndRecords: deleteDonations.checked};
-            const response = await API.fetchWithArgs('/delete', args, 'DELETE');
-            return response;
-        },
-        confirm: (selected, names) => (
-            <>
-                <p>{__('Are you sure you want to delete the following donors?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((id, index) => (
-                        <li key={id}>
-                            <Interweave attributes={{className: 'donorBulkModalContent'}} content={names[index]} />
-                        </li>
-                    ))}
-                </ul>
-                <br></br>
-                <label htmlFor="giveDonorsTableDeleteDonations">
-                    <input id="giveDonorsTableDeleteDonations" type="checkbox" defaultChecked={true} />
-                    {__('Delete all associated donations and records', 'give')}
-                </label>
-            </>
-        ),
-    },
-];
 
 /**
  * Displays a blank slate for the Donors table.
@@ -93,10 +38,15 @@ const ListTableBlankSlate = (
     />
 );
 
+interface DonorsRecommendations {
+    feeRecovery: RecommendedProductData;
+}
+
 /**
+ * @since TBD Type the config.
  * @since 2.27.1
  */
-const RecommendationConfig: any = {
+const RecommendationConfig: DonorsRecommendations = {
     feeRecovery: {
         enum: 'givewp_donors_fee_recovery_recommendation_dismissed',
         documentationPage: 'https://docs.givewp.com/feerecovery-donors-list',
@@ -108,9 +58,17 @@ const RecommendationConfig: any = {
     },
 };
 
-const recommendation = (
-    <ProductRecommendations options={[RecommendationConfig.feeRecovery]} apiSettings={window.GiveDonors} />
-);
+/**
+ * The recommendation data the notice area shows. Fee recovery is the only option.
+ *
+ * @since TBD
+ */
+const recommendations: ListTableRecommendations = {
+    options: [RecommendationConfig.feeRecovery],
+    dismissed: window.GiveDonors.dismissedRecommendations ?? [],
+    apiNonce: window.GiveDonors.apiNonce,
+    canDismiss: window.GiveDonors.canDismissRecommendations ?? true,
+};
 
 /**
  * Configuration for the statistic tiles rendered above the ListTable.
@@ -127,42 +85,46 @@ const recommendation = (
  * then this config must use those same keys: "donorsCount", "oneTimeDonorsCount", "subscribersCount".
  * Missing or mismatched keys will result in empty/undefined values in the UI.
  *
+ * @since TBD Map each tile to the list filter it toggles.
  * @since 4.11.0
  */
 const statsConfig: Record<string, StatConfig> = {
-    donorsCount: { label: __('Number of Donors', 'give')},
-    oneTimeDonorsCount: { label: __('One-Time Donors', 'give')},
+    donorsCount: {label: __('Number of Donors', 'give'), filter: {filterId: 'donorType'}},
+    oneTimeDonorsCount: {
+        label: __('One-Time Donors', 'give'),
+        filter: {filterId: 'donorType', value: 'one-time'},
+    },
     subscribersCount: {
         label: __('Subscribers', 'give'),
+        filter: {filterId: 'donorType', value: 'subscriber'},
         upgrade: !window.GiveDonors.recurringDonationsEnabled && {
             href: 'https://docs.givewp.com/subscribers-stat',
-            tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
-        }
+            tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give'),
+        },
     },
 };
 
+/**
+ * @since TBD Offer "Switch to Legacy View" in the list's view menu, not in the header.
+ * @since TBD Pass the recommendation as data for the notice area.
+ * @since TBD Name one record "donor", as the result count says it.
+ * @since TBD Use the shared filter declarations in place of the "Filter by" settings.
+ * @since TBD Pass the actions as data and the screen config.
+ */
 export default function DonorsListTable() {
     return (
         <ListTablePage
             title={__('Donors', 'give')}
-            singleName={__('donors', 'give')}
+            singleName={__('donor', 'give')}
             pluralName={__('donors', 'give')}
-            rowActions={DonorsRowActions}
-            bulkActions={donorsBulkActions}
+            rowActions={donorsRowActions}
             apiSettings={window.GiveDonors}
-            filterSettings={donorsFilters}
+            filters={donorsFilters}
             listTableBlankSlate={ListTableBlankSlate}
-            productRecommendation={recommendation}
+            recommendations={recommendations}
             statsConfig={statsConfig}
-        >
-            <button className={`button button-tertiary ${styles.secondaryActionButton}`} onClick={showLegacyDonors}>
-                {__('Switch to Legacy View', 'give')}
-            </button>
-        </ListTablePage>
+            screen={listTableScreen}
+            legacyView={{}}
+        />
     );
 }
-
-const showLegacyDonors = async (event) => {
-    await API.fetchWithArgs('/view', {isLegacy: 1});
-    window.location.reload();
-};

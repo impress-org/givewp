@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Give\Subscriptions\ListTable\Columns;
 
+use Give\Framework\ListTable\ColumnKind;
+use Give\Framework\ListTable\Formatting\MoneyFormatter;
 use Give\Framework\ListTable\ModelColumn;
 use Give\Subscriptions\Models\Subscription;
 
@@ -38,6 +40,7 @@ class AmountColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Format with the shared money formatter; $locale is kept for add-on filters and no longer used.
      * @since 2.24.0
      *
      * @inheritDoc
@@ -48,7 +51,29 @@ class AmountColumn extends ModelColumn
     {
         return sprintf(
             '<div class="amount"><span>%s</span></div>',
-            $model->amount->formatToLocale($locale)
+            MoneyFormatter::format($model->amount)
         );
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::MONEY;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @param Subscription $model
+     */
+    public function getRawValue($model)
+    {
+        return MoneyFormatter::raw($model->amount);
     }
 }

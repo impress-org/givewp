@@ -33,6 +33,7 @@ class CampaignColumnTest extends TestCase
     }
 
     /**
+     * @since TBD Expect the cell inside the truncated text wrapper.
      * @since 4.19.0
      */
     public function testLinksToTheCampaignPageForACoreCampaign()
@@ -45,9 +46,11 @@ class CampaignColumnTest extends TestCase
 
         $this->assertStringContainsString('Spring Drive', $cell);
         $this->assertStringContainsString("id={$campaign->id}", $cell);
+        $this->assertStringStartsWith('<span class="givewp-truncated-text" title="Spring Drive"><a href="', $cell);
     }
 
     /**
+     * @since TBD Expect the unlinked title inside the truncated text wrapper.
      * @since 4.19.0
      */
     public function testRendersAnUnlinkedTitleForANonCoreCampaign()
@@ -62,7 +65,7 @@ class CampaignColumnTest extends TestCase
 
         $cell = $this->renderCell($form);
 
-        $this->assertSame('Team Ride', $cell);
+        $this->assertSame('<span class="givewp-truncated-text" title="Team Ride">Team Ride</span>', $cell);
         $this->assertStringNotContainsString('<a', $cell);
     }
 

@@ -13,6 +13,14 @@ A reusable notice component for displaying informational, warning, and error mes
 - **Accessible**: Proper semantic markup and ARIA support
 - **Customizable**: Uses CSS modules for styling
 
+## Props added in TBD
+
+- `title`: a visible `<h3>` that also names the notice (`role="group"`, `aria-labelledby`).
+- `ariaLabel`: the notice's name when there is no title.
+- `dismissLabel`: the dismiss button's accessible name (default "Dismiss notice").
+
+All are optional. A notice with none of them renders as before.
+
 ## Usage
 
 ```tsx

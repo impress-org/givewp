@@ -1,0 +1,4 @@
+significance: minor
+type: enhancement
+entry: The list screens now show a shadow at the edge when the table is wider than the page, and the page header and stat tiles stack on screens 782 pixels wide or less.
+timestamp: 2026-11-05T02:40:00.000Z

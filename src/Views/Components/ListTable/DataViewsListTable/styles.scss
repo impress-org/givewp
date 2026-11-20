@@ -1,0 +1,206 @@
+@use '../layout/breakpoints' as *;
+@import '~@wordpress/dataviews/build-style/style.css';
+
+.givewp-list-table {
+    position: relative;
+    background-color: var(--givewp-shades-white);
+    border-radius: var(--givewp-rounded-8);
+
+    // A soft shadow at an edge while the list hides content past that edge, so the admin can see
+    // there is more to scroll to. Hidden until the `--more-start` or `--more-end` modifier is set.
+    // The shadows let clicks through, and nothing is pinned: the row checkbox and the row actions are
+    // reached by scrolling, and moving keyboard focus to a cell scrolls it into view.
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        // Only over the table rows: the hook sets the space above and below the table.
+        inset-block: var(--givewp-list-table-shadow-top, 0) var(--givewp-list-table-shadow-bottom, 0);
+        z-index: 1;
+        inline-size: var(--givewp-spacing-6);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 150ms ease-out;
+    }
+
+    &::before {
+        inset-inline-start: 0;
+        background: linear-gradient(to right, var(--givewp-grey-50), transparent);
+    }
+
+    &::after {
+        inset-inline-end: 0;
+        background: linear-gradient(to left, var(--givewp-grey-50), transparent);
+    }
+
+    // The gradients have a physical direction, so they flip in right-to-left.
+    [dir='rtl'] &::before {
+        background: linear-gradient(to left, var(--givewp-grey-50), transparent);
+    }
+
+    [dir='rtl'] &::after {
+        background: linear-gradient(to right, var(--givewp-grey-50), transparent);
+    }
+
+    &--more-start::before,
+    &--more-end::after {
+        opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        &::before,
+        &::after {
+            transition: none;
+        }
+    }
+
+    // The bulk actions sit in the search row while rows are selected. Keep the row as tall as the
+    // search field, so the table does not jump when the selection starts or ends.
+    &__bulk-actions {
+        min-height: calc(2 * var(--givewp-spacing-8));
+    }
+
+    // The filter bar and the view options (layout, columns, reset view) share one row, so the options
+    // sit with the filters and not beside the search box.
+    &__filter-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: var(--givewp-spacing-2);
+
+        > .givewp-list-table-filters {
+            flex: 1;
+            min-inline-size: 0;
+        }
+    }
+
+    // Always at the end edge, also when a screen has no filter bar to fill the row.
+    &__view-controls {
+        flex-shrink: 0;
+        margin-inline-start: auto;
+    }
+
+    // In the narrow layout the view options get their own row under the filters, at the end edge.
+    &__view-controls-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-block-start: var(--givewp-spacing-2);
+    }
+
+    // On a phone the search box takes the whole row. DataViews sizes its search slot to the content, so the
+    // slot must fill the row before the box can.
+    @media (max-width: 782px) {
+        .dataviews__search {
+            flex: 1 1 100%;
+            min-inline-size: 0;
+        }
+    }
+
+    // The DataViews wrapper scrolls sideways as a whole when the table is wider than the screen. Pin the
+    // rows around the table to the start edge, so the search, the filters, the settings button and the
+    // pagination stay in view while only the table moves.
+    .dataviews__view-actions,
+    &__filter-row,
+    .dataviews-footer {
+        position: sticky;
+        inset-inline-start: 0;
+    }
+
+    // The page's white container already pads everything inside it, the banner included. DataViews
+    // adds its own 48px at the sides of the toolbar, the footer and the outer table cells, which
+    // pushed the list in from the banner above it. Take that padding out so the container is the
+    // only gutter, and the search and the filters line up with the banner.
+    .dataviews__view-actions,
+    .dataviews-filters__container,
+    .dataviews-loading,
+    .dataviews-no-results {
+        padding-inline: 0;
+    }
+
+    // The table and its footer keep a small inset of their own, so the row borders and the row hover
+    // background do not touch the edge of the container. The search and the filter bar have none, and
+    // start at the edge.
+    .dataviews-footer {
+        padding-inline: var(--givewp-spacing-4);
+    }
+
+    .dataviews-view-table tr th:first-child,
+    .dataviews-view-table tr td:first-child {
+        padding-inline-start: var(--givewp-spacing-4);
+    }
+
+    .dataviews-view-table tr th:last-child,
+    .dataviews-view-table tr td:last-child {
+        padding-inline-end: var(--givewp-spacing-4);
+    }
+
+    // Remove the total count rules below with `ListTableFooter` when the `@wordpress/dataviews` pin moves to
+    // 12.0.1 or later; see the note on `ListTableFooter`.
+    // Which rows are on the page, out of all the rows that match. It looks like the stock count and sits
+    // where the stock count sits: right after the selection checkbox, with the pagination on the right.
+    // The footer puts a gap between its children; the negative margin takes it back, so the count
+    // starts where the stock one does.
+    &__total {
+        margin-inline: calc(-1 * var(--givewp-spacing-2)) auto;
+    }
+
+    // The stock footer counts only the rows on the page ("30 Items"), which reads as the total. It is
+    // hidden until rows are selected, when it counts the selection ("2 Items selected").
+    &:not(&--has-selection) .dataviews-bulk-actions-footer__container .dataviews-bulk-actions-footer__item-count {
+        display: none;
+    }
+
+    &:not(&--has-selection) .dataviews-bulk-actions-footer__container {
+        margin-right: 0;
+    }
+}
+
+// Row checkboxes are always visible, as in the DataViews that WordPress 7.x ships. The pinned
+// 10.1.7 (WordPress 6.9 line) hides them until the row is hovered. Remove this rule when the pin
+// moves to a version with the newer behavior.
+.givewp-list-table .dataviews-view-table tbody .components-checkbox-control__input.components-checkbox-control__input {
+    opacity: 1;
+}
+
+// At 782 px and below the list shows one card per record (the DataViews grid layout), stacked in one
+// column. The page's white container is the only gutter, so the grid drops its own side padding, and
+// each card gets a border so the records stay apart without the table's row lines.
+@media (max-width: $givewp-list-table-narrow) {
+    .givewp-list-table {
+        .dataviews-view-grid-items {
+            grid-template-columns: minmax(0, 1fr);
+            gap: var(--givewp-spacing-3);
+            padding-inline: 0;
+            padding-block: var(--givewp-spacing-3);
+        }
+
+        .dataviews-view-grid__card {
+            padding-inline: var(--givewp-spacing-4);
+            padding-block: var(--givewp-spacing-2);
+            border: 1px solid var(--givewp-grey-100);
+            border-radius: var(--givewp-rounded-8);
+
+            &.is-selected {
+                border-color: var(--wp-admin-theme-color);
+            }
+        }
+
+        .dataviews-view-grid__title-field {
+            font-weight: 600;
+        }
+
+        // The checkbox Give adds before the card title, in place of the one DataViews shows over media.
+        .givewp-list-table__card-checkbox {
+            flex-shrink: 0;
+        }
+
+        .dataviews-footer {
+            padding-inline: 0;
+        }
+    }
+}
+
+.givewp-list-table .dataviews-view-table,
+.givewp-list-table .dataviews-view-table tr.is-selected {
+    color: var(--givewp-grey-600);
+}

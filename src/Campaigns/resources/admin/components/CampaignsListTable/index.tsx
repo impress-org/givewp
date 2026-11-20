@@ -1,8 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
-import ListTableApi from '@givewp/components/ListTable/api';
-import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
-import {CampaignsRowActions} from './CampaignsRowActions';
+import {BulkActionsConfig} from '@givewp/components/ListTable/ListTablePage';
+import {campaignsRowActions} from './CampaignsRowActions';
 import styles from './CampaignsListTable.module.scss';
 import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
@@ -11,7 +10,9 @@ import MergeCampaignModal from '../MergeCampaign/Modal';
 import ExistingUserIntroModal from '@givewp/campaigns/admin/components/ExistingUserIntroModal';
 import {getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 import {useCampaignNoticeHook} from '@givewp/campaigns/hooks';
-import CampaignNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/CampaignNotice';
+import type {ListTableNotice} from '@givewp/components/ListTable/notices/types';
+import listTableScreen from './listTableScreen';
+import {campaignFilters} from './filters';
 
 declare const window: {
     GiveCampaignsListTable: GiveCampaignsListTable;
@@ -35,49 +36,21 @@ export function getGiveCampaignsListTableWindowData() {
     return window.GiveCampaignsListTable;
 }
 
-const API = new ListTableApi(getGiveCampaignsListTableWindowData());
-
-const campaignStatus = [
-    {
-        value: 'any',
-        text: __('All Status', 'give'),
-    },
-    {
-        value: 'active',
-        text: __('Active', 'give'),
-    },
-    {
-        value: 'inactive',
-        text: __('Archived', 'give'),
-    },
-];
-
-const filters: Array<FilterConfig> = [
-    {
-        name: 'status',
-        type: 'select',
-        text: __('status', 'give'),
-        ariaLabel: __('Filter campaign by status', 'give'),
-        options: campaignStatus,
-    },
-    {
-        name: 'search',
-        type: 'search',
-        text: __('Search by name or ID', 'give'),
-        ariaLabel: __('Search donation forms', 'give'),
-    },
-];
-
 const bulkActions: Array<BulkActionsConfig> = [
     {
         label: __('Merge', 'give'),
         value: 'merge',
         type: 'custom',
-        confirm: (selected, names, isOpen, setOpen) => {
+        minSelected: 2,
+        confirm: (selected, names, isOpen, setOpen, list) => {
             return (
                 <MergeCampaignModal
                     isOpen={isOpen}
                     setOpen={setOpen}
+                    onMerged={() => {
+                        list?.clearSelection();
+                        list?.refresh();
+                    }}
                     campaigns={{
                         selected: selected,
                         names: names,
@@ -88,6 +61,12 @@ const bulkActions: Array<BulkActionsConfig> = [
     },
 ];
 
+/**
+ * @since TBD Show the "Campaign List" tip as a notice above the list, not a floating tooltip.
+ * @since TBD Pass the filter declaration in place of the filter settings.
+ * @since TBD Pass the row actions as data and the screen config; Merge needs two selected campaigns and reloads the list.
+ * @since 4.0.0
+ */
 export default function CampaignsListTable() {
     const [isCreateCampaignModalOpen, setCreateCampaignModalOpen] = useState<boolean>(autoOpenCreateCampaignModal());
     const [isExistingUserIntroModalOpen, setExistingUserIntroModalOpen] = useState<boolean>(
@@ -123,6 +102,27 @@ export default function CampaignsListTable() {
         );
     };
 
+    const notices: ListTableNotice[] =
+        !isExistingUserIntroModalOpen && showTooltip
+            ? [
+                  {
+                      id: 'campaign-list',
+                      kind: 'onboarding',
+                      title: __('Campaign List', 'give'),
+                      message: __(
+                          "We've created a campaign from each of your donation forms. Your forms still work as before, but now with the added power of campaign management! Select a campaign to see how you can seamlessly manage your online fundraising.",
+                          'give'
+                      ),
+                      link: {
+                          href: 'https://docs.givewp.com/campaigns-docs',
+                          label: __('Read documentation on what we changed', 'give'),
+                          opensInNewTab: true,
+                      },
+                      onDismiss: dismissTooltip,
+                  },
+              ]
+            : [];
+
     return (
         <>
             <ListTablePage
@@ -130,26 +130,15 @@ export default function CampaignsListTable() {
                 singleName={__('campaign', 'give')}
                 pluralName={__('campaigns', 'give')}
                 apiSettings={getGiveCampaignsListTableWindowData()}
-                filterSettings={filters}
+                filters={campaignFilters}
                 bulkActions={bulkActions}
-                rowActions={CampaignsRowActions}
+                rowActions={campaignsRowActions}
                 listTableBlankSlate={ListTableBlankSlate()}
+                screen={listTableScreen}
+                notices={notices}
             >
                 <CreateCampaignModal isOpen={isCreateCampaignModalOpen} setOpen={setCreateCampaignModalOpen} />
                 <ExistingUserIntroModal isOpen={isExistingUserIntroModalOpen} setOpen={setExistingUserIntroModalOpen} />
-                {!isExistingUserIntroModalOpen && showTooltip && (
-                    <CampaignNotice
-                        title={__('Campaign List', 'give')}
-                        description={__(
-                            "We've created a campaign from each of your donation forms. Your forms still work as before, but now with the added power of campaign management! Select a campaign to see how you can seamlessly manage your online fundraising.",
-                            'give'
-                        )}
-                        linkText={__('Read documentation on what we changed', 'give')}
-                        linkHref="https://docs.givewp.com/campaigns-docs"
-                        handleDismiss={dismissTooltip}
-                        type={'campaignList'}
-                    />
-                )}
             </ListTablePage>
         </>
     );

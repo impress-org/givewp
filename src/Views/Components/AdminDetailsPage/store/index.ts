@@ -1,4 +1,4 @@
-import {createReduxStore, register} from '@wordpress/data';
+import {createReduxStore, register, select} from '@wordpress/data';
 import * as actions from './actions';
 import * as selectors from './selectors';
 
@@ -11,7 +11,9 @@ export type Notification = {
     content: string;
 }
 
-export const store = createReduxStore('givewp/admin-details-page-notifications', {
+const STORE_NAME = 'givewp/admin-details-page-notifications';
+
+export const store = createReduxStore(STORE_NAME, {
     reducer(state = [], action) {
         switch (action.type) {
             case 'ADD_NOTIFICATION':
@@ -31,4 +33,12 @@ export const store = createReduxStore('givewp/admin-details-page-notifications',
     selectors,
 });
 
-register(store);
+/**
+ * Two bundles can load this store on one page (the campaign details page and its "Forms" tab), and
+ * registering a store name twice is an error in `@wordpress/data`.
+ *
+ * @since TBD
+ */
+if (!select(STORE_NAME)) {
+    register(store);
+}

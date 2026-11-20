@@ -6,8 +6,9 @@ namespace Give\DonationForms\V2\ListTable\Columns;
 
 use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Models\DonationForm;
+use Give\Framework\ListTable\ColumnKind;
+use Give\Framework\ListTable\Formatting\MoneyFormatter;
 use Give\Framework\ListTable\ModelColumn;
-use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * @since 2.24.0
@@ -38,6 +39,7 @@ class DonationRevenueColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Format with the shared money formatter; $locale is kept for add-on filters and no longer used.
      * @since 4.3.0 use DonationFormDataRepository
      * @since 3.16.0 Add filter to change the cell value content
      * @since 2.24.0
@@ -53,7 +55,7 @@ class DonationRevenueColumn extends ModelColumn
          */
         $donationFormData = $this->getListTableData();
 
-        $revenue = Money::fromDecimal($donationFormData->getRevenue($model), give_get_currency())->formatToLocale();
+        $revenue = MoneyFormatter::fromDecimal($donationFormData->getRevenue($model));
 
         return sprintf(
             '<a class="column-earnings-value" href="%s" aria-label="%s">%s</a>',
@@ -61,5 +63,32 @@ class DonationRevenueColumn extends ModelColumn
             __('Visit form reports page', 'give'),
             apply_filters("givewp_list_table_cell_value_{$this::getId()}_content", $revenue, $model, $this)
         );
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::MONEY;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @param DonationForm $model
+     */
+    public function getRawValue($model)
+    {
+        /**
+         * @var DonationFormDataRepository $donationFormData
+         */
+        $donationFormData = $this->getListTableData();
+
+        return MoneyFormatter::rawFromDecimal($donationFormData->getRevenue($model));
     }
 }

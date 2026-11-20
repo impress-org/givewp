@@ -5,6 +5,7 @@ namespace Give\Campaigns\Repositories;
 use Give\Campaigns\CampaignsDataQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
+use Give\Framework\ListTable\Formatting\MoneyFormatter;
 
 /**
  * Used to optimize the campaigns list table performance and to avoid n+1 problems.
@@ -220,17 +221,26 @@ class CampaignsDataRepository
 
 
     /**
+     * @since TBD Add $useListTableFormat to write the amounts with the shared money formatter.
      * @since 4.0.0
      *
      * Get goal data for campaign
      *
      * @param Campaign $campaign
+     * @param bool $useListTableFormat The REST API keeps its own format (false); the list table passes true.
      *
      * @return array{actual: int, goal: int, actualFormatted: string, goalFormatted:string, percentage:float}
      */
-    public function getGoalData(Campaign $campaign): array
+    public function getGoalData(Campaign $campaign, bool $useListTableFormat = false): array
     {
         $actual = $this->getActualGoal($campaign);
+        $formatMoney = $useListTableFormat
+            ? static function ($amount): string {
+                return MoneyFormatter::fromDecimal($amount);
+            }
+            : static function ($amount): string {
+                return give_currency_filter(give_format_amount($amount));
+            };
         $percentage = $campaign->goal
             ? $actual / $campaign->goal
             : 0;
@@ -239,10 +249,10 @@ class CampaignsDataRepository
             'actual' => $actual,
             'goal' => $campaign->goal,
             'actualFormatted' => $campaign->goalType == CampaignGoalType::AMOUNT
-                ? give_currency_filter(give_format_amount($actual))
+                ? $formatMoney($actual)
                 : $actual,
             'goalFormatted' => $campaign->goalType == CampaignGoalType::AMOUNT
-                ? give_currency_filter(give_format_amount($campaign->goal))
+                ? $formatMoney($campaign->goal)
                 : $campaign->goal,
             'percentage' => round($percentage * 100, 2),
         ];

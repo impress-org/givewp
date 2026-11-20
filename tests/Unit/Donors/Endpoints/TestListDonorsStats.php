@@ -107,4 +107,21 @@ class TestListDonorsStats extends TestCase
         $this->assertEquals(0, $data['oneTimeDonorsCount']);
         $this->assertEquals(0, $data['subscribersCount']);
     }
+
+    /**
+     * @since TBD
+     */
+    public function testCountsComeFormatted()
+    {
+        Subscription::factory()->count(3)->create();
+
+        $request = new WP_REST_Request('GET', '/give-api/v2/admin/donors/stats');
+        $data = (new ListDonorsStats())->handleRequest($request)->get_data();
+
+        $this->assertSame(
+            ['donorsCount' => '3', 'oneTimeDonorsCount' => '0', 'subscribersCount' => '3'],
+            $data['formatted']
+        );
+        $this->assertSame(3, $data['donorsCount']);
+    }
 }

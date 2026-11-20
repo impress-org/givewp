@@ -1,0 +1,8 @@
+.givewp-list-table-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--givewp-spacing-2);
+    // No side padding: the page's container pads the list, and the toolbar above has none either.
+    padding-block: 0 var(--givewp-spacing-4);
+}

@@ -9,6 +9,8 @@
 !/bin/replace-since-tags.php
 !/bin/write-changelog.sh
 !/bin/release-prep.sh
+!/bin/list-table-bundle-size.mjs
+!/bin/lib/
 !/bin/convert-changelog-format.js
 
 # Numerous always-ignore extensions

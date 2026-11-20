@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Give\DonationForms\V2\ListTable\Columns;
 
 use Give\DonationForms\V2\Models\DonationForm;
+use Give\Framework\ListTable\ColumnKind;
+use Give\Framework\ListTable\Formatting\DateFormatter;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -38,6 +40,7 @@ class DateCreatedColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Format with the shared date formatter instead of a fixed pattern.
      * @since 2.24.0
      *
      * @inheritDoc
@@ -46,8 +49,28 @@ class DateCreatedColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $format = _x('m/d/Y \a\t g:i a', 'human-readable datetime format', 'give');
+        return DateFormatter::dateTime($model->createdAt);
+    }
 
-        return $model->createdAt->format($format);
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::DATE;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @param DonationForm $model
+     */
+    public function getRawValue($model)
+    {
+        return DateFormatter::iso($model->createdAt);
     }
 }

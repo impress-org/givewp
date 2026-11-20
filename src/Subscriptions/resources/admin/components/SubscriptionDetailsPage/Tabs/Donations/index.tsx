@@ -4,25 +4,20 @@ import type { ListTablePageRef } from "@givewp/components";
 import { getSubscriptionOptionsWindowData, useRefreshSubscriptionInBackground } from "@givewp/subscriptions/utils";
 import styles from './styles.module.scss';
 import cn from 'classnames';
-import { DonationRowActions } from "@givewp/donations/components/DonationRowActions";
+import { donationRowActions } from "@givewp/donations/components/DonationRowActions";
+import ListTableApi from "@givewp/components/ListTable/api";
 import BlankSlate from "@givewp/components/ListTable/BlankSlate";
 import apiSettings from './apiSettings';
+import listTableScreen from './listTableScreen';
 import AddRenewalDialog from "./AddRenewalModal";
 import { useState, useRef } from "react";
 import { useDispatch } from "@wordpress/data";
 import { store as coreStore } from "@wordpress/core-data";
 
-const { mode, adminUrl, pluginUrl } = getSubscriptionOptionsWindowData();
+const { mode, adminUrl, pluginUrl, legacyApiRoot, apiNonce } = getSubscriptionOptionsWindowData();
 
-// This is necessary to reuse the DonationRowActions component
-// that expects the window.GiveDonations object to be present
-// while avoiding to expose the entire window.GiveDonations object.
-if (!window?.GiveDonations) {
-    // @ts-ignore
-    window.GiveDonations = {
-        adminUrl,
-    };
-}
+/* The list endpoint carries the subscription id in its address; the donation actions use the plain endpoint. */
+const rowActions = donationRowActions(new ListTableApi({apiRoot: `${legacyApiRoot}/donations`, apiNonce}), adminUrl);
 
 /**
  * @since 4.8.0
@@ -37,6 +32,7 @@ const ListTableBlankSlate = (
 );
 
 /**
+ * @since TBD Pass the donation actions as data and the screen config.
  * @since 4.8.0
  */
 export default function SubscriptionDetailsPageDonationsTab() {
@@ -101,7 +97,8 @@ export default function SubscriptionDetailsPageDonationsTab() {
                     pluralName={__('results', 'give')}
                     paymentMode={mode === 'test'}
                     contentMode={true}
-                    rowActions={DonationRowActions}
+                    rowActions={rowActions}
+                    screen={listTableScreen}
                 />
             </div>
 

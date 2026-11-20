@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Give\Subscriptions\ListTable\Columns;
 
 use Give\Subscriptions\Models\Subscription;
+use Give\Framework\ListTable\ColumnKind;
+use Give\Framework\ListTable\Formatting\DateFormatter;
 use Give\Framework\ListTable\ModelColumn;
-use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
  * @since 2.24.0
@@ -39,6 +40,7 @@ class RenewalDateColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Format with the shared date formatter; $locale is kept for add-on filters and no longer used.
      * @since 4.13.0 updated the date format
      * @since 2.24.0
      *
@@ -48,6 +50,28 @@ class RenewalDateColumn extends ModelColumn
      */
     public function getCellValue($model, $locale = ''): string
     {
-        return Temporal::getFormattedDateTimeUsingTimeZoneAndFormatSettings($model->renewsAt);
+        return DateFormatter::dateTime($model->renewsAt);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::DATE;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @param Subscription $model
+     */
+    public function getRawValue($model)
+    {
+        return DateFormatter::iso($model->renewsAt);
     }
 }

@@ -56,7 +56,7 @@ recorded?" If the answer is "nobody, it's just what the query returned," that's 
 or not the field looks sensitive.
 
 Note the asymmetry: the two consent layers cover *identity display* — name, company, avatar. They
-have never been a licence for contact details. Email, address, phone, and IP have no display
+have never been a license for contact details. Email, address, phone, and IP have no display
 configuration, and adding one would be a product decision rather than a code change.
 
 ## The v3 REST API is the intended data layer
@@ -122,6 +122,33 @@ wp_localize_script($handleName, 'GiveDonors', [
 If you find yourself localizing an array of donors, donations, or subscriptions, stop — that is the
 incident shape.
 
+**The list table layout bootstrap is configuration too.** `PrintListTableLayouts` prints
+`window.GiveListTableLayouts` with `wp_add_inline_script` (inlined into the page just like localized
+data) before the shared `givewp-list-table` script: the layout route path and the signed-in user's
+own stored layouts, one per screen they can open. A layout holds column ids, a density word and a
+page size. The normal client sends ids and enumerated values only, no rows and nothing about a donor.
+`ListTableLayoutValidator` checks the shape of each column id (letters, digits, `_` and `-`, up to 64
+characters), the density word and the page size, but it does not check ids against the screen's
+columns. So an authorized caller can store a string that looks like an id and is not a column;
+validation alone does not guarantee that a stored string holds no personal information. The record
+belongs to that user, is only printed back to that user, and is checked again before it is printed.
+The output is built with `wp_json_encode`. The list still fetches its rows through the REST API.
+
+**The list search term never leaves the tab.** An admin can type a donor's name or email into a
+list's search, so the term is never written to the address, a stored layout, or the server outside
+the list request itself. It is kept only in the tab's `history.state` and a `sessionStorage` copy,
+both of which die with the tab. A tab that this page opens itself starts with a copy of its
+`sessionStorage`, but the copy is only read on a reload or a back/forward load, so a new tab does not
+use it. The address carries ids
+and enumerated values only. See
+[list-tables.md](list-tables.md#view-state).
+
+**List notices carry product and onboarding text only.** The notices above a list (the daily
+recommendation, onboarding tips such as "Campaign List") come from page config: copy, a link, and
+the site-wide list of dismissed recommendations. A `ListTableNotice` has no field for a record, and
+a new notice must not put a donor's name, an amount or any other record value in its text. See
+[list-tables.md](list-tables.md#notices).
+
 **Admin and public localization are separate classes on purpose.** Campaigns has
 `LoadCampaignAdminOptions` and `LoadCampaignPublicOptions`, and the public one is deliberately
 minimal — currency and an `isAdmin` flag. Don't merge them, and don't add a field to the public one
@@ -148,6 +175,23 @@ model straight into a response.
 
 A new field on a ViewModel is a disclosure decision. Ask which callers reach that route
 unauthenticated before adding one.
+
+**The list filter option route returns names, never emails.**
+`givewp/v3/list-table-filter-options/donor` feeds the Donor filter on Donations. Each query selects
+only the donor id and the `name` column, so an option can never carry an email, phone or address,
+and a donor filter is sent to the list as an id, not as a name or an email. The route needs a
+signed-in user with the list screen's view capability (or the donor view capability without a
+screen). The campaign and form sources work the same way with their title columns.
+
+**List stats return aggregates only.** The Donations, Donors and Subscriptions stats endpoints
+return counts and totals, and a `formatted` map with the display text of those same numbers. No
+row, name or email is in the response, and a stat tile shows nothing else. Keep it that way when
+adding a tile: a figure about one donor is a record, not a statistic. Row `rawValues` (unformatted
+money and dates) go out with the row they belong to, through the same list endpoint and its
+permission check.
+
+**The status vocabulary is configuration.** `table.statuses` (status values, translated labels and
+which ones the filter offers) is localized with the column schema. It holds no record.
 
 ### 3. Server-rendered templates
 
