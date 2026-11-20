@@ -17,7 +17,7 @@ if ( ! function_exists('get_comment_delimited_block_content')) {
      *
      * @return string Comment-delimited block content.
      */
-    function get_comment_delimited_block_content($block_name, $block_attributes, $block_content)
+    function get_comment_delimited_block_content($block_name, $block_attributes, $block_content) // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- WordPress core function, declared only when core lacks it (function_exists() guard above); the name must match core.
     {
         if (is_null($block_name)) {
             return $block_content;
@@ -51,7 +51,7 @@ if ( ! function_exists('strip_core_block_namespace')) {
      *
      * @return string Block name to use for serialization.
      */
-    function strip_core_block_namespace($block_name = null)
+    function strip_core_block_namespace($block_name = null) // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- WordPress core function, declared only when core lacks it (function_exists() guard above); the name must match core.
     {
         if (is_string($block_name) && 0 === strpos($block_name, 'core/')) {
             return substr($block_name, 5);
@@ -76,7 +76,7 @@ if ( ! function_exists('serialize_block_attributes')) {
      *
      * @return string Serialized attributes.
      */
-    function serialize_block_attributes($block_attributes)
+    function serialize_block_attributes($block_attributes) // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- WordPress core function, declared only when core lacks it (function_exists() guard above); the name must match core.
     {
         $encoded_attributes = json_encode($block_attributes);
         $encoded_attributes = preg_replace('/--/', '\\u002d\\u002d', $encoded_attributes);

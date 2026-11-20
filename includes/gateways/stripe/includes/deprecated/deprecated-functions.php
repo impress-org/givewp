@@ -92,7 +92,7 @@ function give_is_stripe_checkout_enabled() {
  * @return bool
  */
 if ( ! function_exists( 'get_give_stripe_connect_options' ) ) {
-	function get_give_stripe_connect_options() {
+	function get_give_stripe_connect_options() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- old public function kept for add-ons; this function_exists() copy repeats the @deprecated one declared above.
 
 		_give_deprecated_function( __FUNCTION__, '2.5.0', 'give_stripe_get_connect_settings' );
 
@@ -222,10 +222,10 @@ function give_stripe_is_checkout_enabled() {
  * @return string       Stripe customer ID.
  */
 if ( ! function_exists( 'give_get_stripe_customer_id' ) ) {
-	$stripeVersion  = defined( 'GIVE_STRIPE_VERSION' ) ? GIVE_STRIPE_VERSION : '';
-	$isValidVersion = version_compare( $stripeVersion, '2.2.6', '>=' );
+	$give_stripe_version   = defined( 'GIVE_STRIPE_VERSION' ) ? GIVE_STRIPE_VERSION : '';
+	$give_is_valid_version = version_compare( $give_stripe_version, '2.2.6', '>=' );
 
-	if ( $isValidVersion ) {
+	if ( $give_is_valid_version ) {
 		function give_get_stripe_customer_id( $user_id_or_email ) {
 			_give_deprecated_function( __FUNCTION__, '2.7.0', 'give_stripe_get_customer_id' );
 
