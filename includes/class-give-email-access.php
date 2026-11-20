@@ -129,12 +129,18 @@ class Give_Email_Access {
 	 *
 	 * Register defaults and filters
 	 *
+	 * @since TBD Set the throttle and expiration timeouts for logged-in users too.
 	 * @since  1.0
 	 * @access public
 	 *
 	 * @return void
 	 */
 	public function init() {
+
+		// Timeouts. Set before the logged-in bail below: token validation reads token_expiration.
+		$this->verify_throttle  = apply_filters( 'give_nl_verify_throttle', 300 );
+		$this->limit_throttle   = apply_filters( 'give_nl_limit_throttle', 3 );
+		$this->token_expiration = apply_filters( 'give_nl_token_expiration', 7200 );
 
 		// Bail Out, if user is logged in.
 		if ( is_user_logged_in() ) {
@@ -146,11 +152,6 @@ class Give_Email_Access {
 		if ( ! $column_exists ) {
 			$this->create_columns();
 		}
-
-		// Timeouts.
-		$this->verify_throttle  = apply_filters( 'give_nl_verify_throttle', 300 );
-		$this->limit_throttle   = apply_filters( 'give_nl_limit_throttle', 3 );
-		$this->token_expiration = apply_filters( 'give_nl_token_expiration', 7200 );
 
 		// Setup login.
 		$this->check_for_token();
@@ -235,6 +236,7 @@ class Give_Email_Access {
 	/**
 	 * Has the user authenticated?
 	 *
+	 * @since 4.19.2.1 Set the give_nl cookie with HttpOnly, Secure (on HTTPS) and SameSite=Lax.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -260,7 +262,18 @@ class Give_Email_Access {
 
 			// Set cookie.
 			$lifetime = current_time( 'timestamp' ) + Give()->session->set_expiration_time();
-			@setcookie( 'give_nl', $token, $lifetime, COOKIEPATH, COOKIE_DOMAIN, false );
+			@setcookie(
+				'give_nl',
+				$token,
+				[
+					'expires'  => $lifetime,
+					'path'     => COOKIEPATH,
+					'domain'   => COOKIE_DOMAIN,
+					'secure'   => is_ssl(),
+					'httponly' => true,
+					'samesite' => 'Lax',
+				]
+			);
 
 			return true;
 		}

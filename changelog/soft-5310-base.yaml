@@ -1,0 +1,6 @@
+significance: minor
+type: added
+entry: Added automatic Stripe webhook setup when an account is connected,
+  webhook endpoint management for each connected account, and an email when a
+  webhook endpoint stops working.
+timestamp: 2026-11-02T14:04:13.806Z

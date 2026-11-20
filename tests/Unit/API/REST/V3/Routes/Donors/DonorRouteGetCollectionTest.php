@@ -266,6 +266,61 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
+     * @since 4.19.2.1
+     *
+     * @throws Exception
+     */
+    public function testGetDonorsShouldReturn403WhenDonorOwnerIncludesSensitiveData()
+    {
+        $user = $this->factory()->user->create(['role' => 'subscriber']);
+        /** @var Donor $ownDonor */
+        $ownDonor = Donor::factory()->create(['userId' => $user]);
+        Donor::factory()->create();
+        wp_set_current_user($user);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'id' => $ownDonor->id,
+                'onlyWithDonations' => false,
+                'includeSensitiveData' => true,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(403, $response->get_status());
+    }
+
+    /**
+     * @since 4.19.2.1
+     *
+     * @throws Exception
+     */
+    public function testGetDonorsShouldReturn403WhenDonorOwnerIncludesAnonymousDonors()
+    {
+        $user = $this->factory()->user->create(['role' => 'subscriber']);
+        /** @var Donor $ownDonor */
+        $ownDonor = Donor::factory()->create(['userId' => $user]);
+        $this->createDonor1WithDonation(0, true);
+        wp_set_current_user($user);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'id' => $ownDonor->id,
+                'anonymousDonors' => 'include',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(403, $response->get_status());
+    }
+
+    /**
      * @since 4.0.0
      *
      * @throws Exception
@@ -474,6 +529,119 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
             [
                 'onlyWithDonations' => false,
                 'direction' => 'ASC',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(1, count($data));
+        $this->assertEquals($donor1->id, $data[0]['id']);
+    }
+
+    /**
+     * @since 4.19.2.1
+     *
+     * @throws Exception
+     */
+    public function testGetDonorsShouldNotIncludeAnonymousDonorsWhenSearchMatchesTheirName()
+    {
+        Donation::query()->delete();
+
+        /** @var Campaign $campaign */
+        $campaign = Campaign::factory()->create();
+
+        $donor1 = $this->createDonor1WithDonation($campaign->id);
+        $donor2 = $this->createDonor2WithDonation($campaign->id, true);
+
+        $donor1->email = 'donorone@example.com';
+        $donor1->save();
+        $donor2->email = 'donortwo@example.com';
+        $donor2->save();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'search' => 'B',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(0, count($data));
+    }
+
+    /**
+     * @since 4.19.2.1
+     *
+     * @throws Exception
+     */
+    public function testGetDonorsShouldNotIncludeAnonymousDonorsWhenSearchMatchesTheirNameAndOnlyWithDonationsIsFalse()
+    {
+        Donation::query()->delete();
+
+        /** @var Campaign $campaign */
+        $campaign = Campaign::factory()->create();
+
+        $donor1 = $this->createDonor1WithDonation($campaign->id);
+        $donor2 = $this->createDonor2WithDonation($campaign->id, true);
+
+        $donor1->email = 'donorone@example.com';
+        $donor1->save();
+        $donor2->email = 'donortwo@example.com';
+        $donor2->save();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'search' => 'B',
+                'onlyWithDonations' => false,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(0, count($data));
+    }
+
+    /**
+     * @since 4.19.2.1
+     *
+     * @throws Exception
+     */
+    public function testGetDonorsWithSearchShouldStillReturnNonAnonymousDonors()
+    {
+        Donation::query()->delete();
+
+        /** @var Campaign $campaign */
+        $campaign = Campaign::factory()->create();
+
+        $donor1 = $this->createDonor1WithDonation($campaign->id);
+        $donor2 = $this->createDonor2WithDonation($campaign->id, true);
+
+        $donor1->email = 'donorone@example.com';
+        $donor1->save();
+        $donor2->email = 'donortwo@example.com';
+        $donor2->save();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'search' => 'A',
             ]
         );
 

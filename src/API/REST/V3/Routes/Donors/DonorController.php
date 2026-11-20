@@ -109,6 +109,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Get list of donors.
      *
+     * @since 4.19.2.1 Group the search conditions so anonymous donor filters apply to name and email matches.
      * @since 4.19.0.1 Exclude anonymous donors when the with-donations filter is disabled.
      * @since 4.14.0 Use Headers::addPagination() helper for pagination headers
      * @since 4.8.0 Add support for search parameter
@@ -130,8 +131,13 @@ class DonorController extends WP_REST_Controller
         $query = new DonorsQuery();
 
         if ($request->get_param('search')) {
-            $query->whereLike('name', '%%' . $request->get_param('search') . '%%');
-            $query->orWhereLike('email', '%%' . $request->get_param('search') . '%%');
+            $search = '%%' . $request->get_param('search') . '%%';
+
+            // Group the name/email conditions so the anonymous donor filters below apply to matches on either column.
+            $query->where(function ($builder) use ($search) {
+                $builder->whereLike('name', $search);
+                $builder->orWhereLike('email', $search);
+            });
         }
 
         // Donors only can be donors if they have donations associated with them
@@ -281,6 +287,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.19.2.1 Use DonorPermissions::validationForGetCollectionMethod(), which ignores donor ownership.
      * @since 4.14.0 Use DonorPermissions class
      * @since 4.0.0
      *
@@ -290,7 +297,7 @@ class DonorController extends WP_REST_Controller
      */
     public function get_items_permissions_check($request)
     {
-        return DonorPermissions::validationForGetMethods($request);
+        return DonorPermissions::validationForGetCollectionMethod($request);
     }
 
     /**

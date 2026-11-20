@@ -253,6 +253,23 @@ class TestGenerateConfirmationPageReceipt extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testShouldOmitSubscriptionDetailsWhenSubscriptionWasDeleted()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create();
+
+        $subscription = Subscription::factory()->createWithDonation(['donationFormId' => $donationForm->id]);
+        $donation = $subscription->initialDonation();
+        $subscription->delete();
+
+        $receipt = (new GenerateConfirmationPageReceipt())(new DonationReceipt($donation));
+
+        $this->assertEmpty($receipt->subscriptionDetails->toArray());
+    }
+
+    /**
      * Values inserted by V3 template tags must not be parsed as legacy tags.
      *
      * @since 4.16.8
