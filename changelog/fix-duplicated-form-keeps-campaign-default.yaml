@@ -1,0 +1,6 @@
+significance: patch
+type: fix
+entry: Resolved an issue where duplicating a form in a campaign made the draft
+  copy the campaign's default form, which replaced the campaign page's Donate
+  button with a notice that the form is not published
+timestamp: 2026-10-16T12:49:10.208Z

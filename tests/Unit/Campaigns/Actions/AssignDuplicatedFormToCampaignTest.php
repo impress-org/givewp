@@ -3,6 +3,7 @@
 namespace Give\Tests\Unit\Campaigns\Actions;
 
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Database\DB;
 use Give\Tests\TestCase;
@@ -47,5 +48,35 @@ final class AssignDuplicatedFormToCampaignTest extends TestCase
 
         $this->assertNull(Campaign::findByFormId($duplicatedFormID));
         $this->assertSame($logCount, DB::table('give_log')->count());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDuplicatingTheDefaultFormKeepsTheCampaignDefaultForm()
+    {
+        $campaign = Campaign::factory()->create();
+        $defaultFormId = $campaign->defaultFormId;
+
+        require_once(GIVE_PLUGIN_DIR . '/includes/admin/forms/class-give-form-duplicator.php');
+        \Give_Form_Duplicator::handler($defaultFormId);
+
+        $this->assertSame($defaultFormId, Campaign::find($campaign->id)->defaultFormId);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDuplicatingAnotherCampaignFormKeepsTheCampaignDefaultForm()
+    {
+        $campaign = Campaign::factory()->create();
+        $form = DonationForm::factory()->create();
+        give(CampaignRepository::class)->addCampaignForm($campaign, $form->id);
+
+        require_once(GIVE_PLUGIN_DIR . '/includes/admin/forms/class-give-form-duplicator.php');
+        $duplicatedFormID = \Give_Form_Duplicator::handler($form->id);
+
+        $this->assertSame($campaign->id, Campaign::findByFormId($duplicatedFormID)->id);
+        $this->assertSame($campaign->defaultFormId, Campaign::find($campaign->id)->defaultFormId);
     }
 }
