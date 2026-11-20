@@ -119,6 +119,27 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	}
 
 	/**
+	 * Test that a login sent as an array gets the generic error and no PHP warning.
+	 *
+	 * @since TBD
+	 */
+	public function test_validate_user_login_array_username() {
+
+		$_POST = array(
+			'give_user_login' => array( 'admin' ),
+			'give_user_pass'  => 'password',
+		);
+
+		$result = give_donation_form_validate_user_login();
+
+		$this->assertSame( - 1, $result['user_id'] );
+		$this->assertArrayHasKey( 'invalid_credentials', give_get_errors() );
+
+		give_clear_errors();
+
+	}
+
+	/**
 	 * Test that the login form requires a password.
 	 *
 	 * @since 4.16.7

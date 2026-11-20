@@ -11,10 +11,35 @@ use Give_Donation_Receipt_Email;
 class PlainTextEmailTest extends TestCase
 {
     /**
+     * The mailer settings before the test: the preview changes them on the shared mailer.
+     *
+     * @var array
+     */
+    private $mailerState = [];
+
+    /**
+     * @since TBD
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        foreach (['template', 'content_type', 'html'] as $property) {
+            $reflection = new \ReflectionProperty(get_class(Give()->emails), $property);
+            $reflection->setAccessible(true);
+            $this->mailerState[$property] = $reflection->getValue(Give()->emails);
+        }
+    }
+
+    /**
      * @since TBD
      */
     public function tearDown(): void
     {
+        foreach ($this->mailerState as $property => $value) {
+            Give()->emails->__set($property, $value);
+        }
+
         remove_all_filters('pre_wp_mail');
         remove_all_filters('give_donation-receipt_get_email_message');
         remove_all_filters('give_donation-receipt_get_email_content_type');

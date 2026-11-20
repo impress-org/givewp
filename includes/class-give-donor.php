@@ -390,7 +390,7 @@ class Give_Donor {
 	/**
 	 * Creates a donor.
 	 *
-	 * @since  TBD Store the sanitized values instead of the raw input.
+	 * @since  TBD Store the sanitized values instead of the raw input, and join an array of payment IDs before sanitizing.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -409,14 +409,16 @@ class Give_Donor {
 		];
 
 		$args = wp_parse_args( $data, $defaults );
+
+		// Join the payment IDs first: sanitize_columns() turns an array into an empty string.
+		if ( ! empty( $args['payment_ids'] ) && is_array( $args['payment_ids'] ) ) {
+			$args['payment_ids'] = implode( ',', array_unique( array_values( $args['payment_ids'] ) ) );
+		}
+
 		$args = $this->sanitize_columns( $args );
 
 		if ( empty( $args['email'] ) || ! is_email( $args['email'] ) ) {
 			return false;
-		}
-
-		if ( ! empty( $args['payment_ids'] ) && is_array( $args['payment_ids'] ) ) {
-			$args['payment_ids'] = implode( ',', array_unique( array_values( $args['payment_ids'] ) ) );
 		}
 
 		/**

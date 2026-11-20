@@ -1028,7 +1028,7 @@ function give_donation_form_validate_new_user() {
  * Donation Form Validate User Login
  *
  * @access private
- * @since  TBD Use wp_strip_all_tags() instead of strip_tags().
+ * @since  TBD Use wp_strip_all_tags() instead of strip_tags(), and reject a login that is not a string.
  * @since  4.16.7 Authenticate via wp_authenticate() and return a single generic error.
  * @since  1.0
  *
@@ -1048,6 +1048,13 @@ function give_donation_form_validate_user_login() {
 	// Bailout, if Username is empty.
 	if ( empty( $post_data['give_user_login'] ) ) {
 		give_set_error( 'must_log_in', __( 'Please enter your username or email to log in.', 'give' ) );
+
+		return $valid_user_data;
+	}
+
+	// Bailout, if the username is not a string, such as an array sent in a malformed request.
+	if ( ! is_string( $post_data['give_user_login'] ) ) {
+		give_set_error( 'invalid_credentials', __( 'The login/password does not match or is incorrect.', 'give' ) );
 
 		return $valid_user_data;
 	}
