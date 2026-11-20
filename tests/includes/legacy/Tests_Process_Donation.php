@@ -119,6 +119,27 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	}
 
 	/**
+	 * Test that a login sent as an array gets the generic error and no PHP warning.
+	 *
+	 * @since TBD
+	 */
+	public function test_validate_user_login_array_username() {
+
+		$_POST = array(
+			'give_user_login' => array( 'admin' ),
+			'give_user_pass'  => 'password',
+		);
+
+		$result = give_donation_form_validate_user_login();
+
+		$this->assertSame( - 1, $result['user_id'] );
+		$this->assertArrayHasKey( 'invalid_credentials', give_get_errors() );
+
+		give_clear_errors();
+
+	}
+
+	/**
 	 * Test that the login form requires a password.
 	 *
 	 * @since 4.16.7
@@ -406,6 +427,41 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 
 		give_clear_errors();
 
+	}
+
+	/**
+	 * Guest name fields keep apostrophes and lose HTML tags.
+	 *
+	 * @since TBD
+	 */
+	public function test_get_donation_form_user_cleans_guest_name_fields() {
+		$form = Give_Helper_Form::create_simple_form();
+
+		$_POST = [
+			'give-form-id' => $form->ID,
+			'give_first'   => '<b>Ann</b>',
+			'give_last'    => "O'Neil",
+			'give_title'   => 'Dr',
+		];
+
+		$user = give_get_donation_form_user(
+			[
+				'need_new_user'   => false,
+				'need_user_login' => false,
+				'guest_user_data' => [
+					'user_id'    => 0,
+					'user_email' => 'ann@example.org',
+				],
+			]
+		);
+
+		$_POST = [];
+
+		$this->assertSame( 'Ann', $user['user_first'] );
+		$this->assertSame( "O'Neil", $user['user_last'] );
+		$this->assertSame( 'Dr', $user['user_title'] );
+		$this->assertSame( 'ann@example.org', $user['user_email'] );
+		$this->assertFalse( $user['address'] );
 	}
 
 	/**

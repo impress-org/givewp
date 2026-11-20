@@ -348,7 +348,7 @@ abstract class Give_Shortcode_Generator {
 					/* translators: %s: Donation form ID */
 					? sprintf( __( 'Untitled (#%s)', 'give' ), $post->ID )
 					/** This filter is documented in wp-includes/post-template.php */
-					: apply_filters( 'the_title', $post->post_title, $post->ID );
+					: apply_filters( 'the_title', $post->post_title, $post->ID ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- the_title is a WordPress core filter, applied on purpose so form titles in the shortcode list look as they do elsewhere.
 			}
 
 			$field['type']    = 'listbox';

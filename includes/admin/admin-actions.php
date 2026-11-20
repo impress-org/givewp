@@ -143,7 +143,7 @@ add_action( 'wp_ajax_give_hide_outdated_php_notice', 'give_hide_outdated_php_not
  * @since 2.25.2 Add nonce check for bulk action.
  * @since      1.8.9
  */
-function _give_register_admin_notices() {
+function _give_register_admin_notices() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- admin_notices callback registered by this name below; add-ons may remove_action() it by name, so it keeps its name.
 	// Bailout.
 	if ( ! is_admin() ) {
 		return;
@@ -604,7 +604,7 @@ add_action( 'admin_notices', '_give_register_admin_notices', - 1 );
  *
  * @return bool
  */
-function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
+function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- admin_bar_menu callback registered by this name below; add-ons may remove_action() it by name, so it keeps its name.
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only; it only picks the test mode label shown in the admin bar while the settings form is posted and saves nothing.
 	$is_test_mode = ! empty( $_POST['test_mode'] ) ? give_is_setting_enabled( sanitize_text_field( wp_unslash( $_POST['test_mode'] ) ) ) : give_is_test_mode();
 
@@ -636,7 +636,7 @@ add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 
 /**
  * Outputs the Give admin bar CSS.
  */
-function _give_test_mode_notice_admin_bar_css() {
+function _give_test_mode_notice_admin_bar_css() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- admin_head callback registered by this name below; add-ons may remove_action() it by name, so it keeps its name.
 	if ( ! give_is_test_mode() ) {
 		return;
 	}
@@ -1448,6 +1448,7 @@ add_action( 'give_donor_personal_address_label', 'give_donor_personal_address_la
  * Update Donor Information when User Profile is updated from admin.
  * Note: for internal use only.
  *
+ * @since TBD Use wp_strip_all_tags() instead of strip_tags().
  * @since 4.19.1 Check that the name fields are set before reading them.
  * @since  2.0
  *
@@ -1472,7 +1473,7 @@ function give_update_donor_name_on_user_update( $user_id = 0 ) {
 		$first_name = ! empty( $_POST['first_name'] ) ? give_clean( $_POST['first_name'] ) : get_user_meta( $user_id, 'first_name', true );
 		$last_name  = ! empty( $_POST['last_name'] ) ? give_clean( $_POST['last_name'] ) : get_user_meta( $user_id, 'last_name', true );
 		// phpcs:enable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$full_name  = strip_tags( wp_unslash( trim( "{$first_name} {$last_name}" ) ) );
+		$full_name  = wp_strip_all_tags( wp_unslash( trim( "{$first_name} {$last_name}" ) ) );
 
 		// Assign User First name and Last name to Donor.
 		Give()->donors->update(

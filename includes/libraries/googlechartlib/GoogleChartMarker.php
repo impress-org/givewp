@@ -27,7 +27,7 @@
  * In this case, the data serie will be hidden. Please refer to Google Chart API
  * documentation about compound chart for further information.
  */
-abstract class GoogleChartMarker
+abstract class GoogleChartMarker // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound -- vendored Google Chart library; class names stay as upstream and are loaded by name.
 {
 	/**
 	 * @var GoogleChartData Will hold the data serie.

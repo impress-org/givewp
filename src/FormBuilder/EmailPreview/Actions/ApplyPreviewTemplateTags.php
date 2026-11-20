@@ -24,6 +24,7 @@ class ApplyPreviewTemplateTags
     }
 
     /**
+     * @since TBD Use wp_rand() instead of rand().
      * @since 4.19.1 Use gmdate() instead of date().
      * @since 3.0.0
      * @return array
@@ -46,7 +47,7 @@ class ApplyPreviewTemplateTags
                 'amount' => give_currency_filter( '10.50' ),
                 'price' => give_currency_filter( '10.50' ),
                 'payment_method' => __( 'PayPal', 'give' ),
-                'payment_id' => rand( 2000, 2050 ),
+                'payment_id' => wp_rand( 2000, 2050 ),
                 'receipt_link_url' => give_get_receipt_url(0),
                 'receipt_link' => give_get_receipt_link(0),
                 'date' => gmdate( give_date_format(), current_time( 'timestamp' ) ),

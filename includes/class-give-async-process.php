@@ -65,6 +65,7 @@ class Give_Async_Process extends WPAsyncRequest {
 		/**
 		 * Fire the hook.
 		 */
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the hook name comes from the dispatcher (Give()->async_process->data(['hook' => ...]), today only give_update_log_form_id); the request is nonce-checked in WPAsyncRequest::maybe_handle() first.
 		do_action( $_post['hook'], $_post['data'] );
 
 		exit();

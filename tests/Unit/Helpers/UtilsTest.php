@@ -157,6 +157,31 @@ class UtilsTest extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testGetQueryParamFromURL(): void
+    {
+        $this->assertSame(
+            'showReceipt',
+            Utils::getQueryParamFromURL('https://example.org/donate/?giveDonationAction=showReceipt&x=1', 'giveDonationAction')
+        );
+        $this->assertSame(
+            'failedDonation',
+            Utils::getQueryParamFromURL('/donate/?giveDonationAction=failedDonation', 'giveDonationAction')
+        );
+        $this->assertSame(
+            'showReceipt',
+            Utils::getQueryParamFromURL('//example.org/?giveDonationAction=showReceipt', 'giveDonationAction')
+        );
+        $this->assertSame('a b', Utils::getQueryParamFromURL('https://example.org/?q=a+b', 'q'));
+        $this->assertSame('', Utils::getQueryParamFromURL('https://example.org/donate/', 'giveDonationAction'));
+        $this->assertSame(
+            'fallback',
+            Utils::getQueryParamFromURL('https://example.org/donate/?x=1', 'giveDonationAction', 'fallback')
+        );
+    }
+
+    /**
      * @since 3.20.0 Test encoded strings and strings with special characters
      * @since 3.19.3 Test all types of serialized data
      * @since 3.17.2

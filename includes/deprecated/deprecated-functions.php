@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 2.0
  */
-function _give_load_deprecated_global_params( $give_object ) {
+function _give_load_deprecated_global_params( $give_object ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- give_init callback registered below by this name; add-ons may remove it by name.
 	$GLOBALS['give_logs'] = Give()->logs;
 	$GLOBALS['give_cron'] = Give_Cron::get_instance();
 }
