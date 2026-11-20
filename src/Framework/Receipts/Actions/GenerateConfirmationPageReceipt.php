@@ -91,6 +91,7 @@ class GenerateConfirmationPageReceipt
             }
 
             $value = apply_filters(
+                // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the name is givewp_donation_confirmation_page_field_value_for_ plus the field name, so it carries the Give prefix; add-ons listen to it.
                 sprintf("givewp_donation_confirmation_page_field_value_for_%s", $field->getName()),
                 $value,
                 $field,
@@ -98,6 +99,7 @@ class GenerateConfirmationPageReceipt
             );
 
             $label = apply_filters(
+                // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the name is givewp_donation_confirmation_page_field_label_for_ plus the field name, so it carries the Give prefix; add-ons listen to it.
                 sprintf("givewp_donation_confirmation_page_field_label_for_%s", $field->getName()),
                 $field->hasReceiptLabel() ? $field->getReceiptLabel() : $field->getLabel(),
                 $field,

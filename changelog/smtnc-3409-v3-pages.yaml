@@ -1,0 +1,6 @@
+significance: patch
+type: fix
+entry: Phone fields now load the international phone input library from the
+  plugin instead of a CDN, and v3 form pages, receipts and embeds now pass
+  Plugin Check.
+timestamp: 2026-11-04T20:39:12.346Z

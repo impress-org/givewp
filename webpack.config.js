@@ -75,6 +75,9 @@ const legacyStyleEntry = {
         __dirname,
         'node_modules/@givewp/design-system-foundation/css/foundation.css'
     ),
+    // intl-tel-input styles for the legacy donor screen phone field (IntlTelInput::getCssUrl()). Built
+    // as an entry so its flag images resolve to the copies webpack already emits in build/images.
+    'assets/dist/css/intl-tel-input': path.resolve(__dirname, 'node_modules/intl-tel-input/build/css/intlTelInput.css'),
 };
 
 /**
@@ -254,6 +257,25 @@ const plugins = [
             {
                 from: assetPath('src/fonts'),
                 to: path.resolve(__dirname, 'build/assets/dist/fonts'),
+            },
+            // intl-tel-input files served from the plugin instead of a CDN (see IntlTelInput.php).
+            // `minimized` keeps the production build from minifying them again, so they ship as published.
+            {
+                from: path.resolve(__dirname, 'node_modules/intl-tel-input/build/js/intlTelInput.min.js'),
+                to: path.resolve(__dirname, 'build/assets/dist/js/intl-tel-input/intlTelInput.min.js'),
+                toType: 'file',
+                info: {minimized: true},
+            },
+            {
+                from: path.resolve(__dirname, 'node_modules/intl-tel-input/build/js/utils.js'),
+                to: path.resolve(__dirname, 'build/assets/dist/js/intl-tel-input/utils.js'),
+                toType: 'file',
+                info: {minimized: true},
+            },
+            {
+                from: path.resolve(__dirname, 'node_modules/intl-tel-input/LICENSE'),
+                to: path.resolve(__dirname, 'build/assets/dist/js/intl-tel-input/LICENSE.txt'),
+                toType: 'file',
             },
         ],
     }),
