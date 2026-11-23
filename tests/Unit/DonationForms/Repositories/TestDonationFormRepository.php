@@ -8,6 +8,7 @@ use Give\DonationForms\Factories\DonationFormFactory;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\Rules\CurrencyRule;
+use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
@@ -161,6 +162,41 @@ final class TestDonationFormRepository extends TestCase
 
         $this->assertNull($form);
         $this->assertEmpty($formMeta);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testUpdateShouldClearCachedPostStatus(): void
+    {
+        $donationForm = DonationForm::factory()->create(['status' => DonationFormStatus::DRAFT()]);
+
+        /* Prime the post cache the way a front end request does. */
+        $this->assertSame(DonationFormStatus::DRAFT, get_post_status($donationForm->id));
+
+        $donationForm->status = DonationFormStatus::PUBLISHED();
+        $this->repository->update($donationForm);
+
+        $this->assertSame(DonationFormStatus::PUBLISHED, get_post_status($donationForm->id));
+    }
+
+    /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testDeleteShouldClearCachedPost(): void
+    {
+        $donationForm = DonationForm::factory()->create();
+
+        /* Prime the post cache the way a front end request does. */
+        $this->assertNotNull(get_post($donationForm->id));
+
+        $this->repository->delete($donationForm);
+
+        $this->assertNull(get_post($donationForm->id));
     }
 
     /**
