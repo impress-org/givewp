@@ -38,6 +38,7 @@ class PasswordRoute extends RouteAbstract
     /**
      * Handles password update.
      *
+     * @since TBD Refuse updates for linked user accounts that can edit content.
      * @since 4.16.6 added password validation
      * @since 3.3.0
      *
@@ -65,13 +66,25 @@ class PasswordRoute extends RouteAbstract
 
         $donor = Donor::find($donorId);
 
-        if ( ! $donor || empty($donor->userId)) {
+        if ( ! $donor || empty( $donor->userId ) ) {
             return new WP_REST_Response(
                 [
                     'status' => 400,
                     'response' => 'no_user_account',
                     'body_response' => [
                         'message' => esc_html__('Unable to update password. Contact a site administrator.', 'give'),
+                    ],
+                ]
+            );
+        }
+
+        if ( user_can( $donor->userId, 'edit_posts' ) ) {
+            return new WP_REST_Response(
+                [
+                    'status' => 403,
+                    'response' => 'user_role_not_allowed',
+                    'body_response' => [
+                        'message' => esc_html__( 'Unable to update password. Contact a site administrator.', 'give' ),
                     ],
                 ]
             );

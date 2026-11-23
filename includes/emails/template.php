@@ -34,6 +34,7 @@ function give_get_email_templates() {
  *
  * @todo Modify this function to remove payment id dependency.
  *
+ * @since TBD Flag the tag arguments as an email composition.
  * @since 1.0
  *
  * @param string $message      Message with the template tags.
@@ -44,7 +45,7 @@ function give_get_email_templates() {
  * @return string $message Fully formatted message
  */
 function give_email_template_tags( $message, $payment_data, $payment_id, $admin_notice = false ) {
-	return give_do_email_tags( $message, $payment_id );
+	return give_do_email_tags( $message, [ 'payment_id' => $payment_id, 'context' => 'email' ] );
 }
 
 /**

@@ -1266,6 +1266,11 @@ function give_email_tag_receipt_link_url( $tag_args ) {
 /**
  * Email template tag: {donation_history_link}
  *
+ * The rendered link carries a verify key that logs in as the donor, so the key
+ * is only generated while an email is being composed; in any other render
+ * context the tag resolves to an empty string.
+ *
+ * @since TBD Only generate the access link while composing an email.
  * @since 2.0
  *
  * @param array $tag_args Email Tag Arguments.
@@ -1279,6 +1284,10 @@ function give_email_tag_donation_history_link( $tag_args ) {
 
 	// Backward compatibility.
 	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
+
+	if ( empty( $tag_args['context'] ) || 'email' !== $tag_args['context'] ) {
+		return '';
+	}
 
 	switch ( true ) {
 

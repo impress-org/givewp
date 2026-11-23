@@ -125,4 +125,30 @@ class TestPasswordRoute extends RestApiTestCase
             'User password should be updated to the new value.'
         );
     }
+
+    /**
+     * @since TBD
+     */
+    public function testPasswordUpdateRefusedForUserWithEditCapabilities()
+    {
+        wp_update_user([
+            'ID' => $this->userId,
+            'role' => 'editor',
+        ]);
+
+        $request = new WP_REST_Request('POST', self::ROUTE);
+        $request->set_param('newPassword', 'should-not-apply');
+        $request->set_param('donor_id', $this->donor->id);
+
+        $data = $this->dispatchRequest($request)->get_data();
+
+        $this->assertSame(403, $data['status']);
+        $this->assertSame('user_role_not_allowed', $data['response']);
+
+        $user = get_user_by('id', $this->userId);
+        $this->assertFalse(
+            wp_check_password('should-not-apply', $user->user_pass, $this->userId),
+            'User password should remain unchanged for an account with edit capabilities.'
+        );
+    }
 }
