@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Load wp editor by ajax.
  *
- * @since TBD Verify the nonce. Build the editor settings on the server, taking only the row count and the editor class from the request.
+ * @since 4.19.2.2 Verify the nonce. Build the editor settings on the server, taking only the row count and the editor class from the request.
  * @since 4.19.1 Unslash and sanitize the request input.
  * @since 1.8
  */

@@ -8,7 +8,7 @@ use Give\Tests\TestCase;
 use WPDieException;
 
 /**
- * @since TBD
+ * @since 4.19.2.2
  *
  * @covers ::give_load_wp_editor
  */
@@ -20,7 +20,7 @@ final class LoadWpEditorRequestTest extends TestCase
     private $faker;
 
     /**
-     * @since TBD
+     * @since 4.19.2.2
      */
     public function setUp(): void
     {
@@ -39,7 +39,7 @@ final class LoadWpEditorRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.2
      */
     public function tearDown(): void
     {
@@ -53,7 +53,7 @@ final class LoadWpEditorRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.2
      */
     public function testRejectsRequestWithoutValidNonce(): void
     {
@@ -66,7 +66,7 @@ final class LoadWpEditorRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.2
      */
     public function testRendersEditorWithRowCountAndClassFromRequest(): void
     {
@@ -89,7 +89,7 @@ final class LoadWpEditorRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.2
      */
     public function testIgnoresOtherEditorSettingsFromRequest(): void
     {
@@ -107,7 +107,7 @@ final class LoadWpEditorRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.2
      */
     public function testRendersNothingForUserWhoCannotEditForms(): void
     {
@@ -122,7 +122,7 @@ final class LoadWpEditorRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.2
      */
     public function testRendersNothingWhenEditorArgumentsCannotBeDecoded(): void
     {
@@ -135,7 +135,7 @@ final class LoadWpEditorRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.2
      */
     private function setValidNonce(): void
     {
@@ -145,7 +145,7 @@ final class LoadWpEditorRequestTest extends TestCase
     /**
      * Encodes the editor arguments the way give_wysiwyg() writes them to the data-wp-editor attribute.
      *
-     * @since TBD
+     * @since 4.19.2.2
      *
      * @param array{textarea_rows?: int, editor_class?: string, editor_css?: string} $settings Settings in the request.
      *
@@ -159,7 +159,7 @@ final class LoadWpEditorRequestTest extends TestCase
     /**
      * Runs the handler until it ends the request with wp_die().
      *
-     * @since TBD
+     * @since 4.19.2.2
      *
      * @return array{0: string, 1: string} The printed output and the wp_die() message.
      */

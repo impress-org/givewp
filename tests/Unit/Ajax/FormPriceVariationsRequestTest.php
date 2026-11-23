@@ -8,7 +8,7 @@ use Give_Helper_Form;
 use WPDieException;
 
 /**
- * @since TBD
+ * @since 4.19.2.2
  *
  * @covers ::give_check_for_form_price_variations
  */
@@ -17,7 +17,7 @@ final class FormPriceVariationsRequestTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.19.2.2
      */
     public function setUp(): void
     {
@@ -32,7 +32,7 @@ final class FormPriceVariationsRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.2
      */
     public function tearDown(): void
     {
@@ -49,7 +49,7 @@ final class FormPriceVariationsRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.2
      */
     public function testRejectsRequestWithoutValidNonce(): void
     {
@@ -62,7 +62,7 @@ final class FormPriceVariationsRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.19.2.2
      */
     public function testReturnsPriceLevelsForRequestWithValidNonce(): void
     {
@@ -81,7 +81,7 @@ final class FormPriceVariationsRequestTest extends TestCase
     /**
      * Runs the handler until it ends the request with wp_die().
      *
-     * @since TBD
+     * @since 4.19.2.2
      *
      * @return array{0: string, 1: string} The printed output and the wp_die() message.
      */

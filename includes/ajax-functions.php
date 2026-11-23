@@ -579,7 +579,7 @@ add_action( 'wp_ajax_give_tags_search', 'give_ajax_tags_search' );
 /**
  * Check for Price Variations (Multi-level donation forms)
  *
- * @since  TBD Verify the nonce.
+ * @since  4.19.2.2 Verify the nonce.
  * @since  4.19.1 Escape output. Check that the form ID is set, then unslash and sanitize it.
  * @since  1.5
  *
