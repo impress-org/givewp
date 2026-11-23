@@ -29,14 +29,22 @@ const fetchUrl = <Response>(url: string) => apiFetch<Response>({url});
  * - No refetch on window focus and no automatic retry: the list changes when the view changes or
  *   when an action calls `refresh()`; a failed request shows its error and offers a retry.
  *
+ * Pass `{keepPreviousData: false}` for data that must never show the answer of another request, such as a
+ * count: while the request changes, `data` is then `undefined`.
+ *
+ * @since TBD Accept `keepPreviousData`.
  * @since TBD Return `isValidating`.
  * @since TBD
  */
-export default function useListTableQuery<Response>(endpoint: string | null, parameters: ListTableParameters) {
+export default function useListTableQuery<Response>(
+    endpoint: string | null,
+    parameters: ListTableParameters,
+    {keepPreviousData = true}: {keepPreviousData?: boolean} = {}
+) {
     const url = endpoint ? addQueryArgs(endpoint, toQueryArgs(parameters)) : null;
 
     const {data, error, isLoading, isValidating, mutate} = useSWR<Response, Error>(url, fetchUrl, {
-        keepPreviousData: true,
+        keepPreviousData,
         revalidateOnFocus: false,
         shouldRetryOnError: false,
     });
