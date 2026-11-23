@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.19.2.1
+Stable tag: 4.19.2.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= [4.19.2.2] 2026-11-23 =
+
+* Security - Added additional protection to the admin requests that load the donation form text editor and the donation level dropdown. Reported by Santh.
+
 = [4.19.2.1] 2026-11-17 =
 
 * Security - Added additional permission checks to the donor list REST API endpoint.
