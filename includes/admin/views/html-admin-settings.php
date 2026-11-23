@@ -24,6 +24,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
      *
      * @since 1.8
      */
+    // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the prefix is the settings page slug (give-settings, give-tools or give-reports), so the real name is like give-settings_form_method_tab_general; add-ons use these names.
     $form_method = apply_filters(self::$setting_filter_prefix . '_form_method_tab_' . $current_tab, 'post');
 
     /**
@@ -37,9 +38,11 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
      * @since 1.8
      */
     $form_open_tag = apply_filters(
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the prefix is the settings page slug (give-settings, give-tools or give-reports), so the real name is like give-settings_open_form; add-ons use these names.
         self::$setting_filter_prefix . '_open_form',
         '<form method="' . $form_method . '" id="give-mainform" action="" enctype="multipart/form-data">'
     );
+    // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the prefix is the settings page slug (give-settings, give-tools or give-reports), so the real name is like give-settings_close_form; add-ons use these names.
     $form_close_tag = apply_filters(self::$setting_filter_prefix . '_close_form', '</form>');
 
     $wrapper_class = implode(
@@ -131,6 +134,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
              *
              * @since 1.8
              */
+            // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the prefix is the settings page slug (give-settings, give-tools or give-reports), so the real name is like give-settings_tabs; add-ons use these names.
             do_action(self::$setting_filter_prefix . '_tabs');
 
             // Show link to New Reports page
@@ -164,6 +168,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
          *
          * @since 1.8
          */
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the prefix is the settings page slug (give-settings, give-tools or give-reports), so the real name is like give-settings_sections_general_page; add-ons use these names.
         do_action(self::$setting_filter_prefix . "_sections_{$current_tab}_page");
 
         /**
@@ -175,6 +180,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
          *
          * @since 1.8
          */
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the prefix is the settings page slug (give-settings, give-tools or give-reports), so the real name is like give-settings_settings_general_page; add-ons use these names.
         do_action(self::$setting_filter_prefix . "_settings_{$current_tab}_page");
 
         wp_nonce_field('give-save-settings', '_give-save-settings');

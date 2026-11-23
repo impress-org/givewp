@@ -646,6 +646,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
             $raw_data = false;
             $file_dir = get_attached_file($file_id);
             if ($file_dir) {
+                // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- reads only the header row of the uploaded CSV with fgetcsv(); WP_Filesystem has no file handle API.
                 if (false !== ($handle = fopen($file_dir, 'r'))) {
                     $raw_data = fgetcsv($handle, $index, $delimiter);
                     if (isset($raw_data[0])) {

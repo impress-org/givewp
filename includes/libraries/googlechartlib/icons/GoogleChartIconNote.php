@@ -19,7 +19,7 @@ require_once dirname(__FILE__).'/../GoogleChartIcon.php';
 /**
  * A "Fun style notes with text and optional title".
  */
-class GoogleChartIconNote extends GoogleChartIcon
+class GoogleChartIconNote extends GoogleChartIcon // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound -- vendored Google Chart library; class names stay as upstream and are loaded by name.
 {
 	const LARGE = 1;
 	const SMALL = 2;

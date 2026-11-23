@@ -5,6 +5,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * @since TBD Link the Legacy Reports tab to this site's admin instead of a hardcoded local URL.
  * @since 4.19.1 Escape output.
  */
 // Reports page markup
@@ -60,7 +61,7 @@ if (!defined('ABSPATH')) {
                 esc_html_e('Overview', 'give'); ?>
             </a>
             <a class="nav-tab"
-               href="http://givewp.local/wp-admin/edit.php?post_type=give_forms&page=give-reports&legacy=1">
+               href="<?php echo esc_url(admin_url('edit.php?post_type=give_forms&page=give-reports&legacy=1')); ?>">
                 <?php
                 esc_html_e('Legacy Reports', 'give'); ?>
             </a>

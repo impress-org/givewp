@@ -167,6 +167,8 @@ class DonationReceipt extends Receipt
     /**
      * Get donor billing address
      *
+     * @since TBD Use wp_strip_all_tags() instead of strip_tags().
+     *
      * @return string|null
      */
     private function getDonorBillingAddress()
@@ -183,7 +185,7 @@ class DonationReceipt extends Receipt
             "\r\n"
         );
 
-        $hasAddress = (bool) trim(str_replace(',', '', strip_tags($formatted)));
+        $hasAddress = (bool) trim(str_replace(',', '', wp_strip_all_tags($formatted)));
 
         if ($hasAddress) {
             return $formatted;

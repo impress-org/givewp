@@ -329,6 +329,7 @@ class Give_Addon_Activation_Banner {
 	/**
 	 * Render single banner activation
 	 *
+	 * @since TBD Use wp_strip_all_tags() instead of strip_tags().
 	 * @since 4.19.1 Escape output. Add a nonce to the dismiss link.
 	 * @since 2.1.0
 	 *
@@ -389,7 +390,7 @@ class Give_Addon_Activation_Banner {
 				if ( ! empty( $plugin_data['Description'] ) ) {
 					?>
 					<span class="give-addon-description">
-					<em><?php echo esc_html( strip_tags( $plugin_data['Description'] ) ); ?></em></span><br />
+					<em><?php echo esc_html( wp_strip_all_tags( $plugin_data['Description'] ) ); ?></em></span><br />
 					<?php
 				}
 				if ( isset( $banner_arr['settings_url'] ) ) {
