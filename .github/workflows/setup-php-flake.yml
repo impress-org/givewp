@@ -1,0 +1,39 @@
+name: setup-php flake test
+
+on:
+    push:
+        branches: [ 'ci-test/setup-php-flake' ]
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+jobs:
+    setup:
+        name: ${{ matrix.variant }} #${{ matrix.n }}
+        runs-on: ${{ matrix.runner }}
+        strategy:
+            fail-fast: false
+            matrix:
+                n: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ]
+                variant: [ blacksmith-default, blacksmith-builds-cache, github-hosted ]
+                include:
+                    -   variant: blacksmith-default
+                        runner: blacksmith-4vcpu-ubuntu-2404
+                        cache: ''
+                    -   variant: blacksmith-builds-cache
+                        runner: blacksmith-4vcpu-ubuntu-2404
+                        cache: 'true'
+                    -   variant: github-hosted
+                        runner: ubuntu-24.04
+                        cache: ''
+        steps:
+            -   name: Set Up PHP 7.4
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 7.4
+                    extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+                    coverage: none
+                env:
+                    SETUP_PHP_TRACE: 2
+                    use_builds_cache: ${{ matrix.cache }}
