@@ -1,4 +1,4 @@
-// Styles of the Donation Forms list only: the title cell and the upgrade tooltip.
+// Styles of the Donation Forms list only: the title cell and the placement of the upgrade tip.
 
 // The form title keeps the stock DataViews title style. The title, the builder icon and the Default
 // pill flow inline, so a long title wraps and the pill stays on the title line.
@@ -7,14 +7,19 @@
     min-width: 0;
 }
 
+// The stock table style makes a link a block, which would push the pill under the title.
+.titleContainer .migratedForm a {
+    display: inline;
+}
+
 .defaultFormPill {
     display: inline-block;
     margin-inline-start: var(--givewp-spacing-2);
     white-space: nowrap;
     background: var(--givewp-neutral-200);
     padding: 0 var(--givewp-spacing-2);
-    border-radius: var(--givewp-rounded-12);
-    font-size: var(--givewp-font-size-paragraph-md);
+    border-radius: 2px;
+    font-size: 0.8125rem;
     line-height: 1.5;
 }
 
@@ -56,28 +61,8 @@
     }
 }
 
-.upgradedForm {
-    width: max(7.5rem, 120px);
-    position: relative;
-
-    .tooltip {
-        width: 18rem;
-        bottom: calc(100% + 10px);
-        right: 0;
-    }
-
-    .tooltip::after {
-        top: 100%;
-        right: 55px;
-    }
-
-    .tooltipContainer {
-        position: relative;
-    }
-}
-
-.migratedForm,
-.upgradedForm {
+// The "Uses the Visual Form Builder" hover tip next to the cube icon.
+.migratedForm {
     .tooltip {
         position: absolute;
         background-color: #19661c;
@@ -95,18 +80,5 @@
         border-width: 5px;
         border-style: solid;
         border-color: #19661c transparent transparent transparent;
-    }
-
-    .link {
-        background: none;
-        border: 0;
-        color: inherit;
-        cursor: pointer;
-        font: inherit;
-        padding: 0;
-        margin-top: 2rem;
-        margin-bottom: -0.4rem;
-        font-weight: bold;
-        float: right;
     }
 }

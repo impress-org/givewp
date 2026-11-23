@@ -1,3 +1,5 @@
+@use '../layout/breakpoints' as *;
+
 .givewp-list-table-view-reset {
     display: flex;
     align-items: center;
@@ -9,6 +11,19 @@
 
     &__button.components-button {
         white-space: nowrap;
+        color: var(--givewp-list-table-link);
+
+        // Above the narrow width the button is as tall as the other toolbar controls (the stock button is
+        // 36 px), so the row does not grow when it appears. The installed components package has no
+        // `size="compact"`, so the size is set here, as for "Add filter" and Reset.
+        @media (min-width: #{$givewp-list-table-narrow + 1px}) {
+            block-size: 2rem;
+        }
+    }
+
+    // Hidden, not removed: it keeps its width in the toolbar row, so the filter chips never wrap when it shows.
+    &__button--hidden.components-button {
+        visibility: hidden;
     }
 
     &__message {

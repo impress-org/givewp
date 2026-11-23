@@ -39,14 +39,21 @@ class CampaignsDataRepository
      * @var array
      */
     private $subscriptionDonorsCount = [];
+    /**
+     * @var string[] the campaign ids this instance was asked for
+     */
+    private $requestedIds = [];
 
     /**
      * Cached stats for the given campaigns. Campaigns missing from the cache are queried and added
      * to it, so a warm cache never hides a campaign that arrived after it was built.
      *
      * The cache holds live-mode stats only. The queries filter by the site's payment mode, and the
-     * options carry no mode, so test mode reads straight from the database and never writes.
+     * options carry no mode, so test mode reads straight from the database and never writes. (The
+     * Delete Test Transactions tool removes donations without firing the hooks that refresh the
+     * cache, so a test-mode cache would go stale.)
      *
+     * @since TBD Add missing campaigns to the freshly read option, so a finished refresh is not undone.
      * @since 4.18.0 Query and cache campaigns that are missing from the cache; read subscriptions from the option they are written to; bypass the cache in test mode.
      * @since 4.8.0 added data caching layer
      *
@@ -57,6 +64,7 @@ class CampaignsDataRepository
     public static function campaigns(array $ids): CampaignsDataRepository
     {
         $self = new self();
+        $self->requestedIds = array_map('strval', $ids);
         $emptyCache = ['amounts' => [], 'donationsCount' => [], 'donorsCount' => []];
         $useCache = ! give_is_test_mode();
         $campaignsData = $useCache
@@ -71,15 +79,11 @@ class CampaignsDataRepository
         if ($uncachedIds) {
             $donations = CampaignsDataQuery::donations($uncachedIds);
 
-            $campaignsData = [
-                'amounts' => array_merge($campaignsData['amounts'], self::withZeroRows($donations->collectIntendedAmounts(), $uncachedIds, 'sum')),
-                'donationsCount' => array_merge($campaignsData['donationsCount'], self::withZeroRows($donations->collectDonations(), $uncachedIds, 'count')),
-                'donorsCount' => array_merge($campaignsData['donorsCount'], self::withZeroRows($donations->collectDonors(), $uncachedIds, 'count')),
-            ];
-
-            if ($useCache) {
-                update_option('give_campaigns_data', $campaignsData);
-            }
+            $campaignsData = self::addRows('give_campaigns_data', $campaignsData, [
+                'amounts' => self::withZeroRows($donations->collectIntendedAmounts(), $uncachedIds, 'sum'),
+                'donationsCount' => self::withZeroRows($donations->collectDonations(), $uncachedIds, 'count'),
+                'donorsCount' => self::withZeroRows($donations->collectDonors(), $uncachedIds, 'count'),
+            ], $useCache);
         }
 
         // The subscriptions cache can lag the donations cache, for example when Recurring is activated later
@@ -90,15 +94,11 @@ class CampaignsDataRepository
         if ($uncachedSubscriptionIds) {
             $subscriptions = CampaignsDataQuery::subscriptions($uncachedSubscriptionIds);
 
-            $campaignsSubscriptionData = [
-                'amounts' => array_merge($campaignsSubscriptionData['amounts'], self::withZeroRows($subscriptions->collectInitialAmounts(), $uncachedSubscriptionIds, 'sum')),
-                'donationsCount' => array_merge($campaignsSubscriptionData['donationsCount'], self::withZeroRows($subscriptions->collectDonations(), $uncachedSubscriptionIds, 'count')),
-                'donorsCount' => array_merge($campaignsSubscriptionData['donorsCount'], self::withZeroRows($subscriptions->collectDonors(), $uncachedSubscriptionIds, 'count')),
-            ];
-
-            if ($useCache) {
-                update_option('give_campaigns_subscriptions_data', $campaignsSubscriptionData);
-            }
+            $campaignsSubscriptionData = self::addRows('give_campaigns_subscriptions_data', $campaignsSubscriptionData, [
+                'amounts' => self::withZeroRows($subscriptions->collectInitialAmounts(), $uncachedSubscriptionIds, 'sum'),
+                'donationsCount' => self::withZeroRows($subscriptions->collectDonations(), $uncachedSubscriptionIds, 'count'),
+                'donorsCount' => self::withZeroRows($subscriptions->collectDonors(), $uncachedSubscriptionIds, 'count'),
+            ], $useCache);
         }
 
         $self->amounts = $campaignsData['amounts'];
@@ -112,6 +112,97 @@ class CampaignsDataRepository
         }
 
         return $self;
+    }
+
+    /**
+     * The stats rows of the requested campaigns, in the shape the CampaignsDataQuery collect methods return them.
+     *
+     * Temporary: this cache is replaced by live goals (SOFT-5098), so this method goes away without
+     * a deprecation. Not part of the public API.
+     *
+     * @since TBD
+     *
+     * @internal
+     *
+     * @return array<string, array>
+     */
+    public function getRows(): array
+    {
+        return array_map([$this, 'onlyRequested'], [
+            'amounts' => $this->amounts,
+            'donationsCount' => $this->donationsCount,
+            'donorsCount' => $this->donorsCount,
+            'subscriptionAmounts' => $this->subscriptionAmounts,
+            'subscriptionDonationsCount' => $this->subscriptionDonationsCount,
+            'subscriptionDonorsCount' => $this->subscriptionDonorsCount,
+        ]);
+    }
+
+    /**
+     * The rows of the requested campaigns, so a reader does not scan every cached campaign.
+     *
+     * @since TBD
+     */
+    private function onlyRequested(array $rows): array
+    {
+        return array_values(array_filter($rows, function ($row) {
+            return isset($row['campaign_id']) && in_array((string)$row['campaign_id'], $this->requestedIds, true);
+        }));
+    }
+
+    /**
+     * Adds the rows of newly queried campaigns to the cache and returns the result. In test mode
+     * nothing is stored.
+     *
+     * Just before the write the option is read again, and only campaigns it has no row for are
+     * added, so a row a refresh wrote in the meantime is never overwritten.
+     *
+     * @since TBD
+     *
+     * @param array<string, array> $cache   the cache as this request read it
+     * @param array<string, array> $newRows rows by cache key, for campaigns that were missing
+     *
+     * @return array<string, array>
+     */
+    private static function addRows(string $option, array $cache, array $newRows, bool $store): array
+    {
+        if (!$store) {
+            return self::withNewRows($cache, $newRows);
+        }
+
+        // Past the copy WordPress keeps for this request, so a refresh from another request shows.
+        wp_cache_delete($option, 'options');
+
+        $merged = self::withNewRows((array)get_option($option, []), $newRows);
+
+        update_option($option, $merged, false);
+
+        return $merged;
+    }
+
+    /**
+     * The cache with the rows of the campaigns it has no row for added.
+     *
+     * @since TBD
+     *
+     * @param array<string, array> $newRows rows by cache key
+     *
+     * @return array<string, array>
+     */
+    private static function withNewRows(array $cache, array $newRows): array
+    {
+        $cache = array_merge(['amounts' => [], 'donationsCount' => [], 'donorsCount' => []], $cache);
+        $cachedIds = array_map('strval', array_column($cache['donationsCount'], 'campaign_id'));
+
+        foreach ($newRows as $key => $rows) {
+            foreach ($rows as $row) {
+                if (!in_array((string)$row['campaign_id'], $cachedIds, true)) {
+                    $cache[$key][] = $row;
+                }
+            }
+        }
+
+        return $cache;
     }
 
     /**

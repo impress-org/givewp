@@ -129,7 +129,7 @@ button (`ListTableViewReset`). The pure functions behind them are in `ListTable/
 Filters are shared too. A screen declares its filters once (`filters.ts` next to the screen) and
 `ListTablePage` renders them in one filter bar (`ListTableFilters`). The bar is built from small
 molecules in the same folder that any admin screen can reuse: `ListTableSearch` (a search box with a
-visible label and a hint), `FilterChip` (a chip that opens a popover, with a remove button),
+visible label, and its hint line `SearchHint`, linked through `useSearchHint`), `FilterChip` (a chip that opens a popover, with a remove button),
 `OptionsFilterControl` (checkboxes or radios), `EntityFilterControl` (options searched on the
 server, with loading, error and "Load more") and `DateRangeFilterControl` (presets and a start and
 end day). The hooks `useFilterOptions` and `useFilterOptionLabels` load options and chip names from

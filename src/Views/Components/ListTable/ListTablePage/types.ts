@@ -40,8 +40,11 @@ export type ListTableItem = {id: string | number; [columnId: string]: unknown};
  */
 export type ListTableResponse = {
     items: ListTableItem[];
-    totalItems: number | string;
-    totalPages: number;
+    /** Missing in a `withCount=false` response, unless the server had the total already. */
+    totalItems?: number | string;
+    totalPages?: number;
+    /** Sent with `withCount=false`: whether a page after this one has rows. */
+    hasNextPage?: boolean;
     [key: string]: unknown;
 };
 
@@ -267,7 +270,7 @@ export type StatConfig = {
  * @since TBD
  */
 export type TestModeToggle = {
-    /** The header badge text, "Test". */
+    /** The header badge text, "Test mode". */
     label: string;
     /** The accessible name of the switch. */
     ariaLabel: string;
@@ -326,6 +329,13 @@ export interface ListTablePageProps {
     productRecommendation?: ReactNode;
     /** @since TBD */
     notices?: ListTableNotice[];
+    /**
+     * Called with the rows on the page whenever they change. A screen reads them to show a notice that depends on
+     * the records (the notice itself must carry no record data).
+     *
+     * @since TBD
+     */
+    onItemsChange?: (items: ListTableItem[]) => void;
     /** @since TBD */
     recommendations?: ListTableRecommendations;
     columnFilters?: Array<ColumnFilterConfig>;

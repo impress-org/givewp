@@ -1,6 +1,9 @@
 import {act, startTransition, Suspense, useState} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
-import ListTableSearch from './index';
+import ListTableSearch, {type ListTableSearchProps} from './index';
+import SearchHint from './SearchHint';
+import {shortHint} from './shortHint';
+import useSearchHint from './useSearchHint';
 
 (globalThis as {IS_REACT_ACT_ENVIRONMENT?: boolean}).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -8,18 +11,33 @@ let container: HTMLDivElement;
 let root: Root;
 const onChange = jest.fn();
 
-const render = (props: Partial<React.ComponentProps<typeof ListTableSearch>> = {}) =>
-    act(() =>
-        root.render(
-            <ListTableSearch
-                label="Search donors"
-                hint="Searches name and email."
-                value=""
-                onChange={onChange}
-                {...props}
-            />
-        )
+type HarnessProps = Partial<ListTableSearchProps> & {hint?: string};
+
+/**
+ * The search box and its hint as the list places them: the box in the toolbar row, other controls
+ * after it, and the hint under the row.
+ */
+function Harness({hint = 'Searches name and email.', ...props}: HarnessProps) {
+    const searchHint = useSearchHint(hint);
+
+    return (
+        <>
+            <div className="row">
+                <ListTableSearch
+                    label="Search donors"
+                    value=""
+                    onChange={onChange}
+                    describedBy={searchHint.describedBy}
+                    {...props}
+                />
+                <button type="button">Status</button>
+            </div>
+            {searchHint.hint && <SearchHint {...searchHint.hint} />}
+        </>
     );
+}
+
+const render = (props: HarnessProps = {}) => act(() => root.render(<Harness {...props} />));
 
 const input = () => container.querySelector<HTMLInputElement>('input')!;
 
@@ -62,6 +80,13 @@ describe('ListTableSearch', () => {
         const hint = document.getElementById(input().getAttribute('aria-describedby') ?? '');
 
         expect(hint?.textContent).toBe('Searches name and email.');
+    });
+
+    it('renders only the box: the hint is placed apart, under the row', async () => {
+        await render();
+
+        expect(container.querySelector('.givewp-list-table-search .givewp-list-table-search__hint')).toBeNull();
+        expect(container.querySelector('.row + .givewp-list-table-search__hint-row')).not.toBeNull();
     });
 
     it('calls onChange once after typing stops', async () => {
@@ -126,7 +151,7 @@ describe('ListTableSearch', () => {
             update = setState;
             return (
                 <Suspense fallback={null}>
-                    <ListTableSearch label="Search donors" hint="" value="" onChange={state.callback} />
+                    <ListTableSearch label="Search donors" value="" onChange={state.callback} />
                     <Gate suspend={state.suspend} />
                 </Suspense>
             );
@@ -163,5 +188,70 @@ describe('ListTableSearch', () => {
 
         expect(onChange).not.toHaveBeenCalled();
         expect(input().value).toBe('');
+    });
+});
+
+describe('shortHint', () => {
+    it('keeps the first sentence of the Donations hint', () => {
+        expect(
+            shortHint('Searches donor first name, last name, email or donation ID. A name matches from the start.')
+        ).toBe('Searches donor first name, last name, email or donation ID.');
+    });
+
+    it('keeps a one-sentence hint whole', () => {
+        expect(shortHint('Searches titles.')).toBe('Searches titles.');
+    });
+
+    it('ignores trailing whitespace', () => {
+        expect(shortHint('Searches titles. ')).toBe('Searches titles.');
+    });
+
+    it('splits after a question mark or an exclamation mark', () => {
+        expect(shortHint('Which fields? Name and email.')).toBe('Which fields?');
+        expect(shortHint('Type a name! Then wait.')).toBe('Type a name!');
+    });
+
+    it('keeps a hint with no final punctuation whole', () => {
+        expect(shortHint('Searches titles')).toBe('Searches titles');
+    });
+
+    it('returns an empty hint as empty', () => {
+        expect(shortHint('')).toBe('');
+    });
+});
+
+describe('ListTableSearch hint row', () => {
+    const long = 'Searches donor name or ID. An ID matches exactly.';
+    const hintText = () => container.querySelector('.givewp-list-table-search__hint')?.textContent;
+    const helpButton = () => container.querySelector<HTMLButtonElement>('.givewp-help-tip__button');
+
+    it('shows the short line and a help button that carries the full rule', async () => {
+        await render({hint: long});
+
+        expect(hintText()).toBe('Searches donor name or ID.');
+        expect(helpButton()?.getAttribute('aria-label')).toBe('How search works');
+
+        // The input is described by the FULL rule, in text only a screen reader gets.
+        const described = document.getElementById(input().getAttribute('aria-describedby') ?? '');
+
+        expect(described?.textContent).toBe(long);
+        expect(described?.className).toContain('screen-reader-text');
+    });
+
+    it('has no help button when the hint is one sentence', async () => {
+        await render({hint: 'Searches titles.'});
+
+        expect(helpButton()).toBeNull();
+        expect(hintText()).toBe('Searches titles.');
+        expect(input().getAttribute('aria-describedby')).toBe(
+            container.querySelector('.givewp-list-table-search__hint')?.id
+        );
+    });
+
+    it('renders no hint row for an empty hint (legacy screens)', async () => {
+        await render({hint: ''});
+
+        expect(hintText()).toBeUndefined();
+        expect(helpButton()).toBeNull();
     });
 });

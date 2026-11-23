@@ -1,14 +1,32 @@
+@use '../layout/breakpoints' as *;
+
 .givewp-stat-tiles {
     display: flex;
     flex-direction: row;
-    // The tiles wrap onto a new row when there is no room, at any width, so a narrow page needs no
-    // rule of its own here.
+    // The tiles wrap onto a new row when there is no room, at any width.
     flex-wrap: wrap;
-    gap: var(--givewp-spacing-4);
-    margin-inline: var(--givewp-spacing-6);
+    gap: 0;
+    // The band at the top of the list sheet: full width, with a hairline under it.
+    border-block-end: 1px solid var(--givewp-list-table-hairline);
 
     // Each tile shares the row equally, and drops to the next row before it gets narrower than this.
     > .givewp-stat-tile {
         flex: 1 1 10rem;
+    }
+
+    > .givewp-stat-tile + .givewp-stat-tile {
+        border-inline-start: 1px solid var(--givewp-list-table-hairline);
+    }
+
+    // Stacked, in the same order.
+    @media (max-width: $givewp-list-table-narrow) {
+        > .givewp-stat-tile {
+            flex-basis: 100%;
+        }
+
+        > .givewp-stat-tile + .givewp-stat-tile {
+            border-block-start: 1px solid var(--givewp-list-table-hairline);
+            border-inline-start: 0;
+        }
     }
 }

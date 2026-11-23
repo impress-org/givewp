@@ -7,6 +7,7 @@ use Give\Donors\ListTable\DonorsListTable;
 use Give\Donors\Models\Donor;
 use Give\Donors\Repositories\DonorsDataRepository;
 use Give\Framework\Database\DB;
+use Give\Framework\ListTable\ListCount;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\QueryBuilder\WhereQueryBuilder;
 use WP_REST_Request;
@@ -32,11 +33,91 @@ class ListDonors extends Endpoint
     /**
      * @inheritDoc
      *
-     * @since TBD Accept a list of campaign IDs and add the donorType parameter.
+     * @since TBD Accept a list of campaign IDs, add the donorType parameter, the withCount parameter and the count route.
      * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      */
     public function registerRoute()
     {
+        $args = [
+            'page' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 1,
+                'minimum' => 1
+            ],
+            'perPage' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 30,
+                'minimum' => 1
+            ],
+            'donations' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 0
+            ],
+            'search' => [
+                'type' => 'string',
+                'required' => false
+            ],
+            'start' => [
+                'type' => 'string',
+                'required' => false,
+                'format' => 'date-time'
+            ],
+            'campaignId' => [
+                'type' => 'array',
+                'required' => false,
+                'default' => [],
+                'maxItems' => 50,
+                'items' => [
+                    'type' => 'integer',
+                ],
+                'description' => 'Filter donors by one or more campaign IDs, at most 50. A 0 is ignored.',
+            ],
+            'donorType' => [
+                'type' => 'string',
+                'required' => false,
+                'enum' => [
+                    'one-time',
+                    'subscriber',
+                ],
+                'description' => 'Filter donors by type. Subscribers have at least one subscription.',
+            ],
+            'end' => [
+                'type' => 'string',
+                'required' => false,
+                'format' => 'date-time'
+            ],
+            'sortColumn' => [
+                'type' => 'string',
+                'required' => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'sortDirection' => [
+                'type' => 'string',
+                'required' => false,
+                'enum' => [
+                    'asc',
+                    'desc'
+                ],
+            ],
+            'locale' => [
+                'type' => 'string',
+                'required' => false,
+                'default' => get_locale(),
+            ],
+            'return' => [
+                'type' => 'string',
+                'required' => false,
+                'default' => 'columns',
+                'enum' => [
+                    'model',
+                    'columns'
+                ],
+            ],
+        ];
+
         register_rest_route(
             'give-api/v2',
             $this->endpoint,
@@ -46,91 +127,26 @@ class ListDonors extends Endpoint
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
-                'args' => [
-                    'page' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 1,
-                        'minimum' => 1
-                    ],
-                    'perPage' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 30,
-                        'minimum' => 1
-                    ],
-                    'donations' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 0
-                    ],
-                    'search' => [
-                        'type' => 'string',
-                        'required' => false
-                    ],
-                    'start' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'format' => 'date-time'
-                    ],
-                    'campaignId' => [
-                        'type' => 'array',
-                        'required' => false,
-                        'default' => [],
-                        'maxItems' => 50,
-                        'items' => [
-                            'type' => 'integer',
-                        ],
-                        'description' => 'Filter donors by one or more campaign IDs, at most 50. A 0 is ignored.',
-                    ],
-                    'donorType' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'enum' => [
-                            'one-time',
-                            'subscriber',
-                        ],
-                        'description' => 'Filter donors by type. Subscribers have at least one subscription.',
-                    ],
-                    'end' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'format' => 'date-time'
-                    ],
-                    'sortColumn' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'sortDirection' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'enum' => [
-                            'asc',
-                            'desc'
-                        ],
-                    ],
-                    'locale' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => get_locale(),
-                    ],
-                    'return' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => 'columns',
-                        'enum' => [
-                            'model',
-                            'columns'
-                        ],
-                    ],
+                'args' => $args + ListCount::arguments(),
+            ]
+        );
+
+        register_rest_route(
+            'give-api/v2',
+            $this->endpoint . '/count',
+            [
+                [
+                    'methods' => 'GET',
+                    'callback' => [$this, 'handleCountRequest'],
+                    'permission_callback' => [$this, 'permissionsCheck'],
                 ],
+                'args' => $args,
             ]
         );
     }
 
     /**
-     * @since TBD Load the latest donation dates for the whole page and pass them to the list table.
+     * @since TBD Load the latest donation dates for the whole page and pass them to the list table, and skip the total when the request sends withCount=false.
      * @since 2.24.0 Change this to use the new ListTable class
      * @since 2.20.0
      *
@@ -143,9 +159,7 @@ class ListDonors extends Endpoint
         $this->request = $request;
         $this->listTable = give(DonorsListTable::class);
 
-        $donors = $this->getDonors();
-        $donorsCount = $this->getTotalDonorsCount();
-        $pageCount = (int)ceil($donorsCount / $request->get_param('perPage'));
+        list($donors, $hasNextPage) = ListCount::trim($request, $this->getDonors());
 
         if ('model' === $this->request->get_param('return')) {
             $items = $donors;
@@ -163,13 +177,39 @@ class ListDonors extends Endpoint
         return new WP_REST_Response(
             [
                 'items' => $items,
-                'totalItems' => $donorsCount,
-                'totalPages' => $pageCount
-            ]
+            ] + $this->getPaging($hasNextPage)
         );
     }
 
     /**
+     * The total and page count, or only whether another page follows when the request skips the total.
+     *
+     * @since TBD
+     */
+    private function getPaging(bool $hasNextPage): array
+    {
+        if (!ListCount::isRequested($this->request)) {
+            return ['hasNextPage' => $hasNextPage];
+        }
+
+        return ListCount::totals($this->getTotalDonorsCount(), $this->request);
+    }
+
+    /**
+     * The total for the same filters as the list, without its rows. It reads the total the same
+     * way the list does, so the two cannot disagree.
+     *
+     * @since TBD
+     */
+    public function handleCountRequest(WP_REST_Request $request): WP_REST_Response
+    {
+        $this->request = $request;
+
+        return ListCount::response($this->getTotalDonorsCount(), $request);
+    }
+
+    /**
+     * @since TBD Read one more row when the request skips the total.
      * @since 2.24.0 Replace Query Builder with Donors model
      * @since 2.21.0
      *
@@ -189,7 +229,7 @@ class ListDonors extends Endpoint
             $query->orderBy($sortColumn, $sortDirection);
         }
 
-        $query->limit($perPage)
+        $query->limit(ListCount::limit($this->request))
             ->offset(($page - 1) * $perPage);
 
         $donors = $query->getAll();
@@ -216,7 +256,7 @@ class ListDonors extends Endpoint
     }
 
     /**
-     * @since TBD Accept several campaign IDs, filter by donorType, and group the name and email search so other filters apply to every match.
+     * @since TBD Accept several campaign IDs and compare them as text so the meta index finds them, filter by donorType, and group the name and email search so other filters apply to every match.
      * @since 2.24.0 Replace Query Builder with Donors model
      * @since 2.21.0
      *
@@ -253,6 +293,9 @@ class ListDonors extends Endpoint
         }
 
         if ($campaignIds) {
+            // The meta value is text. Numbers compared with it make MySQL cast every row, which skips the (meta_key, meta_value) index.
+            $campaignIds = array_map('strval', $campaignIds);
+
             $query
                 ->whereIn('id', static function (QueryBuilder $builder) use ($campaignIds) {
                     $builder

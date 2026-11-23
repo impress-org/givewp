@@ -1,29 +1,63 @@
+@use '../layout/breakpoints' as *;
+
 .givewp-filter-chip {
     display: inline-flex;
     align-items: center;
-    border: 1px solid var(--givewp-neutral-300);
+    // Real borders, so the chip keeps its edge in forced colors. The edge is 3:1 on the page.
+    border: 1px solid var(--givewp-list-table-control-edge);
     border-radius: 2px;
-    background: var(--givewp-neutral-25);
+    background: #fff;
 
     &--has-value {
-        border-color: var(--givewp-blue-400);
-        background: var(--givewp-blue-50);
+        border-color: var(--givewp-list-table-action-edge);
+        background: var(--givewp-list-table-action-tint);
     }
 
     &__toggle.components-button {
         padding-inline: var(--givewp-spacing-3);
+        // A 32 px chip is this plus the two 1 px borders (the stock button is 36 px). At 782 px and below
+        // the toggle is 40 px, so the chip is 42 px.
+        block-size: 1.875rem;
+        min-block-size: 1.875rem;
+        // The text and the caret sit in one row. A long value is cut in the text (below), not in the caret.
+        gap: var(--givewp-spacing-1);
         max-inline-size: 16rem;
+        overflow: hidden;
+        font-size: 0.8125rem;
+
+        // A 40 px target on a phone.
+        @media (max-width: $givewp-list-table-narrow) {
+            min-block-size: 2.5rem;
+        }
+    }
+
+    // A long value is cut here. The tooltip holds the full text.
+    &__text {
+        min-inline-size: 0;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-size: var(--givewp-font-size-paragraph-md);
+    }
+
+    // Shows that a chip without a value opens a popover. It never shrinks or gets cut.
+    &__caret {
+        flex-shrink: 0;
+        fill: currentColor;
     }
 
     &__remove.components-button {
-        min-inline-size: 0;
+        // A 24 px target, inside the 32 px chip (the stock icon button is 36 px).
+        block-size: 1.5rem;
+        min-inline-size: 1.5rem;
+        min-block-size: 1.5rem;
         margin-inline-end: var(--givewp-spacing-1);
         padding: 0;
-        color: var(--givewp-neutral-500);
+        color: var(--givewp-list-table-text);
+
+        @media (max-width: $givewp-list-table-narrow) {
+            min-inline-size: 2.5rem;
+            min-block-size: 2.5rem;
+        }
     }
 
     // The popover content sits outside the chip, so it is styled by its own class.

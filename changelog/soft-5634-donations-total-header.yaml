@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: The X-WP-Total and X-WP-TotalPages headers of the donations REST list now count the donations that match the request's filters, not every donation.
+timestamp: 2026-11-18T22:00:00.000Z
