@@ -1,6 +1,5 @@
 significance: patch
 type: fix
 entry: Corrected published v3 donation forms showing "The form is not published"
-  or returning a 404 on sites with a persistent object cache, by clearing the
-  cached form post after a form is updated or deleted.
+  or returning a 404 on sites with a persistent object cache.
 timestamp: 2026-11-23T00:41:42.412Z
