@@ -98,7 +98,7 @@ class Templates
     {
         $templateId = $templateId ?: FormTemplateUtils::getActiveID();
 
-        if ( ! $templateId || ! isset($this->templates[$templateId])) {
+        if ( ! is_string($templateId) || '' === $templateId || ! isset($this->templates[$templateId])) {
             return null;
         }
 
