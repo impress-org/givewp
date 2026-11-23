@@ -66,6 +66,18 @@ class FormTest extends TestCase
     /**
      * @since TBD
      */
+    public function testHandleOffSiteCheckoutRedirectReturnsLocationWhenTemplateIsNotRegistered(): void
+    {
+        $this->useFormWithUnregisteredTemplate();
+
+        $location = home_url('/');
+
+        $this->assertSame($location, (new Form())->handleOffSiteCheckoutRedirect($location));
+    }
+
+    /**
+     * @since TBD
+     */
     private function useFormWithUnregisteredTemplate(): void
     {
         global $post;
