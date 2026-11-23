@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Resolved an issue where a Stripe invoice that is not linked to a
+  subscription caused a fatal error.
+timestamp: 2026-11-19T18:07:43.755Z
