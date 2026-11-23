@@ -185,6 +185,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @since TBD Count only the donations that match the request filters in the X-WP-Total and X-WP-TotalPages headers.
      * @since 4.6.0
      */
     public function get_items($request)
@@ -226,6 +227,7 @@ class DonationController extends WP_REST_Controller
             $query->whereIn('post_status', (array)$status);
         }
 
+        $totalQuery = clone $query;
         $query
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
@@ -243,7 +245,7 @@ class DonationController extends WP_REST_Controller
             );
         }, $donations);
 
-        $totalDonations = empty($donations) ? 0 : Donation::query()->count();
+        $totalDonations = empty($donations) ? 0 : $totalQuery->count();
         $totalPages = (int)ceil($totalDonations / $perPage);
 
         $response = rest_ensure_response($donations);
