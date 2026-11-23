@@ -104,6 +104,8 @@ jobs:
                     php-version: '7.4'
                     extensions: mbstring, intl
                     coverage: none
+                env:
+                    use_builds_cache: true
 
             # For the POT file generated after the build, below.
             -   name: Set up WP-CLI
