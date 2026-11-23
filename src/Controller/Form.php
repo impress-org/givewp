@@ -298,6 +298,7 @@ class Form
      *
      * In case of offsite checkout, this function will load a intermediate template to redirect embed parent page.
      *
+     * @since TBD return early when the request has no form template, such as a favicon redirect with an iframe Referer
      * @since 2.7.0
      *
      * @param string $location
@@ -306,6 +307,10 @@ class Form
      */
     public function handleOffSiteCheckoutRedirect($location)
     {
+        if ( ! FormTemplateUtils::getActiveID()) {
+            return $location;
+        }
+
         /* @var Template $template */
         $template = Give()->templates->getTemplate();
 
