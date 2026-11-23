@@ -1,4 +1,4 @@
 significance: minor
 type: enhancement
-entry: Made the Donations, Donors, Subscriptions and Campaigns lists load in seconds on sites with a million donations. Totals are counted from indexes and kept for a short time (60 seconds by default, set with a filter), long lists get a page number box in place of a page menu with thousands of entries, and a page shows that it is loading. The rows of a list now appear first, and the totals follow from a separate count request.
+entry: Improved how fast the Donations, Donors and Subscriptions screens load on very large sites
 timestamp: 2026-11-16T22:00:00.000Z
