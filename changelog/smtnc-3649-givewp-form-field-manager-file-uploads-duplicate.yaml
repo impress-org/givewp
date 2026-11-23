@@ -1,0 +1,7 @@
+significance: patch
+type: fix
+entry: Corrected the stored file path of files uploaded through Form Field
+  Manager File Upload fields and the donor dashboard avatar upload, which
+  duplicated the sub-site directory in attachment URLs on multisite and
+  prevented image sizes from being generated.
+timestamp: 2026-11-23T21:15:52.922Z

@@ -30,6 +30,8 @@ class AvatarRoute extends RouteAbstract
     }
 
     /**
+     * @since TBD Pass the uploaded file path, not its URL, to the attachment functions.
+     *
      * @inheritDoc
      *
      * @return array|WP_REST_Response
@@ -79,14 +81,14 @@ class AvatarRoute extends RouteAbstract
             );
 
             if (isset($upload['url'])) {
-                $path = $upload['url'];
+                $path = $upload['file'];
 
                 // Check the type of file. We'll use this as the 'post_mime_type'.
                 $filetype = wp_check_filetype(basename($path), null);
 
                 // Prepare an array of post data for the attachment.
                 $attachment = [
-                    'guid' => $path,
+                    'guid' => $upload['url'],
                     'post_mime_type' => $filetype['type'],
                     'post_title' => preg_replace('/\.[^.]+$/', '', basename($path)),
                     'post_content' => '',
