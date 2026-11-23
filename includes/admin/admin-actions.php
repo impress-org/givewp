@@ -22,23 +22,43 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Load wp editor by ajax.
  *
+ * @since 4.19.2.2 Verify the nonce. Build the editor settings on the server, taking only the row count and the editor class from the request.
  * @since 4.19.1 Unslash and sanitize the request input.
  * @since 1.8
  */
 function give_load_wp_editor() {
-	// phpcs:disable WordPress.Security.NonceVerification.Missing -- read-only editor loader; it only prints a WordPress editor for a user who can edit forms and saves nothing.
+	check_ajax_referer( 'give_load_wp_editor' );
+
 	if ( ! isset( $_POST['wp_editor'] ) || ! current_user_can( 'edit_give_forms' ) ) {
-		die();
+		wp_die();
 	}
 
-	$wp_editor                     = json_decode( base64_decode( sanitize_text_field( wp_unslash( $_POST['wp_editor'] ) ) ), true );
-	$wp_editor[2]['textarea_name'] = isset( $_POST['textarea_name'] ) ? give_clean( $_POST['textarea_name'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
-	$editor_id                     = isset( $_POST['wp_editor_id'] ) ? give_clean( $_POST['wp_editor_id'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
-	// phpcs:enable WordPress.Security.NonceVerification.Missing
+	$wp_editor = json_decode( base64_decode( sanitize_text_field( wp_unslash( $_POST['wp_editor'] ) ) ), true );
 
-	wp_editor( wp_kses_post( $wp_editor[0] ), $editor_id, $wp_editor[2] );
+	if ( ! is_array( $wp_editor ) ) {
+		wp_die();
+	}
 
-	die();
+	$content            = isset( $wp_editor[0] ) && is_string( $wp_editor[0] ) ? $wp_editor[0] : '';
+	$requested_settings = isset( $wp_editor[2] ) && is_array( $wp_editor[2] ) ? $wp_editor[2] : [];
+	$editor_id          = isset( $_POST['wp_editor_id'] ) ? give_clean( $_POST['wp_editor_id'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+	$editor_settings    = [
+		'textarea_name' => isset( $_POST['textarea_name'] ) ? give_clean( $_POST['textarea_name'] ) : '', // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data.
+	];
+
+	$textarea_rows = isset( $requested_settings['textarea_rows'] ) ? absint( $requested_settings['textarea_rows'] ) : 0;
+
+	if ( $textarea_rows ) {
+		$editor_settings['textarea_rows'] = $textarea_rows;
+	}
+
+	if ( isset( $requested_settings['editor_class'] ) && is_string( $requested_settings['editor_class'] ) ) {
+		$editor_settings['editor_class'] = implode( ' ', array_filter( array_map( 'sanitize_html_class', explode( ' ', $requested_settings['editor_class'] ) ) ) );
+	}
+
+	wp_editor( wp_kses_post( $content ), $editor_id, $editor_settings );
+
+	wp_die();
 }
 
 add_action( 'wp_ajax_give_load_wp_editor', 'give_load_wp_editor' );

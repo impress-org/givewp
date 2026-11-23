@@ -401,6 +401,8 @@ class Give_Scripts {
             'give_insert_payment_note_nonce'             => wp_create_nonce('give_insert_payment_note'),
             'give_delete_payment_note_nonce'             => wp_create_nonce('give_delete_payment_note'),
             'give_set_notification_status_nonce'         => wp_create_nonce('give_set_notification_status'),
+            'give_load_wp_editor_nonce'                  => wp_create_nonce('give_load_wp_editor'),
+            'give_check_for_form_price_variations_nonce' => wp_create_nonce('give_check_for_form_price_variations'),
 			'setting_not_save_message'          => __( 'Changes you made may not be saved.', 'give' ),
 			'give_donation_amounts'             => [
 				'minimum' => apply_filters( 'give_donation_minimum_limit', 1 ),
