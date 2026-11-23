@@ -6,7 +6,7 @@ use Give\Framework\Database\DB;
 
 /**
  * Marks that one job is running, so a second one does not start. The donation counters recount
- * uses it. The totals cache does not: on a miss every request computes the total itself.
+ * uses it. The donation totals do not: every request that misses computes the total itself.
  *
  * The lock is an options row. INSERT IGNORE adds it only when no request holds it, which
  * add_option() cannot promise. A lock older than EXPIRES_AFTER seconds belongs to a request that

@@ -147,49 +147,37 @@ Things to know before touching this:
 - **Full rebuild** is the `Campaigns/Migrations/CacheCampaignsData` migration, which deletes both
   options and repopulates. That's the recovery path when the cache is wrong.
 
-### Donation totals: a timed option
+### Donation totals: counters plus a 60 second transient
 
-`Donations/Repositories/DonationTotalsCache` keeps the totals the donation endpoints compute over
-every donation, and only those: the Donations list count (`ListDonations::getTotalDonationsCount()`)
-and the Donations stats (`ListDonationsStats`). At a million donations each reads a meta row per
-donation and takes tens of seconds. Everything else is live: the donor and subscription counts and
-the subscriptions stats are indexed, so caching them would only push out the entries above.
+The totals the donation endpoints compute over every donation are the Donations list count
+(`ListDonations::getTotalDonationsCount()`) and the Donations stats (`ListDonationsStats`). At a
+million donations each reads a meta row per donation and can take tens of seconds. Everything else
+is live: the donor and subscription counts and the subscriptions stats are indexed.
 
-The endpoints ask one place for a total, `Donations/Counters/DonationTotals::resolve()`. It
-picks a counted value, a live computation or the cache. Counts from the `give_donations` table
-replace the counters and the cache, and this is the one spot that changes. All of this (cache,
-counters, helpers) is `@internal` and temporary until donations read from that table (SOFT-5015).
-Do not build on it.
+The endpoints ask one place for a total, `Donations/Counters/DonationTotals::resolve()`:
 
-- **Keyed by the SQL.** `remember($key, $callback)` stores each value under the SQL that computes it,
-  so two requests with the same filters share one entry and different filters never mix. The
-  `%` placeholder that `$wpdb->prepare()` puts in a `LIKE` changes per request, so the key drops it.
-- **Writes mark a change, they do not empty the cache.** Each value carries the time its
-  computation started. Any donation write stores the time of the change in its own option
-  (`give_donation_totals_changed_at`): the model hooks (`givewp_donation_created`, `_updated`,
-  `_deleted`, `_trashed`, `_untrashed`; the model's trash and untrash write the post status
-  directly, so before TBD an untrash did not mark a change), the legacy hooks (`give_insert_payment`, `give_update_payment_status`,
-  `give_payment_deleted`), `save_post_give_payment`, `deleted_post` for a donation, and the
-  WordPress metadata hooks for the `donation` (and pre-2.2.0 `payment`) meta type. A value that
-  started before the last change is outdated. A write that bypasses all of these (raw SQL) leaves
-  the totals outdated without knowing it until the next marked change.
-- **Exact by default, timed for display.** `remember()` never returns an outdated value unless the
-  caller passes `$allowOutdated`. Only totals that are just displayed do: the donations list count,
-  the donations stats. For those, an outdated value is returned at once
-  for up to `givewp_donation_totals_max_age` seconds (default 60; 0 turns it off). Past that, the
-  request still returns the outdated value, and computes it again after its response is sent
-  (`fastcgi_finish_request()` or `litespeed_finish_request()`; a server without either computes it
-  in the request, as on a miss). So a busy site computes each total about once a minute instead of
-  on nearly every page view, and a count can lag by the max age plus one computation. On a quiet
-  site the first page view after a write may still show the old number; the one after it is exact.
+1. A value counted by the donation counters (below) is returned as is.
+2. Otherwise the total is read from a transient, `give_donation_total_` plus the md5 of the SQL
+   that computes it. The `%` placeholder that `$wpdb->prepare()` puts in a `LIKE` changes per
+   request, so the key drops it.
+3. On a miss, or when the caller needs a live total, the total is computed and stored in the
+   transient.
+
+The transient lives 60 seconds. The filter `givewp_donation_totals_ttl` sets it; `0` turns the
+transient off, so every request computes the total. Staleness is bounded by time, not by catching
+every write: a write that bypasses the hooks (raw SQL, such as Reset Stats, a campaign merge or a
+form migration) can leave a total wrong for at most that long. There is no change tracking, no lock
+and no background refresh. Two requests that miss at once both compute the total; that costs a
+duplicate query, but no PHP worker waits for another.
+
+This is a stopgap. Counts from the `give_donations` table replace the counters and the transient
+(SOFT-5015), and `DonationTotals` is the one class that changes. It, the counters and the filter are
+`@internal`: do not build on them.
+
 - **Never for choosing rows.** See "A cached total never picks rows" below: a displayed count may
   lag, a donation may never go missing.
-- **Bounded and private.** One option, not autoloaded, at most 50 values. It only holds numbers
-  and the stats row; no donor data. Every endpoint that reads it checks permissions first, and the
-  totals do not depend on who asks.
-- **No lock, no wait.** On a miss every request computes the total itself and stores it. Two
-  requests may compute the same total at once; that costs a duplicate query, but no PHP worker sleeps
-  waiting for another.
+- **Private.** The transient only holds numbers and the stats row; no donor data. Every endpoint that
+  reads it checks permissions first, and the totals do not depend on who asks.
 - **Date ranges need no rounding.** The filter bar sends whole days (`T00:00:00` to `T23:59:59`), so
   the same range gives the same key. Rounding on the server would change what an API client asked
   for.
@@ -199,7 +187,7 @@ Do not build on it.
 `Donations/Counters/DonationCounters` answers the Donations screen's displayed numbers without a
 query over the donations: the three stat tiles (`ListDonationsStats`) and the list count when the
 request has no date range and filters only on status and mode (`ListDonations::countByMode()`).
-Everything else (search, campaign, form, donor, dates) still uses the totals cache above.
+Everything else (search, campaign, form, donor, dates) still uses the computed totals above.
 
 The counters are a temporary stopgap (SOFT-5015), off on table storage: when the option
 `give_donation_storage` is `table`, `DonationCounters::isEnabled()` is false and the listener, the
@@ -235,7 +223,7 @@ recounts and the CLI command are not registered, because counts from `give_donat
 - **Dirty means not used.** `give_donation_counters_dirty` grows on a write that could not be counted
   exactly, on a page read that contradicts a counted total, and on a negative bucket;
   `give_donation_counters_clean` is the dirty value the last recount covered. While dirty (or never
-  built, or turned off) the endpoints use the totals cache path, and a recount runs about a minute
+  built, or turned off) the endpoints use the computed totals (the transient path), and a recount runs about a minute
   later (one Action Scheduler action, `givewp_donation_counters_recount`, however many writes asked).
 - **The full rebuild.** `DonationCountersRebuild` recounts every bucket with the index-driven counts
   of the stats endpoint grouped by status (3 million rows read at 1M donations, 11-22 s), inside one
@@ -247,22 +235,24 @@ recounts and the CLI command are not registered, because counts from `give_donat
   result and marks the counters dirty). Runs one at a time (`DonationTotalsLock`, used by the rebuild only). On demand:
   `wp give donation-counters rebuild`; `status` shows the counters and `verify` compares them with a
   direct recount.
-- **Never for choosing rows.** Same rule as the totals cache: a page read forward bounds the displayed
+- **Never for choosing rows.** Same rule as the totals above: a page read forward bounds the displayed
   total, a deep page counts live. A forward page that contradicts a counted total marks the counters
   dirty, and so does a deep page's live count that differs from a counter that did not move while it
   ran (if it moved, a write happened meanwhile and the two cannot be compared).
-- **The fallback stays current.** Each time the counters answer, the same value is stored in the
-  totals cache under the key the fallback path reads (`DonationTotalsCache::seed()`, written only
-  when it changed). `markDirty()` also marks the totals cache outdated. So while the counters are
-  dirty, the screen shows the last counted value (then a value computed after the response), never
-  a total cached before the counters existed.
+- **Writes that skip the hooks.** Reset Stats deletes every `%give%` option (the counter rows, and the
+  total transients that sit in the options table) and the scheduled actions, so afterwards the counters
+  read as never built and the screens compute the totals until a recount runs. With an external
+  object cache the transients live there, not in the options table, so Reset Stats does not remove
+  them: a total there lasts until its lifetime ends (60 seconds by default, set with `givewp_donation_totals_ttl`). A campaign merge or form migration changes
+  neither mode, type nor status, so the counters stay right, and filtered totals catch up within the
+  transient's lifetime (60 seconds by default).
 
 Filters:
 
 | Filter | Default | Meaning |
 |:--|:--|:--|
 | `givewp_donation_counters_rebuild_interval` | `3600` | Seconds between scheduled full rebuilds. Read on every scheduling decision (reads check at most every 10 minutes, and Action Scheduler's daily `action_scheduler_ensure_recurring_actions`), and a scheduled action with another interval is replaced. `0` or less turns the scheduled rebuild off: the counters then rely on the writes, the recount after a dirty write and the command, so drift from raw SQL stays until the next dirty mark or a manual rebuild. Values under `60` are raised to `60`; a value that is not a number falls back to `3600`. |
-| `givewp_donation_counters_enabled` | `true` | `false` stops reading and updating the counters; the screens use the totals cache path (round 2 behavior). The first write while off marks the counters dirty, so turning them back on recounts before they are used. |
+| `givewp_donation_counters_enabled` | `true` | `false` stops reading and updating the counters; the screens use the computed totals. The first write while off marks the counters dirty, so turning them back on recounts before they are used. |
 
 ```php
 // Recount every 15 minutes.
@@ -375,7 +365,7 @@ Three more rules from the 1M-donation profiling (SOFT-5634):
   extends `ListDonations` never takes this path, since it may add conditions.
 - **A cached total never picks rows.** An admin must always find the donation they look for, so
   which rows a page returns may not depend on a total that can be outdated (a write that skipped
-  the hooks, or the max age of the totals cache). The cached total only fills `totalItems` and
+  the hooks, or the transient's lifetime, 60 seconds by default). The cached total only fills `totalItems` and
   `totalPages`. Pages in the first half are read forward with an offset, one row more than the
   page: a short page fixes the total, and a row after a full page raises it, so the pager always
   reaches the last rows even when the cached total is low.
@@ -428,7 +418,7 @@ apart. The shared helper is `Framework/ListTable/ListCount`.
 - **Count request.** `GET <route>/count?...` takes the same filter and search parameters (page and
   sort are ignored, `perPage` decides `totalPages`) and returns `{"totalItems": int, "totalPages": int}`.
   It has the same permission check as the list, and it reads the total through the same method the
-  list uses (`getTotal...Count()`, with the donation counters, the timed totals cache and
+  list uses (`getTotal...Count()`, with the donation counters, the 60 second transient and
   the live count above), so the two numbers cannot disagree.
 - **Deep donation pages still count.** Reading a page from the other end needs the total. A donations
   rows request that begins at row 10,000 or later (`DEEP_PAGE_OFFSET`) therefore counts first, as the
