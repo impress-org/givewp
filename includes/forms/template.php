@@ -759,6 +759,7 @@ function give_add_button_open_form( $form_id, $args ) {
 /**
  * Shows the User Info fields in the Personal Info box, more fields can be added via the hooks provided.
  *
+ * @since TBD Encode square brackets in the re-filled comment value.
  * @since 3.1.0 Add the give_user_info_fields_user_info filter
  * @since 2.25.0 add radio group to conditionally enable/disable company name field
  * @since 4.19.1 Escape output, including translated strings.
@@ -1069,7 +1070,7 @@ function give_user_info_fields( $form_id ) {
 					placeholder="<?php esc_attr_e( 'Leave a comment', 'give' ); ?>"
 					id="give-comment"
 					<?php echo( give_field_is_required( 'give_comment', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-				><?php echo isset( $_POST['give_comment'] ) ? esc_html( give_clean( $_POST['give_comment'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- public form render; it refills the comment after a failed submit and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data. ?></textarea>
+				><?php echo isset( $_POST['give_comment'] ) ? str_replace( [ '[', ']' ], [ '&#91;', '&#93;' ], esc_html( give_clean( $_POST['give_comment'] ) ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- public form render; it refills the comment after a failed submit and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data. ?></textarea>
 
 			</p>
 		<?php endif; ?>
