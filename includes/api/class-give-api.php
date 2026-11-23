@@ -1821,6 +1821,7 @@ class Give_API {
 	 * Output Query in either JSON/XML.
 	 * The query data is outputted as JSON by default.
 	 *
+	 * @since TBD Set a Content-Type and X-Content-Type-Options header on the XML response.
 	 * @since 4.19.1 Escape output.
 	 * @since 1.1
 	 * @global WP_Query $wp_query
@@ -1848,6 +1849,8 @@ class Give_API {
 
 			case 'xml':
 				require_once GIVE_PLUGIN_DIR . 'includes/libraries/array2xml.php';
+				header( 'Content-Type: text/xml; charset=' . get_option( 'blog_charset' ) );
+				header( 'X-Content-Type-Options: nosniff' );
 				$xml = Array2XML::createXML( 'give', $this->data );
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- writes the API response body, not HTML.
 				echo $xml->saveXML();

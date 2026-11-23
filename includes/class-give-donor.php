@@ -1341,6 +1341,7 @@ class Give_Donor {
 	/**
 	 * Add donor address
 	 *
+	 * @since TBD Only store the known address fields.
 	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since  2.0
 	 * @access public
@@ -1379,18 +1380,16 @@ class Give_Donor {
 			return false;
 		}
 
-		// Set default address.
-		$address = wp_parse_args(
-			$address,
-			[
-				'line1'   => '',
-				'line2'   => '',
-				'city'    => '',
-				'state'   => '',
-				'country' => '',
-				'zip'     => '',
-			]
-		);
+		// Set default address, and drop any key outside this known set.
+		$default_address_fields = [
+			'line1'   => '',
+			'line2'   => '',
+			'city'    => '',
+			'state'   => '',
+			'country' => '',
+			'zip'     => '',
+		];
+		$address                = array_intersect_key( wp_parse_args( $address, $default_address_fields ), $default_address_fields );
 
 		// Set meta key prefix.
 		global $wpdb;

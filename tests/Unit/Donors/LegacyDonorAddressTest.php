@@ -170,4 +170,22 @@ class LegacyDonorAddressTest extends TestCase
         $this->assertSame('7 New St', $reloaded->address['billing'][0]['line1']);
         $this->assertSame('99999', $reloaded->address['billing'][0]['zip']);
     }
+
+    /**
+     * @since TBD
+     */
+    public function testAddAddressDropsKeysOutsideTheKnownSet()
+    {
+        $donor = $this->legacyDonor();
+
+        $this->assertTrue($donor->add_address('billing', $this->address('1 Main St') + ['script' => 'alert(1)']));
+
+        $reloaded = $this->reload($donor);
+
+        $this->assertSame('1 Main St', $reloaded->address['billing']['line1']);
+        $this->assertEqualsCanonicalizing(
+            ['line1', 'line2', 'city', 'state', 'country', 'zip'],
+            array_keys($reloaded->address['billing'])
+        );
+    }
 }
