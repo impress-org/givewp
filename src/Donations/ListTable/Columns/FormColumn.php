@@ -6,6 +6,7 @@ namespace Give\Donations\ListTable\Columns;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Framework\ListTable\Views\TruncatedText;
 
 /**
  * @since 4.19.0
@@ -38,6 +39,7 @@ class FormColumn extends ModelColumn
      * The title comes from the donation record, so no query runs per row. post.php redirects v3 forms to the
      * form builder, so one edit link covers both form types.
      *
+     * @since TBD Clamp long form titles to two lines.
      * @since 4.19.0
      *
      * @inheritDoc
@@ -46,16 +48,20 @@ class FormColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $title = esc_html(wp_strip_all_tags((string)$model->formTitle));
+        $plainTitle = wp_strip_all_tags((string)$model->formTitle);
+        $title = esc_html($plainTitle);
 
         if ( ! $model->formId || ! current_user_can('edit_give_forms')) {
             return $title;
         }
 
-        return sprintf(
-            '<a href="%s">%s</a>',
-            esc_url(admin_url("post.php?post={$model->formId}&action=edit")),
-            $title
+        return TruncatedText::render(
+            sprintf(
+                '<a href="%s">%s</a>',
+                esc_url(admin_url("post.php?post={$model->formId}&action=edit")),
+                $title
+            ),
+            $plainTitle
         );
     }
 }

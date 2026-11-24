@@ -6,6 +6,7 @@ namespace Give\Donations\ListTable\Columns;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Framework\ListTable\Views\TruncatedText;
 
 /**
  * @since 4.3.0
@@ -35,7 +36,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Drop the aria-label so the link is named by its visible text.
+     * @since TBD Clamp long campaign names to two lines, and drop the aria-label so the link is named by its visible text.
      * @since 4.19.0 Say "No campaign" when the donation has no campaign or its campaign no longer exists.
      * @since 4.8.0 Added class to link
      * @since 4.3.0
@@ -52,10 +53,13 @@ class CampaignColumn extends ModelColumn
             return __('No campaign', 'give');
         }
 
-        return sprintf(
-            '<a href="%s" class="campaignLink">%s</a>',
-            admin_url("edit.php?post_type=give_forms&page=give-campaigns&id={$campaign->id}&tab=overview&action=edit"),
-            esc_html($campaign->title)
+        return TruncatedText::render(
+            sprintf(
+                '<a href="%s" class="campaignLink">%s</a>',
+                admin_url("edit.php?post_type=give_forms&page=give-campaigns&id={$campaign->id}&tab=overview&action=edit"),
+                esc_html($campaign->title)
+            ),
+            $campaign->title
         );
     }
 }

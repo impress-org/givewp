@@ -29,4 +29,34 @@
             text-decoration-thickness: 2px;
         }
     }
+
+    // Relaxes the stock `min-width: 15ch` (about 123px) on cells and on the title cell, so a narrow
+    // column (an ID, a count) is as wide as its content. The stock `max-width: 80ch` stays.
+    .dataviews-view-table__cell-content-wrapper:not(.dataviews-column-primary__media),
+    .dataviews-view-table__primary-column-content:not(.dataviews-column-primary__media) {
+        min-inline-size: 0;
+    }
+
+    // Tightens the stock `max-width: 80ch` on the title cell and lets a long name wrap, so the full
+    // name stays visible. Relaxes the stock `white-space: nowrap` on `.dataviews-title-field` and on
+    // its link (`.dataviews-title-field a`), which would not wrap the name and would run it into the
+    // next column. Row height grows by one line only for a long name.
+    .dataviews-view-table__cell-content-wrapper.dataviews-title-field {
+        max-inline-size: 26ch;
+        min-inline-size: 20ch;
+        white-space: normal;
+        overflow-wrap: break-word;
+
+        a {
+            white-space: normal;
+        }
+    }
+
+    // Our own two-line clamp (InterweaveSSR/styles.scss) needs wrapping, but a table cell is `nowrap`.
+    // Cap the width so a long campaign name wraps instead of growing the column. The matching
+    // `min-inline-size: 11rem` and the clamp itself are in InterweaveSSR/styles.scss.
+    .givewp-truncated-text {
+        max-inline-size: 16rem;
+        white-space: normal;
+    }
 }
