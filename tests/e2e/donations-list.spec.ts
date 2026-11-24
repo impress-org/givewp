@@ -752,8 +752,8 @@ test.describe('Donations list filters', () => {
         await byMiddle;
         await expect(rowById(page, donation)).toHaveCount(0);
 
-        // The search term never goes in the address.
-        expect(page.url()).not.toContain(`search=${middle}`);
+        // The search term is in the address as give-search.
+        await expect(page).toHaveURL(new RegExp(`[?&]give-search=${middle}(&|$)`));
     });
 });
 
