@@ -4,7 +4,7 @@
  * Uninstall Give
  *
  * @package     Give
- * @since       TBD Use give_ names for the loop variables.
+ * @since       4.20.0 Use give_ names for the loop variables.
  * @since       4.19.1 Delete only the options that start with a GiveWP prefix, prepare SQL with placeholders, and skip DROP TABLE when there are no tables.
  * @since       1.0
  * @copyright   Copyright (c) 2016, GiveWP
