@@ -41,4 +41,26 @@ final class ArchiveCampaignFormsAsDraftStatusTest extends TestCase
         $this->assertTrue($form->status->isDraft());
         $this->assertTrue($form2->status->isDraft());
     }
+
+    /**
+     * @since TBD
+     */
+    public function testShouldClearCachedPostStatusOfForms(): void
+    {
+        $campaign = Campaign::factory()->create();
+        $form2 = DonationForm::factory()->create();
+        give(CampaignRepository::class)->addCampaignForm($campaign, $form2->id);
+
+        /* Prime the post cache the way a front end request does. */
+        $this->assertSame('publish', get_post_status($campaign->defaultFormId));
+        $this->assertSame('publish', get_post_status($form2->id));
+
+        $campaign->status = CampaignStatus::ARCHIVED();
+        $campaign->save();
+        $archiveCampaignFormsAsDraftStatus = new ArchiveCampaignFormsAsDraftStatus();
+        $archiveCampaignFormsAsDraftStatus($campaign);
+
+        $this->assertSame('draft', get_post_status($campaign->defaultFormId));
+        $this->assertSame('draft', get_post_status($form2->id));
+    }
 }

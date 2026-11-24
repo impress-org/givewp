@@ -11,6 +11,7 @@ use Give\Framework\Database\DB;
 class UnarchiveCampaignFormAsPublishStatus
 {
     /**
+     * @since TBD Clear the post cache of the default form so persistent object caches do not serve the old status.
      * @since 4.2.0
      */
     public function __invoke(Campaign $campaign)
@@ -27,6 +28,8 @@ class UnarchiveCampaignFormAsPublishStatus
                 ->update([
                     'post_status' => 'publish',
                 ]);
+
+            clean_post_cache($campaign->defaultFormId);
         }
     }
 }

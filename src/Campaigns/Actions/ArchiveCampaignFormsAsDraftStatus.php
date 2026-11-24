@@ -16,6 +16,7 @@ class ArchiveCampaignFormsAsDraftStatus
 {
     /**
      * TODO: update this to use single update query (QB was not working with whereIn and update)
+     * @since TBD Clear the post cache of each form so persistent object caches do not serve the old status.
      * @since 4.0.0
      */
     public function __invoke(Campaign $campaign)
@@ -43,6 +44,8 @@ class ArchiveCampaignFormsAsDraftStatus
                 ->update(
                     ['post_status' => 'draft']
                 );
+
+            clean_post_cache($id);
         }
     }
 }
