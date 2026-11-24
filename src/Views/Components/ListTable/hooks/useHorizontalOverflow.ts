@@ -35,33 +35,8 @@ function measure(element: HTMLElement | null): HorizontalOverflow {
 const TABLE = '.dataviews-view-table';
 
 /**
- * The whole list scrolls sideways, not only the table. So the edge shadows are limited to the
- * table's rows with two CSS variables (the space above and below the table).
- */
-function placeShadows(root: HTMLElement | null): void {
-    const table = root?.querySelector<HTMLElement>(TABLE);
-
-    if (!root || !table) {
-        return;
-    }
-
-    const rootBox = root.getBoundingClientRect();
-    const tableBox = table.getBoundingClientRect();
-
-    setIfChanged(root, '--givewp-list-table-shadow-top', `${Math.max(0, tableBox.top - rootBox.top)}px`);
-    setIfChanged(root, '--givewp-list-table-shadow-bottom', `${Math.max(0, rootBox.bottom - tableBox.bottom)}px`);
-}
-
-// Writing a style property that did not change still makes the browser check styles again.
-function setIfChanged(element: HTMLElement, name: string, value: string): void {
-    if (element.style.getPropertyValue(name) !== value) {
-        element.style.setProperty(name, value);
-    }
-}
-
-/**
  * Tells whether the list's scroll container hides content at its start or end edge, so the list
- * can show a shadow on that side. It checks again on scroll, on resize and after every render (new
+ * can mark that side with a class. It checks again on scroll, on resize and after every render (new
  * rows or columns change the content width).
  *
  * @since TBD
@@ -70,8 +45,6 @@ export default function useHorizontalOverflow(rootRef: RefObject<HTMLElement>): 
     const [overflow, setOverflow] = useState<HorizontalOverflow>(NONE);
 
     const update = useCallback(() => {
-        placeShadows(rootRef.current);
-
         const next = measure(rootRef.current?.querySelector<HTMLElement>(SCROLL_CONTAINER) ?? null);
 
         setOverflow((current) =>
@@ -89,7 +62,7 @@ export default function useHorizontalOverflow(rootRef: RefObject<HTMLElement>): 
         element.addEventListener('scroll', update, {passive: true});
         const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update);
         observer?.observe(element);
-        // The table can change height without the scroll container changing size (a row added or removed).
+        // The table can change width without the scroll container changing size (a column added or removed).
         const table = element.querySelector<HTMLElement>(TABLE);
 
         if (table) {
@@ -103,7 +76,7 @@ export default function useHorizontalOverflow(rootRef: RefObject<HTMLElement>): 
     }, [rootRef, update]);
 
     // No dependency list on purpose: the content width can change on any render. A render that changes
-    // nothing only costs the reads, because the writes above skip unchanged values.
+    // nothing only costs the reads, because the state is kept when the values did not change.
     useEffect(update);
 
     return overflow;
