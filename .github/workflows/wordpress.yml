@@ -82,6 +82,9 @@ jobs:
                     key: vendor-v1-${{ runner.os }}-php7.4-${{ hashFiles('composer.json', 'composer.lock', 'bin/strauss-installar.sh') }}
 
             # @link https://github.com/spatie/laravel-activitylog/blob/master/.github/workflows/run-tests.yml
+            # Blacksmith runners do not set ImageOS, so setup-php installs PHP with apt from the ondrej PPA on
+            # every job (about 40 seconds), and that download sometimes fails with "Could not setup PHP".
+            # use_builds_cache makes it use the prebuilt PHP instead (about 7 seconds, no apt).
             -   name: Set Up PHP for build
                 if: steps.vendor-cache.outputs.cache-hit != 'true'
                 uses: shivammathur/setup-php@v2
@@ -89,6 +92,8 @@ jobs:
                     php-version: 7.4
                     extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                     coverage: none
+                env:
+                    use_builds_cache: true
 
             # Caches Composer's downloads, keyed on composer.lock and the PHP version.
             -   name: Install composer dependencies
@@ -118,6 +123,8 @@ jobs:
                     php-version: ${{ matrix.php }}
                     extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                     coverage: none
+                env:
+                    use_builds_cache: true
 
             -   name: Reload Composer autoload
                 run: composer dump-autoload
@@ -224,6 +231,8 @@ jobs:
                 with:
                     php-version: 7.4
                     coverage: none
+                env:
+                    use_builds_cache: true
 
             # Caches Composer's downloads, keyed on composer.lock and the PHP version.
             -   name: Install composer dependencies
