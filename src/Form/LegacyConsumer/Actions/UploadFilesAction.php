@@ -4,12 +4,9 @@ namespace Give\Form\LegacyConsumer\Actions;
 
 use Give\Form\LegacyConsumer\Traits\HasFilesArray;
 use Give\Framework\FieldsAPI\File;
+use Give\Framework\Support\Actions\CreateAttachmentFromUpload;
 
-use function wp_check_filetype;
-use function wp_generate_attachment_metadata;
 use function wp_handle_upload;
-use function wp_insert_attachment;
-use function wp_update_attachment_metadata;
 
 /**
  * @package Give\Form\LegacyConsumer\Commands
@@ -54,29 +51,7 @@ class UploadFilesAction
             $upload = wp_handle_upload($file, ['test_form' => false,]);
 
             if (isset($upload['url'])) {
-                $path = $upload['file'];
-
-                // Check the type of file. We'll use this as the 'post_mime_type'.
-                $filetype = wp_check_filetype(basename($path), null);
-
-                // Prepare an array of post data for the attachment.
-                $attachment = [
-                    'guid' => $upload['url'],
-                    'post_mime_type' => $filetype['type'],
-                    'post_title' => preg_replace('/\.[^.]+$/', '', basename($path)),
-                    'post_content' => '',
-                    'post_status' => 'inherit',
-                ];
-
-                // Insert the attachment.
-                $attachmentId = wp_insert_attachment($attachment, $path);
-
-                // Make sure that this file is included, as wp_generate_attachment_metadata() depends on it.
-                require_once(ABSPATH . 'wp-admin/includes/image.php');
-
-                // Generate the metadata for the attachment, and update the database record.
-                $attachmentData = wp_generate_attachment_metadata($attachmentId, $path);
-                wp_update_attachment_metadata($attachmentId, $attachmentData);
+                $attachmentId = (new CreateAttachmentFromUpload())($upload);
 
                 $fileIds[] = $attachmentId;
             }

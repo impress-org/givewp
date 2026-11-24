@@ -3,6 +3,7 @@
 namespace Give\DonorDashboards\Tabs\EditProfileTab;
 
 use Give\DonorDashboards\Tabs\Contracts\Route as RouteAbstract;
+use Give\Framework\Support\Actions\CreateAttachmentFromUpload;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -81,29 +82,7 @@ class AvatarRoute extends RouteAbstract
             );
 
             if (isset($upload['url'])) {
-                $path = $upload['file'];
-
-                // Check the type of file. We'll use this as the 'post_mime_type'.
-                $filetype = wp_check_filetype(basename($path), null);
-
-                // Prepare an array of post data for the attachment.
-                $attachment = [
-                    'guid' => $upload['url'],
-                    'post_mime_type' => $filetype['type'],
-                    'post_title' => preg_replace('/\.[^.]+$/', '', basename($path)),
-                    'post_content' => '',
-                    'post_status' => 'inherit',
-                ];
-
-                // Insert the attachment.
-                $attachmentId = wp_insert_attachment($attachment, $path);
-
-                // Make sure that this file is included, as wp_generate_attachment_metadata() depends on it.
-                require_once(ABSPATH . 'wp-admin/includes/image.php');
-
-                // Generate the metadata for the attachment, and update the database record.
-                $attachmentData = wp_generate_attachment_metadata($attachmentId, $path);
-                wp_update_attachment_metadata($attachmentId, $attachmentData);
+                $attachmentId = (new CreateAttachmentFromUpload())($upload);
 
                 return [
                     'id' => $attachmentId,
