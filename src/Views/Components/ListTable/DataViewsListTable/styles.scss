@@ -26,8 +26,9 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
 
     // A soft shadow at an edge while the list hides content past that edge, so the admin can see
     // there is more to scroll to. Hidden until the `--more-start` or `--more-end` modifier is set.
-    // The shadows let clicks through, and nothing is pinned: the row checkbox and the row actions are
-    // reached by scrolling, and moving keyboard focus to a cell scrolls it into view.
+    // The shadows let clicks through. Only the Actions column is pinned (see the rule below); the row
+    // checkbox and the other columns are reached by scrolling, and moving keyboard focus to a cell
+    // scrolls it into view.
     &::before,
     &::after {
         content: '';
@@ -69,6 +70,29 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
         &::before,
         &::after {
             transition: none;
+        }
+    }
+
+    // The Actions column is pinned. While the table is wider than the list, keep a clear line on its edge so
+    // the table does not look cut off. While rows are under the column, DataViews marks it `--stuck` and draws a
+    // faint 1px bar with `::after`; that bar is the line the user sees, so it is recolored here. At the scroll
+    // end, DataViews removes `--stuck` (and it can be stale after the columns change), so an inset shadow on the
+    // same pixel and in the same color covers that case. The shadow adds no width and leaves the cell background
+    // alone, so the hover and selected colors are kept.
+    // Break risk: this relies on the stock DataViews class names below. If they are renamed, the line is
+    // gone and the table is back to stock. A box shadow has no logical form, so the line is on the physical
+    // left edge, the same side as the stock line. Stock pins the cell with a physical `right: 0`, so in RTL
+    // the pinned cell is already stock behavior and this rule does not try to fix or flip it.
+    &--more-start,
+    &--more-end {
+        .dataviews-view-table th.dataviews-view-table__actions-column--sticky,
+        .dataviews-view-table td.dataviews-view-table__actions-column--sticky {
+            box-shadow: inset 1px 0 0 var(--givewp-grey-200);
+        }
+
+        .dataviews-view-table th.dataviews-view-table__actions-column--stuck::after,
+        .dataviews-view-table td.dataviews-view-table__actions-column--stuck::after {
+            background-color: var(--givewp-grey-200);
         }
     }
 

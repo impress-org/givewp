@@ -605,6 +605,9 @@ it; screens do not add their own media queries.
   `givewp-list-table--more-start` and `--more-end` while content is hidden at that edge, which shows
   a shadow there (logical sides, so RTL works). It reads layout, never component state; if DataViews
   renames the class the shadows stop and nothing else breaks.
+  The Actions column is pinned by stock DataViews. While either class is set, the 1px bar DataViews
+  draws on its edge while it is `--stuck` is recolored, and an inset shadow in the same color covers
+  the scroll end, where DataViews removes `--stuck`.
 - **Motion.** Any animation in the list sits inside `@media (prefers-reduced-motion: no-preference)`.
 
 ### Styling
