@@ -5,7 +5,6 @@ const read = (...path: string[]) => readFileSync(resolve(__dirname, ...path), 'u
 
 // Every pill-like badge a list cell can show, with the stylesheet and the block that styles it.
 const PILLS = [
-    {name: 'type badge (.badge)', source: read('styles.scss'), opener: '.badge {'},
     {
         name: 'Default form pill (.defaultFormPill)',
         source: read(

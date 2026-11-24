@@ -1,61 +1,9 @@
 @use '@givewp/css/Safe-Rem/functions' as *;
-@use '../layout/tokens' as *;
 
 .interweave {
-    .statusBadge {
-        @include givewp-status-tone-tokens;
-
-        --color: var(--givewp-list-table-status-neutral-text);
-        --bg-color: var(--givewp-list-table-status-neutral-bg);
-
-        align-items: center;
-        background-color: var(--bg-color);
-        border-radius: 2px;
-        color: var(--color);
-        display: inline-flex;
-        font-size: 0.8125rem;
-        font-weight: 500;
-        line-height: 1.5;
-        padding: 2px var(--givewp-spacing-3);
-        width: fit-content;
-
-        div,
-        p {
-            font-size: inherit;
-            font-weight: inherit;
-            line-height: inherit;
-            margin: 0;
-        }
-
-        &--completed,
-        &--complete,
-        &--active,
-        &--publish,
-        &--published {
-            --color: var(--givewp-list-table-status-success-text);
-            --bg-color: var(--givewp-list-table-status-success-bg);
-        }
-
-        &--pending,
-        &--expired {
-            --color: var(--givewp-list-table-status-warning-text);
-            --bg-color: var(--givewp-list-table-status-warning-bg);
-        }
-
-        &--processing {
-            --color: var(--givewp-list-table-status-info-text);
-            --bg-color: var(--givewp-list-table-status-info-bg);
-        }
-
-        &--failed,
-        &--failing,
-        &--revoked,
-        &--cancelled {
-            --color: var(--givewp-list-table-status-error-text);
-            --bg-color: var(--givewp-list-table-status-error-bg);
-        }
-
-        // refunded, abandoned, draft, archived, inactive, trash, trashed, upgraded and give_subscription use the neutral default.
+    // Status and type show as plain text. The WordPress `p` margin would make every row taller.
+    :is(.statusBadge, .badge) p {
+        margin: 0;
     }
 
     .subscriptionStatus {
@@ -127,29 +75,6 @@
 
     .subscriptionStatus:hover .subscriptionStatus__message {
         visibility: visible;
-    }
-
-    .badge {
-        --border-width: 1px;
-        --padding-x: calc(var(--givewp-spacing-3) - var(--border-width));
-        --padding-y: calc(var(--givewp-spacing-1) - var(--border-width));
-        align-items: center;
-        background-color: var(--givewp-neutral-25);
-        border-radius: 2px;
-        border: var(--border-width) solid var(--givewp-neutral-600);
-        color: var(--givewp-neutral-900);
-        display: inline-flex;
-        justify-content: center;
-        padding: var(--padding-y) var(--padding-x);
-
-        p {
-            font-size: 0.8125rem;
-            font-weight: 600;
-            line-height: 1.5;
-            margin: 0;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
     }
 
     // The name link takes the stock DataViews title style; the email is a quieter second line.
@@ -280,12 +205,6 @@
         font-weight: 600;
         white-space: nowrap;
     }
-
-    .amount {
-        color: var(--givewp-neutral-700);
-        font-size: 1rem;
-        font-weight: 500;
-    }
 }
 
 // Plain text, like the other cells. The class name stays because the e2e tests find rows by it.
@@ -297,13 +216,12 @@
     }
 }
 
-// Long cell text (for example a campaign name) clamps to two lines. The full text stays in the DOM
+// Long cell text (for example a campaign name) clamps to one line. The full text stays in the DOM
 // and in the title attribute.
 .givewp-truncated-text {
     display: -webkit-box;
-    min-inline-size: 11rem;
     overflow: hidden;
     overflow-wrap: anywhere;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
 }

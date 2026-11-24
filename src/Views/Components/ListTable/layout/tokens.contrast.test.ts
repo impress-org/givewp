@@ -25,10 +25,6 @@ describe('list table tokens', () => {
         expect(fg).toBeDefined();
         expect(contrastRatio(fg, bg)).toBeGreaterThanOrEqual(minimum);
     });
-
-    it.each(['success', 'warning', 'info', 'error', 'neutral'])('status %s text passes 4.5:1 on its fill', (tone) => {
-        expect(contrastRatio(T(`status-${tone}-text`), T(`status-${tone}-bg`))).toBeGreaterThanOrEqual(4.5);
-    });
 });
 
 // The action edge (the selected tile bar and the funnel) is the admin theme color mixed with black. It is a

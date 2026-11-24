@@ -1,19 +1,5 @@
 // WP admin values for the list pages. They are not in the Give foundation, so they live here, once.
 // Each pair is measured in `tokens.contrast.test.ts`. Do not add a value without adding its pair there.
-// Status badge tones: text on fill. A badge includes this itself, so it works outside the list pages too.
-@mixin givewp-status-tone-tokens {
-    --givewp-list-table-status-success-text: #0a400b;
-    --givewp-list-table-status-success-bg: #cef2cf;
-    --givewp-list-table-status-warning-text: #73480b;
-    --givewp-list-table-status-warning-bg: #ffefd9;
-    --givewp-list-table-status-info-text: #074a8c;
-    --givewp-list-table-status-info-bg: #f2f9ff;
-    --givewp-list-table-status-error-text: #a62308;
-    --givewp-list-table-status-error-bg: #fff4f2;
-    --givewp-list-table-status-neutral-text: #3c434a;
-    --givewp-list-table-status-neutral-bg: #f0f0f1;
-}
-
 // The grey of the full list page. The admin wrapper around the page uses it too, so the page has no lighter strip under it.
 $givewp-list-table-page: #f0f0f1;
 
@@ -23,6 +9,8 @@ $givewp-list-table-page: #f0f0f1;
     --givewp-list-table-control-edge: #757575;
     --givewp-list-table-hairline: #dcdcde;
     --givewp-list-table-tag-text: #50575e;
+    // The fill behind the neutral "Add-on" tag.
+    --givewp-list-table-status-neutral-bg: #f0f0f1;
     --givewp-list-table-row-hover: #f8f8f8;
     --givewp-list-table-page: #{$givewp-list-table-page};
 
@@ -47,6 +35,4 @@ $givewp-list-table-page: #f0f0f1;
     // The test mode badge: an outline, text on fill.
     --givewp-list-table-test-badge-edge: #996800;
     --givewp-list-table-test-badge-bg: #fcf9e8;
-
-    @include givewp-status-tone-tokens;
 }

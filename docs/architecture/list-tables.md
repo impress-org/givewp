@@ -616,7 +616,7 @@ it; screens do not add their own media queries.
 
 The look of the list pages is kept in a few places: the color tokens in `layout/_tokens.scss`, the
 table-only overrides in `DataViewsListTable/_wp-look.scss` (guarded by `wpLookScope.test.ts`), and the
-status badge in `InterweaveSSR/styles.scss`. The A+ look adds no footer colors, type, sizes or
+status and type text in `InterweaveSSR/styles.scss` (plain text; only the `p` margin is reset). The A+ look adds no footer colors, type, sizes or
 controls, and `_wp-look.scss` may not reach the footer. The footer layout and total count rules from
 SOFT-5300 stay in `DataViewsListTable/styles.scss`; the guard test covers only `_wp-look.scss`. The
 overrides were written for the pinned `@wordpress/dataviews` version. See "Styling scope" in the
@@ -727,10 +727,10 @@ filters (`ListTableFilterOptionsController`).
 
 Each entity's statuses come from one server source, a `StatusVocabulary` built by the value object
 (`CampaignStatus::vocabulary()` and the others): every value with its translated label, and which of
-them the Status filter offers. `ListTable::toArray()` sends it as `table.statuses`. The status badge
+them the Status filter offers. `ListTable::toArray()` sends it as `table.statuses`. The status text
 and the Status filter both read it, so they always use the same words. Campaigns offers Active and
 Archived, the two statuses an admin can set in the interface; Inactive, Draft, Pending, Processing and
-Failed show as badges only.
+Failed show in the table only.
 
 ### Parameters the endpoints accept
 
@@ -935,6 +935,6 @@ config it still resets the layout for the current page view; nothing is stored.
 - `src/Framework/ListTable/StatusVocabulary.php` — the status list a badge and a Status filter share
 - `src/Framework/ListTable/Views/GoalProgress.php` — the goal cell the Campaigns and Donation Forms lists share
 - `src/Framework/ListTable/Formatting/` — `MoneyFormatter` and `DateFormatter`, the one way list cells write money and dates
-- `src/Framework/ListTable/Views/Placeholder.php`, `TruncatedText.php` — the empty-value dash and the two-line clamp with the full text on hover
+- `src/Framework/ListTable/Views/Placeholder.php`, `TruncatedText.php` — the empty-value dash and the one-line clamp with the full text on hover
 - `src/Views/Components/ListTable/layout/` — the 782 px breakpoint and the narrow card view
 - `src/Framework/QueryBuilder/` — what the endpoints build queries with ([README](../../src/Framework/QueryBuilder/README.md))

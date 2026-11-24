@@ -29,10 +29,9 @@ const formsStyles = read(
     'DonationFormsListTable.module.scss'
 );
 
-// The list pages show no text under 13 px (0.8125rem), outside the stock DataViews footer.
+// The list pages show no text under 13 px (0.8125rem), outside the stock DataViews footer and the stock column headers (11 px uppercase).
 describe('text size in the list cells and the search label', () => {
     it.each([
-        ['type badge text', sliceBlock(cellStyles, '.badge {')],
         ['goal progress status', sliceBlock(cellStyles, '&__status {')],
         ['Default form pill', sliceBlock(formsStyles, '.defaultFormPill {')],
         ['subscription status hover message', sliceBlock(cellStyles, '&__message {')],

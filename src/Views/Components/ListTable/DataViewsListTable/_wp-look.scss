@@ -1,33 +1,15 @@
 // Table-only rules for the A+ look. Every selector starts at `.givewp-list-table .dataviews-view-table`.
 // Nothing here may reach the DataViews footer or the pager (`wpLookScope.test.ts` enforces it).
 // These override the pinned `@wordpress/dataviews` 10.1.7 styles; re-check them when the pin moves.
-// Rows keep the stock DataViews height (56px at the default density) on purpose. The A+ look only
-// changes the header, the selected row text, links and secondary text.
+// Rows keep the stock DataViews height (56px at the default density) on purpose. The header, the
+// titles and the links use the stock DataViews styles. Only the selected row text and the
+// secondary text color are ours.
 .givewp-list-table .dataviews-view-table {
-    color: var(--givewp-list-table-text);
-
-    // Stock is 11 px uppercase, below our 13 px floor. The sort arrow and the select-all checkbox
-    // are not text, so they keep their own styles.
-    thead th,
-    .dataviews-view-table-header-button {
-        font-size: 0.8125rem;
-        text-transform: none;
-    }
+    color: var(--givewp-list-table-text-secondary);
 
     // Stock selected rows use #757575 text, which fails on the tint.
     tr.is-selected {
         color: var(--givewp-list-table-text);
-    }
-
-    // Links: a darker mix of the scheme's color (4.5:1 in every scheme), underlined so color is not the only cue.
-    td a {
-        color: var(--givewp-list-table-link);
-        text-decoration: underline;
-
-        &:hover,
-        &:focus {
-            text-decoration-thickness: 2px;
-        }
     }
 
     // Relaxes the stock `min-width: 15ch` (about 123px) on cells and on the title cell, so a narrow
@@ -52,10 +34,12 @@
         }
     }
 
-    // Our own two-line clamp (InterweaveSSR/styles.scss) needs wrapping, but a table cell is `nowrap`.
-    // Cap the width so a long campaign name wraps instead of growing the column. The matching
-    // `min-inline-size: 11rem` and the clamp itself are in InterweaveSSR/styles.scss.
+    // Our own one-line clamp (InterweaveSSR/styles.scss) needs a capped width, because a table cell is
+    // `nowrap` and a long campaign name would grow the column. The minimum width (10rem, the most that keeps Donations from
+    // scrolling at 1512) is only for the
+    // table: in the phone cards the value must shrink so the "…" shows.
     .givewp-truncated-text {
+        min-inline-size: 10rem;
         max-inline-size: 16rem;
         white-space: normal;
     }

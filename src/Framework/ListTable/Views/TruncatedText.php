@@ -3,7 +3,7 @@
 namespace Give\Framework\ListTable\Views;
 
 /**
- * Wraps long cell text so the table clamps it to two lines and the full text stays one hover away.
+ * Wraps long cell text so the table clamps it to one line and the full text stays one hover away.
  *
  * @since TBD
  */

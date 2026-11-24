@@ -275,15 +275,19 @@ test.describe('Forms list on wide and narrow screens', () => {
         await page.setViewportSize({width: 1440, height: 900});
         await visitList(page, admin, FORMS_LIST);
 
-        // The campaign name wraps to two lines at most.
+        // The campaign name is cut to one line, with the full name in the title.
         const name = rowById(page, named.formId).locator('.givewp-truncated-text');
         await expect(name).toBeVisible();
-        const lines = await name.evaluate((element) => {
+        const {lines, cut} = await name.evaluate((element) => {
             const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
 
-            return Math.round(element.getBoundingClientRect().height / lineHeight);
+            return {
+                lines: Math.round(element.getBoundingClientRect().height / lineHeight),
+                cut: element.scrollWidth > element.clientWidth || element.scrollHeight > element.clientHeight,
+            };
         });
-        expect(lines).toBeLessThanOrEqual(2);
+        expect(lines).toBe(1);
+        expect(cut).toBe(true);
         await expect(name).toHaveAttribute('title', longName);
 
         // No goal: a dash, named for screen readers,.

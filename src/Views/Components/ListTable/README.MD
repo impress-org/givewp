@@ -22,7 +22,7 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `StatTiles/`, `StatTile/` | The row of stat tiles and one tile. Tiles show the server's `formatted` text and can toggle a list filter (`tileFilters.ts`). |
 | `GiveMark/`, `TestModeBadge/`, `HelpTip/` | The Give mark (atom), the "Test mode" badge in the page header and the small help button with its popover (molecules). |
 | `ListTableSearch/` | The labeled search box, its `SearchHint` (the hint line and its help tip), and `useSearchHint`, which gives both the same ids so the box can sit in the toolbar row and the hint under it. |
-| `InterweaveSSR/` | Renders server markup in a cell. Its `styles.scss` also styles the server-rendered status badge. |
+| `InterweaveSSR/` | Renders server markup in a cell. Its `styles.scss` styles the other server-rendered cell markup (goal ring, donor email, shortcode). |
 | `Skeleton/`, `DashPlaceholder/` | Atoms: the loading block (use it instead of a spinner in the list area) and the empty-value dash with a screen reader label. |
 | `layout/` | The 782 px breakpoint (`breakpoints.ts` and `_breakpoints.scss`, kept equal) and the narrow card view (`narrowView.ts`). |
 | `actions/` | `runListAction`: runs an action, reports it, clears the selection when everything succeeded, reloads. Every action and dialog goes through it. |
@@ -40,8 +40,8 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 The A+ look is kept small and in a few known places. Keep it that way.
 
 - **Tokens.** `layout/_tokens.scss` holds every color the list pages need that has no Give token. It
-  has two mixins: `givewp-list-table-tokens` (included in `.page` of `ListTablePage`, and in
-  `.givewp-list-table`) and `givewp-status-tone-tokens` (included in the status badge). A popover
+  has one mixin, `givewp-list-table-tokens` (included in `.page` of `ListTablePage`, and in
+  `.givewp-list-table`). A popover
   renders outside those roots, so popover content must not rely on these tokens.
   `layout/tokens.contrast.test.ts` measures the contrast of each pair. To fix a color, change it in
   `_tokens.scss`, not in the rule that uses it.
@@ -61,8 +61,9 @@ The A+ look is kept small and in a few known places. Keep it that way.
 - **The pin.** `@wordpress/dataviews` is pinned to `10.1.7` in `package.json`. The overrides in
   `_wp-look.scss` were written for that version. When the pin moves, check them again in the browser.
 - **Rows.** Rows keep the stock DataViews height on purpose.
-- **Status badge.** It is server-rendered markup. It is restyled in `InterweaveSSR/styles.scss`, with
-  no PHP change and no class rename.
+- **Status and type.** They are server-rendered markup and show as plain text, like the other cells.
+  `InterweaveSSR/styles.scss` only removes the WordPress `p` margin so the rows keep their height. The
+  PHP classes (`statusBadge`, `badge`) stay as hooks.
 - **Page layout.** On the full page the list sits in one bordered white sheet (`.sheet` in
   `ListTablePage.module.scss`), with the stat tile band at its top, and the page fills the window
   height. The toolbar is one row: the search box, the filter bar, then the view options, with the

@@ -188,7 +188,7 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
     }
 
     // The page's white container already pads everything inside it, the banner included. DataViews
-    // adds its own 48px at the sides of the toolbar, the footer and the outer table cells, which
+    // adds its own 48px at the sides of the toolbar and the footer, which
     // pushed the list in from the banner above it. Take that padding out so the container is the
     // only gutter, and the search and the filters line up with the banner.
     .dataviews-filters__container,
@@ -197,21 +197,9 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
         padding-inline: 0;
     }
 
-    // The table and its footer keep a small inset of their own, so the row borders and the row hover
-    // background do not touch the edge of the container. The search and the filter bar have none, and
-    // start at the edge.
+    // The footer keeps a small inset of its own. The table cells keep the stock DataViews padding.
     .dataviews-footer {
         padding-inline: var(--givewp-spacing-4);
-    }
-
-    .dataviews-view-table tr th:first-child,
-    .dataviews-view-table tr td:first-child {
-        padding-inline-start: var(--givewp-spacing-4);
-    }
-
-    .dataviews-view-table tr th:last-child,
-    .dataviews-view-table tr td:last-child {
-        padding-inline-end: var(--givewp-spacing-4);
     }
 
     // While a page loads, the old rows stay until the new ones arrive. After 300 ms (the transition delay, the
@@ -348,6 +336,12 @@ $givewp-list-table-focus-ring-room: var(--givewp-spacing-1);
             &.is-selected {
                 border-color: var(--wp-admin-theme-color);
             }
+        }
+
+        // The stock card value is `nowrap` and clips, so a long date or campaign name ran past the card
+        // edge. Let it wrap; the one-line clamp then shows its "…".
+        .dataviews-view-grid .dataviews-view-grid__fields .dataviews-view-grid__field .dataviews-view-grid__field-value {
+            white-space: normal;
         }
 
         .dataviews-view-grid__title-field {
