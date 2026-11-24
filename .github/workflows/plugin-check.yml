@@ -13,11 +13,23 @@ on:
     pull_request:
     push:
         branches: [ develop, master ]
+    # A manual run: the branch to check, and the branch whose baseline it is compared with. There is
+    # no pull request to comment on, so the result is in the run's summary.
     workflow_dispatch:
+        inputs:
+            head-ref:
+                description: Branch to check
+                required: true
+            base-ref:
+                description: Branch to compare with
+                required: true
+                default: develop
 
-# A new push to a pull request cancels the run still going for the older commit.
+# A new push to a pull request cancels the run still going for the older commit. A manual run has a
+# group of its own (the run id), so it never cancels another: group names ignore case, and two
+# branches can differ only by case.
 concurrency:
-    group: plugin-check-${{ github.event.pull_request.number || github.ref }}
+    group: plugin-check-${{ github.event.pull_request.number || (github.event_name == 'workflow_dispatch' && github.run_id) || github.ref }}
     cancel-in-progress: true
 
 permissions:
@@ -31,7 +43,7 @@ jobs:
             pull-requests: write
         # Pinned to a commit, like the other plugin-toolbox calls. Switch to @v1 once plugin-toolbox
         # publishes a release. To take a toolbox change, bump the commit here.
-        uses: stellarwp/plugin-toolbox/.github/workflows/plugin-check.yml@2a409f7161ce1518dca9b82c5ef302b81293f835
+        uses: stellarwp/plugin-toolbox/.github/workflows/plugin-check.yml@40a7cfe0c468ce06fb97b4387be9b7daa159178c
         with:
             plugin-slug: give
             # The pup release the release build uses (composer.json), so the check builds the same way.
@@ -40,3 +52,6 @@ jobs:
             # webpack's filesystem cache (see webpack.config.js). Outside node_modules, because pup
             # build runs npm ci and npm ci deletes node_modules first.
             cache-paths: .cache/webpack
+            # Empty for a pull request or a push, so those behave as before.
+            head-ref: ${{ inputs.head-ref }}
+            base-ref: ${{ inputs.base-ref }}

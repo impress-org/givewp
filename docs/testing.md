@@ -353,6 +353,13 @@ There is no switch to accept new errors beyond changing the baseline. Fix them, 
 is a false positive, add a `phpcs:ignore` comment for that rule with the reason, as the existing
 code does.
 
+**Running it by hand.** In the Actions tab, pick "Plugin Check", then "Run workflow". `Branch to
+check` is what gets built and checked. `Branch to compare with` is where the baseline comes from: its
+`.plugin-check-baseline.json`. There is no pull request, so no comment is written. The result is in
+the run's summary page and in the `plugin-check-report` artifact, and the run fails by the same rule
+as a pull request. From the terminal:
+`gh workflow run plugin-check.yml -f head-ref=my-branch -f base-ref=develop`.
+
 **Plugin Check version.** The action always installs the latest Plugin Check, so a new release can
 add rules and raise counts with no code change. The check then fails on the new rules. Make the
 baseline file again from a fresh run on the branch.
