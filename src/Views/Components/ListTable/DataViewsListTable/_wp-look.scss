@@ -37,12 +37,12 @@
         min-inline-size: 0;
     }
 
-    // Tightens the stock `max-width: 80ch` on the title cell and lets a long name wrap, so the full
-    // name stays visible. Relaxes the stock `white-space: nowrap` on `.dataviews-title-field` and on
-    // its link (`.dataviews-title-field a`), which would not wrap the name and would run it into the
-    // next column. Row height grows by one line only for a long name.
+    // Lets a long name wrap when the table is tight, so the full name stays visible. The stock
+    // `max-width: 80ch` stays, so on a wide screen the name is on one line and takes the room it needs.
+    // Relaxes the stock `white-space: nowrap` on `.dataviews-title-field` and on its link
+    // (`.dataviews-title-field a`), which would not wrap the name and would run it into the next
+    // column. `min-inline-size` keeps the column from collapsing: the table scrolls sideways first.
     .dataviews-view-table__cell-content-wrapper.dataviews-title-field {
-        max-inline-size: 26ch;
         min-inline-size: 20ch;
         white-space: normal;
         overflow-wrap: break-word;
