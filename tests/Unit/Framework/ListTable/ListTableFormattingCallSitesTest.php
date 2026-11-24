@@ -6,13 +6,14 @@ use Give\Tests\TestCase;
 
 /**
  * Guards review criterion 1: every list column writes money and dates through MoneyFormatter and DateFormatter,
- * never with an inline call to a formatting helper.
+ * never with an inline call to a formatting helper. Plain counts are not money, so they go through number_format_i18n(),
+ * which is allowed here.
  *
  * @since TBD
  */
 class ListTableFormattingCallSitesTest extends TestCase
 {
-    private const PATTERN = '/formatToLocale|give_currency_filter|give_format_amount|number_format|date_i18n|wp_date|getFormattedDateTime|->format\(\s*\$format/';
+    private const PATTERN = '/formatToLocale|give_currency_filter|give_format_amount|(?<!->)number_format(?!_i18n)|date_i18n|wp_date|getFormattedDateTime|->format\(\s*\$format/';
 
     /**
      * Files that may use a helper on purpose. Keep this list short; each entry needs a reason.

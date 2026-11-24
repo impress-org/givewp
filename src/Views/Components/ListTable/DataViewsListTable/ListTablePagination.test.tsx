@@ -50,7 +50,18 @@ describe('LargePagination', () => {
 
         expect(container.querySelectorAll('option, select')).toHaveLength(0);
         expect(input().max).toBe('33334');
-        expect(container.textContent).toContain('33334');
+        expect(input().value).toBe('1');
+        expect(container.textContent).toContain('of 33,334');
+    });
+
+    it('writes the page count in the locale of the admin, and keeps the input in plain digits', async () => {
+        window.GiveListTableNumbers = {thousandsSep: '.', decimalPoint: ','};
+        await render(33334);
+
+        expect(container.textContent).toContain('of 33.334');
+        expect(input().max).toBe('33334');
+
+        delete window.GiveListTableNumbers;
     });
 
     it('goes to the typed page when Enter is pressed, and not on each key', async () => {

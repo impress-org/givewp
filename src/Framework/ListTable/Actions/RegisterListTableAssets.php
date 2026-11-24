@@ -34,7 +34,27 @@ class RegisterListTableAssets
             true
         );
 
+        // Counts in the text of the list table follow the admin's locale, the way number_format_i18n() writes them.
+        wp_localize_script(self::HANDLE, 'GiveListTableNumbers', $this->numbers());
+
         // The shared chunk holds the list table's own strings, and WordPress looks translations up by handle.
         Language::setScriptTranslations(self::HANDLE);
+    }
+
+    /**
+     * The separators of the signed-in user's locale. This is configuration, not records.
+     *
+     * @since TBD
+     *
+     * @return array{thousandsSep: string, decimalPoint: string}
+     */
+    private function numbers(): array
+    {
+        global $wp_locale;
+
+        return [
+            'thousandsSep' => (string)($wp_locale->number_format['thousands_sep'] ?? ','),
+            'decimalPoint' => (string)($wp_locale->number_format['decimal_point'] ?? '.'),
+        ];
     }
 }

@@ -15,6 +15,7 @@ use Give\Donors\Repositories\DonorsDataRepository;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
+use Give\Tests\TestTraits\SwitchesNumberSeparators;
 
 /**
  * @since TBD
@@ -22,6 +23,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 class DonorColumnsFormattingTest extends TestCase
 {
     use RefreshDatabase;
+    use SwitchesNumberSeparators;
 
     /**
      * @since TBD
@@ -86,6 +88,23 @@ class DonorColumnsFormattingTest extends TestCase
 
         $this->assertSame('count', $column->getKind());
         $this->assertSame(7, $column->getRawValue($donor));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDonationCountFollowsTheLocale(): void
+    {
+        $donor = new Donor(['totalNumberOfDonations' => 1200]);
+        $column = new DonationCountColumn();
+
+        $this->assertSame('<div class="donationCount"><span>1,200</span></div>', $column->getCellValue($donor));
+        $this->assertSame(
+            '<div class="donationCount"><span>1.200</span></div>',
+            $this->withSeparators('.', ',', function () use ($column, $donor) {
+                return $column->getCellValue($donor);
+            })
+        );
     }
 
     /**

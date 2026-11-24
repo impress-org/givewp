@@ -3,6 +3,7 @@ import {useDispatch} from '@wordpress/data';
 import {__, _n, sprintf} from '@wordpress/i18n';
 import '../../AdminDetailsPage/store';
 import type {ActionOutcome} from '../ListTablePage/types';
+import {insertNumbers} from '../formatNumber';
 
 const ERROR_NOTICE_ID = 'givewp-list-table-action-error';
 
@@ -28,10 +29,25 @@ export default function useListTableActionNotices(singleName: string, pluralName
                     content: successMessage
                         ? successMessage
                         : actionLabel
-                        ? /* translators: 1: action name, 2: number of records, 3: record type (singular or plural) */
-                          sprintf(__('%1$s: %2$d %3$s updated.', 'give'), actionLabel, changed, records)
-                        : /* translators: 1: number of records, 2: record type (singular or plural) */
-                          sprintf(__('%1$d %2$s updated.', 'give'), changed, records),
+                        ? sprintf(
+                              insertNumbers(
+                                  /* translators: 1: action name, 2: number of records, 3: record type (singular or plural) */
+                                  __('%1$s: %2$d %3$s updated.', 'give'),
+                                  {'%2$d': changed}
+                              ),
+                              actionLabel,
+                              changed,
+                              records
+                          )
+                        : sprintf(
+                              insertNumbers(
+                                  /* translators: 1: number of records, 2: record type (singular or plural) */
+                                  __('%1$d %2$s updated.', 'give'),
+                                  {'%1$d': changed}
+                              ),
+                              changed,
+                              records
+                          ),
                 });
             }
 
@@ -46,8 +62,16 @@ export default function useListTableActionNotices(singleName: string, pluralName
                     content:
                         message ??
                         sprintf(
-                            /* translators: 1: number of records, 2: record type (singular or plural) */
-                            _n('%1$d %2$s could not be updated.', '%1$d %2$s could not be updated.', failed, 'give'),
+                            insertNumbers(
+                                /* translators: 1: number of records, 2: record type (singular or plural) */
+                                _n(
+                                    '%1$d %2$s could not be updated.',
+                                    '%1$d %2$s could not be updated.',
+                                    failed,
+                                    'give'
+                                ),
+                                {'%1$d': failed}
+                            ),
                             failed,
                             failed === 1 ? singleName : pluralName
                         ),

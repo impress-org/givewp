@@ -15,6 +15,7 @@ use Give\EventTickets\Repositories\EventsDataRepository;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
+use Give\Tests\TestTraits\SwitchesNumberSeparators;
 
 /**
  * @since TBD
@@ -22,6 +23,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 class EventColumnsFormattingTest extends TestCase
 {
     use RefreshDatabase;
+    use SwitchesNumberSeparators;
 
     /**
      * @since TBD
@@ -123,6 +125,31 @@ class EventColumnsFormattingTest extends TestCase
 
         $this->assertSame('count', $column->getKind());
         $this->assertSame(0, $column->getRawValue($event));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testSalesCountFollowsTheLocaleAndKeepsTheRawNumber(): void
+    {
+        $event = Event::factory()->create();
+        $stub = $this->getMockBuilder(EventsDataRepository::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getSoldCount', 'getCapacity'])
+            ->getMock();
+        $stub->method('getSoldCount')->willReturn(1200);
+        $stub->method('getCapacity')->willReturn(34567);
+        $column = new SalesCountColumn();
+        $column->setListTableData($stub);
+
+        $this->assertSame('1,200 out of 34,567', $column->getCellValue($event));
+        $this->assertSame(
+            '1.200 out of 34.567',
+            $this->withSeparators('.', ',', function () use ($column, $event) {
+                return $column->getCellValue($event);
+            })
+        );
+        $this->assertSame(1200, $column->getRawValue($event));
     }
 
     /**

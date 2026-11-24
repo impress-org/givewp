@@ -17,6 +17,7 @@ import {DataViews} from '@wordpress/dataviews';
 import {__, _n, sprintf} from '@wordpress/i18n';
 import type {Action, Field, View} from '@wordpress/dataviews';
 import type {ListTableItem} from '../ListTablePage/types';
+import {insertNumbers} from '../formatNumber';
 import ListTableViewReset from '../ListTableViewReset';
 import useDelayedFlag from '../hooks/useDelayedFlag';
 import useHorizontalOverflow from '../hooks/useHorizontalOverflow';
@@ -153,18 +154,19 @@ const hasBulkActions = (actions: Action<ListTableItem>[], data: ListTableItem[])
  * class and the same strings as DataViews (core's text domain), so it looks and reads the same.
  */
 function ListTableTotal({rows, totalItems}: {rows: number; totalItems: number}) {
+    // The message is translated first and the numbers go in after, so the strings stay the same as core's
+    // and keep their translations. The plural uses the real number.
     const message =
         totalItems > rows
-            ? sprintf(
+            ? insertNumbers(
                   /* translators: %1$d: number of items. %2$d: total number of items. */
                   _n('%1$d of %2$d Item', '%1$d of %2$d Items', totalItems),
-                  rows,
-                  totalItems
+                  {'%1$d': rows, '%2$d': totalItems}
               )
-            : sprintf(
+            : insertNumbers(
                   /* translators: %d: number of items. */
                   _n('%d Item', '%d Items', rows),
-                  rows
+                  {'%d': rows}
               );
 
     return <span className="givewp-list-table__total dataviews-bulk-actions-footer__item-count">{message}</span>;
@@ -205,7 +207,8 @@ function ListTableLoading({isSlow, announce}: {isSlow: boolean; announce: boolea
  * stock footer prints the total ("30 of 464 Items") from `paginationInfo.totalItems`, which this table
  * already passes. To go back to the stock footer, put `<DataViews.Footer />` in `ListTableLayout`. It
  * was added in one commit, "Enhancement: show the total row count in the list table footer" (find it
- * with `git log --grep`); reverting it removes all of this.
+ * with `git log --grep`); reverting it removes all of this. The stock footer prints plain digits, so when
+ * the pin moves, check that its count still follows the locale (`index.test.tsx` fails on the stock text).
  */
 function ListTableFooter({
     actions,

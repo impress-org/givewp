@@ -312,7 +312,7 @@ class CampaignsDataRepository
 
 
     /**
-     * @since TBD Add $useListTableFormat to write the amounts with the shared money formatter.
+     * @since TBD Add $useListTableFormat to write the amounts with the shared money formatter, and the counts in the admin's locale.
      * @since 4.0.0
      *
      * Get goal data for campaign
@@ -325,6 +325,7 @@ class CampaignsDataRepository
     public function getGoalData(Campaign $campaign, bool $useListTableFormat = false): array
     {
         $actual = $this->getActualGoal($campaign);
+        $isAmount = $campaign->goalType == CampaignGoalType::AMOUNT();
         $formatMoney = $useListTableFormat
             ? static function ($amount): string {
                 return MoneyFormatter::fromDecimal($amount);
@@ -332,6 +333,10 @@ class CampaignsDataRepository
             : static function ($amount): string {
                 return give_currency_filter(give_format_amount($amount));
             };
+        // Counts stay numbers for the REST API. Only the list table gets text for the admin's locale.
+        $formatCount = static function ($count) use ($useListTableFormat) {
+            return $useListTableFormat ? number_format_i18n($count) : $count;
+        };
         $percentage = $campaign->goal
             ? $actual / $campaign->goal
             : 0;
@@ -339,12 +344,12 @@ class CampaignsDataRepository
         return [
             'actual' => $actual,
             'goal' => $campaign->goal,
-            'actualFormatted' => $campaign->goalType == CampaignGoalType::AMOUNT
+            'actualFormatted' => $isAmount
                 ? $formatMoney($actual)
-                : $actual,
-            'goalFormatted' => $campaign->goalType == CampaignGoalType::AMOUNT
+                : $formatCount($actual),
+            'goalFormatted' => $isAmount
                 ? $formatMoney($campaign->goal)
-                : $campaign->goal,
+                : $formatCount($campaign->goal),
             'percentage' => round($percentage * 100, 2),
         ];
     }

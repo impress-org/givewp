@@ -5,6 +5,7 @@ import type {View} from '@wordpress/dataviews';
 import {createInterpolateElement} from '@wordpress/element';
 import {__, _x, isRTL, sprintf} from '@wordpress/i18n';
 import {next, previous} from '@wordpress/icons';
+import {insertNumbers} from '../formatNumber';
 
 /**
  * Up to this many pages the stock page select is fine. Above it the select has too many options: the
@@ -61,10 +62,12 @@ export function LargePagination({view, onChangeView, totalPages}: PaginationProp
             <HStack justify="flex-start" expanded={false} spacing={1} className="dataviews-pagination__page-select">
                 {createInterpolateElement(
                     sprintf(
-                        // translators: 1: Current page number, 2: Total number of pages.
-                        _x('<div>Page</div>%1$s<div>of %2$d</div>', 'paging'),
-                        '<CurrentPage />',
-                        totalPages
+                        insertNumbers(
+                            // translators: 1: Current page number, 2: Total number of pages.
+                            _x('<div>Page</div>%1$s<div>of %2$d</div>', 'paging'),
+                            {'%2$d': totalPages}
+                        ),
+                        '<CurrentPage />'
                     ),
                     {
                         div: <div aria-hidden />,

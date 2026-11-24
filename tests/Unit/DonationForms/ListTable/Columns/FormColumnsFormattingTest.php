@@ -15,6 +15,7 @@ use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\V2\Properties\DonationFormLevel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
+use Give\Tests\TestTraits\SwitchesNumberSeparators;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
 /**
@@ -24,6 +25,7 @@ class FormColumnsFormattingTest extends TestCase
 {
     use RefreshDatabase;
     use LegacyDonationFormAdapter;
+    use SwitchesNumberSeparators;
 
     /**
      * @since TBD
@@ -146,6 +148,98 @@ class FormColumnsFormattingTest extends TestCase
 
         $this->assertStringContainsString('givewp-list-table-dash', $cell);
         $this->assertStringContainsString('No Goal Set', $cell);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testCountGoalCellFollowsTheLocale(): void
+    {
+        $form = $this->createSimpleDonationForm();
+        $form->goalSettings->enableDonationGoal = true;
+        $column = $this->goalColumnWith($this->goalData(87, 1000000, false), $form);
+
+        $english = $column->getCellValue($form);
+        $german = $this->withSeparators('.', ',', function () use ($column, $form) {
+            return $column->getCellValue($form);
+        });
+
+        $this->assertStringContainsString('1,000,000', $english);
+        $this->assertStringContainsString('1.000.000', $german);
+        $this->assertStringNotContainsString('1000000', $english . $german);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testMoneyGoalCellKeepsTheMoneyText(): void
+    {
+        $form = $this->createSimpleDonationForm();
+        $form->goalSettings->enableDonationGoal = true;
+        $data = $this->goalData(87, 1000000, true);
+        $data['actualFormatted'] = '$87.00';
+        $data['goalFormatted'] = '$1,000,000.00';
+
+        $german = $this->withSeparators('.', ',', function () use ($data, $form) {
+            return $this->goalColumnWith($data, $form)->getCellValue($form);
+        });
+
+        $this->assertStringContainsString('$1,000,000.00', $german);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDonationCountFollowsTheLocaleAndKeepsTheRawNumber(): void
+    {
+        $form = $this->createSimpleDonationForm();
+        $stub = $this->getMockBuilder(DonationFormDataRepository::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getDonationsCount'])
+            ->getMock();
+        $stub->method('getDonationsCount')->willReturn(1200);
+        $column = new DonationCountColumn();
+        $column->setListTableData($stub);
+
+        $this->assertSame('<div class="donationCount"><span>1,200</span></div>', $column->getCellValue($form));
+        $this->assertSame(
+            '<div class="donationCount"><span>1.200</span></div>',
+            $this->withSeparators('.', ',', function () use ($column, $form) {
+                return $column->getCellValue($form);
+            })
+        );
+        $this->assertSame(1200, $column->getRawValue($form));
+    }
+
+    /**
+     * @since TBD
+     */
+    private function goalData(int $actual, int $goal, bool $isMoney): array
+    {
+        return [
+            'actual' => $actual,
+            'goal' => $goal,
+            'actualFormatted' => $actual,
+            'goalFormatted' => $goal,
+            'percentage' => round($actual / $goal * 100, 2),
+            'typeIsMoney' => $isMoney,
+        ];
+    }
+
+    /**
+     * @since TBD
+     */
+    private function goalColumnWith(array $goalData, DonationForm $form): GoalColumn
+    {
+        $stub = $this->getMockBuilder(DonationFormDataRepository::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getGoalData'])
+            ->getMock();
+        $stub->method('getGoalData')->willReturn($goalData);
+        $column = new GoalColumn();
+        $column->setListTableData($stub);
+
+        return $column;
     }
 
     /**

@@ -31,6 +31,7 @@ class DonationsCountColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Write the count in the admin's locale.
      * @since 4.0.0
      *
      * @param Campaign $model
@@ -46,7 +47,7 @@ class DonationsCountColumn extends ModelColumn
 
         $label = sprintf(
             '<div class="donationCount"><span>%s</span></div>',
-            $totalDonations
+            number_format_i18n($totalDonations)
         );
 
         return apply_filters("givewp_list_table_cell_value_{$this::getId()}_content", $label, $model, $this);

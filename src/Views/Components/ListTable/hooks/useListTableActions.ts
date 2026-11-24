@@ -11,6 +11,7 @@ import type {
 } from '../ListTablePage/types';
 import {bulkActionsToActions} from '../adapters/bulkActionsToActions';
 import {rowActionsToActions} from '../adapters/rowActionsToActions';
+import {insertNumbers} from '../formatNumber';
 
 /**
  * @since TBD
@@ -88,7 +89,9 @@ export default function useListTableActions({
                             failed: 0,
                             notice: sprintf(
                                 /* translators: 1: number of records, 2: record type, plural */
-                                __('Select at least %1$d %2$s to use this action.', 'give'),
+                                insertNumbers(__('Select at least %1$d %2$s to use this action.', 'give'), {
+                                    '%1$d': minSelected,
+                                }),
                                 minSelected,
                                 pluralName
                             ),

@@ -15,12 +15,15 @@ use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Tests\TestCase;
+use Give\Tests\TestTraits\SwitchesNumberSeparators;
 
 /**
  * @since TBD
  */
 class CampaignColumnsFormattingTest extends TestCase
 {
+    use SwitchesNumberSeparators;
+
     /**
      * @since TBD
      */
@@ -201,8 +204,48 @@ class CampaignColumnsFormattingTest extends TestCase
 
         $goal = $this->callGoalData($stub, $campaign);
 
-        $this->assertSame(40, $goal['goalFormatted']);
-        $this->assertSame(10, $goal['actualFormatted']);
+        $this->assertSame('40', $goal['goalFormatted']);
+        $this->assertSame('10', $goal['actualFormatted']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testCountGoalFollowsTheLocaleInTheListTableOnly(): void
+    {
+        $campaign = new Campaign(['id' => 5, 'goal' => 1000000, 'goalType' => CampaignGoalType::DONATIONS()]);
+        $stub = $this->dataStub(0.0, 87);
+
+        $list = $stub->getGoalData($campaign, true);
+        $german = $this->withSeparators('.', ',', function () use ($stub, $campaign) {
+            return $stub->getGoalData($campaign, true);
+        });
+        $rest = $stub->getGoalData($campaign);
+
+        $this->assertSame('87', $list['actualFormatted']);
+        $this->assertSame('1,000,000', $list['goalFormatted']);
+        $this->assertSame('1.000.000', $german['goalFormatted']);
+        $this->assertSame(87, $rest['actualFormatted']);
+        $this->assertSame(1000000, $rest['goalFormatted']);
+        $this->assertSame(1000000, $list['goal']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDonationsCountFollowsTheLocaleAndKeepsTheRawNumber(): void
+    {
+        $campaign = new Campaign(['id' => 5, 'goal' => 10, 'goalType' => CampaignGoalType::DONATIONS()]);
+        $column = $this->columnWithData(new DonationsCountColumn(), $this->dataStub(0.0, 1200));
+
+        $this->assertSame('<div class="donationCount"><span>1,200</span></div>', $column->getCellValue($campaign));
+        $this->assertSame(
+            '<div class="donationCount"><span>1.200</span></div>',
+            $this->withSeparators('.', ',', function () use ($column, $campaign) {
+                return $column->getCellValue($campaign);
+            })
+        );
+        $this->assertSame(1200, $column->getRawValue($campaign));
     }
 
     /**

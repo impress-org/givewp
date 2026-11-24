@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import {__, _n, sprintf} from '@wordpress/i18n';
+import {insertNumbers} from '../formatNumber';
 
 /**
  * How long the result must stay the same before it is announced, so quick changes give one message.
@@ -37,8 +38,11 @@ function resultMessage(totalItems: number, singleName: string, pluralName: strin
     }
 
     return sprintf(
-        /* translators: 1: number of records, 2: record type, singular or plural (for example "donations"). */
-        _n('%1$d %2$s found', '%1$d %2$s found', totalItems, 'give'),
+        insertNumbers(
+            /* translators: 1: number of records, 2: record type, singular or plural (for example "donations"). */
+            _n('%1$d %2$s found', '%1$d %2$s found', totalItems, 'give'),
+            {'%1$d': totalItems}
+        ),
         totalItems,
         totalItems === 1 ? singleName : pluralName
     );

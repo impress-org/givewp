@@ -1,3 +1,4 @@
+import {readFileSync} from 'fs';
 import {act} from 'react';
 import {createRoot, type Root} from 'react-dom/client';
 import type {Field, View} from '@wordpress/dataviews';
@@ -70,6 +71,36 @@ describe('DataViewsListTable total', () => {
         await render({page: 1, rows: items.slice(0, 12), totalItems: 12});
 
         expect(container.querySelector('.givewp-list-table__total')?.textContent).toBe('12 Items');
+    });
+
+    it('writes the numbers in the locale of the admin', async () => {
+        await render({page: 1, rows: items, totalItems: 1200});
+        expect(container.querySelector('.givewp-list-table__total')?.textContent).toBe('30 of 1,200 Items');
+
+        window.GiveListTableNumbers = {thousandsSep: '.', decimalPoint: ','};
+        await render({page: 1, rows: items, totalItems: 1200});
+        expect(container.querySelector('.givewp-list-table__total')?.textContent).toBe('30 of 1.200 Items');
+
+        await render({page: 1, rows: items.slice(0, 1), totalItems: 1});
+        expect(container.querySelector('.givewp-list-table__total')?.textContent).toBe('1 Item');
+
+        delete window.GiveListTableNumbers;
+    });
+
+    it('keeps the strings of core, so the existing translations still match', () => {
+        const source = readFileSync('src/Views/Components/ListTable/DataViewsListTable/index.tsx', 'utf8');
+
+        expect(source).toContain("_n('%1$d of %2$d Item', '%1$d of %2$d Items', totalItems)");
+        expect(source).toContain("_n('%d Item', '%d Items', rows)");
+    });
+
+    it('is still needed: the stock footer of the pinned DataViews prints the rows on the page, with no total', () => {
+        // When this fails the `@wordpress/dataviews` pin moved. Read `ListTableFooter`: the stock footer may now print
+        // the total itself, and it must still write it in the locale of the admin.
+        const stock = readFileSync('node_modules/@wordpress/dataviews/build-module/components/dataviews-bulk-actions/index.js', 'utf8');
+
+        expect(stock).toContain('_n("%d Item", "%d Items", data.length)');
+        expect(stock).not.toContain('of %2$d Item');
     });
 
     it('shows nothing when no row matches', async () => {

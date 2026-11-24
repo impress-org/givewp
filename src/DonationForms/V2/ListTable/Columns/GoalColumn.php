@@ -38,6 +38,7 @@ class GoalColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Write a count goal in the admin's locale.
      * @since TBD Show a labeled dash when the form has no goal.
      * @since TBD Show a progress ring next to the amount, and a check with "Goal achieved" once the goal is met or the givewp_list_table_goal_progress_achieved_opacity filter returns a value above 0.
      * @since 4.3.0 use DonationFormDataRepository
@@ -62,6 +63,12 @@ class GoalColumn extends ModelColumn
         $donationFormData = $this->getListTableData();
 
         $goalData = $donationFormData->getGoalData($model);
+
+        // The form builder reads the plain numbers from the repository, so only this cell formats them.
+        if (!$goalData['typeIsMoney']) {
+            $goalData['actualFormatted'] = number_format_i18n($goalData['actual']);
+            $goalData['goalFormatted'] = number_format_i18n($goalData['goal']);
+        }
 
         $stats = apply_filters('give_goal_progress_stats', [
             'raw_actual' => $goalData['actual'],

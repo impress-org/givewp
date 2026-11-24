@@ -48,7 +48,7 @@ class SalesCountColumn extends ModelColumn
     /**
      * @inheritDoc
      *
-     * @since TBD Read the sold count and the capacity from the page data.
+     * @since TBD Read the sold count and the capacity from the page data, and write both numbers in the admin's locale.
      * @since 4.19.1 Add translators comments.
      * @since 3.6.0
      *
@@ -60,11 +60,14 @@ class SalesCountColumn extends ModelColumn
         $soldTicketsCount = $data->getSoldCount($model->id);
         $capacity = $data->getCapacity($model->id);
 
-        return sprintf(
+        // The numbers go in after the translation, so the text still matches the translations of the original.
+        return strtr(
             /* translators: 1: Number of tickets sold, 2: Total ticket capacity */
             __('%1$d out of %2$d', 'give'),
-            $soldTicketsCount,
-            $capacity
+            [
+                '%1$d' => number_format_i18n($soldTicketsCount),
+                '%2$d' => number_format_i18n($capacity),
+            ]
         );
     }
 

@@ -40,6 +40,7 @@ class DonationCountColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Write the count in the admin's locale.
      * @since 4.3.0 use DonationFormDataRepository
      * @since 3.16.0 Add filter to change the cell value content
      * @since 3.14.0 Use the "getDonationCount()" method from progress bar model to ensure the correct donation count will be used
@@ -60,7 +61,7 @@ class DonationCountColumn extends ModelColumn
 
         return sprintf(
             '<div class="donationCount"><span>%s</span></div>',
-            $totalDonations
+            number_format_i18n($totalDonations)
         );
     }
 
