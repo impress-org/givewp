@@ -5,12 +5,27 @@ import {contrastRatio, readCustomProperties} from './contrast';
 const tokens = readCustomProperties(readFileSync(join(__dirname, '_tokens.scss'), 'utf8'));
 const T = (name: string) => tokens[`--givewp-list-table-${name}`];
 
+// The status colors are WordPress admin tokens, so they are not in `_tokens.scss`. The fallback hex values
+// are read from `InterweaveSSR/styles.scss`. The selected row is the stock 4% admin color on white.
+const statusStyles = readFileSync(join(__dirname, '..', 'InterweaveSSR', 'styles.scss'), 'utf8');
+const statusFallback = (token: string) =>
+    new RegExp(`var\\(--wpds-color-${token}, (#[0-9a-f]{6})\\)`, 'i').exec(statusStyles)?.[1] as string;
+const STATUS_RED = statusFallback('stroke-interactive-error');
+const STATUS_AMBER = statusFallback('stroke-surface-warning-strong');
+const SELECTED_ROW = '#f7f8fe';
+
 describe('list table tokens', () => {
     it.each([
         ['text on white', T('text'), '#ffffff', 4.5],
         ['text on hover row', T('text'), T('row-hover'), 4.5],
         ['secondary text on white', T('text-secondary'), '#ffffff', 4.5],
         ['secondary text on hover row', T('text-secondary'), T('row-hover'), 4.5],
+        ['failed status text on white', STATUS_RED, '#ffffff', 4.5],
+        ['failed status text on hover row', STATUS_RED, T('row-hover'), 4.5],
+        ['failed status text on selected row', STATUS_RED, SELECTED_ROW, 4.5],
+        ['attention status text (amber) on white', STATUS_AMBER, '#ffffff', 4.5],
+        ['attention status text (amber) on hover row', STATUS_AMBER, T('row-hover'), 4.5],
+        ['attention status text (amber) on selected row', STATUS_AMBER, SELECTED_ROW, 4.5],
         ['control edge on white (UI edge)', T('control-edge'), '#ffffff', 3],
         ['tag text on the neutral status fill', T('tag-text'), T('status-neutral-bg'), 4.5],
         ['test badge text on its fill', T('text'), T('test-badge-bg'), 4.5],

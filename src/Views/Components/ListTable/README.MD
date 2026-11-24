@@ -61,9 +61,12 @@ The A+ look is kept small and in a few known places. Keep it that way.
 - **The pin.** `@wordpress/dataviews` is pinned to `10.1.7` in `package.json`. The overrides in
   `_wp-look.scss` were written for that version. When the pin moves, check them again in the browser.
 - **Rows.** Rows keep the stock DataViews height on purpose.
-- **Status and type.** They are server-rendered markup and show as plain text, like the other cells.
-  `InterweaveSSR/styles.scss` only removes the WordPress `p` margin so the rows keep their height. The
-  PHP classes (`statusBadge`, `badge`) stay as hooks.
+- **Status and type.** They are server-rendered markup. Type is plain text. Status is a small icon and the
+  word, like the Site Editor: the icon is a CSS mask in the text color, drawn in `InterweaveSSR/styles.scss`
+  on the `statusBadge--{value}` classes (no box). Only Failed and Failing (red) and Refunded, Expired and
+  Suspended (amber) take a color, from WordPress admin tokens. A new status value shows the word only until a
+  rule is added; `statusIcons.test.ts` fails when a value in the four status classes has no rule. The
+  `p` margin is reset so the rows keep their height. The PHP classes (`statusBadge`, `badge`) stay as hooks.
 - **Page layout.** On the full page the list sits in one bordered white sheet (`.sheet` in
   `ListTablePage.module.scss`), with the stat tile band at its top, and the page fills the window
   height. The toolbar is one row: the search box, the filter bar, then the view options, with the

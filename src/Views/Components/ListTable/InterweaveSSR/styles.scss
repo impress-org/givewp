@@ -6,6 +6,81 @@
         margin: 0;
     }
 
+    // Status is a small icon and the word, like the Site Editor. The icon is a mask in the text color.
+    // A value with no rule below (a new status) gets a blank icon space, so the words line up.
+    .statusBadge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+
+        &::before {
+            content: '';
+            flex: none;
+            inline-size: 24px;
+            block-size: 24px;
+            margin-inline-start: -4px;
+            background-color: currentColor;
+            mask: var(--icon, linear-gradient(#0000, #0000)) center / contain no-repeat;
+        }
+
+        &--publish,
+        &--active,
+        &--completed,
+        &--upgraded {
+            --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 18.5a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13ZM4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0Zm11.53-1.47-1.06-1.06L11 12.94l-1.47-1.47-1.06 1.06L11 15.06l4.53-4.53Z'/%3E%3C/svg%3E");
+        }
+
+        &--pending,
+        &--processing,
+        &--preapproval,
+        &--future {
+            --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 18.5a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13ZM4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0Zm8 4a4 4 0 0 1-4-4h4V8a4 4 0 0 1 0 8Z'/%3E%3C/svg%3E");
+        }
+
+        &--draft,
+        &--inactive,
+        &--archived,
+        &--paused,
+        &--private,
+        &--trash,
+        &--trashed {
+            --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 18.5a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13ZM4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0Zm8 4a4 4 0 0 0 4-4H8a4 4 0 0 0 4 4Z'/%3E%3C/svg%3E");
+        }
+
+        &--cancelled,
+        &--abandoned,
+        &--revoked {
+            --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 18.5A6.5 6.5 0 0 1 6.93 7.931l9.139 9.138A6.473 6.473 0 0 1 12 18.5Zm5.123-2.498a6.5 6.5 0 0 0-9.124-9.124l9.124 9.124ZM4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0Z'/%3E%3C/svg%3E");
+        }
+
+        &--failed,
+        &--failing,
+        &--refunded,
+        &--expired,
+        &--suspended {
+            --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M5.5 12a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0ZM12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm-.75 12v-1.5h1.5V16h-1.5Zm0-8v5h1.5V8h-1.5Z'/%3E%3C/svg%3E");
+        }
+
+        // Color only for the statuses that need a look. The icon shape and the word still tell them apart.
+        &--failed,
+        &--failing {
+            color: var(--wpds-color-stroke-interactive-error, #cc1818);
+        }
+
+        &--refunded,
+        &--expired,
+        &--suspended {
+            color: var(--wpds-color-stroke-surface-warning-strong, #926300);
+        }
+
+        @media (forced-colors: active) {
+            &::before {
+                forced-color-adjust: none;
+                background-color: CanvasText;
+            }
+        }
+    }
+
     .subscriptionStatus {
         display: flex;
         gap: 10px;
