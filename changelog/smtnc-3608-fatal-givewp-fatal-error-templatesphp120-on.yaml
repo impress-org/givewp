@@ -1,6 +1,5 @@
 significance: patch
 type: fix
-entry: Excluded redirects that have no donation form, such as the favicon
-  request, from the offsite checkout redirect handler, so a request whose
-  Referer is an embedded donation form no longer logs a fatal error.
+entry: Resolved an issue where a redirect requested from a page with an
+  embedded donation form, such as the site icon request, caused a fatal error.
 timestamp: 2026-11-23T15:33:27.102Z
