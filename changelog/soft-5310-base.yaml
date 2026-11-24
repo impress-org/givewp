@@ -1,5 +1,5 @@
 significance: minor
-type: added
+type: feature
 entry: Added automatic Stripe webhook setup when an account is connected,
   webhook endpoint management for each connected account, and an email when a
   webhook endpoint stops working.
