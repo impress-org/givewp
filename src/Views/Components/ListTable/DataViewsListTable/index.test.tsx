@@ -115,7 +115,6 @@ describe('DataViewsListTable page loading', () => {
     afterEach(() => jest.useRealTimers());
 
     const visibleLoading = () => container.querySelector('.givewp-list-table__footer .givewp-list-table__loading');
-    const progress = () => container.querySelector('.givewp-list-table__progress');
     const statusText = () => container.querySelector('.give-visually-hidden[role="status"]')?.textContent;
 
     it('shows nothing for a fast page', async () => {
@@ -123,7 +122,6 @@ describe('DataViewsListTable page loading', () => {
         await act(() => jest.advanceTimersByTime(299));
 
         expect(visibleLoading()).toBeNull();
-        expect(progress()).toBeNull();
         expect(statusText()).toBe('');
 
         await render({page: 2, rows: items, totalItems: 462, isLoading: false});
@@ -133,13 +131,13 @@ describe('DataViewsListTable page loading', () => {
         expect(statusText()).toBe('');
     });
 
-    it('shows the bar and the footer text after 300 ms, hidden from screen readers', async () => {
+    it('shows the footer text after 300 ms, hidden from screen readers', async () => {
         await render({page: 2, rows: items, totalItems: 462, isLoading: true});
         await act(() => jest.advanceTimersByTime(300));
 
         expect(visibleLoading()?.textContent).toBe('Loading…');
         expect(visibleLoading()?.getAttribute('aria-hidden')).toBe('true');
-        expect(progress()?.getAttribute('aria-hidden')).toBe('true');
+        expect(container.querySelector('.givewp-list-table__progress')).toBeNull();
         expect(statusText()).toBe('');
     });
 
@@ -152,7 +150,6 @@ describe('DataViewsListTable page loading', () => {
         await render({page: 2, rows: items, totalItems: 462, isLoading: false});
 
         expect(visibleLoading()).toBeNull();
-        expect(progress()).toBeNull();
         expect(statusText()).toBe('');
     });
 
@@ -350,13 +347,12 @@ describe('DataViewsListTable while the total is not known', () => {
         expect(container.querySelector('.dataviews-pagination')?.textContent).toContain('of 16');
     });
 
-    it('keeps the dim, the bar and the loading text working', async () => {
+    it('keeps the dim and the loading text working', async () => {
         jest.useFakeTimers();
         await render({page: 2, rows: items, totalItems: null, isLoading: true});
         await act(() => jest.advanceTimersByTime(300));
 
         expect(container.querySelector('.givewp-list-table--loading')).not.toBeNull();
-        expect(container.querySelector('.givewp-list-table__progress')).not.toBeNull();
         expect(container.querySelector('.givewp-list-table__footer .givewp-list-table__loading')).not.toBeNull();
         jest.useRealTimers();
     });

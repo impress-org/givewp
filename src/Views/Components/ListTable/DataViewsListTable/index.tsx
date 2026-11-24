@@ -366,10 +366,6 @@ function ListTableLayout({
                 {searchHint && <div className="givewp-list-table__hint">{searchHint}</div>}
             </div>
             {isNarrow && <div className="givewp-list-table__view-controls-row">{viewControls}</div>}
-            {/* A zero-height box right above the table: the bar sits on the table's top edge. */}
-            <div className="givewp-list-table__progress-anchor">
-                {isSlow && <span className="givewp-list-table__progress" aria-hidden="true" />}
-            </div>
             <DataViews.Layout />
             <ListTableFooter
                 actions={actions}
@@ -466,7 +462,7 @@ export default function DataViewsListTable({
         [selection, onChangeSelection, actions]
     );
 
-    // A fast page shows nothing; a slow one gets the bar and the visible text after 300 ms, and the words for
+    // A fast page shows nothing; a slow one gets the visible text after 300 ms, and the words for
     // screen readers after 1 s.
     const isSlow = useDelayedFlag(isLoading, 300);
     const announce = useDelayedFlag(isLoading, 1000);

@@ -439,7 +439,9 @@ itself is assembled in `ListTable/state/` (see [View state](#view-state)). Sorti
 searching and paging stay on the server.
 
 - **Stock behavior inside the list.** Toolbar, view options, row menu, selection bar, loading state
-  and pagination are DataViews' own, as WordPress core uses them. Give adds the page header, stat
+  and pagination are DataViews' own, as WordPress core uses them. Loading shows the stock dim and the stock
+  first-load spinner; the only extra is a "Loading…" with a small spinner in the footer, and the stock
+  under-table spinner is hidden. Give adds the page header, stat
   tiles, the notice area, empty states, confirm bodies and action notices around it. **The
   exceptions are the search box and the filter row**, which are Give components (see [Why the
   filter bar is Give's](#why-the-filter-bar-is-gives)), **the small "More view options" menu (⋮)**
