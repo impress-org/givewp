@@ -213,7 +213,7 @@ export async function allRecords<T>(
 export async function setTestMode(page: Page, isOn: boolean): Promise<void> {
     const toggle = page.getByRole('switch');
 
-    if ((await toggle.getAttribute('aria-checked')) === String(isOn)) {
+    if ((await toggle.isChecked()) === isOn) {
         return;
     }
 

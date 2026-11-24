@@ -46,6 +46,7 @@ import {adminInNewBrowser, deleteUser, isLayoutWrite, resetLayout, signInNewUser
 const DONATIONS_LIST = 'post_type=give_forms&page=give-payment-history';
 const LIST_REQUEST = /admin\/donations\?/;
 const DONATIONS_REQUEST = /give-api\/v2\/admin\/donations\?/;
+const DONATIONS_COUNT_REQUEST = /give-api\/v2\/admin\/donations\/count\?/;
 const OPTIONS_REQUEST = /list-table-filter-options\//;
 
 type V3Donation = {id: number; createdAt: string; status: string};
@@ -115,7 +116,9 @@ test.describe('Donations list', () => {
 
         // A campaign's form and "No campaign" share no donations, so the list empties and says why. The
         // Form filter takes several forms, so it is reset before the other one is picked.
-        await filterBar(page).getByRole('button', {name: /^Reset filter: Form/}).click();
+        await filterBar(page)
+            .getByRole('button', {name: /^Reset filter: Form/})
+            .click();
         await applyFilter(page, 'Form', campaign.title);
         await expect(rowById(page, standalone)).toHaveCount(0);
         await expect(rowById(page, inCampaign)).toHaveCount(0);
@@ -283,7 +286,7 @@ test.describe('Donations list behavior', () => {
 
         await visitDonations(page, admin);
         const toggle = page.getByRole('switch', {name: 'View test donations'});
-        const siteTestMode = await toggle.getAttribute('aria-checked');
+        const siteTestMode = await toggle.isChecked();
 
         await listTable(page).getByRole('searchbox').fill('zzzzqqq');
 
@@ -292,7 +295,7 @@ test.describe('Donations list behavior', () => {
 
         // Clear filters goes back to the screen's defaults, so test mode stays as the site has it.
         await expect(listTable(page).getByRole('searchbox')).toHaveValue('');
-        await expect(toggle).toHaveAttribute('aria-checked', siteTestMode ?? 'false');
+        await expect(toggle).toBeChecked({checked: siteTestMode});
         await expect(listTable(page)).not.toContainText('No donations match your search or filters.');
     });
 
@@ -458,21 +461,24 @@ test.describe('Donations list view in the address', () => {
         expect(await page.evaluate(() => 'givewpSamePage' in window), 'Back and forward should not reload').toBe(true);
     });
 
-    test('never writes the search to the address, and a new page opens without it', async ({page, admin, context}) => {
+    test('writes the search to the address as give-search, and a new page opens with it', async ({
+        page,
+        admin,
+        context,
+    }) => {
         await visitDonations(page, admin);
         await search(page, 'Eve');
 
-        expect(page.url()).not.toContain('Eve');
+        await expect(page).toHaveURL(/[?&]give-search=Eve(&|$)/);
 
         const other = await context.newPage();
         await other.goto(page.url());
         await expect(listRows(other).first()).toBeVisible({timeout: 15_000});
-        await expect(listTable(other).getByRole('searchbox')).toHaveValue('');
+        await expect(listTable(other).getByRole('searchbox')).toHaveValue('Eve');
         await other.close();
     });
 
     test('keeps the search on reload of the same tab', async ({page, admin}) => {
-        // Core's admin canonical-URL script clears history.state on load; the tab's session copy restores it.
         await visitDonations(page, admin);
         await search(page, 'Eve');
 
@@ -503,7 +509,7 @@ test.describe('Donations list view in the address', () => {
         await visitDonations(page, admin);
 
         const toggle = page.getByRole('switch', {name: 'View test donations'});
-        const siteTestMode = (await toggle.getAttribute('aria-checked')) === 'true';
+        const siteTestMode = await toggle.isChecked();
 
         expect(page.url()).not.toContain('give-test-mode');
 
@@ -689,6 +695,8 @@ test.describe('Donations list filters', () => {
         await popover(page).getByLabel('End date').fill(end);
 
         const ranged = nextListRequest(page, DONATIONS_REQUEST, (url) => url.searchParams.has('start'));
+        // The rows come first and the total from its own request.
+        const counted = nextListRequest(page, DONATIONS_COUNT_REQUEST, (url) => url.searchParams.has('start'));
         await popover(page).getByRole('button', {name: 'Apply'}).click();
         const response = await ranged;
         const url = new URL(response.url());
@@ -696,7 +704,7 @@ test.describe('Donations list filters', () => {
         expect(url.searchParams.get('start')).toBe(`${start}T00:00:00`);
         expect(url.searchParams.get('end')).toBe(`${end}T23:59:59`);
         expect(expected).toBeGreaterThanOrEqual(1);
-        expect(Number(((await response.json()) as {totalItems: number | string}).totalItems)).toBe(expected);
+        expect(Number(((await (await counted).json()) as {totalItems: number | string}).totalItems)).toBe(expected);
         await expect(page).toHaveURL(new RegExp(`give-date=${start}_${end}(&|$)`));
     });
 

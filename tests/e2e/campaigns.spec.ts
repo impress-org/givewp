@@ -129,9 +129,10 @@ test.describe('Campaign Forms tab filters', () => {
     test('has no Campaign filter, and Reset keeps the campaign rows', async ({page, admin, requestUtils}) => {
         const {campaignId} = await createCampaignWithForm(requestUtils);
         const query = `${CAMPAIGNS}&id=${campaignId}&tab=forms`;
+        // The rows come first and the total from its own request, so the first page's rows are counted.
         const first = nextListRequest(page, FORMS_REQUEST);
         await visitList(page, admin, query);
-        const initial = Number(((await (await first).json()) as {totalItems: number | string}).totalItems);
+        const initial = ((await (await first).json()) as {items: unknown[]}).items.length;
 
         // The bar is mounted once its Status chip shows, so the checks below do not pass on an empty bar.
         await expect(chip(page, 'Status')).toBeVisible();

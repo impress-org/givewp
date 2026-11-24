@@ -102,11 +102,11 @@ test.describe('Subscriptions list filters @recurring', () => {
 
         const first = popover(page)
             .locator('.givewp-options-filter-control__option')
-            .filter({hasNotText: /^Trash$/})
+            .filter({hasNotText: /^Trashed$/})
             .first()
             .getByRole('checkbox');
         await first.check();
-        await popover(page).getByRole('checkbox', {name: 'Trash', exact: true}).check();
+        await popover(page).getByRole('checkbox', {name: 'Trashed', exact: true}).check();
 
         await expect(first).not.toBeChecked();
         await expect(popover(page).getByRole('checkbox', {checked: true})).toHaveCount(1);
