@@ -1,0 +1,5 @@
+significance: patch
+type: security
+entry: Improved handling of donor email access links and donor-dashboard
+  password updates.
+timestamp: 2026-11-23T22:29:20.292Z

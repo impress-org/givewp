@@ -327,6 +327,54 @@ class TestGenerateConfirmationPageReceipt extends TestCase
     }
 
     /**
+     * Access-link email tags do not generate a link on the confirmation page.
+     *
+     * @since TBD
+     */
+    public function testAccessLinkTagDoesNotGenerateLinkOnConfirmationPage()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray([
+                'receiptDescription' => 'Thanks {first_name}! {donation_history_link}',
+            ]),
+        ]);
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'formId' => $donationForm->id,
+        ]);
+
+        $receipt = (new GenerateConfirmationPageReceipt())(new DonationReceipt($donation));
+
+        $settings = $receipt->settings->toArray();
+
+        $this->assertStringNotContainsString('give_nl=', $settings['description']);
+        $this->assertStringNotContainsString('give_nl=', $settings['heading']);
+    }
+
+    /**
+     * Access-link email tags still generate a link while composing an email.
+     *
+     * @since TBD
+     */
+    public function testAccessLinkTagGeneratesLinkDuringEmailComposition()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create();
+
+        $content = give_do_email_tags(
+            'Thanks {first_name}! {donation_history_link}',
+            [
+                'payment_id' => $donation->id,
+                'email_composition' => true,
+            ]
+        );
+
+        $this->assertMatchesRegularExpression('/give_nl=[A-Za-z0-9]{20}/', $content);
+    }
+
+    /**
      * @since 3.3.0
      */
     public function testShouldAddCustomFieldsToAdditionalDetails(): void

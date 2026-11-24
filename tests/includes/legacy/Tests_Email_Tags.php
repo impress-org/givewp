@@ -717,7 +717,12 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 		Give_Helper_Payment::create_simple_payment();
 
-		$link = give_email_tag_donation_history_link( array( 'user_id' => 1 ) );
+		$link = give_email_tag_donation_history_link(
+			array(
+				'user_id' => 1,
+				'email_composition' => true,
+			)
+		);
 
 		$this->assertMatchesRegularExpression(
 			'/target="_blank">View your donation history &raquo;<\/a>/',
@@ -732,6 +737,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$link = give_email_tag_donation_history_link(
 			array(
 				'user_id'            => 1,
+				'email_composition'  => true,
 				'email_content_type' => 'text/plain',
 			)
 		);
@@ -741,6 +747,25 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 			$link
 		);
 
+	}
+
+	/**
+	 * Test that the access link tag resolves to an empty string outside of email composition.
+	 *
+	 * @since TBD
+	 * @cover give_email_tag_donation_history_link
+	 */
+	function test_give_email_tag_donation_history_link_empty_outside_email() {
+		if ( ! Give()->donors->does_column_exist( 'token' ) ) {
+			Give()->email_access->create_columns();
+		}
+
+		Give_Helper_Payment::create_simple_payment();
+
+		$this->assertSame(
+			'',
+			give_email_tag_donation_history_link( array( 'user_id' => 1 ) )
+		);
 	}
 
 	/**

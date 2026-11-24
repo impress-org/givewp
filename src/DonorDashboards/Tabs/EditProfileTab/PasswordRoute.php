@@ -38,6 +38,7 @@ class PasswordRoute extends RouteAbstract
     /**
      * Handles password update.
      *
+     * @since TBD Require the linked user account session to update the password.
      * @since 4.16.6 added password validation
      * @since 3.3.0
      *
@@ -65,13 +66,25 @@ class PasswordRoute extends RouteAbstract
 
         $donor = Donor::find($donorId);
 
-        if ( ! $donor || empty($donor->userId)) {
+        if ( ! $donor || empty( $donor->userId ) ) {
             return new WP_REST_Response(
                 [
                     'status' => 400,
                     'response' => 'no_user_account',
                     'body_response' => [
                         'message' => esc_html__('Unable to update password. Contact a site administrator.', 'give'),
+                    ],
+                ]
+            );
+        }
+
+        if ( ! is_user_logged_in() || (int) get_current_user_id() !== (int) $donor->userId ) {
+            return new WP_REST_Response(
+                [
+                    'status' => 403,
+                    'response' => 'account_login_required',
+                    'body_response' => [
+                        'message' => esc_html__( 'Please log in with your user account to update the password.', 'give' ),
                     ],
                 ]
             );

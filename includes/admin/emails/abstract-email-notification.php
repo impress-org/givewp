@@ -759,6 +759,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *    4. donor_id
 		 *    5. for third party email tags you can pass necessary param along above parameters other value replace by empty string.
 		 *
+		 * @since TBD Flag the tag arguments as an email composition.
 		 * @since TBD Use wp_strip_all_tags() for plain text emails.
 		 * @since  2.0
 		 * @access public
@@ -779,6 +780,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			// Add email content type email tags.
 			$email_tag_args['email_content_type'] = $this->config['content_type'];
+			$email_tag_args['email_composition']  = true;
 
 			/**
 			 * Filter the email tag args
