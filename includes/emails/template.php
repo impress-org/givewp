@@ -45,7 +45,7 @@ function give_get_email_templates() {
  * @return string $message Fully formatted message
  */
 function give_email_template_tags( $message, $payment_data, $payment_id, $admin_notice = false ) {
-	return give_do_email_tags( $message, [ 'payment_id' => $payment_id, 'context' => 'email' ] );
+	return give_do_email_tags( $message, [ 'payment_id' => $payment_id, 'email_composition' => true ] );
 }
 
 /**

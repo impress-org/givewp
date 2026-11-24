@@ -720,7 +720,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$link = give_email_tag_donation_history_link(
 			array(
 				'user_id' => 1,
-				'context' => 'email',
+				'email_composition' => true,
 			)
 		);
 
@@ -737,7 +737,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$link = give_email_tag_donation_history_link(
 			array(
 				'user_id'            => 1,
-				'context'            => 'email',
+				'email_composition'  => true,
 				'email_content_type' => 'text/plain',
 			)
 		);

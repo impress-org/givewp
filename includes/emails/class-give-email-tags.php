@@ -1285,7 +1285,7 @@ function give_email_tag_donation_history_link( $tag_args ) {
 	// Backward compatibility.
 	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
-	if ( empty( $tag_args['context'] ) || 'email' !== $tag_args['context'] ) {
+	if ( empty( $tag_args['email_composition'] ) ) {
 		return '';
 	}
 

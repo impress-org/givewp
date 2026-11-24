@@ -129,12 +129,13 @@ class TestPasswordRoute extends RestApiTestCase
     /**
      * @since TBD
      */
-    public function testPasswordUpdateRefusedForUserWithEditCapabilities()
+    public function testPasswordUpdateRefusedWithoutLinkedUserSession()
     {
-        wp_update_user([
-            'ID' => $this->userId,
-            'role' => 'editor',
-        ]);
+        wp_set_current_user(0);
+
+        $token = wp_generate_password(32, false);
+        give()->email_access->set_verify_key($this->donor->id, $this->donor->email, $token);
+        $_GET['give_nl'] = $token;
 
         $request = new WP_REST_Request('POST', self::ROUTE);
         $request->set_param('newPassword', 'should-not-apply');
@@ -143,12 +144,12 @@ class TestPasswordRoute extends RestApiTestCase
         $data = $this->dispatchRequest($request)->get_data();
 
         $this->assertSame(403, $data['status']);
-        $this->assertSame('user_role_not_allowed', $data['response']);
+        $this->assertSame('account_login_required', $data['response']);
 
         $user = get_user_by('id', $this->userId);
         $this->assertFalse(
             wp_check_password('should-not-apply', $user->user_pass, $this->userId),
-            'User password should remain unchanged for an account with edit capabilities.'
+            'User password should remain unchanged without the linked user account session.'
         );
     }
 }

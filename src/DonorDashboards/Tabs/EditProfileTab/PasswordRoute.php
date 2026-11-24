@@ -38,7 +38,7 @@ class PasswordRoute extends RouteAbstract
     /**
      * Handles password update.
      *
-     * @since TBD Refuse updates for linked user accounts that can edit content.
+     * @since TBD Require the linked user account session to update the password.
      * @since 4.16.6 added password validation
      * @since 3.3.0
      *
@@ -78,13 +78,13 @@ class PasswordRoute extends RouteAbstract
             );
         }
 
-        if ( user_can( $donor->userId, 'edit_posts' ) ) {
+        if ( ! is_user_logged_in() || (int) get_current_user_id() !== (int) $donor->userId ) {
             return new WP_REST_Response(
                 [
                     'status' => 403,
-                    'response' => 'user_role_not_allowed',
+                    'response' => 'account_login_required',
                     'body_response' => [
-                        'message' => esc_html__( 'Unable to update password. Contact a site administrator.', 'give' ),
+                        'message' => esc_html__( 'Please log in with your user account to update the password.', 'give' ),
                     ],
                 ]
             );

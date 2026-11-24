@@ -780,7 +780,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			// Add email content type email tags.
 			$email_tag_args['email_content_type'] = $this->config['content_type'];
-			$email_tag_args['context']            = 'email';
+			$email_tag_args['email_composition']  = true;
 
 			/**
 			 * Filter the email tag args

@@ -367,7 +367,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             'Thanks {first_name}! {donation_history_link}',
             [
                 'payment_id' => $donation->id,
-                'context' => 'email',
+                'email_composition' => true,
             ]
         );
 
