@@ -70,6 +70,7 @@ class Template
     /**
      * Save settings
      *
+     * @since TBD skip the legacy setting sync when the form template is not registered
      * @sinxe 2.7.0
      *
      * @param $formId
@@ -82,6 +83,10 @@ class Template
         $templateId = Give()->form_meta->get_meta($formId, '_give_form_template', true);
         $template = Give()->templates->getTemplate($templateId);
         $isUpdated = Give()->form_meta->update_meta($formId, "_give_{$templateId}_form_template_settings", $settings);
+
+        if ( ! $template) {
+            return $isUpdated;
+        }
 
         /*
          * Below code save legacy setting which connected/mapped to form template setting.
