@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
  *
  * Process the payment details edit
  *
- * @since TBD Use wp_strip_all_tags() instead of strip_tags().
+ * @since 4.20.0 Use wp_strip_all_tags() instead of strip_tags().
  * @since 4.19.1 Escape output, use gmdate() instead of date(), and unslash and sanitize the comment.
  * @since 2.27.0 Change to save comment to donations meta table
  * @since  1.0

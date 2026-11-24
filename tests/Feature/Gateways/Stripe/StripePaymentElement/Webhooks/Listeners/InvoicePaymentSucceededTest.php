@@ -82,7 +82,7 @@ class InvoicePaymentSucceededTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @dataProvider invoiceWithoutSubscriptionProvider
      *
@@ -127,7 +127,7 @@ class InvoicePaymentSucceededTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function invoiceWithoutSubscriptionProvider(): array
     {
@@ -142,7 +142,7 @@ class InvoicePaymentSucceededTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testHookShouldNotFailForInvoiceWithoutSubscription()
     {
@@ -360,7 +360,7 @@ class InvoicePaymentSucceededTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @throws Exception
      */

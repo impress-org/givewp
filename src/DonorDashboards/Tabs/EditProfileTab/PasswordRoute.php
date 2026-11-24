@@ -38,7 +38,7 @@ class PasswordRoute extends RouteAbstract
     /**
      * Handles password update.
      *
-     * @since TBD Require the linked user account session to update the password.
+     * @since 4.20.0 Require the linked user account session to update the password.
      * @since 4.16.6 added password validation
      * @since 3.3.0
      *

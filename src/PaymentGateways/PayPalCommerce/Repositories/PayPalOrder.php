@@ -100,7 +100,7 @@ class PayPalOrder
      *
      * @see https://developer.paypal.com/docs/api/orders/v2
      *
-     * @since TBD Send payment_source.card only for card fields payments. When it accompanies payment_source.paypal,
+     * @since 4.20.0 Send payment_source.card only for card fields payments. When it accompanies payment_source.paypal,
      *            PayPal ignores the NO_SHIPPING preference and collects a shipping address on every order, which
      *            fails guest card payments with SHIPPING_ADDRESS_MISSING. Also move shipping_preference and
      *            user_action from the deprecated application_context to payment_source.paypal.experience_context.

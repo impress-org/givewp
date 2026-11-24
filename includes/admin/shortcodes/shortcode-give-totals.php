@@ -32,7 +32,7 @@ class Give_Shortcode_Totals extends Give_Shortcode_Generator {
 	/**
 	 * Define the shortcode attribute fields
 	 *
-	 * @since TBD Pass the taxonomy to get_terms() in the arguments array.
+	 * @since 4.20.0 Pass the taxonomy to get_terms() in the arguments array.
 	 * @since 2.1
 	 * @return array
 	 */

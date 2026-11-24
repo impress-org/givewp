@@ -17,14 +17,14 @@ use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
  * payment_source.card next to payment_source.paypal, PayPal ignores NO_SHIPPING and guest card payments
  * fail with SHIPPING_ADDRESS_MISSING, so the card source may only go out for card fields payments.
  *
- * @since TBD
+ * @since 4.20.0
  */
 class PayPalOrderTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testCreateOrderRequestsNoShippingThroughThePayPalSource(): void
     {
@@ -38,7 +38,7 @@ class PayPalOrderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testCreateOrderOmitsTheCardSourceForSmartButtons(): void
     {
@@ -48,7 +48,7 @@ class PayPalOrderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testCreateOrderSendsTheCardSourceForCardFieldsPayments(): void
     {
@@ -67,7 +67,7 @@ class PayPalOrderTest extends TestCase
     /**
      * Runs createOrder() against a PayPal HTTP client that records the request instead of sending it.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     private function createOrderAndCaptureBody(array $overrides = []): array
     {

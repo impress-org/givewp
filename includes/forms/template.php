@@ -759,7 +759,7 @@ function give_add_button_open_form( $form_id, $args ) {
 /**
  * Shows the User Info fields in the Personal Info box, more fields can be added via the hooks provided.
  *
- * @since TBD Encode square brackets in the re-filled comment value.
+ * @since 4.20.0 Encode square brackets in the re-filled comment value.
  * @since 3.1.0 Add the give_user_info_fields_user_info filter
  * @since 2.25.0 add radio group to conditionally enable/disable company name field
  * @since 4.19.1 Escape output, including translated strings.

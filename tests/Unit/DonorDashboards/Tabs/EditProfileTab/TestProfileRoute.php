@@ -9,7 +9,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
 
 /**
- * @since TBD
+ * @since 4.20.0
  *
  * @coversDefaultClass \Give\DonorDashboards\Tabs\EditProfileTab\ProfileRoute
  */
@@ -27,7 +27,7 @@ class TestProfileRoute extends RestApiTestCase
     private $donor;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function setUp(): void
     {
@@ -63,7 +63,7 @@ class TestProfileRoute extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function tearDown(): void
     {
@@ -77,7 +77,7 @@ class TestProfileRoute extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testPrimaryAddressDropsKeysOutsideTheKnownSet()
     {
@@ -102,7 +102,7 @@ class TestProfileRoute extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testAdditionalAddressDropsKeysOutsideTheKnownSet()
     {
@@ -126,7 +126,7 @@ class TestProfileRoute extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testPrimaryAddressKeepsAllKnownFields()
     {
@@ -154,7 +154,7 @@ class TestProfileRoute extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param array $overrides
      */

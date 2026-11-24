@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\Actions;
@@ -12,12 +12,12 @@ use Give\PaymentGateways\Stripe\Models\AccountDetail;
 /**
  * Lists the saved Stripe accounts, Connect or manual, that hold a key for the given mode.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class GetStripeAccountsForMode
 {
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string $mode "live" or "test"
      *

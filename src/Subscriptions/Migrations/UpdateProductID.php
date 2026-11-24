@@ -44,7 +44,7 @@ class UpdateProductID extends Migration
     }
 
     /**
-     * @since TBD Use a plain string in place of a heredoc for the SQL.
+     * @since 4.20.0 Use a plain string in place of a heredoc for the SQL.
      * @since 4.19.1 Escape exception message.
      * @inheritDoc
      *

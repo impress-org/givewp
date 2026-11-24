@@ -11,14 +11,14 @@ use RuntimeException;
 use WPDieException;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class DisconnectStripeAccountControllerTest extends TestCase
 {
     use UsesFakeStripeApi;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function setUp(): void
     {
@@ -35,7 +35,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function tearDown(): void
     {
@@ -46,7 +46,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItDeletesTheSiteEndpointInBothModesAfterRemovingTheAccount(): void
     {
@@ -77,7 +77,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRemovesTheAccountAndAnswersSuccessWhenStripeFails(): void
     {
@@ -95,7 +95,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRemovesTheAccountWhenStripeCannotBeReached(): void
     {
@@ -112,7 +112,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItWarnsWhenTheSavedAccountCannotBeRead(): void
     {
@@ -128,7 +128,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItWarnsWhenTheSavedRecordIsNull(): void
     {
@@ -143,7 +143,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItKeepsTheEndpointWhenAnotherSavedRecordOfTheSameStripeAccountUsesIt(): void
     {
@@ -162,7 +162,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItDoesNotWarnWhenNoAccountIsSavedUnderTheSlug(): void
     {
@@ -177,7 +177,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItNamesBothListenerUrlsWhenTheSiteUrlDiffers(): void
     {
@@ -197,7 +197,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItNamesOnlyTheFailedModeInTheWarning(): void
     {
@@ -214,7 +214,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItDoesNotCallStripeWhenTheNonceIsInvalid(): void
     {
@@ -233,7 +233,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function saveAccounts(AccountDetail ...$accounts): void
     {
@@ -247,7 +247,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function siteEndpoint(): array
     {
@@ -260,7 +260,7 @@ final class DisconnectStripeAccountControllerTest extends TestCase
     /**
      * Sends a request with a valid nonce and returns the decoded JSON response.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @return array{success: bool, data: mixed}
      */

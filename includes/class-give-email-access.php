@@ -129,7 +129,7 @@ class Give_Email_Access {
 	 *
 	 * Register defaults and filters
 	 *
-	 * @since TBD Set the throttle and expiration timeouts for logged-in users too.
+	 * @since 4.20.0 Set the throttle and expiration timeouts for logged-in users too.
 	 * @since  1.0
 	 * @access public
 	 *

@@ -9,14 +9,14 @@ use Give_Donor;
 /**
  * Covers what Give_Donor::create() stores.
  *
- * @since TBD
+ * @since 4.20.0
  */
 class LegacyDonorCreateTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testCreateStoresAnArrayOfPaymentIdsAsAList()
     {
@@ -31,7 +31,7 @@ class LegacyDonorCreateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testCreateAddsPaymentIdsToAnExistingDonorWithoutClearingThem()
     {
@@ -56,7 +56,7 @@ class LegacyDonorCreateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testCreateStoresTheSanitizedValues()
     {

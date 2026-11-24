@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\Actions;
@@ -15,7 +15,7 @@ use Stripe\WebhookEndpoint;
 /**
  * Deletes a webhook endpoint from a connected Stripe account.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class DeleteWebhookEndpoint
 {
@@ -25,7 +25,7 @@ final class DeleteWebhookEndpoint
      * Stripe answers 404 when the endpoint no longer exists. The exception's getHttpStatus() lets a caller
      * treat that as already deleted.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string $mode "live" or "test"
      *

@@ -5,14 +5,14 @@ namespace Give\Tests\Unit\Admin;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class RemoveOldExportFilesUpgradeTest extends TestCase
 {
     private const FILE_NAMES = ['give-payments.csv', 'give-donors.csv'];
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function setUp(): void
     {
@@ -24,7 +24,7 @@ final class RemoveOldExportFilesUpgradeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testRemovesBothOldExportFiles(): void
     {
@@ -40,7 +40,7 @@ final class RemoveOldExportFilesUpgradeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testMissingFilesRaiseNoWarning(): void
     {

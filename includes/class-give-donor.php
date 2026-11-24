@@ -390,7 +390,7 @@ class Give_Donor {
 	/**
 	 * Creates a donor.
 	 *
-	 * @since  TBD Store the sanitized values instead of the raw input, and join an array of payment IDs before sanitizing.
+	 * @since  4.20.0 Store the sanitized values instead of the raw input, and join an array of payment IDs before sanitizing.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -1132,7 +1132,7 @@ class Give_Donor {
 	/**
 	 * Sanitize the data for update/create
 	 *
-	 * @since  TBD Use wp_strip_all_tags() instead of strip_tags() for notes.
+	 * @since  4.20.0 Use wp_strip_all_tags() instead of strip_tags() for notes.
 	 * @since  1.0
 	 * @access private
 	 *
@@ -1341,7 +1341,7 @@ class Give_Donor {
 	/**
 	 * Add donor address
 	 *
-	 * @since TBD Only store the known address fields.
+	 * @since 4.20.0 Only store the known address fields.
 	 * @since 4.19.1 Prepare SQL with placeholders.
 	 * @since  2.0
 	 * @access public

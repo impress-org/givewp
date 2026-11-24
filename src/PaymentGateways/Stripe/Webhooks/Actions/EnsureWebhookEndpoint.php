@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\Actions;
@@ -17,7 +17,7 @@ use Give\PaymentGateways\Stripe\Webhooks\WebhookTarget;
 /**
  * Makes sure a Stripe account has an enabled endpoint that sends every required event to this site.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class EnsureWebhookEndpoint
 {
@@ -32,7 +32,7 @@ final class EnsureWebhookEndpoint
      * StripePaymentElementGateway\Webhooks\Listeners\InvoicePaymentSucceeded, and invoice.charge in Give
      * Recurring's InvoicePaymentSucceeded listener. Those fallbacks are required, not dead code.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public const API_VERSION = '2026-09-30.endive';
 
@@ -57,7 +57,7 @@ final class EnsureWebhookEndpoint
     private $target;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function __construct(
         ListWebhookEndpoints $listEndpoints,
@@ -72,7 +72,7 @@ final class EnsureWebhookEndpoint
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string $mode "live" or "test"
      *

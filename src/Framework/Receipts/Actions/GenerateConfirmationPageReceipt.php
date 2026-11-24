@@ -249,7 +249,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since TBD Skip subscription details when the donation's subscription no longer exists.
+     * @since 4.20.0 Skip subscription details when the donation's subscription no longer exists.
      * @since 3.0.0
      *
      * @return void

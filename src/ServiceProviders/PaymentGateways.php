@@ -89,7 +89,7 @@ class PaymentGateways implements ServiceProvider
     }
 
     /**
-     * @since TBD Register the Stripe webhook setup hooks.
+     * @since 4.20.0 Register the Stripe webhook setup hooks.
      *
      * @inheritDoc
      */
@@ -218,7 +218,7 @@ class PaymentGateways implements ServiceProvider
     /**
      * Register the hooks that set up Stripe webhook endpoints and check their health.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     private function registerStripeWebhookHooks()
     {

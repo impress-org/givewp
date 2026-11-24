@@ -146,7 +146,7 @@ abstract class WPBackgroundProcess extends WPAsyncRequest
      * Generates a unique key based on microtime. Queue items are
      * given a unique key so that they can be merged upon save.
      *
-     * @since TBD Use wp_rand() instead of rand().
+     * @since 4.20.0 Use wp_rand() instead of rand().
      *
      * @param int $length Length.
      *

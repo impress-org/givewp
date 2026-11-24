@@ -52,7 +52,7 @@ class SanitizeProfileData
     /**
      * Sanitize address object passed
      *
-     * @since TBD Drop any key outside the known set of address fields.
+     * @since 4.20.0 Drop any key outside the known set of address fields.
      * @since 2.10.0
      *
      * @param object $address
@@ -82,7 +82,7 @@ class SanitizeProfileData
     /**
      * The known donor address fields.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @return string[]
      */

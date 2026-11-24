@@ -268,7 +268,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since TBD Omit access-link tags, whose links are only generated for emails.
+     * @since 4.20.0 Omit access-link tags, whose links are only generated for emails.
      * @since 3.0.0
      */
     public function getDonationConfirmationPageTemplateTags(): array

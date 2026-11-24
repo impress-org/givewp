@@ -12,7 +12,7 @@ use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\UsesFakeStripeApi;
 use WPDieException;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class EnsureWebhookEndpointsControllerTest extends TestCase
 {
@@ -20,7 +20,7 @@ final class EnsureWebhookEndpointsControllerTest extends TestCase
     use UsesFakeStripeApi;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function setUp(): void
     {
@@ -42,7 +42,7 @@ final class EnsureWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function tearDown(): void
     {
@@ -52,7 +52,7 @@ final class EnsureWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRejectsARequestWithoutAValidNonce(): void
     {
@@ -71,7 +71,7 @@ final class EnsureWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRejectsAUserWhoCannotManageGiveSettings(): void
     {
@@ -86,7 +86,7 @@ final class EnsureWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItUsesTheTestKeyInTestMode(): void
     {
@@ -102,7 +102,7 @@ final class EnsureWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItUsesTheLiveKeyInLiveMode(): void
     {
@@ -120,7 +120,7 @@ final class EnsureWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItSetsUpEveryAccountAndAnswersWithOneNotice(): void
     {
@@ -148,7 +148,7 @@ final class EnsureWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItLogsAFailedAccountAndAsksForARetry(): void
     {
@@ -175,7 +175,7 @@ final class EnsureWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItAnswersWithTheModalFields(): void
     {
@@ -192,7 +192,7 @@ final class EnsureWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function saveAccounts(AccountDetail ...$accounts): void
     {
@@ -206,7 +206,7 @@ final class EnsureWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function siteEndpoint(): array
     {
@@ -219,7 +219,7 @@ final class EnsureWebhookEndpointsControllerTest extends TestCase
     /**
      * Sends a request with a valid nonce, unless the test set one, and returns the decoded JSON response.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @return array{success: bool, data: mixed}
      */
@@ -249,7 +249,7 @@ final class EnsureWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function runController(): void
     {

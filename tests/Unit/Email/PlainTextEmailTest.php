@@ -6,7 +6,7 @@ use Give\Tests\TestCase;
 use Give_Donation_Receipt_Email;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 class PlainTextEmailTest extends TestCase
 {
@@ -18,7 +18,7 @@ class PlainTextEmailTest extends TestCase
     private $mailerState = [];
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function setUp(): void
     {
@@ -32,7 +32,7 @@ class PlainTextEmailTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function tearDown(): void
     {
@@ -50,7 +50,7 @@ class PlainTextEmailTest extends TestCase
     /**
      * Style and script blocks are removed with their contents, and blank lines at the start or end go away.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public function testPlainTextEmailDropsStyleAndScriptTextAndOuterBlankLines()
     {
@@ -70,7 +70,7 @@ class PlainTextEmailTest extends TestCase
     /**
      * Runs the donation receipt preview as a plain text email and returns the message that would be sent.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     private function sendPreviewWithMessage(string $template): string
     {

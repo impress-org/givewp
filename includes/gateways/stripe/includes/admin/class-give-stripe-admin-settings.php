@@ -99,7 +99,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Register groups of a section.
 		 *
-		 * @since  TBD Add the Webhooks group.
+		 * @since  4.20.0 Add the Webhooks group.
 		 * @since  2.6.0
 		 * @access public
 		 *
@@ -141,7 +141,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 *
 		 * @param array $settings List of setting fields.
 		 *
-		 * @since  TBD Move the Stripe Webhooks field to the Webhooks group.
+		 * @since  4.20.0 Move the Stripe Webhooks field to the Webhooks group.
 		 * @since  2.5.0
 		 * @access public
 		 *
@@ -660,7 +660,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Stripe Webhook field.
 		 *
-		 * @since TBD Present manual setup as the fallback to automatic setup, and link to the docs on docs.nexcess.com.
+		 * @since 4.20.0 Present manual setup as the fallback to automatic setup, and link to the docs on docs.nexcess.com.
 		 * @since 4.19.1 Escape output, including translated strings.
 		 * @since 2.5.0
 		 *

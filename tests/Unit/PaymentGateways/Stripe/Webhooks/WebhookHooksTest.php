@@ -13,14 +13,14 @@ use Give_Stripe_Admin_Settings;
 /**
  * The hooks that the PaymentGateways service provider and the Stripe admin settings register once GiveWP boots.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class WebhookHooksTest extends TestCase
 {
     use UsesFakeStripeApi;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function setUp(): void
     {
@@ -31,7 +31,7 @@ final class WebhookHooksTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function tearDown(): void
     {
@@ -43,7 +43,7 @@ final class WebhookHooksTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRegistersTheAjaxActionForAdminsOnly(): void
     {
@@ -52,7 +52,7 @@ final class WebhookHooksTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRunsTheHealthCheckOnTheDailyEvent(): void
     {
@@ -74,7 +74,7 @@ final class WebhookHooksTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItAddsTheWebhookFieldsThroughTheGatewaySettingsFilter(): void
     {
@@ -93,7 +93,7 @@ final class WebhookHooksTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRendersTheSetupFieldThroughItsFieldTypeAction(): void
     {
@@ -105,7 +105,7 @@ final class WebhookHooksTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testTheStripeSettingsHaveAWebhooksGroupThatHoldsTheStripeWebhooksField(): void
     {
@@ -120,7 +120,7 @@ final class WebhookHooksTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testTheAccountManagerModalCarriesANonceForTheController(): void
     {
@@ -136,7 +136,7 @@ final class WebhookHooksTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function openStripeSettings(): void
     {
@@ -153,7 +153,7 @@ final class WebhookHooksTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function stripeAdminSettings(): Give_Stripe_Admin_Settings
     {

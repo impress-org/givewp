@@ -7,14 +7,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class DonorNameSyncOnUserUpdateTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function setUp(): void
     {
@@ -28,7 +28,7 @@ final class DonorNameSyncOnUserUpdateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testDonorNameDropsTagsFromTheUserName(): void
     {
@@ -38,7 +38,7 @@ final class DonorNameSyncOnUserUpdateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testDonorNameHasNoLeadingSpaceWhenTheFirstNameIsOnlyMarkup(): void
     {
@@ -50,7 +50,7 @@ final class DonorNameSyncOnUserUpdateTest extends TestCase
     /**
      * Saves the names as user meta, then runs the profile update sync as an admin.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     private function syncName(string $firstName, string $lastName): int
     {

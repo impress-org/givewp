@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks;
@@ -15,14 +15,14 @@ use Throwable;
  *
  * Context carries account slug, type, mode and Stripe identifiers, never a key or a signing secret.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class WebhookLogger
 {
     public const SOURCE = 'Stripe Webhooks';
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param array<string, scalar|string[]|null> $context
      */
@@ -32,7 +32,7 @@ final class WebhookLogger
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param array<string, scalar|string[]|null> $context
      */
@@ -42,7 +42,7 @@ final class WebhookLogger
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param array<string, scalar|string[]|null> $context
      */
@@ -52,7 +52,7 @@ final class WebhookLogger
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param array<string, scalar|string[]|null> $context
      */
@@ -64,7 +64,7 @@ final class WebhookLogger
     /**
      * What support needs to find a failed request in the Stripe Dashboard.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @return array<string, scalar|string[]|null>
      */
@@ -88,7 +88,7 @@ final class WebhookLogger
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param array<string, scalar|string[]|null> $context
      *

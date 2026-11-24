@@ -752,7 +752,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test that the access link tag resolves to an empty string outside of email composition.
 	 *
-	 * @since TBD
+	 * @since 4.20.0
 	 * @cover give_email_tag_donation_history_link
 	 */
 	function test_give_email_tag_donation_history_link_empty_outside_email() {
@@ -1003,7 +1003,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * The preview {payment_id} tag must be a sample number from 1 to 100.
 	 *
-	 * @since TBD
+	 * @since 4.20.0
 	 */
 	public function test_give_email_preview_template_tags_payment_id_is_in_range() {
 		$message = give_email_preview_template_tags( '{payment_id}' );

@@ -13,7 +13,7 @@ use Stripe\Exception\InvalidRequestException;
 use Stripe\Exception\RateLimitException;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class WebhookSetupStatusTest extends TestCase
 {
@@ -22,7 +22,7 @@ final class WebhookSetupStatusTest extends TestCase
     /**
      * RateLimitException extends InvalidRequestException, so the rate limit check has to come first.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItClassifiesA429AsRateLimitedRatherThanAnInvalidRequest(): void
     {
@@ -36,7 +36,7 @@ final class WebhookSetupStatusTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItClassifiesANetworkFailureAsAConnectionProblem(): void
     {
@@ -49,7 +49,7 @@ final class WebhookSetupStatusTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItClassifiesA400AsAnInvalidRequest(): void
     {
@@ -59,7 +59,7 @@ final class WebhookSetupStatusTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItClassifiesA500AsUnknown(): void
     {
@@ -69,7 +69,7 @@ final class WebhookSetupStatusTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItClassifiesAnExceptionFromOutsideStripeAsUnknown(): void
     {
@@ -77,7 +77,7 @@ final class WebhookSetupStatusTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @dataProvider successProvider
      */
@@ -87,7 +87,7 @@ final class WebhookSetupStatusTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function successProvider(): array
     {
@@ -102,7 +102,7 @@ final class WebhookSetupStatusTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function listFailure(): WebhookEndpointException
     {

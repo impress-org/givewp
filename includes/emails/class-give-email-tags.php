@@ -964,7 +964,7 @@ function give_email_tag_payment_id( $tag_args ) {
  *
  * Output the donation form name, and the donation level (if applicable).
  *
- * @since TBD Use wp_strip_all_tags() instead of strip_tags().
+ * @since 4.20.0 Use wp_strip_all_tags() instead of strip_tags().
  *
  * @param array $tag_args
  *
@@ -1270,7 +1270,7 @@ function give_email_tag_receipt_link_url( $tag_args ) {
  * is only generated while an email is being composed; in any other render
  * context the tag resolves to an empty string.
  *
- * @since TBD Only generate the access link while composing an email.
+ * @since 4.20.0 Only generate the access link while composing an email.
  * @since 2.0
  *
  * @param array $tag_args Email Tag Arguments.

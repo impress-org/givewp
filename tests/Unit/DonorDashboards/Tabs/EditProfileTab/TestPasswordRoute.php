@@ -127,7 +127,7 @@ class TestPasswordRoute extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testPasswordUpdateRefusedWithoutLinkedUserSession()
     {

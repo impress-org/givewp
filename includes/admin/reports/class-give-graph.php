@@ -75,7 +75,7 @@ class Give_Graph {
 	/**
 	 * Get things started
 	 *
-	 * @since TBD Use wp_rand() for the graph id.
+	 * @since 4.20.0 Use wp_rand() for the graph id.
 	 * @since 1.0
 	 *
 	 * @param array $_data

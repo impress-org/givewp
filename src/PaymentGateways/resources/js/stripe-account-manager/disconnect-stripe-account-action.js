@@ -3,7 +3,7 @@
  *
  * This will be used to disconnect any Stripe account from the list
  *
- * @since TBD Show a warning before the reload when the webhook endpoint could not be deleted. Reload when the request fails.
+ * @since 4.20.0 Show a warning before the reload when the webhook endpoint could not be deleted. Reload when the request fails.
  * @since 2.13.0
  */
 import { __ } from '@wordpress/i18n'

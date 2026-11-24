@@ -8,14 +8,14 @@ use Give\Tests\TestCase;
 use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\UsesFakeStripeApi;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class CreateWebhookEndpointTest extends TestCase
 {
     use UsesFakeStripeApi;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItCreatesTheEndpointOnTheConnectedAccountAndLeavesOutTheSecret(): void
     {
@@ -58,7 +58,7 @@ final class CreateWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItOmitsTheOptionalFieldsThatWereNotGiven(): void
     {
@@ -76,7 +76,7 @@ final class CreateWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItWrapsTheErrorStripeReturns(): void
     {

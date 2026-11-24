@@ -1,6 +1,6 @@
 <?php
 /**
- * @since TBD Rename $formId to $give_form_id: WordPress includes this template in the global scope.
+ * @since 4.20.0 Rename $formId to $give_form_id: WordPress includes this template in the global scope.
  * @since 4.19.1 Escape output.
  */
 

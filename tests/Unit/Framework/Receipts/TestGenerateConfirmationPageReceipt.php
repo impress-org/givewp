@@ -253,7 +253,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testShouldOmitSubscriptionDetailsWhenSubscriptionWasDeleted()
     {
@@ -329,7 +329,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
     /**
      * Access-link email tags do not generate a link on the confirmation page.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public function testAccessLinkTagDoesNotGenerateLinkOnConfirmationPage()
     {
@@ -356,7 +356,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
     /**
      * Access-link email tags still generate a link while composing an email.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public function testAccessLinkTagGeneratesLinkDuringEmailComposition()
     {
@@ -467,7 +467,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testFieldValueAndLabelCanBeFilteredByFieldName(): void
     {

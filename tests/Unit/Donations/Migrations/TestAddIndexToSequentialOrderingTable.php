@@ -7,12 +7,12 @@ use Give\Framework\Database\DB;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 class TestAddIndexToSequentialOrderingTable extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testAddsThePaymentIdIndex()
     {
@@ -29,7 +29,7 @@ class TestAddIndexToSequentialOrderingTable extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testIsIdempotent()
     {

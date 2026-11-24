@@ -100,7 +100,7 @@ class PaymentMethod {
 	/**
 	 * Create order event handler for smart buttons.
 	 *
-	 * @since TBD Build the form data through getCreateOrderFormData().
+	 * @since 4.20.0 Build the form data through getCreateOrderFormData().
 	 * @since 2.9.0
 	 *
 	 * @param {object} data PayPal button data.
@@ -128,7 +128,7 @@ class PaymentMethod {
 	/**
 	 * Form data posted to create the PayPal order. Payment methods append their own flags here.
 	 *
-	 * @since TBD
+	 * @since 4.20.0
 	 *
 	 * @return {FormData} FormData object of form entries.
 	 */

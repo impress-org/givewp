@@ -696,7 +696,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Send preview email.
 		 *
-		 * @since TBD Use wp_strip_all_tags() for plain text emails.
+		 * @since 4.20.0 Use wp_strip_all_tags() for plain text emails.
 		 * @since  2.0
 		 * @since 2.15.0 Preview email recipient is now the current user.
 		 * @access public
@@ -759,8 +759,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *    4. donor_id
 		 *    5. for third party email tags you can pass necessary param along above parameters other value replace by empty string.
 		 *
-		 * @since TBD Flag the tag arguments as an email composition.
-		 * @since TBD Use wp_strip_all_tags() for plain text emails.
+		 * @since 4.20.0 Flag the tag arguments as an email composition.
+		 * @since 4.20.0 Use wp_strip_all_tags() for plain text emails.
 		 * @since  2.0
 		 * @access public
 		 *
@@ -850,7 +850,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Decode preview email template tags.
 		 *
-		 * @since TBD Use wp_rand() instead of rand().
+		 * @since 4.20.0 Use wp_rand() instead of rand().
 		 * @since 4.19.1 Use gmdate() instead of date().
 		 * @since 2.14.0 display payment sequential number as id
 		 * @since 2.0

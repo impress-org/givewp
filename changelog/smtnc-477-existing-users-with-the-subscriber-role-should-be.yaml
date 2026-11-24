@@ -1,4 +1,0 @@
-significance: patch
-type: fix
-entry: Resolved an issue where a logged-in user with the Subscriber role was not connected to their existing donor profile. The donor is linked to the user when the user opens the Donor Dashboard from an email access link sent to the account email address.
-timestamp: 2026-11-17T15:55:51.966Z

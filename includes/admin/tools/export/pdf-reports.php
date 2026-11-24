@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param string $data Data.
  *
- * @since  TBD Use wp_strip_all_tags() for the category and tag text.
+ * @since  4.20.0 Use wp_strip_all_tags() for the category and tag text.
  * @since  4.19.1 Escape output, use gmdate() instead of date(), and unslash and sanitize the nonce.
  * @since  1.0
  *

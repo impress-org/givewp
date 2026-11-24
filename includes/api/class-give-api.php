@@ -1821,7 +1821,7 @@ class Give_API {
 	 * Output Query in either JSON/XML.
 	 * The query data is outputted as JSON by default.
 	 *
-	 * @since TBD Set a Content-Type and X-Content-Type-Options header on the XML response.
+	 * @since 4.20.0 Set a Content-Type and X-Content-Type-Options header on the XML response.
 	 * @since 4.19.1 Escape output.
 	 * @since 1.1
 	 * @global WP_Query $wp_query

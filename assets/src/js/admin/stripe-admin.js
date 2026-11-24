@@ -141,7 +141,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	/**
 	 * After an account is added, set up its webhook endpoint and show the result instead of the manual steps.
 	 *
-	 * @since TBD
+	 * @since 4.20.0
 	 */
 	if ( null !== stripeConnectedElement ) {
 		const stripeStatus = stripeConnectedElement.getAttribute( 'data-status' );
@@ -413,7 +413,7 @@ let giveStripeWebhookSetupRunning = false;
 /**
  * Asks the server to set up the webhook endpoint of each Stripe account, and shows the result in a modal.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {string}      nonce   Nonce for the webhook setup request.
  * @param {string|null} account Slug of the only account to set up; every account when empty.
@@ -494,7 +494,7 @@ function giveStripeSetUpWebhooks( nonce, account = null ) {
 /**
  * Enables or disables the buttons that start the webhook setup.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {boolean} disabled Whether the buttons are disabled.
  */
@@ -509,7 +509,7 @@ function giveStripeSetWebhookButtonsDisabled( disabled ) {
 /**
  * The manual setup steps, for when the setup request itself fails.
  *
- * @since TBD Say why the request failed, so the admin can report the cause.
+ * @since 4.20.0 Say why the request failed, so the admin can report the cause.
  *
  * @param {number} failedRequestStatus HTTP status of the failed request; 0 when it never answered.
  *
