@@ -43,9 +43,7 @@ jobs:
             pull-requests: write
         # Pinned to a commit, like the other plugin-toolbox calls. Switch to @v1 once plugin-toolbox
         # publishes a release. To take a toolbox change, bump the commit here.
-        # TODO: this commit is on the unmerged plugin-toolbox branch plugin-check-manual-refs. Bump it to
-        # the commit of the merged change before this pull request is merged.
-        uses: stellarwp/plugin-toolbox/.github/workflows/plugin-check.yml@cd742d1074e648676bc33e3b311ddcd8a48d3042
+        uses: stellarwp/plugin-toolbox/.github/workflows/plugin-check.yml@40a7cfe0c468ce06fb97b4387be9b7daa159178c
         with:
             plugin-slug: give
             # The pup release the release build uses (composer.json), so the check builds the same way.
