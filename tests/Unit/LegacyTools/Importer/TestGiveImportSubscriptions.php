@@ -2,7 +2,11 @@
 
 namespace Give\Tests\Unit\LegacyTools\Importer {
 
+use Give\DonationForms\Models\DonationForm;
+use Give\Donors\Models\Donor;
+use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
+use Give_Import_Subscriptions;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 class TestGiveImportSubscriptions extends TestCase
@@ -153,6 +157,60 @@ class TestGiveImportSubscriptions extends TestCase
         $this->assertArrayHasKey('create_subscription', $report);
         $this->assertGreaterThanOrEqual(1, (int) $report['create_subscription']);
         $this->assertTrue(empty($report['failed_subscription']));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDryRunDoesNotCreateDonorsUsersOrSubscriptions(): void
+    {
+        /** @var DonationForm $form */
+        $form = DonationForm::factory()->create();
+        $email = 'dry-run-donor@example.com';
+        $importer = Give_Import_Subscriptions::get_instance();
+        $importer->reset_report();
+
+        $rawKey = ['form_id', 'donor_id', 'first_name', 'last_name', 'email', 'period', 'frequency', 'amount', 'status'];
+        $row = [(string) $form->id, '', 'Dry', 'Run', $email, 'month', '1', '25.00', 'active'];
+
+        $donorCount = Donor::query()->count();
+        $subscriptionCount = Subscription::query()->count();
+
+        $result = $importer->import_row($rawKey, $row, $rawKey, [
+            'dry_run' => 1,
+            'create_user' => 1,
+            'mode' => 0,
+            'row_key' => 1,
+        ]);
+
+        $this->assertTrue($result);
+        $this->assertNull(Donor::whereEmail($email));
+        $this->assertFalse(get_user_by('email', $email));
+        $this->assertSame($donorCount, Donor::query()->count());
+        $this->assertSame($subscriptionCount, Subscription::query()->count());
+        $this->assertSame(1, (int) $importer->get_report()['create_subscription']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDryRunWithExistingDonorEmailLeavesDonorUnchanged(): void
+    {
+        /** @var DonationForm $form */
+        $form = DonationForm::factory()->create();
+        $donor = Donor::factory()->create();
+        $importer = Give_Import_Subscriptions::get_instance();
+        $importer->reset_report();
+
+        $rawKey = ['form_id', 'donor_id', 'email', 'period', 'frequency', 'amount', 'status'];
+        $row = [(string) $form->id, '', $donor->email, 'month', '1', '25.00', 'active'];
+
+        $donorCount = Donor::query()->count();
+
+        $result = $importer->import_row($rawKey, $row, $rawKey, ['dry_run' => 1, 'mode' => 0, 'row_key' => 1]);
+
+        $this->assertTrue($result);
+        $this->assertSame($donorCount, Donor::query()->count());
     }
 }
 
