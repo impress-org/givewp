@@ -100,6 +100,7 @@ class PaymentMethod {
 	/**
 	 * Create order event handler for smart buttons.
 	 *
+	 * @since TBD Build the form data through getCreateOrderFormData().
 	 * @since 2.9.0
 	 *
 	 * @param {object} data PayPal button data.
@@ -113,7 +114,7 @@ class PaymentMethod {
 		// eslint-disable-next-line
 		const response = await fetch(`${this.ajaxurl}?action=give_paypal_commerce_create_order`, {
 			method: 'POST',
-			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
+			body: this.getCreateOrderFormData(),
 		} );
 		const responseJson = await response.json();
 
@@ -122,6 +123,17 @@ class PaymentMethod {
 		}
 
 		return responseJson.data.id;
+	}
+
+	/**
+	 * Form data posted to create the PayPal order. Payment methods append their own flags here.
+	 *
+	 * @since TBD
+	 *
+	 * @return {FormData} FormData object of form entries.
+	 */
+	getCreateOrderFormData() {
+		return DonationForm.getFormDataWithoutGiveActionField( this.form );
 	}
 }
 

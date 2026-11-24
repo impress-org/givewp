@@ -174,6 +174,8 @@ non-trivial changes to that subsystem.
   trust boundary, webhook verification
 - [pii.md](docs/architecture/pii.md) — what donor data may cross to the client, and through which
   boundary
+- [stripe-webhook-setup.md](docs/architecture/stripe-webhook-setup.md) — how GiveWP creates and
+  checks Stripe webhook endpoints, the setup modal, the health email
 
 These docs are traced from the code. Where a passage is instead a judgement about what *should*
 happen — team convention, or a guess at intent — it is marked **[Judgement]**. Those lines carry no

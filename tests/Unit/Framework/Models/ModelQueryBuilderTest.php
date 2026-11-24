@@ -4,6 +4,9 @@ namespace Give\Tests\Unit\Framework\Models;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignStatus;
+use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMode;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -109,5 +112,46 @@ final class ModelQueryBuilderTest extends TestCase
                 ->having('total', '>', 2)
                 ->count()
         );
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testUsingACloneLeavesTheOriginalQueryUnchanged()
+    {
+        Donation::factory()->count(3)->create(['status' => DonationStatus::COMPLETE()]);
+
+        $query = Donation::query()->where('post_status', DonationStatus::COMPLETE);
+        $sql = $query->getSQL();
+
+        /*
+         * clone copies the builder and shares the where, select and join objects it holds, so
+         * whatever a copy does with them must not reach the query it was made from.
+         */
+        $counted = clone $query;
+        $counted->where('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST)->count();
+
+        $paged = clone $query;
+        $paged->limit(1)->offset(1)->orderBy('post_date', 'DESC')->getAll();
+
+        $this->assertSame($sql, $query->getSQL());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testPagingTheOriginalQueryLeavesItsCloneCountingEveryRow()
+    {
+        $donations = Donation::factory()->count(3)->create(['status' => DonationStatus::COMPLETE()]);
+
+        $query = Donation::query()->where('post_status', DonationStatus::COMPLETE);
+        $totalQuery = clone $query;
+        $totalSql = $totalQuery->getSQL();
+
+        $page = $query->limit(2)->offset(0)->orderBy('post_date', 'DESC')->getAll();
+
+        $this->assertSame($totalSql, $totalQuery->getSQL());
+        $this->assertCount(2, $page);
+        $this->assertSame(count($donations), $totalQuery->count());
     }
 }

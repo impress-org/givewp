@@ -390,6 +390,7 @@ class Give_Donor {
 	/**
 	 * Creates a donor.
 	 *
+	 * @since  TBD Store the sanitized values instead of the raw input, and join an array of payment IDs before sanitizing.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -408,14 +409,16 @@ class Give_Donor {
 		];
 
 		$args = wp_parse_args( $data, $defaults );
+
+		// Join the payment IDs first: sanitize_columns() turns an array into an empty string.
+		if ( ! empty( $args['payment_ids'] ) && is_array( $args['payment_ids'] ) ) {
+			$args['payment_ids'] = implode( ',', array_unique( array_values( $args['payment_ids'] ) ) );
+		}
+
 		$args = $this->sanitize_columns( $args );
 
 		if ( empty( $args['email'] ) || ! is_email( $args['email'] ) ) {
 			return false;
-		}
-
-		if ( ! empty( $args['payment_ids'] ) && is_array( $args['payment_ids'] ) ) {
-			$args['payment_ids'] = implode( ',', array_unique( array_values( $args['payment_ids'] ) ) );
 		}
 
 		/**
@@ -430,7 +433,7 @@ class Give_Donor {
 		$created = false;
 
 		// The DB class 'add' implies an update if the donor being asked to be created already exists
-		if ( $this->db->add( $data ) ) {
+		if ( $this->db->add( $args ) ) {
 
 			// We've successfully added/updated the donor, reset the class vars with the new data
 			$donor = $this->db->get_donor_by( 'email', $args['email'] );
@@ -1129,6 +1132,7 @@ class Give_Donor {
 	/**
 	 * Sanitize the data for update/create
 	 *
+	 * @since  TBD Use wp_strip_all_tags() instead of strip_tags() for notes.
 	 * @since  1.0
 	 * @access private
 	 *
@@ -1154,7 +1158,7 @@ class Give_Donor {
 					if ( 'email' == $key ) {
 						$data[ $key ] = sanitize_email( $data[ $key ] );
 					} elseif ( 'notes' == $key ) {
-						$data[ $key ] = strip_tags( $data[ $key ] );
+						$data[ $key ] = wp_strip_all_tags( $data[ $key ] );
 					} else {
 						$data[ $key ] = sanitize_text_field( $data[ $key ] );
 					}

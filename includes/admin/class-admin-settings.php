@@ -74,6 +74,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 *
 			 * @param array $settings Array of settings class object.
 			 */
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the prefix is the settings page slug (give-settings, give-tools or give-reports), so the real name is like give-settings_get_settings_pages; add-ons use these names.
 			self::$settings = (array)apply_filters( self::$setting_filter_prefix . '_get_settings_pages', [] );
 
 			return self::$settings;
@@ -119,6 +120,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 *
 			 * @since 1.8
 			 */
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the prefix is the settings page slug (give-settings, give-tools or give-reports), so the real name is like give-settings_save_general; add-ons use these names.
 			do_action( self::$setting_filter_prefix . '_save_' . $current_tab );
 
 			self::add_message( 'give-setting-updated', __( 'Your settings have been saved.', 'give' ) );
@@ -132,6 +134,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 *
 			 * @since 1.8
 			 */
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the prefix is the settings page slug (give-settings, give-tools or give-reports), so the real name is like give-settings_saved; add-ons use these names.
 			do_action( self::$setting_filter_prefix . '_saved' );
 		}
 
@@ -173,7 +176,9 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			$notice_html = '';
 			$classes     = 'give-notice give-notice-hidden settings-error notice is-dismissible';
 
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the prefix is the settings page slug (give-settings, give-tools or give-reports), so the real name is like give-settings_error_notices; add-ons use these names.
 			self::$errors   = apply_filters( self::$setting_filter_prefix . '_error_notices', self::$errors );
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the prefix is the settings page slug (give-settings, give-tools or give-reports), so the real name is like give-settings_update_notices; add-ons use these names.
 			self::$messages = apply_filters( self::$setting_filter_prefix . '_update_notices', self::$messages );
 
 			if ( 0 < count( self::$errors ) ) {
@@ -227,6 +232,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 *
 			 * @since 1.8
 			 */
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the prefix is the settings page slug (give-settings, give-tools or give-reports), so the real name is like give-settings_start; add-ons use these names.
 			do_action( self::$setting_filter_prefix . '_start' );
 
 			$current_tab     = give_get_current_setting_tab();
@@ -263,6 +269,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 *
 			 * @since 1.8
 			 */
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the prefix is the settings page slug (give-settings, give-tools or give-reports), so the real name is like give-settings_tabs_array; add-ons use these names.
 			$tabs = apply_filters( self::$setting_filter_prefix . '_tabs_array', [] );
 
 			include 'views/html-admin-settings.php';
@@ -1125,6 +1132,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Helper function to get the formated title.
 		 * Plugins can call this when implementing their own custom settings types.
 		 *
+		 * @since TBD Use wp_strip_all_tags() instead of strip_tags().
 		 * @since  1.8
 		 *
 		 * @param  array $value The form field value array
@@ -1135,7 +1143,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			$title = esc_html( $value['title'] );
 
 			// If html tag detected then allow them to print.
-			if ( strip_tags( $title ) ) {
+			if ( wp_strip_all_tags( $title ) ) {
 				$title = $value['title'];
 			}
 

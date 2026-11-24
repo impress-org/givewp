@@ -12,6 +12,7 @@ class Utils
     /**
      * Extract query param from URL
      *
+     * @since TBD Use wp_parse_url() instead of parse_url().
      * @since 2.7.0
      *
      * @param string $url
@@ -22,7 +23,7 @@ class Utils
      */
     public static function getQueryParamFromURL($url, $queryParamName, $default = '')
     {
-        $queryArgs = wp_parse_args(parse_url($url, PHP_URL_QUERY));
+        $queryArgs = wp_parse_args(wp_parse_url($url, PHP_URL_QUERY));
 
         return isset($queryArgs[$queryParamName]) ? give_clean($queryArgs[$queryParamName]) : $default;
     }

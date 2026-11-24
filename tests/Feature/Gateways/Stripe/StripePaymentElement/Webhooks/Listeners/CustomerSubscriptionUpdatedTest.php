@@ -4,22 +4,27 @@ namespace Give\Tests\Feature\Gateways\Stripe\StripePaymentElement\Webhooks\Liste
 
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\CustomerSubscriptionUpdated;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\Feature\Gateways\Stripe\TestTraits\HasMockStripeAccounts;
+use Give\Tests\Feature\Gateways\Stripe\TestTraits\HasStripePaymentElementSubscriptions;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Stripe\Event;
+use Stripe\Subscription as StripeSubscription;
 
 /**
  * @since 4.16.7
  */
 class CustomerSubscriptionUpdatedTest extends TestCase
 {
-    use RefreshDatabase, HasMockStripeAccounts;
+    use RefreshDatabase;
+    use HasMockStripeAccounts;
+    use HasStripePaymentElementSubscriptions;
 
     /**
      * @since 4.16.7
@@ -211,5 +216,34 @@ class CustomerSubscriptionUpdatedTest extends TestCase
         $subscription = Subscription::find($subscription->id);
 
         $this->assertTrue($subscription->status->isFailing());
+    }
+
+    /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testShouldCancelSubscriptionAndFailInitialDonationWhenStripeExpiresIt()
+    {
+        $subscription = $this->createStripePaymentElementSubscription(
+            SubscriptionStatus::PENDING(),
+            DonationStatus::PROCESSING()
+        );
+
+        $event = Event::constructFrom([
+            'data' => [
+                'object' => StripeSubscription::constructFrom([
+                    'id' => $subscription->gatewaySubscriptionId,
+                    'status' => 'incomplete_expired',
+                ]),
+            ],
+        ]);
+
+        (new CustomerSubscriptionUpdated())->processEvent($event);
+
+        $subscription = Subscription::find($subscription->id);
+
+        $this->assertTrue($subscription->status->isCancelled());
+        $this->assertTrue($subscription->initialDonation()->status->isFailed());
     }
 }

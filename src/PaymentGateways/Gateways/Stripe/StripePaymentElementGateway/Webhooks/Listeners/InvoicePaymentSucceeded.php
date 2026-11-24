@@ -6,9 +6,11 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateSubscriptionStatus;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\UpdateStripeInvoiceMetaData;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Decorators\SubscriptionModelDecorator;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Stripe\Event;
 use Stripe\Invoice;
 
@@ -43,6 +45,7 @@ class InvoicePaymentSucceeded
     }
 
     /**
+     * @since TBD Ignore invoices that are not linked to a subscription.
      * 4.14.1 Added $formId parameter and stripe_account option for Stripe Connect support
      * @since 4.8.0 Add support for Stripe API version 2025-03-31.basil and later versions
      * @since 4.3.0 Update Stripe Invoice metadata
@@ -56,6 +59,11 @@ class InvoicePaymentSucceeded
         $invoice = $event->data->object;
 
         $gatewaySubscriptionId = $this->getGatewaySubscriptionId($invoice);
+
+        // A Stripe account also sends invoices that no subscription created, such as one-off invoices.
+        if (!$gatewaySubscriptionId) {
+            return false;
+        }
 
         $subscription = give()->subscriptions->queryByGatewaySubscriptionId($gatewaySubscriptionId)->get();
 
@@ -107,6 +115,7 @@ class InvoicePaymentSucceeded
     }
 
     /**
+     * @since TBD Set a pending subscription to active once its first donation is complete.
      * @since 3.0.0
      *
      * @throws Exception
@@ -123,6 +132,16 @@ class InvoicePaymentSucceeded
                 'donationId' => $initialDonation->id,
                 'content' => __('Payment succeeded in Stripe.', 'give'),
             ]);
+        }
+
+        $subscription = $initialDonation->subscription;
+
+        if ($subscription && $subscription->status->isPending()) {
+            (new UpdateSubscriptionStatus())(
+                $subscription,
+                SubscriptionStatus::ACTIVE(),
+                __('The subscription was activated because its first payment succeeded in Stripe.', 'give')
+            );
         }
     }
 

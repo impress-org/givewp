@@ -1,0 +1,7 @@
+significance: patch
+type: fix
+entry: Resolved an issue where PayPal Donations asked donors for a shipping
+  address, which failed debit and credit card donations with
+  SHIPPING_ADDRESS_MISSING and stored addresses on donations that never
+  requested them.
+timestamp: 2026-11-17T18:00:00.000Z

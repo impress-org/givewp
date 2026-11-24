@@ -325,6 +325,32 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testCreateOrderFlagsCardFieldsPayments(): void
+    {
+        $form = $this->createV3FormWithCustomAmountMinimum(25);
+        $_POST = $this->v3Request($form, ['give-paypal-commerce-card-fields' => '1']);
+
+        $orderData = $this->createOrderAndCaptureData();
+
+        $this->assertTrue($orderData['cardFields']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testCreateOrderDoesNotFlagSmartButtonsPayments(): void
+    {
+        $form = $this->createV3FormWithCustomAmountMinimum(25);
+        $_POST = $this->v3Request($form);
+
+        $orderData = $this->createOrderAndCaptureData();
+
+        $this->assertFalse($orderData['cardFields']);
+    }
+
+    /**
      * @since 4.16.7.1
      */
     public function testCreateOrderRejectsRequestWithInvalidNonce(): void

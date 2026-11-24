@@ -6,11 +6,13 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 4.19.2.1
+ * Version: 4.19.2.2
  * Requires at least: 6.9
  * Requires PHP: 7.4
  * Text Domain: give
  * Domain Path: /languages
+ * License: GPLv3 or later
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  *
  * Give is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -441,7 +443,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '4.19.2.1');
+            define('GIVE_VERSION', '4.19.2.2');
         }
 
         // Plugin Root File.

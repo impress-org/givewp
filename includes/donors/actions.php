@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param  int  $donation_id
  * @param  array  $donation_data
  */
-function _give_insert_donor_donation_comment( $donation_id, $donation_data ) {
+function _give_insert_donor_donation_comment( $donation_id, $donation_data ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- give_insert_payment callback registered below by this name; add-ons remove it by name to turn off donor comments.
 	if ( ! empty( $_POST['give_comment'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- public donation form request; nonce verified by give_verify_donation_form_nonce() in give_process_donation() before the donation is created.
         $donation = give()->donations->getById($donation_id);
         $donation->comment = trim(sanitize_textarea_field(wp_unslash($_POST['give_comment']))); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- public donation form request; nonce verified by give_verify_donation_form_nonce() in give_process_donation() before the donation is created.

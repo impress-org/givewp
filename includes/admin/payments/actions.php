@@ -21,6 +21,7 @@ if (!defined('ABSPATH')) {
  *
  * Process the payment details edit
  *
+ * @since TBD Use wp_strip_all_tags() instead of strip_tags().
  * @since 4.19.1 Escape output, use gmdate() instead of date(), and unslash and sanitize the comment.
  * @since 2.27.0 Change to save comment to donations meta table
  * @since  1.0
@@ -99,7 +100,7 @@ function give_update_payment_details( $data ) {
 		$email      = ! empty( $data['give-new-donor-email'] ) ? sanitize_text_field( $data['give-new-donor-email'] ) : '';
 		$first_name = ! empty( $data['give-new-donor-first-name'] ) ? sanitize_text_field( $data['give-new-donor-first-name'] ) : '';
 		$last_name  = ! empty( $data['give-new-donor-last-name'] ) ? sanitize_text_field( $data['give-new-donor-last-name'] ) : '';
-		$names      = strip_tags( wp_unslash( trim( "{$first_name} {$last_name}" ) ) );
+		$names      = wp_strip_all_tags( wp_unslash( trim( "{$first_name} {$last_name}" ) ) );
 
 		if ( empty( $email ) || empty( $first_name ) ) {
 			wp_die( esc_html__( 'New Donor requires first name and email address.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );

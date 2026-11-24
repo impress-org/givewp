@@ -50,7 +50,7 @@ require_once 'GoogleChartMarker.php';
  * You can use this method for working with features that are currently
  * not implemented in the library (or buggy).
  */
-class GoogleChart extends GoogleChartApi
+class GoogleChart extends GoogleChartApi // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound -- vendored Google Chart library; class names stay as upstream and are loaded by name.
 {
 	const AUTOSCALE_OFF = false;
 	const AUTOSCALE_VALUES = true;

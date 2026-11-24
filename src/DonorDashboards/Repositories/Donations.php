@@ -3,6 +3,7 @@
 namespace Give\DonorDashboards\Repositories;
 
 use Give\Framework\Database\DB;
+use Give\Log\Log;
 use Give\Receipt\DonationReceipt;
 use Give\Receipt\LineItem;
 use Give\ValueObjects\Money;
@@ -229,6 +230,7 @@ class Donations
     /**
      * Get array containing dynamic receipt information
      *
+     * @since TBD Return an empty array when the receipt cannot be built, instead of throwing.
      * @since 2.25.0 replace wp_strip_all_tags with wp_kses_post
      * @since 2.10.0
      *
@@ -245,7 +247,24 @@ class Donations
          *
          * @since 2.7.0
          */
-        do_action('give_new_receipt', $receipt);
+        try {
+            /*
+             * Receipt line items come from add-ons, so a failure for one donation must not stop the
+             * donor's other donations from loading.
+             */
+            do_action('give_new_receipt', $receipt);
+        } catch (\Throwable $e) {
+            Log::error(
+                esc_html__('An error occurred while building a donation receipt', 'give'),
+                [
+                    'source' => 'Donor Dashboard',
+                    'Donation ID' => $payment->ID,
+                    'Error' => $e->getMessage(),
+                ]
+            );
+
+            return [];
+        }
 
         $receiptArr = [];
 

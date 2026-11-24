@@ -208,7 +208,7 @@ function give_log_user_in( $user_id, $user_login, $user_pass ) {
 	 * @param string $user_login Username.
 	 * @param WP_User $$user      WP_User object of the logged-in user.
 	 */
-	do_action( 'wp_login', $user_login, get_userdata( $user_id ) );
+	do_action( 'wp_login', $user_login, get_userdata( $user_id ) ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WordPress core action, fired on purpose so security and login plugins see a Give login.
 
 	/**
 	 * Fires after give user has successfully logged in.

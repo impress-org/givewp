@@ -20,6 +20,7 @@ use Give\Donations\Listeners\DonationCreated\UpdateDonorMetaWithLastDonatedCurre
 use Give\Donations\Counters\SyncDonationCounters;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Migrations\AddIndexesToDonationMetaTable;
+use Give\Donations\Migrations\AddIndexToSequentialOrderingTable;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
 use Give\Donations\Migrations\MoveDonationCommentToDonationMetaTable;
 use Give\Donations\Migrations\RecalculateExchangeRate;
@@ -77,6 +78,7 @@ class ServiceProvider implements ServiceProviderInterface
             RecalculateExchangeRate::class,
             SanitizeSerializedObjectPayloads::class,
             AddIndexesToDonationMetaTable::class,
+            AddIndexToSequentialOrderingTable::class,
         ]);
     }
 

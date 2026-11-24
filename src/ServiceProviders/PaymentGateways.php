@@ -27,6 +27,7 @@ use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
 use Give\PaymentGateways\PaypalSettingPage;
 use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
 use Give\PaymentGateways\Stripe\Admin\CreditCardSettingField;
+use Give\PaymentGateways\Stripe\Admin\WebhookSettingsFields;
 use Give\PaymentGateways\Stripe\ApplicationFee;
 use Give\PaymentGateways\Stripe\Controllers\DisconnectStripeAccountController;
 use Give\PaymentGateways\Stripe\Controllers\GetStripeAccountDetailsController;
@@ -35,6 +36,9 @@ use Give\PaymentGateways\Stripe\Controllers\SetDefaultStripeAccountController;
 use Give\PaymentGateways\Stripe\DonationFormElements;
 use Give\PaymentGateways\Stripe\DonationFormSettingPage;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
+use Give\PaymentGateways\Stripe\Webhooks\Controllers\EnsureWebhookEndpointsController;
+use Give\PaymentGateways\Stripe\Webhooks\Controllers\ManageWebhookEndpointsController;
+use Give\PaymentGateways\Stripe\Webhooks\WebhookHealthMonitor;
 
 /**
  * Class PaymentGateways
@@ -85,6 +89,8 @@ class PaymentGateways implements ServiceProvider
     }
 
     /**
+     * @since TBD Register the Stripe webhook setup hooks.
+     *
      * @inheritDoc
      */
     public function boot()
@@ -100,6 +106,7 @@ class PaymentGateways implements ServiceProvider
 
         $this->registerMigrations();
         $this->registerStripeCustomFields();
+        $this->registerStripeWebhookHooks();
         $this->registerPayPalCommerceHooks();
     }
 
@@ -206,6 +213,31 @@ class PaymentGateways implements ServiceProvider
     {
         Hooks::addAction('give_admin_field_stripe_account_manager', AccountManagerSettingField::class, 'handle');
         Hooks::addAction('give_admin_field_stripe_credit_card_format', CreditCardSettingField::class, 'handle', 10, 2);
+    }
+
+    /**
+     * Register the hooks that set up Stripe webhook endpoints and check their health.
+     *
+     * @since TBD
+     */
+    private function registerStripeWebhookHooks()
+    {
+        Hooks::addAction(
+            'wp_ajax_' . EnsureWebhookEndpointsController::ACTION,
+            EnsureWebhookEndpointsController::class
+        );
+        Hooks::addAction(
+            'wp_ajax_' . ManageWebhookEndpointsController::ACTION,
+            ManageWebhookEndpointsController::class
+        );
+        /* 11 runs after Give_Stripe_Admin_Settings::register_settings() creates the webhooks group at 10. */
+        Hooks::addFilter('give_get_settings_gateways', WebhookSettingsFields::class, 'addFields', 11);
+        Hooks::addAction(
+            'give_admin_field_' . WebhookSettingsFields::SETUP_FIELD_TYPE,
+            WebhookSettingsFields::class,
+            'renderSetupField'
+        );
+        Hooks::addAction('give_daily_scheduled_events', WebhookHealthMonitor::class);
     }
 
     /**

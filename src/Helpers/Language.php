@@ -20,6 +20,7 @@ class Language
         $giveRelativePath = self::getRelativePath();
 
         $locale = is_admin() && !wp_doing_ajax() && function_exists('get_user_locale') ? get_user_locale() : get_locale();
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WordPress core filter, fired on purpose as load_plugin_textdomain() does, so locale plugins can change Give's locale.
         $locale = apply_filters('plugin_locale', $locale, 'give'); // Traditional WordPress plugin locale filter.
 
         // Setup paths to current locale file.
@@ -33,6 +34,7 @@ class Language
         } elseif (file_exists($moFileLocal)) {
             load_textdomain('give', $moFileLocal); // Look in local /wp-content/plugins/give/languages/ folder.
         } else {
+            // phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound -- fallback when neither .mo file above exists; Give also ships outside WordPress.org and supports a custom folder through give_languages_directory.
             load_plugin_textdomain('give', false, $giveRelativePath); // Load the default language files.
         }
     }

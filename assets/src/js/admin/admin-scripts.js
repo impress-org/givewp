@@ -982,6 +982,7 @@ const gravatar = require('gravatar');
                 if (parseInt(form_id) != 0) {
                     const data = {
                         action: 'give_check_for_form_price_variations',
+                        _wpnonce: Give.fn.getGlobalVar('give_check_for_form_price_variations_nonce'),
                         form_id: form_id,
                         all_prices: true,
                     };
@@ -2830,6 +2831,7 @@ const gravatar = require('gravatar');
                             ajaxurl,
                             {
                                 action: 'give_load_wp_editor',
+                                _wpnonce: Give.fn.getGlobalVar('give_load_wp_editor_nonce'),
                                 wp_editor: $item.data('wp-editor'),
                                 wp_editor_id: textarea_id,
                                 textarea_name: $('textarea', $item).attr('name'),

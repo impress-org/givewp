@@ -471,6 +471,7 @@ add_action( 'wp_ajax_give_pages_search', 'give_ajax_pages_search' );
 /**
  * Retrieve Categories via AJAX for chosen dropdown search field.
  *
+ * @since TBD Pass the taxonomy to get_terms() in the arguments array.
  * @since 4.19.1 Check that the search term is set, then unslash and sanitize it.
  * @since  2.1
  *
@@ -497,7 +498,7 @@ function give_ajax_categories_search() {
 		]
 	);
 
-	$categories = get_terms( 'give_forms_category', $args );
+	$categories = get_terms( array_merge( $args, [ 'taxonomy' => 'give_forms_category' ] ) );
 
 	foreach ( $categories as $category ) {
 		$results[] = [
@@ -525,6 +526,7 @@ add_action( 'wp_ajax_give_categories_search', 'give_ajax_categories_search' );
 /**
  * Retrieve Tags via AJAX for chosen dropdown search field.
  *
+ * @since TBD Pass the taxonomy to get_terms() in the arguments array.
  * @since 4.19.1 Check that the search term is set, then unslash and sanitize it.
  * @since  2.1
  *
@@ -551,7 +553,7 @@ function give_ajax_tags_search() {
 		]
 	);
 
-	$categories = get_terms( 'give_forms_tag', $args );
+	$categories = get_terms( array_merge( $args, [ 'taxonomy' => 'give_forms_tag' ] ) );
 
 	foreach ( $categories as $category ) {
 		$results[] = [
@@ -579,18 +581,19 @@ add_action( 'wp_ajax_give_tags_search', 'give_ajax_tags_search' );
 /**
  * Check for Price Variations (Multi-level donation forms)
  *
+ * @since  4.19.2.2 Verify the nonce.
  * @since  4.19.1 Escape output. Check that the form ID is set, then unslash and sanitize it.
  * @since  1.5
  *
  * @return void
  */
 function give_check_for_form_price_variations() {
+	check_ajax_referer( 'give_check_for_form_price_variations' );
 
 	if ( ! current_user_can( 'edit_give_forms', get_current_user_id() ) ) {
 		die( '-1' );
 	}
 
-	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only price level dropdown; it needs edit_give_forms, returns a <select> and saves nothing.
 	$form_id = isset( $_POST['form_id'] ) ? absint( wp_unslash( $_POST['form_id'] ) ) : 0;
 	$form    = get_post( $form_id );
 
@@ -604,7 +607,7 @@ function give_check_for_form_price_variations() {
 		if ( $variable_prices ) {
 			$ajax_response = '<select class="give_price_options_select give-select give-select" name="give_price_option">';
 
-			if ( isset( $_POST['all_prices'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only price level dropdown; it only adds an "All Levels" option and saves nothing.
+			if ( isset( $_POST['all_prices'] ) ) {
 				$ajax_response .= '<option value="all">' . esc_html__( 'All Levels', 'give' ) . '</option>';
 			}
 

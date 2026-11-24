@@ -17,8 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $give_stripe_map_deprecated_filters = give_stripe_deprecated_filters();
 
-foreach ( $give_stripe_map_deprecated_filters as $new => $old ) {
-	add_filter( $new, 'give_stripe_deprecated_filter_mapping', 10, 4 );
+foreach ( $give_stripe_map_deprecated_filters as $give_stripe_new_filter => $give_stripe_old_filter ) {
+	add_filter( $give_stripe_new_filter, 'give_stripe_deprecated_filter_mapping', 10, 4 );
 }
 
 /**
@@ -52,6 +52,7 @@ function give_stripe_deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '',
 
 	if ( isset( $give_stripe_map_deprecated_filters[ $filter ] ) ) {
 		if ( has_filter( $give_stripe_map_deprecated_filters[ $filter ] ) ) {
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- fires the OLD filter name get_give_stripe_connect_options from give_stripe_deprecated_filters() so add-ons still hooked on it keep working; it cannot change.
 			$data = apply_filters( $give_stripe_map_deprecated_filters[ $filter ], $data, $arg_1, $arg_2, $arg_3 );
 
 			if ( ! defined( 'DOING_AJAX' ) ) {

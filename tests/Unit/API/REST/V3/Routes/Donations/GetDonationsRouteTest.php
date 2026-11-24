@@ -257,6 +257,86 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testGetDonationsTotalHeadersShouldCountOnlyDonationsFromSpecifiedDonor()
+    {
+        Donation::query()->delete();
+
+        $donation1 = $this->createDonation1();
+        $this->createDonation2();
+        $this->createDonation3();
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'donorId' => $donation1->donorId,
+                'per_page' => 5,
+            ]
+        );
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+        $headers = $response->get_headers();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(1, count($data));
+        $this->assertEquals($donation1->id, $data[0]['id']);
+        $this->assertEquals(1, $headers['X-WP-Total']);
+        $this->assertEquals(1, $headers['X-WP-TotalPages']);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testGetDonationsTotalHeadersShouldCountOnlyDonationsFromSpecifiedModeAndStatus()
+    {
+        Donation::query()->delete();
+
+        $this->createDonation1();
+
+        /** @var Donation $completedTestDonation */
+        $completedTestDonation = Donation::factory()->create([
+            'status' => DonationStatus::COMPLETE(),
+            'anonymous' => false,
+            'mode' => DonationMode::TEST(),
+        ]);
+
+        Donation::factory()->create([
+            'status' => DonationStatus::PENDING(),
+            'anonymous' => false,
+            'mode' => DonationMode::TEST(),
+        ]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'mode' => 'test',
+                'status' => ['publish'],
+                'per_page' => 5,
+            ]
+        );
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+        $headers = $response->get_headers();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(1, count($data));
+        $this->assertEquals($completedTestDonation->id, $data[0]['id']);
+        $this->assertEquals(1, $headers['X-WP-Total']);
+        $this->assertEquals(1, $headers['X-WP-TotalPages']);
+    }
+
+    /**
      * @since 4.0.0
      *
      * @throws Exception

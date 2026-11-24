@@ -81,6 +81,20 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
+	 * Flag the order as a card fields payment so the server adds the 3D Secure card source.
+	 *
+	 * @since TBD
+	 *
+	 * @return {FormData} FormData object of form entries.
+	 */
+	getCreateOrderFormData() {
+		const formData = super.getCreateOrderFormData();
+		formData.append( 'give-paypal-commerce-card-fields', '1' );
+
+		return formData;
+	}
+
+	/**
 	 * Set container for histed card fields.
 	 *
 	 * @since 2.9.0

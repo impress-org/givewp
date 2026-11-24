@@ -32,6 +32,7 @@ class Give_Shortcode_Totals extends Give_Shortcode_Generator {
 	/**
 	 * Define the shortcode attribute fields
 	 *
+	 * @since TBD Pass the taxonomy to get_terms() in the arguments array.
 	 * @since 2.1
 	 * @return array
 	 */
@@ -39,7 +40,7 @@ class Give_Shortcode_Totals extends Give_Shortcode_Generator {
 
 		$category_options = array();
 		$category_lists   = array();
-		$categories       = get_terms( 'give_forms_category', apply_filters( 'give_forms_category_dropdown', array() ) );
+		$categories       = get_terms( array_merge( wp_parse_args( apply_filters( 'give_forms_category_dropdown', array() ) ), [ 'taxonomy' => 'give_forms_category' ] ) );
 		if ( give_is_setting_enabled( give_get_option( 'categories' ) ) && ! is_wp_error( $categories ) ) {
 			foreach ( $categories as $category ) {
 				$category_options[ absint( $category->term_id ) ] = esc_html( $category->name );
@@ -54,9 +55,9 @@ class Give_Shortcode_Totals extends Give_Shortcode_Generator {
 
 		$tag_options = array();
 		$tag_lists   = array();
-		$tags        = get_terms( 'give_forms_tag', apply_filters( 'give_forms_tag_dropdown', array() ) );
+		$tags        = get_terms( array_merge( wp_parse_args( apply_filters( 'give_forms_tag_dropdown', array() ) ), [ 'taxonomy' => 'give_forms_tag' ] ) );
 		if ( give_is_setting_enabled( give_get_option( 'tags' ) ) && ! is_wp_error( $tags ) ) {
-			$tags = get_terms( 'give_forms_tag', apply_filters( 'give_forms_tag_dropdown', array() ) );
+			$tags = get_terms( array_merge( wp_parse_args( apply_filters( 'give_forms_tag_dropdown', array() ) ), [ 'taxonomy' => 'give_forms_tag' ] ) );
 			foreach ( $tags as $tag ) {
 				$tag_options[ absint( $tag->term_id ) ] = esc_html( $tag->name );
 			}
