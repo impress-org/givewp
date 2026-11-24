@@ -14,9 +14,9 @@ class CreateAttachmentFromUpload
      *
      * @param array{file: string, url: string} $upload Successful result of wp_handle_upload().
      *
-     * @return int|\WP_Error The attachment ID, or a WP_Error if the attachment could not be inserted.
+     * @return int The attachment ID, or 0 if the attachment could not be inserted.
      */
-    public function __invoke(array $upload)
+    public function __invoke(array $upload): int
     {
         $path = $upload['file'];
 
