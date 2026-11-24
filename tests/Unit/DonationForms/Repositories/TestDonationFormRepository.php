@@ -200,6 +200,31 @@ final class TestDonationFormRepository extends TestCase
     }
 
     /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testInsertShouldClearCachedPostQueries(): void
+    {
+        $getFormIds = static function (): array {
+            return get_posts([
+                'post_type' => 'give_forms',
+                'post_status' => 'any',
+                'fields' => 'ids',
+                'numberposts' => -1,
+            ]);
+        };
+
+        /* Cache the query result the way a list of forms does. */
+        $getFormIds();
+
+        $donationForm = $this->modelFactory->make();
+        $this->repository->insert($donationForm);
+
+        $this->assertContains($donationForm->id, $getFormIds());
+    }
+
+    /**
      *
      * @since 3.0.0
      */
