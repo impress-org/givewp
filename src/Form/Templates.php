@@ -87,15 +87,20 @@ class Templates
     /**
      * Get Registered form template
      *
+     * @since TBD return null when the template ID is empty or not registered
      * @since 2.7.0
      *
      * @param string $templateId Template Id. Default to active form template.
      *
-     * @return Template
+     * @return Template|null
      */
     public function getTemplate($templateId = null)
     {
         $templateId = $templateId ?: FormTemplateUtils::getActiveID();
+
+        if ( ! is_string($templateId) || '' === $templateId || ! isset($this->templates[$templateId])) {
+            return null;
+        }
 
         if (isset($this->templateObjs[$templateId])) {
             return $this->templateObjs[$templateId];

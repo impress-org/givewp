@@ -343,6 +343,11 @@ class IframeView
     {
         $activeFormTemplate = FormTemplateUtils::getActiveID($this->formId);
         $this->template = Give()->templates->getTemplate($activeFormTemplate);
+
+        if ( ! $this->template) {
+            return;
+        }
+
         $this->minHeight = $this->template->getFormStartingHeight($this->formId);
 
         $this->url = $this->url ?: $this->getIframeURL();
@@ -358,6 +363,7 @@ class IframeView
      * Note: if you want to overwrite this function then do not forget to add action hook in footer and header.
      * We use these hooks to manipulated donation form related actions.
      *
+     * @since TBD return an empty string when the form template is not registered
      * @since 4.19.1 Escape output.
      * @since 2.7.0
      */
@@ -366,6 +372,12 @@ class IframeView
         ob_start();
 
         $this->loadDefaultConfig();
+
+        if ( ! $this->template) {
+            ob_end_clean();
+
+            return '';
+        }
 
         if ($this->modal) {
             // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getButtonHTML() escapes internally.

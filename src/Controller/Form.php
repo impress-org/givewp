@@ -62,6 +62,7 @@ class Form
     /**
      * Load receipt view.
      *
+     * @since TBD return early when the form template is not registered
      * @since 3.16.0 add action give_donation_confirmation_page_enqueue_scripts
      * @since 2.7.0
      */
@@ -76,8 +77,12 @@ class Form
 
         // Handle success page.
         if (FormUtils::isViewingFormReceipt() && ! FormUtils::isLegacyForm()) {
-            /* @var Template $formTemplate */
+            /* @var Template|null $formTemplate */
             $formTemplate = Give()->templates->getTemplate();
+
+            if ( ! $formTemplate) {
+                return;
+            }
 
             if (FormUtils::inIframe() || ($formTemplate->openSuccessPageInIframe && FormUtils::isProcessingForm())) {
                 // Set header.
@@ -124,6 +129,7 @@ class Form
     /**
      * Load donation form view.
      *
+     * @since TBD return early when the form template is not registered
      * @since 2.7.0
      * @since 2.16.2 Co-locate $formTemplate with related conditional and usage.
      * @global WP_Post $post
@@ -137,8 +143,12 @@ class Form
 
         // Handle donation form.
         if (FormUtils::isViewingForm()) {
-            /* @var Template $formTemplate */
+            /* @var Template|null $formTemplate */
             $formTemplate = Give()->templates->getTemplate();
+
+            if ( ! $formTemplate) {
+                return;
+            }
 
             // Set header.
             nocache_headers();
@@ -152,15 +162,18 @@ class Form
     /**
      * Show failed transaction error on donation form.
      *
+     * @since TBD return early when the form template is not registered
      * @since 2.7.0
      */
     public function setFailedTransactionError()
     {
-        Give_Notices::print_frontend_notice(
-            Give()->templates->getTemplate(FormTemplateUtils::getActiveID())->getFailedDonationMessage(),
-            true,
-            'error'
-        );
+        $template = Give()->templates->getTemplate(FormTemplateUtils::getActiveID());
+
+        if ( ! $template) {
+            return;
+        }
+
+        Give_Notices::print_frontend_notice($template->getFailedDonationMessage(), true, 'error');
     }
 
     /**
@@ -230,6 +243,7 @@ class Form
     /**
      * Return current page aka embed form parent url as success page.
      *
+     * @since TBD return the URL unchanged when the request has no form template
      * @since 2.7.0
      *
      * @param string $url
@@ -238,8 +252,12 @@ class Form
      */
     public static function editSuccessPageURI($url)
     {
-        /* @var Template $template */
+        /* @var Template|null $template */
         $template = Give()->templates->getTemplate();
+
+        if ( ! $template) {
+            return $url;
+        }
 
         return $template->openSuccessPageInIframe ?
             FormUtils::createSuccessPageURL(Utils::switchRequestedURL($url, FormUtils::getIframeParentURL())) :
@@ -249,6 +267,7 @@ class Form
     /**
      * Return current page aka embed form parent url as failed page.
      *
+     * @since TBD return the URL unchanged when the request has no form template
      * @since 2.7.0
      *
      * @param string $url
@@ -257,8 +276,12 @@ class Form
      */
     public static function editFailedPageURI($url)
     {
-        /* @var Template $template */
+        /* @var Template|null $template */
         $template = Give()->templates->getTemplate(FormTemplateUtils::getActiveID());
+
+        if ( ! $template) {
+            return $url;
+        }
 
         return $template->openFailedPageInIframe ?
             FormUtils::createFailedPageURL(Utils::switchRequestedURL($url, FormUtils::getIframeParentURL())) :
@@ -298,6 +321,7 @@ class Form
      *
      * In case of offsite checkout, this function will load a intermediate template to redirect embed parent page.
      *
+     * @since TBD return early when the request has no registered form template, such as a favicon redirect with an iframe Referer
      * @since 2.7.0
      *
      * @param string $location
@@ -306,8 +330,12 @@ class Form
      */
     public function handleOffSiteCheckoutRedirect($location)
     {
-        /* @var Template $template */
+        /* @var Template|null $template */
         $template = Give()->templates->getTemplate();
+
+        if ( ! $template) {
+            return $location;
+        }
 
         // Exit if redirect is on same website.
         if (0 === strpos($location, home_url())) {

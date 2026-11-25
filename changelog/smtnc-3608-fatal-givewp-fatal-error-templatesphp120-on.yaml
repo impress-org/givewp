@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Resolved an issue where a redirect requested from a page with an
+  embedded donation form, such as the site icon request, caused a fatal error.
+timestamp: 2026-11-23T15:33:27.102Z
