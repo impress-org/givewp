@@ -25,6 +25,7 @@ class AssignDuplicatedFormToCampaign
     }
 
     /**
+     * @since TBD Add the copy as a regular campaign form instead of making it the campaign's default form.
      * @since 4.19.0 Leave the copy of a form with no campaign standalone instead of logging an error.
      * @since 4.0.0
      */
@@ -37,7 +38,7 @@ class AssignDuplicatedFormToCampaign
         }
 
         try {
-            $this->campaignRepository->addCampaignForm($campaign, $duplicatedFormID, true);
+            $this->campaignRepository->addCampaignForm($campaign, $duplicatedFormID);
         } catch (\Exception $e) {
             Log::error('Failed to assign duplicated form to campaign.', [
                 'campaign_id' => $campaign->id,
