@@ -19,7 +19,7 @@ require_once 'GoogleChartApi.php';
 /**
  * A dynamic icon.
  */
-abstract class GoogleChartIcon extends GoogleChartApi
+abstract class GoogleChartIcon extends GoogleChartApi // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound -- vendored Google Chart library; class names stay as upstream and are loaded by name.
 {
 	/**
 	 * @var GoogleChartData Will hold the data serie.

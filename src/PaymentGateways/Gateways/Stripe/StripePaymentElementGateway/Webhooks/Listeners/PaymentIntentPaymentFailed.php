@@ -40,8 +40,11 @@ class PaymentIntentPaymentFailed
     }
 
     /**
+     * @since 4.20.0 Fail the first donation of a subscription as well as a single donation.
      * @since 3.0.4 Return a bool value.
      * @since 3.0.0
+     *
+     * @throws Exception
      */
     public function processEvent(Event $event): bool
     {
@@ -52,6 +55,12 @@ class PaymentIntentPaymentFailed
 
         if (!$donation || !$this->shouldProcessDonation($donation)) {
             return false;
+        }
+
+        if ($donation->type->isSubscription()) {
+            $this->handleInitialSubscriptionPaymentFailed($donation);
+
+            return true;
         }
 
         if ($donation->type->isSingle() && !$donation->status->isFailed()) {

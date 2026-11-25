@@ -1,0 +1,21 @@
+{
+  "errors": {
+    "WordPress.Security.EscapeOutput.OutputNotEscaped": 1,
+    "badly_named_files": 16,
+    "inlined_react_jsx_runtime": 23,
+    "plugin_updater_detected": 1
+  },
+  "warnings": {
+    "PluginCheck.CodeAnalysis.PHPErrorReporting.IniDirectiveDisplay_errors": 3,
+    "WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound": 1,
+    "WordPress.Security.NonceVerification.Missing": 8,
+    "WordPress.Security.ValidatedSanitizedInput.InputNotSanitized": 1,
+    "mismatched_plugin_name": 1,
+    "missing_composer_json_file": 1,
+    "plugin_header_nonexistent_domain_path": 1,
+    "react_removed_api": 3,
+    "readme_parser_warnings_trimmed_section_changelog": 1,
+    "trademarked_term": 2,
+    "update_modification_detected": 2
+  }
+}

@@ -69,6 +69,8 @@ jobs:
                 with:
                     php-version: 7.4
                     coverage: none
+                env:
+                    use_builds_cache: true
 
             -   name: Install Composer dependencies
                 uses: ramsey/composer-install@v4

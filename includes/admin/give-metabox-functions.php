@@ -249,7 +249,7 @@ function give_render_field( $field ) {
 function give_text_input( $field ) {
 	global $thepostid, $post;
 
-	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $thepostid is a shared global (WordPress metabox convention): give_default_gateway() and give_metabox_form_data_repeater_fields() read it after a field function sets it, and add-ons may set it before they render fields.
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
@@ -323,7 +323,7 @@ function give_text_input( $field ) {
 function give_chosen_input( $field ) {
 	global $thepostid, $post;
 
-	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $thepostid is a shared global (WordPress metabox convention): give_default_gateway() and give_metabox_form_data_repeater_fields() read it after a field function sets it, and add-ons may set it before they render fields.
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['before_field']  = '';
@@ -400,7 +400,7 @@ function give_chosen_input( $field ) {
 function give_label_field( $field ) {
 	global $thepostid, $post;
 
-	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $thepostid is a shared global (WordPress metabox convention): give_default_gateway() and give_metabox_form_data_repeater_fields() read it after a field function sets it, and add-ons may set it before they render fields.
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['before_field']  = '';
@@ -446,7 +446,7 @@ function give_donation_limit( $field ) {
 	global $thepostid, $post;
 
 	// Get Give donation form ID.
-	$thepostid = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid = empty( $thepostid ) ? $post->ID : $thepostid; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $thepostid is a shared global (WordPress metabox convention): give_default_gateway() and give_metabox_form_data_repeater_fields() read it after a field function sets it, and add-ons may set it before they render fields.
 
 	// Default arguments.
 	$default_options = [
@@ -575,7 +575,7 @@ function give_donation_limit( $field ) {
 function give_hidden_input( $field ) {
 	global $thepostid, $post;
 
-	$thepostid      = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid      = empty( $thepostid ) ? $post->ID : $thepostid; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $thepostid is a shared global (WordPress metabox convention): give_default_gateway() and give_metabox_form_data_repeater_fields() read it after a field function sets it, and add-ons may set it before they render fields.
 	$field['value'] = give_get_field_value( $field, $thepostid );
 
 	// Custom attribute handling
@@ -624,7 +624,7 @@ function give_hidden_input( $field ) {
 function give_textarea_input( $field ) {
 	global $thepostid, $post;
 
-	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $thepostid is a shared global (WordPress metabox convention): give_default_gateway() and give_metabox_form_data_repeater_fields() read it after a field function sets it, and add-ons may set it before they render fields.
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
@@ -670,7 +670,7 @@ function give_textarea_input( $field ) {
 function give_wysiwyg( $field ) {
 	global $thepostid, $post;
 
-	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $thepostid is a shared global (WordPress metabox convention): give_default_gateway() and give_metabox_form_data_repeater_fields() read it after a field function sets it, and add-ons may set it before they render fields.
 	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
@@ -737,7 +737,7 @@ function give_wysiwyg( $field ) {
 function give_checkbox( $field ) {
 	global $thepostid, $post;
 
-	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $thepostid is a shared global (WordPress metabox convention): give_default_gateway() and give_metabox_form_data_repeater_fields() read it after a field function sets it, and add-ons may set it before they render fields.
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
@@ -787,7 +787,7 @@ function give_checkbox( $field ) {
 function give_multicheck( $field ) {
 	global $thepostid, $post;
 
-	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $thepostid is a shared global (WordPress metabox convention): give_default_gateway() and give_metabox_form_data_repeater_fields() read it after a field function sets it, and add-ons may set it before they render fields.
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
@@ -849,7 +849,7 @@ function give_multicheck( $field ) {
 function give_select( $field ) {
 	global $thepostid, $post;
 
-	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $thepostid is a shared global (WordPress metabox convention): give_default_gateway() and give_metabox_form_data_repeater_fields() read it after a field function sets it, and add-ons may set it before they render fields.
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
@@ -899,7 +899,7 @@ function give_select( $field ) {
 function give_radio( $field ) {
 	global $thepostid, $post;
 
-	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $thepostid is a shared global (WordPress metabox convention): give_default_gateway() and give_metabox_form_data_repeater_fields() read it after a field function sets it, and add-ons may set it before they render fields.
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
@@ -951,7 +951,7 @@ function give_radio( $field ) {
 function give_multiradio( $field ) {
 	global $thepostid, $post;
 
-	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $thepostid is a shared global (WordPress metabox convention): give_default_gateway() and give_metabox_form_data_repeater_fields() read it after a field function sets it, and add-ons may set it before they render fields.
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
@@ -1013,7 +1013,7 @@ function give_multiradio( $field ) {
 function give_colorpicker( $field ) {
 	global $thepostid, $post;
 
-	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $thepostid is a shared global (WordPress metabox convention): give_default_gateway() and give_metabox_form_data_repeater_fields() read it after a field function sets it, and add-ons may set it before they render fields.
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
@@ -1058,7 +1058,7 @@ function give_file( $field ) {
 function give_media( $field ) {
 	global $thepostid, $post;
 
-	$thepostid    = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid    = empty( $thepostid ) ? $post->ID : $thepostid; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $thepostid is a shared global (WordPress metabox convention): give_default_gateway() and give_metabox_form_data_repeater_fields() read it after a field function sets it, and add-ons may set it before they render fields.
 	$button_label = sprintf( /* translators: %s: Type of file, File or Image */ __( 'Add or Upload %s', 'give' ), ( 'file' === $field['type'] ? __( 'File', 'give' ) : __( 'Image', 'give' ) ) );
 
 	$field['style']               = isset( $field['style'] ) ? $field['style'] : '';
@@ -1270,6 +1270,7 @@ function give_get_field_value( $field, $postid ) {
 	 *
 	 * @param mixed $field_value Field value.
 	 */
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the hook name is the metabox field id plus _field_value (for example _give_offline-donation-instruction_notification_field_value in emails/backward-compatibility.php); add-ons filter their own field ids, so it cannot be renamed.
 	$field_value = apply_filters( "{$field['id']}_field_value", $field_value, $field, $postid );
 
 	// Set default value if no any data saved to db.
@@ -1632,7 +1633,7 @@ function _give_metabox_form_data_repeater_fields($fields) { // phpcs:ignore Word
  *
  * @return mixed
  */
-function _give_set_multi_level_repeater_field_id( $field_id, $field, $fields, $default ) {
+function _give_set_multi_level_repeater_field_id( $field_id, $field, $fields, $default ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- filter callback registered by this name below; add-ons may remove_filter() it by name, so it keeps its name.
 	$row_placeholder = false !== $default ? $default : '{{row-count-placeholder}}';
 	$field_id        = "{$fields['id']}[{$row_placeholder}][{$field['id']}][level_id]";
 
@@ -1653,7 +1654,7 @@ add_filter( 'give_get_repeater_field__give_id_id', '_give_set_multi_level_repeat
  *
  * @return mixed
  */
-function _give_set_multi_level_repeater_field_value( $field_value, $field, $field_group, $fields ) {
+function _give_set_multi_level_repeater_field_value( $field_value, $field, $field_group, $fields ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- filter callback registered by this name below; add-ons may remove_filter() it by name, so it keeps its name.
 	$field_value = $field_group[ $field['id'] ]['level_id'];
 
 	return $field_value;
@@ -1670,7 +1671,7 @@ add_filter( 'give_get_repeater_field__give_id_value', '_give_set_multi_level_rep
  *
  * @return string
  */
-function _give_set_field_give_id_default_value( $field ) {
+function _give_set_field_give_id_default_value( $field ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- filter callback registered by this name below; add-ons may remove_filter() it by name, so it keeps its name.
 	return 0;
 }
 
@@ -1685,7 +1686,7 @@ add_filter( 'give_default_field_group_field__give_id_value', '_give_set_field_gi
  *
  * @return string
  */
-function _give_set_field_give_default_default_value( $field ) {
+function _give_set_field_give_default_default_value( $field ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- filter callback registered by this name below; add-ons may remove_filter() it by name, so it keeps its name.
 	return 'default';
 }
 
@@ -1738,7 +1739,7 @@ add_filter( 'give_get_field_name', 'give_repeater_field_set_editor_id', 10, 2 );
 function give_donation_form_goal( $field ) {
 	global $thepostid, $post;
 
-	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $thepostid is a shared global (WordPress metabox convention): give_default_gateway() and give_metabox_form_data_repeater_fields() read it after a field function sets it, and add-ons may set it before they render fields.
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );

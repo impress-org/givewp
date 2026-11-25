@@ -163,13 +163,17 @@ import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesTo
     };
 
     /**
+     * @since 4.20.0 Flag the order as a card fields payment so the server adds the 3D Secure card source.
      * @since 4.1.0
      */
     const cardFieldsCreateOrderHandler = async () => {
+        const formData = getFormData();
+        formData.append('give-paypal-commerce-card-fields', '1');
+
         return await createOrder(
             `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`,
             payPalCommerceGateway,
-            getFormData()
+            formData
         );
     };
 

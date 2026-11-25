@@ -91,6 +91,7 @@ class GenerateConfirmationPageReceipt
             }
 
             $value = apply_filters(
+                // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the name is givewp_donation_confirmation_page_field_value_for_ plus the field name, so it carries the Give prefix; add-ons listen to it.
                 sprintf("givewp_donation_confirmation_page_field_value_for_%s", $field->getName()),
                 $value,
                 $field,
@@ -98,6 +99,7 @@ class GenerateConfirmationPageReceipt
             );
 
             $label = apply_filters(
+                // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the name is givewp_donation_confirmation_page_field_label_for_ plus the field name, so it carries the Give prefix; add-ons listen to it.
                 sprintf("givewp_donation_confirmation_page_field_label_for_%s", $field->getName()),
                 $field->hasReceiptLabel() ? $field->getReceiptLabel() : $field->getLabel(),
                 $field,
@@ -247,6 +249,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @since 4.20.0 Skip subscription details when the donation's subscription no longer exists.
      * @since 3.0.0
      *
      * @return void
@@ -255,6 +258,11 @@ class GenerateConfirmationPageReceipt
     {
         if ($receipt->donation->subscriptionId) {
             $subscription = $receipt->donation->subscription;
+
+            if (!$subscription) {
+                return;
+            }
+
             $subscriptionAmountLabel = sprintf(
                 $subscription->period->label($subscription->frequency),
                 $subscription->frequency

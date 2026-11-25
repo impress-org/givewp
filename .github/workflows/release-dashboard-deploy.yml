@@ -104,6 +104,8 @@ jobs:
                     php-version: 7.4
                     extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                     coverage: none
+                env:
+                    use_builds_cache: true
 
             -   uses: actions/setup-node@v7
                 with:

@@ -253,6 +253,23 @@ class TestGenerateConfirmationPageReceipt extends TestCase
     }
 
     /**
+     * @since 4.20.0
+     */
+    public function testShouldOmitSubscriptionDetailsWhenSubscriptionWasDeleted()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create();
+
+        $subscription = Subscription::factory()->createWithDonation(['donationFormId' => $donationForm->id]);
+        $donation = $subscription->initialDonation();
+        $subscription->delete();
+
+        $receipt = (new GenerateConfirmationPageReceipt())(new DonationReceipt($donation));
+
+        $this->assertEmpty($receipt->subscriptionDetails->toArray());
+    }
+
+    /**
      * Values inserted by V3 template tags must not be parsed as legacy tags.
      *
      * @since 4.16.8
@@ -307,6 +324,54 @@ class TestGenerateConfirmationPageReceipt extends TestCase
 
         $this->assertStringNotContainsString('sensitive-token', $settings['heading']);
         $this->assertStringNotContainsString('sensitive-token', $settings['description']);
+    }
+
+    /**
+     * Access-link email tags do not generate a link on the confirmation page.
+     *
+     * @since 4.20.0
+     */
+    public function testAccessLinkTagDoesNotGenerateLinkOnConfirmationPage()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray([
+                'receiptDescription' => 'Thanks {first_name}! {donation_history_link}',
+            ]),
+        ]);
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'formId' => $donationForm->id,
+        ]);
+
+        $receipt = (new GenerateConfirmationPageReceipt())(new DonationReceipt($donation));
+
+        $settings = $receipt->settings->toArray();
+
+        $this->assertStringNotContainsString('give_nl=', $settings['description']);
+        $this->assertStringNotContainsString('give_nl=', $settings['heading']);
+    }
+
+    /**
+     * Access-link email tags still generate a link while composing an email.
+     *
+     * @since 4.20.0
+     */
+    public function testAccessLinkTagGeneratesLinkDuringEmailComposition()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create();
+
+        $content = give_do_email_tags(
+            'Thanks {first_name}! {donation_history_link}',
+            [
+                'payment_id' => $donation->id,
+                'email_composition' => true,
+            ]
+        );
+
+        $this->assertMatchesRegularExpression('/give_nl=[A-Za-z0-9]{20}/', $content);
     }
 
     /**
@@ -399,5 +464,46 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             $additionalDetails->toArray()[0],
             $receipt->additionalDetails->toArray()
         );
+    }
+
+    /**
+     * @since 4.20.0
+     */
+    public function testFieldValueAndLabelCanBeFilteredByFieldName(): void
+    {
+        $field = Text::make('favoriteColor')
+            ->label('Your favorite color:')
+            ->defaultValue('Blue')
+            ->metaKey('_favorite_color')
+            ->showInReceipt();
+
+        add_action('givewp_donation_form_schema', static function (\Give\Framework\FieldsAPI\DonationForm $form) use ($field) {
+            $form->insertAfter('email', $field);
+        });
+
+        add_filter('givewp_donation_confirmation_page_field_value_for_favoriteColor', static function () {
+            return 'Green';
+        });
+
+        add_filter('givewp_donation_confirmation_page_field_label_for_favoriteColor', static function () {
+            return 'Color:';
+        });
+
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create();
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'formId' => $donationForm->id,
+        ]);
+
+        give_update_payment_meta($donation->id, '_favorite_color', 'Blue');
+
+        $receipt = (new GenerateConfirmationPageReceipt())(new DonationReceipt($donation));
+
+        $expected = new ReceiptDetailCollection();
+        $expected->addDetail(new ReceiptDetail('Color:', 'Green'));
+
+        $this->assertContains($expected->toArray()[0], $receipt->additionalDetails->toArray());
     }
 }

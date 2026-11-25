@@ -104,7 +104,7 @@ function give_unset_error( $error_id ) {
  * @since  1.0
  * @return string
  */
-function _give_die_handler() {
+function _give_die_handler() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- wp_die handler registered by this name in give_die() and returned by name under unit tests; the name is part of that contract.
 	if ( defined( 'GIVE_UNIT_TESTS' ) ) {
 		return '_give_die_handler';
 	} else {

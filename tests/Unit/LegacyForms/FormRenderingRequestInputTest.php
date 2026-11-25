@@ -106,4 +106,28 @@ final class FormRenderingRequestInputTest extends TestCase
 
         $this->assertStringContainsString('data-total="25.50"', $html);
     }
+
+    /**
+     * @since 4.20.0
+     */
+    public function testCommentRefillEncodesSquareBracketsAndPreservesText(): void
+    {
+        $formId = self::factory()->post->create(['post_type' => 'give_forms']);
+        update_post_meta($formId, '_give_donor_comment', 'enabled');
+
+        $comment = 'Please keep [audio src=https://example.org/demo.mp3] in the comment.';
+        $_POST['give_comment'] = wp_slash($comment);
+
+        ob_start();
+        give_user_info_fields($formId);
+        $html = ob_get_clean();
+
+        $this->assertStringContainsString('&#91;audio src=https://example.org/demo.mp3&#93;', $html);
+        $this->assertStringNotContainsString('[audio src=', $html);
+        $this->assertSame(
+            1,
+            preg_match('/<textarea\b[^>]*\bname="give_comment"[^>]*>(.*?)<\/textarea>/s', $html, $matches)
+        );
+        $this->assertSame($comment, html_entity_decode($matches[1], ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+    }
 }

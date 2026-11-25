@@ -268,6 +268,7 @@ class FormBuilderViewModel
     }
 
     /**
+     * @since 4.20.0 Omit access-link tags, whose links are only generated for emails.
      * @since 3.0.0
      */
     public function getDonationConfirmationPageTemplateTags(): array
@@ -304,11 +305,18 @@ class FormBuilderViewModel
             "subscription",
         ];
 
+        $emailOnlyTags = [
+            'donation_history_link',
+            'email_access_link',
+        ];
+
         array_multisort($templateTags, SORT_ASC);
 
         return array_values(
-            array_filter($templateTags, static function ($tag) use ($supportedContexts) {
-                return !empty($tag['description']) && in_array((string)$tag['context'], $supportedContexts, true);
+            array_filter($templateTags, static function ($tag) use ($supportedContexts, $emailOnlyTags) {
+                return !empty($tag['description'])
+                    && in_array((string)$tag['context'], $supportedContexts, true)
+                    && !in_array((string)$tag['tag'], $emailOnlyTags, true);
             })
         );
     }

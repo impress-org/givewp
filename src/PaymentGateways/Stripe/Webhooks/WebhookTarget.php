@@ -1,0 +1,234 @@
+<?php
+
+/**
+ * @since 4.20.0
+ */
+
+namespace Give\PaymentGateways\Stripe\Webhooks;
+
+use Give\PaymentGateways\Stripe\Webhooks\DataTransferObjects\WebhookEndpointDto;
+
+/**
+ * The URL that Stripe must deliver events to for this site, and the events GiveWP needs.
+ *
+ * @since 4.20.0
+ */
+final class WebhookTarget
+{
+    /**
+     * Stripe accepts at most this many webhook endpoints per account.
+     *
+     * @since 4.20.0
+     */
+    public const MAX_ENDPOINTS_PER_ACCOUNT = 16;
+
+    /**
+     * The events that the Stripe listeners in GiveWP and Give Recurring handle.
+     *
+     * payment_intent.requires_action, payment_intent.processing and customer.subscription.paused have no
+     * listener yet. They are subscribed now so existing endpoints already send them when their listeners
+     * ship. The webhook listener answers 200 to event types it does not handle.
+     *
+     * @since 4.20.0
+     */
+    public const REQUIRED_EVENTS = [
+        'checkout.session.completed',
+        'payment_intent.succeeded',
+        'payment_intent.payment_failed',
+        'payment_intent.requires_action',
+        'payment_intent.processing',
+        'charge.refunded',
+        'invoice.payment_succeeded',
+        'invoice.payment_failed',
+        'customer.subscription.created',
+        'customer.subscription.deleted',
+        'customer.subscription.updated',
+        'customer.subscription.resumed',
+        'customer.subscription.paused',
+    ];
+
+    private const LISTENER_ARG = 'give-listener';
+
+    /**
+     * Ports a URL may name or leave out without changing the endpoint it points at.
+     */
+    private const DEFAULT_PORTS = ['https' => 443, 'http' => 80];
+    private const LISTENER_VALUE = 'stripe';
+
+    /**
+     * The URL a new endpoint is created with.
+     *
+     * @since 4.20.0
+     */
+    public function url(): string
+    {
+        return $this->listenerUrl($this->baseUrl());
+    }
+
+    /**
+     * Every listener URL that matches() accepts: the one url() returns, then the site URL's when it differs.
+     *
+     * @since 4.20.0
+     *
+     * @return string[] HTTPS listener URLs, without duplicates.
+     */
+    public function urls(): array
+    {
+        return array_values(array_unique([$this->url(), $this->listenerUrl(site_url())]));
+    }
+
+    /**
+     * Whether a webhook endpoint URL delivers to this site's Stripe listener.
+     *
+     * The scheme, a trailing slash and the default port of the scheme are ignored, and both the home URL and
+     * the site URL count, because the settings page told admins to use the site URL before this class existed.
+     *
+     * @since 4.20.0
+     */
+    public function matches(string $url): bool
+    {
+        $candidate = $this->normalize($url);
+
+        if (!$candidate) {
+            return false;
+        }
+
+        foreach ($this->urls() as $listenerUrl) {
+            if ($candidate === $this->normalize($listenerUrl)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * The endpoints whose URL carries the give-listener query argument, whichever site they deliver to.
+     *
+     * Endpoints that GiveWP did not create, such as those of other applications on the same Stripe account,
+     * are left out.
+     *
+     * @since 4.20.0
+     *
+     * @param WebhookEndpointDto[] $endpoints
+     *
+     * @return WebhookEndpointDto[]
+     */
+    public function onlyListeners(array $endpoints): array
+    {
+        return array_values(
+            array_filter($endpoints, function (WebhookEndpointDto $endpoint) {
+                return $this->hasListenerArg($endpoint->url);
+            })
+        );
+    }
+
+    /**
+     * The endpoint on the list that delivers to this site, preferring one that is enabled and complete.
+     *
+     * @since 4.20.0
+     *
+     * @param WebhookEndpointDto[] $endpoints
+     */
+    public function findIn(array $endpoints): ?WebhookEndpointDto
+    {
+        $matching = array_values(
+            array_filter($endpoints, function (WebhookEndpointDto $endpoint) {
+                return $this->matches($endpoint->url);
+            })
+        );
+
+        usort($matching, function (WebhookEndpointDto $a, WebhookEndpointDto $b) {
+            return $this->rank($b) <=> $this->rank($a);
+        });
+
+        return $matching[0] ?? null;
+    }
+
+    /**
+     * The required events that the endpoint does not send.
+     *
+     * @since 4.20.0
+     *
+     * @return string[]
+     */
+    public function missingEvents(WebhookEndpointDto $endpoint): array
+    {
+        if (in_array('*', $endpoint->enabledEvents, true)) {
+            return [];
+        }
+
+        return array_values(array_diff(self::REQUIRED_EVENTS, $endpoint->enabledEvents));
+    }
+
+    /**
+     * @since 4.20.0
+     */
+    private function baseUrl(): string
+    {
+        return defined('GIVEWP_GATEWAY_ROUTE_BASE_URL') ? GIVEWP_GATEWAY_ROUTE_BASE_URL : home_url();
+    }
+
+    /**
+     * @since 4.20.0
+     */
+    private function listenerUrl(string $baseUrl): string
+    {
+        return set_url_scheme(
+            add_query_arg(self::LISTENER_ARG, self::LISTENER_VALUE, trailingslashit($baseUrl)),
+            'https'
+        );
+    }
+
+    /**
+     * @since 4.20.0
+     */
+    private function hasListenerArg(string $url): bool
+    {
+        $query = wp_parse_url($url, PHP_URL_QUERY);
+
+        if (!is_string($query)) {
+            return false;
+        }
+
+        wp_parse_str($query, $args);
+
+        return isset($args[self::LISTENER_ARG]);
+    }
+
+    /**
+     * Reduces a URL to "host/path?give-listener=stripe", or an empty string when it is not a listener URL.
+     *
+     * @since 4.20.0
+     */
+    private function normalize(string $url): string
+    {
+        $parts = wp_parse_url($url);
+
+        if (empty($parts['host']) || empty($parts['query'])) {
+            return '';
+        }
+
+        wp_parse_str($parts['query'], $query);
+
+        if (self::LISTENER_VALUE !== ($query[self::LISTENER_ARG] ?? null)) {
+            return '';
+        }
+
+        $scheme = strtolower($parts['scheme'] ?? '');
+        $isDefaultPort = isset($parts['port']) && (self::DEFAULT_PORTS[$scheme] ?? null) === (int)$parts['port'];
+        $port = isset($parts['port']) && !$isDefaultPort ? ':' . $parts['port'] : '';
+        $host = strtolower($parts['host']) . $port;
+        $path = untrailingslashit($parts['path'] ?? '');
+
+        return $host . $path . '?' . self::LISTENER_ARG . '=' . self::LISTENER_VALUE;
+    }
+
+    /**
+     * @since 4.20.0
+     */
+    private function rank(WebhookEndpointDto $endpoint): int
+    {
+        return ('enabled' === $endpoint->status ? 2 : 0) + ($this->missingEvents($endpoint) ? 0 : 1);
+    }
+}

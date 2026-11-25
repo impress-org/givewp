@@ -129,12 +129,18 @@ class Give_Email_Access {
 	 *
 	 * Register defaults and filters
 	 *
+	 * @since 4.20.0 Set the throttle and expiration timeouts for logged-in users too.
 	 * @since  1.0
 	 * @access public
 	 *
 	 * @return void
 	 */
 	public function init() {
+
+		// Timeouts. Set before the logged-in bail below: token validation reads token_expiration.
+		$this->verify_throttle  = apply_filters( 'give_nl_verify_throttle', 300 );
+		$this->limit_throttle   = apply_filters( 'give_nl_limit_throttle', 3 );
+		$this->token_expiration = apply_filters( 'give_nl_token_expiration', 7200 );
 
 		// Bail Out, if user is logged in.
 		if ( is_user_logged_in() ) {
@@ -146,11 +152,6 @@ class Give_Email_Access {
 		if ( ! $column_exists ) {
 			$this->create_columns();
 		}
-
-		// Timeouts.
-		$this->verify_throttle  = apply_filters( 'give_nl_verify_throttle', 300 );
-		$this->limit_throttle   = apply_filters( 'give_nl_limit_throttle', 3 );
-		$this->token_expiration = apply_filters( 'give_nl_token_expiration', 7200 );
 
 		// Setup login.
 		$this->check_for_token();

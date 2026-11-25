@@ -5,6 +5,8 @@ namespace Give\PaymentGateways\Stripe\Admin;
 use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
+use Give\PaymentGateways\Stripe\Webhooks\Controllers\EnsureWebhookEndpointsController;
+use Give\PaymentGateways\Stripe\Webhooks\Controllers\ManageWebhookEndpointsController;
 use Give_Admin_Settings;
 
 use function add_query_arg;
@@ -244,6 +246,7 @@ class AccountManagerSettingField
     }
 
     /**
+     * @since 4.20.0 Add the Webhook Status field.
      * @since 4.19.1 Escape output. Add nonces to the set default and statement descriptor requests.
      * @since 2.13.0
      *
@@ -439,6 +442,12 @@ class AccountManagerSettingField
             </div>
 
             <?php
+            if ($this->isGlobalSettingPage()) :
+                $this->getWebhookStatusMarkup($stripeAccountSlug, $accountName);
+            endif;
+            ?>
+
+            <?php
             if ($stripeAccountSlug === $this->defaultStripeAccountSlug) : ?>
                 <div class="give-stripe-account-badge">
                     <?php
@@ -464,6 +473,40 @@ class AccountManagerSettingField
     }
 
     /**
+     * The Webhook Status field. Its state and button are filled in by JavaScript, because reading the endpoints
+     * takes a request to Stripe per account.
+     *
+     * @since 4.20.0
+     */
+    private function getWebhookStatusMarkup(string $accountSlug, string $accountName)
+    {
+        ?>
+        <div
+            class="give-stripe-account-fieldset give-stripe-webhook-status"
+            data-account="<?php echo esc_attr($accountSlug); ?>"
+            data-account-name="<?php echo esc_attr($accountName); ?>"
+            data-state="loading"
+            data-ensure-nonce="<?php echo esc_attr(wp_create_nonce(EnsureWebhookEndpointsController::ACTION)); ?>"
+            data-manage-nonce="<?php echo esc_attr(wp_create_nonce(ManageWebhookEndpointsController::ACTION)); ?>"
+        >
+            <span class="give-stripe-label"><?php esc_html_e('Webhook Status:', 'give'); ?></span>
+            <div class="give-stripe-account-actions">
+                <button type="button" class="give-stripe-webhook-status-button" disabled>
+                    <?php esc_html_e('Checking…', 'give'); ?>
+                </button>
+                <span class="give-stripe-edit-statement-descriptor give-stripe-webhook-edit give-hidden">
+                    <a class="give-stripe-webhook-edit-btn" href="#">
+                        <span class="dashicons dashicons-edit-page"></span>
+                        <?php esc_html_e('Edit', 'give'); ?>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <?php
+    }
+
+    /**
+     * @since 4.20.0 Add the nonce for the webhook setup request.
      * @since 4.19.1 Escape output.
      * @since 2.13.0
      */
@@ -511,6 +554,8 @@ class AccountManagerSettingField
             echo esc_attr($can_display); ?>"
             data-redirect-url="<?php
             echo esc_url_raw($redirectUrl); ?>"
+            data-webhook-nonce="<?php
+            echo esc_attr(wp_create_nonce(EnsureWebhookEndpointsController::ACTION)); ?>"
         >
         </div>
         <?php

@@ -39,6 +39,7 @@ class InvoicePaymentFailed
     }
 
     /**
+     * @since 4.20.0 Ignore invoices that are not linked to a subscription.
      * @since 4.8.0 Add support for Stripe API version 2025-03-31.basil and later versions
      * @since 3.0.4 Return a bool value.
      * @since 3.0.0
@@ -51,6 +52,12 @@ class InvoicePaymentFailed
         $invoice = $event->data->object;
 
         $gatewaySubscriptionId = $this->getGatewaySubscriptionId($invoice);
+
+        // A Stripe account also sends invoices that no subscription created, such as one-off invoices.
+        if (!$gatewaySubscriptionId) {
+            return false;
+        }
+
         $subscription = give()->subscriptions->queryByGatewaySubscriptionId($gatewaySubscriptionId)->get();
 
         // only use this for next gen for now

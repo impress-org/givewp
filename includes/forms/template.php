@@ -111,7 +111,7 @@ function give_get_donation_form( $args = [] ) {
 
 			// Get Goal thank you message.
 			$goal_achieved_message = give_get_meta( $form->ID, '_give_form_goal_achieved_message', true );
-			$goal_achieved_message = ! empty( $goal_achieved_message ) ? $form_title . apply_filters( 'the_content', $goal_achieved_message ) : '';
+			$goal_achieved_message = ! empty( $goal_achieved_message ) ? $form_title . apply_filters( 'the_content', $goal_achieved_message ) : ''; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WordPress core filter, run on purpose so the goal message gets shortcodes and paragraphs.
 
 			// Print thank you message.
 			echo wp_kses_post( apply_filters( 'give_goal_closed_output', $goal_achieved_message, $form->ID, $form ) );
@@ -759,6 +759,7 @@ function give_add_button_open_form( $form_id, $args ) {
 /**
  * Shows the User Info fields in the Personal Info box, more fields can be added via the hooks provided.
  *
+ * @since 4.20.0 Encode square brackets in the re-filled comment value.
  * @since 3.1.0 Add the give_user_info_fields_user_info filter
  * @since 2.25.0 add radio group to conditionally enable/disable company name field
  * @since 4.19.1 Escape output, including translated strings.
@@ -1069,7 +1070,7 @@ function give_user_info_fields( $form_id ) {
 					placeholder="<?php esc_attr_e( 'Leave a comment', 'give' ); ?>"
 					id="give-comment"
 					<?php echo( give_field_is_required( 'give_comment', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-				><?php echo isset( $_POST['give_comment'] ) ? esc_html( give_clean( $_POST['give_comment'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- public form render; it refills the comment after a failed submit and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data. ?></textarea>
+				><?php echo isset( $_POST['give_comment'] ) ? str_replace( [ '[', ']' ], [ '&#91;', '&#93;' ], esc_html( give_clean( $_POST['give_comment'] ) ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- public form render; it refills the comment after a failed submit and saves nothing. give_clean() unslashes and sanitizes with sanitize_text_field(), and drops serialized data. ?></textarea>
 
 			</p>
 		<?php endif; ?>
@@ -2237,7 +2238,7 @@ function give_form_display_content( $form_id, $args ) {
 			remove_filter( 'the_content', '_restore_wpautop_hook', $priority );
 		}
 
-		$content = apply_filters( 'the_content', $content );
+		$content = apply_filters( 'the_content', $content ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WordPress core filter, run on purpose when the "the_content filter" setting is on.
 
 		// Restore wpautop after done with blocks parsing.
 		if ( $priority ) {
@@ -2497,7 +2498,7 @@ add_filter( 'give_form_html_tags', 'give_form_add_currency_settings', 0, 2 );
  * @return string
  * @since 2.1
  */
-function add_give_goal_progress_class( $class_goal ) {
+function add_give_goal_progress_class( $class_goal ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- form grid callback, added and removed by this name in give_form_grid_shortcode(); themes may remove it by name.
 	$class_goal = 'progress progress-striped active';
 
 	return $class_goal;
@@ -2511,7 +2512,7 @@ function add_give_goal_progress_class( $class_goal ) {
  * @return string
  * @since 2.1
  */
-function add_give_goal_progress_bar_class( $class_bar ) {
+function add_give_goal_progress_bar_class( $class_bar ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- form grid callback, added and removed by this name in give_form_grid_shortcode(); themes may remove it by name.
 	$class_bar = 'bar';
 
 	return $class_bar;
@@ -2527,7 +2528,7 @@ function add_give_goal_progress_bar_class( $class_bar ) {
  * @return array
  * @since 2.1
  */
-function add_class_for_form_grid( $class, $id, $args ) {
+function add_class_for_form_grid( $class, $id, $args ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- form grid callback, added and removed by this name in give_form_grid_shortcode(); themes may remove it by name.
 	$class[] = 'give-form-grid-wrap';
 
 	foreach ( $class as $index => $item ) {

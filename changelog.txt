@@ -1,5 +1,21 @@
 == Changelog ==
 
+= [4.20.0] 2026-11-25 =
+
+* Enhancement - The Reports page now loads much faster on sites with hundreds of thousands of donations
+* Feature - Added automatic Stripe webhook setup when an account is connected, webhook endpoint management for each connected account, and an email when a webhook endpoint stops working.
+* Fix - Prevented a fatal error and an empty Donor Dashboard Donation History when a donation's subscription had been permanently deleted, and kept a donation whose receipt fails to build from stopping the donor's other donations from loading.
+* Fix - Prevented blank donation form fields from erasing saved donor profile data when a returning donor submits a later donation.
+* Fix - Resolved an issue where a logged-in user with the Subscriber role was not connected to their existing donor profile. The donor is linked to the user when the user opens the Donor Dashboard from an email access link sent to the account email address.
+* Fix - Resolved an issue where a Stripe invoice that is not linked to a subscription caused a fatal error.
+* Fix - Resolved an issue where PayPal Donations asked donors for a shipping address, which failed debit and credit card donations with SHIPPING_ADDRESS_MISSING and stored addresses on donations that never requested them.
+* Fix - Resolved an issue where Recent Transactions on the donor details page showed completed renewals as Pending, or showed no transactions for donors with fewer than five donations.
+* Fix - Resolved an issue where recurring donations declined by Stripe still showed as active subscriptions.
+* Fix - Updated more of the codebase to meet the official WordPress Plugin Check guidelines.
+* Security - Added additional validation to donor address data.
+* Security - Improved handling of comment text in donation forms.
+* Security - Improved handling of donor email access links and donor-dashboard password updates.
+
 = [4.19.2.2] 2026-11-23 =
 
 * Security - Added additional protection to the admin requests that load the donation form text editor and the donation level dropdown. Reported by Santh.
