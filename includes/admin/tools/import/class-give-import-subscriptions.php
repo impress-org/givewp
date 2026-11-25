@@ -205,6 +205,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Show success notice
          *
+         * @since TBD Say that subscriptions would be created, not created, in the dry run report.
          * @since 4.19.1 Escape output. Add translators comments. Check that the total and success values are set.
          * @since 4.11.0
          */
@@ -280,8 +281,19 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
                     if (!empty($report)) {
                         if (isset($report['create_subscription'])) {
-                            /* translators: %s: Number of subscriptions */
-                            echo '<p>' . esc_html(sprintf(_n('%s subscription created', '%s subscriptions created', (int)$report['create_subscription'], 'give'), (int)$report['create_subscription'])) . '</p>';
+                            if ($dry_run) {
+                                /* translators: %s: Number of subscriptions */
+                                $createdMessage = _n(
+                                    '%s subscription would be created. No records were created.',
+                                    '%s subscriptions would be created. No records were created.',
+                                    (int)$report['create_subscription'],
+                                    'give'
+                                );
+                            } else {
+                                /* translators: %s: Number of subscriptions */
+                                $createdMessage = _n('%s subscription created', '%s subscriptions created', (int)$report['create_subscription'], 'give');
+                            }
+                            echo '<p>' . esc_html(sprintf($createdMessage, (int)$report['create_subscription'])) . '</p>';
                         }
                         if (isset($report['failed_subscription'])) {
                             /* translators: %s: Number of subscriptions */
@@ -981,6 +993,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
          * @param array $import_setting
          * @return bool|int|string
          *
+         * @since TBD Do not create donors or WP users when dry run is enabled.
          * @since 4.19.1 Add translators comments.
          */
         public function import_row($raw_key, $row_data, $main_key = [], $import_setting = [])
@@ -1031,6 +1044,9 @@ if (!class_exists('Give_Import_Subscriptions')) {
                 $resolvedDonorId = 0;
                 if (!empty($data['donor_id'])) {
                     $resolvedDonorId = (int)$data['donor_id'];
+                } elseif ($dry_run) {
+                    $existingDonor = \Give\Donors\Models\Donor::whereEmail((string)$data['email']);
+                    $resolvedDonorId = $existingDonor ? (int)$existingDonor->id : 0;
                 } else {
                     try {
                         $email = (string)$data['email'];
