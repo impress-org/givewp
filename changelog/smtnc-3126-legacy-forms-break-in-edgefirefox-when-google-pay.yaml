@@ -1,0 +1,5 @@
+significance: patch
+type: tweak
+entry: Passed the form ID to the give_chosen_gateway filter so add-ons can
+  choose a fallback gateway that is enabled for that form
+timestamp: 2026-11-24T23:46:49.466Z

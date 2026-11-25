@@ -240,6 +240,28 @@ class Test_Gateways extends Give_Unit_Test_Case {
     }
 
     /**
+     * @since TBD
+     */
+    public function test_chosen_gateway_filter_receives_form_id()
+    {
+        $receivedFormId = null;
+
+        $callback = static function ($gateway, $formId = null) use (&$receivedFormId) {
+            $receivedFormId = $formId;
+
+            return $gateway;
+        };
+
+        add_filter('give_chosen_gateway', $callback, 10, 2);
+
+        give_get_chosen_gateway($this->_simple_form->ID);
+
+        remove_filter('give_chosen_gateway', $callback, 10);
+
+        $this->assertSame($this->_simple_form->ID, $receivedFormId);
+    }
+
+    /**
      * Test give_no_gateway_error.
      *
      * @since 2.0.7 gateway setting can be empty array but if fetch it via give function than default payment gateways will return,

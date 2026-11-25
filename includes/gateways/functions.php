@@ -237,6 +237,7 @@ function give_send_to_gateway( $gateway, $payment_data ) {
  * Determines the currently selected donation payment gateway.
  *
  * @access public
+ * @since  TBD Pass the form ID to the give_chosen_gateway filter.
  * @since  4.19.1 Unslash and sanitize the requested form ID and payment mode.
  * @since  1.0
  *
@@ -273,7 +274,15 @@ function give_get_chosen_gateway( $form_id ) {
 		$enabled_gateway = give_get_default_gateway( $form_id );
 	}
 
-	return apply_filters( 'give_chosen_gateway', $enabled_gateway );
+	/**
+	 * Filters the currently selected donation payment gateway.
+	 *
+	 * @since TBD Add $form_id param.
+	 *
+	 * @param string $enabled_gateway The slug of the chosen gateway.
+	 * @param int    $form_id         The ID of the form.
+	 */
+	return apply_filters( 'give_chosen_gateway', $enabled_gateway, $form_id );
 
 }
 
