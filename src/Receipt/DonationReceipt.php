@@ -199,6 +199,7 @@ class DonationReceipt extends Receipt
      *
      * @since 2.7.0
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->position = 0;
