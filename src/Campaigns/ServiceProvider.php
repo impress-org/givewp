@@ -13,6 +13,7 @@ use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
 use Give\Campaigns\Actions\LoadCampaignAdminOptions;
 use Give\Campaigns\Actions\PreventDeleteDefaultForm;
+use Give\Campaigns\Actions\ReplaceGiveFormsAdminBarNewLink;
 use Give\Campaigns\Actions\ReplaceGiveFormsCptLabels;
 use Give\Campaigns\Actions\UnarchiveCampaignFormAsPublishStatus;
 use Give\Campaigns\ListTable\Routes\DeleteCampaignListTable;
@@ -167,11 +168,13 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since TBD Point the admin bar's "New > Campaign" item at the create campaign screen.
      * @since 4.0.0
      */
     private function registerMenus()
     {
         Hooks::addAction('admin_menu', CampaignsAdminPage::class, 'addCampaignsSubmenuPage', 999);
+        Hooks::addAction('admin_bar_menu', ReplaceGiveFormsAdminBarNewLink::class, '__invoke', 80);
     }
 
     /**
