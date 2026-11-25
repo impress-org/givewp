@@ -31,6 +31,7 @@ class DonationFormsListTable extends ListTable
     }
 
     /**
+     * @since TBD Put Status right after the title, then ID and Date.
      * @since 4.19.0 Add the Campaign column.
      * @since 2.24.0
      *
@@ -39,18 +40,19 @@ class DonationFormsListTable extends ListTable
     public function getDefaultColumns(): array
     {
         return [
-            new IdColumn(),
             new TitleColumn(),
+            new StatusColumn(),
+            new IdColumn(),
+            new DateCreatedColumn(),
             new CampaignColumn(),
             new GoalColumn(),
             new DonationCountColumn(),
             new DonationRevenueColumn(),
-            new DateCreatedColumn(),
-            new StatusColumn(),
         ];
     }
 
     /**
+     * @since TBD Hide the Goal column by default.
      * @since 4.19.0 Add the Campaign column.
      * @since 2.24.0
      *
@@ -62,7 +64,6 @@ class DonationFormsListTable extends ListTable
             IdColumn::getId(),
             TitleColumn::getId(),
             CampaignColumn::getId(),
-            GoalColumn::getId(),
             DonationCountColumn::getId(),
             DonationRevenueColumn::getId(),
             DateCreatedColumn::getId(),

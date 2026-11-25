@@ -34,6 +34,7 @@ class DonationsListTable extends ListTable
     }
 
     /**
+     * @since TBD Put the Donor and Status first, then ID and Amount.
      * @since 4.19.0 Added Form column
      * @since 4.10.0 Updated columns order
      * @since 4.8.0 Added Subscription Donation Type column
@@ -44,15 +45,15 @@ class DonationsListTable extends ListTable
     public function getDefaultColumns(): array
     {
         return [
+            new DonorColumn(),
+            new StatusColumn(),
             new IdColumn(),
             new AmountColumn(),
             new PaymentTypeColumn(),
-            new DonorColumn(),
+            new CreatedAtColumn(),
             new CampaignColumn(),
             new FormColumn(),
             new GatewayColumn(),
-            new CreatedAtColumn(),
-            new StatusColumn(),
             new SubscriptionDonationTypeColumn(),
         ];
     }
