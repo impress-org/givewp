@@ -75,7 +75,11 @@ describe('list sheet styles', () => {
         expect(content).toContain('padding-block: 0');
         // With no band above it, the content gets 24px at the top of the sheet.
         expect(content).toMatch(/&:first-child \{\s*padding-block-start: var\(--givewp-spacing-6\);/);
-        expect(block(page, '.pageContent')).toContain('padding: var(--givewp-spacing-6)');
+        expect(block(page, '.pageContent')).toContain('padding-block: var(--givewp-spacing-6)');
+        // The list reaches the side edges of the box; everything else keeps the 24px.
+        expect(block(page, '.pageContent')).toMatch(
+            /> :not\(:global\(\.givewp-list-table\)\) \{\s*margin-inline: var\(--givewp-spacing-6\);/
+        );
         expect(content).toMatch(/\.givewp-list-table__toolbar\)\s*\{\s*padding-block-start: 0;/);
     });
 

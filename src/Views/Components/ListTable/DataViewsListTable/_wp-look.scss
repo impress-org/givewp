@@ -12,6 +12,37 @@
         color: var(--givewp-list-table-text);
     }
 
+    // The side padding of the edge cells and the header, as in WordPress 7.0 (DataViews 10.1.7 uses 48px at the
+    // edges). The properties are logical, so they work in both directions; the stock physical rules are flipped
+    // in the RTL build.
+    tr > :first-child {
+        padding-inline: var(--givewp-spacing-6) var(--givewp-spacing-3);
+    }
+
+    tr > :last-child {
+        padding-inline: var(--givewp-spacing-3) var(--givewp-spacing-6);
+    }
+
+    tr > .dataviews-view-table__checkbox-column {
+        padding-inline-end: 0;
+    }
+
+    thead th:has(.dataviews-view-table-header-button):not(:first-child, :last-child) {
+        padding-inline: var(--givewp-spacing-1);
+    }
+
+    // Compact density: the cells have 8px, so the header buttons need no padding of their own to line up with
+    // them, and the last cell starts at 8px.
+    &.has-compact-density {
+        tr > :last-child {
+            padding-inline-start: var(--givewp-spacing-2);
+        }
+
+        thead th:has(.dataviews-view-table-header-button):not(:first-child, :last-child) {
+            padding-inline: 0;
+        }
+    }
+
     // Relaxes the stock `min-width: 15ch` (about 123px) on cells and on the title cell, so a narrow
     // column (an ID, a count) is as wide as its content. The stock `max-width: 80ch` stays.
     .dataviews-view-table__cell-content-wrapper:not(.dataviews-column-primary__media),
@@ -35,11 +66,10 @@
     }
 
     // Our own one-line clamp (InterweaveSSR/styles.scss) needs a capped width, because a table cell is
-    // `nowrap` and a long campaign name would grow the column. The minimum width (10rem, the most that keeps Donations from
-    // scrolling at 1512) is only for the
-    // table: in the phone cards the value must shrink so the "…" shows.
+    // `nowrap` and a long campaign name would grow the column. The minimum width (11rem; Donations does not scroll at
+    // 1512 with it) is only for the table: in the phone cards the value must shrink so the "…" shows.
     .givewp-truncated-text {
-        min-inline-size: 10rem;
+        min-inline-size: 11rem;
         max-inline-size: 16rem;
         white-space: normal;
     }

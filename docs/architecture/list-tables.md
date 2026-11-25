@@ -531,6 +531,26 @@ One thing changes on screen after the switch: newer DataViews also shows a dot o
 gear when the view differs from the default. The button stays the same: disabled, not hidden, while
 the view is the default, with no confirm dialog.
 
+### Side padding of the table, toolbar and footer
+
+What it is: the insets of WordPress 7.0, set by hand. The first and last cells, the footer, the empty and
+loading states and the card grid are 24px from the list edges (10.1.7 uses 48px), and sortable header cells
+have 4px at each side. The list reaches both edges of its white box, like the stock card.
+
+Switch to native (DataViews 12 or newer):
+
+1. In `ListTable/DataViewsListTable/_wp-look.scss`, delete the four rules `tr > :first-child`,
+   `tr > :last-child`, `tr > .dataviews-view-table__checkbox-column` and
+   `thead th:has(.dataviews-view-table-header-button):not(:first-child, :last-child)`, with their comment, and
+   the `&.has-compact-density` block under them (its `tr > :last-child` and `thead th:has(...)` rules).
+2. In `ListTable/DataViewsListTable/styles.scss`, delete the rule for `.dataviews-footer`,
+   `.dataviews-loading` and `.dataviews-no-results` (`padding-inline`), and the `padding-inline` line of
+   `.dataviews-view-grid-items` in the narrow media query (keep its `padding-block`).
+3. Keep `$givewp-list-table-edge` on `.givewp-list-table__toolbar` and `__view-controls-row`: the toolbar is
+   Give's own. Keep the margins in `ListTablePage.module.scss` (`.pageContent`) and the stat tile padding.
+4. Check by eye: LTR and RTL, compact and comfortable density, phone width, empty and loading states.
+5. Delete this entry.
+
 ## Money and dates
 
 Every list screen writes money and dates the same way, and the server does all of it. The browser

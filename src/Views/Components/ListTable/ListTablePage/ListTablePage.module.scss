@@ -148,7 +148,13 @@ $givewp-list-table-wp-footer-space: 65px;
     display: flex;
     flex-direction: column;
     gap: var(--givewp-spacing-2);
-    padding: var(--givewp-spacing-6);
+    padding-block: var(--givewp-spacing-6);
+
+    // The list reaches both side edges of the white box, as in WordPress 7.0: its toolbar, cells and footer
+    // carry the 24px inset themselves. Everything else in the box gets the inset here.
+    > :not(:global(.givewp-list-table)) {
+        margin-inline: var(--givewp-spacing-6);
+    }
 }
 
 // The outermost box under the page holds the side gutter: the sheet on the full page, the content

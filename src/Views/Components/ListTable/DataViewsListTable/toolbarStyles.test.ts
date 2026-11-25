@@ -47,10 +47,16 @@ describe('list toolbar styles', () => {
         expect(block(row, '&--labeled')).toContain('padding-block-start: $givewp-list-table-search-label-block');
     });
 
-    it('keeps ring room inside both edges of the toolbar and the narrow view-options row', () => {
-        expect(table).toMatch(/\$givewp-list-table-focus-ring-room: var\(--givewp-spacing-1\);/);
-        expect(block(table, '&__toolbar')).toContain('padding-inline: $givewp-list-table-focus-ring-room');
-        expect(block(table, '&__view-controls-row')).toContain('padding-inline: $givewp-list-table-focus-ring-room');
+    it('insets the toolbar and the narrow view-options row from both edges, so no focus ring is clipped', () => {
+        expect(table).toMatch(/\$givewp-list-table-edge: var\(--givewp-spacing-6\);/);
+        expect(block(table, '&__toolbar')).toContain('padding-inline: $givewp-list-table-edge');
+        expect(block(table, '&__view-controls-row')).toContain('padding-inline: $givewp-list-table-edge');
+    });
+
+    it('insets the footer and the empty and loading states as much as the toolbar', () => {
+        expect(table).toMatch(
+            /\.dataviews-footer,\s*\.dataviews-loading,\s*\.dataviews-no-results \{\s*padding-inline: \$givewp-list-table-edge;/
+        );
     });
 
     it('keeps the toolbar height while rows are selected: the bulk bar lies over the row, out of the flow', () => {
