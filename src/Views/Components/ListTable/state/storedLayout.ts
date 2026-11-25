@@ -119,7 +119,7 @@ export function applyStoredLayout(defaults: ScreenDefaults, stored: unknown): Vi
 }
 
 /**
- * Whether the view shows the screen's default layout. Drives the "Reset view" button.
+ * Whether the view shows the screen's default layout. Drives whether the "Reset view" button is enabled.
  *
  * @since TBD
  */

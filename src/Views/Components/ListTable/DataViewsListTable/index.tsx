@@ -55,9 +55,9 @@ export interface DataViewsListTableProps {
     onChangeSelection: (ids: string[]) => void;
     empty: ReactNode;
     perPageSizes: number[];
-    /** True while the layout is the screen default. Hides "Reset view". */
+    /** True while the layout is the screen default. "Reset view" in the view options is disabled then. */
     isDefaultLayout?: boolean;
-    /** Puts the layout back to the screen defaults. Without it there is no "Reset view". */
+    /** Puts the layout back to the screen defaults. Without it there is no "Reset view" in the view options. */
     onResetLayout?: () => void;
     /** Give's labeled search box, in place of the DataViews one. None when the list has no search. */
     searchBox?: ReactNode;
@@ -67,7 +67,7 @@ export interface DataViewsListTableProps {
     filterBar?: ReactNode;
     /** `narrow` shows the cards (the view must be a grid view). Default `wide`. */
     layoutMode?: ListTableLayoutMode;
-    /** Give's "More view options" menu, right after the view options and "Reset view", in both layouts. */
+    /** Give's "More view options" menu, right after the view options, in both layouts. */
     viewMenu?: ReactNode;
 }
 
@@ -281,10 +281,10 @@ function ListTableFooter({
  * box, filter bar and view options share one toolbar row above the table, with the search hint under
  * it; while rows are selected, the bulk actions show in the search box's place, where the selection
  * starts (the stock footer keeps its own copy next to the pagination), and the search box, its hint and
- * the view options stay there, hidden, so the table does not move; and a "Reset view" button sits after
- * the view options, which this DataViews version does not offer.
+ * the view options stay there, hidden, so the table does not move; and a "Reset view" button sits inside
+ * the view options popover, which this DataViews version does not offer.
  *
- * @since TBD Render the `viewMenu` slot after "Reset view", in both layouts.
+ * @since TBD Render the `viewMenu` slot after the view options, in both layouts, and put "Reset view" inside the view options.
  * @since TBD In the narrow layout, put the view options on their own row under the filters, with no layout switcher.
  * @since TBD Always render the `searchBox` and `filterBar` slots; no stock search or filter row.
  * @since TBD Put the search box, the filter bar and the view options in one row, with the search hint under it; keep them in place while rows are selected.
@@ -331,12 +331,12 @@ function ListTableLayout({
     viewMenu?: ReactNode;
 }) {
     // While rows are selected, the view options, the search box and its hint stay in the layout, hidden
-    // (styles.scss), so the table does not move when the selection starts or ends. Reset view comes and
-    // goes, so it sits first: the view options and the menu keep their place at the end edge.
+    // (styles.scss), so the table does not move when the selection starts or ends. ListTableViewReset renders
+    // no visible control here; it adds "Reset view" to the view options popover.
     const viewControls = (
         <HStack spacing={1} expanded={false} className="givewp-list-table__view-controls">
-            {onResetLayout && <ListTableViewReset isDefault={isDefaultLayout} onConfirm={onResetLayout} />}
             <DataViews.ViewConfig />
+            {onResetLayout && <ListTableViewReset isDefault={isDefaultLayout} onReset={onResetLayout} />}
             {viewMenu}
         </HStack>
     );

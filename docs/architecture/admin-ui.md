@@ -123,7 +123,7 @@ states, and a `SetStatusDialog`. See [list-tables.md](list-tables.md#the-react-p
 A screen that passes a `screen` config also gets view state from the same folder: the view in the
 URL and the search in the tab (`useListTableUrlState`), the per-user stored layout
 (`useListTableLayoutPreferences`, saved through `givewp/v3/list-table-layouts`), and a "Reset view"
-button (`ListTableViewReset`). The pure functions behind them are in `ListTable/state/`. See
+button in the View options popover (`ListTableViewReset`). The pure functions behind them are in `ListTable/state/`. See
 [list-tables.md](list-tables.md#view-state).
 
 Filters are shared too. A screen declares its filters once (`filters.ts` next to the screen) and

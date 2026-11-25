@@ -469,7 +469,8 @@ searching and paging stay on the server.
   and other `wp-*` packages it uses come from the site. So the pin is the DataViews line the
   **oldest supported** WordPress ships (`readme.txt` "Requires at least"), currently 10.1.x for 6.9.
   A newer line needs script handles and components the floor release does not have. Move the pin
-  only when the floor moves.
+  only when the floor moves. Newer DataViews features that Give does by hand are listed in
+  [Stand-ins for newer DataViews](#stand-ins-for-newer-dataviews-remove-after-the-bump).
 - **One shared chunk.** Webpack puts DataViews and the shared list code in `build/givewp-list-table.js`
   (`splitChunks.cacheGroups.listTable`). It has no `.asset.php` dependencies of its own, so
   `Give\Framework\ListTable\Actions\RegisterListTableAssets` registers the `givewp-list-table`
@@ -489,6 +490,46 @@ searching and paging stay on the server.
   screen's globals.
 - **No preloaded rows.** The list fetches its own first page; do not localize rows into the page (see
   [pii.md](pii.md)).
+
+## Stand-ins for newer DataViews (remove after the bump)
+
+Give pins `@wordpress/dataviews` at 10.1.7 (the line WordPress 6.9 ships). Some things that native
+DataViews 12+ (WordPress 7.0) does itself are done here by hand. Each entry below says how to remove
+it. Do the steps in the same PR that moves the DataViews pin.
+
+### Reset view in the View options popover
+
+What it is: `ListTableViewReset` finds the stock "View options" button, waits until it is expanded,
+and portals a stock `Button` into the popover's "Appearance" heading. DataViews 10.1.7 gives
+`DataViews.ViewConfig` no prop or slot for this.
+
+Why it can break: it relies on `aria-controls` being the popover id, on the class
+`.dataviews-settings-section__sidebar`, and on "Appearance" being the first section. If one changes,
+the button is simply missing (nothing crashes). A test with the real `DataViews.ViewConfig` fails
+when that happens.
+
+Switch to native (DataViews 12 or newer, `onReset` prop):
+
+1. In `ListTable/DataViewsListTable/index.tsx`, delete the `ListTableViewReset` import and its line in `viewControls`.
+2. Pass the stock prop on `<DataViews>`: `onReset={isDefaultLayout ? false : onResetLayout}`
+   (`false` shows a disabled button; a function shows an enabled one). Pass it only when
+   `onResetLayout` exists (no `screen` config means no reset). `onResetLayout` and `isDefaultLayout`
+   already come from `useListTableLayoutPreferences`; keep them.
+3. Delete the folder `ListTable/ListTableViewReset/` (`index.tsx`, `styles.scss`, `ListTableViewReset.test.tsx`).
+4. In `DataViewsListTable/index.test.tsx`, delete the test that opens the real "View options" popover
+   and looks for "Reset view", and add one test that the stock "Reset view" calls `resetLayout` when
+   the view is not the default.
+5. In `ListTable/README.MD`, delete the `ListTableViewReset/` row. In the "Reset view" section of this
+   page, say the button is stock. In `docs/architecture/admin-ui.md`, remove the `ListTableViewReset`
+   name next to the "Reset view" button.
+6. Remove the `@wordpress/a11y` `speak` use (stock has no announcement), if nothing else needs it.
+7. Check by eye: popover on desktop, phone and RTL; reset restores columns, density and page size and
+   clears the saved layout.
+8. Delete this entry.
+
+One thing changes on screen after the switch: newer DataViews also shows a dot on the View options
+gear when the view differs from the default. The button stays the same: disabled, not hidden, while
+the view is the default, with no confirm dialog.
 
 ## Money and dates
 
@@ -626,7 +667,7 @@ overrides were written for the pinned `@wordpress/dataviews` version. See "Styli
 
 Donations, Donors, Subscriptions and Donation Forms (with the option-based form editor on) offer
 "Switch to Legacy View". It is no longer a button in the page header: it is the last group of the
-"More view options" menu (`ListTableViewMenu`), right after the stock view options. "Reset view" comes before them, so they do not move when it appears.
+"More view options" menu (`ListTableViewMenu`), right after the stock view options.
 A screen passes `legacyView` to `ListTablePage`; `switchToLegacyView()` calls the domain's `/view`
 route (see [the top of this page](#the-archive-screens-have-two-implementations-and-the-user-picks))
 and reloads. Screens without a legacy screen (Campaigns, Event Tickets, the Forms tab) pass nothing
@@ -900,9 +941,11 @@ WordPress prints inline data only with its handle, so it appears only on list pa
 
 ### Reset view
 
-`ListTableViewReset` is a button next to the stock view options, shown only while the layout
-differs from the defaults. After a confirmation it puts the columns, density and page size back to
-the defaults and deletes the stored record. Filters, sort and search stay. When the page size
+`ListTableViewReset` puts a "Reset view" button inside the stock View options popover, at the top
+right of "Appearance". It is disabled while the layout is the default. It asks nothing: one click
+puts the columns, density and page size back to the defaults, deletes the stored record, and says so
+to screen readers. It is a stand-in for the stock `onReset` of newer DataViews (see
+[Stand-ins for newer DataViews](#stand-ins-for-newer-dataviews-remove-after-the-bump)). Filters, sort and search stay. When the page size
 changes, the page becomes the one that holds the row the current page starts with (page 3 of 50 rows
 becomes page 4 of 30), and that change adds a history entry like any other. Without a `screen`
 config it still resets the layout for the current page view; nothing is stored.

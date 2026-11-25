@@ -8,6 +8,15 @@ import DataViewsListTable from './index';
 (globalThis as {IS_REACT_ACT_ENVIRONMENT?: boolean}).IS_REACT_ACT_ENVIRONMENT = true;
 
 jest.mock('./styles.scss', () => ({}));
+// The installed `Button` does not know `__next40pxDefaultSize` and React warns; the one WordPress ships does.
+jest.mock('@wordpress/components', () => {
+    const {createElement, forwardRef} = jest.requireActual('react');
+    const actual = jest.requireActual('@wordpress/components');
+    const Button = forwardRef(({__next40pxDefaultSize, ...props}: Record<string, unknown>, ref: unknown) =>
+        createElement(actual.Button, {...props, ref})
+    );
+    return {...actual, Button};
+});
 
 const fields: Field<ListTableItem>[] = [{id: 'name', label: 'Name', getValue: ({item}) => String(item.name ?? '')}];
 const items = Array.from({length: 30}, (_, index) => ({id: index + 1, name: `Row ${index + 1}`}));
@@ -44,6 +53,12 @@ const render = (props: {page: number; rows: ListTableItem[]; totalItems: number 
     });
 
 beforeEach(() => {
+    // jsdom has no ResizeObserver, which the View options popover uses.
+    (globalThis as {ResizeObserver?: unknown}).ResizeObserver = class {
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+    };
     container = document.createElement('div');
     document.body.appendChild(container);
     root = createRoot(container);
@@ -52,6 +67,7 @@ beforeEach(() => {
 afterEach(() => {
     act(() => root.unmount());
     container.remove();
+    delete (globalThis as {ResizeObserver?: unknown}).ResizeObserver;
 });
 
 describe('DataViewsListTable total', () => {
@@ -250,8 +266,8 @@ describe('DataViewsListTable page control switch', () => {
 });
 
 describe('DataViewsListTable view controls', () => {
-    // Reset view comes and goes, so it sits before the controls that must not move.
-    it('orders Reset view, then the view options, then the more options menu', async () => {
+    // "Reset view" is not in the toolbar: it is added inside the View options popover.
+    it('orders the view options, then the more options menu', async () => {
         await render({
             page: 1,
             rows: items,
@@ -267,7 +283,24 @@ describe('DataViewsListTable view controls', () => {
             (button) => button.getAttribute('aria-label') ?? button.textContent
         );
 
-        expect(labels).toEqual(['Reset view', 'View options', 'More view options']);
+        expect(labels).toEqual(['View options', 'More view options']);
+    });
+
+    // Fails when a DataViews bump changes the popover markup that `ListTableViewReset` relies on.
+    it('shows Reset view in the heading of the real View options popover', async () => {
+        const onResetLayout = jest.fn();
+        await render({page: 1, rows: items, totalItems: 30, layout: {isDefaultLayout: false, onResetLayout}});
+        await act(async () => container.querySelector<HTMLElement>('button[aria-label="View options"]')?.click());
+        await act(async () => new Promise((resolve) => setTimeout(resolve, 50)));
+
+        const reset = document.querySelector<HTMLButtonElement>(
+            '.dataviews-config__popover .dataviews-settings-section__sidebar > .givewp-view-config-reset > button'
+        );
+        expect(reset?.textContent).toBe('Reset view');
+        expect(reset?.parentElement?.parentElement?.querySelector('h2')?.textContent).toBe('Appearance');
+
+        await act(async () => reset?.click());
+        expect(onResetLayout).toHaveBeenCalledTimes(1);
     });
 });
 
