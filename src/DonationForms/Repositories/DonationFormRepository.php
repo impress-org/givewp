@@ -71,6 +71,7 @@ class DonationFormRepository
     }
 
     /**
+     * @since TBD Clear the post cache after the insert so cached queries include the new form.
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.7.0 Add post_excerpt to the list of fields being inserted
      * @since 3.0.0
@@ -138,6 +139,8 @@ class DonationFormRepository
 
         DB::query('COMMIT');
 
+        clean_post_cache($donationFormId);
+
         $donationForm->id = $donationFormId;
 
         $donationForm->createdAt = $dateCreated;
@@ -150,6 +153,7 @@ class DonationFormRepository
     }
 
     /**
+     * @since TBD Clear the cached post after the update so persistent object caches do not serve the old status.
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.7.0 Add post_excerpt to the list of fields being updated
      * @since 3.0.0
@@ -214,10 +218,13 @@ class DonationFormRepository
 
         DB::query('COMMIT');
 
+        clean_post_cache($donationForm->id);
+
         Hooks::doAction('givewp_donation_form_updated', $donationForm);
     }
 
     /**
+     * @since TBD Clear the cached post after the delete so persistent object caches do not serve the deleted form.
      * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.0.0
      *
@@ -246,6 +253,8 @@ class DonationFormRepository
         }
 
         DB::query('COMMIT');
+
+        clean_post_cache($donationForm->id);
 
         Hooks::doAction('givewp_donation_form_deleted', $donationForm);
 
