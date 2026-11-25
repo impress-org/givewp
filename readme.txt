@@ -273,7 +273,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= [4.20.0] 2026-11-24 =
+= [4.20.0] 2026-11-25 =
 
 * Enhancement - The Reports page now loads much faster on sites with hundreds of thousands of donations
 * Feature - Added automatic Stripe webhook setup when an account is connected, webhook endpoint management for each connected account, and an email when a webhook endpoint stops working.
