@@ -13,6 +13,8 @@ function do_shortcode($shortcode)
 
 namespace Give\Tests\Unit\ThirdPartySupport\Elementor\Widgets\V2;
 
+use Give\Campaigns\Models\Campaign;
+use Give\DonationForms\Models\DonationForm;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidget\ElementorDonationFormWidget;
@@ -167,6 +169,37 @@ class TestElementorDonationFormWidget extends TestCase
         $this->assertSame(
             '[give_form display_style="newTab" continue_button_title="Donate in New Tab" id="789"]',
             self::$capturedShortcode
+        );
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDefaultFormOptionStaysTheCampaignDefaultFormWhenAStandaloneFormExists(): void
+    {
+        $campaign = Campaign::factory()->create(['title' => 'Spring Appeal']);
+        DonationForm::factory()->create(['title' => 'A standalone form']);
+
+        $widget = new ElementorDonationFormWidget();
+
+        $this->assertSame(
+            (string)$campaign->defaultFormId,
+            $widget->getDefaultFormOption($widget->getFormOptionsWithCampaigns())
+        );
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDefaultFormOptionIsTheFirstStandaloneFormWhenNoFormBelongsToACampaign(): void
+    {
+        $form = DonationForm::factory()->create(['title' => 'A standalone form']);
+
+        $widget = new ElementorDonationFormWidget();
+
+        $this->assertSame(
+            (string)$form->id,
+            $widget->getDefaultFormOption($widget->getFormOptionsWithCampaigns())
         );
     }
 }
