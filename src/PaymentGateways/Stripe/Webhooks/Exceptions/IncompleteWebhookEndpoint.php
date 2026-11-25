@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\Exceptions;
@@ -11,12 +11,12 @@ use Give\Framework\Exceptions\Primitives\Exception;
 /**
  * Thrown when an endpoint points at this site but is disabled or lacks events, and enabling or completing it failed.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class IncompleteWebhookEndpoint extends Exception
 {
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public static function updateFailed(string $endpointId, WebhookEndpointException $previous): self
     {

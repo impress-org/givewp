@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD Rename $template_html to $give_template_html so the template variable has the Give prefix.
+ * @since 4.20.0 Rename $template_html to $give_template_html so the template variable has the Give prefix.
  * @since 4.19.1 Escape output.
  */
 

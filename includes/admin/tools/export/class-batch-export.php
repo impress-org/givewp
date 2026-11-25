@@ -116,7 +116,7 @@ class Give_Batch_Export extends Give_Export {
 	/**
 	 * Give_Batch_Export constructor.
 	 *
-	 * @since TBD Use wp_is_writable() to check the uploads folder.
+	 * @since 4.20.0 Use wp_is_writable() to check the uploads folder.
      * @since 2.21.0 Create only csv file.
 	 * @since 2.9.0 add hash to filename to avoid collisions
 	 * @since 1.5
@@ -148,7 +148,7 @@ class Give_Batch_Export extends Give_Export {
 	/**
 	 * Process a step.
 	 *
-	 * @since TBD Use wp_delete_file() to remove the old export file.
+	 * @since 4.20.0 Use wp_delete_file() to remove the old export file.
 	 * @since 1.5
 	 * @return bool
 	 */
@@ -252,7 +252,7 @@ class Give_Batch_Export extends Give_Export {
 	/**
 	 * Retrieve the file data is written to.
 	 *
-	 * @since TBD Use wp_is_writable() to check the export file.
+	 * @since 4.20.0 Use wp_is_writable() to check the export file.
 	 * @since 1.5
 	 * @return string
 	 */
@@ -306,7 +306,7 @@ class Give_Batch_Export extends Give_Export {
 	/**
 	 * Perform the export.
 	 *
-	 * @since  TBD Use wp_delete_file() to remove the temp export file.
+	 * @since  4.20.0 Use wp_delete_file() to remove the temp export file.
 	 * @since  4.19.1 Escape output.
 	 * @access public
 	 * @since  1.5

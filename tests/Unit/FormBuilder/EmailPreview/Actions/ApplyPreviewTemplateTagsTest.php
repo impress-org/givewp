@@ -6,12 +6,12 @@ use Give\FormBuilder\EmailPreview\Actions\ApplyPreviewTemplateTags;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 class ApplyPreviewTemplateTagsTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testPaymentIdTagBecomesASampleNumberInRange()
     {
@@ -26,7 +26,7 @@ class ApplyPreviewTemplateTagsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testDonationTagBecomesTheSampleFormTitle()
     {

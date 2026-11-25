@@ -11,7 +11,7 @@ use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\UsesFakeStripeApi;
 use Stripe\Exception\ApiConnectionException;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class WebhookHealthMonitorTest extends TestCase
 {
@@ -29,7 +29,7 @@ final class WebhookHealthMonitorTest extends TestCase
     private $emails = [];
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function setUp(): void
     {
@@ -47,7 +47,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItEmailsTheFatalErrorAddressOnceForTheSameProblem(): void
     {
@@ -66,7 +66,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItEmailsAgainWhenAProblemComesBackAfterAHealthyCheck(): void
     {
@@ -86,7 +86,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItKeepsTheStoredProblemsOfTheOtherModeAfterAHealthyCheck(): void
     {
@@ -106,7 +106,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItKeepsTheProblemOfASkippedAccountWhenAnotherAccountChanges(): void
     {
@@ -134,7 +134,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItDropsTheProblemOfAnAccountThatRecoveredWhileAnotherWasSkipped(): void
     {
@@ -156,7 +156,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItEmailsAgainWhenTheProblemMovesToAnotherAccountWithTheSameName(): void
     {
@@ -182,7 +182,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItDoesNothingWhenTheEmailSettingIsDisabled(): void
     {
@@ -195,7 +195,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @dataProvider transientFailureProvider
      */
@@ -210,7 +210,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function transientFailureProvider(): array
     {
@@ -229,7 +229,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItKeepsTheLastEmailWhenALaterCheckIsSkipped(): void
     {
@@ -247,7 +247,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItDoesNotEmailAgainWhenOneOfTwoAccountsIsSkipped(): void
     {
@@ -272,7 +272,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItEmailsTheErrorStripeReturnsForARejectedKey(): void
     {
@@ -290,7 +290,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItListsEveryAccountInOneEmail(): void
     {
@@ -311,7 +311,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItTriesAgainOnTheNextRunWhenTheEmailFails(): void
     {
@@ -336,7 +336,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItLogsTheProblemsOnce(): void
     {
@@ -353,7 +353,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItEmailsAgainWhenTheSameProblemShowsUpInTheOtherMode(): void
     {
@@ -371,7 +371,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItDoesNotCallStripeWithoutAccounts(): void
     {
@@ -384,7 +384,7 @@ final class WebhookHealthMonitorTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function saveTwoAccounts(): void
     {

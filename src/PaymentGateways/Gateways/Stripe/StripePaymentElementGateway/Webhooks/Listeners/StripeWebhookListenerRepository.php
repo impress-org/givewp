@@ -90,7 +90,7 @@ trait StripeWebhookListenerRepository
      *
      * For Stripe Connect accounts, we need to pass the connected account ID to retrieve the invoice from the correct account, not the platform account.
      *
-     * @since TBD Read the request options from getStripeRequestOptions().
+     * @since 4.20.0 Read the request options from getStripeRequestOptions().
      * @since 4.19.1 Escape exception message.
      * @since 4.15.3 Added support for using a secret key when retrieving invoices for non-default accounts
      * 4.14.1 Added $formId parameter and stripe_account option for Stripe Connect support
@@ -123,7 +123,7 @@ trait StripeWebhookListenerRepository
      * A subscription that is still active is moved to pending even when its first donation was
      * already failed.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param Donation $initialDonation The first donation of the subscription
      *
@@ -157,7 +157,7 @@ trait StripeWebhookListenerRepository
     /**
      * Build the options for a Stripe API request made with the account the form uses.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param int|null $formId Form ID to determine the connected account
      *

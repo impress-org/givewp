@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks;
@@ -12,7 +12,7 @@ use Give\PaymentGateways\Stripe\Webhooks\ValueObjects\WebhookSetupStatus;
 /**
  * Builds the content of the modal shown after a Stripe account is added, from the setup result of each account.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class WebhookSetupNotice
 {
@@ -22,7 +22,7 @@ final class WebhookSetupNotice
     private $target;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function __construct(WebhookTarget $target)
     {
@@ -30,7 +30,7 @@ final class WebhookSetupNotice
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param array<int, array{account: AccountDetail, status: WebhookSetupStatus, message: string}> $results
      * @param string $mode "live" or "test"
@@ -97,7 +97,7 @@ final class WebhookSetupNotice
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function describe(AccountDetail $account, WebhookSetupStatus $status, string $message): string
     {
@@ -142,7 +142,7 @@ final class WebhookSetupNotice
     /**
      * The manual setup steps that the modal showed before GiveWP set up endpoints itself.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     private function manualInstructions(): string
     {
@@ -168,7 +168,7 @@ final class WebhookSetupNotice
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function webhookSettingsUrl(): string
     {

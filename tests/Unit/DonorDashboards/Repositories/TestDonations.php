@@ -10,14 +10,14 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use RuntimeException;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class TestDonations extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testGetDonationsKeepsOtherDonationsWhenOneReceiptFails(): void
     {

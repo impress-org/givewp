@@ -8,12 +8,12 @@ use ReflectionMethod;
 use ReflectionProperty;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class BackgroundProcessKeyTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function setUp(): void
     {
@@ -25,7 +25,7 @@ final class BackgroundProcessKeyTest extends TestCase
     /**
      * The identifier names the stored queue rows and the cron event, so it must not change.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public function testUpdaterIdentifierIsUnchanged(): void
     {
@@ -37,7 +37,7 @@ final class BackgroundProcessKeyTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testQueueKeysHaveTheExpectedShapeAndLength(): void
     {

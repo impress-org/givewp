@@ -329,7 +329,7 @@ class Give_Addon_Activation_Banner {
 	/**
 	 * Render single banner activation
 	 *
-	 * @since TBD Use wp_strip_all_tags() instead of strip_tags().
+	 * @since 4.20.0 Use wp_strip_all_tags() instead of strip_tags().
 	 * @since 4.19.1 Escape output. Add a nonce to the dismiss link.
 	 * @since 2.1.0
 	 *

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\Actions;
@@ -16,7 +16,7 @@ use Stripe\WebhookEndpoint;
 /**
  * Creates a webhook endpoint on a connected Stripe account.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class CreateWebhookEndpoint
 {
@@ -26,7 +26,7 @@ final class CreateWebhookEndpoint
      * Stripe requires an explicit API version when an endpoint is created as a connected account,
      * and does not allow changing it afterwards.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string               $mode          "live" or "test"
      * @param string[]             $enabledEvents Event types, or ["*"] for all.

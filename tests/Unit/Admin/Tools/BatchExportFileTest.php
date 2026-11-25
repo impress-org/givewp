@@ -10,14 +10,14 @@ use ReflectionMethod;
  * Locks the export file lifecycle of Give_Batch_Export: step 1 starts a fresh file, later steps
  * append to it, and get_file() creates the file when it is missing.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class BatchExportFileTest extends TestCase
 {
     private const FILE_NAME = 'give-batch-export-file-test';
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function setUp(): void
     {
@@ -30,7 +30,7 @@ final class BatchExportFileTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function tearDown(): void
     {
@@ -41,7 +41,7 @@ final class BatchExportFileTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testStepOneReplacesAnOldFile(): void
     {
@@ -55,7 +55,7 @@ final class BatchExportFileTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testLaterStepAppendsToTheFile(): void
     {
@@ -69,7 +69,7 @@ final class BatchExportFileTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testGetFileCreatesAMissingFileAndKeepsItWritable(): void
     {
@@ -88,7 +88,7 @@ final class BatchExportFileTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function makeExport(int $step): Give_Batch_Export
     {
@@ -108,7 +108,7 @@ final class BatchExportFileTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function filePath(): string
     {

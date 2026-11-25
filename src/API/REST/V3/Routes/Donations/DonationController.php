@@ -185,7 +185,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @since TBD Count only the donations that match the request filters in the X-WP-Total and X-WP-TotalPages headers.
+     * @since 4.20.0 Count only the donations that match the request filters in the X-WP-Total and X-WP-TotalPages headers.
      * @since 4.6.0
      */
     public function get_items($request)

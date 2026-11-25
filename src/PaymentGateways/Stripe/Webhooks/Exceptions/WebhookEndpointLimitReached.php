@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\Exceptions;
@@ -12,12 +12,12 @@ use Give\PaymentGateways\Stripe\Webhooks\WebhookTarget;
 /**
  * Thrown instead of creating an endpoint on an account that already has the maximum number of endpoints.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class WebhookEndpointLimitReached extends Exception
 {
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public static function create(): self
     {

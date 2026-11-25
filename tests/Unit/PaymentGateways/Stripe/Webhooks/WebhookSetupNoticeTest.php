@@ -9,14 +9,14 @@ use Give\Tests\TestCase;
 use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\UsesFakeStripeApi;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class WebhookSetupNoticeTest extends TestCase
 {
     use UsesFakeStripeApi;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItReportsSuccessWhenEveryAccountIsSetUp(): void
     {
@@ -34,7 +34,7 @@ final class WebhookSetupNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItTellsAConnectAccountToReconnectAndAManualAccountToFixItsKey(): void
     {
@@ -56,7 +56,7 @@ final class WebhookSetupNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItFallsBackToTheManualStepsOnAnUnknownError(): void
     {
@@ -71,7 +71,7 @@ final class WebhookSetupNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItListsTheRequiredEventsForAnIncompleteEndpoint(): void
     {
@@ -82,7 +82,7 @@ final class WebhookSetupNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItStatesTheEndpointLimitForAFullAccount(): void
     {
@@ -95,7 +95,7 @@ final class WebhookSetupNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItAsksToWaitWhenStripeRateLimitedTheRequest(): void
     {
@@ -107,7 +107,7 @@ final class WebhookSetupNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItPointsAtTheServerWhenStripeCannotBeReached(): void
     {
@@ -119,7 +119,7 @@ final class WebhookSetupNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItNamesTheModeTheEndpointWasSetUpFor(): void
     {
@@ -136,7 +136,7 @@ final class WebhookSetupNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItShowsTheManualStepsWhenThereIsNoAccount(): void
     {
@@ -148,7 +148,7 @@ final class WebhookSetupNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItEscapesTheStripeErrorMessage(): void
     {
@@ -167,7 +167,7 @@ final class WebhookSetupNoticeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @return array{level: string, title: string, body: string, retry: bool}
      */

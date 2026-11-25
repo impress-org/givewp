@@ -163,7 +163,7 @@ import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesTo
     };
 
     /**
-     * @since TBD Flag the order as a card fields payment so the server adds the 3D Secure card source.
+     * @since 4.20.0 Flag the order as a card fields payment so the server adds the 3D Secure card source.
      * @since 4.1.0
      */
     const cardFieldsCreateOrderHandler = async () => {

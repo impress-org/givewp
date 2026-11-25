@@ -14,7 +14,7 @@ class Helpers
 
     /**
      * Retrieve the current donor ID from based on session
-     * @since TBD Link a donor to the logged-in user when the email access token proves ownership of the account email.
+     * @since 4.20.0 Link a donor to the logged-in user when the email access token proves ownership of the account email.
      * @since 4.16.8.1 Guard against get_donor_by() finding no matching donor for the token's email.
      * @since 2.10.0
      */
@@ -79,7 +79,7 @@ class Helpers
      * Connects an unlinked donor to a logged-in user. The emailed access token proves control of the donor's
      * mailbox, so the link is made only when the token's email is also the user's account email.
      *
-     * @since TBD Persist only the user association so legacy donors can have missing name metadata.
+     * @since 4.20.0 Persist only the user association so legacy donors can have missing name metadata.
      *
      * @throws Exception
      */

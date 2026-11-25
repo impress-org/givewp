@@ -1468,7 +1468,7 @@ add_action( 'give_donor_personal_address_label', 'give_donor_personal_address_la
  * Update Donor Information when User Profile is updated from admin.
  * Note: for internal use only.
  *
- * @since TBD Use wp_strip_all_tags() instead of strip_tags().
+ * @since 4.20.0 Use wp_strip_all_tags() instead of strip_tags().
  * @since 4.19.1 Check that the name fields are set before reading them.
  * @since  2.0
  *

@@ -15,7 +15,7 @@ class IntlTelInput
     private const VERSION = '21.2.4';
 
     /**
-     * @since TBD Serve the file from the plugin's build folder instead of the jsDelivr CDN.
+     * @since 4.20.0 Serve the file from the plugin's build folder instead of the jsDelivr CDN.
      * @since 3.9.0
      */
     public static function getCssUrl(): string
@@ -24,7 +24,7 @@ class IntlTelInput
     }
 
     /**
-     * @since TBD Serve the file from the plugin's build folder instead of the jsDelivr CDN.
+     * @since 4.20.0 Serve the file from the plugin's build folder instead of the jsDelivr CDN.
      * @since 3.9.0
      */
     public static function getScriptUrl(): string
@@ -33,7 +33,7 @@ class IntlTelInput
     }
 
     /**
-     * @since TBD Serve the file from the plugin's build folder instead of the jsDelivr CDN, with the library version as a query string.
+     * @since 4.20.0 Serve the file from the plugin's build folder instead of the jsDelivr CDN, with the library version as a query string.
      * @since 3.9.0
      */
     public static function getUtilsScriptUrl(): string

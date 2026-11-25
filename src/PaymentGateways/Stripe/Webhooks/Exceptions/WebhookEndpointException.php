@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\Exceptions;
@@ -12,7 +12,7 @@ use Stripe\Exception\ApiErrorException;
 /**
  * Thrown when a webhook endpoint request cannot be made or Stripe rejects it.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class WebhookEndpointException extends Exception
 {
@@ -32,7 +32,7 @@ final class WebhookEndpointException extends Exception
     private $requestId;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public static function fromStripe(ApiErrorException $exception): self
     {
@@ -46,7 +46,7 @@ final class WebhookEndpointException extends Exception
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public static function missingAccessToken(string $mode): self
     {
@@ -54,7 +54,7 @@ final class WebhookEndpointException extends Exception
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public static function invalidMode(string $mode): self
     {
@@ -62,7 +62,7 @@ final class WebhookEndpointException extends Exception
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public static function invalidEndpointId(string $endpointId): self
     {
@@ -72,7 +72,7 @@ final class WebhookEndpointException extends Exception
     /**
      * HTTP status of the Stripe response, or null when the request failed before Stripe answered.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public function getHttpStatus(): ?int
     {
@@ -82,7 +82,7 @@ final class WebhookEndpointException extends Exception
     /**
      * Stripe error type, for example "invalid_request_error" or "authentication_error".
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public function getErrorType(): ?string
     {
@@ -92,7 +92,7 @@ final class WebhookEndpointException extends Exception
     /**
      * Id of the Stripe request (`req_...`), which finds the call in the Stripe Dashboard logs.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public function getRequestId(): ?string
     {

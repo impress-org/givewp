@@ -63,7 +63,7 @@ class TestGive extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testPluginHeaderDeclaresTheGplLicenseOfTheReadme(): void
     {

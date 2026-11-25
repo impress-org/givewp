@@ -157,7 +157,7 @@ class UtilsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testGetQueryParamFromURL(): void
     {

@@ -1028,7 +1028,7 @@ function give_donation_form_validate_new_user() {
  * Donation Form Validate User Login
  *
  * @access private
- * @since  TBD Use wp_strip_all_tags() instead of strip_tags(), and reject a login that is not a string.
+ * @since  4.20.0 Use wp_strip_all_tags() instead of strip_tags(), and reject a login that is not a string.
  * @since  4.16.7 Authenticate via wp_authenticate() and return a single generic error.
  * @since  1.0
  *
@@ -1254,7 +1254,7 @@ function give_register_and_login_new_user( $user_data = [] ) {
 /**
  * Get Donation Form User
  *
- * @since   TBD Use wp_strip_all_tags() instead of strip_tags() on the name fields.
+ * @since   4.20.0 Use wp_strip_all_tags() instead of strip_tags() on the name fields.
  * @since   4.19.1 Read the AJAX flag from the sanitized post data.
  * @since   1.0
  * @since 2.17.1 Do not run validation check for ajax request expect donation validation ajax request.

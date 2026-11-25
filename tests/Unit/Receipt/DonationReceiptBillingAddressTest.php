@@ -8,14 +8,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class DonationReceiptBillingAddressTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testShowsTheBillingAddressWhenTheDonationHasOne(): void
     {
@@ -34,7 +34,7 @@ final class DonationReceiptBillingAddressTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testHidesTheBillingAddressWhenTheDonationHasNone(): void
     {
@@ -46,7 +46,7 @@ final class DonationReceiptBillingAddressTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testHidesTheBillingAddressWhenItIsOnlyMarkup(): void
     {

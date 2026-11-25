@@ -6,12 +6,12 @@ use Give\Tests\TestCase;
 use Give_Admin_Settings;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class SettingsFieldTitleTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testTitleWithTextIsReturnedAsGiven(): void
     {
@@ -21,7 +21,7 @@ final class SettingsFieldTitleTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testEmptyTitleStaysEmpty(): void
     {

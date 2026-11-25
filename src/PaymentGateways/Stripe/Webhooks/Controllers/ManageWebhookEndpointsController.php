@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\Controllers;
@@ -26,7 +26,7 @@ use Give\PaymentGateways\Stripe\Webhooks\WebhookTarget;
  * Operations: "status" (read-only, every account), "list" (one account), and "create", "update" and "delete" on one
  * endpoint of one account. The last three answer with the refreshed modal content.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class ManageWebhookEndpointsController
 {
@@ -80,7 +80,7 @@ final class ManageWebhookEndpointsController
     private $view;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function __construct(
         GetStripeAccountsForMode $getAccounts,
@@ -103,7 +103,7 @@ final class ManageWebhookEndpointsController
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function __invoke(): void
     {
@@ -181,7 +181,7 @@ final class ManageWebhookEndpointsController
      * The health state of every account that holds a key for the mode. A read that fails reports "error" for that
      * account only.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param array<string, AccountDetail> $accounts
      *
@@ -213,7 +213,7 @@ final class ManageWebhookEndpointsController
     /**
      * Applies a create, update or delete and returns the message to show above the refreshed list.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @return array{level: string, message: string}
      */
@@ -236,7 +236,7 @@ final class ManageWebhookEndpointsController
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @return array{level: string, message: string}
      *
@@ -277,7 +277,7 @@ final class ManageWebhookEndpointsController
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @return array{level: string, message: string}
      *
@@ -322,7 +322,7 @@ final class ManageWebhookEndpointsController
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @return array{level: string, message: string}
      *
@@ -345,7 +345,7 @@ final class ManageWebhookEndpointsController
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param WebhookEndpointDto[] $endpoints
      */
@@ -363,7 +363,7 @@ final class ManageWebhookEndpointsController
     /**
      * The required events that were checked in the form.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @return string[]
      */
@@ -377,7 +377,7 @@ final class ManageWebhookEndpointsController
     /**
      * Read without input(), because sanitize_text_field() deletes percent-encoded octets such as "%2B".
      *
-     * @since TBD
+     * @since 4.20.0
      */
     private function url(): string
     {
@@ -387,7 +387,7 @@ final class ManageWebhookEndpointsController
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function input(string $key): string
     {
@@ -395,7 +395,7 @@ final class ManageWebhookEndpointsController
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @return array{level: string, message: string}
      */
@@ -405,7 +405,7 @@ final class ManageWebhookEndpointsController
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @return array{level: string, message: string}
      */
@@ -422,7 +422,7 @@ final class ManageWebhookEndpointsController
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function logChange(string $change, AccountDetail $account, string $mode, string $endpointId): void
     {
@@ -438,7 +438,7 @@ final class ManageWebhookEndpointsController
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function logFailure(
         string $operation,

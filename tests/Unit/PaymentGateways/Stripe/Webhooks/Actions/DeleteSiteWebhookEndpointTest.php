@@ -11,7 +11,7 @@ use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\UsesFakeStripeApi;
 use RuntimeException;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class DeleteSiteWebhookEndpointTest extends TestCase
 {
@@ -19,7 +19,7 @@ final class DeleteSiteWebhookEndpointTest extends TestCase
     use UsesFakeStripeApi;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItDeletesOnlyTheEndpointForThisSiteInEachMode(): void
     {
@@ -47,7 +47,7 @@ final class DeleteSiteWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItSkipsAModeWithoutAKey(): void
     {
@@ -62,7 +62,7 @@ final class DeleteSiteWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItDoesNotDeleteWhenNoEndpointMatchesThisSite(): void
     {
@@ -78,7 +78,7 @@ final class DeleteSiteWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItTreatsAnEndpointThatIsAlreadyGoneAsDeleted(): void
     {
@@ -93,7 +93,7 @@ final class DeleteSiteWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItLogsAStripeErrorAndStillTriesTheOtherMode(): void
     {
@@ -123,7 +123,7 @@ final class DeleteSiteWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItLogsAnUnexpectedErrorInsteadOfThrowing(): void
     {
@@ -137,7 +137,7 @@ final class DeleteSiteWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItKeepsAnEndpointThatAnotherSavedRecordOfTheSameStripeAccountLists(): void
     {
@@ -155,7 +155,7 @@ final class DeleteSiteWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItDeletesWithoutAskingStripeWhenTheOtherRecordIsAnotherKnownAccount(): void
     {
@@ -171,7 +171,7 @@ final class DeleteSiteWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItKeepsEveryEndpointWhenTheOtherRecordHasTheSameAccountId(): void
     {
@@ -186,7 +186,7 @@ final class DeleteSiteWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItReportsFailureAndKeepsTheEndpointWhenAnotherRecordCannotBeChecked(): void
     {
@@ -202,7 +202,7 @@ final class DeleteSiteWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function siteEndpoint(string $id = 'we_123'): array
     {

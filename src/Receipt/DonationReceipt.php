@@ -167,7 +167,7 @@ class DonationReceipt extends Receipt
     /**
      * Get donor billing address
      *
-     * @since TBD Use wp_strip_all_tags() instead of strip_tags().
+     * @since 4.20.0 Use wp_strip_all_tags() instead of strip_tags().
      *
      * @return string|null
      */

@@ -7,14 +7,14 @@ use Give\Tests\TestCase;
 use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\UsesFakeStripeApi;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class GetStripeAccountsForModeTest extends TestCase
 {
     use UsesFakeStripeApi;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItSkipsSavedEntriesThatAreNotValidAccounts(): void
     {
@@ -35,7 +35,7 @@ final class GetStripeAccountsForModeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItReturnsAManualAccountOnlyForTheModeItHasAKeyFor(): void
     {
@@ -62,7 +62,7 @@ final class GetStripeAccountsForModeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItKeysTheAccountsBySlug(): void
     {
@@ -82,7 +82,7 @@ final class GetStripeAccountsForModeTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItReturnsNothingWhenNoAccountIsSaved(): void
     {

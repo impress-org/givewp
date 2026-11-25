@@ -7,12 +7,12 @@ use Give_Graph;
 use ReflectionProperty;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class GiveGraphIdTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function setUp(): void
     {
@@ -24,7 +24,7 @@ final class GiveGraphIdTest extends TestCase
     /**
      * The id is only a DOM id suffix, so only its shape and uniqueness matter.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public function testEachGraphGetsAnMd5ShapedId(): void
     {
@@ -37,7 +37,7 @@ final class GiveGraphIdTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function graphId(Give_Graph $graph): string
     {

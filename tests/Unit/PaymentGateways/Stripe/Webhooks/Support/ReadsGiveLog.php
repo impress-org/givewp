@@ -7,14 +7,14 @@ use Give\Log\LogRepository;
 use Give\PaymentGateways\Stripe\Webhooks\WebhookLogger;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 trait ReadsGiveLog
 {
     /**
      * The Stripe webhook entries of one level, optionally narrowed to an account slug.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string $type A Give\Log\ValueObjects\LogType value
      *

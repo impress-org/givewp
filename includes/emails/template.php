@@ -34,6 +34,7 @@ function give_get_email_templates() {
  *
  * @todo Modify this function to remove payment id dependency.
  *
+ * @since 4.20.0 Flag the tag arguments as an email composition.
  * @since 1.0
  *
  * @param string $message      Message with the template tags.
@@ -44,7 +45,7 @@ function give_get_email_templates() {
  * @return string $message Fully formatted message
  */
 function give_email_template_tags( $message, $payment_data, $payment_id, $admin_notice = false ) {
-	return give_do_email_tags( $message, $payment_id );
+	return give_do_email_tags( $message, [ 'payment_id' => $payment_id, 'email_composition' => true ] );
 }
 
 /**
@@ -52,7 +53,7 @@ function give_email_template_tags( $message, $payment_data, $payment_id, $admin_
  *
  * Provides sample content for the preview email functionality within settings > email.
  *
- * @since TBD Use wp_rand() instead of rand().
+ * @since 4.20.0 Use wp_rand() instead of rand().
  * @since 4.19.1 Use gmdate() instead of date().
  * @since 1.0
  *

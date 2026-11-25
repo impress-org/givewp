@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\Actions;
@@ -15,7 +15,7 @@ use Give\PaymentGateways\Stripe\Webhooks\WebhookTarget;
 /**
  * Reports whether a Stripe account sends every required event to this site, without changing anything.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class CheckWebhookEndpointHealth
 {
@@ -30,7 +30,7 @@ final class CheckWebhookEndpointHealth
     private $target;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function __construct(ListWebhookEndpoints $listEndpoints, WebhookTarget $target)
     {
@@ -39,7 +39,7 @@ final class CheckWebhookEndpointHealth
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string $mode "live" or "test"
      *
@@ -53,7 +53,7 @@ final class CheckWebhookEndpointHealth
     /**
      * The health of an account whose endpoints are already listed, so no second request is needed.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param WebhookEndpointDto[] $endpoints
      */

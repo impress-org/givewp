@@ -257,7 +257,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @throws Exception
      */
@@ -291,7 +291,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @throws Exception
      */

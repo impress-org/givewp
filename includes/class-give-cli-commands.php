@@ -367,7 +367,7 @@ class GIVE_CLI_COMMAND {
 	 * wp give donors --number=1000
 	 * wp give donors --form-id=1024
 	 *
-	 * @since TBD Use wp_is_writable() to check the CSV file.
+	 * @since 4.20.0 Use wp_is_writable() to check the CSV file.
 	 * @since 4.19.1 Use gmdate() and wp_date() instead of date(), and add translators comments.
 	 * @since         1.7
 	 * @access        public
@@ -953,7 +953,7 @@ class GIVE_CLI_COMMAND {
 	/**
 	 * Get random user name
 	 *
-	 * @since TBD Use wp_rand() to pick the names.
+	 * @since 4.20.0 Use wp_rand() to pick the names.
 	 * @since 1.8.17
 	 * @return string
 	 */

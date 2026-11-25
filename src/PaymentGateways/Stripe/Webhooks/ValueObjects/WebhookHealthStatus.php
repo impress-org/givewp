@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\ValueObjects;
@@ -11,7 +11,7 @@ use Give\Framework\Support\ValueObjects\Enum;
 /**
  * Read-only state of the webhook endpoint that points at this site on one Stripe account.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @method static WebhookHealthStatus HEALTHY()
  * @method static WebhookHealthStatus MISSING()

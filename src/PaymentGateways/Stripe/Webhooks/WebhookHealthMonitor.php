@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks;
@@ -17,7 +17,7 @@ use Give\PaymentGateways\Stripe\Webhooks\ValueObjects\WebhookSetupStatus;
  * Checks once a day, on give_daily_scheduled_events, that each Stripe account sends events to this site, and emails
  * the site administrator when one does not. It only reads from Stripe.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class WebhookHealthMonitor
 {
@@ -44,7 +44,7 @@ final class WebhookHealthMonitor
     private $target;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function __construct(
         GetStripeAccountsForMode $getAccounts,
@@ -57,7 +57,7 @@ final class WebhookHealthMonitor
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function __invoke(): void
     {
@@ -147,7 +147,7 @@ final class WebhookHealthMonitor
      * A line describing what is wrong with the account, an empty string when nothing is, or null when the
      * check was skipped.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     private function problemOf(AccountDetail $account, string $mode): ?string
     {
@@ -197,7 +197,7 @@ final class WebhookHealthMonitor
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string[] $problems One line for each account with a problem.
      */
@@ -243,7 +243,7 @@ final class WebhookHealthMonitor
     /**
      * The address WordPress sends fatal error emails to.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     private function recipient(): string
     {

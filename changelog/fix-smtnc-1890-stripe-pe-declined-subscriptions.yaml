@@ -1,5 +1,0 @@
-significance: patch
-type: fix
-entry: Resolved an issue where recurring donations declined by Stripe still
-  showed as active subscriptions.
-timestamp: 2026-11-18T05:53:31.357Z
