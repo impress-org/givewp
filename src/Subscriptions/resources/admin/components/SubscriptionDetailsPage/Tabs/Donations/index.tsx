@@ -14,10 +14,9 @@ import { useState, useRef } from "react";
 import { useDispatch } from "@wordpress/data";
 import { store as coreStore } from "@wordpress/core-data";
 
-const { mode, adminUrl, pluginUrl, legacyApiRoot, apiNonce } = getSubscriptionOptionsWindowData();
+const { mode, adminUrl, pluginUrl } = getSubscriptionOptionsWindowData();
 
-/* The list endpoint carries the subscription id in its address; the donation actions use the plain endpoint. */
-const rowActions = donationRowActions(new ListTableApi({apiRoot: `${legacyApiRoot}/donations`, apiNonce}), adminUrl);
+const rowActions = donationRowActions(new ListTableApi(apiSettings), adminUrl);
 
 /**
  * @since 4.8.0
@@ -32,7 +31,7 @@ const ListTableBlankSlate = (
 );
 
 /**
- * @since TBD Pass the donation actions as data and the screen config.
+ * @since TBD Pass the donation actions as data, the screen config and the subscription as the scope.
  * @since 4.8.0
  */
 export default function SubscriptionDetailsPageDonationsTab() {
@@ -92,6 +91,8 @@ export default function SubscriptionDetailsPageDonationsTab() {
                     ref={listTableRef}
                     title={__('Donations', 'give')}
                     apiSettings={apiSettings}
+                    // Not in `apiRoot`: the list adds paths such as `/count` to that address.
+                    scope={{subscriptionId}}
                     listTableBlankSlate={ListTableBlankSlate}
                     singleName={__('result', 'give')}
                     pluralName={__('results', 'give')}
