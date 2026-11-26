@@ -27,6 +27,11 @@
         align-items: flex-start;
         justify-content: space-between;
         gap: var(--givewp-spacing-2);
+
+        // A long translation of the "Add-on" tag moves under the label, not past the tile edge.
+        &--offer {
+            flex-wrap: wrap;
+        }
     }
 
     // Long labels wrap.
@@ -92,12 +97,6 @@
             background: var(--givewp-list-table-action-tint);
             color: var(--givewp-list-table-link);
         }
-    }
-
-    // The upgrade tile carries a small orange edge along its top, so it reads as an offer, not a count. An inset
-    // shadow draws it, so it does not fight the tile dividers (borders) and needs no left or right.
-    &--upgrade {
-        box-shadow: inset 0 3px 0 var(--givewp-list-table-upgrade-edge);
     }
 
     // The funnel follows the admin color scheme, as in the design: an outline on hover and focus, filled when

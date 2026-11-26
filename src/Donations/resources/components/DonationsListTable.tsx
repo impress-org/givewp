@@ -4,6 +4,7 @@ import {donationRowActions, isDonationsTrashView} from './DonationRowActions';
 import {setStatusRowAction} from '@givewp/components/ListTable/rowActions/setStatusRowAction';
 import {idsOf} from '@givewp/components/ListTable/adapters/idsOf';
 import ListTableApi from '@givewp/components/ListTable/api';
+import AddOnTag from '@givewp/components/ListTable/AddOnTag';
 import styles from './ListTable.module.scss';
 import {BulkActionsConfig, ListTableRowAction, StatConfig} from '@givewp/components/ListTable/ListTablePage';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
@@ -224,7 +225,7 @@ export default function DonationsListTable() {
                     aria-describedby="manual-donations-tooltip"
                 >
                     {__('Enter donations', 'give')}
-                    <span className={styles.manualDonationsAddOn}>{__('Add-on', 'give')}</span>
+                    <AddOnTag />
                     <span id="manual-donations-tooltip" className={styles.manualDonationsMessage}>
                         <img
                             src={`${window.GiveDonations.pluginUrl}build/assets/dist/images/admin/triangle-tip.svg`}

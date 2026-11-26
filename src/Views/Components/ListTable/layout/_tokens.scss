@@ -19,8 +19,6 @@ $givewp-list-table-page: #f0f0f1;
     // passes 3:1 on its own; the raw admin color does not in every scheme.
     --givewp-list-table-action-edge: #757575;
     --givewp-list-table-action-tint: rgb(0 0 0 / 0.04);
-    // The edge of the upgrade tile (Give orange 600). 3:1 on white, as a meaningful graphic.
-    --givewp-list-table-upgrade-edge: #a66710;
 
     // Link text needs 4.5:1, so it takes a darker mix than the edge (Sunrise, Coffee and Ocean are light colors).
     // A browser without `color-mix()` gets the WordPress link blue, which passes 4.5:1 on white.

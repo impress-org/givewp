@@ -628,8 +628,9 @@ tiles.
 - **States.** `loading` (a `Skeleton` and "Loading" for screen readers), `ready`, `refreshing` (the
   old value stays, dimmed, and nothing is announced), `error` (a dash, "Statistic could not be
   loaded") and `upgrade` (a message and an "Upgrade" link in place of the number when the add-on is
-  missing). `useListTableStats` derives the state from the request. The tiles never unmount, so the
-  row keeps its size and the table does not move when numbers land.
+  missing, with an `AddOnTag` beside the label). `useListTableStats` derives the state from the
+  request. The tiles never unmount, so the row keeps its size and the table does not move when
+  numbers land.
 - **Values are `formatted`.** The tile shows the server's text from the stats `formatted` map and
   never formats a number itself.
 - **Tiles that filter.** A `StatConfig` with `filter: {filterId, value}` makes the tile a toggle

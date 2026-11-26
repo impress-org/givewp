@@ -30,7 +30,6 @@ describe('list table tokens', () => {
         ['tag text on the neutral status fill', T('tag-text'), T('status-neutral-bg'), 4.5],
         ['test badge text on its fill', T('text'), T('test-badge-bg'), 4.5],
         ['test badge edge on white (UI edge)', T('test-badge-edge'), '#ffffff', 3],
-        ['upgrade tile edge on white (UI edge)', T('upgrade-edge'), '#ffffff', 3],
         ['action edge fallback (no color-mix) on white (UI edge)', T('action-edge'), '#ffffff', 3],
         ['action edge fallback (no color-mix) on hover row (UI edge)', T('action-edge'), T('row-hover'), 3],
         ['link fallback (no color-mix) on white', T('link'), '#ffffff', 4.5],

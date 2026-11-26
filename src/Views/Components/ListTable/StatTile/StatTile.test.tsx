@@ -129,6 +129,20 @@ describe('StatTile', () => {
         expect(container.textContent).not.toContain('9');
     });
 
+    it('marks an upgrade tile, and only that one, with an "Add-on" tag that screen readers hear', async () => {
+        await render(<StatTile label="Recurring" state="upgrade" upgrade={{href: 'https://example.test', message: 'm'}} />);
+
+        const tag = container.querySelector('.givewp-add-on-tag') as HTMLElement;
+
+        expect(tag.textContent).toBe('Add-on');
+        expect(tag.closest('[aria-hidden="true"]')).toBeNull();
+        expect(container.textContent?.indexOf('Add-on')).toBeGreaterThan(container.textContent!.indexOf('Recurring'));
+
+        await render(<StatTile label="Donors" value="1" state="ready" />);
+
+        expect(container.querySelector('.givewp-add-on-tag')).toBeNull();
+    });
+
     it('shows the error dash', async () => {
         await render(<StatTile label="Donors" state="error" />);
 
