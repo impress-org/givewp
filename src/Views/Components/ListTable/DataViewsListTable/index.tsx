@@ -224,7 +224,8 @@ function ListTableFooter({
             <HStack expanded={false} justify="end" className="dataviews-footer givewp-list-table__footer">
                 {!hasError && hasBulkActions(actions, data) && <DataViews.BulkActionToolbar />}
                 <span className="givewp-list-table__spacer" />
-                {!hasError && <ListTableLoading isSlow={isSlow} announce={announce} />}
+                {/* With no rows, DataViews shows its own spinner in their place: a second one would repeat it. */}
+                {!hasError && <ListTableLoading isSlow={isSlow && data.length > 0} announce={announce} />}
                 <ArrowsPagination view={view} onChangeView={onChangeView} hasNextPage={hasNextPage} />
             </HStack>
         );

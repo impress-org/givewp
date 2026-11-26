@@ -157,6 +157,17 @@ describe('DataViewsListTable page loading', () => {
         expect(statusText()).toBe('');
     });
 
+    // A list opened on page 2 or later has no rows and no total yet, and DataViews shows its own spinner
+    // where the rows will be.
+    it('leaves the one visible spinner to DataViews while there are no rows, and still announces', async () => {
+        await render({page: 2, rows: [], totalItems: null, isLoading: true});
+        await act(() => jest.advanceTimersByTime(1000));
+
+        expect(visibleLoading()).toBeNull();
+        expect(statusText()).toBe('Loading…');
+        expect(container.querySelector('.givewp-list-table__footer')).not.toBeNull();
+    });
+
     it('gives screen readers the words after 1 s, and removes everything when the page arrives', async () => {
         await render({page: 2, rows: items, totalItems: 462, isLoading: true});
         await act(() => jest.advanceTimersByTime(1000));
