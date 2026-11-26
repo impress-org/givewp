@@ -121,13 +121,13 @@ Things to know before touching this:
   donations gets a zero row so it counts as cached and is not re-queried on every page load.
   Before this, a warm cache returned early and a campaign absent from it showed no stats until
   `CacheCampaignData` ran for it.
-- **Test mode is always live.** `CampaignsDataQuery` filters by `give_is_test_mode()` and the options
-  carry no mode, so the cache holds live stats only. In test mode `campaigns()` queries the database
-  and never reads or writes the options. A test-mode cache would go stale: the Delete Test
-  Transactions tool deletes through `give_delete_donation()`, which fires no hook that refreshes the
-  cache. If test-mode reads are slow on a large all-test dataset, start the query from the
-  `_give_payment_mode = 'test'` meta rows (as `ListDonations::getTestModeCountQuery()` does); do not
-  add a cache.
+- **Test mode has its own cache.** `CampaignsDataQuery` filters by `give_is_test_mode()` and the options
+  carry no mode, so they hold live stats only. Test mode stores the same rows in a transient that lasts five
+  minutes (`TestModeStatsCache`, internal). It is not refreshed: any donation or subscription change, a
+  deletion (so "Delete Test Transactions" too) or a campaign merge drops it (`ServiceProvider::
+  clearTestModeStatsOnChanges()`). The transient is named after a token and dropping it removes the token, so
+  a request that is still counting cannot bring old figures back. A change that fires no hook, such as raw
+  SQL, shows after at most five minutes.
 - **The fill reads again before it writes.** Just before the write, `campaigns()`
   reads the option again and adds only the campaigns it has no row for, so a row a refresh wrote
   meanwhile is never overwritten.

@@ -49,11 +49,10 @@ class CampaignsDataRepository
      * Cached stats for the given campaigns. Campaigns missing from the cache are queried and added
      * to it, so a warm cache never hides a campaign that arrived after it was built.
      *
-     * The cache holds live-mode stats only. The queries filter by the site's payment mode, and the
-     * options carry no mode, so test mode reads straight from the database and never writes. (The
-     * Delete Test Transactions tool removes donations without firing the hooks that refresh the
-     * cache, so a test-mode cache would go stale.)
+     * The options hold live-mode stats only: the queries filter by the site's payment mode, and the
+     * options carry no mode. Test mode has its own short-lived cache (TestModeStatsCache).
      *
+     * @since TBD Cache the test mode stats for a few minutes, apart from the live cache.
      * @since TBD Add missing campaigns to the freshly read option, so a finished refresh is not undone.
      * @since 4.18.0 Query and cache campaigns that are missing from the cache; read subscriptions from the option they are written to; bypass the cache in test mode.
      * @since 4.8.0 added data caching layer
@@ -68,12 +67,17 @@ class CampaignsDataRepository
         $self->requestedIds = array_map('strval', $ids);
         $emptyCache = ['amounts' => [], 'donationsCount' => [], 'donorsCount' => []];
         $useCache = ! give_is_test_mode();
-        $campaignsData = $useCache
-            ? array_merge($emptyCache, (array)get_option('give_campaigns_data', []))
-            : $emptyCache;
-        $campaignsSubscriptionData = $useCache
-            ? array_merge($emptyCache, (array)get_option('give_campaigns_subscriptions_data', []))
-            : $emptyCache;
+        // Opened before any counting, see TestModeStatsCache::open().
+        $testCache = $useCache ? null : TestModeStatsCache::open();
+        $stored = $testCache ? $testCache->read() : [];
+        $campaignsData = array_merge(
+            $emptyCache,
+            $useCache ? (array)get_option('give_campaigns_data', []) : $stored['donations']
+        );
+        $campaignsSubscriptionData = array_merge(
+            $emptyCache,
+            $useCache ? (array)get_option('give_campaigns_subscriptions_data', []) : $stored['subscriptions']
+        );
 
         $uncachedIds = self::missingIds($campaignsData, $ids);
 
@@ -100,6 +104,13 @@ class CampaignsDataRepository
                 'donationsCount' => self::withZeroRows($subscriptions->collectDonations(), $uncachedSubscriptionIds, 'count'),
                 'donorsCount' => self::withZeroRows($subscriptions->collectDonors(), $uncachedSubscriptionIds, 'count'),
             ], $useCache);
+        }
+
+        if ($testCache && ($uncachedIds || $uncachedSubscriptionIds)) {
+            $testCache->write(array_merge($stored, [
+                'donations' => $campaignsData,
+                'subscriptions' => $campaignsSubscriptionData,
+            ]));
         }
 
         $self->amounts = $campaignsData['amounts'];

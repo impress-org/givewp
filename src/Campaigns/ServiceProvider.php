@@ -30,6 +30,7 @@ use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\Repositories\TestModeStatsCache;
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 use Give\Donations\Models\Donation;
 use Give\Framework\Migrations\MigrationsRegister;
@@ -274,5 +275,40 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('givewp_campaigns_merged', function (Campaign $campaign) {
             give(CacheCampaignData::class)->dispatch($campaign->id);
         });
+
+        $this->clearTestModeStatsOnChanges();
+    }
+
+    /**
+     * The test mode stats cache is dropped, not refreshed, when a donation or subscription changes. It is
+     * cleared whatever the current mode: a test donation can change while the site is live.
+     *
+     * @since TBD
+     */
+    private function clearTestModeStatsOnChanges(): void
+    {
+        $hooks = [
+            'give_insert_payment',
+            'give_update_payment_status',
+            'give_updated_edited_donation',
+            'give_payment_deleted',
+            'give_recurring_add_subscription_payment',
+            'givewp_donation_created',
+            'givewp_donation_updated',
+            'givewp_donation_deleted',
+            'givewp_donation_trashed',
+            'givewp_donation_untrashed',
+            'givewp_subscription_created',
+            'givewp_subscription_updated',
+            'givewp_subscription_deleted',
+            'give_subscription_inserted',
+            'give_subscription_updated',
+            'give_subscription_deleted',
+            'givewp_campaigns_merged',
+        ];
+
+        foreach ($hooks as $hook) {
+            add_action($hook, [TestModeStatsCache::class, 'clear']);
+        }
     }
 }
