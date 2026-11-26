@@ -20,7 +20,6 @@ import type {ListTableItem} from '../ListTablePage/types';
 import {insertNumbers} from '../formatNumber';
 import ListTableViewReset from '../ListTableViewReset';
 import useDelayedFlag from '../hooks/useDelayedFlag';
-import useHorizontalOverflow from '../hooks/useHorizontalOverflow';
 import ListTablePagination, {ArrowsPagination} from './ListTablePagination';
 import './styles.scss';
 
@@ -391,7 +390,6 @@ function ListTableLayout({
  * @since TBD Accept a `null` total and `hasNextPage`: the footer then shows only the arrows.
  * @since TBD Add the `viewMenu` slot.
  * @since TBD Add `layoutMode`: the cards at 782 px and below, the table above.
- * @since TBD Add the `--more-start` and `--more-end` modifiers while the list hides content at that edge.
  * @since TBD Drop `search` and `searchLabel`; DataViews' own search is always off.
  * @since TBD Accept the `searchBox`, `searchHint` and `filterBar` slots.
  * @since TBD
@@ -419,7 +417,6 @@ export default function DataViewsListTable({
     viewMenu,
 }: DataViewsListTableProps) {
     const rootRef = useRef<HTMLDivElement>(null);
-    const {hasMoreStart, hasMoreEnd} = useHorizontalOverflow(rootRef);
     const isNarrow = layoutMode === 'narrow';
     const hasBulkActions = actions.some((action) => action.supportsBulk);
     const shownFields = useMemo(
@@ -502,8 +499,6 @@ export default function DataViewsListTable({
             tabIndex={-1}
             className={cx('givewp-list-table', {
                 'givewp-list-table--loading': isLoading,
-                'givewp-list-table--more-start': hasMoreStart,
-                'givewp-list-table--more-end': hasMoreEnd,
                 'givewp-list-table--narrow': isNarrow,
                 'givewp-list-table--has-selection': selection.length > 0,
             })}

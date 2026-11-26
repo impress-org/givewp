@@ -113,17 +113,4 @@ describe('list toolbar styles', () => {
         expect(read('ListTableFilters', 'styles.scss')).not.toContain('padding-block');
     });
 
-    it('keeps a clear line on the pinned Actions column while the table is cut at either edge', () => {
-        const edge = block(table, '&--more-start,\n    &--more-end');
-
-        // The shadow covers the scroll end, where DataViews drops `--stuck`.
-        expect(edge).toContain('.dataviews-view-table th.dataviews-view-table__actions-column--sticky');
-        expect(edge).toContain('.dataviews-view-table td.dataviews-view-table__actions-column--sticky');
-        expect(edge).toContain('box-shadow: inset 1px 0 0 var(--givewp-grey-200)');
-
-        // While `--stuck`, the stock `::after` bar is the real line and paints over the shadow: recolor it.
-        const bar = block(edge, '.dataviews-view-table th.dataviews-view-table__actions-column--stuck::after,\n        .dataviews-view-table td.dataviews-view-table__actions-column--stuck::after');
-
-        expect(bar).toContain('background-color: var(--givewp-grey-200)');
-    });
 });

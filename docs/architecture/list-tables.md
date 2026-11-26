@@ -663,14 +663,9 @@ it; screens do not add their own media queries.
   `fromNarrowView()` maps a change back, taking only the query (page, page size, sort, filters,
   search). The card view is never stored as the layout and never written to the URL, and the
   selection is kept.
-- **Scroll edges.** Above 782 px a wide table scrolls sideways inside the list.
-  `useHorizontalOverflow` watches the stock `.dataviews-wrapper` and sets
-  `givewp-list-table--more-start` and `--more-end` while content is hidden at that edge. It reads
-  layout, never component state; if DataViews renames the class the classes stop and nothing else
-  breaks.
-  The Actions column is pinned by stock DataViews. While either class is set, the 1px bar DataViews
-  draws on its edge while it is `--stuck` is recolored, and an inset shadow in the same color covers
-  the scroll end, where DataViews removes `--stuck`.
+- **Scroll edges.** Above 782 px a wide table scrolls sideways inside the list. The Actions column
+  is pinned by stock DataViews, which draws a faint 1px line on its edge only while rows are scrolled
+  under it. Give adds no line, shadow or class of its own.
 - **Motion.** Any animation in the list sits inside `@media (prefers-reduced-motion: no-preference)`.
 
 ### Styling

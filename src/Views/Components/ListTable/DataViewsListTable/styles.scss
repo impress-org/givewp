@@ -25,29 +25,6 @@ $givewp-list-table-edge: var(--givewp-spacing-6);
     background-color: var(--givewp-shades-white);
     border-radius: var(--givewp-rounded-8);
 
-    // The Actions column is pinned. While the table is wider than the list, keep a clear line on its edge so
-    // the table does not look cut off. While rows are under the column, DataViews marks it `--stuck` and draws a
-    // faint 1px bar with `::after`; that bar is the line the user sees, so it is recolored here. At the scroll
-    // end, DataViews removes `--stuck` (and it can be stale after the columns change), so an inset shadow on the
-    // same pixel and in the same color covers that case. The shadow adds no width and leaves the cell background
-    // alone, so the hover and selected colors are kept.
-    // Break risk: this relies on the stock DataViews class names below. If they are renamed, the line is
-    // gone and the table is back to stock. A box shadow has no logical form, so the line is on the physical
-    // left edge, the same side as the stock line. Stock pins the cell with a physical `right: 0`, so in RTL
-    // the pinned cell is already stock behavior and this rule does not try to fix or flip it.
-    &--more-start,
-    &--more-end {
-        .dataviews-view-table th.dataviews-view-table__actions-column--sticky,
-        .dataviews-view-table td.dataviews-view-table__actions-column--sticky {
-            box-shadow: inset 1px 0 0 var(--givewp-grey-200);
-        }
-
-        .dataviews-view-table th.dataviews-view-table__actions-column--stuck::after,
-        .dataviews-view-table td.dataviews-view-table__actions-column--stuck::after {
-            background-color: var(--givewp-grey-200);
-        }
-    }
-
     // The toolbar above the table: one row, then the search hint under it.
     &__toolbar {
         display: flex;

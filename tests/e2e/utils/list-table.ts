@@ -320,22 +320,22 @@ export async function topOf(locator: Locator): Promise<number> {
 }
 
 /**
- * Checks that the last column of the list can be scrolled into view at 1024 px, with the "more to
- * the right" shadow shown until then, and that the page itself never scrolls sideways.
+ * Checks that the table is wider than the list at 1024 px, that its last column can be scrolled into
+ * view, and that the page itself never scrolls sideways.
  */
 export async function expectLastColumnReachable(page: Page, admin: Admin, query: string): Promise<void> {
     await page.setViewportSize({width: 1024, height: 900});
     await visitList(page, admin, query);
 
     const root = listTable(page);
-    await expect(root).toHaveClass(/givewp-list-table--more-end/);
+    const wrapper = root.locator('.dataviews-wrapper');
+    await expect.poll(() => wrapper.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
 
-    await root.locator('.dataviews-wrapper').evaluate((element) => {
+    await wrapper.evaluate((element) => {
         element.scrollLeft = element.scrollWidth;
     });
 
     await expect(root.locator('.dataviews-view-table thead th').last()).toBeInViewport();
-    await expect(root).not.toHaveClass(/givewp-list-table--more-end/);
     expect(await pageOverflows(page)).toBe(false);
 }
 
