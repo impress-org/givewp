@@ -53,9 +53,12 @@ const standaloneFilters = donationFormFilters({withCampaign: true});
 const campaignFormFilters = donationFormFilters({withCampaign: false});
 
 /**
+ * "Default" is the default form of a campaign, so only a campaign's Forms tab marks it.
+ *
+ * @since TBD Show the "Default" tag only on a campaign's Forms tab.
  * @since 4.6.0 add option based form editor enabled check.
  */
-const columnFilters: Array<ColumnFilterConfig> = [
+const titleColumnFilters = (showDefaultTag: boolean): Array<ColumnFilterConfig> => [
     {
         column: 'title',
         filter: (item) => {
@@ -75,7 +78,7 @@ const columnFilters: Array<ColumnFilterConfig> = [
                             )}
                             <Interweave attributes={{className: 'interweave'}} content={String(item?.title ?? '')} />
                         </div>
-                        {item?.isDefaultCampaignForm && (
+                        {showDefaultTag && item?.isDefaultCampaignForm && (
                             <div className={`${formStyles.defaultFormPill} givewp-default-form-pill`}>
                                 {__('Default', 'give')}
                             </div>
@@ -86,6 +89,9 @@ const columnFilters: Array<ColumnFilterConfig> = [
         },
     },
 ];
+
+const standaloneColumnFilters = titleColumnFilters(false);
+const campaignFormColumnFilters = titleColumnFilters(true);
 
 /**
  * Displays a blank slate for the Forms table.
@@ -190,7 +196,7 @@ export default function DonationFormsListTable({
                 filters={isCampaignDetailsPage ? campaignFormFilters : standaloneFilters}
                 scope={campaignId ? {campaignId} : undefined}
                 listTableBlankSlate={ListTableBlankSlate}
-                columnFilters={columnFilters}
+                columnFilters={isCampaignDetailsPage ? campaignFormColumnFilters : standaloneColumnFilters}
                 banner={Onboarding}
                 notices={notices}
                 onItemsChange={(items) => setHasUpgradedForm(items.some((item) => item?.status_raw === 'upgraded'))}

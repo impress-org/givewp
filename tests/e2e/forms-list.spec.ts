@@ -15,7 +15,6 @@ import {
     visitList,
 } from './utils/list-table';
 import {isLayoutWrite, resetLayout} from './utils/user';
-import {wp} from './utils/wp-cli';
 
 /**
  * Moving a form between campaigns, from the Forms list and from a campaign's Forms tab.
@@ -202,6 +201,25 @@ test.describe('Campaign Forms tab', () => {
         await resetLayout(requestUtils, 'campaign-forms');
     });
 
+    test('marks the default form right after its name', async ({page, admin, requestUtils}) => {
+        const campaign = await createCampaignWithForm(requestUtils);
+
+        await page.setViewportSize({width: 1440, height: 900});
+        await admin.visitAdminPage(
+            'edit.php',
+            `post_type=give_forms&page=give-campaigns&id=${campaign.campaignId}&tab=forms`
+        );
+
+        // The tag flows on the title line rather than on a line of its own.
+        const row = rowById(page, campaign.formId);
+        const title = row.locator('.interweave').first();
+        const tag = row.locator('.givewp-default-form-pill');
+        await expect(tag).toHaveText('Default');
+        const titleBox = (await title.boundingBox())!;
+        const tagBox = (await tag.boundingBox())!;
+        expect(tagBox.y).toBeLessThan(titleBox.y + titleBox.height);
+    });
+
     test('hides the Campaign column by default and leaves the address untouched', async ({
         page,
         admin,
@@ -255,7 +273,7 @@ test.describe('Forms list on wide and narrow screens', () => {
         });
     });
 
-    test('at 1440 px: names on two lines, dash for no goal, pill on the title line', async ({
+    test('at 1440 px: campaign name on one line, no "Default" tag on the full list', async ({
         page,
         admin,
         requestUtils,
@@ -264,14 +282,6 @@ test.describe('Forms list on wide and narrow screens', () => {
 
         const longName = `E2E campaign with a long name ${Date.now()}`.padEnd(40, 'x').slice(0, 40);
         const named = await createCampaignWithForm(requestUtils, {title: longName});
-        const noGoal = await createCampaignWithForm(requestUtils);
-        wp(
-            'eval',
-            `$form = \\Give\\DonationForms\\Models\\DonationForm::find(${noGoal.formId});
-            $form->settings->enableDonationGoal = false;
-            $form->save();`
-        );
-
         await page.setViewportSize({width: 1440, height: 900});
         await visitList(page, admin, FORMS_LIST);
 
@@ -290,17 +300,9 @@ test.describe('Forms list on wide and narrow screens', () => {
         expect(cut).toBe(true);
         await expect(name).toHaveAttribute('title', longName);
 
-        // No goal: a dash, named for screen readers,.
-        const noGoalRow = rowById(page, noGoal.formId);
-        await expect(noGoalRow.locator('.givewp-list-table-dash')).toContainText('No Goal Set');
-
-        // The "Default" pill flows on the title line rather than on a line of its own.
-        const title = rowById(page, named.formId).locator('.interweave').first();
-        const pill = rowById(page, named.formId).locator('.givewp-default-form-pill');
-        await expect(pill).toBeVisible();
-        const titleBox = (await title.boundingBox())!;
-        const pillBox = (await pill.boundingBox())!;
-        expect(pillBox.y).toBeLessThan(titleBox.y + titleBox.height);
+        // "Default" is the default form of one campaign, so the full list does not mark it.
+        await expect(rowById(page, named.formId).locator('.interweave').first()).toBeVisible();
+        await expect(rowById(page, named.formId).locator('.givewp-default-form-pill')).toHaveCount(0);
     });
 });
 

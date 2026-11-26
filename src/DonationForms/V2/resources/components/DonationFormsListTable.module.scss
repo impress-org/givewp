@@ -14,18 +14,18 @@
 
 .defaultFormPill {
     display: inline-block;
-    margin-inline-start: var(--givewp-spacing-2);
     white-space: nowrap;
-    background: var(--givewp-neutral-200);
-    padding: 0 var(--givewp-spacing-2);
-    border-radius: 2px;
+    color: var(--givewp-list-table-text-secondary);
     font-size: 0.8125rem;
+    font-weight: 400;
     line-height: 1.5;
 }
 
 .migratedForm {
     display: inline;
     min-width: 0;
+    // The gap before the "Default" tag is here, so a tag that wraps under a long name is not indented.
+    margin-inline-end: var(--givewp-spacing-2);
 
     :global(.interweave) {
         min-width: 0;
