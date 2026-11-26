@@ -71,18 +71,18 @@ describe('ResultCountStatus', () => {
         expect(region().textContent).toBe('12 donations found');
     });
 
-    it('writes a count over a thousand in the locale of the admin', async () => {
+    it('writes a count over a thousand in the browser language', async () => {
         await render({totalItems: 40});
         await render({requestKey: 'second', totalItems: 1200});
         await wait(300);
         expect(region().textContent).toBe('1,200 donations found');
 
-        window.GiveListTableNumbers = {thousandsSep: '.', decimalPoint: ','};
+        jest.spyOn(window.navigator, 'language', 'get').mockReturnValue('de-DE');
         await render({requestKey: 'third', totalItems: 1300});
         await wait(300);
         expect(region().textContent?.trim()).toBe('1.300 donations found');
 
-        delete window.GiveListTableNumbers;
+        jest.restoreAllMocks();
     });
 
     it('uses the singular noun for one result and a fixed text for none', async () => {

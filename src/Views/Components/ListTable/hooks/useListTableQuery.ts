@@ -3,14 +3,16 @@ import useSWR from 'swr';
 import apiFetch from '@wordpress/api-fetch';
 import {addQueryArgs} from '@wordpress/url';
 import type {ListTableParameters} from '../ListTablePage/types';
+import {browserLocale} from '../formatNumber';
 
 /**
  * Turns request parameters into query arguments the way the old client did: empty values are left
- * out and arrays are sent as comma-separated text.
+ * out and arrays are sent as comma-separated text. The browser's language goes along, as before, so the
+ * server formats money and counts for it.
  */
 function toQueryArgs(parameters: ListTableParameters): Record<string, string | number | boolean> {
     return Object.fromEntries(
-        Object.entries(parameters)
+        Object.entries({...parameters, locale: browserLocale()})
             .filter(([, value]) => value !== undefined && value !== null && value !== '')
             .map(([key, value]) => [key, Array.isArray(value) ? value.join(',') : value])
     );

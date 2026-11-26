@@ -54,14 +54,14 @@ describe('LargePagination', () => {
         expect(container.textContent).toContain('of 33,334');
     });
 
-    it('writes the page count in the locale of the admin, and keeps the input in plain digits', async () => {
-        window.GiveListTableNumbers = {thousandsSep: '.', decimalPoint: ','};
+    it('writes the page count in the browser language, and keeps the input in plain digits', async () => {
+        jest.spyOn(window.navigator, 'language', 'get').mockReturnValue('de-DE');
         await render(33334);
 
         expect(container.textContent).toContain('of 33.334');
         expect(input().max).toBe('33334');
 
-        delete window.GiveListTableNumbers;
+        jest.restoreAllMocks();
     });
 
     it('goes to the typed page when Enter is pressed, and not on each key', async () => {

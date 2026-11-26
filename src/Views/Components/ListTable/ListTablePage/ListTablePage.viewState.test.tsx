@@ -204,12 +204,12 @@ describe('ListTablePage first render', () => {
         });
     });
 
-    it('never sends the browser locale, so the server formats with the site settings', async () => {
+    it('sends the browser language, so the server formats money and counts for it', async () => {
         await render();
 
         const [first] = listRequests();
 
-        expect(first.searchParams.has('locale')).toBe(false);
+        expect(first.searchParams.get('locale')).toBe(window.navigator.language);
     });
 
     it('makes no second request for the same view', async () => {

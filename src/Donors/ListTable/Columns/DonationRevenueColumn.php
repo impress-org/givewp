@@ -51,7 +51,7 @@ class DonationRevenueColumn extends ModelColumn
     {
         return sprintf(
             '<div class="amount"><span>%s</span></div>',
-            MoneyFormatter::format($model->totalAmountDonated)
+            MoneyFormatter::format($model->totalAmountDonated, (string)$locale)
         );
     }
 

@@ -6,6 +6,7 @@ namespace Give\DonationForms\V2\ListTable\Columns;
 
 use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Models\DonationForm;
+use Give\Framework\ListTable\Formatting\CountFormatter;
 use Give\Framework\ListTable\ModelColumn;
 use Give\Framework\ListTable\Views\GoalProgress;
 use Give\Framework\ListTable\Views\Placeholder;
@@ -53,6 +54,8 @@ class GoalColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
+        // Read this way so a subclass that overrides getCellValue($model) keeps working.
+        $locale = func_num_args() > 1 ? (string)func_get_arg(1) : '';
         if (! $model->goalSettings->enableDonationGoal) {
             return Placeholder::dash(__('No Goal Set', 'give'));
         }
@@ -66,8 +69,8 @@ class GoalColumn extends ModelColumn
 
         // The form builder reads the plain numbers from the repository, so only this cell formats them.
         if (!$goalData['typeIsMoney']) {
-            $goalData['actualFormatted'] = number_format_i18n($goalData['actual']);
-            $goalData['goalFormatted'] = number_format_i18n($goalData['goal']);
+            $goalData['actualFormatted'] = CountFormatter::format($goalData['actual'], $locale);
+            $goalData['goalFormatted'] = CountFormatter::format($goalData['goal'], $locale);
         }
 
         $stats = apply_filters('give_goal_progress_stats', [

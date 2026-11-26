@@ -84,9 +84,9 @@ class SalesAmountColumn extends ModelColumn
             $template,
             $model->id,
             $salesPercentage,
-            MoneyFormatter::format($salesTotal),
+            MoneyFormatter::format($salesTotal, (string)$locale),
             __('of', 'give'),
-            MoneyFormatter::format($maxCapacitySales)
+            MoneyFormatter::format($maxCapacitySales, (string)$locale)
         );
     }
 

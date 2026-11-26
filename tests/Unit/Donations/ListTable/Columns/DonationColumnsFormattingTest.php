@@ -59,15 +59,28 @@ class DonationColumnsFormattingTest extends TestCase
     /**
      * @since TBD
      */
-    public function testAmountFollowsSiteSettingsWhateverLocaleIsPassed(): void
+    public function testAmountFollowsTheBrowserLocaleWhenAutoFormatIsOn(): void
     {
-        $donation = new Donation(['amount' => new Money(133128, 'USD')]);
+        give_update_option('auto_format_currency', 'on');
+        $donation = new Donation(['amount' => new Money(1234567890, 'USD')]);
         $column = new AmountColumn();
 
-        $this->assertStringContainsString('$1,331.28', $column->getCellValue($donation, 'pt_BR'));
-        $this->assertStringContainsString('<div class="amount"><span>', $column->getCellValue($donation, 'pt_BR'));
-        $this->assertSame(['amount' => '1331.28', 'currency' => 'USD'], $column->getRawValue($donation));
+        $cell = html_entity_decode($column->getCellValue($donation, 'en-US-u-nu-thai'));
+
+        $this->assertStringContainsString('๑๒,๓๔๕,๖๗๘.๙๐', $cell);
+        $this->assertSame(['amount' => '12345678.90', 'currency' => 'USD'], $column->getRawValue($donation));
         $this->assertSame('money', $column->getKind());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testAmountFollowsSiteSettingsWhenAutoFormatIsOff(): void
+    {
+        give_update_option('auto_format_currency', '');
+        $donation = new Donation(['amount' => new Money(133128, 'USD')]);
+
+        $this->assertStringContainsString('$1,331.28', (new AmountColumn())->getCellValue($donation, 'pt-BR'));
     }
 
     /**

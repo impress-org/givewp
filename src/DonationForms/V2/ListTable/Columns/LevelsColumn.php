@@ -54,7 +54,7 @@ class LevelsColumn extends ModelColumn
 
         return sprintf(
             '<div class="amount"><span>%s</span></div>',
-            $this->getLevels($model->levels)
+            $this->getLevels($model->levels, (string)$locale)
         );
     }
 
@@ -66,10 +66,10 @@ class LevelsColumn extends ModelColumn
      *
      * @return string
      */
-    private function getLevels(array $levels): string
+    private function getLevels(array $levels, string $locale): string
     {
         if (count($levels) === 1) {
-            return MoneyFormatter::format($levels[0]->amount);
+            return MoneyFormatter::format($levels[0]->amount, $locale);
         }
 
         $levelsAmount = array_map(function ($level) {
@@ -80,13 +80,13 @@ class LevelsColumn extends ModelColumn
         $max = $levels[array_search(max($levelsAmount), $levelsAmount)];
 
         if ($min === $max) {
-            return MoneyFormatter::format($min->amount);
+            return MoneyFormatter::format($min->amount, $locale);
         }
 
         return sprintf(
             '%s - %s',
-            MoneyFormatter::format($min->amount),
-            MoneyFormatter::format($max->amount)
+            MoneyFormatter::format($min->amount, $locale),
+            MoneyFormatter::format($max->amount, $locale)
         );
     }
 

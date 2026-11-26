@@ -10,10 +10,13 @@ use Money\Currencies\BitcoinCurrencies;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Exception\UnknownCurrencyException;
+use NumberFormatter;
+use Throwable;
 
 /**
  * The one way list tables write money. It follows the currency settings of the site, the same way
- * receipts and reports do.
+ * receipts and reports do. When a column passes the browser's locale and "Auto-format currency" is on, it
+ * follows that locale instead.
  *
  * @since TBD
  */
@@ -29,11 +32,21 @@ final class MoneyFormatter
      * string, so use the result in HTML cells and not as plain text (a CSV, an aria-label).
      *
      * @since TBD
+     *
+     * @param string $locale The browser's language, for the columns that format by it.
      */
-    public static function format(?Money $amount): string
+    public static function format(?Money $amount, string $locale = ''): string
     {
         if ($amount === null) {
             return Placeholder::dash(__('No amount', 'give'));
+        }
+
+        if ($locale !== '' && give_get_option('auto_format_currency') && class_exists(NumberFormatter::class)) {
+            try {
+                return $amount->formatToLocale($locale);
+            } catch (Throwable $error) {
+                // The locale comes from the request: one PHP rejects falls back to the site settings below.
+            }
         }
 
         $code = $amount->getCurrency()->getCode();
@@ -59,8 +72,9 @@ final class MoneyFormatter
      *
      * @param string|int|float|null $amount A decimal amount such as "12.50", or a number.
      * @param string|null $currency Defaults to the currency of the site.
+     * @param string $locale The browser's language, for the values that format by it.
      */
-    public static function fromDecimal($amount, ?string $currency = null): string
+    public static function fromDecimal($amount, ?string $currency = null, string $locale = ''): string
     {
         if ($amount === null || $amount === '') {
             return Placeholder::dash(__('No amount', 'give'));
@@ -73,7 +87,7 @@ final class MoneyFormatter
         }
 
         try {
-            return self::format(Money::fromDecimal($amount, $currency));
+            return self::format(Money::fromDecimal($amount, $currency), $locale);
         } catch (UnknownCurrencyException $exception) {
             // A stored code that none of the sets know must not fail a whole response: use Give's own text.
             $decimal = is_float($amount) ? number_format($amount, (int) give_get_price_decimals($currency), '.', '') : (string) $amount;

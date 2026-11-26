@@ -32,7 +32,7 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `EmptyStates/` | One component for "No … match your search or filters" with Clear filters, and for the failed request with Try again. |
 | `AsyncEntitySelect/` | The campaign and form entities the "Assign campaign" picker loads from. |
 | `LegacyRowActions/` | Renders an old row-actions function in its own column (`useLegacyRowActionsField`). |
-| `formatNumber.ts` | `formatNumber` and `insertNumbers`: counts in the browser text (footer, page count, notices) use the thousands separator of the admin's locale, which PHP prints as `GiveListTableNumbers`. In PHP use `number_format_i18n()`. Translate the message first and insert the numbers after, so the `%d` strings keep matching their translations. Money is not formatted here. |
+| `formatNumber.ts` | `browserLocale`, `formatNumber` and `insertNumbers`: counts in the browser text (footer, page count, notices) follow the browser's language. The list requests send the same language, and in PHP counts go through `CountFormatter`. Translate the message first and insert the numbers after, so the `%d` strings keep matching their translations. Money is not formatted here. |
 | `api.ts` | `ListTableApi.fetchWithArgs`, for a list endpoint's actions. |
 
 ## Styling scope

@@ -59,14 +59,27 @@ class SubscriptionColumnsFormattingTest extends TestCase
     /**
      * @since TBD
      */
-    public function testAmountFollowsSiteSettingsWhateverLocaleIsPassed(): void
+    public function testAmountFollowsTheBrowserLocaleWhenAutoFormatIsOn(): void
     {
-        $subscription = new Subscription(['amount' => new Money(133128, 'USD')]);
+        give_update_option('auto_format_currency', 'on');
+        $subscription = new Subscription(['amount' => new Money(1234567890, 'USD')]);
         $column = new AmountColumn();
 
-        $this->assertStringContainsString('$1,331.28', $column->getCellValue($subscription, 'pt_BR'));
-        $this->assertSame(['amount' => '1331.28', 'currency' => 'USD'], $column->getRawValue($subscription));
-        $this->assertSame('money', $column->getKind());
+        $cell = html_entity_decode($column->getCellValue($subscription, 'en-US-u-nu-thai'));
+
+        $this->assertStringContainsString('๑๒,๓๔๕,๖๗๘.๙๐', $cell);
+        $this->assertSame(['amount' => '12345678.90', 'currency' => 'USD'], $column->getRawValue($subscription));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testAmountFollowsSiteSettingsWhenAutoFormatIsOff(): void
+    {
+        give_update_option('auto_format_currency', '');
+        $subscription = new Subscription(['amount' => new Money(133128, 'USD')]);
+
+        $this->assertStringContainsString('$1,331.28', (new AmountColumn())->getCellValue($subscription, 'pt-BR'));
     }
 
     /**

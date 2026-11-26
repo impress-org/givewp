@@ -69,14 +69,19 @@ class EventColumnsFormattingTest extends TestCase
     /**
      * @since TBD
      */
-    public function testSalesAmountFollowsSiteSettingsWhateverLocaleIsPassed(): void
+    public function testSalesAmountFollowsTheBrowserLocaleWhenAutoFormatIsOn(): void
     {
+        give_update_option('auto_format_currency', 'on');
+        // The settings would write a comma, so a period shows that the locale was used.
+        give_update_option('decimal_separator', ',');
         $event = Event::factory()->create();
         $column = new SalesAmountColumn();
 
-        $cell = $column->getCellValue($event, 'pt_BR');
+        $cell = html_entity_decode($column->getCellValue($event, 'en-US'));
+        give_delete_option('auto_format_currency');
+        give_delete_option('decimal_separator');
 
-        $this->assertStringContainsString('$0.00 of $0.00', html_entity_decode($cell));
+        $this->assertStringContainsString('$0.00 of $0.00', $cell);
         $this->assertSame(['amount' => '0.00', 'currency' => 'USD'], $column->getRawValue($event));
         $this->assertSame('money', $column->getKind());
     }

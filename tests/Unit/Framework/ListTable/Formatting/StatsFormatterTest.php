@@ -38,4 +38,18 @@ class StatsFormatterTest extends TestCase
         $this->assertStringNotContainsString('<', $result['formatted']['total']);
         $this->assertStringContainsString('0.00', $result['formatted']['total']);
     }
+
+    /**
+     * @since TBD
+     */
+    public function testWritesCountsAndMoneyForTheBrowserLocale(): void
+    {
+        give_update_option('auto_format_currency', 'on');
+
+        $result = StatsFormatter::withFormatted(['count' => 1234567, 'total' => 12345678.5], ['total'], 'en-US-u-nu-thai');
+        give_delete_option('auto_format_currency');
+
+        $this->assertSame('๑,๒๓๔,๕๖๗', $result['formatted']['count']);
+        $this->assertStringContainsString('๑๒,๓๔๕,๖๗๘.๕๐', $result['formatted']['total']);
+    }
 }

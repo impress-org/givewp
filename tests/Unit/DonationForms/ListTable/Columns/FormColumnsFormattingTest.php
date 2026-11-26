@@ -70,7 +70,7 @@ class FormColumnsFormattingTest extends TestCase
     /**
      * @since TBD
      */
-    public function testRevenueUsesTheSharedMoneyFormatWhateverLocaleIsPassed(): void
+    public function testRevenueUsesTheSiteSettingsWhateverLocaleIsPassed(): void
     {
         $form = new DonationForm(['id' => 9]);
         $column = $this->revenueColumn(1331.28);
@@ -83,23 +83,28 @@ class FormColumnsFormattingTest extends TestCase
     /**
      * @since TBD
      */
-    public function testLevelsRangeIgnoresTheLocale(): void
+    public function testLevelsRangeFollowsTheBrowserLocaleWhenAutoFormatIsOn(): void
     {
-        $form = new DonationForm(['levels' => [$this->level(50), $this->level(10), $this->level(25)]]);
+        give_update_option('auto_format_currency', 'on');
+        $form = new DonationForm(['levels' => [$this->level(500000), $this->level(100000), $this->level(250000)]]);
         $column = new LevelsColumn();
 
-        $this->assertStringContainsString('$10.00 - $50.00', $column->getCellValue($form, 'pt_BR'));
+        $cell = html_entity_decode($column->getCellValue($form, 'en-US-u-nu-thai'));
+
+        $this->assertStringContainsString('๑๐๐,๐๐๐.๐๐', $cell);
+        $this->assertStringContainsString('๕๐๐,๐๐๐.๐๐', $cell);
         $this->assertSame('text', $column->getKind());
     }
 
     /**
      * @since TBD
      */
-    public function testSingleLevelIgnoresTheLocale(): void
+    public function testSingleLevelFollowsSiteSettingsWhenAutoFormatIsOff(): void
     {
+        give_update_option('auto_format_currency', '');
         $form = new DonationForm(['levels' => [$this->level(25)]]);
 
-        $this->assertStringContainsString('<span>$25.00</span>', (new LevelsColumn())->getCellValue($form, 'pt_BR'));
+        $this->assertStringContainsString('<span>$25.00</span>', (new LevelsColumn())->getCellValue($form, 'en-US-u-nu-thai'));
     }
 
     /**

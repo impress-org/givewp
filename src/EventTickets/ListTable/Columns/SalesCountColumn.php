@@ -7,6 +7,7 @@ namespace Give\EventTickets\ListTable\Columns;
 use Give\EventTickets\Models\Event;
 use Give\EventTickets\Repositories\EventsDataRepository;
 use Give\Framework\ListTable\ColumnKind;
+use Give\Framework\ListTable\Formatting\CountFormatter;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -56,6 +57,8 @@ class SalesCountColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
+        // Read this way so a subclass that overrides getCellValue($model) keeps working.
+        $locale = func_num_args() > 1 ? (string)func_get_arg(1) : '';
         $data = $this->dataFor($model);
         $soldTicketsCount = $data->getSoldCount($model->id);
         $capacity = $data->getCapacity($model->id);
@@ -65,8 +68,8 @@ class SalesCountColumn extends ModelColumn
             /* translators: 1: Number of tickets sold, 2: Total ticket capacity */
             __('%1$d out of %2$d', 'give'),
             [
-                '%1$d' => number_format_i18n($soldTicketsCount),
-                '%2$d' => number_format_i18n($capacity),
+                '%1$d' => CountFormatter::format($soldTicketsCount, $locale),
+                '%2$d' => CountFormatter::format($capacity, $locale),
             ]
         );
     }

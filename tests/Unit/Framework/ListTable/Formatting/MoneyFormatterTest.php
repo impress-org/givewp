@@ -180,4 +180,33 @@ class MoneyFormatterTest extends TestCase
         $this->assertSame(['amount' => '12.50', 'currency' => 'USD'], MoneyFormatter::rawFromDecimal(12.5, 'USD'));
         $this->assertNull(MoneyFormatter::rawFromDecimal(null));
     }
+
+    /**
+     * @since TBD
+     */
+    public function testFollowsTheBrowserLocaleOnlyWhenAutoFormatIsOn(): void
+    {
+        $money = new Money(1234567890, 'USD');
+
+        give_update_option('auto_format_currency', 'on');
+        $this->assertStringContainsString('๑๒,๓๔๕,๖๗๘.๙๐', MoneyFormatter::format($money, 'en-US-u-nu-thai'));
+        $this->assertStringContainsString('๑๒,๓๔๕,๖๗๘.๙๐', MoneyFormatter::fromDecimal('12345678.90', null, 'en-US-u-nu-thai'));
+        $this->assertSame('$12,345,678.90', MoneyFormatter::format($money, ''));
+
+        give_update_option('auto_format_currency', '');
+        $this->assertSame('$12,345,678.90', MoneyFormatter::format($money, 'en-US-u-nu-thai'));
+    }
+
+    /**
+     * The locale comes from the request, so a value PHP rejects must not break the response.
+     *
+     * @since TBD
+     */
+    public function testALocalePhpRejectsFallsBackToTheSiteSettings(): void
+    {
+        give_update_option('auto_format_currency', 'on');
+        $money = new Money(133128, 'USD');
+
+        $this->assertSame('$1,331.28', MoneyFormatter::format($money, str_repeat('a', 5000)));
+    }
 }

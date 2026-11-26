@@ -606,14 +606,17 @@ only shows the text it gets.
   `rawValues` in the browser. A raw value must reuse what the cell already computed, never run a
   new query.
 - **Stats send text too.** The Donations, Donors and Subscriptions stats endpoints add a
-  `formatted` map next to the numbers: counts through `number_format_i18n()`, money through
+  `formatted` map next to the numbers: counts through `CountFormatter`, money through
   `MoneyFormatter`. The tiles show that text as it is.
-- **Why the browser never formats.** The old list sent `locale: navigator.language` and the server
-  formatted with it, so a Brazilian browser on a US-dollar site saw `US$ 100,00` on some screens and
-  `$100.00` on others. The request no longer sends `locale`; endpoints fall back to `get_locale()`,
-  so an add-on column that still reads `$locale` gets the site's language. There is no `Intl`,
-  `toLocaleString` or `navigator.language` in the list client code. One exception stays: the filter
-  chip text formats a picked day with the site's date format (`filters/siteDate.ts`).
+- **The browser's language.** Every list request (rows, stats, count) sends `locale=navigator.language`
+  (`browserLocale()` in `formatNumber.ts`). Money cells that followed it before still do (Donations,
+  Subscriptions, Donors, Form levels, Event Tickets sales, the money stat tiles), only when "Auto-format
+  currency" is on and PHP intl exists; campaign revenue, goals and form revenue follow the currency settings.
+  Counts follow it too: `CountFormatter` in PHP and `formatNumber()` in the browser. So a Brazilian browser
+  on a US-dollar site shows `US$ 100,00` in those money cells. Count columns read the locale with
+  `func_get_arg()`, so an add-on subclass that overrides `getCellValue($model)` keeps working. Dates do not
+  follow it. In the client, only `formatNumber.ts` may read the browser language
+  (`listTableClientFormatting.test.ts`).
 - **Two details found on the way.** The intl fallback in `CurrencyFacade::formatToLocale()` passes a
   `currency` key that `give_currency_filter()` ignores, so a donation in another currency showed the
   site's symbol. `MoneyFormatter` passes `currency_code`. The facade itself is not changed. And on

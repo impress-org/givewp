@@ -5,6 +5,7 @@ namespace Give\Campaigns\Repositories;
 use Give\Campaigns\CampaignsDataQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
+use Give\Framework\ListTable\Formatting\CountFormatter;
 use Give\Framework\ListTable\Formatting\MoneyFormatter;
 
 /**
@@ -319,10 +320,11 @@ class CampaignsDataRepository
      *
      * @param Campaign $campaign
      * @param bool $useListTableFormat The REST API keeps its own format (false); the list table passes true.
+     * @param string $locale The browser's language, for the list table counts.
      *
      * @return array{actual: int, goal: int, actualFormatted: string, goalFormatted:string, percentage:float}
      */
-    public function getGoalData(Campaign $campaign, bool $useListTableFormat = false): array
+    public function getGoalData(Campaign $campaign, bool $useListTableFormat = false, string $locale = ''): array
     {
         $actual = $this->getActualGoal($campaign);
         $isAmount = $campaign->goalType == CampaignGoalType::AMOUNT();
@@ -334,8 +336,8 @@ class CampaignsDataRepository
                 return give_currency_filter(give_format_amount($amount));
             };
         // Counts stay numbers for the REST API. Only the list table gets text for the admin's locale.
-        $formatCount = static function ($count) use ($useListTableFormat) {
-            return $useListTableFormat ? number_format_i18n($count) : $count;
+        $formatCount = static function ($count) use ($useListTableFormat, $locale) {
+            return $useListTableFormat ? CountFormatter::format($count, $locale) : $count;
         };
         $percentage = $campaign->goal
             ? $actual / $campaign->goal

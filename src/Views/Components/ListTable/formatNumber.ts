@@ -1,41 +1,36 @@
 /**
- * The separators of the signed-in user's locale. PHP prints them before the shared list table script, from
- * the same place `number_format_i18n()` reads, so a number in a cell and a number in the footer match.
- * This is configuration, not records.
+ * The language of the browser, as in "pt-BR". The list requests send it, so the server formats money and
+ * counts the same way as the numbers written here.
  *
  * @since TBD
  */
-export interface GiveListTableNumbers {
-    thousandsSep: string;
-    decimalPoint: string;
+export function browserLocale(): string {
+    return window.navigator.language || window.navigator.languages?.[0] || '';
 }
 
-declare global {
-    interface Window {
-        GiveListTableNumbers?: GiveListTableNumbers;
+// `useGrouping` also groups four-digit numbers in the languages that would not by default, as PHP does.
+const options: Intl.NumberFormatOptions = {maximumFractionDigits: 0, useGrouping: true};
+
+function numberFormat(): Intl.NumberFormat {
+    try {
+        return new Intl.NumberFormat(browserLocale() || undefined, options);
+    } catch {
+        return new Intl.NumberFormat(undefined, options);
     }
 }
 
-const DEFAULT_THOUSANDS_SEPARATOR = ',';
-
 /**
- * Writes a whole number with the thousands separator of the admin's locale: 1200 is "1,200" in en_US and
- * "1.200" in de_DE. The separator can be any text, also more than one character. Counts are whole numbers,
- * so a fraction is dropped.
+ * Writes a whole number in the browser's language: 1200 is "1,200" in en-US and "1.200" in de-DE. Counts are
+ * whole numbers, so a fraction is dropped.
  *
  * @since TBD
  */
 export function formatNumber(value: number): string {
-    const separator = window.GiveListTableNumbers?.thousandsSep ?? DEFAULT_THOUSANDS_SEPARATOR;
-    const whole = Math.trunc(value);
-
-    if (!Number.isFinite(whole)) {
+    if (!Number.isFinite(value)) {
         return String(value);
     }
 
-    const digits = String(Math.abs(whole)).replace(/\B(?=(\d{3})+(?!\d))/g, () => separator);
-
-    return whole < 0 ? `-${digits}` : digits;
+    return numberFormat().format(Math.trunc(value));
 }
 
 /**

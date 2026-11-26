@@ -7,6 +7,7 @@ namespace Give\DonationForms\V2\ListTable\Columns;
 use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ColumnKind;
+use Give\Framework\ListTable\Formatting\CountFormatter;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -52,6 +53,8 @@ class DonationCountColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
+        // Read this way so a subclass that overrides getCellValue($model) keeps working.
+        $locale = func_num_args() > 1 ? (string)func_get_arg(1) : '';
         /**
          * @var DonationFormDataRepository $donationFormData
          */
@@ -61,7 +64,7 @@ class DonationCountColumn extends ModelColumn
 
         return sprintf(
             '<div class="donationCount"><span>%s</span></div>',
-            number_format_i18n($totalDonations)
+            CountFormatter::format($totalDonations, $locale)
         );
     }
 

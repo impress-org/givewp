@@ -49,6 +49,12 @@ class ListDonationsStats extends Endpoint
                         'required' => false,
                         'default' => give_is_test_mode(),
                     ],
+                        'locale' => [
+                            'type' => 'string',
+                            'required' => false,
+                            'default' => '',
+                            'sanitize_callback' => 'sanitize_text_field',
+                        ],
                 ],
             ]
         );
@@ -64,7 +70,7 @@ class ListDonationsStats extends Endpoint
 
         $statistics = $this->getDonationStatistics();
 
-        return new WP_REST_Response(StatsFormatter::withFormatted($statistics));
+        return new WP_REST_Response(StatsFormatter::withFormatted($statistics, [], (string)$request->get_param('locale')));
     }
 
     /**

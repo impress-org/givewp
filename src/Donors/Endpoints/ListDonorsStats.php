@@ -35,8 +35,14 @@ class ListDonorsStats extends Endpoint
                     'methods' => 'GET',
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
-                ],
-                'args' => [
+                    'args' => [
+                        'locale' => [
+                            'type' => 'string',
+                            'required' => false,
+                            'default' => '',
+                            'sanitize_callback' => 'sanitize_text_field',
+                        ],
+                    ],
                 ],
             ]
         );
@@ -52,7 +58,7 @@ class ListDonorsStats extends Endpoint
 
         $statistics = $this->getDonorStatistics();
 
-        return new WP_REST_Response(StatsFormatter::withFormatted($statistics));
+        return new WP_REST_Response(StatsFormatter::withFormatted($statistics, [], (string)$request->get_param('locale')));
     }
 
     /**

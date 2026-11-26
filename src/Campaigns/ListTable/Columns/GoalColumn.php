@@ -43,12 +43,14 @@ class GoalColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
+        // Read this way so a subclass that overrides getCellValue($model) keeps working.
+        $locale = func_num_args() > 1 ? (string)func_get_arg(1) : '';
         /**
          * @var CampaignsDataRepository $campaignsData
          */
         $campaignsData = $this->getListTableData();
 
-        $goalData = $campaignsData->getGoalData($model, true);
+        $goalData = $campaignsData->getGoalData($model, true, $locale);
 
         if ($goalData['goal'] === 0) {
             return Placeholder::dash(__('No Goal Set', 'give'));

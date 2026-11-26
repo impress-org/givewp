@@ -51,7 +51,7 @@ class AmountColumn extends ModelColumn
     {
         return sprintf(
             '<div class="amount"><span>%s</span></div>',
-            MoneyFormatter::format($model->amount)
+            MoneyFormatter::format($model->amount, (string)$locale)
         );
     }
 
