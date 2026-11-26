@@ -152,7 +152,9 @@ class DonationCountersSchedule
         self::$recountRequested = true;
 
         self::whenReady(static function () {
-            AsBackgroundJobs::scheduleSingleAction(time() + self::RECOUNT_DELAY, self::RECOUNT_HOOK, [], self::GROUP);
+            $runAt = time() + self::RECOUNT_DELAY;
+
+            AsBackgroundJobs::scheduleSingleAction($runAt, self::RECOUNT_HOOK, [], self::GROUP);
         });
     }
 
