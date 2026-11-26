@@ -175,6 +175,33 @@ class FormColumnsFormattingTest extends TestCase
     }
 
     /**
+     * An add-on on the filter may do math with a count goal, so it gets plain numbers; the cell formats them.
+     *
+     * @since TBD
+     */
+    public function testCountGoalFilterStillGetsPlainNumbers(): void
+    {
+        $form = $this->createSimpleDonationForm();
+        $form->goalSettings->enableDonationGoal = true;
+        $column = $this->goalColumnWith($this->goalData(87, 1000000, false), $form);
+        $received = [];
+        $filter = static function (array $stats) use (&$received) {
+            $received = [$stats['actual'], $stats['goal']];
+
+            return $stats;
+        };
+        add_filter('give_goal_progress_stats', $filter, 99);
+
+        $cell = $column->getCellValue($form, 'en-US-u-nu-thai');
+
+        remove_filter('give_goal_progress_stats', $filter, 99);
+
+        $this->assertSame(1000000, $received[1]);
+        $this->assertTrue(is_numeric($received[0]));
+        $this->assertStringContainsString('๑,๐๐๐,๐๐๐', $cell);
+    }
+
+    /**
      * @since TBD
      */
     public function testMoneyGoalCellKeepsTheMoneyText(): void

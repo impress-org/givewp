@@ -42,7 +42,7 @@ class GoalColumn extends ModelColumn
     /**
      * @since TBD Write a count goal in the admin's locale.
      * @since TBD Show a labeled dash when the form has no goal.
-     * @since TBD Show a progress ring next to the amount, and a check with "Goal achieved" once the goal is met or the givewp_list_table_goal_progress_achieved_opacity filter returns a value above 0.
+     * @since TBD Show the goal target with its type, not the current amount, beside a progress ring, and a check with "Goal achieved" once the goal is met or the givewp_list_table_goal_progress_achieved_opacity filter returns a value above 0.
      * @since 4.3.0 use DonationFormDataRepository
      * @since 4.2.0 convert goal data to v3 form format
      * @since 3.16.0 Remove "give_get_form_earnings_stats" filter logic and add filters to change the cell value content
@@ -68,12 +68,6 @@ class GoalColumn extends ModelColumn
 
         $goalData = $donationFormData->getGoalData($model);
 
-        // The form builder reads the plain numbers from the repository, so only this cell formats them.
-        if (!$goalData['typeIsMoney']) {
-            $goalData['actualFormatted'] = CountFormatter::format($goalData['actual'], $locale);
-            $goalData['goalFormatted'] = CountFormatter::format($goalData['goal'], $locale);
-        }
-
         $stats = apply_filters('give_goal_progress_stats', [
             'raw_actual' => $goalData['actual'],
             'raw_goal' => $goalData['goal'],
@@ -84,10 +78,15 @@ class GoalColumn extends ModelColumn
             'form_id' => $model->id,
         ]);
 
+        // A count goal is written after the filter, so an add-on on it still gets plain numbers.
+        $goal = ! $goalData['typeIsMoney'] && is_numeric($stats['goal'])
+            ? CountFormatter::format($stats['goal'], $locale)
+            : (string)$stats['goal'];
+
         return GoalProgress::render(
             $model->id,
             $stats['progress'],
-            GoalLabel::make($model->goalSettings->goalType->getValue(), $stats['raw_goal'], (string)$stats['goal'])
+            GoalLabel::make($model->goalSettings->goalType->getValue(), $stats['raw_goal'], $goal)
         );
     }
 }
