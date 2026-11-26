@@ -1,6 +1,6 @@
 // WP admin values for the list pages. They are not in the Give foundation, so they live here, once.
 // Each pair is measured in `tokens.contrast.test.ts`. Do not add a value without adding its pair there.
-// The grey of the full list page. The admin wrapper around the page uses it too, so the page has no lighter strip under it.
+// The gray of the full list page. The admin wrapper around the page uses it too, so the page has no lighter strip under it.
 $givewp-list-table-page: #f0f0f1;
 
 @mixin givewp-list-table-tokens {
@@ -15,7 +15,7 @@ $givewp-list-table-page: #f0f0f1;
     --givewp-list-table-page: #{$givewp-list-table-page};
 
     // Our own bars, edges and focus use a darker mix of the site's admin color, so old schemes
-    // (Sunrise, Light) still pass 3:1. A browser without `color-mix()` gets the grey control edge instead, which
+    // (Sunrise, Light) still pass 3:1. A browser without `color-mix()` gets the gray control edge instead, which
     // passes 3:1 on its own; the raw admin color does not in every scheme.
     --givewp-list-table-action-edge: #757575;
     --givewp-list-table-action-tint: rgb(0 0 0 / 0.04);

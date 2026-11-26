@@ -32,7 +32,7 @@ class DonationsCountColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Write the count in the admin's locale.
+     * @since TBD Write the count in the browser's language.
      * @since 4.0.0
      *
      * @param Campaign $model

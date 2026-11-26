@@ -51,7 +51,7 @@ class SalesAmountColumn extends ModelColumn
      * @inheritDoc
      *
      * @since TBD Read the sales from the data the endpoint loads for the whole page.
-     * @since TBD Format with the shared money formatter; $locale is kept for add-on filters and no longer used.
+     * @since TBD Format with the shared money formatter, which follows the browser's language when "Auto-format currency" is on.
      * @since 3.20.0 Refactored to use event ticket amount instead of ticket type price
      * @since 3.6.0
      *

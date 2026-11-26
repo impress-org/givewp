@@ -36,7 +36,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Clamp long campaign names to two lines, and drop the aria-label so the link is named by its visible text.
+     * @since TBD Clamp long campaign names to one line, and drop the aria-label so the link is named by its visible text.
      * @since 4.19.0 Say "No campaign" when the donation has no campaign or its campaign no longer exists.
      * @since 4.8.0 Added class to link
      * @since 4.3.0

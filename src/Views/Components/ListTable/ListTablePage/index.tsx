@@ -113,7 +113,6 @@ export const ShowConfirmModalContext = createContext(
  * @since TBD Let the stat tiles toggle the single-choice option filters the screen declares.
  * @since TBD After Reset, focus the search box, else a control left in the filter bar, else the bar.
  * @since TBD Announce the result count to screen readers after the admin changes the view.
- * @since TBD Do not send the browser locale with list requests.
  * @since TBD One filter path: the deprecated `filterSettings` are mapped onto filter declarations, and the DataViews filter row and search are gone.
  * @since TBD With `filters`, show Reset only when the filters differ from the screen defaults, and reset to those defaults.
  * @since TBD Accept filter declarations (`filters`), a fixed `scope` and `testModeToggle`; with `filters`, render Give's filter bar and labeled search.
@@ -226,7 +225,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
             origin,
             replaceView,
         });
-        // A screen with the test-mode toggle keeps test mode in the view, so it shows as a chip.
+        // A screen with the test-mode toggle keeps test mode in the view; the header switch edits it.
         const testMode = testModeSwitch ? viewFilterValue(view, TEST_MODE_FILTER) === true : paymentMode;
         // Only a single-choice list can be set by a tile.
         const tileFilterIds = useMemo(

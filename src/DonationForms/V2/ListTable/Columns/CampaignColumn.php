@@ -43,7 +43,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Clamp long campaign names to two lines.
+     * @since TBD Clamp long campaign names to one line.
      * @since TBD Drop the aria-label so the link is named by its visible text.
      * @since 4.19.0
      *

@@ -449,8 +449,8 @@ searching and paging stay on the server.
   [Switch to Legacy View](#switch-to-legacy-view)), and **the narrow layout**, which uses the stock
   `grid` layout but picks it by window width, not by a layout switcher (see [Narrow
   screens](#narrow-screens)). Where the pinned DataViews lags
-  the current WordPress release, a short commented CSS rule in `DataViewsListTable/styles.scss`
-  matches the newer behavior (row checkboxes always visible).
+  newer WordPress, the fix is in `ListTable/dataviewsPolyfill/` (see
+  [DataViews polyfill](#dataviews-polyfill-review-at-every-dataviews-upgrade)).
 - **Rows and total are two requests.** `ListTablePage` asks for the rows with `withCount=false` and
   reads `hasNextPage`, and asks `<root>/count` for the total on its own (`hooks/useListTableTotals`).
   The count is keyed without page and sort, so paging does not count again, and it never keeps the
@@ -575,7 +575,7 @@ At the DataViews bump:
    `col.dataviews-view-table__col-first-data`. Do not delete the rule. Check in the browser that the
    `col-checkbox` class still exists.
 2. Update the class names in `dataviewsPolyfill/polyfillStyles.test.ts` and `DataViewsListTable/index.test.tsx`, and the rule
-   name in `ListTable/README.MD` and in this entry.
+   name in `ListTable/dataviewsPolyfill/README.md` and in this entry.
 3. Measure Donors, Campaigns, Forms, Donations and the Forms tab of a campaign again at 2220, 1512 and
    1280 px. Look at the sideways scroll, the width of the first and checkbox columns, and the row
    heights. Change `8%` if the new stylesheet shares the width in another way.
@@ -584,12 +584,13 @@ At the DataViews bump:
 
 ## Money and dates
 
-Every list screen writes money and dates the same way, and the server does all of it. The browser
-only shows the text it gets.
+The server writes the money and dates of every list screen, and the browser only shows the text it
+gets. Some money cells follow the browser's language (see below).
 
 - **Two formatters.** `Give\Framework\ListTable\Formatting\MoneyFormatter` writes money through
   `give_currency_filter(give_format_amount())`, the same helpers receipts and reports use, so the
-  currency settings (symbol, position, separators, decimals) decide the result.
+  currency settings (symbol, position, separators, decimals) decide the result, unless a column passes the
+  browser's locale and "Auto-format currency" is on.
   `DateFormatter::dateTime()` uses the site's date format, time format and time zone ("November 29,
   2025 at 4:16 pm"); `DateFormatter::date()` is the date-only form (Campaign start and end). Every
   column calls one of them. `tests/Unit/Framework/ListTable/ListTableFormattingCallSitesTest.php`
@@ -619,9 +620,8 @@ only shows the text it gets.
   (`listTableClientFormatting.test.ts`).
 - **Two details found on the way.** The intl fallback in `CurrencyFacade::formatToLocale()` passes a
   `currency` key that `give_currency_filter()` ignores, so a donation in another currency showed the
-  site's symbol. `MoneyFormatter` passes `currency_code`. The facade itself is not changed. And on
-  sites with "Auto-format server currency amounts" on, Donations, Donors, Subscriptions and Event
-  Tickets amounts used to follow PHP intl; they now follow the currency settings like the rest.
+  site's symbol. `MoneyFormatter` passes `currency_code`. The facade itself is not changed. With "Auto-format
+  currency" on, the money columns that pass the locale follow the browser's language through PHP intl.
 
 ## Notices
 

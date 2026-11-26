@@ -22,7 +22,7 @@ describe('status icons', () => {
     });
 });
 
-// The Goal cell is as quiet as the Status cell: the cell's own grey, no bold, and the same check.
+// The Goal cell is as quiet as the Status cell: the cell's own gray, no bold, and the same check.
 describe('goal progress', () => {
     const goal = styles.slice(styles.indexOf('.givewp-goal-progress {'), styles.indexOf('.goalProgress {'));
 

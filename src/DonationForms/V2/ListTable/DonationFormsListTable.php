@@ -32,8 +32,7 @@ class DonationFormsListTable extends ListTable
     }
 
     /**
-     * @since TBD Add the Donors column, hidden by default.
-     * @since TBD Put Status right after the title, then ID and Date.
+     * @since TBD Put Status right after the title, then ID and Date, and add the Donors column.
      * @since 4.19.0 Add the Campaign column.
      * @since 2.24.0
      *

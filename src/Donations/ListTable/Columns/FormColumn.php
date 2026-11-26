@@ -39,7 +39,7 @@ class FormColumn extends ModelColumn
      * The title comes from the donation record, so no query runs per row. post.php redirects v3 forms to the
      * form builder, so one edit link covers both form types.
      *
-     * @since TBD Clamp long form titles to two lines.
+     * @since TBD Clamp long form titles to one line.
      * @since 4.19.0
      *
      * @inheritDoc

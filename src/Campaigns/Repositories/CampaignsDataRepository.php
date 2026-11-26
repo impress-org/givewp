@@ -313,7 +313,7 @@ class CampaignsDataRepository
 
 
     /**
-     * @since TBD Add $useListTableFormat to write the amounts with the shared money formatter, and the counts in the admin's locale.
+     * @since TBD Add $useListTableFormat to write the amounts with the shared money formatter, and the counts in the browser's language.
      * @since 4.0.0
      *
      * Get goal data for campaign
@@ -337,7 +337,7 @@ class CampaignsDataRepository
             : static function ($amount): string {
                 return give_currency_filter(give_format_amount($amount));
             };
-        // Counts stay numbers for the REST API. Only the list table gets text for the admin's locale.
+        // Counts stay numbers for the REST API. Only the list table gets text for the browser's language.
         $formatCount = static function ($count) use ($useListTableFormat, $locale) {
             return $useListTableFormat ? CountFormatter::format($count, $locale) : $count;
         };

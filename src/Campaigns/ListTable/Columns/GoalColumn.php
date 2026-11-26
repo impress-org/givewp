@@ -35,10 +35,9 @@ class GoalColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Show the target with its goal type, without the current amount.
      * @since TBD Show a labeled dash when the campaign has no goal.
      * @since TBD Format the amounts with the shared money formatter.
-     * @since TBD Show a progress ring next to the amount, and a check with "Goal achieved" once the goal is met or the givewp_list_table_goal_progress_achieved_opacity filter returns a value above 0.
+     * @since TBD Show the goal target with its type, not the current amount, beside a progress ring, and a check with "Goal achieved" once the goal is met or the givewp_list_table_goal_progress_achieved_opacity filter returns a value above 0.
      * @since 4.0.0
      *
      * @param Campaign $model

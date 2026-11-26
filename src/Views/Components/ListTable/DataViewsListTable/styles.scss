@@ -163,7 +163,7 @@ $givewp-list-table-edge: var(--givewp-spacing-6);
 
     // The page number box that replaces the stock page select above 100 pages (`ListTablePagination.tsx`). The stock
     // select is the "minimal" kind: no edge, the same 11 px text as the words around it, a tint on hover and a ring
-    // on focus. The box looks the same, with a light grey fill at rest so it reads as a field (the select has a
+    // on focus. The box looks the same, with a light gray fill at rest so it reads as a field (the select has a
     // chevron). Its width follows the number of digits in the last page (set in the component), so it does not
     // change size while a number is typed.
     // `input[type='number']` is in the selector so it beats the WordPress admin form styles (an edge, a 30 px

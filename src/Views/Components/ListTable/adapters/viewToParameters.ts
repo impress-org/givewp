@@ -60,7 +60,6 @@ export function withToggleFilter(view: View, id: string, isOn: boolean): View {
  * The filters come from the declarations; `today` (the site's day, fixed per view) is what date
  * presets count from. `scope` is sent with every request.
  *
- * @since TBD Do not send a locale: the server formats money and dates with the site settings.
  * @since TBD Take only filter declarations; the old filter settings are mapped onto them first.
  * @since TBD Build the filter parameters from the filter declarations when they are given.
  * @since TBD

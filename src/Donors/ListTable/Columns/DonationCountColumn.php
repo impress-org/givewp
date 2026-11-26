@@ -40,7 +40,7 @@ class DonationCountColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Write the count in the admin's locale.
+     * @since TBD Write the count in the browser's language.
      * @since 4.12.0 Remove link from donation count column
      * @since 2.24.0
      *

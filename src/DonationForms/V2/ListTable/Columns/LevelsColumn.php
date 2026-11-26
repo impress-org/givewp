@@ -39,7 +39,7 @@ class LevelsColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Format with the shared money formatter; $locale is kept for add-on filters and no longer used.
+     * @since TBD Format with the shared money formatter, which follows the browser's language when "Auto-format currency" is on.
      * @since 2.24.0
      *
      * @inheritDoc
@@ -59,7 +59,7 @@ class LevelsColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Format with the shared money formatter; the $locale parameter is removed.
+     * @since TBD Format with the shared money formatter.
      * @since 2.24.0
      *
      * @param array $levels

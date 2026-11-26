@@ -49,7 +49,7 @@ class SalesCountColumn extends ModelColumn
     /**
      * @inheritDoc
      *
-     * @since TBD Read the sold count and the capacity from the page data, and write both numbers in the admin's locale.
+     * @since TBD Read the sold count and the capacity from the page data, and write both numbers in the browser's language.
      * @since 4.19.1 Add translators comments.
      * @since 3.6.0
      *

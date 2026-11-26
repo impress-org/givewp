@@ -49,12 +49,12 @@ class ListDonationsStats extends Endpoint
                         'required' => false,
                         'default' => give_is_test_mode(),
                     ],
-                        'locale' => [
-                            'type' => 'string',
-                            'required' => false,
-                            'default' => '',
-                            'sanitize_callback' => 'sanitize_text_field',
-                        ],
+                    'locale' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'default' => '',
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
                 ],
             ]
         );
