@@ -551,6 +551,34 @@ Switch to native (DataViews 12 or newer):
 4. Check by eye: LTR and RTL, compact and comfortable density, phone width, empty and loading states.
 5. Delete this entry.
 
+### Column widths: our layout choice, to match the WordPress 7.1 Pages screen
+
+This one is not a stand-in. Keep it after the bump.
+
+What it is: `_wp-look.scss` sets `width: 8%` on `col.dataviews-view-table__col-primary` and
+`width: 0.1%` on `col.dataviews-view-table__col-checkbox`. DataViews leaves the first data column out of
+its `1%` rule, so that column takes all the free width and the other columns stay at their minimum. Newer
+DataViews does the same for our tables. The native Pages screen shares the free width only because it
+also loads the older stylesheet. WordPress 7.1 is the screen users compare with, so we look like it, and long
+names wrap more on laptop screens. The checkbox rule stops the checkbox column from taking a share of the free width.
+
+Why it can break: it names DataViews classes. DataViews 11.2 and newer name the first data column
+`col-first-data`. After a bump the `col-primary` rule matches nothing, and the "column widths" test in
+`DataViewsListTable/index.test.tsx` fails to tell you.
+
+At the DataViews bump:
+
+1. In `ListTable/DataViewsListTable/_wp-look.scss`, rename `col.dataviews-view-table__col-primary` to
+   `col.dataviews-view-table__col-first-data`. Do not delete the rule. Check in the browser that the
+   `col-checkbox` class still exists.
+2. Update the class names in `wpLookScope.test.ts` and `DataViewsListTable/index.test.tsx`, and the rule
+   name in `ListTable/README.MD` and in this entry.
+3. Measure Donors, Campaigns, Forms, Donations and the Forms tab of a campaign again at 2220, 1512 and
+   1280 px. Look at the sideways scroll, the width of the first and checkbox columns, and the row
+   heights. Change `8%` if the new stylesheet shares the width in another way.
+4. Check the `min-inline-size` rules and `.givewp-truncated-text` in `_wp-look.scss` again with the new
+   column widths.
+
 ## Money and dates
 
 Every list screen writes money and dates the same way, and the server does all of it. The browser

@@ -59,7 +59,10 @@ The A+ look is kept small and in a few known places. Keep it that way.
   `DataViewsListTable` takes `paginationInfo={null}` while the total is unknown and then shows only
   the previous and next arrows (`ArrowsPagination`); Next follows `hasNextPage`.
 - **The pin.** `@wordpress/dataviews` is pinned to `10.1.7` in `package.json`. The overrides in
-  `_wp-look.scss` were written for that version. When the pin moves, check them again in the browser.
+  `_wp-look.scss` were written for that version. When the pin moves, check them again in the browser. The
+  column width rules (title and checkbox columns) are our layout choice: at the bump, rename `col-primary` to
+  `col-first-data`, do not delete them (see "Column widths" in
+  [list-tables.md](../../../../docs/architecture/list-tables.md)).
 - **Rows.** Rows keep the stock DataViews height on purpose.
 - **Status and type.** They are server-rendered markup. Type is plain text. Status is a small icon and the
   word, like the Site Editor: the icon is a CSS mask in the text color, drawn in `InterweaveSSR/styles.scss`

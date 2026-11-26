@@ -63,6 +63,8 @@ describe('the A+ table rules', () => {
 
     it('keep the column width rules', () => {
         const css = compiled.replace(/\/\*[\s\S]*?\*\//g, '');
+        expect(css).toMatch(/col\.dataviews-view-table__col-primary \{[^}]*width: 8%/);
+        expect(css).toMatch(/col\.dataviews-view-table__col-checkbox \{[^}]*width: 0\.1%/);
         expect(css).toMatch(/\.dataviews-view-table__cell-content-wrapper:not\(\.dataviews-column-primary__media\)[^{]*\{[^}]*min-inline-size: 0/);
         expect(css).toMatch(/\.dataviews-title-field \{[^}]*min-inline-size: 20ch/);
         expect(css).toMatch(/\.givewp-truncated-text \{[^}]*max-inline-size: 16rem/);

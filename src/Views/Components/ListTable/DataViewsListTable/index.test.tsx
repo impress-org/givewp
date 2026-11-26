@@ -304,6 +304,24 @@ describe('DataViewsListTable view controls', () => {
     });
 });
 
+describe('DataViewsListTable column widths', () => {
+    // When this fails after a DataViews bump, the column classes changed. Rename the selectors of our width
+    // rules in `_wp-look.scss` (`col-primary` becomes `col-first-data`) and update this test. See "Column
+    // widths" in docs/architecture/list-tables.md.
+    it('keeps the column classes that our width rules use', async () => {
+        await render({
+            page: 1,
+            rows: items,
+            totalItems: 30,
+            viewExtras: {titleField: 'name', fields: []},
+            layout: {actions: [{id: 'delete', label: 'Delete', supportsBulk: true, callback: () => undefined}]},
+        });
+
+        expect(container.querySelector('colgroup col.dataviews-view-table__col-primary')).not.toBeNull();
+        expect(container.querySelector('colgroup col.dataviews-view-table__col-checkbox')).not.toBeNull();
+    });
+});
+
 describe('DataViewsListTable while the total is not known', () => {
     const arrows = () => [...container.querySelectorAll<HTMLButtonElement>('.givewp-list-table__footer button')];
 
