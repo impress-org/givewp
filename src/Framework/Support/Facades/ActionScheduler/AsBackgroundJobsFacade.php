@@ -70,7 +70,8 @@ class AsBackgroundJobsFacade
     }
 
     /**
-     * Schedules an action to run once, unless one is already pending or running.
+     * Schedules an action to run once, unless one with the same hook and group is already pending or
+     * running, whatever its arguments.
      *
      * @since TBD
      *
@@ -81,7 +82,7 @@ class AsBackgroundJobsFacade
      */
     public function scheduleSingleAction(int $timestamp, string $hook, array $args, string $group): void
     {
-        if (as_has_scheduled_action($hook, $args, $group)) {
+        if (as_has_scheduled_action($hook, null, $group)) {
             return;
         }
 

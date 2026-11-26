@@ -42,10 +42,10 @@ class AsBackgroundJobsFacadeTest extends TestCase
     /**
      * @since TBD
      */
-    public function testScheduleSingleActionSchedulesOnce(): void
+    public function testScheduleSingleActionSchedulesOncePerHookAndGroup(): void
     {
-        AsBackgroundJobs::scheduleSingleAction(time() + 60, self::HOOK, [], self::GROUP);
-        AsBackgroundJobs::scheduleSingleAction(time() + 90, self::HOOK, [], self::GROUP);
+        AsBackgroundJobs::scheduleSingleAction(time() + 60, self::HOOK, [1], self::GROUP);
+        AsBackgroundJobs::scheduleSingleAction(time() + 90, self::HOOK, [2], self::GROUP);
 
         $this->assertSame(1, $this->pendingActions());
     }
