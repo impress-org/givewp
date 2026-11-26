@@ -21,3 +21,19 @@ describe('status icons', () => {
         ).toEqual([]);
     });
 });
+
+// The Goal cell is as quiet as the Status cell: the cell's own grey, no bold, and the same check.
+describe('goal progress', () => {
+    const goal = styles.slice(styles.indexOf('.givewp-goal-progress {'), styles.indexOf('.goalProgress {'));
+
+    it('draws the achieved check with the Completed status icon, in the text color', () => {
+        expect(styles.match(/\$icon-completed/g)?.length).toBeGreaterThanOrEqual(3);
+        expect(goal).toContain('mask: $icon-completed center / contain no-repeat');
+        expect(goal).toContain('background-color: currentColor');
+    });
+
+    it('sets no color or weight of its own on the text', () => {
+        expect(goal).not.toMatch(/(?<![-\w])color:(?! CanvasText)/);
+        expect(goal).not.toContain('font-weight');
+    });
+});

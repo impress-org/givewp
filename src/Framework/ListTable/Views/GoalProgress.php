@@ -15,8 +15,8 @@ class GoalProgress
      *
      * @since TBD
      */
-    private const RING_COLOR = '#2bc253';
-    private const TRACK_COLOR = '#eeeeee';
+    private const RING_COLOR = '#646970';
+    private const TRACK_COLOR = '#646970';
 
     /**
      * @since TBD
@@ -61,7 +61,7 @@ class GoalProgress
     }
 
     /**
-     * The ring as an SVG data URI: a gray track and a green arc with round ends. The round ends add
+     * The ring as an SVG data URI: a see-through track and an arc, both in the gray of the cell text, with round ends. The round ends add
      * half the stroke width at each end, so the arc is drawn that much shorter: a goal at 99% still
      * shows a gap, and any progress above 0 shows at least a dot. At 0 there is no arc.
      *
@@ -76,7 +76,7 @@ class GoalProgress
 
         $svg = sprintf(
             "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'>" .
-            "<circle cx='14' cy='14' r='12' fill='none' stroke='%s' stroke-width='4'/>" .
+            "<circle cx='14' cy='14' r='12' fill='none' stroke='%s' stroke-opacity='0.25' stroke-width='4'/>" .
             "<circle cx='14' cy='14' r='12' fill='none' stroke='%s' stroke-width='4' stroke-linecap='round'" .
             " pathLength='100' stroke-dasharray='%s 100' transform='rotate(-90 14 14)'/>" .
             "</svg>",

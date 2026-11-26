@@ -1,6 +1,9 @@
 @use '../layout/breakpoints' as *;
 @use '@givewp/css/Safe-Rem/functions' as *;
 
+// The check of a finished thing: a completed status and a reached goal.
+$icon-completed: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 18.5a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13ZM4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0Zm11.53-1.47-1.06-1.06L11 12.94l-1.47-1.47-1.06 1.06L11 15.06l4.53-4.53Z'/%3E%3C/svg%3E");
+
 .interweave {
     // Status and type show as plain text. The WordPress `p` margin would make every row taller.
     :is(.statusBadge, .badge) p {
@@ -28,7 +31,7 @@
         &--active,
         &--completed,
         &--upgraded {
-            --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 18.5a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13ZM4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0Zm11.53-1.47-1.06-1.06L11 12.94l-1.47-1.47-1.06 1.06L11 15.06l4.53-4.53Z'/%3E%3C/svg%3E");
+            --icon: #{$icon-completed};
         }
 
         &--pending,
@@ -189,12 +192,13 @@
         }
     }
 
-    // A progress ring next to the amount. Once the goal is met, a check replaces the ring and
-    // "Goal achieved" replaces the percentage.
+    // A progress ring beside the target. Once the goal is met, the Completed status check replaces the ring and
+    // "Goal achieved" replaces the percentage. It is as quiet as the Status cell: the text color of the cell,
+    // no bold, and the same 24px icon box.
     .givewp-goal-progress {
         align-items: center;
         display: inline-flex;
-        gap: 0.625rem;
+        gap: 4px;
 
         // On the narrowest phones a long amount does not fit beside the ring, so it moves under it.
         @media (max-width: $givewp-list-table-narrow) {
@@ -203,9 +207,16 @@
 
         &__ring,
         &__check {
+            box-sizing: border-box;
             flex-shrink: 0;
-            height: 1.75rem;
-            width: 1.75rem;
+            height: 24px;
+            width: 24px;
+            margin-inline-start: -4px;
+        }
+
+        // The ring is as wide as the circle of the status icons.
+        &__ring {
+            padding: 4px;
         }
 
         &__ring-image {
@@ -215,15 +226,17 @@
         }
 
         &__check {
-            background: var(--givewp-green-700)
-                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M8.5 14.5l3.5 3.5 7.5-8' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
-                center / contain no-repeat;
-            border-radius: 50%;
+            background-color: currentColor;
+            mask: $icon-completed center / contain no-repeat;
             display: none;
+
+            @media (forced-colors: active) {
+                forced-color-adjust: none;
+                background-color: CanvasText;
+            }
         }
 
         &__amount {
-            color: var(--givewp-neutral-700);
             display: flex;
             flex-direction: column;
             font-size: 0.8125rem;
@@ -239,20 +252,13 @@
                 min-inline-size: 0;
                 white-space: normal;
             }
-
-            .goal {
-                font-weight: 700;
-            }
         }
 
         &__status {
-            color: var(--givewp-neutral-500);
             font-size: 0.8125rem;
 
             &--achieved {
-                color: var(--givewp-green-700);
                 display: none;
-                font-weight: 600;
             }
         }
 

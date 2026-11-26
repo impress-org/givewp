@@ -36,6 +36,16 @@ class GoalProgressTest extends TestCase
     }
 
     /**
+     * A see-through track stays quieter than the arc on white, on selected rows and in dark high contrast.
+     *
+     * @since TBD
+     */
+    public function testDrawsTheTrackAsASeeThroughGray(): void
+    {
+        $this->assertStringContainsString('stroke-opacity=&#039;0.25&#039;', GoalProgress::render(7, 40, '$100 raised'));
+    }
+
+    /**
      * @since TBD
      */
     public function testLeavesTheRingEmptyAt0(): void
@@ -43,7 +53,8 @@ class GoalProgressTest extends TestCase
         $html = GoalProgress::render(7, -5, '$100 raised');
 
         $this->assertStringContainsString('aria-valuenow="0"', $html);
-        $this->assertStringNotContainsString('%232bc253', $html);
+        // The track has the same gray, so the empty ring is told by an arc with no stroke.
+        $this->assertStringContainsString('stroke=&#039;none&#039;', $html);
     }
 
     /**
@@ -53,7 +64,7 @@ class GoalProgressTest extends TestCase
     {
         $html = GoalProgress::render(7, 3, '$100 raised');
 
-        $this->assertStringContainsString('stroke=&#039;%232bc253&#039;', $html);
+        $this->assertStringContainsString('stroke=&#039;%23646970&#039;', $html);
         $this->assertStringContainsString('stroke-dasharray=&#039;0 100&#039;', $html);
     }
 
