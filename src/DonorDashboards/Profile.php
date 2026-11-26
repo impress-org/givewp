@@ -200,10 +200,36 @@ class Profile
     }
 
     /**
+     * @since TBD Require a donor-matched upload stamp or a logged-in author for avatar ownership.
      * @since 3.14.2
      */
     public function avatarBelongsToCurrentUser(?int $avatarId = null): bool
     {
-        return (int)get_post_field("post_author", $avatarId ?? $this->getAvatarId()) === get_current_user_id();
+        $avatarId = (int) ($avatarId ?? $this->getAvatarId());
+
+        if (! $avatarId) {
+            return false;
+        }
+
+        $stampDonorId = (int) get_post_meta($avatarId, '_give_donor_avatar_donor_id', true);
+        $donorId = (int) $this->getId();
+
+        // Dashboard uploads are stamped with the donor ID, which also covers email-token sessions.
+        if ($donorId && $stampDonorId === $donorId) {
+            return true;
+        }
+
+        // Avatars uploaded before the stamp existed can only be matched to a logged-in author.
+        $userId = get_current_user_id();
+
+        if ($userId > 0 && (int) get_post_field('post_author', $avatarId) === $userId) {
+            return true;
+        }
+
+        // Pre-stamp avatars have no author to match in an email-token session; only the donor's
+        // own currently stored avatar qualifies.
+        return ! $stampDonorId
+            && (int) get_post_field('post_author', $avatarId) === 0
+            && $avatarId === (int) $this->getAvatarId();
     }
 }

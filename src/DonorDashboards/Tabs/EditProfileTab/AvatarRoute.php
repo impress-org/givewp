@@ -30,6 +30,8 @@ class AvatarRoute extends RouteAbstract
     }
 
     /**
+     * @since TBD Stamp uploaded avatars with the donor ID for ownership checks.
+     *
      * @inheritDoc
      *
      * @return array|WP_REST_Response
@@ -95,6 +97,9 @@ class AvatarRoute extends RouteAbstract
 
                 // Insert the attachment.
                 $attachmentId = wp_insert_attachment($attachment, $path);
+
+                // Stamp the upload with the donor ID so ownership checks cover email-token sessions.
+                update_post_meta($attachmentId, '_give_donor_avatar_donor_id', give()->donorDashboard->getId());
 
                 // Make sure that this file is included, as wp_generate_attachment_metadata() depends on it.
                 require_once(ABSPATH . 'wp-admin/includes/image.php');

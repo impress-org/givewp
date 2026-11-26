@@ -25,6 +25,9 @@ class UpdateDonorAvatar implements Stage
         return $payload;
     }
 
+    /**
+     * @since TBD Verify avatar ownership before storing any avatar ID.
+     */
     protected function updateAvatarInMetaDB()
     {
         if (!array_key_exists('avatarId', $this->data)) {
@@ -33,7 +36,7 @@ class UpdateDonorAvatar implements Stage
 
         $avatarId = $this->data['avatarId'];
 
-        if (give()->donorDashboard->getAvatarId() && !give()->donorDashboard->avatarBelongsToCurrentUser($avatarId)) {
+        if (!give()->donorDashboard->avatarBelongsToCurrentUser($avatarId)) {
             Log::error(
                 'Avatar update permission denied.',
                 [

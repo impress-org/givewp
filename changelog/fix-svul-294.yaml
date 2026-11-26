@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Improved validation of the donor dashboard avatar upload.
+timestamp: 2026-11-26T17:25:51.549Z

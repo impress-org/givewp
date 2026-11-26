@@ -27,6 +27,7 @@ class TestProfileRoute extends RestApiTestCase
     private $donor;
 
     /**
+     * @since TBD Create the test donor without an avatar.
      * @since 4.20.0
      */
     public function setUp(): void
@@ -46,6 +47,7 @@ class TestProfileRoute extends RestApiTestCase
 
         $this->donor = Donor::factory()->create([
             'userId' => $this->userId,
+            'avatarId' => null,
         ]);
 
         wp_set_current_user($this->userId);
@@ -151,6 +153,105 @@ class TestProfileRoute extends RestApiTestCase
         $this->assertSame('IL', $billing['state']);
         $this->assertSame('US', $billing['country']);
         $this->assertSame('62701', $billing['zip']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testAvatarIdRefusedForAttachmentTheDonorDoesNotOwn()
+    {
+        wp_set_current_user(0);
+
+        $token = wp_generate_password(32, false);
+        give()->email_access->set_verify_key($this->donor->id, $this->donor->email, $token);
+        $_GET['give_nl'] = $token;
+
+        // Profile::__construct() resolves and caches the current donor once; re-register the
+        // singleton now that the token session is in place so it resolves this test's donor.
+        give()->singleton('donorDashboard', \Give\DonorDashboards\Profile::class);
+
+        $attachmentId = $this->createAttachment(0);
+
+        $this->dispatchRequest($this->profileRequest(['avatarId' => $attachmentId]));
+
+        $this->assertEmpty(
+            $this->getStoredAvatarId(),
+            'Avatar ID should not be stored for an attachment the donor does not own.'
+        );
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testAvatarIdStoredForDonorStampedUpload()
+    {
+        wp_set_current_user(0);
+
+        $token = wp_generate_password(32, false);
+        give()->email_access->set_verify_key($this->donor->id, $this->donor->email, $token);
+        $_GET['give_nl'] = $token;
+
+        give()->singleton('donorDashboard', \Give\DonorDashboards\Profile::class);
+
+        $attachmentId = $this->createAttachment(0);
+        update_post_meta($attachmentId, '_give_donor_avatar_donor_id', $this->donor->id);
+
+        $this->dispatchRequest($this->profileRequest(['avatarId' => $attachmentId]));
+
+        $this->assertSame(
+            $attachmentId,
+            (int) $this->getStoredAvatarId(),
+            'Avatar ID should be stored for an upload stamped with the donor ID.'
+        );
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testAvatarIdStoredForOwnAuthoredAttachment()
+    {
+        $attachmentId = $this->createAttachment($this->userId);
+
+        $this->dispatchRequest($this->profileRequest(['avatarId' => $attachmentId]));
+
+        $this->assertSame(
+            $attachmentId,
+            (int) $this->getStoredAvatarId(),
+            'Avatar ID should be stored for the logged-in donor\'s own upload.'
+        );
+    }
+
+    /**
+     * Read the donor's stored avatar ID straight from the database, bypassing any meta cache
+     * left over from an earlier test in the same process.
+     *
+     * @since TBD
+     */
+    private function getStoredAvatarId()
+    {
+        global $wpdb;
+
+        return $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT meta_value FROM {$wpdb->prefix}give_donormeta WHERE donor_id = %d AND meta_key = '_give_donor_avatar_id' LIMIT 1",
+                $this->donor->id
+            )
+        );
+    }
+
+    /**
+     * @since TBD
+     */
+    private function createAttachment(int $authorId): int
+    {
+        return wp_insert_attachment(
+            [
+                'post_title' => 'Test avatar image',
+                'post_status' => 'inherit',
+                'post_mime_type' => 'image/png',
+                'post_author' => $authorId,
+            ]
+        );
     }
 
     /**
