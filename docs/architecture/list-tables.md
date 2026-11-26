@@ -665,7 +665,10 @@ it; screens do not add their own media queries.
   selection is kept.
 - **Scroll edges.** Above 782 px a wide table scrolls sideways inside the list. The Actions column
   is pinned by stock DataViews, which draws a faint 1px line on its edge only while rows are scrolled
-  under it. Give adds no line, shadow or class of its own.
+  under it. Give adds no line or shadow of its own. The pinned DataViews measures the scroll only on
+  mount, scroll and window resize, and 200 ms late, so `useActionsColumnStuck` toggles the stock
+  `--stuck` class at once on scroll, resize and render, as WordPress 7.1 does. Remove the hook when
+  the pinned DataViews does that itself.
 - **Motion.** Any animation in the list sits inside `@media (prefers-reduced-motion: no-preference)`.
 
 ### Styling

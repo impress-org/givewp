@@ -19,6 +19,7 @@ import type {Action, Field, View} from '@wordpress/dataviews';
 import type {ListTableItem} from '../ListTablePage/types';
 import {insertNumbers} from '../formatNumber';
 import ListTableViewReset from '../ListTableViewReset';
+import useActionsColumnStuck from '../hooks/useActionsColumnStuck';
 import useDelayedFlag from '../hooks/useDelayedFlag';
 import ListTablePagination, {ArrowsPagination} from './ListTablePagination';
 import './styles.scss';
@@ -417,6 +418,7 @@ export default function DataViewsListTable({
     viewMenu,
 }: DataViewsListTableProps) {
     const rootRef = useRef<HTMLDivElement>(null);
+    useActionsColumnStuck(rootRef);
     const isNarrow = layoutMode === 'narrow';
     const hasBulkActions = actions.some((action) => action.supportsBulk);
     const shownFields = useMemo(
