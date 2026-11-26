@@ -304,12 +304,12 @@ class TestListDonors extends TestCase
     }
 
     /**
-     * The campaign filter compares the campaign IDs as text so the meta index finds them. It must
-     * return the same donors as the number comparison it replaced, whatever state the donations are in.
+     * The campaign filter reads the donation meta alone, so a donor is listed whatever state their
+     * donation is in.
      *
      * @since TBD
      */
-    public function testCampaignFilterMatchesTheNumberComparisonForEveryDonationState()
+    public function testCampaignFilterListsDonorsForEveryDonationState()
     {
         $campaignA = Campaign::factory()->create();
         $campaignB = Campaign::factory()->create();
@@ -323,8 +323,11 @@ class TestListDonors extends TestCase
             DonationStatus::RENEWAL(),
         ];
 
+        $inCampaignA = [];
+
         foreach ($statuses as $status) {
             $donor = Donor::factory()->create();
+            $inCampaignA[] = $donor->id;
             Donation::factory()->create(['donorId' => $donor->id, 'campaignId' => $campaignA->id, 'status' => $status]);
         }
 
@@ -341,12 +344,11 @@ class TestListDonors extends TestCase
 
         Donor::factory()->create();
 
-        foreach ([[$campaignA->id], [$campaignB->id], [$campaignC->id], [$campaignA->id, $campaignB->id]] as $campaignIds) {
-            $this->assertSame(
-                $this->donorIdsWithNumberComparison($campaignIds),
-                $this->donorIdsForCampaigns($campaignIds)
-            );
-        }
+        array_push($inCampaignA, $testDonor->id, $anonymous->id, $several->id);
+
+        $this->assertEqualsCanonicalizing($inCampaignA, $this->donorIdsForCampaigns([$campaignA->id]));
+        $this->assertEqualsCanonicalizing($inCampaignA, $this->donorIdsForCampaigns([$campaignA->id, $campaignB->id]));
+        $this->assertSame([], $this->donorIdsForCampaigns([$campaignC->id]));
 
         // A donor with donations in two campaigns shows once in each.
         $this->assertSame([$several->id], $this->donorIdsForCampaigns([$campaignB->id]));
@@ -377,7 +379,6 @@ class TestListDonors extends TestCase
 
         $donation->delete();
         $this->assertSame([], $this->donorIdsForCampaigns([$other->id]));
-        $this->assertSame($this->donorIdsWithNumberComparison([$other->id]), $this->donorIdsForCampaigns([$other->id]));
     }
 
     /**
@@ -392,39 +393,6 @@ class TestListDonors extends TestCase
         return array_map(static function (Donor $donor) {
             return $donor->id;
         }, $response->get_data()['items']);
-    }
-
-    /**
-     * The query the filter used before: the campaign IDs compared as numbers.
-     *
-     * @since TBD
-     *
-     * @return int[]
-     */
-    private function donorIdsWithNumberComparison(array $campaignIds): array
-    {
-        $ids = implode(',', array_map('intval', $campaignIds));
-        $donors = DB::table('give_donors')
-            ->whereIn('id', static function ($builder) use ($ids) {
-                $builder
-                    ->from('give_donationmeta')
-                    ->distinct()
-                    ->select('meta_value')
-                    ->where('meta_key', '_give_payment_donor_id')
-                    ->whereIn('donation_id', static function ($builder) use ($ids) {
-                        $builder
-                            ->from('give_donationmeta')
-                            ->select('donation_id')
-                            ->where('meta_key', '_give_campaign_id')
-                            ->whereRaw("AND meta_value IN ($ids)");
-                    });
-            })
-            ->orderBy('id', 'DESC')
-            ->getAll();
-
-        return array_map(static function ($row) {
-            return (int)$row->id;
-        }, $donors ?: []);
     }
 
     /**

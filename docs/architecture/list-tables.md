@@ -395,15 +395,6 @@ Three more rules from the 1M-donation profiling (SOFT-5634):
   took 188 seconds at a million donations; with the range it reads only recurring rows). The range
   leaves out values no writer stores, such as `'05'` or `'-1'`.
 
-### Donors list: compare campaign IDs as text
-
-`ListDonors` filters by campaign with a subquery on `give_donationmeta` (`_give_campaign_id`). The
-meta value column is text, and the IDs are passed as strings. A number compared with that column
-makes MySQL cast every row, so it read all 1.9 million campaign meta rows (about 3.9 seconds) instead
-of the 20,000 rows of one campaign through the `(meta_key, meta_value)` index. Same donors either
-way: the query still reads the same meta, with no status, mode or anonymous rule added. Reading
-`give_revenue` was tried and is not faster (same plan cost), and it has no index on `donation_id`.
-
 ## Rows first, totals apart: `withCount=false` and `/count`
 
 A list request used to wait for its total. The total is the slow part on a large site (the first

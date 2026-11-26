@@ -256,7 +256,7 @@ class ListDonors extends Endpoint
     }
 
     /**
-     * @since TBD Accept several campaign IDs and compare them as text so the meta index finds them, filter by donorType, and group the name and email search so other filters apply to every match.
+     * @since TBD Accept several campaign IDs, filter by donorType, and group the name and email search so other filters apply to every match.
      * @since 2.24.0 Replace Query Builder with Donors model
      * @since 2.21.0
      *
@@ -293,9 +293,6 @@ class ListDonors extends Endpoint
         }
 
         if ($campaignIds) {
-            // The meta value is text. Numbers compared with it make MySQL cast every row, which skips the (meta_key, meta_value) index.
-            $campaignIds = array_map('strval', $campaignIds);
-
             $query
                 ->whereIn('id', static function (QueryBuilder $builder) use ($campaignIds) {
                     $builder
