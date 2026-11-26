@@ -219,7 +219,8 @@ recounts and the CLI command are not registered, because counts from `give_donat
   hooks are skipped and the model's after hook counts the donation once committed (a counter update
   inside that transaction could deadlock and roll back the donation write).
 - **A counter update never fails a write.** Every handler catches its own errors and marks the
-  counters dirty instead. Measured cost per write: see the spike report (a few indexed queries).
+  counters dirty instead. Cost per write, measured in a local test: a model create adds 5 queries (2
+  reads of the donation, 3 writes to `wp_options`) and a status change adds 6, about 1 ms or less each.
 - **Dirty means not used.** `give_donation_counters_dirty` grows on a write that could not be counted
   exactly, on a page read that contradicts a counted total, and on a negative bucket;
   `give_donation_counters_clean` is the dirty value the last recount covered. While dirty (or never
@@ -398,9 +399,11 @@ Three more rules from the 1M-donation profiling (SOFT-5634):
 ## Rows first, totals apart: `withCount=false` and `/count`
 
 A list request used to wait for its total. The total is the slow part on a large site (the first
-request, a search, the Live tab, the last page), and it only feeds numbers on screen. So the six v3
+request, a search, the Live tab, the last page), and it only feeds numbers on screen. So the six
 list routes (donations, donors, subscriptions, donation forms, campaigns, events) can send them
-apart. The shared helper is `Framework/ListTable/ListCount`.
+apart. The shared helper is `Framework/ListTable/ListCount`. Five of them are under `give-api/v2`
+and the campaigns one is under `givewp/v3`; none is a v3 resource route. See
+[The list routes are an exception](pii.md#the-list-routes-are-an-exception).
 
 - **Rows request.** `GET <route>?...&withCount=false` returns the same keys as before, without
   `totalItems` and `totalPages`, and with `hasNextPage` (the endpoint reads `perPage + 1` rows and

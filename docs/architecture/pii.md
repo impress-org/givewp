@@ -85,6 +85,17 @@ Those values are the guard. Don't load the admin bundle on a public page, and do
 public one's params to make a public feature show more — that's the decision this document says
 belongs to an admin setting, not to code. See [admin-ui.md](admin-ui.md).
 
+### The list routes are an exception
+
+The admin list screens (Donations, Donors, Subscriptions, Donation Forms, Campaigns and Events) do
+not use the v3 resource routes. Their rows are table cells that the server renders through the
+`ListTable` column classes, which add-ons extend with their own columns, so the response holds cell
+HTML. With `return=model` it holds the whole model, with no ViewModel. Every one of these routes
+checks the screen's permission first, and they are for the admin only.
+
+Do not build new features on them. A new list of records should follow v3, unless it is one more of
+these admin screens. See [list-tables.md](list-tables.md).
+
 ### An open question, deliberately unresolved
 
 Public routes currently return partial PII in places, and whether that is the right long-term shape
@@ -134,14 +145,11 @@ validation alone does not guarantee that a stored string holds no personal infor
 belongs to that user, is only printed back to that user, and is checked again before it is printed.
 The output is built with `wp_json_encode`. The list still fetches its rows through the REST API.
 
-**The list search term never leaves the tab.** An admin can type a donor's name or email into a
-list's search, so the term is never written to the address, a stored layout, or the server outside
-the list request itself. It is kept only in the tab's `history.state` and a `sessionStorage` copy,
-both of which die with the tab. A tab that this page opens itself starts with a copy of its
-`sessionStorage`, but the copy is only read on a reload or a back/forward load, so a new tab does not
-use it. The address carries ids
-and enumerated values only. See
-[list-tables.md](list-tables.md#view-state).
+**The list search term is in the address.** An admin can type a donor's name or email into a list's
+search, and the term is written to the address as `give-search`, as WordPress core does with `?s=`.
+So it shows in the browser history, in server logs and in a copied link. It is never stored in a
+layout, and an embedded table never writes it. The rest of the address carries ids and enumerated
+values only. See [list-tables.md](list-tables.md#the-search-term-is-in-the-address).
 
 **List notices carry product text only.** The notices above a list (the daily
 recommendation and system notices) come from page config: copy, a link, and
