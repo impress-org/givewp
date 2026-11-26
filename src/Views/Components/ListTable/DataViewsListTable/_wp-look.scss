@@ -7,53 +7,9 @@
 .givewp-list-table .dataviews-view-table {
     color: var(--givewp-list-table-text-secondary);
 
-    // Our layout choice, to share the free width like the Pages screen. DataViews leaves the title column
-    // out of its `width: 1%` rule, so on its own it takes all the free width (newer versions too). The
-    // checkbox column then takes a share as well, so it is held narrow. At the DataViews bump, rename
-    // `col-primary` to `col-first-data`; do not delete the rule. See "Column widths" in
-    // docs/architecture/list-tables.md.
-    col.dataviews-view-table__col-primary {
-        width: 8%;
-    }
-
-    col.dataviews-view-table__col-checkbox {
-        width: 0.1%;
-    }
-
     // Stock selected rows use #757575 text, which fails on the tint.
     tr.is-selected {
         color: var(--givewp-list-table-text);
-    }
-
-    // The side padding of the edge cells and the header, as in WordPress 7.0 (DataViews 10.1.7 uses 48px at the
-    // edges). The properties are logical, so they work in both directions; the stock physical rules are flipped
-    // in the RTL build.
-    tr > :first-child {
-        padding-inline: var(--givewp-spacing-6) var(--givewp-spacing-3);
-    }
-
-    tr > :last-child {
-        padding-inline: var(--givewp-spacing-3) var(--givewp-spacing-6);
-    }
-
-    tr > .dataviews-view-table__checkbox-column {
-        padding-inline-end: 0;
-    }
-
-    thead th:has(.dataviews-view-table-header-button):not(:first-child, :last-child) {
-        padding-inline: var(--givewp-spacing-1);
-    }
-
-    // Compact density: the cells have 8px, so the header buttons need no padding of their own to line up with
-    // them, and the last cell starts at 8px.
-    &.has-compact-density {
-        tr > :last-child {
-            padding-inline-start: var(--givewp-spacing-2);
-        }
-
-        thead th:has(.dataviews-view-table-header-button):not(:first-child, :last-child) {
-            padding-inline: 0;
-        }
     }
 
     // Relaxes the stock `min-width: 15ch` (about 123px) on cells and on the title cell, so a narrow

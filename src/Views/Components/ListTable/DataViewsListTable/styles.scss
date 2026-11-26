@@ -2,10 +2,11 @@
 @use '../layout/tokens' as *;
 @use '../ListTableSearch/label' as *;
 @use './wp-look';
+@use '../dataviewsPolyfill/polyfill';
 @import '~@wordpress/dataviews/build-style/style.css';
 
-// The inset from both edges of the list, as in WordPress 7.0, for the toolbar, the footer, the states and the
-// cards (the first and last table cells have the same one, in `_wp-look.scss`). It also keeps controls off the
+// The inset from both edges of the list for the toolbar. The table, footer, states and cards get the same one
+// from `dataviewsPolyfill/_polyfill.scss`. It also keeps controls off the
 // DataViews wrapper edge: the wrapper scrolls sideways, so it would clip a focus ring.
 $givewp-list-table-edge: var(--givewp-spacing-6);
 
@@ -116,13 +117,6 @@ $givewp-list-table-edge: var(--givewp-spacing-6);
         inset-inline-start: 0;
     }
 
-    // DataViews 10.1.7 uses 48px at these sides.
-    .dataviews-footer,
-    .dataviews-loading,
-    .dataviews-no-results {
-        padding-inline: $givewp-list-table-edge;
-    }
-
     // While a page loads, the old rows stay until the new ones arrive. After 300 ms (the transition delay, the
     // same wait the footer text uses, so a fast page shows nothing) they are dimmed. DataViews sets
     // `aria-busy` on the table and on the cards. The stock spinner under the table is hidden: it sits out of
@@ -205,40 +199,6 @@ $givewp-list-table-edge: var(--givewp-spacing-6);
             margin: 0;
         }
     }
-
-    // Remove the total count rules below with `ListTableFooter` when the `@wordpress/dataviews` pin moves to
-    // 12.0.1 or later; see the note on `ListTableFooter`.
-    // Which rows are on the page, out of all the rows that match. It looks like the stock count and sits
-    // where the stock count sits: right after the selection checkbox, with the pagination on the right.
-    // The footer puts a gap between its children; the negative margin takes it back, so the count
-    // starts where the stock one does.
-    // `__spacer` stands in for the count while the total is unknown, so the controls keep their place.
-    &__total,
-    &__spacer {
-        margin-inline: calc(-1 * var(--givewp-spacing-2)) auto;
-
-        // The stock footer stacks at this width: no side gap to take back, so the count lines up with the checkbox.
-        @container (max-width: 560px) {
-            margin-inline-start: 0;
-        }
-    }
-
-    // The stock footer counts only the rows on the page ("30 Items"), which reads as the total. It is
-    // hidden until rows are selected, when it counts the selection ("2 Items selected").
-    &:not(&--has-selection) .dataviews-bulk-actions-footer__container .dataviews-bulk-actions-footer__item-count {
-        display: none;
-    }
-
-    &:not(&--has-selection) .dataviews-bulk-actions-footer__container {
-        margin-right: 0;
-    }
-}
-
-// Row checkboxes are always visible, as in the DataViews that WordPress 7.x ships. The pinned
-// 10.1.7 (WordPress 6.9 line) hides them until the row is hovered. Remove this rule when the pin
-// moves to a version with the newer behavior.
-.givewp-list-table .dataviews-view-table tbody .components-checkbox-control__input.components-checkbox-control__input {
-    opacity: 1;
 }
 
 // At 782 px and below the list shows one card per record (the DataViews grid layout), stacked in one
@@ -249,7 +209,6 @@ $givewp-list-table-edge: var(--givewp-spacing-6);
         .dataviews-view-grid-items {
             grid-template-columns: minmax(0, 1fr);
             gap: var(--givewp-spacing-3);
-            padding-inline: $givewp-list-table-edge;
             padding-block: var(--givewp-spacing-3);
         }
 

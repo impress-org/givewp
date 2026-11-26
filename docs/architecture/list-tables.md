@@ -470,7 +470,7 @@ searching and paging stay on the server.
   **oldest supported** WordPress ships (`readme.txt` "Requires at least"), currently 10.1.x for 6.9.
   A newer line needs script handles and components the floor release does not have. Move the pin
   only when the floor moves. Newer DataViews features that Give does by hand are listed in
-  [Stand-ins for newer DataViews](#stand-ins-for-newer-dataviews-remove-after-the-bump).
+  [DataViews polyfill](#dataviews-polyfill-review-at-every-dataviews-upgrade).
 - **One shared chunk.** Webpack puts DataViews and the shared list code in `build/givewp-list-table.js`
   (`splitChunks.cacheGroups.listTable`). It has no `.asset.php` dependencies of its own, so
   `Give\Framework\ListTable\Actions\RegisterListTableAssets` registers the `givewp-list-table`
@@ -491,11 +491,13 @@ searching and paging stay on the server.
 - **No preloaded rows.** The list fetches its own first page; do not localize rows into the page (see
   [pii.md](pii.md)).
 
-## Stand-ins for newer DataViews (remove after the bump)
+## DataViews polyfill (review at every DataViews upgrade)
 
-Give pins `@wordpress/dataviews` at 10.1.7 (the line WordPress 6.9 ships). Some things that native
-DataViews 12+ (WordPress 7.0) does itself are done here by hand. Each entry below says how to remove
-it. Do the steps in the same PR that moves the DataViews pin.
+Give pins `@wordpress/dataviews` at 10.1.7 (the line WordPress 6.9 ships). Newer DataViews (the target
+is WordPress 7.1) does some things by itself or looks different, so the CSS and JS that close the gap live
+in one folder, `ListTable/dataviewsPolyfill/`. Its `README.md` lists every entry, and
+`polyfillVersion.test.ts` fails when the version changes. Go through the list in the same PR that moves
+the pin. The longer removal steps are below.
 
 ### Reset view in the View options popover
 
@@ -515,11 +517,11 @@ Switch to native (DataViews 12 or newer, `onReset` prop):
    (`false` shows a disabled button; a function shows an enabled one). Pass it only when
    `onResetLayout` exists (no `screen` config means no reset). `onResetLayout` and `isDefaultLayout`
    already come from `useListTableLayoutPreferences`; keep them.
-3. Delete the folder `ListTable/ListTableViewReset/` (`index.tsx`, `styles.scss`, `ListTableViewReset.test.tsx`).
+3. Delete the folder `ListTable/dataviewsPolyfill/ListTableViewReset/` (`index.tsx`, `styles.scss`, `ListTableViewReset.test.tsx`).
 4. In `DataViewsListTable/index.test.tsx`, delete the test that opens the real "View options" popover
    and looks for "Reset view", and add one test that the stock "Reset view" calls `resetLayout` when
    the view is not the default.
-5. In `ListTable/README.MD`, delete the `ListTableViewReset/` row. In the "Reset view" section of this
+5. In `ListTable/dataviewsPolyfill/README.md`, delete the "Reset view" row. In the "Reset view" section of this
    page, say the button is stock. In `docs/architecture/admin-ui.md`, remove the `ListTableViewReset`
    name next to the "Reset view" button.
 6. Remove the `@wordpress/a11y` `speak` use (stock has no announcement), if nothing else needs it.
@@ -539,13 +541,13 @@ have 4px at each side. The list reaches both edges of its white box, like the st
 
 Switch to native (DataViews 12 or newer):
 
-1. In `ListTable/DataViewsListTable/_wp-look.scss`, delete the four rules `tr > :first-child`,
+1. In `ListTable/dataviewsPolyfill/_polyfill.scss`, delete the four rules `tr > :first-child`,
    `tr > :last-child`, `tr > .dataviews-view-table__checkbox-column` and
    `thead th:has(.dataviews-view-table-header-button):not(:first-child, :last-child)`, with their comment, and
    the `&.has-compact-density` block under them (its `tr > :last-child` and `thead th:has(...)` rules).
-2. In `ListTable/DataViewsListTable/styles.scss`, delete the rule for `.dataviews-footer`,
-   `.dataviews-loading` and `.dataviews-no-results` (`padding-inline`), and the `padding-inline` line of
-   `.dataviews-view-grid-items` in the narrow media query (keep its `padding-block`).
+2. In the same file, delete the rule for `.dataviews-footer`, `.dataviews-loading` and
+   `.dataviews-no-results` (`padding-inline`), and the `.dataviews-view-grid-items` rule in the narrow
+   media query.
 3. Keep `$givewp-list-table-edge` on `.givewp-list-table__toolbar` and `__view-controls-row`: the toolbar is
    Give's own. Keep the margins in `ListTablePage.module.scss` (`.pageContent`) and the stat tile padding.
 4. Check by eye: LTR and RTL, compact and comfortable density, phone width, empty and loading states.
@@ -553,9 +555,10 @@ Switch to native (DataViews 12 or newer):
 
 ### Column widths: our layout choice, to match the WordPress 7.1 Pages screen
 
-This one is not a stand-in. Keep it after the bump.
+Keep this one after the bump: it is part of the polyfill because it copies the newer look, but newer DataViews
+does not do it for our tables.
 
-What it is: `_wp-look.scss` sets `width: 8%` on `col.dataviews-view-table__col-primary` and
+What it is: `dataviewsPolyfill/_polyfill.scss` sets `width: 8%` on `col.dataviews-view-table__col-primary` and
 `width: 0.1%` on `col.dataviews-view-table__col-checkbox`. DataViews leaves the first data column out of
 its `1%` rule, so that column takes all the free width and the other columns stay at their minimum. Newer
 DataViews does the same for our tables. The native Pages screen shares the free width only because it
@@ -568,15 +571,15 @@ Why it can break: it names DataViews classes. DataViews 11.2 and newer name the 
 
 At the DataViews bump:
 
-1. In `ListTable/DataViewsListTable/_wp-look.scss`, rename `col.dataviews-view-table__col-primary` to
+1. In `ListTable/dataviewsPolyfill/_polyfill.scss`, rename `col.dataviews-view-table__col-primary` to
    `col.dataviews-view-table__col-first-data`. Do not delete the rule. Check in the browser that the
    `col-checkbox` class still exists.
-2. Update the class names in `wpLookScope.test.ts` and `DataViewsListTable/index.test.tsx`, and the rule
+2. Update the class names in `dataviewsPolyfill/polyfillStyles.test.ts` and `DataViewsListTable/index.test.tsx`, and the rule
    name in `ListTable/README.MD` and in this entry.
 3. Measure Donors, Campaigns, Forms, Donations and the Forms tab of a campaign again at 2220, 1512 and
    1280 px. Look at the sideways scroll, the width of the first and checkbox columns, and the row
    heights. Change `8%` if the new stylesheet shares the width in another way.
-4. Check the `min-inline-size` rules and `.givewp-truncated-text` in `_wp-look.scss` again with the new
+4. Check the `min-inline-size` rules and `.givewp-truncated-text` in `DataViewsListTable/_wp-look.scss` again with the new
    column widths.
 
 ## Money and dates
@@ -696,18 +699,20 @@ it; screens do not add their own media queries.
   is pinned by stock DataViews, which draws a faint 1px line on its edge only while rows are scrolled
   under it. Give adds no line or shadow of its own. The pinned DataViews measures the scroll only on
   mount, scroll and window resize, and 200 ms late, so `useActionsColumnStuck` toggles the stock
-  `--stuck` class at once on scroll, resize and render, as WordPress 7.1 does. Remove the hook when
+  `--stuck` class at once on scroll, resize and render, as WordPress 7.1 does (in `dataviewsPolyfill/`). Remove the hook when
   the pinned DataViews does that itself.
 - **Motion.** Any animation in the list sits inside `@media (prefers-reduced-motion: no-preference)`.
 
 ### Styling
 
-The look of the list pages is kept in a few places: the color tokens in `layout/_tokens.scss`, the
-table-only overrides in `DataViewsListTable/_wp-look.scss` (guarded by `wpLookScope.test.ts`), and the
-status icons and type text in `InterweaveSSR/styles.scss` (status is a CSS-mask icon and the word, with color only for Failed, Failing, Refunded, Expired and Suspended; type is plain text; the `p` margin is reset). The A+ look adds no footer colors, type, sizes or
-controls, and `_wp-look.scss` may not reach the footer. The footer layout and total count rules from
-SOFT-5300 stay in `DataViewsListTable/styles.scss`; the guard test covers only `_wp-look.scss`. The
-overrides were written for the pinned `@wordpress/dataviews` version. See "Styling scope" in the
+The look of the list pages is kept in a few places: the color tokens in `layout/_tokens.scss`, Give's
+table-only rules in `DataViewsListTable/_wp-look.scss` (guarded by `wpLookScope.test.ts`), everything
+that only copies the newer WordPress look in `dataviewsPolyfill/` (see
+[DataViews polyfill](#dataviews-polyfill-review-at-every-dataviews-upgrade)), and the status icons and type
+text in `InterweaveSSR/styles.scss` (status is a CSS-mask icon and the word, with color only for Failed,
+Failing, Refunded, Expired and Suspended; type is plain text; the `p` margin is reset). The A+ look adds no
+footer colors, type, sizes or controls, and `_wp-look.scss` may not reach the footer. The overrides were
+written for the pinned `@wordpress/dataviews` version. See "Styling scope" in the
 [React README](../../src/Views/Components/ListTable/README.MD).
 
 ## Switch to Legacy View
@@ -992,7 +997,7 @@ WordPress prints inline data only with its handle, so it appears only on list pa
 right of "Appearance". It is disabled while the layout is the default. It asks nothing: one click
 puts the columns, density and page size back to the defaults, deletes the stored record, and says so
 to screen readers. It is a stand-in for the stock `onReset` of newer DataViews (see
-[Stand-ins for newer DataViews](#stand-ins-for-newer-dataviews-remove-after-the-bump)). Filters, sort and search stay. When the page size
+[DataViews polyfill](#dataviews-polyfill-review-at-every-dataviews-upgrade)). Filters, sort and search stay. When the page size
 changes, the page becomes the one that holds the row the current page starts with (page 3 of 50 rows
 becomes page 4 of 30), and that change adds a history entry like any other. Without a `screen`
 config it still resets the layout for the current page view; nothing is stored.

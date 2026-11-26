@@ -104,7 +104,7 @@ describe('DataViewsListTable total', () => {
     });
 
     it('keeps the strings of core, so the existing translations still match', () => {
-        const source = readFileSync('src/Views/Components/ListTable/DataViewsListTable/index.tsx', 'utf8');
+        const source = readFileSync('src/Views/Components/ListTable/dataviewsPolyfill/ListTableTotal.tsx', 'utf8');
 
         expect(source).toContain("_n('%1$d of %2$d Item', '%1$d of %2$d Items', totalItems)");
         expect(source).toContain("_n('%d Item', '%d Items', rows)");
@@ -306,7 +306,7 @@ describe('DataViewsListTable view controls', () => {
 
 describe('DataViewsListTable column widths', () => {
     // When this fails after a DataViews bump, the column classes changed. Rename the selectors of our width
-    // rules in `_wp-look.scss` (`col-primary` becomes `col-first-data`) and update this test. See "Column
+    // rules in `dataviewsPolyfill/_polyfill.scss` (`col-primary` becomes `col-first-data`) and update this test. See "Column
     // widths" in docs/architecture/list-tables.md.
     it('keeps the column classes that our width rules use', async () => {
         await render({

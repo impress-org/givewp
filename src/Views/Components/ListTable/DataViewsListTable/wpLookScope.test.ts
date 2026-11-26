@@ -43,28 +43,8 @@ describe('the A+ table rules', () => {
         }
     });
 
-    it('keep the edge cell and header padding of WordPress 7.0, also in compact density', () => {
-        const css = compiled.replace(/\/\*[\s\S]*?\*\//g, '');
-        const rules = Object.fromEntries(
-            [...css.matchAll(/([^{}]+)\{([^}]*)\}/g)].map(([, selector, body]) => [
-                selector.trim().replace('.givewp-list-table .dataviews-view-table', ''),
-                body.trim(),
-            ])
-        );
-        const header = 'thead th:has(.dataviews-view-table-header-button):not(:first-child, :last-child)';
-
-        expect(rules[' tr > :first-child']).toBe('padding-inline: var(--givewp-spacing-6) var(--givewp-spacing-3);');
-        expect(rules[' tr > :last-child']).toBe('padding-inline: var(--givewp-spacing-3) var(--givewp-spacing-6);');
-        expect(rules[' tr > .dataviews-view-table__checkbox-column']).toBe('padding-inline-end: 0;');
-        expect(rules[` ${header}`]).toBe('padding-inline: var(--givewp-spacing-1);');
-        expect(rules['.has-compact-density tr > :last-child']).toBe('padding-inline-start: var(--givewp-spacing-2);');
-        expect(rules[`.has-compact-density ${header}`]).toBe('padding-inline: 0;');
-    });
-
     it('keep the column width rules', () => {
         const css = compiled.replace(/\/\*[\s\S]*?\*\//g, '');
-        expect(css).toMatch(/col\.dataviews-view-table__col-primary \{[^}]*width: 8%/);
-        expect(css).toMatch(/col\.dataviews-view-table__col-checkbox \{[^}]*width: 0\.1%/);
         expect(css).toMatch(/\.dataviews-view-table__cell-content-wrapper:not\(\.dataviews-column-primary__media\)[^{]*\{[^}]*min-inline-size: 0/);
         expect(css).toMatch(/\.dataviews-title-field \{[^}]*min-inline-size: 20ch/);
         expect(css).toMatch(/\.givewp-truncated-text \{[^}]*max-inline-size: 16rem/);

@@ -17,7 +17,7 @@ export interface ListTableViewResetProps {
 
 /**
  * Stand-in for the `onReset` button of newer DataViews (remove after the DataViews bump, see
- * "Stand-ins for newer DataViews" in docs/architecture/list-tables.md). DataViews 10.1.7 has no way to
+ * "DataViews polyfill" in docs/architecture/list-tables.md). DataViews 10.1.7 has no way to
  * add a button to the View options popover, so this finds the stock "View options" button in the same
  * toolbar, waits until it is open, and puts a stock "Reset view" button into the popover's first
  * heading ("Appearance"). If the stock markup changes, the button is missing; nothing else breaks.

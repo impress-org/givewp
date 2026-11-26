@@ -14,12 +14,12 @@ import {
 import cx from 'classnames';
 import {CheckboxControl, __experimentalHStack as HStack, Spinner} from '@wordpress/components';
 import {DataViews} from '@wordpress/dataviews';
-import {__, _n, sprintf} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import type {Action, Field, View} from '@wordpress/dataviews';
 import type {ListTableItem} from '../ListTablePage/types';
-import {insertNumbers} from '../formatNumber';
-import ListTableViewReset from '../ListTableViewReset';
-import useActionsColumnStuck from '../hooks/useActionsColumnStuck';
+import ListTableTotal from '../dataviewsPolyfill/ListTableTotal';
+import ListTableViewReset from '../dataviewsPolyfill/ListTableViewReset';
+import useActionsColumnStuck from '../dataviewsPolyfill/useActionsColumnStuck';
 import useDelayedFlag from '../hooks/useDelayedFlag';
 import ListTablePagination, {ArrowsPagination} from './ListTablePagination';
 import './styles.scss';
@@ -149,30 +149,6 @@ const hasBulkActions = (actions: Action<ListTableItem>[], data: ListTableItem[])
     );
 
 /**
- * The footer message of the next DataViews pin (12.0.1, WordPress 7.0), without the selection case: "30
- * of 464 Items" when more rows match than are on the page, else "30 Items". It uses the stock count's
- * class and the same strings as DataViews (core's text domain), so it looks and reads the same.
- */
-function ListTableTotal({rows, totalItems}: {rows: number; totalItems: number}) {
-    // The message is translated first and the numbers go in after, so the strings stay the same as core's
-    // and keep their translations. The plural uses the real number.
-    const message =
-        totalItems > rows
-            ? insertNumbers(
-                  /* translators: %1$d: number of items. %2$d: total number of items. */
-                  _n('%1$d of %2$d Item', '%1$d of %2$d Items', totalItems),
-                  {'%1$d': rows, '%2$d': totalItems}
-              )
-            : insertNumbers(
-                  /* translators: %d: number of items. */
-                  _n('%d Item', '%d Items', rows),
-                  {'%d': rows}
-              );
-
-    return <span className="givewp-list-table__total dataviews-bulk-actions-footer__item-count">{message}</span>;
-}
-
-/**
  * Says, next to the page control, that a page is loading. The old rows stay on screen until the new ones
  * arrive (and are dimmed, see styles.scss), and the stock spinner sits under the table, out of sight when the
  * list is long, so a slow page looked like a frozen one.
@@ -202,7 +178,8 @@ function ListTableLoading({isSlow, announce}: {isSlow: boolean; announce: boolea
  * Items"), which reads as the total, so this one shows the total next to the selection checkbox
  * instead. While rows are selected, the stock count of the selection ("2 Items selected") shows.
  *
- * Remove this footer (and `ListTableTotal`, `hasBulkActions` and the `__total` rules in styles.scss)
+ * Remove this footer (and `dataviewsPolyfill/ListTableTotal`, `hasBulkActions` and the `__total` rules in
+ * `dataviewsPolyfill/_polyfill.scss`)
  * when the `@wordpress/dataviews` pin moves to 12.0.1 or later (WordPress 7.0). From that version the
  * stock footer prints the total ("30 of 464 Items") from `paginationInfo.totalItems`, which this table
  * already passes. To go back to the stock footer, put `<DataViews.Footer />` in `ListTableLayout`. It

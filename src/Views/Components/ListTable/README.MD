@@ -16,7 +16,7 @@ the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs
 | `state/` | View state, with Jest tests next to it. Pure functions: `types.ts` (the `ListTableScreen` config and the closed list of screen keys), `screenDefaults` (a screen's defaults from its config and the column schema), `viewQuery` (reads and writes the `give-` URL parameters), `storedLayout` (the stored layout record), `assembleView`, `fieldOrder` (a column's default position, the pinned column last) and `fieldRules` (locked and pinned columns). Not pure, because they talk to the browser or the route: `listTableHistory` (`history`, the address and the tab's search copy), `layoutApi` (the layout route and the printed bootstrap) and `layoutWriteQueue` (the ordered layout writes and the once-per-page-view error notice). |
 | `filters/` | The filter model, pure functions: declaration types, value text, date ranges, chip text, exclusive values, request parameters, the option route client, and the deprecated `filterSettingsToDeclarations` adapter (`legacyFilterSettings.ts`). |
 | `ListTableFilters/` | The filter bar: primary filters, "Add filter", chips and Reset, read from a screen's `filters` declaration. Built from the `ListTableSearch`, `FilterChip`, `OptionsFilterControl`, `DateRangeFilterControl` and `EntityFilterControl` molecules. |
-| `ListTableViewReset/` | Stand-in for the stock `onReset` button: puts "Reset view" inside the View options popover. Remove after the DataViews bump. |
+| `dataviewsPolyfill/` | Everything that only makes the pinned DataViews match newer WordPress (CSS and JS). Review it at every DataViews upgrade. |
 | `ListTableViewMenu/` | The small "More view options" menu after the stock view options. Holds "Switch to Legacy View" on the screens that pass `legacyView`. |
 | `ListTableNoticeArea/`, `notices/` | The one notice area above the list (action errors, system notices, the daily recommendation) and the pure `pickDailyRecommendation`. |
 | `StatTiles/`, `StatTile/` | The row of stat tiles and one tile. Tiles show the server's `formatted` text and can toggle a list filter (`tileFilters.ts`). |
@@ -45,24 +45,20 @@ The A+ look is kept small and in a few known places. Keep it that way.
   renders outside those roots, so popover content must not rely on these tokens.
   `layout/tokens.contrast.test.ts` measures the contrast of each pair. To fix a color, change it in
   `_tokens.scss`, not in the rule that uses it.
-- **Table overrides.** They live only in `DataViewsListTable/_wp-look.scss`. Every rule starts at
-  `.givewp-list-table .dataviews-view-table`. `wpLookScope.test.ts` compiles the file and checks the
-  selectors.
+- **Table overrides.** Give's own are in `DataViewsListTable/_wp-look.scss`. Every rule there starts at
+  `.givewp-list-table .dataviews-view-table`, and `wpLookScope.test.ts` compiles the file and checks the
+  selectors. Rules that only copy the newer WordPress look are in `dataviewsPolyfill/_polyfill.scss`.
 - **The DataViews footer.** The A+ look adds no footer colors, type, sizes or controls. Nothing in
-  `_wp-look.scss` may reach the footer or the pager. The footer layout rules that already exist
-  (the sticky pin, the side padding and the total count) are in `DataViewsListTable/styles.scss`.
-  The total count rules are to be removed "with `ListTableFooter` when the `@wordpress/dataviews` pin
-  moves to 12.0.1 or later". `wpLookScope.test.ts` guards only `_wp-look.scss`, not the whole
-  stylesheet.
+  `_wp-look.scss` may reach the footer or the pager. The sticky pin of the footer is in
+  `DataViewsListTable/styles.scss`; its side padding and the total count rules are in
+  `dataviewsPolyfill/_polyfill.scss`.
 - **Totals.** The rows do not wait for the total. `ListTablePage` requests rows with `withCount=false`
   (answer: `items`, `hasNextPage`) and the total from `<apiRoot>/count` (`hooks/useListTableTotals`).
   `DataViewsListTable` takes `paginationInfo={null}` while the total is unknown and then shows only
   the previous and next arrows (`ArrowsPagination`); Next follows `hasNextPage`.
-- **The pin.** `@wordpress/dataviews` is pinned to `10.1.7` in `package.json`. The overrides in
-  `_wp-look.scss` were written for that version. When the pin moves, check them again in the browser. The
-  column width rules (title and checkbox columns) are our layout choice: at the bump, rename `col-primary` to
-  `col-first-data`, do not delete them (see "Column widths" in
-  [list-tables.md](../../../../docs/architecture/list-tables.md)).
+- **The pin.** `@wordpress/dataviews` is pinned to `10.1.7` in `package.json`. When the pin moves, go
+  through [dataviewsPolyfill/README.md](dataviewsPolyfill/README.md) (a test fails until you do) and check
+  the `_wp-look.scss` rules in the browser.
 - **Rows.** Rows keep the stock DataViews height on purpose.
 - **Status and type.** They are server-rendered markup. Type is plain text. Status is a small icon and the
   word, like the Site Editor: the icon is a CSS mask in the text color, drawn in `InterweaveSSR/styles.scss`

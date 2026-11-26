@@ -53,12 +53,6 @@ describe('list toolbar styles', () => {
         expect(block(table, '&__view-controls-row')).toContain('padding-inline: $givewp-list-table-edge');
     });
 
-    it('insets the footer and the empty and loading states as much as the toolbar', () => {
-        expect(table).toMatch(
-            /\.dataviews-footer,\s*\.dataviews-loading,\s*\.dataviews-no-results \{\s*padding-inline: \$givewp-list-table-edge;/
-        );
-    });
-
     it('keeps the toolbar height while rows are selected: the bulk bar lies over the row, out of the flow', () => {
         const bar = block(table, '&__bulk-actions');
 
