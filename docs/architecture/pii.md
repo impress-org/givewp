@@ -148,8 +148,9 @@ The output is built with `wp_json_encode`. The list still fetches its rows throu
 **The list search term is in the address.** An admin can type a donor's name or email into a list's
 search, and the term is written to the address as `give-search`, as WordPress core does with `?s=`.
 So it shows in the browser history, in server logs and in a copied link. It is never stored in a
-layout, and an embedded table never writes it. The rest of the address carries ids and enumerated
-values only. See [list-tables.md](list-tables.md#the-search-term-is-in-the-address).
+layout, and an embedded table never writes it. The other values the list writes are ids, enumerated
+values and dates; parameters it does not own stay as they were. See
+[list-tables.md](list-tables.md#the-search-term-is-in-the-address).
 
 **List notices carry product text only.** The notices above a list (the daily
 recommendation and system notices) come from page config: copy, a link, and
