@@ -68,9 +68,8 @@ class DefaultColumnsTest extends TestCase
     }
 
     /**
-     * An add-on that adds a column after Status keeps working, and its column starts hidden.
-     * addColumnAfter() does not set the visibility itself, so the add-on does it, as in
-     * addColumn().
+     * An add-on that adds a column after Status keeps working, and its column starts hidden, also
+     * when the add-on sets the visibility itself, as older code had to.
      *
      * @since TBD
      */
@@ -105,6 +104,97 @@ class DefaultColumnsTest extends TestCase
 
         $this->assertSame('company', $ids[array_search('status', $ids, true) + 1]);
         $this->assertContains('company', $this->hiddenIds($columns));
+    }
+
+    /**
+     * An add-on that adds a column next to another one and sets no visibility gets the same default as
+     * addColumn(): hidden. Before, building the column list failed with a TypeError.
+     *
+     * @since TBD
+     */
+    public function testAColumnAddedBeforeOrAfterAnotherStartsWithADefaultVisibility(): void
+    {
+        $listTable = give(DonationsListTable::class);
+        $before = new class extends ModelColumn {
+            public static function getId(): string
+            {
+                return 'companyBefore';
+            }
+
+            public function getLabel(): string
+            {
+                return 'Company';
+            }
+
+            public function getCellValue($model): string
+            {
+                return '';
+            }
+        };
+        $after = new class extends ModelColumn {
+            public static function getId(): string
+            {
+                return 'companyAfter';
+            }
+
+            public function getLabel(): string
+            {
+                return 'Company';
+            }
+
+            public function getCellValue($model): string
+            {
+                return '';
+            }
+        };
+
+        try {
+            $listTable->addColumnBefore('status', $before);
+            $listTable->addColumnAfter('status', $after);
+
+            $hidden = $this->hiddenIds($listTable->getColumnsArray());
+        } finally {
+            $listTable->removeColumn('companyBefore');
+            $listTable->removeColumn('companyAfter');
+        }
+
+        $this->assertContains('companyBefore', $hidden);
+        $this->assertContains('companyAfter', $hidden);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testAVisibilityTheAddOnSetBeforeAddingTheColumnIsKept(): void
+    {
+        $listTable = give(DonationsListTable::class);
+        $column = new class extends ModelColumn {
+            public static function getId(): string
+            {
+                return 'companyShown';
+            }
+
+            public function getLabel(): string
+            {
+                return 'Company';
+            }
+
+            public function getCellValue($model): string
+            {
+                return '';
+            }
+        };
+        $column->visible(true);
+
+        try {
+            $listTable->addColumnAfter('status', $column);
+
+            $hidden = $this->hiddenIds($listTable->getColumnsArray());
+        } finally {
+            $listTable->removeColumn('companyShown');
+        }
+
+        $this->assertNotContains('companyShown', $hidden);
     }
 
     /**

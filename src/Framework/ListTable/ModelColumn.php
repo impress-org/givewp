@@ -115,6 +115,16 @@ abstract class ModelColumn implements Arrayable
     }
 
     /**
+     * Whether visible() was called for this column.
+     *
+     * @since TBD
+     */
+    public function hasVisibility(): bool
+    {
+        return $this->visibleColumn !== null;
+    }
+
+    /**
      * @since 2.24.0
      *
      * @return bool
