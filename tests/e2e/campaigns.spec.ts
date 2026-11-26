@@ -175,7 +175,7 @@ test.describe('Campaigns list money', () => {
         await visitList(page, admin, CAMPAIGNS);
         const campaignRow = rowById(page, campaign.campaignId);
         await expectCell(campaignRow, 'Revenue', MONEY);
-        await expectCell(campaignRow, 'Goal', /^\$[\d,]+\.\d{2} of \$[\d,]+\.\d{2}/);
+        await expectCell(campaignRow, 'Goal', /^\$[\d,]+\.\d{2} raised\s*\d+% reached|^\$[\d,]+\.\d{2} raised\s*Goal achieved/);
     });
 });
 

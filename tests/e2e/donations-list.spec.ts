@@ -20,6 +20,8 @@ import {
     listRows,
     listTable,
     MONEY,
+    MONEY_PT_BR,
+    useAutoFormatCurrency,
     nextListRequest,
     popover,
     rowById,
@@ -760,21 +762,22 @@ test.describe('Donations list filters', () => {
 test.describe('Donations list money and dates', () => {
     test.use({locale: 'pt-BR'});
     useUsDateFormats();
+    useAutoFormatCurrency();
 
-    test('writes money and dates in the site format in a pt-BR browser', async ({page, admin, requestUtils}) => {
+    test('writes money for the browser and dates in the site format in a pt-BR browser', async ({page, admin, requestUtils}) => {
         expect(wp('eval', 'echo give_get_currency();'), 'This test expects a site in US dollars').toBe('USD');
         // A stored layout can reorder or hide the columns read below.
         await resetLayout(requestUtils, 'donations');
 
         const donationId = createDonation((await createCampaignWithForm(requestUtils)).formId);
 
-        // The list request no longer carries the browser's language for the server to format with.
+        // The list request carries the browser's language, which the server formats money with.
         const request = page.waitForRequest(DONATIONS_REQUEST);
         await visitList(page, admin, DONATIONS_LIST);
-        expect(new URL((await request).url()).searchParams.has('locale')).toBe(false);
+        expect(new URL((await request).url()).searchParams.get('locale')).toBe('pt-BR');
 
         const donation = rowById(page, donationId);
-        await expectCell(donation, 'Amount', MONEY);
+        await expectCell(donation, 'Amount', MONEY_PT_BR);
         await expectCell(donation, 'Date', DATE_TIME);
     });
 });

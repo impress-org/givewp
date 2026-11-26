@@ -7,7 +7,8 @@ import {
     expectLastColumnReachable,
     expectNoBrowserDialogs,
     expectStacksOnNarrowScreens,
-    MONEY,
+    MONEY_PT_BR,
+    useAutoFormatCurrency,
     nextListRequest,
     rowWithText,
     useUsDateFormats,
@@ -54,8 +55,9 @@ test.describe('Donors list filters', () => {
 test.describe('Donors list money and dates', () => {
     test.use({locale: 'pt-BR'});
     useUsDateFormats();
+    useAutoFormatCurrency();
 
-    test('writes money and dates in the site format in a pt-BR browser', async ({page, admin, requestUtils}) => {
+    test('writes money for the browser and dates in the site format in a pt-BR browser', async ({page, admin, requestUtils}) => {
         expect(wp('eval', 'echo give_get_currency();'), 'This test expects a site in US dollars').toBe('USD');
         // A stored layout can reorder or hide the columns read below.
         await resetLayout(requestUtils, 'donors');
@@ -68,7 +70,7 @@ test.describe('Donors list money and dates', () => {
         await visitList(page, admin, DONORS);
         // The Donors list shows no ID column by default; the email is in the Name cell.
         const donor = rowWithText(page, email);
-        await expectCell(donor, 'Total Given', MONEY);
+        await expectCell(donor, 'Total Given', MONEY_PT_BR);
         await expectCell(donor, 'Latest Donation', DATE_TIME);
     });
 });

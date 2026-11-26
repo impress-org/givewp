@@ -250,6 +250,28 @@ export function dayOfLastMonth(day: number): string {
 export const MONEY = /^\$[\d,]+\.\d{2}$/;
 
 /**
+ * US dollars as a pt-BR browser writes them: `US$ 1.234,56`.
+ */
+export const MONEY_PT_BR = /^US\$\s[\d.]+,\d{2}$/;
+
+/**
+ * Turns "Auto-format currency" on, so the money columns that follow the browser language do, for the tests in
+ * the calling `test.describe`, and puts the old settings back after them.
+ */
+export function useAutoFormatCurrency(): void {
+    let restore: () => void = () => undefined;
+
+    test.beforeAll(() => {
+        restore = saveOptions('give_settings');
+        wp('eval', "give_update_option('auto_format_currency', 'on');");
+    });
+
+    test.afterAll(() => {
+        restore();
+    });
+}
+
+/**
  * A date and time in the site's `F j, Y` and `g:i a` formats: `March 5, 2026 at 3:07 pm`.
  */
 export const DATE_TIME = /^[A-Z][a-z]+ \d{1,2}, \d{4} at \d{1,2}:\d{2} (am|pm)$/;
