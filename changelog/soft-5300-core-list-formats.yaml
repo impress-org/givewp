@@ -1,5 +1,0 @@
-significance: minor
-type: enhancement
-entry: 'The Donations, Donors, Subscriptions and Event Tickets list screens now write dates in one style.
-  Counts follow the browser language, and so does money when "Auto-format currency" is on.'
-timestamp: 2026-11-04T23:20:00.000Z
