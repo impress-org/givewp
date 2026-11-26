@@ -3,6 +3,7 @@
 namespace Give\Donations\Counters;
 
 use ActionScheduler;
+use Give\Framework\Support\Facades\ActionScheduler\AsBackgroundJobs;
 use Throwable;
 
 /**
@@ -151,11 +152,7 @@ class DonationCountersSchedule
         self::$recountRequested = true;
 
         self::whenReady(static function () {
-            if (as_has_scheduled_action(self::RECOUNT_HOOK, null, self::GROUP)) {
-                return;
-            }
-
-            as_schedule_single_action(time() + self::RECOUNT_DELAY, self::RECOUNT_HOOK, [], self::GROUP, true);
+            AsBackgroundJobs::scheduleSingleAction(time() + self::RECOUNT_DELAY, self::RECOUNT_HOOK, [], self::GROUP);
         });
     }
 
@@ -185,7 +182,7 @@ class DonationCountersSchedule
         }
 
         if (!$matches && $interval > 0) {
-            as_schedule_recurring_action(time() + $interval, $interval, self::REBUILD_HOOK, [], self::GROUP);
+            AsBackgroundJobs::scheduleRecurringAction(time() + $interval, $interval, self::REBUILD_HOOK, [], self::GROUP);
         }
     }
 
