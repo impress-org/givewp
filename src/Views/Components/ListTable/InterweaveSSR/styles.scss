@@ -1,3 +1,4 @@
+@use '../layout/breakpoints' as *;
 @use '@givewp/css/Safe-Rem/functions' as *;
 
 .interweave {
@@ -195,6 +196,11 @@
         display: inline-flex;
         gap: 0.625rem;
 
+        // On the narrowest phones a long amount does not fit beside the ring, so it moves under it.
+        @media (max-width: $givewp-list-table-narrow) {
+            flex-wrap: wrap;
+        }
+
         &__ring,
         &__check {
             flex-shrink: 0;
@@ -225,6 +231,14 @@
             gap: 1px;
             line-height: normal;
             white-space: nowrap;
+
+            // A phone card has no room for the target on one line: it wraps instead of being cut off. It stays
+            // beside the ring while it has 7rem there.
+            @media (max-width: $givewp-list-table-narrow) {
+                flex: 1 1 7rem;
+                min-inline-size: 0;
+                white-space: normal;
+            }
 
             .goal {
                 font-weight: 700;

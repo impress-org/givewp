@@ -9,7 +9,7 @@ import type {ListTableScreen} from '@givewp/components/ListTable/state/types';
  */
 const listTableScreen: ListTableScreen = {
     key: 'campaigns',
-    fieldRoles: {primary: 'title', secondary: ['status', 'goal', 'revenue']},
+    fieldRoles: {primary: 'title', secondary: ['status', 'goal', 'donationsCount', 'donorsCount', 'revenue']},
 };
 
 export default listTableScreen;

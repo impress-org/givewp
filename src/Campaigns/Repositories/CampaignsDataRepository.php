@@ -327,7 +327,9 @@ class CampaignsDataRepository
     public function getGoalData(Campaign $campaign, bool $useListTableFormat = false, string $locale = ''): array
     {
         $actual = $this->getActualGoal($campaign);
-        $isAmount = $campaign->goalType == CampaignGoalType::AMOUNT();
+        // The list table also writes recurring amounts as money. The REST API keeps its older output.
+        $isAmount = $campaign->goalType == CampaignGoalType::AMOUNT()
+            || ($useListTableFormat && $campaign->goalType == CampaignGoalType::AMOUNT_FROM_SUBSCRIPTIONS());
         $formatMoney = $useListTableFormat
             ? static function ($amount): string {
                 return MoneyFormatter::fromDecimal($amount);

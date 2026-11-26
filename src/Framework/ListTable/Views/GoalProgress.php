@@ -23,14 +23,13 @@ class GoalProgress
      *
      * @param int|string $id Record id, used to label the progress ring.
      * @param int|float $percentage How much of the goal is reached; the ring shows 0–100.
-     * @param string $actual The raised amount, formatted.
-     * @param string $goal The goal, formatted.
+     * @param string $target The goal with what it counts, from GoalLabel::make().
      */
-    public static function render($id, $percentage, $actual, $goal): string
+    public static function render($id, $percentage, string $target): string
     {
         // The cell HTML goes through Interweave, which drops inline SVG, so the ring is an SVG image.
         $template = '
-            <div class="givewp-goal-progress%6$s">
+            <div class="givewp-goal-progress%5$s">
                 <span
                     class="givewp-goal-progress__ring"
                     role="progressbar"
@@ -38,11 +37,11 @@ class GoalProgress
                     aria-valuenow="%2$s"
                     aria-valuemin="0"
                     aria-valuemax="100"
-                ><img class="givewp-goal-progress__ring-image" src="%7$s" alt="" /></span>
+                ><img class="givewp-goal-progress__ring-image" src="%6$s" alt="" /></span>
                 <span class="givewp-goal-progress__check" aria-hidden="true"></span>
                 <div id="giveDonationFormsProgressBar-%1$d" class="givewp-goal-progress__amount">
-                    <span><span class="goal">%3$s</span>%4$s</span>
-                    %5$s
+                    <span class="goal">%3$s</span>
+                    %4$s
                 </div>
             </div>
         ';
@@ -54,8 +53,7 @@ class GoalProgress
             $template,
             $id,
             esc_attr($ringPercentage),
-            $actual,
-            sprintf(' %s %s', __('of', 'give'), $goal),
+            $target,
             self::status($ringPercentage),
             self::isAchieved($percentage) ? ' givewp-goal-progress--achieved' : '',
             esc_attr(self::ringImage($ringPercentage))
@@ -104,7 +102,7 @@ class GoalProgress
             '<span class="givewp-goal-progress__status givewp-goal-progress__status--achieved">%s</span>',
             sprintf(
                 /* translators: %s: how much of the goal is reached, as a whole number */
-                esc_html__('%s%% of goal', 'give'),
+                esc_html__('%s%% reached', 'give'),
                 '<span class="givewp-goal-progress__percent">' . $percent . '</span>'
             ),
             esc_html__('Goal achieved', 'give')

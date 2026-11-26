@@ -15,7 +15,7 @@ class GoalProgressTest extends TestCase
      */
     public function testShowsTheGoalAsAchievedPast100(): void
     {
-        $html = GoalProgress::render(7, 150, '$150', '$100');
+        $html = GoalProgress::render(7, 150, '$100 raised');
 
         $this->assertStringContainsString('givewp-goal-progress--achieved', $html);
         $this->assertStringContainsString('aria-valuenow="100"', $html);
@@ -27,11 +27,11 @@ class GoalProgressTest extends TestCase
      */
     public function testShowsTheRingAndPercentageBelowTheGoal(): void
     {
-        $html = GoalProgress::render(7, 62.4, '$62', '$100');
+        $html = GoalProgress::render(7, 62.4, '$100 raised');
 
         $this->assertStringNotContainsString('givewp-goal-progress--achieved', $html);
         $this->assertStringContainsString('aria-valuenow="62.4"', $html);
-        $this->assertStringContainsString('<span class="givewp-goal-progress__percent">62</span>% of goal', $html);
+        $this->assertStringContainsString('<span class="givewp-goal-progress__percent">62</span>% reached', $html);
         $this->assertStringContainsString('stroke-dasharray=&#039;57.1 100&#039;', $html);
     }
 
@@ -40,7 +40,7 @@ class GoalProgressTest extends TestCase
      */
     public function testLeavesTheRingEmptyAt0(): void
     {
-        $html = GoalProgress::render(7, -5, '$0', '$100');
+        $html = GoalProgress::render(7, -5, '$100 raised');
 
         $this->assertStringContainsString('aria-valuenow="0"', $html);
         $this->assertStringNotContainsString('%232bc253', $html);
@@ -51,7 +51,7 @@ class GoalProgressTest extends TestCase
      */
     public function testShowsADotForSmallProgress(): void
     {
-        $html = GoalProgress::render(7, 3, '$3', '$100');
+        $html = GoalProgress::render(7, 3, '$100 raised');
 
         $this->assertStringContainsString('stroke=&#039;%232bc253&#039;', $html);
         $this->assertStringContainsString('stroke-dasharray=&#039;0 100&#039;', $html);
@@ -67,10 +67,23 @@ class GoalProgressTest extends TestCase
         };
         add_filter('givewp_list_table_goal_progress_achieved_opacity', $filter);
 
-        $html = GoalProgress::render(7, 40, '$40', '$100');
+        $html = GoalProgress::render(7, 40, '$100 raised');
 
         remove_filter('givewp_list_table_goal_progress_achieved_opacity', $filter);
 
         $this->assertStringContainsString('givewp-goal-progress--achieved', $html);
+    }
+
+    /**
+     * The current amount is in the Revenue, Donations or Donors column, so the cell names only the target.
+     *
+     * @since TBD
+     */
+    public function testShowsTheTargetOnTheFirstLine(): void
+    {
+        $html = GoalProgress::render(7, 40, '500 donors');
+
+        $this->assertStringContainsString('<span class="goal">500 donors</span>', $html);
+        $this->assertStringNotContainsString(' of ', $html);
     }
 }

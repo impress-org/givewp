@@ -5,6 +5,7 @@ namespace Give\DonationForms\V2\ListTable;
 use Give\DonationForms\V2\ListTable\Columns\CampaignColumn;
 use Give\DonationForms\V2\ListTable\Columns\DateCreatedColumn;
 use Give\DonationForms\V2\ListTable\Columns\DonationCountColumn;
+use Give\DonationForms\V2\ListTable\Columns\DonorCountColumn;
 use Give\DonationForms\V2\ListTable\Columns\DonationRevenueColumn;
 use Give\DonationForms\V2\ListTable\Columns\GoalColumn;
 use Give\DonationForms\V2\ListTable\Columns\IdColumn;
@@ -31,6 +32,7 @@ class DonationFormsListTable extends ListTable
     }
 
     /**
+     * @since TBD Add the Donors column, hidden by default.
      * @since TBD Put Status right after the title, then ID and Date.
      * @since 4.19.0 Add the Campaign column.
      * @since 2.24.0
@@ -47,6 +49,7 @@ class DonationFormsListTable extends ListTable
             new CampaignColumn(),
             new GoalColumn(),
             new DonationCountColumn(),
+            new DonorCountColumn(),
             new DonationRevenueColumn(),
         ];
     }

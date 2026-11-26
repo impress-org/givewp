@@ -3,6 +3,7 @@
 namespace Give\Campaigns\ListTable;
 
 use Give\Campaigns\ListTable\Columns\DonationsCountColumn;
+use Give\Campaigns\ListTable\Columns\DonorsCountColumn;
 use Give\Campaigns\ListTable\Columns\GoalColumn;
 use Give\Campaigns\ListTable\Columns\IdColumn;
 use Give\Campaigns\ListTable\Columns\RevenueColumn;
@@ -28,6 +29,7 @@ class CampaignsListTable extends ListTable
     }
 
     /**
+     * @since TBD Add the Donors column.
      * @since 4.0.0
      *
      * @return array|ModelColumn[]
@@ -40,6 +42,7 @@ class CampaignsListTable extends ListTable
             new TitleColumn(),
             new GoalColumn(),
             new DonationsCountColumn(),
+            new DonorsCountColumn(),
             new RevenueColumn(),
             //new DescriptionColumn(),
             //new DonationsCountColumn(),
@@ -61,6 +64,7 @@ class CampaignsListTable extends ListTable
             TitleColumn::getId(),
             GoalColumn::getId(),
             DonationsCountColumn::getId(),
+            DonorsCountColumn::getId(),
             RevenueColumn::getId(),
             //DescriptionColumn::getId(),
             //DonationsCountColumn::getId(),

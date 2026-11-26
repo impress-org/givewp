@@ -1031,8 +1031,10 @@ config it still resets the layout for the current page view; nothing is stored.
 - `src/Framework/ListTable/Layouts/` — the stored layout: screens, store, validator, route and the printed bootstrap
 - `src/Framework/ListTable/FilterOptions/` — the filter option route and its sources
 - `src/Framework/ListTable/StatusVocabulary.php` — the status list a badge and a Status filter share
-- `src/Framework/ListTable/Views/GoalProgress.php` — the goal cell the Campaigns and Donation Forms lists share
-- `src/Framework/ListTable/Formatting/` — `MoneyFormatter` and `DateFormatter`, the one way list cells write money and dates
+- `src/Framework/ListTable/Views/GoalProgress.php`, `GoalLabel.php` — the goal cell the Campaigns and Donation Forms
+  lists share: the target with what it counts ("500 donors"), then the progress. The current amount or count is not in
+  the cell; it is in the Revenue, Donations or Donors column (Donors is hidden by default on the forms list)
+- `src/Framework/ListTable/Formatting/` — `MoneyFormatter`, `CountFormatter` and `DateFormatter`, the one way list cells write money, counts and dates
 - `src/Framework/ListTable/Views/Placeholder.php`, `TruncatedText.php` — the empty-value dash and the one-line clamp with the full text on hover
 - `src/Views/Components/ListTable/layout/` — the 782 px breakpoint and the narrow card view
 - `src/Framework/QueryBuilder/` — what the endpoints build queries with ([README](../../src/Framework/QueryBuilder/README.md))

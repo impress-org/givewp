@@ -2,6 +2,7 @@
 
 namespace Give\Tests\Unit\Framework\ListTable;
 
+use Give\Campaigns\ListTable\CampaignsListTable;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Framework\ListTable\ModelColumn;
@@ -23,10 +24,22 @@ class DefaultColumnsTest extends TestCase
         $columns = give(DonationFormsListTable::class)->getColumnsArray();
 
         $this->assertSame(
-            ['title', 'status', 'id', 'dateCreated', 'formCampaign', 'goal', 'donationCount', 'donationRevenue'],
+            ['title', 'status', 'id', 'dateCreated', 'formCampaign', 'goal', 'donationCount', 'donorCount', 'donationRevenue'],
             array_column($columns, 'id')
         );
-        $this->assertSame(['goal'], $this->hiddenIds($columns));
+        $this->assertSame(['goal', 'donorCount'], $this->hiddenIds($columns));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testCampaignsListShowsDonorsAfterDonations(): void
+    {
+        $columns = give(CampaignsListTable::class)->getColumnsArray();
+        $ids = array_column($columns, 'id');
+
+        $this->assertSame('donorsCount', $ids[array_search('donationsCount', $ids, true) + 1]);
+        $this->assertNotContains('donorsCount', $this->hiddenIds($columns));
     }
 
     /**

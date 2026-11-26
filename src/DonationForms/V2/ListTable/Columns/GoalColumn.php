@@ -8,6 +8,7 @@ use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\Formatting\CountFormatter;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Framework\ListTable\Views\GoalLabel;
 use Give\Framework\ListTable\Views\GoalProgress;
 use Give\Framework\ListTable\Views\Placeholder;
 
@@ -83,6 +84,10 @@ class GoalColumn extends ModelColumn
             'form_id' => $model->id,
         ]);
 
-        return GoalProgress::render($model->id, $stats['progress'], $stats['actual'], $stats['goal']);
+        return GoalProgress::render(
+            $model->id,
+            $stats['progress'],
+            GoalLabel::make($model->goalSettings->goalType->getValue(), $stats['raw_goal'], (string)$stats['goal'])
+        );
     }
 }
