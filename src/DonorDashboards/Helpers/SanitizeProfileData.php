@@ -2,6 +2,8 @@
 
 namespace Give\DonorDashboards\Helpers;
 
+use stdClass;
+
 /**
  * Normalize format of location type lists.
  * @since 2.10.0
@@ -50,24 +52,43 @@ class SanitizeProfileData
     /**
      * Sanitize address object passed
      *
+     * @since 4.20.0 Drop any key outside the known set of address fields.
      * @since 2.10.0
      *
      * @param object $address
      *
-     * @return object
+     * @return object|array
      *
      */
     public static function sanitizeAddress($address)
     {
-        if ( ! empty($address)) {
-            foreach ($address as $key => $value) {
-                $address->{$key} = sanitize_text_field($value);
-            }
-
-            return $address;
-        } else {
+        if (empty($address)) {
             return [];
         }
+
+        $sanitized = new stdClass();
+
+        foreach ($address as $key => $value) {
+            if ( ! in_array($key, self::addressFields(), true)) {
+                continue;
+            }
+
+            $sanitized->{$key} = sanitize_text_field($value);
+        }
+
+        return $sanitized;
+    }
+
+    /**
+     * The known donor address fields.
+     *
+     * @since 4.20.0
+     *
+     * @return string[]
+     */
+    private static function addressFields()
+    {
+        return ['line1', 'line2', 'city', 'state', 'country', 'zip'];
     }
 
     /**

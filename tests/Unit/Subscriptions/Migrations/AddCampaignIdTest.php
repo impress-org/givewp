@@ -10,7 +10,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.20.0
  *
  * @covers \Give\Subscriptions\Migrations\AddCampaignId
  */
@@ -19,7 +19,7 @@ class AddCampaignIdTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @throws Exception
      */

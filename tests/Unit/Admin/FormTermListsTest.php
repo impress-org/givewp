@@ -9,7 +9,7 @@ use WPDieException;
 /**
  * Locks the form category and tag lists that read terms with get_terms().
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class FormTermListsTest extends TestCase
 {
@@ -19,7 +19,7 @@ final class FormTermListsTest extends TestCase
     private $registeredTaxonomies = [];
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function setUp(): void
     {
@@ -40,7 +40,7 @@ final class FormTermListsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function tearDown(): void
     {
@@ -54,7 +54,7 @@ final class FormTermListsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testCategoryDropdownListsCategoriesThatHaveForms(): void
     {
@@ -68,7 +68,7 @@ final class FormTermListsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testCategoryDropdownUsesTheFilteredArgumentsButKeepsItsTaxonomy(): void
     {
@@ -85,7 +85,7 @@ final class FormTermListsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testTagsDropdownListsTagsThatHaveForms(): void
     {
@@ -98,7 +98,7 @@ final class FormTermListsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testTotalsShortcodeListsFormCategoriesAndTags(): void
     {
@@ -117,7 +117,7 @@ final class FormTermListsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testAjaxCategorySearchReturnsMatchingCategories(): void
     {
@@ -131,7 +131,7 @@ final class FormTermListsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testAjaxTagSearchReturnsMatchingTags(): void
     {
@@ -147,7 +147,7 @@ final class FormTermListsTest extends TestCase
     /**
      * Creates a published form with one category and one tag, plus a category no form uses.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     private function createFormWithTerms(): array
     {
@@ -168,7 +168,7 @@ final class FormTermListsTest extends TestCase
     /**
      * Runs an AJAX handler and returns its decoded JSON response.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     private function runAjaxHandler(string $handler): array
     {

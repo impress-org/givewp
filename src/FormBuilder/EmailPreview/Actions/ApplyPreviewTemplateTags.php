@@ -24,7 +24,7 @@ class ApplyPreviewTemplateTags
     }
 
     /**
-     * @since TBD Use wp_rand() instead of rand().
+     * @since 4.20.0 Use wp_rand() instead of rand().
      * @since 4.19.1 Use gmdate() instead of date().
      * @since 3.0.0
      * @return array

@@ -7,12 +7,12 @@ use Give\Tests\TestCase;
 /**
  * Old hook names in the deprecated maps still run when Give fires the new names.
  *
- * @since TBD
+ * @since 4.20.0
  */
 class DeprecatedHookMappingTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function setUp(): void
     {
@@ -22,7 +22,7 @@ class DeprecatedHookMappingTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function tearDown(): void
     {
@@ -32,7 +32,7 @@ class DeprecatedHookMappingTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testMapsAreHookedOnTheNewNames(): void
     {
@@ -42,7 +42,7 @@ class DeprecatedHookMappingTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testOldFilterNameStillFiltersTheNewFilter(): void
     {
@@ -59,7 +59,7 @@ class DeprecatedHookMappingTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testOldActionNameStillRunsWhenTheNewActionFires(): void
     {
@@ -77,7 +77,7 @@ class DeprecatedHookMappingTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testOldStripeFilterNameStillFiltersTheNewFilter(): void
     {

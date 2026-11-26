@@ -69,7 +69,7 @@ class StoreCustomFieldsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @dataProvider blankValuesProvider
      *
@@ -88,7 +88,7 @@ class StoreCustomFieldsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @return void
      * @throws Exception
@@ -101,7 +101,7 @@ class StoreCustomFieldsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @return array<string, array{0: mixed}>
      */
@@ -203,7 +203,7 @@ class StoreCustomFieldsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param mixed $submittedValue
      *

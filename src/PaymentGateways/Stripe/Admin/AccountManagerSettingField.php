@@ -246,7 +246,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Add the Webhook Status field.
+     * @since 4.20.0 Add the Webhook Status field.
      * @since 4.19.1 Escape output. Add nonces to the set default and statement descriptor requests.
      * @since 2.13.0
      *
@@ -476,7 +476,7 @@ class AccountManagerSettingField
      * The Webhook Status field. Its state and button are filled in by JavaScript, because reading the endpoints
      * takes a request to Stripe per account.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     private function getWebhookStatusMarkup(string $accountSlug, string $accountName)
     {
@@ -506,7 +506,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since TBD Add the nonce for the webhook setup request.
+     * @since 4.20.0 Add the nonce for the webhook setup request.
      * @since 4.19.1 Escape output.
      * @since 2.13.0
      */

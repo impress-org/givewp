@@ -8,14 +8,14 @@ use Give\Tests\TestCase;
 use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\UsesFakeStripeApi;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class ListWebhookEndpointsTest extends TestCase
 {
     use UsesFakeStripeApi;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItReturnsTheEndpointsFromEveryPage(): void
     {
@@ -53,7 +53,7 @@ final class ListWebhookEndpointsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItAuthenticatesWithTheTokenOfTheRequestedMode(): void
     {
@@ -72,7 +72,7 @@ final class ListWebhookEndpointsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItWrapsTheErrorStripeReturns(): void
     {
@@ -90,7 +90,7 @@ final class ListWebhookEndpointsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItDoesNotCallStripeWhenTheAccountHasNoTokenForTheMode(): void
     {
@@ -104,7 +104,7 @@ final class ListWebhookEndpointsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRefusesATokenThatBelongsToTheOtherMode(): void
     {
@@ -118,7 +118,7 @@ final class ListWebhookEndpointsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRefusesAModeOtherThanLiveOrTest(): void
     {
@@ -128,7 +128,7 @@ final class ListWebhookEndpointsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItExposesTheStripeRequestIdOfAFailure(): void
     {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\Traits;
@@ -12,7 +12,7 @@ use Give\PaymentGateways\Stripe\Webhooks\Exceptions\WebhookEndpointException;
 /**
  * Shared checks for the webhook endpoint actions.
  *
- * @since TBD
+ * @since 4.20.0
  */
 trait PreparesWebhookEndpointRequests
 {
@@ -22,7 +22,7 @@ trait PreparesWebhookEndpointRequests
      * For accounts connected through GiveWP Connect the stored "secret key" is the OAuth access token,
      * so endpoints created with it belong to the connected account itself.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string $mode "live" or "test"
      *
@@ -45,7 +45,7 @@ trait PreparesWebhookEndpointRequests
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @throws WebhookEndpointException
      */

@@ -40,7 +40,7 @@ class PaymentIntentPaymentFailed
     }
 
     /**
-     * @since TBD Fail the first donation of a subscription as well as a single donation.
+     * @since 4.20.0 Fail the first donation of a subscription as well as a single donation.
      * @since 3.0.4 Return a bool value.
      * @since 3.0.0
      *

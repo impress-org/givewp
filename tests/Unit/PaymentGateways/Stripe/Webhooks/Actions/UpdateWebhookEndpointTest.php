@@ -9,14 +9,14 @@ use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\UsesFakeStripeApi;
 use InvalidArgumentException;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class UpdateWebhookEndpointTest extends TestCase
 {
     use UsesFakeStripeApi;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItSendsOnlyTheChangedFieldsToTheEndpoint(): void
     {
@@ -41,7 +41,7 @@ final class UpdateWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRefusesToChangeTheApiVersion(): void
     {
@@ -55,7 +55,7 @@ final class UpdateWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRefusesAnEmptyChangeSet(): void
     {
@@ -65,7 +65,7 @@ final class UpdateWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRefusesAnIdThatIsNotAWebhookEndpointId(): void
     {
@@ -79,7 +79,7 @@ final class UpdateWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItWrapsTheErrorStripeReturns(): void
     {

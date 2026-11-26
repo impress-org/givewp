@@ -13,14 +13,14 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * Requires HasMockStripeAccounts: creating a Stripe Payment Element donation reads the Stripe
  * accounts option.
  *
- * @since TBD
+ * @since 4.20.0
  */
 trait HasStripePaymentElementSubscriptions
 {
     /**
      * Create a monthly Stripe Payment Element subscription with its first donation.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param SubscriptionStatus $subscriptionStatus The GiveWP subscription status.
      * @param DonationStatus $initialDonationStatus The status of the first donation.

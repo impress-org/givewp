@@ -12,14 +12,14 @@ use Give\Tests\TestCase;
 use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\UsesFakeStripeApi;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class EnsureWebhookEndpointTest extends TestCase
 {
     use UsesFakeStripeApi;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItLeavesAnEnabledCompleteEndpointAlone(): void
     {
@@ -32,7 +32,7 @@ final class EnsureWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItCreatesTheEndpointWhenNoneMatchesThisSite(): void
     {
@@ -53,7 +53,7 @@ final class EnsureWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItEnablesTheEndpointAndAddsTheMissingEvents(): void
     {
@@ -76,7 +76,7 @@ final class EnsureWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItDoesNotCreateAnEndpointWhenTheAccountIsFull(): void
     {
@@ -97,7 +97,7 @@ final class EnsureWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItReportsAnIncompleteEndpointWhenTheUpdateFails(): void
     {
@@ -114,7 +114,7 @@ final class EnsureWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItClassifiesARejectedTokenAsAnAuthorizationProblem(): void
     {
@@ -129,7 +129,7 @@ final class EnsureWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItLeavesAnEndpointThatSendsEveryEventAlone(): void
     {
@@ -142,7 +142,7 @@ final class EnsureWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItSendsOnlyTheEventsToAnEnabledEndpointThatMissesSome(): void
     {
@@ -158,7 +158,7 @@ final class EnsureWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItOnlyEnablesADisabledEndpointThatSendsEveryEvent(): void
     {
@@ -173,7 +173,7 @@ final class EnsureWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItCreatesTheEndpointWhenTheAccountHasRoomForOneMore(): void
     {
@@ -189,7 +189,7 @@ final class EnsureWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItUpdatesTheSiteEndpointOnAFullAccount(): void
     {
@@ -206,7 +206,7 @@ final class EnsureWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItReportsAFailedCreateAsAStripeError(): void
     {
@@ -224,7 +224,7 @@ final class EnsureWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItAuthenticatesWithTheLiveKeyInLiveMode(): void
     {
@@ -239,7 +239,7 @@ final class EnsureWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItNamesTheCreatedEndpointAfterGiveWP(): void
     {
@@ -253,7 +253,7 @@ final class EnsureWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function siteEndpoint(array $overrides = []): array
     {
@@ -266,7 +266,7 @@ final class EnsureWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @return array[] Endpoint bodies whose URLs point at other sites.
      */

@@ -2225,7 +2225,7 @@ function give_get_formatted_address( $address = [] ) {
  * @param string $url URL
  *
  * @return string
- * @since TBD Use wp_parse_url() in place of parse_url().
+ * @since 4.20.0 Use wp_parse_url() in place of parse_url().
  * @since 2.2.0
  */
 function give_get_safe_asset_url( $url ) {

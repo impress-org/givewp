@@ -7,7 +7,7 @@ import BlockPlaceholderSelectEvent from './BlockPlaceholderSelectEvent';
 import './styles.scss';
 
 /**
- * @since TBD Render the block wrapper with useBlockProps() for block API version 3.
+ * @since 4.20.0 Render the block wrapper with useBlockProps() for block API version 3.
  * @since 3.6.0
  */
 export default function Edit(props) {

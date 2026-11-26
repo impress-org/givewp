@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\DataTransferObjects;
@@ -11,7 +11,7 @@ use Stripe\WebhookEndpoint;
 /**
  * A Stripe webhook endpoint as returned by the Stripe API.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class WebhookEndpointDto
 {
@@ -72,7 +72,7 @@ final class WebhookEndpointDto
     public $application;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public static function fromStripeObject(WebhookEndpoint $endpoint): self
     {

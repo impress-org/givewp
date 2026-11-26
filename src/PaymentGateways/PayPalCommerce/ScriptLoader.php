@@ -89,7 +89,7 @@ class ScriptLoader
     /**
      * Load admin scripts
      *
-     * @since TBD Use a double-quoted string instead of a heredoc for the inline script.
+     * @since 4.20.0 Use a double-quoted string instead of a heredoc for the inline script.
      * @since 4.19.1 Add translators comments. Send nonces with the PayPal onboarding requests.
      * @since 3.13.0 Add new "keepWebhooksAfterDisconnect" string
      * @since 2.9.0

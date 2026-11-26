@@ -14,7 +14,7 @@ use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\UsesFakeStripeApi;
 use WPDieException;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class ManageWebhookEndpointsControllerTest extends TestCase
 {
@@ -22,7 +22,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     use UsesFakeStripeApi;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function setUp(): void
     {
@@ -44,7 +44,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function tearDown(): void
     {
@@ -55,7 +55,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRejectsARequestWithoutAValidNonce(): void
     {
@@ -73,7 +73,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRejectsAUserWhoCannotManageGiveSettings(): void
     {
@@ -87,7 +87,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @dataProvider unknownOperationProvider
      */
@@ -102,7 +102,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function unknownOperationProvider(): array
     {
@@ -113,7 +113,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @dataProvider accountOperationProvider
      */
@@ -138,7 +138,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function accountOperationProvider(): array
     {
@@ -151,7 +151,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testStatusReportsEachAccountAndSkipsAccountsWithoutAKeyForTheMode(): void
     {
@@ -188,7 +188,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testStatusUsesTheLiveKeysInLiveMode(): void
     {
@@ -212,7 +212,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testListReturnsTheModalHtmlAndTheHealthState(): void
     {
@@ -232,7 +232,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testListOmitsEndpointsWithoutTheListenerArgument(): void
     {
@@ -249,7 +249,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testListCountsHiddenEndpointsTowardTheAccountLimit(): void
     {
@@ -273,7 +273,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testListLabelsTheSubmitButtonOfTheCollapsedFormDifferentlyFromItsToggle(): void
     {
@@ -288,7 +288,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testListReportsAnErrorStateAndLogsAWarningWhenStripeCannotBeRead(): void
     {
@@ -311,7 +311,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testAnUpdateWhoseListCannotBeReadAgainSendsItsNoticeAndNoList(): void
     {
@@ -341,7 +341,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testAFailedCreateWhoseListCannotBeReadAgainSendsBothErrors(): void
     {
@@ -367,7 +367,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testCreateSendsOnlyTheRequiredEventsTheApiVersionAndTheDescription(): void
     {
@@ -402,7 +402,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @dataProvider incompleteCreateProvider
      */
@@ -421,7 +421,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function incompleteCreateProvider(): array
     {
@@ -436,7 +436,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testCreateIsRefusedWhenTheAccountHasTheMaximumNumberOfEndpoints(): void
     {
@@ -470,7 +470,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testUpdateKeepsEventsOutsideTheRequiredListAndDisablesTheEndpoint(): void
     {
@@ -507,7 +507,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testCreateSendsAPercentEncodedUrlAsPosted(): void
     {
@@ -528,7 +528,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testUpdateDoesNotSendAnUnchangedUrl(): void
     {
@@ -553,7 +553,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testUpdateAsksForAValidUrlBeforeCallingStripe(): void
     {
@@ -575,7 +575,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testUpdateEnablesTheEndpointWhenTheStatusIsNotDisabled(): void
     {
@@ -598,7 +598,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testUpdateKeepsTheAllEventsWildcardWhateverTheFormSends(): void
     {
@@ -621,7 +621,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testUpdateAnswersWithAnErrorNoticeForAnEndpointThatIsNotOnTheAccount(): void
     {
@@ -643,7 +643,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testUpdateAnswersWithANotFoundNoticeForAHiddenEndpoint(): void
     {
@@ -665,7 +665,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testDeleteAnswersWithANotFoundNoticeForAHiddenEndpoint(): void
     {
@@ -685,7 +685,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testListSaysThereAreNoGiveWpEndpointsWhenOnlyOtherEndpointsExist(): void
     {
@@ -703,7 +703,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testDeleteRemovesTheEndpointAndAnswersWithTheRefreshedList(): void
     {
@@ -727,7 +727,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @dataProvider mutationProvider
      */
@@ -765,7 +765,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function mutationProvider(): array
     {
@@ -792,7 +792,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testDeleteWithAMalformedEndpointIdAnswersWithAnErrorNoticeWithoutCallingStripeToDelete(): void
     {
@@ -812,7 +812,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function saveAccounts(AccountDetail ...$accounts): void
     {
@@ -826,7 +826,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function siteEndpoint(): array
     {
@@ -839,7 +839,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     /**
      * Sends a request with a valid nonce, unless the test set one, and returns the decoded JSON response.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param array<string, string|string[]> $fields
      *
@@ -874,7 +874,7 @@ final class ManageWebhookEndpointsControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function runController(): void
     {

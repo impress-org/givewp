@@ -83,7 +83,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Flag the order as a card fields payment so the server adds the 3D Secure card source.
 	 *
-	 * @since TBD
+	 * @since 4.20.0
 	 *
 	 * @return {FormData} FormData object of form entries.
 	 */

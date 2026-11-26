@@ -47,7 +47,7 @@ class PayPalStandardToDonationsMigrationGlobalBanner
     /**
      * Render the banner.
      *
-     * @since TBD Return a double-quoted string instead of a heredoc.
+     * @since 4.20.0 Return a double-quoted string instead of a heredoc.
      * @since 2.33.0
      */
     public function getModalScript(): string

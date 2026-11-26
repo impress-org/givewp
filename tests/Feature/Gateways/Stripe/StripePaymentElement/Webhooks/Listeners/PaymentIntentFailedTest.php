@@ -62,7 +62,7 @@ class PaymentIntentFailedTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @throws Exception
      */
@@ -84,7 +84,7 @@ class PaymentIntentFailedTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @throws Exception
      */
@@ -109,7 +109,7 @@ class PaymentIntentFailedTest extends TestCase
      * An earlier failure event failed the donation but could not save the subscription; this event
      * finishes the change without adding a second donation note.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @throws Exception
      */
@@ -133,7 +133,7 @@ class PaymentIntentFailedTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function createPaymentFailedEvent(Donation $donation): Event
     {

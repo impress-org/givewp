@@ -8,14 +8,14 @@ use Give\Tests\TestCase;
 use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\UsesFakeStripeApi;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class DeleteWebhookEndpointTest extends TestCase
 {
     use UsesFakeStripeApi;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItDeletesTheEndpointAsTheConnectedAccount(): void
     {
@@ -31,7 +31,7 @@ final class DeleteWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItExposesTheNotFoundStatusSoACallerCanTreatItAsAlreadyDeleted(): void
     {
@@ -46,7 +46,7 @@ final class DeleteWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItEscapesTheRejectedIdInTheExceptionMessage(): void
     {
@@ -62,7 +62,7 @@ final class DeleteWebhookEndpointTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRefusesAnIdThatIsNotAWebhookEndpointId(): void
     {

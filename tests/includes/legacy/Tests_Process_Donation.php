@@ -121,7 +121,7 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	/**
 	 * Test that a login sent as an array gets the generic error and no PHP warning.
 	 *
-	 * @since TBD
+	 * @since 4.20.0
 	 */
 	public function test_validate_user_login_array_username() {
 
@@ -432,7 +432,7 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	/**
 	 * Guest name fields keep apostrophes and lose HTML tags.
 	 *
-	 * @since TBD
+	 * @since 4.20.0
 	 */
 	public function test_get_donation_form_user_cleans_guest_name_fields() {
 		$form = Give_Helper_Form::create_simple_form();

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks;
@@ -13,7 +13,7 @@ use Give\PaymentGateways\Stripe\Webhooks\DataTransferObjects\WebhookEndpointDto;
  * The HTML inside the modal that lists the webhook endpoints of one Stripe account, with the edit, delete and
  * create forms. Every value is escaped here, so the JavaScript only inserts the returned markup.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class WebhookEndpointsModalView
 {
@@ -23,7 +23,7 @@ final class WebhookEndpointsModalView
     private $target;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function __construct(WebhookTarget $target)
     {
@@ -31,7 +31,7 @@ final class WebhookEndpointsModalView
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param WebhookEndpointDto[]                 $endpoints    The endpoints to list.
      * @param array{level: string, message: string} $notice       Result of the last action; empty for none.
@@ -100,7 +100,7 @@ final class WebhookEndpointsModalView
     /**
      * The notices alone, for a response that leaves the rest of the modal as it is.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param array<int, array{level: string, message: string}> $notices In display order; empty ones are skipped.
      *
@@ -112,7 +112,7 @@ final class WebhookEndpointsModalView
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param array{level: string, message: string} $notice
      */
@@ -132,7 +132,7 @@ final class WebhookEndpointsModalView
     /**
      * The warning shown when the account has endpoints but none of them sends events to this site.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     private function siteEndpointBanner(): string
     {
@@ -151,7 +151,7 @@ final class WebhookEndpointsModalView
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function endpoint(WebhookEndpointDto $endpoint): string
     {
@@ -245,7 +245,7 @@ final class WebhookEndpointsModalView
      * The form to add an endpoint. On an account without endpoints the form is expanded, because there is
      * nothing to list and adding one is the only useful action.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param int  $endpointCount
      * @param bool $expanded Whether the form renders without its collapsed summary.
@@ -280,7 +280,7 @@ final class WebhookEndpointsModalView
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string $submitLabel
      */
@@ -307,7 +307,7 @@ final class WebhookEndpointsModalView
      * One checkbox per required event. Events outside that list are not shown and are kept as they are when an
      * endpoint is saved. An endpoint that sends every event ("*") shows them all checked and cannot be narrowed here.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string[] $selected
      */

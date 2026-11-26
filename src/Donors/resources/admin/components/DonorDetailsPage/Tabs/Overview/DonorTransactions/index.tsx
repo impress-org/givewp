@@ -21,7 +21,7 @@ export type Transaction = {
 };
 
 /**
- * @since TBD Map renewals (give_subscription) to Completed.
+ * @since 4.20.0 Map renewals (give_subscription) to Completed.
  * @since 4.5.0
  */
 const statusMap: Record<string, 'Completed' | 'Failed' | 'Pending' | 'Refunded'> = {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\Controllers;
@@ -18,7 +18,7 @@ use Throwable;
  * Sets up the webhook endpoint of every Stripe account for the current mode, or of the one account named in the
  * "account" field, and answers with the modal content.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class EnsureWebhookEndpointsController
 {
@@ -40,7 +40,7 @@ final class EnsureWebhookEndpointsController
     private $notice;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function __construct(
         GetStripeAccountsForMode $getAccounts,
@@ -53,7 +53,7 @@ final class EnsureWebhookEndpointsController
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function __invoke(): void
     {
@@ -104,7 +104,7 @@ final class EnsureWebhookEndpointsController
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string $mode "live" or "test"
      */

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\Actions;
@@ -17,7 +17,7 @@ use Stripe\WebhookEndpoint;
 /**
  * Updates a webhook endpoint on a connected Stripe account.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class UpdateWebhookEndpoint
 {
@@ -30,7 +30,7 @@ final class UpdateWebhookEndpoint
      * "description", "disabled" (bool), "metadata". Stripe keeps metadata keys that are not sent, and removes
      * a key when its value is an empty string. "api_version" cannot be changed after creation.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string $mode "live" or "test"
      * @param array{

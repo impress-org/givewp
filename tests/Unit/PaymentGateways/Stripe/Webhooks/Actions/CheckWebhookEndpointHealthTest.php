@@ -9,14 +9,14 @@ use Give\Tests\TestCase;
 use Give\Tests\Unit\PaymentGateways\Stripe\Webhooks\Support\UsesFakeStripeApi;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class CheckWebhookEndpointHealthTest extends TestCase
 {
     use UsesFakeStripeApi;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @dataProvider endpointProvider
      */
@@ -31,7 +31,7 @@ final class CheckWebhookEndpointHealthTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function endpointProvider(): array
     {

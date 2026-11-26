@@ -13,7 +13,7 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
  * each lookup scanned the whole table: at a million donations the Reports page spent minutes in
  * those scans alone. One index on payment_id turns each lookup into a point read.
  *
- * @since TBD
+ * @since 4.20.0
  */
 class AddIndexToSequentialOrderingTable extends Migration
 {
@@ -71,7 +71,7 @@ class AddIndexToSequentialOrderingTable extends Migration
     /**
      * Whether any index, whatever its name, covers the payment_id column.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     private function isIndexed(string $table): bool
     {

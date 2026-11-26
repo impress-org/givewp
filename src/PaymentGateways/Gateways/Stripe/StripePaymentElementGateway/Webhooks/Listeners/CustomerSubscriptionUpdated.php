@@ -50,7 +50,7 @@ class CustomerSubscriptionUpdated
     }
 
     /**
-     * @since TBD Cancel a subscription that Stripe expired before its first payment.
+     * @since 4.20.0 Cancel a subscription that Stripe expired before its first payment.
      * @since 4.16.7
      * @throws Exception
      */
@@ -92,7 +92,7 @@ class CustomerSubscriptionUpdated
      * cancellation happens here. The gateway's cancelSubscription() is not called, because the
      * Stripe subscription can no longer be changed.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param Subscription $subscription The GiveWP subscription Stripe expired
      *

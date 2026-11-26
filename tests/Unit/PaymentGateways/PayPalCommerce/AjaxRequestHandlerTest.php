@@ -325,7 +325,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testCreateOrderFlagsCardFieldsPayments(): void
     {
@@ -338,7 +338,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testCreateOrderDoesNotFlagSmartButtonsPayments(): void
     {

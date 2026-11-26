@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks;
@@ -11,14 +11,14 @@ use Give\PaymentGateways\Stripe\Webhooks\DataTransferObjects\WebhookEndpointDto;
 /**
  * The URL that Stripe must deliver events to for this site, and the events GiveWP needs.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class WebhookTarget
 {
     /**
      * Stripe accepts at most this many webhook endpoints per account.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public const MAX_ENDPOINTS_PER_ACCOUNT = 16;
 
@@ -29,7 +29,7 @@ final class WebhookTarget
      * listener yet. They are subscribed now so existing endpoints already send them when their listeners
      * ship. The webhook listener answers 200 to event types it does not handle.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public const REQUIRED_EVENTS = [
         'checkout.session.completed',
@@ -58,7 +58,7 @@ final class WebhookTarget
     /**
      * The URL a new endpoint is created with.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public function url(): string
     {
@@ -68,7 +68,7 @@ final class WebhookTarget
     /**
      * Every listener URL that matches() accepts: the one url() returns, then the site URL's when it differs.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @return string[] HTTPS listener URLs, without duplicates.
      */
@@ -83,7 +83,7 @@ final class WebhookTarget
      * The scheme, a trailing slash and the default port of the scheme are ignored, and both the home URL and
      * the site URL count, because the settings page told admins to use the site URL before this class existed.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public function matches(string $url): bool
     {
@@ -108,7 +108,7 @@ final class WebhookTarget
      * Endpoints that GiveWP did not create, such as those of other applications on the same Stripe account,
      * are left out.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param WebhookEndpointDto[] $endpoints
      *
@@ -126,7 +126,7 @@ final class WebhookTarget
     /**
      * The endpoint on the list that delivers to this site, preferring one that is enabled and complete.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param WebhookEndpointDto[] $endpoints
      */
@@ -148,7 +148,7 @@ final class WebhookTarget
     /**
      * The required events that the endpoint does not send.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @return string[]
      */
@@ -162,7 +162,7 @@ final class WebhookTarget
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function baseUrl(): string
     {
@@ -170,7 +170,7 @@ final class WebhookTarget
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function listenerUrl(string $baseUrl): string
     {
@@ -181,7 +181,7 @@ final class WebhookTarget
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function hasListenerArg(string $url): bool
     {
@@ -199,7 +199,7 @@ final class WebhookTarget
     /**
      * Reduces a URL to "host/path?give-listener=stripe", or an empty string when it is not a listener URL.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     private function normalize(string $url): string
     {
@@ -225,7 +225,7 @@ final class WebhookTarget
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function rank(WebhookEndpointDto $endpoint): int
     {

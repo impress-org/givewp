@@ -6,12 +6,12 @@ use Give\PaymentGateways\PayPalCommerce\Banners\PayPalStandardToDonationsMigrati
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 class PayPalStandardToDonationsMigrationGlobalBannerTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testModalScriptFillsInTheBannerValues()
     {

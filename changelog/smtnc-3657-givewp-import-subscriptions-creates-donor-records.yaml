@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Prevented donors and WP users from being created during a subscription
+  import in dry run.
+timestamp: 2026-11-24T21:04:33.661Z

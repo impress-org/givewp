@@ -230,7 +230,7 @@ class Donations
     /**
      * Get array containing dynamic receipt information
      *
-     * @since TBD Return an empty array when the receipt cannot be built, instead of throwing.
+     * @since 4.20.0 Return an empty array when the receipt cannot be built, instead of throwing.
      * @since 2.25.0 replace wp_strip_all_tags with wp_kses_post
      * @since 2.10.0
      *

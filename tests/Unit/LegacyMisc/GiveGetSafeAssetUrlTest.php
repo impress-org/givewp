@@ -5,12 +5,12 @@ namespace Give\Tests\Unit\LegacyMisc;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 class GiveGetSafeAssetUrlTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testRemovesTheSchemeAndKeepsTheRestOfTheUrl(): void
     {

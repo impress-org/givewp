@@ -49,7 +49,7 @@ class MigrationCommand
     }
 
     /**
-     * @since TBD Write the continue prompt with WP_CLI::out().
+     * @since 4.20.0 Write the continue prompt with WP_CLI::out().
      */
     public function afterEach($stepClass, FormMigrationPayload $payload, $_payload)
     {

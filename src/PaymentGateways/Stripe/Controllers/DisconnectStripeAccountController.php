@@ -30,7 +30,7 @@ class DisconnectStripeAccountController
     private $target;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function __construct(DeleteSiteWebhookEndpoint $deleteSiteWebhookEndpoint, WebhookTarget $target)
     {
@@ -39,7 +39,7 @@ class DisconnectStripeAccountController
     }
 
     /**
-     * @since TBD Delete this site's webhook endpoint from the Stripe account after removing the account.
+     * @since 4.20.0 Delete this site's webhook endpoint from the Stripe account after removing the account.
      * @since 2.13.0
      */
     public function __invoke()
@@ -96,7 +96,7 @@ class DisconnectStripeAccountController
     /**
      * The saved account, read before it is removed because deleting its webhook endpoint needs its key.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param mixed  $record      The record saved under the slug.
      * @param string $accountSlug Slug of the saved Stripe account being disconnected.
@@ -121,7 +121,7 @@ class DisconnectStripeAccountController
      * Runs after the account is removed, so a slow or failing Stripe request cannot leave the account
      * connected. A failure is logged and the disconnect still answers with success.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param AccountDetail   $account           The account that was just removed, with its key.
      * @param AccountDetail[] $remainingAccounts The accounts still saved; an endpoint one of them uses is kept.
@@ -150,7 +150,7 @@ class DisconnectStripeAccountController
      * The accounts still saved after the removal. A record that cannot be read holds no usable key, so it
      * is left out.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @return AccountDetail[]
      */
@@ -172,7 +172,7 @@ class DisconnectStripeAccountController
     /**
      * The message the settings page shows when the endpoint may still be on the account.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string[] $failedModes The modes in which the endpoint may still be on the account.
      */
@@ -184,7 +184,7 @@ class DisconnectStripeAccountController
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string[] $urls Webhook endpoint URLs of this site.
      */
@@ -216,7 +216,7 @@ class DisconnectStripeAccountController
      * Names the mode to clean up when only one failed, because the endpoint in the other mode was deleted or
      * kept for another saved account.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string[] $failedModes The modes in which the endpoint may still be on the account.
      */

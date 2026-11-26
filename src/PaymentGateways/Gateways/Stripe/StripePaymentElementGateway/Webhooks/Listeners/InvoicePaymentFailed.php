@@ -39,7 +39,7 @@ class InvoicePaymentFailed
     }
 
     /**
-     * @since TBD Ignore invoices that are not linked to a subscription.
+     * @since 4.20.0 Ignore invoices that are not linked to a subscription.
      * @since 4.8.0 Add support for Stripe API version 2025-03-31.basil and later versions
      * @since 3.0.4 Return a bool value.
      * @since 3.0.0

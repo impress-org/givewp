@@ -5,12 +5,12 @@ namespace Give\Tests\Unit\EventTickets\Blocks;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 class EventTicketsBlockMetadataTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testBlockJsonIsValidAndUsesBlockApiVersion3(): void
     {

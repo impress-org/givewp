@@ -9,7 +9,7 @@ use Throwable;
 /**
  * Replaces the Stripe SDK's HTTP transport so the real SDK code runs without network access.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class FakeStripeHttpClient implements ClientInterface
 {
@@ -24,7 +24,7 @@ final class FakeStripeHttpClient implements ClientInterface
     private $responses = [];
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function queue(int $status, array $body, array $headers = []): void
     {
@@ -35,7 +35,7 @@ final class FakeStripeHttpClient implements ClientInterface
      * Makes the next request throw, the way the SDK's cURL client throws ApiConnectionException when Stripe
      * cannot be reached.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public function queueException(Throwable $exception): void
     {
@@ -43,7 +43,7 @@ final class FakeStripeHttpClient implements ClientInterface
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function request($method, $absUrl, $headers, $params, $hasFile)
     {
@@ -70,7 +70,7 @@ final class FakeStripeHttpClient implements ClientInterface
     /**
      * Returns the value of a request header, or null when the request did not send it.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public function header(int $requestIndex, string $name): ?string
     {

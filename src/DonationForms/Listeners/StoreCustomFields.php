@@ -106,7 +106,7 @@ class StoreCustomFields
     /**
      * A blank value is treated as an omitted field, so it must not erase existing donor meta.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param mixed $value
      */
@@ -120,7 +120,7 @@ class StoreCustomFields
     }
 
     /**
-     * @since TBD Skip blank values for donor scoped fields so they do not overwrite existing donor meta.
+     * @since 4.20.0 Skip blank values for donor scoped fields so they do not overwrite existing donor meta.
      * @since 3.0.0
      */
     protected function persistFieldScope(Field $field, $value, Donation $donation, ?Subscription $subscription): void

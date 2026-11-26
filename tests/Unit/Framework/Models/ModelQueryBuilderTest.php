@@ -115,7 +115,7 @@ final class ModelQueryBuilderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testUsingACloneLeavesTheOriginalQueryUnchanged()
     {
@@ -138,7 +138,7 @@ final class ModelQueryBuilderTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testPagingTheOriginalQueryLeavesItsCloneCountingEveryRow()
     {

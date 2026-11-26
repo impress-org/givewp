@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Admin;
@@ -12,14 +12,14 @@ use Give\PaymentGateways\Stripe\Webhooks\WebhookHealthMonitor;
 /**
  * Adds the setup button and the health email option to the Webhooks group of the Stripe settings.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class WebhookSettingsFields
 {
     public const SETUP_FIELD_TYPE = 'stripe_webhook_setup';
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param array $settings Settings of the Payment Gateways tab, keyed by group.
      *
@@ -60,7 +60,7 @@ final class WebhookSettingsFields
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param array $field
      */

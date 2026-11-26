@@ -12,7 +12,7 @@ class Utils
     /**
      * Extract query param from URL
      *
-     * @since TBD Use wp_parse_url() instead of parse_url().
+     * @since 4.20.0 Use wp_parse_url() instead of parse_url().
      * @since 2.7.0
      *
      * @param string $url

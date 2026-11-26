@@ -5,12 +5,12 @@ namespace Give\Tests\Unit\Views;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class ReportsTemplateLegacyLinkTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testLegacyReportsTabLinksToThisSitesAdmin(): void
     {

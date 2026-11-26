@@ -8,12 +8,12 @@ use Give\PaymentGateways\Stripe\Webhooks\WebhookHealthMonitor;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 final class WebhookSettingsFieldsTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function setUp(): void
     {
@@ -24,7 +24,7 @@ final class WebhookSettingsFieldsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function tearDown(): void
     {
@@ -35,7 +35,7 @@ final class WebhookSettingsFieldsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItAddsBothFieldsBeforeTheEndOfTheWebhooksGroup(): void
     {
@@ -55,7 +55,7 @@ final class WebhookSettingsFieldsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItLeavesTheSettingsOfOtherSectionsAlone(): void
     {
@@ -66,7 +66,7 @@ final class WebhookSettingsFieldsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItEnablesTheHealthEmailByDefault(): void
     {
@@ -80,7 +80,7 @@ final class WebhookSettingsFieldsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function testItRendersTheSetupButtonWithANonceForTheController(): void
     {
@@ -97,7 +97,7 @@ final class WebhookSettingsFieldsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     private function openSection(string $section): void
     {
@@ -109,7 +109,7 @@ final class WebhookSettingsFieldsTest extends TestCase
     /**
      * The Webhooks group as the Stripe admin settings register it.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     private function gatewaySettings(): array
     {

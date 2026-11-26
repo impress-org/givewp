@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\ValueObjects;
@@ -20,7 +20,7 @@ use Throwable;
 /**
  * Outcome of setting up the webhook endpoint of one Stripe account.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @method static WebhookSetupStatus FOUND()
  * @method static WebhookSetupStatus CREATED()
@@ -57,7 +57,7 @@ final class WebhookSetupStatus extends Enum
     const UNKNOWN = 'unknown';
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public static function fromException(Throwable $exception): self
     {
@@ -93,7 +93,7 @@ final class WebhookSetupStatus extends Enum
     /**
      * Whether the account has an enabled endpoint with every required event.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     public function isSuccessful(): bool
     {

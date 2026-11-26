@@ -471,7 +471,7 @@ add_action( 'wp_ajax_give_pages_search', 'give_ajax_pages_search' );
 /**
  * Retrieve Categories via AJAX for chosen dropdown search field.
  *
- * @since TBD Pass the taxonomy to get_terms() in the arguments array.
+ * @since 4.20.0 Pass the taxonomy to get_terms() in the arguments array.
  * @since 4.19.1 Check that the search term is set, then unslash and sanitize it.
  * @since  2.1
  *
@@ -526,7 +526,7 @@ add_action( 'wp_ajax_give_categories_search', 'give_ajax_categories_search' );
 /**
  * Retrieve Tags via AJAX for chosen dropdown search field.
  *
- * @since TBD Pass the taxonomy to get_terms() in the arguments array.
+ * @since 4.20.0 Pass the taxonomy to get_terms() in the arguments array.
  * @since 4.19.1 Check that the search term is set, then unslash and sanitize it.
  * @since  2.1
  *

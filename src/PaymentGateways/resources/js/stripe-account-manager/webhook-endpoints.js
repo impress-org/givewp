@@ -1,7 +1,7 @@
 /**
  * Webhook Status field of the Stripe Manage Accounts page, and the modal that lists the webhook endpoints of an account.
  *
- * @since TBD
+ * @since 4.20.0
  */
 import { __, sprintf } from '@wordpress/i18n';
 
@@ -39,7 +39,7 @@ let openField = null;
  * How many times a modal has been opened. A response that belongs to an earlier modal is dropped, so a
  * request started for one account cannot fill the modal of another.
  *
- * @since TBD
+ * @since 4.20.0
  */
 let modalCount = 0;
 
@@ -47,14 +47,14 @@ let modalCount = 0;
  * The number of the latest request sent for each account. The status button shows the state that the latest
  * request answered, so a slower earlier request cannot put an older state back.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @type {WeakMap<HTMLElement, number>}
  */
 const latestRequests = new WeakMap();
 
 /**
- * @since TBD
+ * @since 4.20.0
  *
  * @param {string} text Plain text.
  *
@@ -67,7 +67,7 @@ function escapeHtml(text) {
 }
 
 /**
- * @since TBD
+ * @since 4.20.0
  *
  * @param {HTMLElement} field The Webhook Status field of an account.
  * @param {string}      state One of the keys of getStates().
@@ -90,7 +90,7 @@ function setState(field, state) {
 }
 
 /**
- * @since TBD
+ * @since 4.20.0
  *
  * @param {string}   operation One of the operations of the manage controller.
  * @param {string}   nonce     Nonce for the manage controller.
@@ -118,14 +118,14 @@ function post(operation, nonce, formData = new FormData()) {
  * How many status refreshes have started. A response that belongs to an older refresh is dropped, so a
  * slow first read cannot overwrite the state a newer read already applied.
  *
- * @since TBD
+ * @since 4.20.0
  */
 let statusRefreshCount = 0;
 
 /**
  * Reads the webhook state of every account with one request.
  *
- * @since TBD
+ * @since 4.20.0
  */
 function refreshStatuses() {
     const fields = Array.from(document.querySelectorAll('.give-stripe-webhook-status'));
@@ -158,7 +158,7 @@ function refreshStatuses() {
 /**
  * The loader shown while the modal fetches the endpoint list.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @return {string} The loader as HTML.
  */
@@ -169,7 +169,7 @@ function loaderMarkup() {
 /**
  * Replaces the content of the open modal. The markup comes from WebhookEndpointsModalView, which escapes every value.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {string} html Content of the modal body.
  *
@@ -188,7 +188,7 @@ function showContent(html) {
 /**
  * Removes every notice from the modal content. Banners and hints are not notices, so they stay.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {HTMLElement} container The modal content container.
  */
@@ -199,7 +199,7 @@ function removeNotices(container) {
 /**
  * Shows a busy notice while an operation runs. The notice announces itself to screen readers through role="status".
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {string} operation "create", "update" or "delete".
  */
@@ -224,7 +224,7 @@ function showBusyNotice(operation) {
  * Locks or unlocks the modal content while an operation runs: every button is disabled, so a second
  * operation cannot start before the first one answers.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {boolean} busy Whether an operation is running.
  */
@@ -249,7 +249,7 @@ function setBusy(busy) {
 /**
  * Marks one form as busy with a spinner on its submit button.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {HTMLElement|null} form The form that started the operation.
  * @param {boolean}          busy Whether an operation is running.
@@ -272,7 +272,7 @@ function setSubmitBusy(form, busy) {
  * Puts the keyboard focus on the notice of the modal content, so keyboard and screen reader users
  * land on the result of the last operation.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {HTMLElement|null} container The modal content container.
  */
@@ -295,7 +295,7 @@ function focusNotice(container) {
  * Opens the form an operation came from, so the admin sees it again after the content was refreshed.
  * A failed update shows the form of its endpoint; a failed create shows the Add endpoint form.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {string}      operation "create", "update" or "delete".
  * @param {FormData}    formData  The fields the form sent.
@@ -344,7 +344,7 @@ function reopenForm(operation, formData, container) {
  * has stored, which are not what a failed operation tried to save. The events of an endpoint that
  * sends every event are left alone, because its checkboxes are disabled and Stripe keeps them.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {HTMLElement|null} form     The form to fill.
  * @param {FormData}         formData The fields the admin submitted.
@@ -382,7 +382,7 @@ function restoreFormValues(form, formData) {
 /**
  * Shows the failure of a list read: an error notice and a button that reads the list again.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {string|null} notices The notices as HTML when Stripe answered with an error; null when the request failed.
  */
@@ -422,7 +422,7 @@ function showListFailed(notices = null) {
  * Shows the failure of an operation without wiping the modal: the notice is prepended, the form is
  * unlocked and filled with the values the admin submitted, and the form is opened again.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {HTMLElement} form      The form that started the operation.
  * @param {FormData}    formData  The fields the admin submitted.
@@ -452,7 +452,7 @@ function showOperationError(form, formData, operation) {
  * Shows the notices of an operation whose list could not be read again. The rest of the content stays as
  * it is, so the form keeps the values the admin submitted.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {string}           notices   The notices as HTML.
  * @param {HTMLElement|null} form      The form that started the operation.
@@ -484,7 +484,7 @@ function showNoticesOnly(notices, form, operation, changed) {
  * Sends the operation of a modal form, then shows the refreshed list and updates the status button.
  * A failed request keeps the list and the form values; the error path decides where the notice goes.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {string}        operation "list", "create", "update" or "delete".
  * @param {FormData}      formData  Form fields.
@@ -564,7 +564,7 @@ function runOperation(operation, formData = new FormData(), form = null) {
 }
 
 /**
- * @since TBD
+ * @since 4.20.0
  *
  * @param {HTMLElement} field The Webhook Status field of an account.
  */
@@ -591,7 +591,7 @@ function openModal(field) {
 /**
  * Swaps the Delete button of an endpoint for a confirm row with a Delete and a Cancel button.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {HTMLElement} form The delete form of the endpoint.
  */
@@ -625,7 +625,7 @@ function enterDeleteConfirm(form) {
 /**
  * Puts the Delete button of an endpoint back and removes the confirm row.
  *
- * @since TBD
+ * @since 4.20.0
  *
  * @param {HTMLElement} form The delete form of the endpoint.
  */

@@ -6,7 +6,7 @@ use Give\PaymentGateways\Stripe\Models\AccountDetail;
 use Stripe\ApiRequestor;
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 trait UsesFakeStripeApi
 {
@@ -16,7 +16,7 @@ trait UsesFakeStripeApi
     protected $stripe;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @before
      */
@@ -27,7 +27,7 @@ trait UsesFakeStripeApi
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @after
      */
@@ -37,7 +37,7 @@ trait UsesFakeStripeApi
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     protected function makeAccount(array $overrides = []): AccountDetail
     {
@@ -64,7 +64,7 @@ trait UsesFakeStripeApi
     /**
      * A webhook endpoint as the Stripe API returns it.
      *
-     * @since TBD
+     * @since 4.20.0
      */
     protected function endpointBody(array $overrides = []): array
     {
@@ -89,7 +89,7 @@ trait UsesFakeStripeApi
     /**
      * A single page of webhook endpoints as the Stripe API returns it.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param array[] $endpoints Bodies built with endpointBody().
      */
@@ -104,7 +104,7 @@ trait UsesFakeStripeApi
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     protected function errorBody(string $type, string $message): array
     {

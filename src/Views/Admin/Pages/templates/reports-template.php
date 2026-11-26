@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * @since TBD Link the Legacy Reports tab to this site's admin instead of a hardcoded local URL.
+ * @since 4.20.0 Link the Legacy Reports tab to this site's admin instead of a hardcoded local URL.
  * @since 4.19.1 Escape output.
  */
 // Reports page markup

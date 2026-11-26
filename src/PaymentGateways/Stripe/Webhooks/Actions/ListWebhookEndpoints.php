@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\Actions;
@@ -16,14 +16,14 @@ use Stripe\WebhookEndpoint;
 /**
  * Lists every webhook endpoint registered on a connected Stripe account.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class ListWebhookEndpoints
 {
     use PreparesWebhookEndpointRequests;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string $mode "live" or "test"
      *

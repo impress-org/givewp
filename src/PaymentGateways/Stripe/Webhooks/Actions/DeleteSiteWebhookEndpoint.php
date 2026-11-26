@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD
+ * @since 4.20.0
  */
 
 namespace Give\PaymentGateways\Stripe\Webhooks\Actions;
@@ -18,7 +18,7 @@ use Throwable;
  * It never throws. A Stripe failure, such as a revoked OAuth token, is logged and reported in the result so
  * that the account can still be removed from GiveWP.
  *
- * @since TBD
+ * @since 4.20.0
  */
 final class DeleteSiteWebhookEndpoint
 {
@@ -43,7 +43,7 @@ final class DeleteSiteWebhookEndpoint
     private $target;
 
     /**
-     * @since TBD
+     * @since 4.20.0
      */
     public function __construct(
         ListWebhookEndpoints $listEndpoints,
@@ -59,7 +59,7 @@ final class DeleteSiteWebhookEndpoint
      * Deletes this site's endpoints in each mode for which the account holds a key. A mode without a key is
      * left out of the result.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param AccountDetail   $account           The account being disconnected.
      * @param AccountDetail[] $remainingAccounts The accounts still saved. An endpoint one of them also uses is kept.
@@ -82,7 +82,7 @@ final class DeleteSiteWebhookEndpoint
     }
 
     /**
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string          $mode              "live" or "test"
      * @param AccountDetail[] $remainingAccounts The accounts still saved.
@@ -156,7 +156,7 @@ final class DeleteSiteWebhookEndpoint
      * the same account was connected through GiveWP Connect, and an endpoint id is unique to its Stripe
      * account, so an id another record lists is an endpoint that record still receives events through.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param AccountDetail   $account           The account being disconnected.
      * @param AccountDetail[] $remainingAccounts The accounts still saved.
@@ -207,7 +207,7 @@ final class DeleteSiteWebhookEndpoint
     /**
      * Stripe answers 404 when the endpoint is already gone, which is the state this action wants.
      *
-     * @since TBD
+     * @since 4.20.0
      *
      * @param string $mode "live" or "test"
      *

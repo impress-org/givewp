@@ -1132,7 +1132,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Helper function to get the formated title.
 		 * Plugins can call this when implementing their own custom settings types.
 		 *
-		 * @since TBD Use wp_strip_all_tags() instead of strip_tags().
+		 * @since 4.20.0 Use wp_strip_all_tags() instead of strip_tags().
 		 * @since  1.8
 		 *
 		 * @param  array $value The form field value array

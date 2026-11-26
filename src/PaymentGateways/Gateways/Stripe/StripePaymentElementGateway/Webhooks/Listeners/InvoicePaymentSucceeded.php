@@ -45,7 +45,7 @@ class InvoicePaymentSucceeded
     }
 
     /**
-     * @since TBD Ignore invoices that are not linked to a subscription.
+     * @since 4.20.0 Ignore invoices that are not linked to a subscription.
      * 4.14.1 Added $formId parameter and stripe_account option for Stripe Connect support
      * @since 4.8.0 Add support for Stripe API version 2025-03-31.basil and later versions
      * @since 4.3.0 Update Stripe Invoice metadata
@@ -115,7 +115,7 @@ class InvoicePaymentSucceeded
     }
 
     /**
-     * @since TBD Set a pending subscription to active once its first donation is complete.
+     * @since 4.20.0 Set a pending subscription to active once its first donation is complete.
      * @since 3.0.0
      *
      * @throws Exception

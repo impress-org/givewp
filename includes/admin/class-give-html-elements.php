@@ -428,7 +428,7 @@ class Give_HTML_Elements {
 	 *
 	 * Renders an HTML Dropdown of all the Categories.
 	 *
-	 * @since TBD Pass the taxonomy to get_terms() in the arguments array.
+	 * @since 4.20.0 Pass the taxonomy to get_terms() in the arguments array.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -468,7 +468,7 @@ class Give_HTML_Elements {
 	 *
 	 * Renders an HTML Dropdown of all the Tags.
 	 *
-	 * @since TBD Pass the taxonomy to get_terms() in the arguments array.
+	 * @since 4.20.0 Pass the taxonomy to get_terms() in the arguments array.
 	 * @since  1.8
 	 * @access public
 	 *
