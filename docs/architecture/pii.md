@@ -90,8 +90,8 @@ belongs to an admin setting, not to code. See [admin-ui.md](admin-ui.md).
 The admin list screens (Donations, Donors, Subscriptions, Donation Forms, Campaigns and Events) do
 not use the v3 resource routes. Their rows are table cells that the server renders through the
 `ListTable` column classes, which add-ons extend with their own columns, so the response holds cell
-HTML. With `return=model` it holds the whole model, with no ViewModel. Every one of these routes
-checks the screen's permission first, and they are for the admin only.
+HTML. Every one of them except Campaigns also takes `return=model`, which returns the whole models,
+with no ViewModel. All of them check the screen's permission first, and they are for the admin only.
 
 Do not build new features on them. A new list of records should follow v3, unless it is one more of
 these admin screens. See [list-tables.md](list-tables.md).

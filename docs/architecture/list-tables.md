@@ -220,7 +220,8 @@ recounts and the CLI command are not registered, because counts from `give_donat
   inside that transaction could deadlock and roll back the donation write).
 - **A counter update never fails a write.** Every handler catches its own errors and marks the
   counters dirty instead. Cost per write, measured in a local test: a model create adds 5 queries (2
-  reads of the donation, 3 writes to `wp_options`) and a status change adds 6, about 1 ms or less each.
+  reads of the donation, 3 writes to `wp_options`) and a status change adds 6. In both cases they take
+  about 1 ms or less in total.
 - **Dirty means not used.** `give_donation_counters_dirty` grows on a write that could not be counted
   exactly, on a page read that contradicts a counted total, and on a negative bucket;
   `give_donation_counters_clean` is the dirty value the last recount covered. While dirty (or never
@@ -855,7 +856,7 @@ add-on page that never heard of the prop still gets. The one exception: a standa
 `?donor=12`, and `give-` names) to its first view and first request, and never writes them back. The
 code is in `ListTable/state/` and `ListTable/hooks/useListTableUrlState.ts` and
 `useListTableLayoutPreferences.ts`. Most of `state/` is pure functions; three modules are not:
-`listTableHistory` (the `history` entry, the address and the tab's `sessionStorage`), `layoutApi` (the
+`listTableHistory` (the `history` entry and the address), `layoutApi` (the
 layout route and the printed bootstrap) and `layoutWriteQueue` (the page view's write queue and its
 error notice).
 
