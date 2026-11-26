@@ -169,7 +169,7 @@ What the prop turns on:
 | | No `screen` | `screen` on a standalone page | `screen` with `contentMode` |
 |:--|:--|:--|:--|
 | Page, page size, sort and filters in the URL (`give-` parameters) | Recognized filter parameters (bare legacy names and `give-` names) apply to the first view and first request; never written | Yes | No |
-| Search term kept in the tab (history entry and `sessionStorage`) | No | Yes | No |
+| Search term in the URL (`give-search`) | No | Yes | No |
 | Columns, order, density and page size stored per user | No | Yes | Yes |
 | Reset view | Yes, for this page view only | Yes | Yes |
 

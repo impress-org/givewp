@@ -40,6 +40,26 @@ class GetEventsListTableTest extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testSearchMatchesTheTitleOrTheDescription(): void
+    {
+        $byTitle = Event::factory()->create(['title' => 'Spring gala', 'description' => 'Dinner']);
+        $byDescription = Event::factory()->create(['title' => 'Auction', 'description' => 'After the gala']);
+        Event::factory()->create(['title' => 'Fun run', 'description' => 'Five miles']);
+
+        $request = $this->getMockRequest();
+        $request->set_param('page', 1);
+        $request->set_param('perPage', 30);
+        $request->set_param('locale', 'en-US');
+        $request->set_param('search', 'gala');
+
+        $items = give(GetEventsListTable::class)->handleRequest($request)->data['items'];
+
+        $this->assertEqualsCanonicalizing([$byTitle->id, $byDescription->id], array_column($items, 'id'));
+    }
+
+    /**
      * @since 3.6.0
      *
      * @throws Exception

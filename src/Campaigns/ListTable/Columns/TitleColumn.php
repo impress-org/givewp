@@ -29,7 +29,7 @@ class TitleColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Drop the aria-label so the link is named by its visible text.
+     * @since TBD Escape the title, and drop the aria-label so the link is named by its visible text.
      * @since 4.0.0
      *
      * @param Campaign $model
@@ -39,7 +39,7 @@ class TitleColumn extends ModelColumn
         return sprintf(
             '<a href="%s">%s</a>',
             admin_url("edit.php?post_type=give_forms&page=give-campaigns&id=$model->id"),
-            $model->title
+            esc_html($model->title)
         );
     }
 }

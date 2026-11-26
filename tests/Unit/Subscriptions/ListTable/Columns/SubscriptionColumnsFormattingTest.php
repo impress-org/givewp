@@ -9,6 +9,8 @@ use Give\Subscriptions\ListTable\Columns\AmountColumn;
 use Give\Subscriptions\ListTable\Columns\RenewalDateColumn;
 use Give\Subscriptions\ListTable\Columns\StatusColumn;
 use Give\Subscriptions\Models\Subscription;
+use Give\Campaigns\Models\Campaign;
+use Give\Subscriptions\ListTable\Columns\CampaignColumn;
 use Give\Tests\TestCase;
 
 /**
@@ -115,5 +117,19 @@ class SubscriptionColumnsFormattingTest extends TestCase
     public function testStatusColumnIsAStatusKind(): void
     {
         $this->assertSame('status', (new StatusColumn())->getKind());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testCampaignCellEscapesTheTitle(): void
+    {
+        // Saving a campaign strips tags, so this title only has characters that survive it.
+        $text = '"Cats" & Dogs';
+        $campaign = Campaign::factory()->create(['title' => $text]);
+
+        $cell = (new CampaignColumn())->getCellValue(new Subscription(['campaignId' => $campaign->id]));
+
+        $this->assertStringContainsString(esc_html($text), $cell);
     }
 }

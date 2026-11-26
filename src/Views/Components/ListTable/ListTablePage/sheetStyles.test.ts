@@ -90,4 +90,10 @@ describe('list sheet styles', () => {
     it('does not fill the viewport when embedded in another page', () => {
         expect(block(page, '.pageEmbedded')).toContain('min-block-size: auto');
     });
+
+    it('gives a screen blank slate room above and below, and leaves the other empty states as they are', () => {
+        expect(read('ListTablePage', 'styles.scss')).toMatch(
+            /\.givewp-list-table \.dataviews-no-results:not\(:has\(\.givewp-list-table-empty-state\)\) \{\s*padding-block: var\(--givewp-spacing-8\);/
+        );
+    });
 });

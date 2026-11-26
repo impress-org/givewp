@@ -219,7 +219,9 @@ recounts and the CLI command are not registered, because counts from `give_donat
   hooks are skipped and the model's after hook counts the donation once committed (a counter update
   inside that transaction could deadlock and roll back the donation write).
 - **A counter update never fails a write.** Every handler catches its own errors and marks the
-  counters dirty instead. Measured cost per write: see the spike report (a few indexed queries).
+  counters dirty instead. Cost per write, measured in a local test: a model create adds 5 queries (2
+  reads of the donation, 3 writes to `wp_options`) and a status change adds 6. In both cases they take
+  about 1 ms or less in total.
 - **Dirty means not used.** `give_donation_counters_dirty` grows on a write that could not be counted
   exactly, on a page read that contradicts a counted total, and on a negative bucket;
   `give_donation_counters_clean` is the dirty value the last recount covered. While dirty (or never
@@ -395,21 +397,14 @@ Three more rules from the 1M-donation profiling (SOFT-5634):
   took 188 seconds at a million donations; with the range it reads only recurring rows). The range
   leaves out values no writer stores, such as `'05'` or `'-1'`.
 
-### Donors list: compare campaign IDs as text
-
-`ListDonors` filters by campaign with a subquery on `give_donationmeta` (`_give_campaign_id`). The
-meta value column is text, and the IDs are passed as strings. A number compared with that column
-makes MySQL cast every row, so it read all 1.9 million campaign meta rows (about 3.9 seconds) instead
-of the 20,000 rows of one campaign through the `(meta_key, meta_value)` index. Same donors either
-way: the query still reads the same meta, with no status, mode or anonymous rule added. Reading
-`give_revenue` was tried and is not faster (same plan cost), and it has no index on `donation_id`.
-
 ## Rows first, totals apart: `withCount=false` and `/count`
 
 A list request used to wait for its total. The total is the slow part on a large site (the first
-request, a search, the Live tab, the last page), and it only feeds numbers on screen. So the six v3
+request, a search, the Live tab, the last page), and it only feeds numbers on screen. So the six
 list routes (donations, donors, subscriptions, donation forms, campaigns, events) can send them
-apart. The shared helper is `Framework/ListTable/ListCount`.
+apart. The shared helper is `Framework/ListTable/ListCount`. Five of them are under `give-api/v2`
+and the campaigns one is under `givewp/v3`; none is a v3 resource route. See
+[The list routes are an exception](pii.md#the-list-routes-are-an-exception).
 
 - **Rows request.** `GET <route>?...&withCount=false` returns the same keys as before, without
   `totalItems` and `totalPages`, and with `hasNextPage` (the endpoint reads `perPage + 1` rows and
@@ -861,7 +856,7 @@ add-on page that never heard of the prop still gets. The one exception: a standa
 `?donor=12`, and `give-` names) to its first view and first request, and never writes them back. The
 code is in `ListTable/state/` and `ListTable/hooks/useListTableUrlState.ts` and
 `useListTableLayoutPreferences.ts`. Most of `state/` is pure functions; three modules are not:
-`listTableHistory` (the `history` entry, the address and the tab's `sessionStorage`), `layoutApi` (the
+`listTableHistory` (the `history` entry and the address), `layoutApi` (the
 layout route and the printed bootstrap) and `layoutWriteQueue` (the page view's write queue and its
 error notice).
 

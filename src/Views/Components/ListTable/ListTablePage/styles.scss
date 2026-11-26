@@ -7,3 +7,8 @@
     background-color: var(--givewp-shades-white);
     border-radius: var(--givewp-rounded-8);
 }
+
+// The screens' blank slates rely on this room around them. Our other empty states bring their own.
+.givewp-list-table .dataviews-no-results:not(:has(.givewp-list-table-empty-state)) {
+    padding-block: var(--givewp-spacing-8);
+}

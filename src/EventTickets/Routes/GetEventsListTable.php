@@ -9,6 +9,7 @@ use Give\Framework\Database\DB;
 use Give\Framework\ListTable\ListCount;
 use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\QueryBuilder\WhereQueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -207,6 +208,7 @@ class GetEventsListTable
     }
 
     /**
+     * @since TBD Group the two search columns, so another filter applies to both.
      * @since 3.6.0
      */
     private function getWhereConditions(QueryBuilder $query): QueryBuilder
@@ -217,8 +219,11 @@ class GetEventsListTable
             if (ctype_digit($search)) {
                 $query->where('id', $search);
             } else {
-                $query->whereLike('title', $search);
-                $query->orWhereLike('description', $search);
+                $query->where(static function (WhereQueryBuilder $builder) use ($search) {
+                    $builder
+                        ->whereLike('title', $search)
+                        ->orWhereLike('description', $search);
+                });
             }
         }
 
