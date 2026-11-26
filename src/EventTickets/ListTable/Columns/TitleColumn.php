@@ -39,7 +39,7 @@ class TitleColumn extends ModelColumn
     /**
      * @inheritDoc
      *
-     * @since TBD Drop the aria-label so the link is named by its visible text.
+     * @since TBD Escape the title, and drop the aria-label so the link is named by its visible text.
      * @since 3.6.0
      *
      * @param Event $model
@@ -49,7 +49,7 @@ class TitleColumn extends ModelColumn
         return sprintf(
             '<a href="%s">%s</a>',
             admin_url("edit.php?post_type=give_forms&page=give-event-tickets&id={$model->id}"),
-            $model->title
+            esc_html($model->title)
         );
     }
 }

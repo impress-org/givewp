@@ -40,6 +40,7 @@ class DonorInformationColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Escape the name and email.
      * @since 4.12.0 Remove gravatar from donor information column
      * @since 3.20.0 Use email to get avatar URL
      * @since 2.24.0
@@ -62,8 +63,8 @@ class DonorInformationColumn extends ModelColumn
         return sprintf(
             $template,
             $url,
-            trim("$model->firstName $model->lastName"),
-            $model->email
+            esc_html(trim("$model->firstName $model->lastName")),
+            esc_html($model->email)
         );
     }
 }

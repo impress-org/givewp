@@ -13,6 +13,7 @@ use Give\EventTickets\Models\EventTicket;
 use Give\EventTickets\Models\EventTicketType;
 use Give\EventTickets\Repositories\EventsDataRepository;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\EventTickets\ListTable\Columns\TitleColumn;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\SwitchesNumberSeparators;
@@ -244,5 +245,18 @@ class EventColumnsFormattingTest extends TestCase
         }
 
         return $event;
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testTitleCellEscapesTheTitle(): void
+    {
+        $text = '<script>alert(1)</script> & Co';
+
+        $cell = (new TitleColumn())->getCellValue(new Event(['id' => 1, 'title' => $text]));
+
+        $this->assertStringNotContainsString('<script>', $cell);
+        $this->assertStringContainsString(esc_html($text), $cell);
     }
 }

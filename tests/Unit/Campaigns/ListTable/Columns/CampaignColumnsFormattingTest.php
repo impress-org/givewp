@@ -14,6 +14,7 @@ use Give\Campaigns\ListTable\Columns\StatusColumn;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
+use Give\Campaigns\ListTable\Columns\TitleColumn;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\SwitchesNumberSeparators;
 
@@ -284,5 +285,18 @@ class CampaignColumnsFormattingTest extends TestCase
         $column->setListTableData($data);
 
         return $column;
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testTitleCellEscapesTheTitle(): void
+    {
+        $text = '<script>alert(1)</script> & Co';
+
+        $cell = (new TitleColumn())->getCellValue(new Campaign(['id' => 1, 'title' => $text]));
+
+        $this->assertStringNotContainsString('<script>', $cell);
+        $this->assertStringContainsString(esc_html($text), $cell);
     }
 }

@@ -13,6 +13,7 @@ use Give\Donors\ListTable\Columns\LatestDonationColumn;
 use Give\Donors\Models\Donor;
 use Give\Donors\Repositories\DonorsDataRepository;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\Donors\ListTable\Columns\DonorInformationColumn;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\SwitchesNumberSeparators;
@@ -250,5 +251,19 @@ class DonorColumnsFormattingTest extends TestCase
             'status' => $status,
             'createdAt' => new DateTime($date, new DateTimeZone('UTC')),
         ]);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDonorCellEscapesTheNameAndEmail(): void
+    {
+        $text = '<script>alert(1)</script> & Co';
+        $donor = new Donor(['id' => 1, 'firstName' => $text, 'lastName' => '', 'email' => $text]);
+
+        $cell = (new DonorInformationColumn())->getCellValue($donor);
+
+        $this->assertStringNotContainsString('<script>', $cell);
+        $this->assertSame(2, substr_count($cell, esc_html($text)));
     }
 }
