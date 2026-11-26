@@ -35,11 +35,13 @@
     }
 
     // Our own one-line clamp (InterweaveSSR/styles.scss) needs a capped width, because a table cell is
-    // `nowrap` and a long campaign name would grow the column. The minimum width (11rem; Donations does not scroll at
-    // 1512 with it) is only for the table: in the phone cards the value must shrink so the "…" shows.
+    // `nowrap` and a long campaign name would grow the column. The columns share free width by fixed
+    // shares, not by their text, so the minimum grows with the window: 11rem up to about 1600px, then
+    // wider, up to 26rem. The minimum is only for the table: in the phone cards the value must shrink so
+    // the "…" shows.
     .givewp-truncated-text {
-        min-inline-size: 11rem;
-        max-inline-size: 16rem;
+        min-inline-size: clamp(11rem, calc(25vw - 14rem), 26rem);
+        max-inline-size: 26rem;
         white-space: normal;
     }
 }

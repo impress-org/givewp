@@ -47,6 +47,6 @@ describe('the A+ table rules', () => {
         const css = compiled.replace(/\/\*[\s\S]*?\*\//g, '');
         expect(css).toMatch(/\.dataviews-view-table__cell-content-wrapper:not\(\.dataviews-column-primary__media\)[^{]*\{[^}]*min-inline-size: 0/);
         expect(css).toMatch(/\.dataviews-title-field \{[^}]*min-inline-size: 20ch/);
-        expect(css).toMatch(/\.givewp-truncated-text \{[^}]*max-inline-size: 16rem/);
+        expect(css).toMatch(/\.givewp-truncated-text \{[^}]*min-inline-size: clamp\(11rem, [^}]*max-inline-size: 26rem/);
     });
 });
