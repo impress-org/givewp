@@ -440,6 +440,8 @@ trait WhereClause
     }
 
     /**
+     * @since TBD Handle empty IN/NOT IN arrays without emitting invalid SQL.
+     *
      * @param  Where  $where
      *
      * @return string
@@ -450,6 +452,14 @@ trait WhereClause
             // Handle membership conditions
             case Operator::IN:
             case Operator::NOTIN:
+                if (is_array($where->value) && empty($where->value)) {
+                    // An empty IN matches nothing; an empty NOT IN matches everything.
+                    return DB::prepare(
+                        '%1s %2s',
+                        $where->logicalOperator,
+                        $where->comparisonOperator === Operator::NOTIN ? '1 = 1' : '1 = 0'
+                    );
+                }
 
                 return DB::prepare(
                         "%1s %2s %3s",

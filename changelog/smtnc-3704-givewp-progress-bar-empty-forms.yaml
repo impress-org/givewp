@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Prevented the Multi Form Goal progress bar from fataling when no forms
+  match, and made it report zero revenue and donations instead.
+timestamp: 2026-11-27T16:06:13.407Z

@@ -111,6 +111,57 @@ final class WhereTest extends TestCase
         );
     }
 
+    public function testWhereInWithEmptyArray()
+    {
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('*')
+            ->from(DB::raw('posts'))
+            ->where('post_status', 'subscription')
+            ->whereIn('ID', []);
+
+        $sql = $builder->getSQL();
+
+        $this->assertStringContainsString(
+            "SELECT * FROM posts WHERE post_status = 'subscription' AND 1 = 0",
+            $sql
+        );
+        $this->assertStringNotContainsString('IN ()', $sql);
+    }
+
+    public function testWhereNotInWithEmptyArray()
+    {
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('*')
+            ->from(DB::raw('posts'))
+            ->where('post_status', 'subscription')
+            ->whereNotIn('ID', []);
+
+        $this->assertStringContainsString(
+            "SELECT * FROM posts WHERE post_status = 'subscription' AND 1 = 1",
+            $builder->getSQL()
+        );
+    }
+
+    public function testOrWhereInWithEmptyArray()
+    {
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('*')
+            ->from(DB::raw('posts'))
+            ->where('post_status', 'subscription')
+            ->orWhereIn('ID', []);
+
+        $this->assertStringContainsString(
+            "SELECT * FROM posts WHERE post_status = 'subscription' OR 1 = 0",
+            $builder->getSQL()
+        );
+    }
+
     public function testWhereNotIn()
     {
         $builder = new QueryBuilder();
