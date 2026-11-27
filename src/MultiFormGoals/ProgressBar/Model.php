@@ -125,11 +125,17 @@ class Model
 
     /**
      * Returns query results for Donation Revenue.
+     *
+     * @since TBD Return zeroed results when no forms match, instead of counting every donation.
      * @since 2.9.0
      * @return stdClass seem MultiFormGoals/ProgressBar/Query.php
      */
     public function getDonationRevenueResults()
     {
+        if (empty($this->getForms())) {
+            return (object)['total' => 0, 'count' => 0];
+        }
+
         if ( ! $this->donationRevenueResults) {
             $query = new Query($this->getForms());
             $this->donationRevenueResults = $query->getResults();
@@ -141,11 +147,16 @@ class Model
     /**
      * Get raw earnings value for Progress Bar
      *
+     * @since TBD Return '0' when no forms match.
      * @since 3.12.0 use DonationQuery
      * @since 2.9.0
      */
     public function getTotal(): string
     {
+        if (empty($this->getForms())) {
+            return '0';
+        }
+
         return (new DonationQuery())->forms($this->getForms())->sumIntendedAmount();
     }
 
