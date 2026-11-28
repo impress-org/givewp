@@ -1,8 +1,17 @@
 import {expect, test} from '@wordpress/e2e-test-utils-playwright';
 import {donationForm, expectReceipt, fillDonorDetails, payWithTestGateway, waitForForm} from './utils/donation-form';
 import {editForm} from './utils/form';
+import {
+    chip,
+    expectListMounts,
+    expectNoBrowserDialogs,
+    expectStacksOnNarrowScreens,
+    popover,
+    visitList,
+} from './utils/list-table';
 import {createStandaloneForm} from './utils/standalone-form';
-import {wp} from './utils/wp-cli';
+import {resetLayout} from './utils/user';
+import {isPluginActive, wp} from './utils/wp-cli';
 
 /**
  * The Recurring add-on, installed from its latest GitHub release by the E2E workflow.
@@ -14,6 +23,7 @@ import {wp} from './utils/wp-cli';
  * a lookup that returns nothing would show.
  */
 const SLUG = 'give-recurring';
+const SUBSCRIPTIONS = 'post_type=give_forms&page=give-subscriptions';
 
 test.describe('Recurring add-on', () => {
     test.skip(!(process.env.E2E_ADDONS ?? '').split(/\s+/).includes(SLUG), `E2E_ADDONS does not name ${SLUG}`);
@@ -23,9 +33,7 @@ test.describe('Recurring add-on', () => {
     });
 
     test('subscriptions admin page mounts', async ({page, admin}) => {
-        await admin.visitAdminPage('edit.php', 'post_type=give_forms&page=give-subscriptions');
-
-        await expect(page.getByRole('heading', {level: 1, name: 'Subscriptions'})).toBeVisible({timeout: 15_000});
+        await expectListMounts(page, admin, 'post_type=give_forms&page=give-subscriptions', 'Subscriptions');
     });
 
     test('a form with no campaign takes a monthly subscription', async ({page, admin, requestUtils}) => {
@@ -69,5 +77,56 @@ test.describe('Recurring add-on', () => {
         );
 
         expect(subscription).toBe('active:0');
+    });
+});
+
+/**
+ * The shared list filters on Subscriptions. This needs Give Recurring active, not only named in
+ * `E2E_ADDONS`, so it checks for the plugin itself and skips without it.
+ */
+test.describe('Subscriptions list filters @recurring', () => {
+    expectNoBrowserDialogs();
+
+    test('Status keeps Trash alone', async ({page, admin, requestUtils}) => {
+        const plugins = (await requestUtils.rest({path: '/wp/v2/plugins', params: {status: 'active'}})) as Array<{
+            plugin: string;
+        }>;
+        test.skip(
+            !plugins.some((plugin) => plugin.plugin.startsWith('give-recurring/')),
+            'Give Recurring is not active.'
+        );
+
+        await resetLayout(requestUtils, 'subscriptions');
+        await visitList(page, admin, SUBSCRIPTIONS);
+        await chip(page, 'Status').click();
+
+        const first = popover(page)
+            .locator('.givewp-options-filter-control__option')
+            .filter({hasNotText: /^Trashed$/})
+            .first()
+            .getByRole('checkbox');
+        await first.check();
+        await popover(page).getByRole('checkbox', {name: 'Trashed', exact: true}).check();
+
+        await expect(first).not.toBeChecked();
+        await expect(popover(page).getByRole('checkbox', {checked: true})).toHaveCount(1);
+    });
+});
+
+/**
+ * The Subscriptions list on narrow screens. Like the filters above, this needs Give Recurring active.
+ */
+test.describe('Subscriptions blank slate on narrow screens @recurring', () => {
+    expectNoBrowserDialogs();
+
+    test('blank slate fits 782 px and 375 px with no page overflow', async ({page, admin, requestUtils}) => {
+        test.skip(!isPluginActive(SLUG), 'Give Recurring is not active.');
+
+        // A test site may have no subscriptions, and then shows a blank slate rather than cards.
+        await expectStacksOnNarrowScreens(page, admin, requestUtils, {
+            query: SUBSCRIPTIONS,
+            key: 'subscriptions',
+            hasRecords: false,
+        });
     });
 });

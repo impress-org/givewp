@@ -1,7 +1,14 @@
 import {Interweave} from 'interweave';
+import {__} from '@wordpress/i18n';
+import DashPlaceholder from '../DashPlaceholder';
 import './styles.scss';
 
-//@since 2.24.0 renders all SSR data from backend
+/**
+ * Renders all SSR data from backend.
+ *
+ * @since TBD Show the labeled dash for an empty value.
+ * @since 2.24.0
+ */
 const InterweaveSSR = ({column, item}) => {
     let value = item?.[column.id];
     if (value === undefined) {
@@ -13,7 +20,7 @@ const InterweaveSSR = ({column, item}) => {
     }
 
     if (value === '' || value === null) {
-        return <>'-'</>;
+        return <DashPlaceholder label={__('No value', 'give')} />;
     }
 
     return <Interweave attributes={{className: 'interweave'}} content={value} />;

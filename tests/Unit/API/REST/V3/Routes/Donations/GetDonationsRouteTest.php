@@ -839,6 +839,39 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testTotalHeadersCountOnlyTheFilteredDonations()
+    {
+        Donation::query()->delete();
+
+        Donation::factory()->count(3)->create(['status' => DonationStatus::COMPLETE(), 'mode' => DonationMode::LIVE(), 'anonymous' => false]);
+        Donation::factory()->count(2)->create(['status' => DonationStatus::PENDING(), 'mode' => DonationMode::LIVE(), 'anonymous' => false]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(['page' => 1, 'per_page' => 2, 'status' => ['publish']]);
+
+        $response = $this->dispatchRequest($request);
+        $headers = $response->get_headers();
+
+        $this->assertEquals(3, $headers['X-WP-Total']);
+        $this->assertEquals(2, $headers['X-WP-TotalPages']);
+
+        // A page past the end is empty, but the totals still describe the filtered set.
+        $request->set_query_params(['page' => 9, 'per_page' => 2, 'status' => ['publish']]);
+
+        $response = $this->dispatchRequest($request);
+        $headers = $response->get_headers();
+
+        $this->assertEquals([], $response->get_data());
+        $this->assertEquals(3, $headers['X-WP-Total']);
+        $this->assertEquals(2, $headers['X-WP-TotalPages']);
+    }
+
+    /**
      * Get expected value for comparison with API response
      *
      * @since 4.6.0

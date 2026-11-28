@@ -116,4 +116,31 @@ class TestSubscriptionStats extends TestCase
         $this->assertEquals(225.00, $data['totalContributions']);
         $this->assertEquals(2, $data['activeSubscriptions']);
     }
+
+    /**
+     * @since TBD
+     */
+    public function testTotalContributionsComeFormattedNextToTheRawNumber()
+    {
+        $subscription = Subscription::factory()->create([
+            'status' => SubscriptionStatus::ACTIVE(),
+        ]);
+
+        $donation = Donation::factory()->create([
+            'amount' => new Money(133128, 'USD'),
+            'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
+        ]);
+        give()->payment_meta->update_meta($donation->id, 'subscription_id', $subscription->id);
+
+        $request = new WP_REST_Request('GET', '/give-api/v2/admin/subscriptions/stats');
+        $request->set_param('testMode', false);
+
+        $data = (new ListSubscriptionStats())->handleRequest($request)->get_data();
+
+        $this->assertSame(1331.28, $data['totalContributions']);
+        $this->assertSame('$1,331.28', $data['formatted']['totalContributions']);
+        $this->assertSame('1', $data['formatted']['activeSubscriptions']);
+        $this->assertSame(['activeSubscriptions', 'totalContributions'], array_keys($data['formatted']));
+    }
 }

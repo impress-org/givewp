@@ -1,0 +1,103 @@
+@use '../layout/breakpoints' as *;
+
+// DataViews polyfill: CSS that exists only to make the pinned `@wordpress/dataviews` 10.1.7 look like the one
+// in newer WordPress (the target is 7.1). Review every rule when the pin moves. The list, with how to check
+// and remove each one, is in README.md in this folder. `polyfillVersion.test.ts` fails on a new version.
+//
+// @since TBD
+
+// The inset from both edges of the list (10.1.7 uses 48px).
+$edge: var(--givewp-spacing-6);
+
+.givewp-list-table .dataviews-view-table {
+    // Our layout choice, to share the free width like the Pages screen. DataViews leaves the title column
+    // out of its `width: 1%` rule, so on its own it takes all the free width (newer versions too). The
+    // checkbox column then takes a share as well, so it is held narrow. At the DataViews bump, rename
+    // `col-primary` to `col-first-data`; do not delete the rule. See "Column widths" in
+    // docs/architecture/list-tables.md.
+    col.dataviews-view-table__col-primary {
+        width: 8%;
+    }
+
+    col.dataviews-view-table__col-checkbox {
+        width: 0.1%;
+    }
+
+    // The side padding of the edge cells and the header, as in WordPress 7.0 (DataViews 10.1.7 uses 48px at the
+    // edges). The properties are logical, so they work in both directions; the stock physical rules are flipped
+    // in the RTL build.
+    tr > :first-child {
+        padding-inline: var(--givewp-spacing-6) var(--givewp-spacing-3);
+    }
+
+    tr > :last-child {
+        padding-inline: var(--givewp-spacing-3) var(--givewp-spacing-6);
+    }
+
+    tr > .dataviews-view-table__checkbox-column {
+        padding-inline-end: 0;
+    }
+
+    thead th:has(.dataviews-view-table-header-button):not(:first-child, :last-child) {
+        padding-inline: var(--givewp-spacing-1);
+    }
+
+    // Compact density: the cells have 8px, so the header buttons need no padding of their own to line up with
+    // them, and the last cell starts at 8px.
+    &.has-compact-density {
+        tr > :last-child {
+            padding-inline-start: var(--givewp-spacing-2);
+        }
+
+        thead th:has(.dataviews-view-table-header-button):not(:first-child, :last-child) {
+            padding-inline: 0;
+        }
+    }
+}
+
+.givewp-list-table {
+    .dataviews-footer,
+    .dataviews-loading,
+    .dataviews-no-results {
+        padding-inline: $edge;
+    }
+
+    // Remove with `ListTableTotal.tsx` and `ListTableFooter` at 12.0.1 or later; see the note on `ListTableFooter`.
+    // Which rows are on the page, out of all the rows that match. It looks like the stock count and sits
+    // where the stock count sits: right after the selection checkbox, with the pagination on the right.
+    // The footer puts a gap between its children; the negative margin takes it back, so the count
+    // starts where the stock one does.
+    // `__spacer` stands in for the count while the total is unknown, so the controls keep their place.
+    &__total,
+    &__spacer {
+        margin-inline: calc(-1 * var(--givewp-spacing-2)) auto;
+
+        // The stock footer stacks at this width: no side gap to take back, so the count lines up with the checkbox.
+        @container (max-width: 560px) {
+            margin-inline-start: 0;
+        }
+    }
+
+    // The stock footer counts only the rows on the page ("30 Items"), which reads as the total. It is
+    // hidden until rows are selected, when it counts the selection ("2 Items selected").
+    &:not(&--has-selection) .dataviews-bulk-actions-footer__container .dataviews-bulk-actions-footer__item-count {
+        display: none;
+    }
+
+    &:not(&--has-selection) .dataviews-bulk-actions-footer__container {
+        margin-right: 0;
+    }
+}
+
+// Row checkboxes are always visible, as in the DataViews that WordPress 7.x ships. The pinned
+// 10.1.7 (WordPress 6.9 line) hides them until the row is hovered. Remove this rule when the pin
+// moves to a version with the newer behavior.
+.givewp-list-table .dataviews-view-table tbody .components-checkbox-control__input.components-checkbox-control__input {
+    opacity: 1;
+}
+
+@media (max-width: $givewp-list-table-narrow) {
+    .givewp-list-table .dataviews-view-grid-items {
+        padding-inline: $edge;
+    }
+}

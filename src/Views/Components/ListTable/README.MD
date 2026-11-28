@@ -1,116 +1,204 @@
-# ListTablePage
+# ListTable
 
-## \<ListTablePage/\> Props
+The admin list screens (Campaigns, Donation Forms, Donations, Donors, Subscriptions, Event Tickets, and
+the list tabs of the campaign and subscription details pages) render through `ListTablePage`, which
+shows the rows with the WordPress list engine, `@wordpress/dataviews`. Why it is built this way, and
+the version pin rule, are in [docs/architecture/list-tables.md](../../../../docs/architecture/list-tables.md).
 
-| Prop       | Type                                        | Required | Default             |
-|------------|---------------------------------------------|----------|---------------------|
-| data       | Object: {items: Array}                      | Yes      | -                   |
-| columns    | Array\<ListTableColumn\>                    | Yes      | -                   |
-| title      | String                                      | Yes      | -                   |
-| singleName | String                                      | No       | __('item', 'give')  |
-| pluralName | String                                      | No       | __('items', 'give') |
-| error      | Object/Bool                                 | No       | false               |
-| isLoading  | Bool                                        | No       | false               |
-| align | String - `'start'`, `'center'`, or `'end'`  | No       | 'start'             |
-| rowActions | JSX function component                      | No       | null                |
-| bulkActions | Array\<BulkActionsConfig\>                  | No | null                |
-| apiSettings    | Object: {apiRoot: string, apiNonce: string} | Yes      | -       |
-| filterSettings | Array\<FilterConfig\>                       | No       | [ ]     |
-| children | ReactNode                                   | No | null    |
+## Folder
 
-### data
+| Path | What it is |
+|:--|:--|
+| `ListTablePage/` | The page shell: `ListTablePageHeader` (title, header buttons, test-mode switch), then the list sheet with the stat tiles at its top, the notices and the list (the sheet and the tiles are on the full page only). `switchToLegacyView` saves the legacy view choice for the screens that pass `legacyView`. `types.ts` holds the public types. |
+| `DataViewsListTable/` | Stock `<DataViews>` with Give's tokens. No data fetching. |
+| `adapters/` | Pure functions from the columns and actions to DataViews fields and actions, and from the view to the request parameters (`viewToParameters`), plus the page size rule (`snapPerPage`). Jest tests sit next to them. |
+| `hooks/` | `useListTableView` (the view and where its last change came from), `useListTableUrlState` (the view in the address, the search in the tab), `useListTableLayoutPreferences` (stores the layout, and Reset view), `useListTableSelection`, `useListTableQuery` (SWR + `apiFetch`), `useListTableActions` (the DataViews actions and the dialogs they open), `useListTableActionNotices`, and `useListActionSubmit` for a confirm modal or dialog. |
+| `state/` | View state, with Jest tests next to it. Pure functions: `types.ts` (the `ListTableScreen` config and the closed list of screen keys), `screenDefaults` (a screen's defaults from its config and the column schema), `viewQuery` (reads and writes the `give-` URL parameters), `storedLayout` (the stored layout record), `assembleView`, `fieldOrder` (a column's default position, the pinned column last) and `fieldRules` (locked and pinned columns). Not pure, because they talk to the browser or the route: `listTableHistory` (`history`, the address and the tab's search copy), `layoutApi` (the layout route and the printed bootstrap) and `layoutWriteQueue` (the ordered layout writes and the once-per-page-view error notice). |
+| `filters/` | The filter model, pure functions: declaration types, value text, date ranges, chip text, exclusive values, request parameters, the option route client, and the deprecated `filterSettingsToDeclarations` adapter (`legacyFilterSettings.ts`). |
+| `ListTableFilters/` | The filter bar: primary filters, "Add filter", chips and Reset, read from a screen's `filters` declaration. Built from the `ListTableSearch`, `FilterChip`, `OptionsFilterControl`, `DateRangeFilterControl` and `EntityFilterControl` molecules. |
+| `dataviewsPolyfill/` | Everything that only makes the pinned DataViews match newer WordPress (CSS and JS). Review it at every DataViews upgrade. |
+| `ListTableViewMenu/` | The small "More view options" menu after the stock view options. Holds "Switch to Legacy View" on the screens that pass `legacyView`. |
+| `ListTableNoticeArea/`, `notices/` | The one notice area above the list (action errors, system notices, the daily recommendation) and the pure `pickDailyRecommendation`. |
+| `StatTiles/`, `StatTile/` | The row of stat tiles and one tile. Tiles show the server's `formatted` text and can toggle a list filter (`tileFilters.ts`). |
+| `GiveMark/`, `TestModeBadge/`, `HelpTip/` | The Give mark (atom), the "Test mode" badge in the page header and the small help button with its popover (molecules). |
+| `ListTableSearch/` | The labeled search box, its `SearchHint` (the hint line and its help tip), and `useSearchHint`, which gives both the same ids so the box can sit in the toolbar row and the hint under it. |
+| `InterweaveSSR/` | Renders server markup in a cell. Its `styles.scss` styles the other server-rendered cell markup (goal ring, donor email, shortcode). |
+| `Skeleton/`, `DashPlaceholder/` | Atoms: the loading block (use it instead of a spinner in the list area) and the empty-value dash with a screen reader label. |
+| `layout/` | The 782 px breakpoint (`breakpoints.ts` and `_breakpoints.scss`, kept equal) and the narrow card view (`narrowView.ts`). |
+| `actions/` | `runListAction`: runs an action, reports it, clears the selection when everything succeeded, reloads. Every action and dialog goes through it. |
+| `rowActions/` | Ready-made actions: `trashRowActions` (Edit, Restore, Trash, Delete permanently) and `setStatusRowAction`. |
+| `BulkActionConfirm/` | Body of a confirm modal: message, affected records, Cancel / Confirm. |
+| `SetStatusDialog/` | One "Set status" action for screens whose endpoint has `/setStatus`. |
+| `EmptyStates/` | One component for "No … match your search or filters" with Clear filters, and for the failed request with Try again. |
+| `AsyncEntitySelect/` | The campaign and form entities the "Assign campaign" picker loads from. |
+| `LegacyRowActions/` | Renders an old row-actions function in its own column (`useLegacyRowActionsField`). |
+| `formatNumber.ts` | `browserLocale`, `formatNumber` and `insertNumbers`: counts in the browser text (footer, page count, notices) follow the browser's language. The list requests send the same language, and in PHP counts go through `CountFormatter`. Translate the message first and insert the numbers after, so the `%d` strings keep matching their translations. Money is not formatted here. |
+| `api.ts` | `ListTableApi.fetchWithArgs`, for a list endpoint's actions. |
 
-`data` is a plain JS object. It has one required property,
-`data.items`, which is an array of objects where each object represents a row of data in the table. If you're using SWR,
-this should be returned from the `useSWR` hook.
+## Styling scope
 
-### columns
+The A+ look is kept small and in a few known places. Keep it that way.
 
-An array that determines how columns will be displayed. By default, the columns will be displayed in array order.
+- **Tokens.** `layout/_tokens.scss` holds every color the list pages need that has no Give token. It
+  has one mixin, `givewp-list-table-tokens` (included in `.page` of `ListTablePage`, and in
+  `.givewp-list-table`). A popover
+  renders outside those roots, so popover content must not rely on these tokens.
+  `layout/tokens.contrast.test.ts` measures the contrast of each pair. To fix a color, change it in
+  `_tokens.scss`, not in the rule that uses it.
+- **Table overrides.** Give's own are in `DataViewsListTable/_wp-look.scss`. Every rule there starts at
+  `.givewp-list-table .dataviews-view-table`, and `wpLookScope.test.ts` compiles the file and checks the
+  selectors. Rules that only copy the newer WordPress look are in `dataviewsPolyfill/_polyfill.scss`.
+- **The DataViews footer.** The A+ look adds no footer colors, type, sizes or controls. Nothing in
+  `_wp-look.scss` may reach the footer or the pager. The sticky pin of the footer is in
+  `DataViewsListTable/styles.scss`; its side padding and the total count rules are in
+  `dataviewsPolyfill/_polyfill.scss`.
+- **Totals.** The rows do not wait for the total. `ListTablePage` requests rows with `withCount=false`
+  (answer: `items`, `hasNextPage`) and the total from `<apiRoot>/count` (`hooks/useListTableTotals`).
+  `DataViewsListTable` takes `paginationInfo={null}` while the total is unknown and then shows only
+  the previous and next arrows (`ArrowsPagination`); Next follows `hasNextPage`.
+- **The pin.** `@wordpress/dataviews` is pinned to `10.1.7` in `package.json`. When the pin moves, go
+  through [dataviewsPolyfill/README.md](dataviewsPolyfill/README.md) (a test fails until you do) and check
+  the `_wp-look.scss` rules in the browser.
+- **Rows.** Rows keep the stock DataViews height on purpose.
+- **Status and type.** They are server-rendered markup. Type is plain text. Status is a small icon and the
+  word, like the Site Editor: the icon is a CSS mask in the text color, drawn in `InterweaveSSR/styles.scss`
+  on the `statusBadge--{value}` classes (no box). Only Failed and Failing (red) and Refunded, Expired and
+  Suspended (amber) take a color, from WordPress admin tokens. A new status value shows the word only until a
+  rule is added; `statusIcons.test.ts` fails when a value in the four status classes has no rule. The
+  `p` margin is reset so the rows keep their height. The PHP classes (`statusBadge`, `badge`) stay as hooks.
+- **Page layout.** On the full page the list sits in one bordered white sheet (`.sheet` in
+  `ListTablePage.module.scss`), with the stat tile band at its top, and the page fills the window
+  height. The toolbar is one row: the search box, the filter bar, then the view options, with the
+  search hint under the row. The search label sits out of the flow, above the box; its size is in
+  `ListTableSearch/_label.scss`, and the toolbar row keeps that space above itself. Only the full page article carries the stable class
+  `givewp-list-table-page` (an embedded list does not); the rule that paints the admin wrapper the page
+  color uses `:has()` on it.
+- **Embedded lists.** With `contentMode` there is no page header around the list, no sheet, no tiles
+  and no window height. A rule for the shared list must still look right there.
+- **Narrow screens.** Our own search input, chip toggle and chip remove button are 40 px tall at 782
+  px and below (`$givewp-list-table-narrow`). The chip itself is 42 px tall there, because of its 1 px
+  border. Stock buttons and selects are not changed.
+- **Onboarding tips.** The Campaign List tip, the default campaign form tip and the upgraded form tip are `onboarding` notices in the notice area: in the page flow, under the tiles and above the table, so they never cover rows or controls. The upgraded form tip is one shared notice, shown when a listed form has the Upgraded status. `Balloon/` is unchanged; the campaign details page tips still use it.
+- **Filter bar height.** "Add filter" and "Reset" (stock buttons) are 32 px tall above 782 px, so the chips, the buttons and the search box share one 32 px line. At 782 px and below they keep the stock size.
 
-Each object in the array should contain the following properties:
+Components added for the A+ look:
 
-| Property    | Type                                         | Required? | Description                                                                                                                                             |
-|-------------|----------------------------------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| name        | String                                       | Yes       | The property from `data.items` to associate the column with.                                                                                            |
-| text        | String                                       | Yes       | The label to display for the column. Should be translatable.                                                                                            |
-| preset      | String                                       | No        | Which default component we should use to render this column. If `preset` and `render` are both missing, the column will just display as a plain string. |
-| render      | Function                                     | No        | A React functional component that takes one argument, `item`, and returns some JSX .                                                                    |
-| addClass    | String                                       | No        | A class name that will be added to the `<td>` element that wraps each table cell.                                                                       |
-| inlineSize  | String<br/>(CSS length)                      | No        | The width of the column. Takes any valid CSS length, like `'300px'` or `'50%'`. Default is `'8rem'`.                                                    |
-| alignColumn | String<br/>`'start'`, `'center'`, or `'end'` | No        | Alignment of the column's contents. If the `align` prop of `<ListTablePage/>` is set, will override it for this column only.                            |                                                                                   |                                                                                                                             |
+| Level | Component |
+|:--|:--|
+| Atom | `GiveMark` |
+| Molecule | `TestModeBadge`, `HelpTip`, `SearchHint`, `Balloon` |
+| Changed | `StatTile`, `FilterChip`, `ListTableSearch`, `EmptyStates`, `ListTableNoticeArea` (styles the shared `Notice` only through its `className`) |
 
-### title
+Open items for the owner:
 
-Will be used as the title displayed at the top of the page. Also used to generate a visually hidden table caption for
-accessibility. Should be translatable.
+- The upgrade tile is marked with the neutral "Add-on" tag and has no colored edge, so a colored edge on a tile only means "selected". The "Upgrade" copy is for the designer to confirm.
 
-### singleName
+## `<ListTablePage />` props
 
-A lowercase string containing the term for a single table item. Will only be displayed if there's an error while
-updating the table. Should be translatable.
+| Prop | Type | Required | Default |
+|:--|:--|:--|:--|
+| `title` | `string` | Yes | — |
+| `apiSettings` | `{apiRoot, apiNonce, table: {columns}}` | Yes | — |
+| `listTableBlankSlate` | `ReactNode`, shown when there are no records and no filters | Yes | — |
+| `singleName`, `pluralName` | `string`, lowercase, translated | No | `'item'`, `'items'` |
+| `rowActions` | `ListTableRowAction[]`, or a legacy render function | No | `null` |
+| `bulkActions` | `BulkActionsConfig[]` (legacy shape, still supported) | No | `null` |
+| `filters` | `FilterDeclaration[]`: the entity's filter declaration, shown as Give's labeled search and filter bar (see below) | No | — |
+| `scope` | `Record<string, string \| number>`: fixed request parameters set by the host page (never a chip, never reset) | No | — |
+| `testModeToggle` | `{label, ariaLabel}`: the header test-mode badge and switch | No | — |
+| `filterSettings` | **Deprecated.** `FilterConfig[]`, kept so add-ons that pass it keep working. Mapped onto declarations; read only without `filters`. The `filterby` type is skipped | No | `[]` |
+| `columnFilters` | `{column, filter(item, column, data)}[]` to render a column yourself | No | `[]` |
+| `statsConfig` | `Record<string, StatConfig>` for the stat tiles (`/stats` endpoint). Tiles stay mounted with skeletons while loading and show the server's `formatted` text; `{label, filter?, upgrade?}` per key, where `filter: {filterId, value?}` makes the tile toggle that list filter | No | — |
+| `paymentMode` | `boolean`, initial test mode | No | — |
+| `contentMode` | `boolean`, no header or stats: the list sits in a details page tab | No | `false` |
+| `perPage` | `number`, 1–100, snapped to the offered sizes (10, 20, 30, 50, 100) | No | `30` |
+| `screen` | `ListTableScreen`: turns on view state (see below); its `fieldRoles` pick the card fields at 782 px and below | No | — |
+| `notices` | `ListTableNotice[]`: system notices for the notice area | No | — |
+| `recommendations` | `{options, dismissed, apiNonce}`: one product tip a day in the notice area | No | — |
+| `legacyView` | Adds "Switch to Legacy View" to the "More view options" menu | No | — |
+| `banner`, `children` | as before | No | — |
+| `productRecommendation` | **Deprecated.** Pass `recommendations`. Still rendered, last in the notice area | No | — |
 
-### pluralName
+The `ref` exposes `refresh()`, which reloads the rows and the stat tiles.
 
-A lowercase string containing the term for multiple table items. Will only be displayed if there's an error while
-updating the table. Should be translatable.
+## Filters: the `filters` prop
 
-### error
+A screen declares its filters once, in a `filters.ts` file next to it, and passes the list as
+`filters`:
 
-Whether to render the page in an error state. If you're using this without SWR, you can just treat `error` as a boolean.
-If you're using SWR, this should be returned from the `useSWR` hook.
+```ts
+export const donationsFilters: FilterDeclaration[] = [
+    {kind: 'entity', id: 'campaign', label: __('Campaign', 'give'), isPrimary: true, source: 'campaign',
+        multiple: true, parameter: 'campaignId', allowNone: true, legacyUrlKey: 'campaignId'},
+    {kind: 'options', id: 'status', label: __('Status', 'give'), isPrimary: true, multiple: true,
+        options: 'statuses', parameter: 'status', exclusiveValues: ['trash']},
+    {kind: 'date', id: 'date', label: __('Donation date', 'give'), parameters: {start: 'start', end: 'end'}},
+    {kind: 'search', id: 'search', label: __('Search donations', 'give'), hint: __('Searches …', 'give'),
+        parameter: 'search'},
+];
+```
 
-### isLoading
+- Kinds: `options` (a fixed list, or `'statuses'` for the server's vocabulary in
+  `apiSettings.table.statuses`), `entity` (campaigns, forms or donors searched on the server), `date`
+  (presets and a day range) and `search` (the labeled search box; its `hint` must say what is searched
+  and how it matches).
+- `isPrimary` filters are always shown; the others are in "Add filter". `whenEmpty`,
+  `exclusiveValues`, `allowNone` and `legacyUrlKey` are described in
+  [docs/architecture/list-tables.md](../../../../docs/architecture/list-tables.md#filters).
+- Build the list at module level, not inside the component, so it keeps one identity.
+- Reset shows only when the filters differ from the screen's defaults (test mode on a test site).
+- An add-on that still passes `filterSettings` gets them mapped by `filterSettingsToDeclarations()`.
+  Move to `filters` when you can.
 
-Whether to show a loading overlay over the table contents. Row actions are not available while loading. If you're using
-SWR, this should be the same as `isValidating` returned from the `useSWR` hook.
+## View state: the `screen` prop
 
-### apiSettings
+A screen passes one small config, kept next to the screen in a `listTableScreen.ts` file:
 
-An object with two properties: `apiNonce`, the nonce used to authenticate with the Wordpress REST API, and `apiRoot`,
-the root URL that this page will use for fetching data.
+```ts
+const listTableScreen: ListTableScreen = {key: 'donations', defaults: {hiddenFields: ['paymentType']}};
+```
 
-### filterSettings
+- `key` is one of the closed list in `state/types.ts`, which must match
+  `src/Framework/ListTable/Layouts/ListTableScreens.php` (`screenKeys.test.ts` checks it). Shared code
+  in this folder never names a key (`coreScreens.test.ts` checks it).
+- `defaults` only overrides the server column schema: `hiddenFields`, `visibleFields`, `perPage` and
+  `density` (default `balanced`).
 
-An array that determines what inputs to display above the table. By default, the filters will be displayed in array
-order.
+What the prop turns on:
 
-Each object in the array should contain the following properties:
+| | No `screen` | `screen` on a standalone page | `screen` with `contentMode` |
+|:--|:--|:--|:--|
+| Page, page size, sort and filters in the URL (`give-` parameters) | Recognized filter parameters (bare legacy names and `give-` names) apply to the first view and first request; never written | Yes | No |
+| Search term in the URL (`give-search`) | No | Yes | No |
+| Columns, order, density and page size stored per user | No | Yes | Yes |
+| Reset view | Yes, for this page view only | Yes | Yes |
 
-| Property | Type               | Required?                        | Description                                                                                                       |
-|----------|--------------------|----------------------------------|-------------------------------------------------------------------------------------------------------------------|
-| name     | String             | Yes                              | The property from `data.items` to associate the column with.                                                      |
-| type     | String             | Yes                              | What kind of filter to display.  <br/> Available types: `select`, `formselect`, `search`                          |
-| ariaLabel | String             | Yes                              | A description of the filter for screen readers.                                                                   |
-| inlineSize | String<br/>(CSS Length) | No                               | The inline size of the filter. Corresponds to the width in left-to-right languages. Accepts any valid CSS length. |
-| options  | Array              | For type `select` or `formselect` | What options to include for the `select`. An array of objects that look like `{value: 1, text: 'option 1'}`       |
-| text | String             | No | Used as a placeholder value for `select` or `search` filters                                                      |
+The identifying column (the title column, or `id`) is locked visible, and a legacy row-actions column
+is locked and always last. Add-on pages that pass no `screen` behave as before. The full rules are in
+[docs/architecture/list-tables.md](../../../../docs/architecture/list-tables.md#view-state).
 
-### rowActions
+## Row actions
 
-A React functional component. Used to display markup that will show when hovering over a row. Takes the following props:
+```tsx
+const rowActions: ListTableRowAction[] = [
+    {id: 'edit', label: __('Edit', 'give'), isPrimary: true, href: (item) => `…&id=${item.id}`},
+    {
+        id: 'trash',
+        label: __('Trash', 'give'),
+        supportsBulk: true,
+        isVisible: (data, parameters) => !hasStatus(parameters, 'trash'),
+        confirm: {title: __('Trash donations', 'give'), body: () => <p>…</p>, confirmLabel: __('Move to trash', 'give')},
+        run: (items) => api.fetchWithArgs('/trash', {ids: idsOf(items)}, 'DELETE'),
+    },
+];
+```
 
-| Prop      | Type                   | Description                                                                                                                                                                                                              |
-|-----------|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| data      | Object: {items: Array} | The data object.  <br/> See the `data` entry above.                                                                                                                                                                      |
-| item      | Object                 | The information for a specific row.  <br/> See the `data` entry above.                                                                                                                                                   |
-| addRow    | Function               | Show an animation of an item being added to the table.  <br/> Takes a callback (for example, a fetch to an API that will create a new row), returns a function which executes the callback and shows the animation.      |
-| removeRow | Function               | Show an animation of an item being removed from the table.  <br/> Takes a callback (for example, a request to an API to that will delete a row), returns a function which executes the callback and shows the animation. |
-
-### bulkActions
-
-An array that determines what bulk actions display above the table. Will be displayed in array order.
-
-When a user selects a bulk action and one or more row checkboxes then clicks 'Apply', a confirmation modal will pop up.
-After clicking 'Confirm' in that modal, the action will be applied.
-
-Each object in the array should contain the following properties:
-
-| Property  | Type                                                   | Required? | Description                                                                                                                                                                                                                                                                                                                                     |
-|-----------|--------------------------------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| label     | String                                                 | Yes       | The label for the bulk action option. Also used for the title of the confirmation window. Should be translatable.                                                                                                                                                                                                                               |
-| value     | String or Number                                       | Yes       | The internal value for the bulk action option.<br/>Each `value` should be unique.                                                                                                                                                                                                                                                               |
-| action    | Function: (selected) => Promise\<{errors, successes}\> | Yes       | The function that gets run when the user has confirmed the bulk action. Takes one argument, `selected`, which contains an array of IDs for the selected items. Returns an object with the number of successful and failed changes.                                                                                                              |
-| confirm   | Function: (selected, names) => (String or JSX element) | Yes       | A string or React component that gets displayed in the confirmation modal. Takes two arguments: `selected`, which contains an array of IDs for the selected items, and `names`, an array of names. Both values are strings. The `names` array will only contain elements if the `item` object (see above) has a `name` or `donorName` property. |
-| isVisible | Function<br/> (data, options) => Boolean               | No        | What options to include for the `select`. An array of objects that look like `{value: 1, text: 'option 1'}`                                                                                                                                                                                                                                     |
-| type      | String<br/>`'normal'`, `'warning'`, or `'danger'`      | No        | Determines what type of styling to apply to the bulk action confirmation modal.<br/>`'normal'` (default) - green border<br/>`'warning'` - yellow border<br/>`'danger'` - red border                                                                                                                                                             |
+- `isPrimary`: the one inline action ("Edit", or "Restore" in a trash view).
+- Exactly one of `href`, `run`, `RenderModal` (a body for DataViews' modal) or `Dialog` (a component
+  with its own modal, opened by the page).
+- `run` gets one item from a row's menu and the selected items from the selection bar. Its reply goes
+  through `normalizeActionResult` and shows as a snackbar or an error notice.
+- `isEligible(item)` leaves a row out of the action; `isVisible(data, parameters)` hides the action.
+- A list with a trash view gets these four actions from `trashRowActions`, and "Set status" from
+  `setStatusRowAction`. A `Dialog` that changes records submits with `useListActionSubmit`, and gets
+  the request as a prop, so it never calls the API itself.

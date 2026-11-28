@@ -13,8 +13,11 @@ use Give\Donations\ListTable\Columns\PaymentTypeColumn;
 use Give\Donations\ListTable\Columns\StatusColumn;
 use Give\Donations\ListTable\Columns\SubscriptionDonationTypeColumn;
 use Give\Framework\ListTable\ListTable;
+use Give\Framework\ListTable\StatusVocabulary;
+use Give\Donations\ValueObjects\DonationStatus;
 
 /**
+ * @since TBD Send the status vocabulary.
  * @since 4.3.0 show campaign title instead of form title
  * @since 2.24.0
  */
@@ -31,6 +34,7 @@ class DonationsListTable extends ListTable
     }
 
     /**
+     * @since TBD Put the Donor and Status first, then ID and Amount.
      * @since 4.19.0 Added Form column
      * @since 4.10.0 Updated columns order
      * @since 4.8.0 Added Subscription Donation Type column
@@ -41,15 +45,15 @@ class DonationsListTable extends ListTable
     public function getDefaultColumns(): array
     {
         return [
+            new DonorColumn(),
+            new StatusColumn(),
             new IdColumn(),
             new AmountColumn(),
             new PaymentTypeColumn(),
-            new DonorColumn(),
+            new CreatedAtColumn(),
             new CampaignColumn(),
             new FormColumn(),
             new GatewayColumn(),
-            new CreatedAtColumn(),
-            new StatusColumn(),
             new SubscriptionDonationTypeColumn(),
         ];
     }
@@ -72,5 +76,13 @@ class DonationsListTable extends ListTable
             FormColumn::getId(),
             StatusColumn::getId(),
         ];
+    }
+
+    /**
+     * @since TBD
+     */
+    protected function statuses(): ?StatusVocabulary
+    {
+        return DonationStatus::vocabulary();
     }
 }

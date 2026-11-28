@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Give\EventTickets\ListTable\Columns;
 
 use Give\EventTickets\Models\Event;
+use Give\EventTickets\Repositories\EventsDataRepository;
+use Give\Framework\ListTable\ColumnKind;
+use Give\Framework\ListTable\Formatting\CountFormatter;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -14,6 +17,15 @@ use Give\Framework\ListTable\ModelColumn;
  */
 class SalesCountColumn extends ModelColumn
 {
+    /**
+     * Data loaded here, one event at a time, when the list table has no page data.
+     *
+     * @since TBD
+     *
+     * @var array<int, EventsDataRepository>
+     */
+    private $fallbackData = [];
+
     /**
      * @inheritDoc
      *
@@ -37,6 +49,7 @@ class SalesCountColumn extends ModelColumn
     /**
      * @inheritDoc
      *
+     * @since TBD Read the sold count and the capacity from the page data, and write both numbers in the browser's language.
      * @since 4.19.1 Add translators comments.
      * @since 3.6.0
      *
@@ -44,16 +57,62 @@ class SalesCountColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $soldTicketsCount = $model->eventTickets()->count() ?? 0;
-        $capacity = array_reduce($model->ticketTypes()->getAll() ?? [], function (int $carry, $ticketType) {
-            return $carry + $ticketType->capacity;
-        }, 0);
+        // Read this way so a subclass that overrides getCellValue($model) keeps working.
+        $locale = func_num_args() > 1 ? (string)func_get_arg(1) : '';
+        $data = $this->dataFor($model);
+        $soldTicketsCount = $data->getSoldCount($model->id);
+        $capacity = $data->getCapacity($model->id);
 
-        return sprintf(
+        // The numbers go in after the translation, so the text still matches the translations of the original.
+        return strtr(
             /* translators: 1: Number of tickets sold, 2: Total ticket capacity */
             __('%1$d out of %2$d', 'give'),
-            $soldTicketsCount,
-            $capacity
+            [
+                '%1$d' => CountFormatter::format($soldTicketsCount, $locale),
+                '%2$d' => CountFormatter::format($capacity, $locale),
+            ]
         );
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::COUNT;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @param Event $model
+     */
+    public function getRawValue($model)
+    {
+        return $this->dataFor($model)->getSoldCount($model->id);
+    }
+
+    /**
+     * The page data, or data for this event alone when the column is used without page data.
+     *
+     * @since TBD
+     */
+    private function dataFor(Event $event): EventsDataRepository
+    {
+        $data = $this->getListTableData();
+
+        if ($data instanceof EventsDataRepository) {
+            return $data;
+        }
+
+        if (!isset($this->fallbackData[$event->id])) {
+            $this->fallbackData[$event->id] = EventsDataRepository::events([$event->id]);
+        }
+
+        return $this->fallbackData[$event->id];
     }
 }

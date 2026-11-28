@@ -3,15 +3,19 @@
 namespace Give\Campaigns\ListTable;
 
 use Give\Campaigns\ListTable\Columns\DonationsCountColumn;
+use Give\Campaigns\ListTable\Columns\DonorsCountColumn;
 use Give\Campaigns\ListTable\Columns\GoalColumn;
 use Give\Campaigns\ListTable\Columns\IdColumn;
 use Give\Campaigns\ListTable\Columns\RevenueColumn;
 use Give\Campaigns\ListTable\Columns\StatusColumn;
 use Give\Campaigns\ListTable\Columns\TitleColumn;
 use Give\Framework\ListTable\ListTable;
+use Give\Framework\ListTable\StatusVocabulary;
+use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
+ * @since TBD Send the status vocabulary.
  * @since 4.0.0
  */
 class CampaignsListTable extends ListTable
@@ -25,6 +29,7 @@ class CampaignsListTable extends ListTable
     }
 
     /**
+     * @since TBD Add the Donors column.
      * @since 4.0.0
      *
      * @return array|ModelColumn[]
@@ -37,6 +42,7 @@ class CampaignsListTable extends ListTable
             new TitleColumn(),
             new GoalColumn(),
             new DonationsCountColumn(),
+            new DonorsCountColumn(),
             new RevenueColumn(),
             //new DescriptionColumn(),
             //new DonationsCountColumn(),
@@ -58,6 +64,7 @@ class CampaignsListTable extends ListTable
             TitleColumn::getId(),
             GoalColumn::getId(),
             DonationsCountColumn::getId(),
+            DonorsCountColumn::getId(),
             RevenueColumn::getId(),
             //DescriptionColumn::getId(),
             //DonationsCountColumn::getId(),
@@ -65,5 +72,13 @@ class CampaignsListTable extends ListTable
             //EndDateColumn::getId(),
             StatusColumn::getId(),
         ];
+    }
+
+    /**
+     * @since TBD
+     */
+    protected function statuses(): ?StatusVocabulary
+    {
+        return CampaignStatus::vocabulary();
     }
 }

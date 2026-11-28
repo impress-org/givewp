@@ -1,0 +1,5 @@
+significance: minor
+type: enhancement
+entry: The list endpoints accept several statuses, campaigns and forms, plus start and end dates, and
+  a new route loads filter options.
+timestamp: 2026-11-26T12:00:02.000Z

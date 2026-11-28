@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Give\Donations\ListTable\Columns;
 
 use Give\Donations\Models\Donation;
+use Give\Framework\ListTable\ColumnKind;
+use Give\Framework\ListTable\Formatting\MoneyFormatter;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -38,6 +40,7 @@ class AmountColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Format with the shared money formatter, which follows the browser's language when "Auto-format currency" is on.
      * @since 2.24.0
      *
      * @inheritDoc
@@ -48,7 +51,29 @@ class AmountColumn extends ModelColumn
     {
         return sprintf(
             '<div class="amount"><span>%s</span></div>',
-            $model->amount->formatToLocale($locale)
+            MoneyFormatter::format($model->amount, (string)$locale)
         );
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::MONEY;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @inheritDoc
+     *
+     * @param Donation $model
+     */
+    public function getRawValue($model)
+    {
+        return MoneyFormatter::raw($model->amount);
     }
 }

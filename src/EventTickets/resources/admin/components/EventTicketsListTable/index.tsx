@@ -1,58 +1,18 @@
 import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
-import ListTableApi from '@givewp/components/ListTable/api';
-import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
-import {IdBadge} from '@givewp/components/ListTable/TableCell';
-import {Interweave} from 'interweave';
-import {EventTicketsRowActions} from './EventTicketsRowActions';
+import {eventTicketsRowActions} from './EventTicketsRowActions';
 import styles from './EventTicketsListTable.module.scss';
 import {GiveEventTickets} from './types';
 import CreateEventModal from '../CreateEventModal';
 import Feedback from '../../feedback';
+import listTableScreen from './listTableScreen';
+import {eventTicketFilters} from './filters';
 
 declare global {
     interface Window {
         GiveEventTickets: GiveEventTickets;
     }
 }
-
-const API = new ListTableApi(window.GiveEventTickets);
-
-const filters: Array<FilterConfig> = [
-    {
-        name: 'search',
-        type: 'search',
-        inlineSize: '14rem',
-        text: __('Search by keyword', 'give'),
-        ariaLabel: __('search events', 'give'),
-    },
-];
-
-const bulkActions: Array<BulkActionsConfig> = [
-    {
-        label: __('Delete', 'give'),
-        value: 'delete',
-        type: 'danger',
-        action: async (selected) => {
-            return await API.fetchWithArgs('', {ids: selected.join(',')}, 'DELETE');
-        },
-        confirm: (selected, names) => (
-            <>
-                <p>{__('Really delete the following events?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((eventId, index) => (
-                        <li key={eventId}>
-                            <IdBadge id={eventId} />{' '}
-                            <span>
-                                {__('from ', 'give')} <Interweave content={names[index]} />
-                            </span>
-                        </li>
-                    ))}
-                </ul>
-            </>
-        ),
-    },
-];
 
 /**
  * Displays a blank slate for the EventTickets table.
@@ -81,6 +41,8 @@ const ListTableBlankSlate = () => {
 /**
  * EventTicketsListTable
  *
+ * @since TBD Pass the filter declaration in place of the filter settings.
+ * @since TBD Pass the actions as data and the screen config; Delete serves both the row menu and the selection bar.
  * @since 3.20.0 Add wrapper class for the EventTicketsListTable
  * @since 3.6.0
  */
@@ -93,10 +55,10 @@ export default function EventTicketsListTable() {
                 singleName={__('event', 'give')}
                 pluralName={__('events', 'give')}
                 apiSettings={window.GiveEventTickets}
-                filterSettings={filters}
-                bulkActions={bulkActions}
-                rowActions={EventTicketsRowActions}
+                filters={eventTicketFilters}
+                rowActions={eventTicketsRowActions}
                 listTableBlankSlate={ListTableBlankSlate()}
+                screen={listTableScreen}
             >
                 <CreateEventModal />
             </ListTablePage>

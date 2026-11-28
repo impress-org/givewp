@@ -3,6 +3,7 @@
 namespace Give\DonationForms\AsyncData\AdminFormListView;
 
 use Give\DonationForms\AsyncData\AsyncDataHelpers;
+use Give\Framework\ListTable\Formatting\MoneyFormatter;
 
 /**
  * @since 3.16.0
@@ -50,6 +51,7 @@ class AdminFormListView
     }
 
     /**
+     * @since TBD Format the revenue with the shared money formatter.
      * @since 3.16.0
      */
     public function maybeSetRevenueColumnAsync($revenueCachedValue, $formId)
@@ -64,6 +66,6 @@ class AdminFormListView
 
         $revenue = AsyncDataHelpers::getFormRevenueValue($formId);
 
-        return give_currency_filter(give_format_amount($revenue));
+        return MoneyFormatter::fromDecimal($revenue);
     }
 }

@@ -8,6 +8,7 @@ use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\Database\DB;
+use Give\Framework\ListTable\ListCount;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\QueryBuilder\WhereQueryBuilder;
 use Give\Helpers\Language;
@@ -40,11 +41,101 @@ class ListDonationForms extends Endpoint
     protected $defaultForm;
 
     /**
+     * @since TBD Accept a list of statuses and of campaigns, and a created date range, and add the withCount parameter and the count route.
      * @since 4.0.0 Add campaignId parameter
      * @inheritDoc
      */
     public function registerRoute()
     {
+        $args = [
+            'page' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 1,
+                'minimum' => 1,
+            ],
+            'perPage' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 30,
+                'minimum' => 1,
+            ],
+            'status' => [
+                'type' => 'array',
+                'required' => false,
+                'default' => ['any'],
+                'maxItems' => 50,
+                'items' => [
+                    'type' => 'string',
+                    'enum' => [
+                        'publish',
+                        'future',
+                        'draft',
+                        'pending',
+                        'trash',
+                        'auto-draft',
+                        'inherit',
+                        'any',
+                        'upgraded',
+                    ],
+                ],
+                'description' => 'Filter forms by one or more statuses. At most 50. "any" means publish, draft, pending, private and upgraded. It leaves out trash and future, and it is the only value that returns private forms.',
+            ],
+            'search' => [
+                'type' => 'string',
+                'required' => false,
+            ],
+            'sortColumn' => [
+                'type' => 'string',
+                'required' => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'sortDirection' => [
+                'type' => 'string',
+                'required' => false,
+                'enum' => [
+                    'asc',
+                    'desc',
+                ],
+            ],
+            'locale' => [
+                'type' => 'string',
+                'required' => false,
+                'default' => get_locale(),
+            ],
+            'return' => [
+                'type' => 'string',
+                'required' => false,
+                'default' => 'columns',
+                'enum' => [
+                    'model',
+                    'columns',
+                ],
+            ],
+            'campaignId' => [
+                'type' => 'integer',
+                'required' => false,
+            ],
+            'campaign' => [
+                'type' => 'string',
+                'required' => false,
+                'validate_callback' => [$this, 'validateCampaignListSize'],
+                'description' => 'A campaign id, a comma-separated list of up to 50 campaign ids, "none" for standalone forms, or empty for all forms.',
+            ],
+            'start' => [
+                'type' => 'string',
+                'required' => false,
+                'format' => 'date-time',
+                'description' => 'Only forms created on or after this date and time. Send the site\'s local time with seconds and no offset, such as 2025-04-10T14:30:00: it is compared as stored.',
+            ],
+            'end' => [
+                'type' => 'string',
+                'required' => false,
+                'format' => 'date-time',
+                'description' => 'Only forms created on or before this date and time. Send the site\'s local time with seconds and no offset, such as 2025-04-10T14:30:00: it is compared as stored.',
+            ],
+        ];
+
         register_rest_route(
             'give-api/v2',
             $this->endpoint,
@@ -54,81 +145,26 @@ class ListDonationForms extends Endpoint
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
-                'args' => [
-                    'page' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 1,
-                        'minimum' => 1,
-                    ],
-                    'perPage' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 30,
-                        'minimum' => 1,
-                    ],
-                    'status' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => 'any',
-                        'enum' => [
-                            'publish',
-                            'future',
-                            'draft',
-                            'pending',
-                            'trash',
-                            'auto-draft',
-                            'inherit',
-                            'any',
-                            'upgraded',
-                        ],
-                    ],
-                    'search' => [
-                        'type' => 'string',
-                        'required' => false,
-                    ],
-                    'sortColumn' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'sortDirection' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'enum' => [
-                            'asc',
-                            'desc',
-                        ],
-                    ],
-                    'locale' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => get_locale(),
-                    ],
-                    'return' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => 'columns',
-                        'enum' => [
-                            'model',
-                            'columns',
-                        ],
-                    ],
-                    'campaignId' => [
-                        'type' => 'integer',
-                        'required' => false,
-                    ],
-                    'campaign' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'description' => 'A campaign id, "none" for standalone forms, or empty for all forms.',
-                    ],
+                'args' => $args + ListCount::arguments(),
+            ]
+        );
+
+        register_rest_route(
+            'give-api/v2',
+            $this->endpoint . '/count',
+            [
+                [
+                    'methods' => 'GET',
+                    'callback' => [$this, 'handleCountRequest'],
+                    'permission_callback' => [$this, 'permissionsCheck'],
                 ],
+                'args' => $args,
             ]
         );
     }
 
     /**
+     * @since TBD Skip the total when the request sends withCount=false.
      * @since 4.19.0 Resolve isDefaultCampaignForm from the row's campaign when the request names none; expose campaignType and campaignTitle
      * @since 3.22.0 Add locale support
      * @since 2.24.0 Change this to use the new ListTable class
@@ -147,9 +183,7 @@ class ListDonationForms extends Endpoint
 
         $this->defaultForm = $defaultCampaignForm->id ?? 0;
 
-        $forms = $this->getForms();
-        $totalForms = $this->getTotalFormsCount();
-        $totalPages = (int)ceil($totalForms / $this->request->get_param('perPage'));
+        list($forms, $hasNextPage) = ListCount::trim($request, $this->getForms());
 
         $formsData = DonationFormDataRepository::forms($forms);
 
@@ -199,17 +233,46 @@ class ListDonationForms extends Endpoint
         }
 
         return new WP_REST_Response(
-            [
-                'items' => $items,
-                'totalItems' => $totalForms,
-                'totalPages' => $totalPages,
-                'trash' => defined('EMPTY_TRASH_DAYS') && EMPTY_TRASH_DAYS > 0,
-                'defaultForm' => $this->defaultForm,
-            ]
+            array_merge(
+                ['items' => $items],
+                $this->getPaging($hasNextPage),
+                [
+                    'trash' => defined('EMPTY_TRASH_DAYS') && EMPTY_TRASH_DAYS > 0,
+                    'defaultForm' => $this->defaultForm,
+                ]
+            )
         );
     }
 
     /**
+     * The total and page count, or only whether another page follows when the request skips the total.
+     *
+     * @since TBD
+     */
+    private function getPaging(bool $hasNextPage): array
+    {
+        if (!ListCount::isRequested($this->request)) {
+            return ['hasNextPage' => $hasNextPage];
+        }
+
+        return ListCount::totals($this->getTotalFormsCount(), $this->request);
+    }
+
+    /**
+     * The total for the same filters as the list, without its rows. It reads the total the same
+     * way the list does, so the two cannot disagree.
+     *
+     * @since TBD
+     */
+    public function handleCountRequest(WP_REST_Request $request): WP_REST_Response
+    {
+        $this->request = $request;
+
+        return ListCount::response($this->getTotalFormsCount(), $request);
+    }
+
+    /**
+     * @since TBD Read one more row when the request skips the total.
      * @since 3.2.0 added distinct() to the query
      * @since 2.24.0 Refactor to query through the ModelQueryBuilder
      *
@@ -232,7 +295,7 @@ class ListDonationForms extends Endpoint
             $query->orderBy($sortColumn, $sortDirection);
         }
 
-        $query->limit($perPage)
+        $query->limit(ListCount::limit($this->request))
             ->offset(($page - 1) * $perPage);
 
         $donationForms = $query->distinct()->getAll();
@@ -260,6 +323,29 @@ class ListDonationForms extends Endpoint
     }
 
     /**
+     * Rejects an array and a campaign list of more than 50 items. Any other value is accepted, as it always was.
+     *
+     * @since TBD
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public function validateCampaignListSize($value): bool
+    {
+        if (is_array($value) || is_object($value)) {
+            return false;
+        }
+
+        if (! is_string($value)) {
+            return true;
+        }
+
+        return count(explode(',', $value)) <= 50;
+    }
+
+    /**
+     * @since TBD Filter by several statuses and campaigns, and by created date range
      * @since 4.19.0 Add "campaign" filter: a campaign id or "none" for standalone forms; campaign id filter includes the campaign's default form
      * @since      4.0.0 Add "campaignId" support
      * @since      2.24.0
@@ -271,13 +357,24 @@ class ListDonationForms extends Endpoint
     private function getWhereConditions(QueryBuilder $query): QueryBuilder
     {
         $search = $this->request->get_param('search');
-        $status = $this->request->get_param('status');
+        $statuses = array_values(array_filter((array)$this->request->get_param('status'), 'is_string'));
+        $start = $this->request->get_param('start');
+        $end = $this->request->get_param('end');
 
-        // Status
-        if ($status === 'any') {
+        // Status: a list with "any" is today's default set
+        if (! $statuses || in_array('any', $statuses, true)) {
             $query->whereIn('post_status', ['publish', 'draft', 'pending', 'private', 'upgraded']);
         } else {
-            $query->where('post_status', $status);
+            $query->whereIn('post_status', $statuses);
+        }
+
+        // Created date
+        if ($start && $end) {
+            $query->whereBetween('post_date', $start, $end);
+        } elseif ($start) {
+            $query->where('post_date', $start, '>=');
+        } elseif ($end) {
+            $query->where('post_date', $end, '<=');
         }
 
         // Search
@@ -295,24 +392,26 @@ class ListDonationForms extends Endpoint
         }
 
         $campaign = (string)$this->request->get_param('campaign');
-        $campaignId = $this->request->get_param('campaignId') ?: (ctype_digit($campaign) ? (int)$campaign : 0);
+        $campaignIds = $this->request->get_param('campaignId')
+            ? [(int)$this->request->get_param('campaignId')]
+            : array_values(array_filter(array_map('intval', array_filter(explode(',', $campaign), 'ctype_digit'))));
 
-        // Forms attached through the campaign forms table, or the campaign's own default form
+        // Forms attached through the campaign forms table, or a campaign's own default form
         // (how Peer-to-Peer campaigns link their form)
-        if ($campaignId) {
-            $query->where(function (WhereQueryBuilder $builder) use ($campaignId) {
+        if ($campaignIds) {
+            $query->where(function (WhereQueryBuilder $builder) use ($campaignIds) {
                 $builder
-                    ->whereIn('ID', function (QueryBuilder $subQuery) use ($campaignId) {
+                    ->whereIn('ID', function (QueryBuilder $subQuery) use ($campaignIds) {
                         $subQuery
                             ->from('give_campaign_forms')
                             ->select('form_id')
-                            ->where('campaign_id', $campaignId);
+                            ->whereIn('campaign_id', $campaignIds);
                     })
-                    ->orWhereIn('ID', function (QueryBuilder $subQuery) use ($campaignId) {
+                    ->orWhereIn('ID', function (QueryBuilder $subQuery) use ($campaignIds) {
                         $subQuery
                             ->from('give_campaigns')
                             ->select('form_id')
-                            ->where('id', $campaignId);
+                            ->whereIn('id', $campaignIds);
                     });
             });
         }

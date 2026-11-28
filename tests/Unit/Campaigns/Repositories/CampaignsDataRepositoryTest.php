@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\Campaigns;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignsDataRepository;
+use Give\Campaigns\Repositories\TestModeStatsCache;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
@@ -36,6 +37,8 @@ final class CampaignsDataRepositoryTest extends TestCase
 
         delete_option('give_campaigns_data');
         delete_option('give_campaigns_subscriptions_data');
+        // A new token also drops the test mode cache of an earlier test.
+        delete_option(TestModeStatsCache::TOKEN_OPTION);
         add_filter('give_is_test_mode', '__return_false');
     }
 
@@ -197,6 +200,136 @@ final class CampaignsDataRepositoryTest extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testASecondTestModeReadRunsNoStatsQuery(): void
+    {
+        $this->enableTestMode();
+        $campaign = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        $this->createTestDonations($campaign, 2);
+        CampaignsDataRepository::campaigns([$campaign->id]);
+
+        $statsQueries = $this->countStatsQueries(function () use ($campaign, &$data) {
+            $data = CampaignsDataRepository::campaigns([$campaign->id]);
+        });
+
+        $this->assertSame(0, $statsQueries);
+        $this->assertSame(2, $data->getDonationsCount($campaign));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testANewOrDeletedTestDonationClearsTheTestModeCache(): void
+    {
+        $this->enableTestMode();
+        $campaign = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        $this->createTestDonations($campaign, 1);
+        $this->assertSame(1, CampaignsDataRepository::campaigns([$campaign->id])->getDonationsCount($campaign));
+
+        $added = $this->createTestDonations($campaign, 1);
+        $this->assertSame(2, CampaignsDataRepository::campaigns([$campaign->id])->getDonationsCount($campaign));
+
+        // What the "Delete Test Transactions" tool calls.
+        give_delete_donation($added[0]->id);
+        $this->assertSame(1, CampaignsDataRepository::campaigns([$campaign->id])->getDonationsCount($campaign));
+    }
+
+    /**
+     * Filling in another campaign must not give the figures already cached a longer life.
+     *
+     * @since TBD
+     */
+    public function testTheTestModeCacheKeepsItsFirstExpiry(): void
+    {
+        $this->enableTestMode();
+        $first = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        $second = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        CampaignsDataRepository::campaigns([$first->id]);
+        $cache = TestModeStatsCache::open();
+        $stored = $cache->read();
+        $stored['expires'] = time() + 60;
+        $cache->write($stored);
+
+        CampaignsDataRepository::campaigns([$first->id, $second->id]);
+
+        $this->assertSame($stored['expires'], TestModeStatsCache::open()->read()['expires']);
+    }
+
+    /**
+     * A live site that never used test mode stores nothing for it.
+     *
+     * @since TBD
+     */
+    public function testClearingWritesNothingWhenTestModeWasNeverCached(): void
+    {
+        TestModeStatsCache::clear();
+
+        $this->assertFalse(get_option(TestModeStatsCache::TOKEN_OPTION));
+    }
+
+    /**
+     * After the first change the token is gone, so later donations on a live site write nothing for it.
+     *
+     * @since TBD
+     */
+    public function testClearingRemovesTheToken(): void
+    {
+        TestModeStatsCache::open();
+
+        TestModeStatsCache::clear();
+
+        $this->assertFalse(get_option(TestModeStatsCache::TOKEN_OPTION));
+    }
+
+    /**
+     * @since TBD
+     *
+     * @return Donation[]
+     */
+    private function createTestDonations(Campaign $campaign, int $count): array
+    {
+        $donations = [];
+
+        for ($i = 0; $i < $count; $i++) {
+            $donations[] = Donation::factory()->create([
+                'campaignId' => $campaign->id,
+                'formId' => $campaign->defaultFormId,
+                'status' => DonationStatus::COMPLETE(),
+                'mode' => DonationMode::TEST(),
+                'amount' => new Money(1000, 'USD'),
+            ]);
+        }
+
+        return $donations;
+    }
+
+    /**
+     * The queries over the donation meta that the callback runs.
+     *
+     * @since TBD
+     */
+    private function countStatsQueries(callable $callback): int
+    {
+        global $wpdb;
+
+        $count = 0;
+        $spy = static function ($query) use (&$count, $wpdb) {
+            if (strpos($query, $wpdb->prefix . 'give_donationmeta') !== false) {
+                $count++;
+            }
+
+            return $query;
+        };
+
+        add_filter('query', $spy);
+        $callback();
+        remove_filter('query', $spy);
+
+        return $count;
+    }
+
+    /**
      * @since 4.18.0
      */
     public function testTestModeDoesNotWriteTheCache()
@@ -207,6 +340,63 @@ final class CampaignsDataRepositoryTest extends TestCase
         CampaignsDataRepository::campaigns([$campaign->id]);
 
         $this->assertFalse(get_option('give_campaigns_data'));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFillingMissingCampaignsDoesNotUndoARefreshThatFinishedMeanwhile()
+    {
+        $cached = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        $missing = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        update_option('give_campaigns_data', [
+            'amounts' => [['campaign_id' => (string)$cached->id, 'sum' => 0]],
+            'donationsCount' => [['campaign_id' => (string)$cached->id, 'count' => 0]],
+            'donorsCount' => [['campaign_id' => (string)$cached->id, 'count' => 0]],
+        ]);
+
+        // A refresh stores new numbers for the cached campaign after the fill read the option and
+        // while the missing campaign is queried, so before the fill's write.
+        $done = false;
+        $refresh = function ($query) use (&$done, $cached) {
+            if (!$done && stripos($query, 'give_donationmeta') !== false && stripos($query, 'SELECT') === 0) {
+                $done = true;
+                update_option('give_campaigns_data', [
+                    'amounts' => [['campaign_id' => (string)$cached->id, 'sum' => 70]],
+                    'donationsCount' => [['campaign_id' => (string)$cached->id, 'count' => 7]],
+                    'donorsCount' => [['campaign_id' => (string)$cached->id, 'count' => 3]],
+                ]);
+            }
+
+            return $query;
+        };
+
+        add_filter('query', $refresh, 1);
+        $campaignsData = CampaignsDataRepository::campaigns([$cached->id, $missing->id]);
+        remove_filter('query', $refresh, 1);
+
+        $this->assertTrue($done, 'the refresh ran while the missing campaign was queried');
+        $this->assertEquals(7, $campaignsData->getDonationsCount($cached));
+        $this->assertEquals(
+            ['7', '0'],
+            array_map('strval', array_column(get_option('give_campaigns_data')['donationsCount'], 'count'))
+        );
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testGetRowsHoldsOnlyTheRequestedCampaigns()
+    {
+        $first = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        $second = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        CampaignsDataRepository::campaigns([$first->id, $second->id]);
+
+        $rows = CampaignsDataRepository::campaigns([$second->id])->getRows();
+
+        $this->assertSame([(string)$second->id], array_column($rows['donationsCount'], 'campaign_id'));
+        $this->assertSame([(string)$second->id], array_column($rows['amounts'], 'campaign_id'));
+        $this->assertCount(2, get_option('give_campaigns_data')['donationsCount'], 'the stored option keeps both');
     }
 
     /**

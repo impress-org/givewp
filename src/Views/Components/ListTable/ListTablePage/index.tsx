@@ -1,457 +1,608 @@
-import {createContext, useRef, useState, forwardRef, useImperativeHandle} from 'react';
-import {__} from '@wordpress/i18n';
-import {A11yDialog} from 'react-a11y-dialog';
-import A11yDialogInstance from 'a11y-dialog';
-import {GiveIcon} from '@givewp/components';
-import {ListTable} from '../ListTable';
-import Pagination from '../Pagination';
-import {Filter, getInitialFilterState} from '../Filters';
-import useDebounce from '../hooks/useDebounce';
-import {useResetPage} from '../hooks/useResetPage';
-import ListTableApi from '../api';
-import styles from './ListTablePage.module.scss';
+import {createContext, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react';
+import {__, sprintf} from '@wordpress/i18n';
 import cx from 'classnames';
-import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
-import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
-import DeleteIcon from '@givewp/components/ListTable/ListTablePage/DeleteIcon';
-import ListTableStats, { StatConfig } from '../ListTableStats/ListTableStats';
-import FilterBy from '../FilterBy';
+import type {Field, View} from '@wordpress/dataviews';
+import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notifications';
+import ListTableApi from '../api';
+import DataViewsListTable from '../DataViewsListTable';
+import ListTableEmptyState from '../EmptyStates';
+import ListTableFilters from '../ListTableFilters';
+import ListTableNoticeArea from '../ListTableNoticeArea';
+import ListTableSearch from '../ListTableSearch';
+import SearchHint from '../ListTableSearch/SearchHint';
+import useSearchHint from '../ListTableSearch/useSearchHint';
+import ListTableViewMenu from '../ListTableViewMenu';
+import ResultCountStatus from '../ResultCountStatus';
+import StatTiles from '../StatTiles';
+import {isBarFilter} from '../filters/filterKinds';
+import {LEGACY_ROW_ACTIONS_FIELD} from '../LegacyRowActions';
+import useLegacyRowActionsField from '../LegacyRowActions/useLegacyRowActionsField';
+import {columnsToFields, titleFieldId} from '../adapters/columnsToFields';
+import {
+    DEFAULT_PER_PAGE,
+    filterFieldId,
+    PER_PAGE_SIZES,
+    TEST_MODE_FILTER,
+    viewFilterValue,
+    viewToParameters,
+    withToggleFilter,
+} from '../adapters/viewToParameters';
+import {getItemName} from '../adapters/getItemName';
+import {filterSettingsToDeclarations} from '../filters/legacyFilterSettings';
+import {siteToday} from '../filters/siteDate';
+import {differsFromDefaultFilters, differsFromDefaultFiltersIgnoring} from '../state/defaultFilterState';
+import type {BarFilterDeclaration, FilterDeclaration, SearchFilterDeclaration} from '../filters/types';
+import {assembleView} from '../state/assembleView';
+import {keepPinnedLast, lockFields, placeShownFields} from '../state/fieldRules';
+import {resolveScreenDefaults} from '../state/screenDefaults';
+import type {ViewQueryContext} from '../state/types';
+import useListTableView from '../hooks/useListTableView';
+import useListTableUrlState, {readInitialUrlState} from '../hooks/useListTableUrlState';
+import useListTableLayoutPreferences, {readInitialLayout} from '../hooks/useListTableLayoutPreferences';
+import useListTableSelection from '../hooks/useListTableSelection';
+import useListTableQuery from '../hooks/useListTableQuery';
+import useListTableTotals from '../hooks/useListTableTotals';
+import useListTableStats from '../hooks/useListTableStats';
+import useListTableActionNotices from '../hooks/useListTableActionNotices';
+import useListTableActions from '../hooks/useListTableActions';
+import useDailyRecommendation from '../hooks/useDailyRecommendation';
+import useNarrowLayout from '../hooks/useNarrowLayout';
+import {fromNarrowView, resolveFieldRoles, toNarrowView} from '../layout/narrowView';
+import {urlSearchTerm} from '../state/viewQuery';
+import ListTablePageHeader from './ListTablePageHeader';
+import LegacyConfirmModal, {LegacyConfirmRequest} from './LegacyConfirmModal';
+import switchToLegacyView from './switchToLegacyView';
+import type {
+    Column,
+    LegacyRowActions as LegacyRowActionsRender,
+    ListTableItem,
+    ListTablePageProps,
+    ListTablePageRef,
+    ListTableResponse,
+    ListTableRowAction,
+} from './types';
+import styles from './ListTablePage.module.scss';
+import './styles.scss';
 
-export interface ListTablePageProps {
-    //required
-    title: string;
-    apiSettings: {apiRoot; apiNonce; table};
+export type {
+    BulkActionsConfig,
+    BulkActionsConfigWithoutAction,
+    Column,
+    ColumnFilterConfig,
+    FilterConfig,
+    LegacyRowActionArgs,
+    LegacyRowActions,
+    LegacyViewSwitch,
+    ListTableActionDialogProps,
+    ListTableItem,
+    ListTablePageProps,
+    ListTableParameters,
+    ListTablePageRef,
+    ListTableRowAction,
+    StatConfig,
+    TestModeToggle,
+} from './types';
 
-    //optional
-    bulkActions?: Array<BulkActionsConfig> | null;
-    pluralName?: string;
-    singleName?: string;
-    children?: JSX.Element | JSX.Element[] | null;
-    rowActions?: JSX.Element | JSX.Element[] | Function | null;
-    filterSettings?;
-    align?: 'start' | 'center' | 'end';
-    paymentMode?: boolean;
-    listTableBlankSlate: JSX.Element;
-    productRecommendation?: JSX.Element;
-    columnFilters?: Array<ColumnFilterConfig>;
-    banner?: () => JSX.Element;
-    contentMode?: boolean;
-    perPage?: number;
-    statsConfig?: Record<string, StatConfig>;
-}
+const isSearch = (declaration: FilterDeclaration): declaration is SearchFilterDeclaration =>
+    declaration.kind === 'search';
 
-interface FilterConfigBase {
-    // required
-    name: string;
+// A stable default: a new `[]` on every render would rebuild the DataViews fields on every render.
+const NO_COLUMN_FILTERS: NonNullable<ListTablePageProps['columnFilters']> = [];
 
-    // optional
-    ariaLabel?: string;
-    inlineSize?: string;
-    text?: string;
-}
-
-interface FilterConfigWithSimpleOptions extends FilterConfigBase {
-    type: 'select' | 'campaignselect' | 'formselect' | 'search' | 'checkbox' | 'hidden';
-    options?: Array<{text: string; value: string}>;
-}
-
-export interface FilterByGroupedOptions {
-    id: string;
-    apiParam: string;
-    name: string;
-    type: 'checkbox' | 'radio' | 'toggle';
-    options: Array<{text: string; value: string}>;
-    defaultValue?: string | string[];
-    isVisible?: (values: Record<string, string[]>) => boolean;
-    showTitle?: boolean;
-}
-
-interface FilterConfigWithGroupedOptions extends FilterConfigBase {
-    type: 'filterby';
-    groupedOptions?: Array<FilterByGroupedOptions>;
-}
-
-export type FilterConfig = FilterConfigWithSimpleOptions | FilterConfigWithGroupedOptions;
-
-export interface ColumnFilterConfig {
-    column: string;
-    filter: Function;
-}
-
-interface BulkActionsConfigBase {
-    //required
-    label: string;
-    value: string | number;
-    confirm: (
-        selected: Array<string | number>,
-        names?: Array<string>,
-        isOpen?: boolean,
-        setOpen?: (isOpen?: boolean) => void
-    ) => JSX.Element | JSX.Element[] | string;
-
-    //optional
-    isVisible?: (data: any, parameters: any) => boolean;
-    isIdSelectable?: (id: string, data: any) => boolean;
-    type?: 'normal' | 'warning' | 'danger' | 'custom';
-}
-
-// Makes the "action" property required for the standard types
-interface BulkActionsConfigWithAction extends BulkActionsConfigBase {
-    type: 'normal' | 'warning' | 'danger';
-    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
-}
-
-// Makes the "action" property required for the undefined type
-interface BulkActionsConfigWithoutType extends BulkActionsConfigBase {
-    type?: undefined;
-    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
-}
-
-// Makes the "action" property forbidden for the custom type
-export interface BulkActionsConfigWithoutAction extends BulkActionsConfigBase {
-    type: 'custom';
-}
-
-export type BulkActionsConfig =
-    | BulkActionsConfigWithAction
-    | BulkActionsConfigWithoutType
-    | BulkActionsConfigWithoutAction;
-
+/**
+ * Opens the confirm modal for a legacy row action.
+ *
+ * @since TBD Opens the list engine's confirm modal.
+ */
 export const ShowConfirmModalContext = createContext(
     (label, confirm, action, type = null, confirmButtonText = __('Confirm', 'give')) => {}
 );
-export const CheckboxContext = createContext(null);
 
-export interface ListTablePageRef {
-    refresh: () => Promise<any>;
-}
-
-const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
-    title,
-    apiSettings,
-    bulkActions = null,
-    filterSettings = [],
-    singleName = __('item', 'give'),
-    pluralName = __('items', 'give'),
-    rowActions = null,
-    children = null,
-    align = 'start',
-    paymentMode,
-    listTableBlankSlate,
-    productRecommendation,
-    columnFilters = [],
-    banner,
-    contentMode,
-    perPage = 30,
-    statsConfig,
-}: ListTablePageProps, ref) => {
-    const [page, setPage] = useState<number>(1);
-    const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
-    const [isOpen, setOpen] = useState(false);
-    const [modalContent, setModalContent] = useState<{
-        confirm;
-        action?;
-        label;
-        confirmButtonText?: string;
-        type?: 'normal' | 'warning' | 'danger' | 'custom';
-    }>({
-        confirm: (selected) => {},
-        action: (selected) => {},
-        label: '',
-        confirmButtonText: '',
-    });
-    const [selectedAction, setSelectedAction] = useState<string>('');
-    const [selectedIds, setSelectedIds] = useState([]);
-    const [selectedNames, setSelectedNames] = useState([]);
-    const dialog = useRef() as {current: A11yDialogInstance};
-    const checkboxRefs = useRef([]);
-    const [sortField, setSortField] = useState<{sortColumn: string; sortDirection: string}>({
-        sortColumn: 'id',
-        sortDirection: 'desc',
-    });
-    const [testMode, setTestMode] = useState(paymentMode);
-
-    const {sortColumn, sortDirection} = sortField;
-    const locale = navigator.language || navigator.languages[0];
-    const testModeFilter = filterSettings.find((filter) => filter.name === 'toggle');
-
-    const parameters = {
-        page,
-        perPage,
-        sortColumn,
-        sortDirection,
-        locale,
-        testMode,
-        ...filters,
-    };
-
-    const archiveApi = useRef(new ListTableApi(apiSettings)).current;
-
-    const {data, error, isValidating, mutate} = archiveApi.useListTable(parameters);
-    const {data: statsData, error: statsError, isValidating: statsIsValidating, mutate: mutateStats} = statsConfig ? archiveApi.useStats(testMode) : {data: null, error: null, isValidating: false, mutate: async () => {}};
-
-    useResetPage(data, page, setPage, filters);
-
-    useImperativeHandle(ref, () => ({
-        refresh: async () => {
-           await mutate();
-           statsConfig && await mutateStats();
-        }
-    }), [mutate, mutateStats, statsConfig]);
-
-    const handleFilterChange = (name, value) => {
-        setFilters((prevState) => {
-            if (!value || (Array.isArray(value) && value.length === 0)) {
-                const {[name]: _, ...rest} = prevState as Record<string, string[]>;
-                return rest;
-            }
-            return {...prevState, [name]: value};
-        });
-    };
-
-    const handleDebouncedFilterChange = useDebounce(handleFilterChange);
-
-    const showConfirmActionModal = (
-        label,
-        confirm,
-        action,
-        type?: 'normal' | 'warning' | 'danger' | 'custom' | null,
-        confirmButtonText?: string
+/**
+ * The page shell every admin list screen renders through: the Give page header, and the list
+ * itself (with its stat tiles at the top of the sheet) through the WordPress list engine
+ * (`@wordpress/dataviews`). It accepts the same props as before the engine change, so every screen and add-on keeps rendering without changes.
+ *
+ * @since TBD Request the rows with `withCount=false` and the total on its own, so the rows show without waiting for the count.
+ * @since TBD Add `onItemsChange`: the rows on the page, for a notice that depends on them.
+ * @since TBD Add `legacyView`: "Switch to Legacy View" in the list's "More view options" menu.
+ * @since TBD At 782 px and below, show the records as cards built from the screen's field roles.
+ * @since TBD Keep the stat tiles mounted with a status, name their region by the screen, and render them at the top of the list sheet.
+ * @since TBD Send an explicit `scope` also without `filters`, over the scope from `filterSettings`.
+ * @since TBD Announce a cached result count only after its request has finished.
+ * @since TBD Let the stat tiles toggle the single-choice option filters the screen declares.
+ * @since TBD After Reset, focus the search box, else a control left in the filter bar, else the bar.
+ * @since TBD Announce the result count to screen readers after the admin changes the view.
+ * @since TBD One filter path: the deprecated `filterSettings` are mapped onto filter declarations, and the DataViews filter row and search are gone.
+ * @since TBD With `filters`, show Reset only when the filters differ from the screen defaults, and reset to those defaults.
+ * @since TBD Accept filter declarations (`filters`), a fixed `scope` and `testModeToggle`; with `filters`, render Give's filter bar and labeled search.
+ * @since TBD Render the list through `@wordpress/dataviews`; accept typed row actions; keep the view in the URL; store and reset the layout.
+ * @since 2.24.0
+ */
+const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(
+    (
+        {
+            title,
+            apiSettings,
+            bulkActions = null,
+            filterSettings = [],
+            singleName = __('item', 'give'),
+            pluralName = __('items', 'give'),
+            rowActions = null,
+            children = null,
+            paymentMode,
+            listTableBlankSlate,
+            productRecommendation,
+            notices,
+            recommendations,
+            columnFilters = NO_COLUMN_FILTERS,
+            banner,
+            contentMode = false,
+            perPage = DEFAULT_PER_PAGE,
+            statsConfig,
+            screen,
+            filters: declaredFilters,
+            scope: fixedScope,
+            testModeToggle,
+            legacyView,
+            onItemsChange,
+        }: ListTablePageProps,
+        ref
     ) => {
-        setModalContent({label, confirm, action, type, confirmButtonText});
-        dialog.current.show();
-    };
+        const columns = apiSettings.table.columns as Column[];
+        const legacyRowActions = typeof rowActions === 'function' ? (rowActions as LegacyRowActionsRender) : null;
+        const typedRowActions = Array.isArray(rowActions) ? (rowActions as ListTableRowAction[]) : null;
+        // A screen that passes only the deprecated filter settings gets them mapped onto declarations, once.
+        const [legacy] = useState(() =>
+            declaredFilters ? undefined : filterSettingsToDeclarations(filterSettings, contentMode)
+        );
+        const declarations = declaredFilters ?? legacy?.filters ?? [];
+        const testModeSwitch = testModeToggle ?? legacy?.testModeToggle;
+        const statuses = apiSettings.table.statuses ?? [];
 
-    const openBulkActionModal = (event) => {
-        event.preventDefault();
+        // Read once: some screens' header modals rewrite `apiSettings.apiRoot` while they render.
+        const [apiRoot] = useState(apiSettings.apiRoot);
+        const [listTableApi] = useState(() => new ListTableApi(apiSettings));
+        // An explicit `scope` goes over the scope that a tab's hidden (deprecated) filter settings give.
+        const [scope] = useState(() => ({...legacy?.scope, ...fixedScope}));
+        const [legacyConfirm, setLegacyConfirm] = useState<LegacyConfirmRequest | null>(null);
 
-        if (window.GiveDonations && window.GiveDonations.addonsBulkActions) {
-            bulkActions = [...bulkActions, ...window.GiveDonations.addonsBulkActions];
-        }
+        // Resolved once, before the first render, so the first list request already carries the URL's view.
+        const [start] = useState(() => {
+            const defaults = resolveScreenDefaults(screen, columns, titleFieldId(columns), {
+                perPage,
+                pinnedField: legacyRowActions ? LEGACY_ROW_ACTIONS_FIELD : undefined,
+                // Declared filters have no defaults: only test mode, on a test site, and a standalone
+                // hidden filter of the old settings.
+                filters: [
+                    ...(legacy?.defaultFilters ?? []),
+                    ...(testModeSwitch && paymentMode
+                        ? [{field: filterFieldId(TEST_MODE_FILTER), operator: 'is' as const, value: true}]
+                        : []),
+                ],
+            });
+            const context: ViewQueryContext = {
+                filters: declarations,
+                statuses,
+                testModeToggle: Boolean(testModeSwitch),
+                sortableFields: columns.filter((column) => column.sortable).map((column) => column.id),
+                defaults,
+                siteTestMode: Boolean(paymentMode),
+            };
 
-        const bulkAction = bulkActions.find((config) => selectedAction === config.value);
-
-        if (!bulkAction) return;
-
-        const selected = [];
-        const names = [];
-        const selectedRefs = checkboxRefs.current.filter((checkbox) => {
-            const isSelectable = bulkAction?.isIdSelectable?.(checkbox.dataset.id, data) ?? true;
-            return checkbox.checked && isSelectable;
-        });
-        selectedRefs.forEach((checkbox) => {
-            selected.push(checkbox.dataset.id);
-            names.push(checkbox.dataset.name);
-        });
-        setSelectedIds(selected);
-        setSelectedNames(names);
-        if (selected.length) {
-            setModalContent({...bulkAction});
-            if ('custom' === bulkAction.type) {
-                setOpen(true);
-                bulkAction?.confirm(selected, names, isOpen, setOpen);
-            } else {
-                dialog.current.show();
-            }
-        }
-    };
-
-    const setSortDirectionForColumn = (column, direction) => {
-        setSortField((previousState) => {
             return {
-                ...previousState,
-                sortColumn: column,
-                sortDirection: direction,
+                defaults,
+                context,
+                layout: readInitialLayout(screen, defaults),
+                urlState: readInitialUrlState(screen, contentMode, context),
             };
         });
-    };
 
-    const showPagination = () => (
-        <Pagination
-            currentPage={page}
-            totalPages={data ? data.totalPages : 1}
-            disabled={!data}
-            totalItems={data ? parseInt(data.totalItems) : -1}
-            setPage={setPage}
-            singleName={__('result', 'give')}
-            pluralName={__('results', 'give')}
-        />
-    );
+        const {view, origin, onChangeView, replaceView, restoreDefaultFilters} = useListTableView(() =>
+            assembleView({
+                defaults: start.defaults,
+                layout: start.layout,
+                query: start.urlState?.query,
+            })
+        );
 
-    const PageActions = ({PageActionsTop}: {PageActionsTop?: boolean}) => {
-        return (
-            <div className={cx(styles.pageActions, {[styles.alignEnd]: !bulkActions})}>
-                {PageActionsTop ? (
-                    <BulkActionSelect
-                        selectedState={[selectedAction, setSelectedAction]}
-                        parameters={parameters}
-                        data={data}
-                        bulkActions={bulkActions}
-                        showModal={openBulkActionModal}
-                    />
-            ) : (
-                    <>
-                        {page && setPage && showPagination()}
-                    </>
-                )}
+        const {resetLayout, isDefaultLayout, layoutPerPage} = useListTableLayoutPreferences({
+            screen,
+            defaults: start.defaults,
+            initialLayout: start.layout,
+            view,
+            origin,
+            replaceView,
+        });
+        useListTableUrlState({
+            screen,
+            contentMode,
+            context: start.context,
+            defaults: start.defaults,
+            initial: start.urlState,
+            layoutPerPage,
+            view,
+            origin,
+            replaceView,
+        });
+        // A screen with the test-mode toggle keeps test mode in the view; the header switch edits it.
+        const testMode = testModeSwitch ? viewFilterValue(view, TEST_MODE_FILTER) === true : paymentMode;
+        // Only a single-choice list can be set by a tile.
+        const tileFilterIds = useMemo(
+            () =>
+                declarations
+                    .filter((declaration) => declaration.kind === 'options' && !declaration.multiple)
+                    .map((declaration) => declaration.id),
+            [declarations]
+        );
+
+        const setTestMode = (isOn: boolean) => onChangeView(withToggleFilter(view, TEST_MODE_FILTER, isOn));
+        const {selection, onChangeSelection} = useListTableSelection(view);
+        const clearSelection = useCallback(() => onChangeSelection([]), [onChangeSelection]);
+        const report = useListTableActionNotices(singleName, pluralName);
+
+        // Date presets count from the site's day, fixed per view so the request stays the same. Only what
+        // changes the request reads the day again, not a layout change such as density or columns.
+        const requestKey = JSON.stringify([view.page, view.perPage, view.sort, view.filters, view.search]);
+        const today = useMemo(() => siteToday(), [requestKey]);
+        // A table that keeps its view in the address asks for the same term the address carries, so a
+        // reload or a copied link returns the same rows. The input keeps what the user typed.
+        const urlBacked = !contentMode && Boolean(screen?.key);
+        const parameters = useMemo(
+            () =>
+                viewToParameters(
+                    urlBacked && view.search ? {...view, search: urlSearchTerm(view.search)} : view,
+                    declarations,
+                    scope,
+                    {testMode, today}
+                ),
+            [view, urlBacked, declarations, scope, testMode, today]
+        );
+
+        // The rows never wait for the total: `withCount=false` asks the server for the rows and
+        // `hasNextPage` only, and the total comes from its own request (see `useListTableTotals`).
+        const rowsParameters = useMemo(() => ({...parameters, withCount: 'false'}), [parameters]);
+        const {
+            data,
+            error,
+            isLoading,
+            isValidating,
+            refresh: refreshList,
+        } = useListTableQuery<ListTableResponse>(apiRoot, rowsParameters);
+        const {totals, hasNextPage, refreshTotals} = useListTableTotals({
+            apiRoot,
+            parameters,
+            page: view.page ?? 1,
+            data,
+            isLoading,
+        });
+        const {
+            stats,
+            status: statsStatus,
+            refresh: refreshStats,
+        } = useListTableStats(statsConfig ? `${apiRoot}/stats` : null, testMode);
+
+        const refresh = useCallback(async () => {
+            await Promise.all([refreshList(), refreshTotals(), statsConfig && refreshStats()]);
+        }, [refreshList, refreshTotals, refreshStats, statsConfig]);
+
+        useImperativeHandle(ref, () => ({refresh}), [refresh]);
+
+        // After records are removed, or with a page typed in the address, the current page can be past
+        // the last one. This waits for the total and for the rows of the current page: a page that has
+        // rows exists, whatever an older count says, and while it loads the count may be the old one.
+        const isEmptyPage = !isLoading && data?.items.length === 0;
+
+        useEffect(() => {
+            if (isEmptyPage && totals && totals.totalPages > 0 && view.page > totals.totalPages) {
+                replaceView({...view, page: totals.totalPages}, 'correction');
+            }
+        }, [totals?.totalPages, view.page, isEmptyPage]);
+
+        const legacyRowActionsField = useLegacyRowActionsField(legacyRowActions, {
+            data,
+            parameters,
+            listTableApi,
+            report,
+            refresh,
+        });
+
+        const searchDeclaration = declarations.find(isSearch);
+        const searchHint = useSearchHint(searchDeclaration?.hint ?? '');
+        // Reset shows only when the view differs from the screen's defaults, so an untouched view on a
+        // test site (test mode on by default) offers no Reset, and Reset puts the defaults back instead
+        // of turning test mode off. An added filter with no value yet counts.
+        const canReset = differsFromDefaultFilters(view, start.defaults.filters);
+        const searchBoxRef = useRef<HTMLDivElement>(null);
+        const filterBarRef = useRef<HTMLDivElement>(null);
+        // The search box, or, when it is not shown (hidden during a bulk selection, or on a screen without
+        // a search), the first control left in the filter bar, or else the bar itself.
+        const focusFilterArea = useCallback(() => {
+            const bar = filterBarRef.current;
+            const searchInput = searchBoxRef.current?.querySelector('input');
+            const target =
+                (searchInput && getComputedStyle(searchInput).visibility !== 'hidden' ? searchInput : null) ??
+                bar?.querySelector<HTMLElement>('button:not(:disabled)') ??
+                bar;
+
+            target?.focus();
+        }, []);
+        // The control that was clicked (Reset, Clear filters) goes away, so keyboard focus moves once the
+        // page has re-rendered without it.
+        const [focusRequest, setFocusRequest] = useState(0);
+        useEffect(() => {
+            if (focusRequest > 0) {
+                focusFilterArea();
+            }
+        }, [focusRequest, focusFilterArea]);
+        const resetFilters = useCallback(() => {
+            restoreDefaultFilters(start.defaults.filters);
+            setFocusRequest((count) => count + 1);
+        }, [restoreDefaultFilters, start.defaults.filters]);
+        // The filtered empty state offers "Clear filters", so it shows only when a search or a filter
+        // narrows the list. Test mode does not count: an empty list with only test mode changed is
+        // just empty, so it shows the screen's own blank slate.
+        const isFilteredEmpty = differsFromDefaultFiltersIgnoring(
+            view,
+            start.defaults.filters,
+            filterFieldId(TEST_MODE_FILTER)
+        );
+
+        const fields = useMemo<Field<ListTableItem>[]>(
+            () =>
+                lockFields(
+                    [
+                        ...columnsToFields(columns, columnFilters, data),
+                        ...(legacyRowActionsField ? [legacyRowActionsField] : []),
+                    ],
+                    start.defaults
+                ),
+            [columns, columnFilters, data, legacyRowActionsField]
+        );
+        const onChangeTableView = useCallback(
+            (next: View) => onChangeView(keepPinnedLast(placeShownFields(next, view, start.defaults), start.defaults)),
+            [onChangeView, view]
+        );
+
+        // At 782 px and below the list shows cards. The card view is made from the table view on each
+        // render and never kept: a change made on the cards only carries its page, sort, filters and
+        // search back to the table view, so resizing keeps the view and the stored layout stays a table.
+        const isNarrow = useNarrowLayout();
+        const [fieldRoles] = useState(() => resolveFieldRoles(screen?.fieldRoles, columns, start.defaults.titleField));
+        const hasIdColumn = columns.some((column) => column.id === 'id');
+        const displayView = useMemo<View>(
+            () =>
+                isNarrow
+                    ? toNarrowView(
+                          view,
+                          fieldRoles,
+                          hasIdColumn,
+                          start.defaults.pinnedLast ? [start.defaults.pinnedLast] : []
+                      )
+                    : view,
+            [isNarrow, view, fieldRoles, hasIdColumn]
+        );
+        const onChangeDisplayView = useCallback(
+            (next: View) => (isNarrow ? onChangeView(fromNarrowView(next, view)) : onChangeTableView(next)),
+            [isNarrow, onChangeView, onChangeTableView, view]
+        );
+
+        const {actions, actionDialog, closeActionDialog, customAction, setCustomActionOpen} = useListTableActions({
+            rowActions: typedRowActions,
+            bulkActions,
+            data,
+            parameters,
+            selection,
+            pluralName,
+            report,
+            refresh,
+            clearSelection,
+        });
+
+        useEffect(() => {
+            onItemsChange?.(data?.items ?? []);
+        }, [data?.items]);
+
+        const {recommendation, dismiss: dismissRecommendation} = useDailyRecommendation(recommendations);
+
+        const showConfirmModal = useCallback(
+            (label, confirm, action, type = null, confirmButtonText = __('Confirm', 'give')) =>
+                setLegacyConfirm({label, confirm, action, type, confirmButtonText}),
+            []
+        );
+
+        // The notices and the list. On the full page they sit in the list sheet, under the stat tiles.
+        const listContent = (
+            <div className={styles.pageContent}>
+                {contentMode && children}
+                <ListTableNoticeArea
+                    notices={notices ?? []}
+                    recommendation={recommendation}
+                    onDismissRecommendation={dismissRecommendation}
+                    trailing={
+                        productRecommendation && (
+                            <table className="givewp-list-table-recommendation">
+                                <tbody>{productRecommendation}</tbody>
+                            </table>
+                        )
+                    }
+                >
+                    <NotificationPlaceholder type="notice" />
+                </ListTableNoticeArea>
+                <DataViewsListTable
+                    view={displayView}
+                    onChangeView={onChangeDisplayView}
+                    layoutMode={isNarrow ? 'narrow' : 'wide'}
+                    viewMenu={
+                        <ListTableViewMenu
+                            legacyView={
+                                legacyView && {
+                                    ariaLabel: legacyView.ariaLabel,
+                                    onSelect: () =>
+                                        switchToLegacyView(listTableApi, legacyView.onSwitched).catch(() =>
+                                            report({
+                                                changed: 0,
+                                                failed: 0,
+                                                notice: __(
+                                                    'The legacy view could not be saved. Please try again.',
+                                                    'give'
+                                                ),
+                                            })
+                                        ),
+                                }
+                            }
+                        />
+                    }
+                    fields={fields}
+                    actions={actions}
+                    data={error ? [] : data?.items ?? []}
+                    paginationInfo={totals}
+                    hasNextPage={hasNextPage}
+                    isLoading={isLoading}
+                    hasError={Boolean(error)}
+                    selection={selection}
+                    onChangeSelection={onChangeSelection}
+                    empty={
+                        error ? (
+                            <ListTableEmptyState
+                                isError
+                                message={sprintf(
+                                    /* translators: %s: record type, plural (for example "donations") */
+                                    __('There was a problem retrieving the %s.', 'give'),
+                                    pluralName
+                                )}
+                                actionLabel={__('Try again', 'give')}
+                                onAction={refresh}
+                            />
+                        ) : isFilteredEmpty ? (
+                            <ListTableEmptyState
+                                message={sprintf(
+                                    /* translators: %s: record type, plural (for example "donations") */
+                                    __('No %s match your search or filters.', 'give'),
+                                    pluralName
+                                )}
+                                actionLabel={__('Clear filters', 'give')}
+                                onAction={resetFilters}
+                            />
+                        ) : (
+                            listTableBlankSlate
+                        )
+                    }
+                    perPageSizes={PER_PAGE_SIZES}
+                    isDefaultLayout={isDefaultLayout}
+                    onResetLayout={resetLayout}
+                    searchBox={
+                        searchDeclaration && (
+                            <div ref={searchBoxRef}>
+                                <ListTableSearch
+                                    label={searchDeclaration.label}
+                                    describedBy={searchHint.describedBy}
+                                    value={view.search ?? ''}
+                                    onChange={(term) => onChangeView({...view, search: term})}
+                                />
+                            </div>
+                        )
+                    }
+                    searchHint={searchHint.hint && <SearchHint {...searchHint.hint} />}
+                    filterBar={
+                        <ListTableFilters
+                            declarations={declarations.filter(isBarFilter)}
+                            view={view}
+                            onChangeView={onChangeView}
+                            statuses={statuses}
+                            screen={screen?.key}
+                            canReset={canReset}
+                            onReset={resetFilters}
+                            containerRef={filterBarRef}
+                        />
+                    }
+                />
+                <ResultCountStatus
+                    // The request itself, so a filter added with no value yet is not a new result.
+                    requestKey={JSON.stringify(parameters)}
+                    isLoading={isLoading}
+                    isValidating={isValidating}
+                    totalItems={error || !data || !totals ? undefined : totals.totalItems}
+                    singleName={singleName}
+                    pluralName={pluralName}
+                />
             </div>
         );
-    };
 
-    const TestModeFilter = () => (
-        <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} checked={testMode} />
-    );
+        return (
+            <ShowConfirmModalContext.Provider value={showConfirmModal}>
+                <article className={cx(styles.page, contentMode ? styles.pageEmbedded : 'givewp-list-table-page')}>
+                    {!contentMode && (
+                        <ListTablePageHeader
+                            title={title}
+                            banner={banner}
+                            testModeToggle={testModeSwitch}
+                            testMode={testMode}
+                            onChangeTestMode={setTestMode}
+                        >
+                            {children}
+                        </ListTablePageHeader>
+                    )}
 
-    const TestModeBadge = () => <span className={styles.testModeBadge}>{testModeFilter?.text}</span>;
-
-    const SearchSection = () => (
-        <section role="search" className={styles.searchContainer}>
-            <div className={styles.flexRow}>
-                <PageActions PageActionsTop />
-            </div>
-            <div className={styles.flexRow}>
-                {filterSettings.map((filter) => (
-                    filter.type === 'filterby' ? (
-                        <FilterBy
-                            key={filter.name}
-                            groupedOptions={filter.groupedOptions}
-                            onChange={handleFilterChange}
-                            values={filters}
-                        />
+                    {contentMode ? (
+                        listContent
                     ) : (
-                        <Filter
-                            key={filter.name}
-                            value={filters[filter.name]}
-                            filter={filter}
-                            onChange={handleFilterChange}
-                            debouncedOnChange={handleDebouncedFilterChange}
-                        />
-                    )
-                ))}
-            </div>
-        </section>
-    );
+                        <div className={styles.sheet}>
+                            {statsConfig && (
+                                <StatTiles
+                                    config={statsConfig}
+                                    stats={stats}
+                                    status={statsStatus}
+                                    label={sprintf(
+                                        /* translators: %s: the screen's title (for example "Donors") */
+                                        __('%s statistics', 'give'),
+                                        title
+                                    )}
+                                    filters={view.filters}
+                                    availableFilterIds={tileFilterIds}
+                                    onChangeFilters={(filters) => onChangeView({...view, filters, page: 1})}
+                                />
+                            )}
+                            {listContent}
+                        </div>
+                    )}
+                </article>
 
-    return (
-        <>
-            <article className={styles.page}>
-                {!contentMode && (
-                    <>
-                        <header className={styles.pageHeader}>
-                            <div className={styles.flexRow}>
-                                <GiveIcon size={'2.25rem'} />
-                                <h1 className={styles.pageTitle}>{title}</h1>
-                                {testModeFilter && testMode && <TestModeBadge />}
-                            </div>
-                            {children && <div className={styles.flexRow}>{children}</div>}
-                        </header>
+                {/* Details pages that hold a list in a tab already show snackbars. */}
+                {!contentMode && <NotificationPlaceholder type="snackbar" />}
 
-                        <div className={cx('wp-header-end', 'hidden')} />
-
-                        {banner && <section role="banner">{banner()}</section>}
-                        {testModeFilter && (
-                            <div className={styles.filtersRow}>
-                                <TestModeFilter />
-                            </div>
-                        )}
-                        {statsConfig && !statsIsValidating && <ListTableStats config={statsConfig} values={statsData} />}
-                    </>
+                {legacyConfirm && (
+                    <LegacyConfirmModal
+                        request={legacyConfirm}
+                        onClose={() => setLegacyConfirm(null)}
+                        report={report}
+                        refresh={refresh}
+                    />
                 )}
 
-                <div className={styles.pageContent}>
-                    <SearchSection />
-                    {contentMode && children ? <>{children}</> : <></>}
-                    <CheckboxContext.Provider value={checkboxRefs}>
-                        <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
-                            <ListTable
-                                apiSettings={apiSettings}
-                                sortField={sortField}
-                                setSortDirectionForColumn={setSortDirectionForColumn}
-                                singleName={singleName}
-                                pluralName={pluralName}
-                                title={title}
-                                rowActions={rowActions}
-                                parameters={parameters}
-                                data={data}
-                                error={error}
-                                isLoading={isValidating}
-                                align={align}
-                                testMode={testMode}
-                                listTableBlankSlate={listTableBlankSlate}
-                                productRecommendation={productRecommendation}
-                                columnFilters={columnFilters}
-                                includeBulkActionsCheckbox={bulkActions?.length > 0}
-                            />
-                        </ShowConfirmModalContext.Provider>
-                    </CheckboxContext.Provider>
-                    <PageActions />
-                </div>
-            </article>
-            <A11yDialog
-                id="giveListTableModal"
-                dialogRef={(instance) => (dialog.current = instance)}
-                title={
-                    <>
-                        {modalContent?.type === 'danger' && <DeleteIcon />}
-                        {modalContent?.label}
-                    </>
-                }
-                titleId={styles.modalTitle}
-                classNames={{
-                    container: styles.container,
-                    overlay: styles.overlay,
-                    dialog: cx(styles.dialog, {
-                        [styles.warning]: modalContent?.type === 'warning',
-                        [styles.danger]: modalContent?.type === 'danger',
-                    }),
-                    closeButton: 'hidden',
-                }}
-            >
-                <div className={styles.modalContent}>
-                    {modalContent?.confirm(selectedIds, selectedNames, isOpen, setOpen) || null}
-                </div>
-                <div className={styles.gutter}>
-                    <button id={styles.cancel} onClick={(event) => dialog.current?.hide()}>
-                        {__('Cancel', 'give')}
-                    </button>
-                    <button
-                        id={styles.confirm}
-                        onClick={async (event) => {
-                            dialog.current?.hide();
-                            try {
-                                await modalContent.action(selectedIds);
-                                await mutate();
-                                await mutateStats();
-                            } catch (error) {
-                                console.error('Bulk action error:', error);
+                {actionDialog && (
+                    <actionDialog.rowAction.Dialog
+                        items={actionDialog.items}
+                        onClose={closeActionDialog}
+                        refresh={refresh}
+                        report={report}
+                        clearSelection={clearSelection}
+                    />
+                )}
 
-                                // Create a user-friendly error message
-                                let errorMessage = __('An error occurred while performing this action.', 'give');
-
-                                if (error.message && error.message.includes('permission')) {
-                                    errorMessage = __('You don\'t have permission to perform this action.', 'give');
-                                } else if (error.message && error.message.includes('403')) {
-                                    errorMessage = __('Access denied. You don\'t have permission to perform this action.', 'give');
-                                } else if (error.message) {
-                                    // Try to extract a meaningful message from the error
-                                    const match = error.message.match(/You don't have permission[^"]*|You don&#039;t have permission[^"]*/i);
-                                    if (match) {
-                                        errorMessage = match[0].replace(/&#039;/g, "'");
-                                    }
-                                }
-
-                                // Show error as a notice/alert
-                                alert(errorMessage);
-                            }
-                        }}
-                    >
-                        {modalContent?.confirmButtonText ?? __('Confirm', 'give')}
-                    </button>
-                </div>
-            </A11yDialog>
-        </>
-    );
-});
+                {/* A closed custom dialog stays mounted, as with the old table: its buttons close it mid-click. */}
+                {customAction &&
+                    customAction.config.confirm(
+                        customAction.items.map((item) => String(item.id)),
+                        customAction.items.map(getItemName),
+                        customAction.isOpen,
+                        (isOpen = false) => setCustomActionOpen(isOpen),
+                        {refresh, clearSelection}
+                    )}
+            </ShowConfirmModalContext.Provider>
+        );
+    }
+);
 
 ListTablePage.displayName = 'ListTablePage';
 

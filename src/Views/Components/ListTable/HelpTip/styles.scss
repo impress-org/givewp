@@ -1,0 +1,21 @@
+.givewp-help-tip {
+    // The stock popover box is `width: min-content`, which breaks the text one word per line. It also
+    // draws the 1px edge and shadow, so the content below adds no border of its own.
+    // Scoped under our own popover class, so no other popover changes.
+    .components-popover__content {
+        inline-size: min(20rem, 90vw);
+        overflow-wrap: anywhere;
+    }
+
+    &__button.components-button {
+        min-inline-size: 2rem;
+        block-size: 2rem;
+    }
+
+    &__content {
+        padding: 0.75rem;
+        font-size: 0.8125rem;
+        line-height: 1.5;
+        white-space: normal;
+    }
+}

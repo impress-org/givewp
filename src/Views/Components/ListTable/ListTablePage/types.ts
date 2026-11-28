@@ -1,0 +1,390 @@
+import type {ReactElement, ReactNode} from 'react';
+import type {RenderModalProps} from '@wordpress/dataviews';
+import type ListTableApi from '../api';
+import type {ListTableScreen} from '../state/types';
+import type {ListTableNotice, ListTableRecommendations} from '../notices/types';
+import type {FilterDeclaration, StatusVocabularyEntry} from '../filters/types';
+
+/**
+ * What a column holds, as `ColumnKind` names it on the server. The narrow layout reads it to pick the
+ * card fields of a screen that declares no field roles.
+ *
+ * @since TBD
+ */
+export type ColumnKind = 'money' | 'date' | 'count' | 'text' | 'status';
+
+/**
+ * A column of a list table, as `ModelColumn::toArray()` sends it.
+ *
+ * @since TBD Add `kind`.
+ * @since TBD
+ */
+export interface Column {
+    id: string;
+    label: string;
+    sortable: boolean;
+    visible?: boolean;
+    kind?: ColumnKind;
+}
+
+/**
+ * One row of a list table. Cells are server-rendered HTML keyed by column id; some screens add raw
+ * values (`name`, `titleRaw`, `status_raw`, …).
+ *
+ * @since TBD
+ */
+export type ListTableItem = {id: string | number; [columnId: string]: unknown};
+
+/**
+ * @since TBD
+ */
+export type ListTableResponse = {
+    items: ListTableItem[];
+    /** Missing in a `withCount=false` response, unless the server had the total already. */
+    totalItems?: number | string;
+    totalPages?: number;
+    /** Sent with `withCount=false`: whether a page after this one has rows. */
+    hasNextPage?: boolean;
+    [key: string]: unknown;
+};
+
+/**
+ * The request parameters of a list endpoint, in the shape the screens' `isVisible` rules read.
+ * Arrays are joined with commas only when the request URL is built.
+ *
+ * @since TBD
+ */
+export type ListTableParameters = Record<string, string | number | boolean | Array<string | number> | undefined>;
+
+/**
+ * One old filter setting. Screens declare filters with `FilterDeclaration` now; this shape stays only
+ * for add-ons that still pass `filterSettings`, which `filterSettingsToDeclarations()` maps onto
+ * declarations. The grouped "Filter by" type (`filterby`) is gone; a setting of that type is skipped.
+ *
+ * @deprecated Use `FilterDeclaration` and the `filters` prop.
+ *
+ * @since TBD Remove the grouped `filterby` type; mapped onto filter declarations.
+ */
+export interface FilterConfig {
+    // required
+    name: string;
+    type: 'select' | 'campaignselect' | 'formselect' | 'search' | 'checkbox' | 'hidden';
+
+    // optional
+    ariaLabel?: string;
+    text?: string;
+    options?: Array<{text: string; value: string}>;
+}
+
+export interface ColumnFilterConfig {
+    column: string;
+    /** Renders the cell in place of the server HTML. */
+    filter: (item: ListTableItem, column: Column, data: ListTableResponse | undefined) => ReactNode;
+}
+
+/**
+ * What a custom bulk action's own dialog can ask of the list, after it has changed records.
+ *
+ * @since TBD
+ */
+export type BulkActionDialogContext = {
+    refresh: () => Promise<unknown>;
+    clearSelection: () => void;
+};
+
+interface BulkActionsConfigBase {
+    //required
+    label: string;
+    value: string | number;
+    confirm: (
+        selected: Array<string | number>,
+        names?: Array<string>,
+        isOpen?: boolean,
+        setOpen?: (isOpen?: boolean) => void,
+        context?: BulkActionDialogContext
+    ) => JSX.Element | JSX.Element[] | string;
+
+    //optional
+    isVisible?: (data: ListTableResponse | undefined, parameters: ListTableParameters) => boolean;
+    isIdSelectable?: (id: string, data: ListTableResponse | undefined) => boolean;
+    type?: 'normal' | 'warning' | 'danger' | 'custom';
+    /**
+     * A `custom` action that needs at least this many rows (Campaigns "Merge" needs two). With fewer,
+     * an error notice explains it instead of opening the dialog. The action stays offered: DataViews
+     * ignores `disabled` in the selection bar, and an action left out removes the row checkboxes.
+     */
+    minSelected?: number;
+}
+
+// Makes the "action" property required for the standard types
+interface BulkActionsConfigWithAction extends BulkActionsConfigBase {
+    type: 'normal' | 'warning' | 'danger';
+    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
+}
+
+// Makes the "action" property required for the undefined type
+interface BulkActionsConfigWithoutType extends BulkActionsConfigBase {
+    type?: undefined;
+    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
+}
+
+// Makes the "action" property forbidden for the custom type
+export interface BulkActionsConfigWithoutAction extends BulkActionsConfigBase {
+    type: 'custom';
+}
+
+export type BulkActionsConfig =
+    | BulkActionsConfigWithAction
+    | BulkActionsConfigWithoutType
+    | BulkActionsConfigWithoutAction;
+
+/**
+ * What an action did, counted from whatever the action endpoint replied.
+ *
+ * @since TBD
+ */
+export type ActionOutcome = {
+    changed: number;
+    failed: number;
+    message?: string;
+    /** An error to show although no record failed, for example an action that could not start. */
+    notice?: string;
+    /** The snackbar text, in place of the generic "updated" message. */
+    successMessage?: string;
+};
+
+/**
+ * Shows the result of an action on the page: a snackbar for what changed, a notice for what failed.
+ *
+ * @since TBD
+ */
+export type ReportOutcome = (outcome: ActionOutcome, actionLabel?: string) => void;
+
+/**
+ * What running an action needs from the page: show the result, clear the selection, reload.
+ *
+ * @since TBD
+ */
+export type ListActionContext = {
+    report: ReportOutcome;
+    refresh: () => Promise<unknown>;
+    clearSelection: () => void;
+};
+
+/**
+ * An action declared as data, so the list engine can show "Edit" inline and the rest in the row menu.
+ * With `supportsBulk` the same action also runs on a selection, as in WordPress core: DataViews lists
+ * every bulk action in each row's menu, so a separate bulk action would show twice there.
+ *
+ * Exactly one of `href`, `run`, `RenderModal` or `Dialog`. `run` and `confirm.body` get one item from
+ * a row's menu and the eligible selected items from the selection bar.
+ *
+ * @since TBD
+ */
+export interface ListTableRowAction<Item extends ListTableItem = ListTableItem> {
+    id: string;
+    label: string | ((items: Item[]) => string);
+    /** Only "Edit", or "Restore" on trashed rows. */
+    isPrimary?: boolean;
+    supportsBulk?: boolean;
+    /** Same rule as a bulk action's: checked on every render against the response and the request parameters. */
+    isVisible?: (data: ListTableResponse | undefined, parameters: ListTableParameters) => boolean;
+    isEligible?: (item: Item) => boolean;
+    isDestructive?: boolean;
+    /** The snackbar text when the action succeeds, in place of the generic "updated" message. */
+    successMessage?: (items: Item[]) => string;
+    href?: (item: Item) => string;
+    confirm?: {
+        title: string;
+        body: (items: Item[]) => ReactNode;
+        confirmLabel: string;
+    };
+    run?: (items: Item[]) => Promise<unknown>;
+    RenderModal?: (props: RenderModalProps<Item>) => ReactElement;
+    /** A screen dialog that renders its own modal; the page shows it outside the list engine. */
+    Dialog?: (props: ListTableActionDialogProps<Item>) => ReactElement;
+}
+
+/**
+ * @since TBD
+ */
+export type ListTableActionDialogProps<Item extends ListTableItem = ListTableItem> = {
+    items: Item[];
+    onClose: () => void;
+    refresh: () => Promise<unknown>;
+    report: ReportOutcome;
+    clearSelection: () => void;
+};
+
+/**
+ * The arguments today's row-actions render function receives.
+ *
+ * @since TBD
+ */
+export type LegacyRowActionArgs = {
+    data: ListTableResponse | undefined;
+    item: ListTableItem;
+    removeRow: (callback: (id: string) => Promise<unknown>) => (event: {target: EventTarget}) => Promise<void>;
+    addRow: (callback: (id: string) => Promise<unknown>) => (event: {target: EventTarget}) => Promise<void>;
+    setUpdateErrors: (response: unknown) => void;
+    parameters: ListTableParameters;
+    listTableApi: ListTableApi;
+};
+
+/**
+ * Today's row-actions input: a function that renders the actions of one row.
+ *
+ * @since TBD
+ */
+export type LegacyRowActions = (args: LegacyRowActionArgs) => ReactNode;
+
+/**
+ * One stat tile of a list screen, keyed in `statsConfig` by the key the stats endpoint sends.
+ * The server formats the value, so there is no currency here.
+ *
+ * @since TBD Move here from `ListTableStats`; remove `currency`; add `filter`; `upgrade` also accepts `false`.
+ * @since 4.10.0
+ */
+export type StatConfig = {
+    label: string;
+    /**
+     * The list filter this tile toggles. No `value` makes the tile the "Total" of that filter's
+     * group. Ignored when the screen does not declare the filter, and on an `upgrade` tile.
+     */
+    filter?: {filterId: string; value?: string};
+    /**
+     * Set when the add-on is missing: the tile shows this message and link instead of a number.
+     * `false` means the add-on is active, so the screens can pass `!enabled && {...}`.
+     */
+    upgrade?:
+        | false
+        | {
+              href: string;
+              tooltip: string;
+          };
+};
+
+/**
+ * The test-mode switch in the page header, and the badge next to the title while it is on.
+ *
+ * @since TBD
+ */
+export type TestModeToggle = {
+    /** The header badge text, "Test mode". */
+    label: string;
+    /** The accessible name of the switch. */
+    ariaLabel: string;
+};
+
+/**
+ * "Switch to Legacy View" in the list's "More view options" menu, for a screen that has a legacy screen.
+ *
+ * @since TBD
+ */
+export type LegacyViewSwitch = {
+    /** The accessible name of the menu item, when it should say more than "Switch to Legacy View". */
+    ariaLabel?: string;
+    /** Where to go once the choice is saved. Reloads the page by default. */
+    onSwitched?: () => void;
+};
+
+/**
+ * @since TBD Add `legacyView`.
+ * @since TBD Deprecate `filterSettings`; it is mapped onto filter declarations.
+ * @since TBD Add `filters`, `scope`, `testModeToggle` and `apiSettings.table.statuses`.
+ * @since 2.24.0
+ */
+export interface ListTablePageProps {
+    //required
+    title: string;
+    apiSettings: {
+        apiRoot: string;
+        apiNonce: string;
+        table: {id?: string; columns: Array<object>; statuses?: StatusVocabularyEntry[]};
+    };
+
+    //optional
+    bulkActions?: Array<BulkActionsConfig> | null;
+    pluralName?: string;
+    singleName?: string;
+    children?: ReactNode;
+    rowActions?: LegacyRowActions | Function | ListTableRowAction[] | null;
+    /**
+     * The old filter settings. Mapped onto filter declarations by `filterSettingsToDeclarations()`,
+     * so they render through the same filter bar and URL rules. Read only when `filters` is not set.
+     *
+     * @deprecated Kept only so add-ons that pass it keep working (CQ-006); no core screen uses it.
+     * Pass `filters`, `scope` and `testModeToggle` instead. The grouped `filterby` type is no longer
+     * supported and is skipped.
+     *
+     * @since TBD Mapped onto filter declarations; `filterby` is skipped.
+     */
+    filterSettings?: FilterConfig[];
+    paymentMode?: boolean;
+    listTableBlankSlate: ReactNode;
+    /**
+     * @deprecated Pass `recommendations`. If given, it renders last in the notice area, in its old wrapper.
+     * @since TBD
+     */
+    productRecommendation?: ReactNode;
+    /** @since TBD */
+    notices?: ListTableNotice[];
+    /**
+     * Called with the rows on the page whenever they change. A screen reads them to show a notice that depends on
+     * the records (the notice itself must carry no record data).
+     *
+     * @since TBD
+     */
+    onItemsChange?: (items: ListTableItem[]) => void;
+    /** @since TBD */
+    recommendations?: ListTableRecommendations;
+    columnFilters?: Array<ColumnFilterConfig>;
+    banner?: () => ReactNode;
+    contentMode?: boolean;
+    perPage?: number;
+    statsConfig?: Record<string, StatConfig>;
+    /**
+     * The screen's config. It turns on view state:
+     *
+     * - absent: the view lives in memory only, as before. Add-on pages that do not pass it do not change.
+     * - present on a standalone page: the view is kept in the URL and the search term in the tab's history.
+     * - present with `contentMode` (a list in a details page tab): the URL and history are never touched.
+     *
+     * @since TBD
+     */
+    screen?: ListTableScreen;
+    /**
+     * The entity's filter declaration: Give's filter bar and labeled search. When set,
+     * `filterSettings` is not read.
+     *
+     * @since TBD
+     */
+    filters?: FilterDeclaration[];
+    /**
+     * Fixed request parameters set by the page the list sits on (the campaign of a campaign's "Forms"
+     * tab). Sent with every request; never a control, a chip or a URL parameter, and never reset.
+     * Also honored without `filters`, where it goes over the scope from hidden `filterSettings`.
+     *
+     * @since TBD Honored without `filters` too.
+     * @since TBD
+     */
+    scope?: Record<string, string | number>;
+    /**
+     * The test-mode switch and badge in the header. Used with `filters`; with the deprecated
+     * `filterSettings` the `toggle` setting adds it.
+     *
+     * @since TBD
+     */
+    testModeToggle?: TestModeToggle;
+    /**
+     * Offers "Switch to Legacy View" in the list's "More view options" menu. Only for a screen that
+     * has a legacy screen; never in the page header.
+     *
+     * @since TBD
+     */
+    legacyView?: LegacyViewSwitch;
+}
+
+export interface ListTablePageRef {
+    refresh: () => Promise<unknown>;
+}

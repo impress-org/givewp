@@ -170,6 +170,7 @@ trait Columns
     }
 
     /**
+     * @since TBD Give the column the default visibility, as addColumn() does, unless it already has one.
      * @since 2.24.0
      *
      * @return self
@@ -181,6 +182,11 @@ trait Columns
             [$column::getId() => $column],
             $this->columns
         );
+
+        // An add-on may have set it before adding the column, which must stay.
+        if (!$column->hasVisibility()) {
+            $this->setColumnVisibility($column::getId());
+        }
 
         return $this;
     }

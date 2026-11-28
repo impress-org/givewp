@@ -1,11 +1,9 @@
 import { getSubscriptionOptionsWindowData } from "@givewp/subscriptions/utils";
 
 const { legacyApiRoot, apiNonce } = getSubscriptionOptionsWindowData();
-const urlParams = new URLSearchParams(window.location.search);
-const subscriptionId = urlParams.get('id');
 
 const apiSettings = {
-    apiRoot: `${legacyApiRoot}/donations?subscriptionId=${subscriptionId}`,
+    apiRoot: `${legacyApiRoot}/donations`,
     apiNonce,
     table: {
         columns: [

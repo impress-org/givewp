@@ -1,0 +1,6 @@
+// Stand-in for the stock `onReset` button (remove after the DataViews bump).
+.dataviews-settings-section__sidebar:has(> .givewp-view-config-reset) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

@@ -1,101 +1,87 @@
+@use '../layout/breakpoints' as *;
 @use '@givewp/css/Safe-Rem/functions' as *;
 
+// The check of a finished thing: a completed status and a reached goal.
+$icon-completed: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 18.5a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13ZM4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0Zm11.53-1.47-1.06-1.06L11 12.94l-1.47-1.47-1.06 1.06L11 15.06l4.53-4.53Z'/%3E%3C/svg%3E");
+
 .interweave {
+    // Status and type show as plain text. The WordPress `p` margin would make every row taller.
+    :is(.statusBadge, .badge) p {
+        margin: 0;
+    }
+
+    // Status is a small icon and the word, like the Site Editor. The icon is a mask in the text color.
+    // A value with no rule below (a new status) gets a blank icon space, so the words line up.
     .statusBadge {
-        --color: var(--givewp-shades-white);
-        --bg-color: var(--givewp-shades-black);
-
-        align-items: center;
-        background-color: var(--bg-color);
-        border-radius: 0.75rem;
-        color: var(--color);
-        column-gap: safe-rem(1);
         display: inline-flex;
-        font-size: 0.75rem;
-        font-weight: 600;
-        justify-content: center;
-        line-height: 1.5;
-        padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
-        text-transform: capitalize;
-        transform: translateY(0.075rem);
-        width: fit-content;
+        align-items: center;
+        gap: 4px;
 
-        div,
-        p {
-            font-size: safe-rem(0.75);
-            font-weight: 600;
-            line-height: safe-rem(1.125);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+        &::before {
+            content: '';
+            flex: none;
+            inline-size: 24px;
+            block-size: 24px;
+            margin-inline-start: -4px;
+            background-color: currentColor;
+            mask: var(--icon, linear-gradient(#0000, #0000)) center / contain no-repeat;
         }
 
-        p {
-            margin: 0;
-        }
-
-        &--completed,
-        &--complete {
-            --bg-color: var(--givewp-emerald-100);
-            --color: var(--givewp-emerald-900);
-        }
-
-        &--active,
         &--publish,
-        &--published {
-            --bg-color: var(--givewp-green-100);
-            --color: var(--givewp-green-900);
-        }
-
-        &--archived,
-        &--inactive {
-            --bg-color: var(--givewp-grey-100);
-            --color: var(--givewp-grey-900);
-        }
-
-        &--failing {
-            --bg-color: var(--givewp-yellow-100);
-            --color: var(--givewp-yellow-900);
-        }
-
-        &--failed,
-        &--revoked,
-        &--abandoned,
-        &--cancelled,
-        &--expired {
-            --bg-color: var(--givewp-red-100);
-            --color: var(--givewp-red-900);
-        }
-
-        &--draft {
-            --bg-color: var(--givewp-orange-100);
-            --color: var(--givewp-orange-900);
+        &--active,
+        &--completed,
+        &--upgraded {
+            --icon: #{$icon-completed};
         }
 
         &--pending,
-        &--processing {
-            --bg-color: var(--givewp-blue-100);
-            --color: var(--givewp-blue-900);
+        &--processing,
+        &--preapproval,
+        &--future {
+            --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 18.5a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13ZM4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0Zm8 4a4 4 0 0 1-4-4h4V8a4 4 0 0 1 0 8Z'/%3E%3C/svg%3E");
         }
 
-        &--upgraded {
-            --bg-color: var(--givewp-purple-50);
-            --color: var(--givewp-purple-900);
-        }
-
-        &--refunded {
-            --bg-color: var(--givewp-blue-700);
-            --color: var(--givewp-blue-25);
-        }
-
-        &--give_subscription {
-            --bg-color: var(--givewp-green-700);
-            --color: var(--givewp-green-25);
-        }
-
+        &--draft,
+        &--inactive,
+        &--archived,
+        &--paused,
+        &--private,
         &--trash,
         &--trashed {
-            --bg-color: var(--givewp-red-700);
-            --color: var(--givewp-red-25);
+            --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 18.5a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13ZM4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0Zm8 4a4 4 0 0 0 4-4H8a4 4 0 0 0 4 4Z'/%3E%3C/svg%3E");
+        }
+
+        &--cancelled,
+        &--abandoned,
+        &--revoked {
+            --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 18.5A6.5 6.5 0 0 1 6.93 7.931l9.139 9.138A6.473 6.473 0 0 1 12 18.5Zm5.123-2.498a6.5 6.5 0 0 0-9.124-9.124l9.124 9.124ZM4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0Z'/%3E%3C/svg%3E");
+        }
+
+        &--failed,
+        &--failing,
+        &--refunded,
+        &--expired,
+        &--suspended {
+            --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M5.5 12a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0ZM12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm-.75 12v-1.5h1.5V16h-1.5Zm0-8v5h1.5V8h-1.5Z'/%3E%3C/svg%3E");
+        }
+
+        // Color only for the statuses that need a look. The icon shape and the word still tell them apart.
+        &--failed,
+        &--failing {
+            color: var(--wpds-color-stroke-interactive-error, #cc1818);
+        }
+
+        &--refunded,
+        &--expired,
+        &--suspended {
+            color: var(--wpds-color-stroke-surface-warning-strong, #926300);
+        }
+
+        @media (forced-colors: active) {
+            &::before {
+                forced-color-adjust: none;
+                background-color: CanvasText;
+            }
         }
     }
 
@@ -121,7 +107,7 @@
             width: max-content;
             height: max-content;
             padding-inline: 1.25rem;
-            font-size: 0.75rem;
+            font-size: 0.8125rem;
             font-weight: 400;
             line-height: 2.5rem;
             border-radius: 2px;
@@ -137,7 +123,8 @@
                 top: -75px;
             }
 
-            &--failed, &--exceeded {
+            &--failed,
+            &--exceeded {
                 border: 1px solid #e5301b;
             }
 
@@ -169,64 +156,19 @@
         visibility: visible;
     }
 
-    .badge {
-        --border-width: 1px;
-        --padding-x: calc(var(--givewp-spacing-3) - var(--border-width));
-        --padding-y: calc(var(--givewp-spacing-1) - var(--border-width));
-        align-items: center;
-        background-color: var(--givewp-neutral-25);
-        border-radius: 1.5rem;
-        border: var(--border-width) solid var(--givewp-neutral-600);
-        color: var(--givewp-neutral-900);
-        display: inline-flex;
-        justify-content: center;
-        padding: var(--padding-y) var(--padding-x);
-
-        p {
-            font-size: 0.75rem;
-            font-weight: 600;
-            line-height: 1.5;
-            margin: 0;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-    }
-
+    // The name link takes the stock DataViews title style; the email is a quieter second line.
     .donorInformation {
-        position: relative;
         display: flex;
         flex-flow: column;
-        gap: var(--givewp-spacing-1);
-
-        & > a {
-            color: #2271b1;
-            font-size: 1rem;
-            font-weight: 600;
-            line-height: 1.5;
-        }
+        min-width: 0;
 
         &__email {
-            font-size: 0.875rem;
-            line-height: 1.43;
-            max-width: calc(100% - 4rem);
-            min-width: 0;
+            color: var(--givewp-list-table-text-secondary);
+            font-weight: 400;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-    }
-
-    .giveDonationFormsLink {
-        color: #2271b1;
-        display: block;
-        font-size: 1rem;
-        font-weight: 700;
-        max-width: 32ch;
-        overflow: hidden;
-        position: relative;
-        text-decoration: none;
-        text-overflow: ellipsis;
-        white-space: nowrap;
     }
 
     .shortcode {
@@ -250,21 +192,98 @@
         }
     }
 
+    // A progress ring beside the target. Once the goal is met, the Completed status check replaces the ring and
+    // "Goal achieved" replaces the percentage. It is as quiet as the Status cell: the text color of the cell,
+    // no bold, and the same 24px icon box.
+    .givewp-goal-progress {
+        align-items: center;
+        display: inline-flex;
+        gap: 4px;
+
+        // On the narrowest phones a long amount does not fit beside the ring, so it moves under it.
+        @media (max-width: $givewp-list-table-narrow) {
+            flex-wrap: wrap;
+        }
+
+        &__ring,
+        &__check {
+            box-sizing: border-box;
+            flex-shrink: 0;
+            height: 24px;
+            width: 24px;
+            margin-inline-start: -4px;
+        }
+
+        // The ring is as wide as the circle of the status icons.
+        &__ring {
+            padding: 4px;
+        }
+
+        &__ring-image {
+            display: block;
+            height: 100%;
+            width: 100%;
+        }
+
+        &__check {
+            background-color: currentColor;
+            mask: $icon-completed center / contain no-repeat;
+            display: none;
+
+            @media (forced-colors: active) {
+                forced-color-adjust: none;
+                background-color: CanvasText;
+            }
+        }
+
+        &__amount {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.8125rem;
+            font-variant-numeric: tabular-nums;
+            gap: 1px;
+            line-height: normal;
+            white-space: nowrap;
+
+            // A phone card has no room for the target on one line: it wraps instead of being cut off. It stays
+            // beside the ring while it has 7rem there.
+            @media (max-width: $givewp-list-table-narrow) {
+                flex: 1 1 7rem;
+                min-inline-size: 0;
+                white-space: normal;
+            }
+        }
+
+        &__status {
+            font-size: 0.8125rem;
+
+            &--achieved {
+                display: none;
+            }
+        }
+
+        &--achieved {
+            .givewp-goal-progress__ring,
+            .givewp-goal-progress__status--progress {
+                display: none;
+            }
+
+            .givewp-goal-progress__check,
+            .givewp-goal-progress__status--achieved {
+                display: block;
+            }
+        }
+    }
+
+    // The Event Tickets sales bar.
     .goalProgress {
-        width: 95%;
+        width: 100%;
         height: 0.5rem;
         position: relative;
         background: rgba(238, 238, 238);
         border-radius: 1.5625rem;
         overflow: hidden;
         margin: 0.3125rem 0 0.125rem;
-
-        &--achieved {
-            position: absolute;
-            display: flex;
-            font-size: 0.8rem;
-            padding-block: 6px;
-        }
 
         & > span {
             display: block;
@@ -281,31 +300,23 @@
         font-weight: 600;
         white-space: nowrap;
     }
-
-    .amount {
-        color: var(--givewp-neutral-700);
-        font-size: 1rem;
-        font-weight: 500;
-    }
 }
 
+// Plain text, like the other cells. The class name stays because the e2e tests find rows by it.
 .idBadge {
-    align-items: center;
-    background-color: var(--givewp-neutral-50);
-    border-radius: var(--givewp-rounded-8);
-    border: 1px solid var(--givewp-neutral-200);
-    color: var(--givewp-neutral-700);
-    display: inline-flex;
-    flex-grow: 0;
-    flex-shrink: 0;
-    font-size: 0.875rem;
-    font-weight: 600;
-    line-height: 1.25rem;
-    padding: calc(0.5 * var(--givewp-spacing-1)) var(--givewp-spacing-2);
-    text-align: center;
-    width: fit-content;
+    font-variant-numeric: tabular-nums;
 
     &::before {
         content: '#';
     }
+}
+
+// Long cell text (for example a campaign name) clamps to one line. The full text stays in the DOM
+// and in the title attribute.
+.givewp-truncated-text {
+    display: -webkit-box;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
 }

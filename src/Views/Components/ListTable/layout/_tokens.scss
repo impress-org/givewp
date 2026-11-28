@@ -1,0 +1,36 @@
+// WP admin values for the list pages. They are not in the Give foundation, so they live here, once.
+// Each pair is measured in `tokens.contrast.test.ts`. Do not add a value without adding its pair there.
+// The gray of the full list page. The admin wrapper around the page uses it too, so the page has no lighter strip under it.
+$givewp-list-table-page: #f0f0f1;
+
+@mixin givewp-list-table-tokens {
+    --givewp-list-table-text: #1e1e1e;
+    --givewp-list-table-text-secondary: #646970;
+    --givewp-list-table-control-edge: #757575;
+    --givewp-list-table-hairline: #dcdcde;
+    --givewp-list-table-tag-text: #50575e;
+    // The fill behind the neutral "Add-on" tag.
+    --givewp-list-table-status-neutral-bg: #f0f0f1;
+    --givewp-list-table-row-hover: #f8f8f8;
+    --givewp-list-table-page: #{$givewp-list-table-page};
+
+    // Our own bars, edges and focus use a darker mix of the site's admin color, so old schemes
+    // (Sunrise, Light) still pass 3:1. A browser without `color-mix()` gets the gray control edge instead, which
+    // passes 3:1 on its own; the raw admin color does not in every scheme.
+    --givewp-list-table-action-edge: #757575;
+    --givewp-list-table-action-tint: rgb(0 0 0 / 0.04);
+
+    // Link text needs 4.5:1, so it takes a darker mix than the edge (Sunrise, Coffee and Ocean are light colors).
+    // A browser without `color-mix()` gets the WordPress link blue, which passes 4.5:1 on white.
+    --givewp-list-table-link: #135e96;
+
+    @supports (color: color-mix(in srgb, red 50%, blue)) {
+        --givewp-list-table-action-edge: color-mix(in srgb, var(--wp-admin-theme-color, #3858e9) 75%, #000);
+        --givewp-list-table-link: color-mix(in srgb, var(--wp-admin-theme-color, #3858e9) 55%, #000);
+        --givewp-list-table-action-tint: color-mix(in srgb, var(--wp-admin-theme-color, #3858e9) 8%, #fff);
+    }
+
+    // The test mode badge: an outline, text on fill.
+    --givewp-list-table-test-badge-edge: #996800;
+    --givewp-list-table-test-badge-bg: #fcf9e8;
+}

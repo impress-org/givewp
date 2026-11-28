@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Registers and sets up the Donation Forms (give_forms) custom post type
  *
+ * @since TBD Use the Give "G" as the menu icon.
  * @since 4.0.0 updated menu_name to GiveWP
  * @since 1.0
  *
@@ -105,7 +106,7 @@ function give_setup_post_types() {
 		'map_meta_cap'    => true,
 		'capability_type' => 'give_form',
 		'has_archive'     => $give_forms_archives,
-		'menu_icon'       => 'dashicons-give',
+		'menu_icon'       => \Give\Helpers\AdminMenuIcon::dataUri(),
 		'hierarchical'    => false,
 		'supports'        => apply_filters( 'give_forms_supports', $give_form_supports ),
 	];

@@ -1,0 +1,241 @@
+@use '../layout/breakpoints' as *;
+@use '../layout/tokens' as *;
+@use '../ListTableSearch/label' as *;
+@use './wp-look';
+@use '../dataviewsPolyfill/polyfill';
+@import '~@wordpress/dataviews/build-style/style.css';
+
+// The inset from both edges of the list for the toolbar. The table, footer, states and cards get the same one
+// from `dataviewsPolyfill/_polyfill.scss`. It also keeps controls off the
+// DataViews wrapper edge: the wrapper scrolls sideways, so it would clip a focus ring.
+$givewp-list-table-edge: var(--givewp-spacing-6);
+
+.givewp-list-table {
+    @include givewp-list-table-tokens;
+
+    // When a new page arrives and the table top is above the window, it scrolls to the edge of the sticky page
+    // header (the WordPress admin bar and the Give header), not under it. The root takes the focus (no ring)
+    // only when the rows the user was on are gone.
+    scroll-margin-block-start: calc(var(--wp-admin--admin-bar--height, 32px) + 5.5rem);
+
+    &:focus {
+        outline: none;
+    }
+
+    position: relative;
+    background-color: var(--givewp-shades-white);
+    border-radius: var(--givewp-rounded-8);
+
+    // The toolbar above the table: one row, then the search hint under it.
+    &__toolbar {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
+        padding-block: var(--givewp-spacing-4);
+        padding-inline: $givewp-list-table-edge;
+    }
+
+    // The search box, the filter bar and the view options share one row, lined up at the top. The
+    // filter bar stays beside the search box while 16rem is left for it (about two chips), and else
+    // moves to the next line with the view options. Its chips wrap inside it.
+    &__toolbar-row {
+        // The containing box of the bulk bar, which lies over the row while rows are selected.
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: var(--givewp-spacing-2);
+
+        > .givewp-list-table-filters {
+            flex: 1 1 16rem;
+            min-inline-size: 0;
+        }
+
+        // The search label sits above the search box, out of the flow: the row keeps its space.
+        &--labeled {
+            padding-block-start: $givewp-list-table-search-label-block;
+        }
+    }
+
+    &__search {
+        max-inline-size: 100%;
+
+        > * {
+            min-inline-size: 0;
+        }
+    }
+
+    // While rows are selected the bulk actions take the place of the whole toolbar row: the search box,
+    // the filter bar, the view options and the hint keep their place, hidden (also from keyboard and screen
+    // readers), and the bulk bar lies over the row, out of the flow. It can be wider than the search box,
+    // so it must not set the row height: the table never moves when the selection starts or ends.
+    &__bulk-actions {
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline: 0;
+        z-index: 1;
+    }
+
+    &__toolbar-row--labeled &__bulk-actions {
+        inset-block-start: $givewp-list-table-search-label-block;
+    }
+
+    &--has-selection &__search-box,
+    &--has-selection &__hint,
+    &--has-selection &__view-controls,
+    &--has-selection .givewp-list-table-filters {
+        visibility: hidden;
+    }
+
+    // Always at the end edge, also when a screen has no filter bar to fill the row.
+    &__view-controls {
+        flex-shrink: 0;
+        margin-inline-start: auto;
+    }
+
+    // In the narrow layout the view options get their own row under the filters, at the end edge.
+    &__view-controls-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-block-start: var(--givewp-spacing-2);
+        padding-inline: $givewp-list-table-edge;
+    }
+
+    // On a phone the search box takes the whole row, and the filters wrap under it.
+    @media (max-width: $givewp-list-table-narrow) {
+        &__search {
+            flex: 1 1 100%;
+        }
+    }
+
+    // The DataViews wrapper scrolls sideways as a whole when the table is wider than the screen. Pin the
+    // rows around the table to the start edge, so the search, the filters, the settings button and the
+    // pagination stay in view while only the table moves.
+    &__toolbar,
+    .dataviews-footer {
+        position: sticky;
+        inset-inline-start: 0;
+    }
+
+    // While a page loads, the old rows stay until the new ones arrive. After 300 ms (the transition delay, the
+    // same wait the footer text uses, so a fast page shows nothing) they are dimmed. DataViews sets
+    // `aria-busy` on the table and on the cards. The stock spinner under the table is hidden: it sits out of
+    // sight below a long page, and the footer text says the same thing next to the page control.
+    .dataviews-view-table,
+    .dataviews-view-grid {
+        transition: opacity 100ms ease-out;
+    }
+
+    .dataviews-view-table[aria-busy='true'],
+    .dataviews-view-grid[aria-busy='true'] {
+        opacity: 0.6;
+        transition: opacity 150ms ease-in 300ms;
+    }
+
+    .dataviews-loading-more {
+        display: none;
+    }
+
+    // Selection waits for the new rows (the table ignores changes while it loads, see `DataViewsListTable`): the
+    // checkboxes and the bulk actions do not react to the pointer either, so they do not look usable.
+    &--loading {
+        .dataviews-selection-checkbox,
+        .givewp-list-table__card-checkbox,
+        .dataviews-bulk-actions-footer__container,
+        .dataviews-bulk-actions-toolbar {
+            pointer-events: none;
+        }
+    }
+
+    // The visible "Loading…" in the footer, right before the page control. It appears after 300 ms (the
+    // component renders it then) and is hidden from screen readers, which get their own words later.
+    &__loading {
+        align-items: center;
+        color: var(--givewp-list-table-text-secondary);
+        display: inline-flex;
+        font-size: 0.8125rem;
+        gap: var(--givewp-spacing-2);
+
+        .components-spinner {
+            margin: 0;
+        }
+    }
+
+    // The page number box that replaces the stock page select above 100 pages (`ListTablePagination.tsx`). The stock
+    // select is the "minimal" kind: no edge, the same 11 px text as the words around it, a tint on hover and a ring
+    // on focus. The box looks the same, with a light gray fill at rest so it reads as a field (the select has a
+    // chevron). Its width follows the number of digits in the last page (set in the component), so it does not
+    // change size while a number is typed.
+    // `input[type='number']` is in the selector so it beats the WordPress admin form styles (an edge, a 30 px
+    // height, a blue focus edge), which use that selector.
+    input[type='number']#{&}__page-input {
+        appearance: textfield;
+        background: var(--givewp-list-table-page);
+        border: 0;
+        border-radius: 2px;
+        box-shadow: none;
+        box-sizing: border-box;
+        color: inherit;
+        font: inherit;
+        line-height: 1.5;
+        min-block-size: 1.5rem;
+        padding: 0 var(--givewp-spacing-2);
+        text-align: center;
+        text-transform: none;
+
+        &:hover {
+            background: var(--givewp-list-table-hairline);
+        }
+
+        &:focus {
+            background: var(--givewp-shades-white);
+            box-shadow: 0 0 0 1.5px var(--givewp-list-table-action-edge);
+            outline: 2px solid transparent;
+        }
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            appearance: none;
+            margin: 0;
+        }
+    }
+}
+
+// At 782 px and below the list shows one card per record (the DataViews grid layout), stacked in one
+// column. The grid keeps the same side inset as the toolbar, and each card gets a border so the records stay
+// apart without the table's row lines.
+@media (max-width: $givewp-list-table-narrow) {
+    .givewp-list-table {
+        .dataviews-view-grid-items {
+            grid-template-columns: minmax(0, 1fr);
+            gap: var(--givewp-spacing-3);
+            padding-block: var(--givewp-spacing-3);
+        }
+
+        .dataviews-view-grid__card {
+            padding-inline: var(--givewp-spacing-4);
+            padding-block: var(--givewp-spacing-2);
+            border: 1px solid var(--givewp-grey-100);
+            border-radius: var(--givewp-rounded-8);
+
+            &.is-selected {
+                border-color: var(--wp-admin-theme-color);
+            }
+        }
+
+        // The stock card value is `nowrap` and clips, so a long date or campaign name ran past the card
+        // edge. Let it wrap; the one-line clamp then shows its "…".
+        .dataviews-view-grid .dataviews-view-grid__fields .dataviews-view-grid__field .dataviews-view-grid__field-value {
+            white-space: normal;
+        }
+
+        .dataviews-view-grid__title-field {
+            font-weight: 600;
+        }
+
+        // The checkbox Give adds before the card title, in place of the one DataViews shows over media.
+        .givewp-list-table__card-checkbox {
+            flex-shrink: 0;
+        }
+    }
+}

@@ -6,7 +6,11 @@ namespace Give\DonationForms\V2\ListTable\Columns;
 
 use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Models\DonationForm;
+use Give\Framework\ListTable\Formatting\CountFormatter;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Framework\ListTable\Views\GoalLabel;
+use Give\Framework\ListTable\Views\GoalProgress;
+use Give\Framework\ListTable\Views\Placeholder;
 
 /**
  * @since 2.24.0
@@ -36,6 +40,9 @@ class GoalColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Write a count goal in the admin's locale.
+     * @since TBD Show a labeled dash when the form has no goal.
+     * @since TBD Show the goal target with its type, not the current amount, beside a progress ring, and a check with "Goal achieved" once the goal is met or the givewp_list_table_goal_progress_achieved_opacity filter returns a value above 0.
      * @since 4.3.0 use DonationFormDataRepository
      * @since 4.2.0 convert goal data to v3 form format
      * @since 3.16.0 Remove "give_get_form_earnings_stats" filter logic and add filters to change the cell value content
@@ -48,8 +55,10 @@ class GoalColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
+        // Read this way so a subclass that overrides getCellValue($model) keeps working.
+        $locale = func_num_args() > 1 ? (string)func_get_arg(1) : '';
         if (! $model->goalSettings->enableDonationGoal) {
-            return __('No Goal Set', 'give');
+            return Placeholder::dash(__('No Goal Set', 'give'));
         }
 
         /**
@@ -69,40 +78,15 @@ class GoalColumn extends ModelColumn
             'form_id' => $model->id,
         ]);
 
+        // A count goal is written after the filter, so an add-on on it still gets plain numbers.
+        $goal = ! $goalData['typeIsMoney'] && is_numeric($stats['goal'])
+            ? CountFormatter::format($stats['goal'], $locale)
+            : (string)$stats['goal'];
 
-        $template = '
-            <div
-                role="progressbar"
-                aria-labelledby="giveDonationFormsProgressBar-%1$d"
-                aria-valuenow="%2$s"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                class="goalProgress"
-            >
-                <span style="width: %2$s%%"></span>
-            </div>
-            <div id="giveDonationFormsProgressBar-%1$d">
-                <span class="goal">%3$s</span>%4$s %5$s
-            </div>
-        ';
-
-        return sprintf(
-            $template,
+        return GoalProgress::render(
             $model->id,
             $stats['progress'],
-            $stats['actual'],
-            sprintf(
-                ' %s %s',
-                __('of', 'give'),
-                $stats['goal']
-            ),
-            sprintf(
-                '<span style="opacity:%1$s" class="goalProgress--achieved"><img src="%2$s" alt="%3$s" />%4$s</span>',
-                apply_filters('givewp_list_table_goal_progress_achieved_opacity', $stats['progress'] >= 100 ? 1 : 0),
-                GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/star-icon.svg',
-                __('Goal achieved icon', 'give'),
-                __('Goal achieved!', 'give')
-            )
+            GoalLabel::make($model->goalSettings->goalType->getValue(), $stats['raw_goal'], $goal)
         );
     }
 }

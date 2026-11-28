@@ -5,14 +5,18 @@ namespace Give\DonationForms\V2\ListTable;
 use Give\DonationForms\V2\ListTable\Columns\CampaignColumn;
 use Give\DonationForms\V2\ListTable\Columns\DateCreatedColumn;
 use Give\DonationForms\V2\ListTable\Columns\DonationCountColumn;
+use Give\DonationForms\V2\ListTable\Columns\DonorCountColumn;
 use Give\DonationForms\V2\ListTable\Columns\DonationRevenueColumn;
 use Give\DonationForms\V2\ListTable\Columns\GoalColumn;
 use Give\DonationForms\V2\ListTable\Columns\IdColumn;
 use Give\DonationForms\V2\ListTable\Columns\StatusColumn;
 use Give\DonationForms\V2\ListTable\Columns\TitleColumn;
 use Give\Framework\ListTable\ListTable;
+use Give\Framework\ListTable\StatusVocabulary;
+use Give\DonationForms\V2\ValueObjects\DonationFormStatus;
 
 /**
+ * @since TBD Send the status vocabulary.
  * @since 2.24.0
  */
 class DonationFormsListTable extends ListTable
@@ -28,6 +32,7 @@ class DonationFormsListTable extends ListTable
     }
 
     /**
+     * @since TBD Put Status right after the title, then ID and Date, and add the Donors column.
      * @since 4.19.0 Add the Campaign column.
      * @since 2.24.0
      *
@@ -36,18 +41,20 @@ class DonationFormsListTable extends ListTable
     public function getDefaultColumns(): array
     {
         return [
-            new IdColumn(),
             new TitleColumn(),
+            new StatusColumn(),
+            new IdColumn(),
+            new DateCreatedColumn(),
             new CampaignColumn(),
             new GoalColumn(),
             new DonationCountColumn(),
+            new DonorCountColumn(),
             new DonationRevenueColumn(),
-            new DateCreatedColumn(),
-            new StatusColumn(),
         ];
     }
 
     /**
+     * @since TBD Hide the Goal column by default.
      * @since 4.19.0 Add the Campaign column.
      * @since 2.24.0
      *
@@ -59,11 +66,18 @@ class DonationFormsListTable extends ListTable
             IdColumn::getId(),
             TitleColumn::getId(),
             CampaignColumn::getId(),
-            GoalColumn::getId(),
             DonationCountColumn::getId(),
             DonationRevenueColumn::getId(),
             DateCreatedColumn::getId(),
             StatusColumn::getId(),
         ];
+    }
+
+    /**
+     * @since TBD
+     */
+    protected function statuses(): ?StatusVocabulary
+    {
+        return DonationFormStatus::vocabulary();
     }
 }

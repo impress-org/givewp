@@ -26,6 +26,7 @@ class FormColumnTest extends TestCase
 
         $this->assertStringContainsString('Spring Form', $cell);
         $this->assertStringContainsString('post.php?post=42', $cell);
+        $this->assertStringContainsString('title="Spring Form"', $cell);
     }
 
     /**

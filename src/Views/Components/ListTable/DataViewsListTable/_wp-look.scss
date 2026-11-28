@@ -1,0 +1,47 @@
+// Table-only rules for the A+ look. Every selector starts at `.givewp-list-table .dataviews-view-table`.
+// Nothing here may reach the DataViews footer or the pager (`wpLookScope.test.ts` enforces it).
+// These override the pinned `@wordpress/dataviews` 10.1.7 styles; re-check them when the pin moves.
+// Rows keep the stock DataViews height (56px at the default density) on purpose. The header, the
+// titles and the links use the stock DataViews styles. Only the selected row text and the
+// secondary text color are ours.
+.givewp-list-table .dataviews-view-table {
+    color: var(--givewp-list-table-text-secondary);
+
+    // Stock selected rows use #757575 text, which fails on the tint.
+    tr.is-selected {
+        color: var(--givewp-list-table-text);
+    }
+
+    // Relaxes the stock `min-width: 15ch` (about 123px) on cells and on the title cell, so a narrow
+    // column (an ID, a count) is as wide as its content. The stock `max-width: 80ch` stays.
+    .dataviews-view-table__cell-content-wrapper:not(.dataviews-column-primary__media),
+    .dataviews-view-table__primary-column-content:not(.dataviews-column-primary__media) {
+        min-inline-size: 0;
+    }
+
+    // Lets a long name wrap when the table is tight, so the full name stays visible. The stock
+    // `max-width: 80ch` stays, so on a wide screen the name is on one line and takes the room it needs.
+    // Relaxes the stock `white-space: nowrap` on `.dataviews-title-field` and on its link
+    // (`.dataviews-title-field a`), which would not wrap the name and would run it into the next
+    // column. `min-inline-size` keeps the column from collapsing: the table scrolls sideways first.
+    .dataviews-view-table__cell-content-wrapper.dataviews-title-field {
+        min-inline-size: 20ch;
+        white-space: normal;
+        overflow-wrap: break-word;
+
+        a {
+            white-space: normal;
+        }
+    }
+
+    // Our own one-line clamp (InterweaveSSR/styles.scss) needs a capped width, because a table cell is
+    // `nowrap` and a long campaign name would grow the column. The columns share free width by fixed
+    // shares, not by their text, so the minimum grows with the window: 11rem up to about 1600px, then
+    // wider, up to 26rem. The minimum is only for the table: in the phone cards the value must shrink so
+    // the "…" shows.
+    .givewp-truncated-text {
+        min-inline-size: clamp(11rem, calc(25vw - 14rem), 26rem);
+        max-inline-size: 26rem;
+        white-space: normal;
+    }
+}

@@ -1,0 +1,13 @@
+// Needs the `--givewp-list-table-*` tokens of an ancestor.
+.givewp-add-on-tag {
+    background: var(--givewp-list-table-status-neutral-bg);
+    border-radius: var(--givewp-rounded-2);
+    color: var(--givewp-list-table-tag-text);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    // A short line height, so the tag stays lower than the button or the tile row around it.
+    line-height: 1.25;
+    padding-inline: 0.375rem;
+    // "Add-on" must not break at its hyphen.
+    white-space: nowrap;
+}

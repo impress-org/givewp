@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Give\DonationForms\V2\ListTable\Columns;
 
 use Give\DonationForms\V2\Models\DonationForm;
+use Give\Framework\ListTable\ColumnKind;
+use Give\Framework\ListTable\Formatting\MoneyFormatter;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Framework\ListTable\Views\Placeholder;
 
 /**
  * @since 2.24.0
@@ -36,6 +39,7 @@ class LevelsColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Format with the shared money formatter, which follows the browser's language when "Auto-format currency" is on.
      * @since 2.24.0
      *
      * @inheritDoc
@@ -45,30 +49,30 @@ class LevelsColumn extends ModelColumn
     public function getCellValue($model, $locale = ''): string
     {
         if (empty($model->levels)) {
-            return __('No Levels', 'give');
+            return Placeholder::dash(__('No Levels', 'give'));
         }
 
         return sprintf(
             '<div class="amount"><span>%s</span></div>',
-            $this->getLevels($model->levels, $locale)
+            $this->getLevels($model->levels, (string)$locale)
         );
     }
 
     /**
+     * @since TBD Format with the shared money formatter.
      * @since 2.24.0
      *
      * @param array $levels
-     * @param string $locale
      *
      * @return string
      */
     private function getLevels(array $levels, string $locale): string
     {
         if (count($levels) === 1) {
-            return $levels[0]->amount->formatToLocale($locale);
+            return MoneyFormatter::format($levels[0]->amount, $locale);
         }
 
-        $levelsAmount = array_map(function ($level) use ($locale) {
+        $levelsAmount = array_map(function ($level) {
             return $level->amount->formatToDecimal();
         }, $levels);
 
@@ -76,13 +80,25 @@ class LevelsColumn extends ModelColumn
         $max = $levels[array_search(max($levelsAmount), $levelsAmount)];
 
         if ($min === $max) {
-            return $min->amount->formatToLocale($locale);
+            return MoneyFormatter::format($min->amount, $locale);
         }
 
         return sprintf(
             '%s - %s',
-            $min->amount->formatToLocale($locale),
-            $max->amount->formatToLocale($locale)
+            MoneyFormatter::format($min->amount, $locale),
+            MoneyFormatter::format($max->amount, $locale)
         );
+    }
+
+    /**
+     * The cell is a range of amounts or the text "No Levels", so it is not one money value.
+     *
+     * @since TBD
+     *
+     * @inheritDoc
+     */
+    public function getKind(): string
+    {
+        return ColumnKind::TEXT;
     }
 }

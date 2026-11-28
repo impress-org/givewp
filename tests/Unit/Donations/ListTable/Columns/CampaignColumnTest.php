@@ -53,5 +53,6 @@ class CampaignColumnTest extends TestCase
 
         $this->assertStringContainsString('Spring Drive', $cell);
         $this->assertStringContainsString("id={$campaign->id}", $cell);
+        $this->assertStringContainsString('title="Spring Drive"', $cell);
     }
 }

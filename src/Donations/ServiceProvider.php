@@ -3,6 +3,7 @@
 namespace Give\Donations;
 
 use Give\Donations\Actions\LoadDonationAdminOptions;
+use Give\Donations\Counters\DonationCountersCommand;
 use Give\Donations\CustomFields\Controllers\DonationDetailsController;
 use Give\Donations\LegacyListeners\ClearDonationPostCache;
 use Give\Donations\LegacyListeners\DispatchDonationNoteEmailNotification;
@@ -16,6 +17,7 @@ use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
 use Give\Donations\LegacyListeners\UpdateDonationMetaWithLegacyFormCurrencySettings;
 use Give\Donations\Listeners\DonationCreated\UpdateDonationMetaWithCurrencySettings;
 use Give\Donations\Listeners\DonationCreated\UpdateDonorMetaWithLastDonatedCurrency;
+use Give\Donations\Counters\SyncDonationCounters;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Migrations\AddIndexesToDonationMetaTable;
 use Give\Donations\Migrations\AddIndexToSequentialOrderingTable;
@@ -27,20 +29,26 @@ use Give\Donations\Migrations\SetAutomaticFormattingOption;
 use Give\Donations\Migrations\UnserializeTitlePrefix;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationNotesRepository;
+use Give\Donations\Counters\DonationCounters;
+use Give\Donations\Counters\DonationCountersRebuild;
+use Give\Donations\Counters\DonationCountersSchedule;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
+use WP_CLI;
 
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
+     * @since TBD Register the donation counters listener as a singleton.
      * @inheritDoc
      */
     public function register()
     {
         give()->singleton('donations', DonationRepository::class);
         give()->singleton('donationNotes', DonationNotesRepository::class);
+        give()->singleton(SyncDonationCounters::class);
         give()->singleton(DonationsListTable::class, function () {
             $listTable = new DonationsListTable();
             Hooks::doAction('givewp_donations_list_table', $listTable);
@@ -50,12 +58,14 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since TBD Boot the donation counters.
      * @inheritDoc
      */
     public function boot()
     {
         $this->bootListeners();
         $this->bootLegacyListeners();
+        $this->bootDonationCounters();
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
         $this->loadDonationAdminOptions();
@@ -145,6 +155,39 @@ class ServiceProvider implements ServiceProviderInterface
             // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renders the full donation details page; its view escapes its own values.
             echo (new DonationDetailsController())->show($donationId);
         });
+    }
+
+    /**
+     * Keeps the donation counters up to date on every write, recounts them in the background, and
+     * adds the `wp give donation-counters` command.
+     *
+     * Not registered on table storage: the counters read wp_posts and give_donationmeta directly,
+     * and counts from give_donations replace them there.
+     *
+     * @since TBD
+     */
+    private function bootDonationCounters()
+    {
+        if (DonationCounters::usesTableStorage()) {
+            return;
+        }
+
+        give(SyncDonationCounters::class)->register();
+
+        $rebuild = static function () {
+            (new DonationCountersRebuild())();
+        };
+
+        add_action(DonationCountersSchedule::REBUILD_HOOK, $rebuild);
+        add_action(DonationCountersSchedule::RECOUNT_HOOK, $rebuild);
+
+        add_action('action_scheduler_ensure_recurring_actions', static function () {
+            DonationCountersSchedule::ensureScheduled(DonationCounters::read()['builtAt'], true);
+        });
+
+        if (defined('WP_CLI') && WP_CLI) {
+            WP_CLI::add_command('give donation-counters', DonationCountersCommand::class);
+        }
     }
 
     /**

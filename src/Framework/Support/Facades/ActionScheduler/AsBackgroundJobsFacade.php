@@ -43,6 +43,53 @@ class AsBackgroundJobsFacade
     }
 
     /**
+     * Schedules a recurring action unless one is already pending or running. This does not use
+     * getActionByHookArgsGroup(), which also matches completed and canceled actions and would stop
+     * a canceled schedule from ever coming back.
+     *
+     * @since TBD
+     *
+     * @param int    $timestamp         When the first instance runs.
+     * @param int    $intervalInSeconds How long to wait between runs.
+     * @param string $hook              The hook to trigger.
+     * @param array  $args              Arguments to pass when the hook triggers.
+     * @param string $group             The group to assign this job to.
+     */
+    public function scheduleRecurringAction(
+        int $timestamp,
+        int $intervalInSeconds,
+        string $hook,
+        array $args,
+        string $group
+    ): void {
+        if (as_has_scheduled_action($hook, $args, $group)) {
+            return;
+        }
+
+        as_schedule_recurring_action($timestamp, $intervalInSeconds, $hook, $args, $group);
+    }
+
+    /**
+     * Schedules an action to run once, unless one with the same hook and group is already pending or
+     * running, whatever its arguments.
+     *
+     * @since TBD
+     *
+     * @param int    $timestamp When the action runs.
+     * @param string $hook      The hook to trigger.
+     * @param array  $args      Arguments to pass when the hook triggers.
+     * @param string $group     The group to assign this job to.
+     */
+    public function scheduleSingleAction(int $timestamp, string $hook, array $args, string $group): void
+    {
+        if (as_has_scheduled_action($hook, null, $group)) {
+            return;
+        }
+
+        as_schedule_single_action($timestamp, $hook, $args, $group, true);
+    }
+
+    /**
      * @since 3.6.0
      *
      * @param string $hook         The hook to trigger.

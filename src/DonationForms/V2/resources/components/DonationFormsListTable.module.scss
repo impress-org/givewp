@@ -1,0 +1,84 @@
+// Styles of the Donation Forms list only: the title cell and the placement of the upgrade tip.
+
+// The form title keeps the stock DataViews title style. The title, the builder icon and the Default
+// pill flow inline, so a long title wraps and the pill stays on the title line.
+.titleContainer {
+    display: block;
+    min-width: 0;
+}
+
+// The stock table style makes a link a block, which would push the pill under the title.
+.titleContainer .migratedForm a {
+    display: inline;
+}
+
+.defaultFormPill {
+    display: inline-block;
+    white-space: nowrap;
+    color: var(--givewp-list-table-text-secondary);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.migratedForm {
+    display: inline;
+    min-width: 0;
+    // The gap before the "Default" tag is here, so a tag that wraps under a long name is not indented.
+    margin-inline-end: var(--givewp-spacing-2);
+
+    :global(.interweave) {
+        min-width: 0;
+    }
+
+    .tooltipContainer {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        margin-inline-end: var(--givewp-spacing-1);
+        vertical-align: middle;
+        z-index: 2;
+
+        svg {
+            fill: #3a21d9;
+        }
+    }
+
+    .tooltip {
+        display: none;
+        width: 230px;
+        bottom: 25px;
+        left: -10px;
+    }
+
+    .tooltip::after {
+        top: 100%;
+        left: 14px;
+    }
+
+    .tooltipContainer:hover .tooltip {
+        display: unset;
+    }
+}
+
+// The "Uses the Visual Form Builder" hover tip next to the cube icon.
+.migratedForm {
+    .tooltip {
+        position: absolute;
+        background-color: #19661c;
+        color: var(--givewp-shades-white);
+        padding: 1rem;
+        border-radius: 4px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05);
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .tooltip::after {
+        content: ' ';
+        position: absolute;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #19661c transparent transparent transparent;
+    }
+}

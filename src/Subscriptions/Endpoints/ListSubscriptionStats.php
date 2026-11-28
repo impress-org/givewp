@@ -3,6 +3,7 @@
 namespace Give\Subscriptions\Endpoints;
 
 use Give\Framework\Database\DB;
+use Give\Framework\ListTable\Formatting\StatsFormatter;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -42,12 +43,19 @@ class ListSubscriptionStats extends Endpoint
                         'required' => false,
                         'default' => give_is_test_mode(),
                     ],
+                    'locale' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'default' => '',
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
                 ],
             ]
         );
     }
 
     /**
+     * @since TBD Add formatted values.
      * @since 4.12.0
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
@@ -56,7 +64,7 @@ class ListSubscriptionStats extends Endpoint
 
         $statistics = $this->getSubscriptionStatistics();
 
-        return new WP_REST_Response($statistics);
+        return new WP_REST_Response(StatsFormatter::withFormatted($statistics, ['totalContributions'], (string)$request->get_param('locale')));
     }
 
     /**
@@ -121,7 +129,4 @@ class ListSubscriptionStats extends Endpoint
         ];
     }
 }
-
-
-
 

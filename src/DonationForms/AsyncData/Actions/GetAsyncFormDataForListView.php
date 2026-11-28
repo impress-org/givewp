@@ -7,6 +7,7 @@ use Give\DonationForms\AsyncData\AsyncDataHelpers;
 use Give\DonationForms\AsyncData\FormGrid\FormGridViewOptions;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys;
+use Give\Framework\ListTable\Formatting\MoneyFormatter;
 
 /**
  * @since 3.16.0
@@ -14,6 +15,7 @@ use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys;
 class GetAsyncFormDataForListView
 {
     /**
+     * @since TBD Format the revenue with the shared money formatter.
      * @since 3.20.0 Check if form goal is enabled
      * @since 3.16.0
      */
@@ -61,7 +63,7 @@ class GetAsyncFormDataForListView
         $revenue = $amountRaised;
         if (0 === $revenue && $this->isAsyncRevenue()) {
             $revenue = AsyncDataHelpers::getFormRevenueValue($formId);
-            $revenue = give_currency_filter(give_format_amount($revenue));
+            $revenue = MoneyFormatter::fromDecimal($revenue);
         }
 
         $response = [

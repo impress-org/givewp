@@ -31,7 +31,7 @@ if (empty($showLegacy)) {
 }
 ```
 
-Two consequences worth internalising:
+Two consequences worth internalizing:
 
 - **A bug report about "the donations page" is ambiguous** until you know which UI the reporter is
   on. The fix location is completely different, and neither implementation shares code with the
@@ -51,8 +51,9 @@ A modern list table has three parts:
    `Give\Framework\ListTable\ListTable`, declaring `ModelColumn` objects.
 2. **A REST endpoint** (`src/<Domain>/Endpoints/List*.php`) that runs the query, calls
    `$listTable->items($models)`, and returns rows.
-3. **A React page** (`src/Views/Components/ListTable/`) that fetches from the endpoint with SWR.
-   See its [README](../../src/Views/Components/ListTable/README.MD) for the component props.
+3. **A React page** (`src/Views/Components/ListTable/`) that renders the rows through the WordPress
+   list engine, `@wordpress/dataviews`. See [The React page](#the-react-page-dataviews) below and the
+   folder's [README](../../src/Views/Components/ListTable/README.MD).
 
 Donations, Donors, Subscriptions, Campaigns, Event Tickets and v2 Donation Forms each have their
 own set. The v2 forms list is a different, older system — see
@@ -96,7 +97,7 @@ on a 100-row page writes 100 log entries per page view, into the database. Sites
 log tables this way. If you're debugging slow admin pages and the log table is huge, suspect a
 throwing column before anything else.
 
-## Two caches, two designs
+## Caches and counters
 
 ### Campaigns: an options-table cache
 
@@ -120,12 +121,21 @@ Things to know before touching this:
   donations gets a zero row so it counts as cached and is not re-queried on every page load.
   Before this, a warm cache returned early and a campaign absent from it showed no stats until
   `CacheCampaignData` ran for it.
-- **The cache is live-mode only.** `CampaignsDataQuery` filters by `give_is_test_mode()` but the
-  options carry no mode, so a test-mode write would poison the live figures. In test mode
-  `campaigns()` queries every id directly and writes nothing. `CacheCampaignData` and the
-  `CacheCampaignsData` migration force live mode through the `give_is_test_mode` filter while they
-  run, so a refresh queued by a live donation still lands even if test mode was switched on before
-  Action Scheduler picked it up.
+- **Test mode has its own cache.** `CampaignsDataQuery` filters by `give_is_test_mode()` and the options
+  carry no mode, so they hold live stats only. Test mode stores the same rows in a transient that lasts five
+  minutes (`TestModeStatsCache`, internal). It is not refreshed: any donation or subscription change, a
+  deletion (so "Delete Test Transactions" too) or a campaign merge drops it (`ServiceProvider::
+  clearTestModeStatsOnChanges()`). The transient is named after a token and dropping it removes the token, so
+  a request that is still counting cannot bring old figures back. A change that fires no hook, such as raw
+  SQL, shows after at most five minutes.
+- **The fill reads again before it writes.** Just before the write, `campaigns()`
+  reads the option again and adds only the campaigns it has no row for, so a row a refresh wrote
+  meanwhile is never overwritten.
+- **`CampaignsDataRepository::getRows()` is internal.** Live goals (SOFT-5098) replace this cache, so
+  it can go without a deprecation.
+- **The v2 forms list reads campaign goals through this cache** (`DonationFormDataRepository::
+  setFormsCampaignGoals()`), so a form with a campaign goal shows the same figures as its campaign
+  row in the campaigns list, with the same lag.
 - **Both readers and all writers use `give_campaigns_subscriptions_data`.** Until the fix, the two
   readers used a singular key, so the subscriptions cache never hit. The
   `Campaigns/Migrations/FlushCampaignsDataCache` migration drops both options once so no site
@@ -136,6 +146,133 @@ Things to know before touching this:
   `wp_options.autoload` for these two keys before assuming.
 - **Full rebuild** is the `Campaigns/Migrations/CacheCampaignsData` migration, which deletes both
   options and repopulates. That's the recovery path when the cache is wrong.
+
+### Donation totals: counters plus a 60 second transient
+
+The totals the donation endpoints compute over every donation are the Donations list count
+(`ListDonations::getTotalDonationsCount()`) and the Donations stats (`ListDonationsStats`). At a
+million donations each reads a meta row per donation and can take tens of seconds. Everything else
+is live: the donor and subscription counts and the subscriptions stats are indexed.
+
+The endpoints ask one place for a total, `Donations/Counters/DonationTotals::resolve()`:
+
+1. A value counted by the donation counters (below) is returned as is.
+2. Otherwise the total is read from a transient, `give_donation_total_` plus the md5 of the SQL
+   that computes it. The `%` placeholder that `$wpdb->prepare()` puts in a `LIKE` changes per
+   request, so the key drops it.
+3. On a miss, or when the caller needs a live total, the total is computed and stored in the
+   transient.
+
+The transient lives 60 seconds. The filter `givewp_donation_totals_ttl` sets it; `0` turns the
+transient off, so every request computes the total. Staleness is bounded by time, not by catching
+every write: a write that bypasses the hooks (raw SQL, such as Reset Stats, a campaign merge or a
+form migration) can leave a total wrong for at most that long. There is no change tracking, no lock
+and no background refresh. Two requests that miss at once both compute the total; that costs a
+duplicate query, but no PHP worker waits for another.
+
+This is a stopgap. Counts from the `give_donations` table replace the counters and the transient
+(SOFT-5015), and `DonationTotals` is the one class that changes. It, the counters and the filter are
+`@internal`: do not build on them.
+
+- **Never for choosing rows.** See "A cached total never picks rows" below: a displayed count may
+  lag, a donation may never go missing.
+- **Private.** The transient only holds numbers and the stats row; no donor data. Every endpoint that
+  reads it checks permissions first, and the totals do not depend on who asks.
+- **Date ranges need no rounding.** The filter bar sends whole days (`T00:00:00` to `T23:59:59`), so
+  the same range gives the same key. Rounding on the server would change what an API client asked
+  for.
+
+### Donation counters: updated on every write
+
+`Donations/Counters/DonationCounters` answers the Donations screen's displayed numbers without a
+query over the donations: the three stat tiles (`ListDonationsStats`) and the list count when the
+request has no date range and filters only on status and mode (`ListDonations::countByMode()`).
+Everything else (search, campaign, form, donor, dates) still uses the computed totals above.
+
+The counters are a temporary stopgap (SOFT-5015), off on table storage: when the option
+`give_donation_storage` is `table`, `DonationCounters::isEnabled()` is false and the listener, the
+recounts and the CLI command are not registered, because counts from `give_donations` replace them.
+(`classify()` and the rebuild read `wp_posts` and `give_donationmeta` directly.)
+
+- **One bucket per donation.** Each donation is in exactly one bucket named after its mode (test when
+  it has a `_give_payment_mode = test` row), its type (recurring when it has a `subscription_id` row
+  of `'1'` or more, the `RecurringDonationCondition` rule) and its post status:
+  `give_donation_count_{live|test}_{onetime|recurring}_{status}`. Tiles and counts are sums of buckets
+  (every status but `trash` unless the request names statuses).
+- **Storage.** One `wp_options` row per bucket, not autoloaded, only ever changed with
+  `INSERT ... ON DUPLICATE KEY UPDATE option_value = option_value + delta` (one statement per write,
+  rows in a fixed order). The option name is a unique key, so concurrent writers never lose an
+  update (20 parallel processes measured). Rows are read with one direct `SELECT`, never through
+  `get_option()`, so a persistent object cache cannot serve an old copy. Numbers only, no donor data.
+- **Every write moves the donation.** `Donations/Counters/SyncDonationCounters` reads the donation's
+  bucket from the database in each write path's before hook and again in its after hook, and moves
+  it. Hooks covered: the model (`givewp_donation_creating`/`created`, `updating`/`updated`,
+  `deleting`/`deleted`, `trashing`/`trashed`, `untrashing`/`untrashed`), the post API
+  (`wp_insert_post_data` + `save_post_give_payment` for inserts, `pre_post_update`/`post_updated`,
+  `before_delete_post`/`deleted_post`, which also cover `wp_trash_post` and `wp_untrash_post`), the
+  `donation` and `payment` metadata hooks for the mode and subscription keys, and the legacy
+  `give_insert_payment`, `give_update_payment_status` and `give_payment_deleted`. Since the handler
+  re-reads the bucket, the same change seen by several hooks (model hook, then the legacy hook the
+  bridge dispatches, then the post hooks) moves the donation once. Old state is never guessed: an after
+  hook with no before hook in the same request moves the donation only for a create; otherwise the
+  counters are marked dirty. A model write changes its meta inside a database transaction, so its meta
+  hooks are skipped and the model's after hook counts the donation once committed (a counter update
+  inside that transaction could deadlock and roll back the donation write).
+- **A counter update never fails a write.** Every handler catches its own errors and marks the
+  counters dirty instead. Cost per write, measured in a local test: a model create adds 5 queries (2
+  reads of the donation, 3 writes to `wp_options`) and a status change adds 6. In both cases they take
+  about 1 ms or less in total.
+- **Dirty means not used.** `give_donation_counters_dirty` grows on a write that could not be counted
+  exactly, on a page read that contradicts a counted total, and on a negative bucket;
+  `give_donation_counters_clean` is the dirty value the last recount covered. While dirty (or never
+  built, or turned off) the endpoints use the computed totals (the transient path), and a recount runs about a minute
+  later (one Action Scheduler action, `givewp_donation_counters_recount`, however many writes asked).
+- **The full rebuild.** `DonationCountersRebuild` recounts every bucket with the index-driven counts
+  of the stats endpoint grouped by status (3 million rows read at 1M donations, 11-22 s), inside one
+  `REPEATABLE READ` snapshot that also reads the counters. Each bucket then gets
+  `count + (recount - counter in the snapshot)` atomically, so writes that land while it counts are
+  kept. The one unsafe moment is a write whose data is committed but whose counter update is not: each
+  request holds a `give_donation_counters_writing_*` row between its before and after hooks, and the
+  rebuild starts only a snapshot that sees none (it retries for about ten seconds, then applies its
+  result and marks the counters dirty). Runs one at a time (`DonationTotalsLock`, used by the rebuild only). On demand:
+  `wp give donation-counters rebuild`; `status` shows the counters and `verify` compares them with a
+  direct recount.
+- **Never for choosing rows.** Same rule as the totals above: a page read forward bounds the displayed
+  total, a deep page counts live. A forward page that contradicts a counted total marks the counters
+  dirty, and so does a deep page's live count that differs from a counter that did not move while it
+  ran (if it moved, a write happened meanwhile and the two cannot be compared).
+- **Writes that skip the hooks.** Reset Stats deletes every `%give%` option (the counter rows, and the
+  total transients that sit in the options table) and the scheduled actions, so afterwards the counters
+  read as never built and the screens compute the totals until a recount runs. With an external
+  object cache the transients live there, not in the options table, so Reset Stats does not remove
+  them: a total there lasts until its lifetime ends (60 seconds by default, set with `givewp_donation_totals_ttl`). A campaign merge or form migration changes
+  neither mode, type nor status, so the counters stay right, and filtered totals catch up within the
+  transient's lifetime (60 seconds by default).
+
+Filters:
+
+| Filter | Default | Meaning |
+|:--|:--|:--|
+| `givewp_donation_counters_rebuild_interval` | `3600` | Seconds between scheduled full rebuilds. Read on every scheduling decision (reads check at most every 10 minutes, and Action Scheduler's daily `action_scheduler_ensure_recurring_actions`), and a scheduled action with another interval is replaced. `0` or less turns the scheduled rebuild off: the counters then rely on the writes, the recount after a dirty write and the command, so drift from raw SQL stays until the next dirty mark or a manual rebuild. Values under `60` are raised to `60`; a value that is not a number falls back to `3600`. |
+| `givewp_donation_counters_enabled` | `true` | `false` stops reading and updating the counters; the screens use the computed totals. The first write while off marks the counters dirty, so turning them back on recounts before they are used. |
+
+```php
+// Recount every 15 minutes.
+add_filter('givewp_donation_counters_rebuild_interval', static function () {
+    return 15 * MINUTE_IN_SECONDS;
+});
+
+// Turn the counters off.
+add_filter('givewp_donation_counters_enabled', '__return_false');
+```
+
+What is not covered, so only the next rebuild (or a dirty mark) fixes it: raw SQL writes to
+`wp_posts` or `wp_give_donationmeta`; a `delete_metadata()` call for every donation at once; a
+change to the same donation made by two requests at the same moment (each moves it from the bucket it
+read); mode or subscription meta changes made in a request while a model create in it is unfinished (a
+create that threw): they are skipped and the counters are marked dirty at the end of the request; a database proxy that sends
+the rebuild's reads to a replica (the snapshot then does not hold). A deleted or recreated
+`give_donation_counters_*` row is detected as "never built" or dirty.
 
 ### v2 forms list: async columns, not caching
 
@@ -202,7 +339,7 @@ Two rules that fall out of the same profiling, and apply to any endpoint that fi
   `ID NOT IN (SELECT donation_id FROM give_donationmeta WHERE meta_key = '_give_payment_mode' AND
   meta_value = 'test')`, and name or email search is `ID IN (... WHERE meta_key IN (first, last)
   AND meta_value LIKE 'term%')`. A `LEFT JOIN ... WHERE meta IS NULL OR meta <> 'test'`, or a
-  `HAVING` on a joined column, forces the full join to materialise first. And group any `OR` you
+  `HAVING` on a joined column, forces the full join to materialize first. And group any `OR` you
   do write with a closure `where(function ($q) { ... })`: an ungrouped `orWhere()` binds looser
   than the preceding `AND`s and silently drops them, which is how trashed donations once leaked
   into the live list.
@@ -219,6 +356,654 @@ expression over several (sorting the list by amount is still a full scan), and n
 aggregates that must touch every row; those remain the case for moving donations into their own
 table.
 
+Three more rules from the 1M-donation profiling (SOFT-5634):
+
+- **Count from the mode rows when nothing else touches meta.** With only status and date filters,
+  `ListDonations::countByMode()` counts test-mode donations by joining *from* the
+  `_give_payment_mode = test` rows to `posts` (`STRAIGHT_JOIN`). Those rows sit together in the
+  `(meta_key, meta_value)` index and in the table, so the read is sequential: about 5 to 20 seconds
+  cold at a million rows, against about 50 for the `ID IN (subquery)` form, which probes the meta
+  of every post. A live-mode total is all matching posts minus the test-mode ones. A class that
+  extends `ListDonations` never takes this path, since it may add conditions.
+- **A cached total never picks rows.** An admin must always find the donation they look for, so
+  which rows a page returns may not depend on a total that can be outdated (a write that skipped
+  the hooks, or the transient's lifetime, 60 seconds by default). The cached total only fills `totalItems` and
+  `totalPages`. Pages in the first half are read forward with an offset, one row more than the
+  page: a short page fixes the total, and a row after a full page raises it, so the pager always
+  reaches the last rows even when the cached total is low.
+- **Read a deep page from the other end, after a live count.** When the list is sorted by ID alone
+  and the page is past the middle of the cached total, or past its end, `ListDonations` counts the
+  matches against the database first (bypassing the cache), then `getIdPageWindow()` reads the
+  page in the opposite direction with a short offset; the hydrate step re-sorts. A page past the
+  live total is not queried. The deep page costs one live count (about 15 to 30 seconds for all
+  test-mode donations at a million, a second or two for a campaign) instead of an offset walk over
+  every skipped row (65 seconds for the last page). A class that extends `ListDonations` always
+  reads forward.
+- **A count joins only the meta its filters read.** `Model::query()->count()` keeps every
+  attach-meta join (32 for donations, 5 for donors). The v3 donations route and `DonorsQuery`
+  count with only the joins their conditions name.
+- **Stats count from indexes and derive the rest.** `ListDonationsStats` never joins meta onto every
+  donation. All donations come from the posts' type and status index, test-mode ones from the mode
+  rows (as above) and recurring ones from the subscription rows, each joined to `posts` in that
+  order with `STRAIGHT_JOIN`. Live mode is the whole minus test mode; one-time is the total minus
+  recurring, so the three tiles always add up (a donation with no subscription row is one-time).
+  About 20 seconds cold at a million donations, against 70 to 115 for the old LEFT JOIN of both
+  meta rows. The floor is the mode count: the value index is a prefix index, so MySQL reads each
+  matching row to confirm it, and the rows are spread over the whole table.
+- **Recurring means `subscription_id >= '1'`, in one place.** `RecurringDonationCondition` is shared
+  by the stats and the `donationType` filter the tiles link to. `NOT IN ('', '0')`, `> '0'` and
+  `< '0'` look selective, but on the prefix index they read every `'0'` row, and every donation made
+  through the model stores `subscription_id = 0`: a full pass over the key (the recurring filter
+  took 188 seconds at a million donations; with the range it reads only recurring rows). The range
+  leaves out values no writer stores, such as `'05'` or `'-1'`.
+
+## Rows first, totals apart: `withCount=false` and `/count`
+
+A list request used to wait for its total. The total is the slow part on a large site (the first
+request, a search, the Live tab, the last page), and it only feeds numbers on screen. So the six
+list routes (donations, donors, subscriptions, donation forms, campaigns, events) can send them
+apart. The shared helper is `Framework/ListTable/ListCount`. Five of them are under `give-api/v2`
+and the campaigns one is under `givewp/v3`; none is a v3 resource route. See
+[The list routes are an exception](pii.md#the-list-routes-are-an-exception).
+
+- **Rows request.** `GET <route>?...&withCount=false` returns the same keys as before, without
+  `totalItems` and `totalPages`, and with `hasNextPage` (the endpoint reads `perPage + 1` rows and
+  drops the extra one). Without `withCount=false` the response is exactly what it was, so add-ons
+  and the legacy tables are not affected.
+- **Count request.** `GET <route>/count?...` takes the same filter and search parameters (page and
+  sort are ignored, `perPage` decides `totalPages`) and returns `{"totalItems": int, "totalPages": int}`.
+  It has the same permission check as the list, and it reads the total through the same method the
+  list uses (`getTotal...Count()`, with the donation counters, the 60 second transient and
+  the live count above), so the two numbers cannot disagree.
+- **Deep donation pages still count.** Reading a page from the other end needs the total. A donations
+  rows request that begins at row 10,000 or later (`DEEP_PAGE_OFFSET`) therefore counts first, as the
+  list does, and then also sends `totalItems` and `totalPages`. A client uses them when present.
+- **Rows never come from a total.** A cached or counted number only feeds what is displayed and the
+  page jumps. The rows request reads the rows from the database every time, so a stale total can
+  hide nothing. Tested by adding a donation after the count was cached.
+- **A new filter needs no extra work.** The count route and the list share `getWhereConditions()`, so
+  a filter added there is in both.
+
+## The React page: DataViews
+
+Every list screen renders through `ListTablePage`, which hands the rows to `@wordpress/dataviews`.
+Columns come from `ModelColumn::toArray()`; small pure functions in `ListTable/adapters/` turn them
+and the actions into DataViews fields and actions, and turn the view back into the endpoint's request
+parameters (`viewToParameters`). Filters are declared per entity (see [Filters](#filters)). The view
+itself is assembled in `ListTable/state/` (see [View state](#view-state)). Sorting, filtering,
+searching and paging stay on the server.
+
+- **Stock behavior inside the list.** Toolbar, view options, row menu, selection bar, loading state
+  and pagination are DataViews' own, as WordPress core uses them. Loading shows the stock dim and the stock
+  first-load spinner; the only extra is a "Loading…" with a small spinner in the footer, and the stock
+  under-table spinner is hidden. Give adds the page header, stat
+  tiles, the notice area, empty states, confirm bodies and action notices around it. **The
+  exceptions are the search box and the filter row**, which are Give components (see [Why the
+  filter bar is Give's](#why-the-filter-bar-is-gives)), **the small "More view options" menu (⋮)**
+  next to the stock view options, which the pinned DataViews cannot take extra items into (see
+  [Switch to Legacy View](#switch-to-legacy-view)), and **the narrow layout**, which uses the stock
+  `grid` layout but picks it by window width, not by a layout switcher (see [Narrow
+  screens](#narrow-screens)). Where the pinned DataViews lags
+  newer WordPress, the fix is in `ListTable/dataviewsPolyfill/` (see
+  [DataViews polyfill](#dataviews-polyfill-review-at-every-dataviews-upgrade)).
+- **Rows and total are two requests.** `ListTablePage` asks for the rows with `withCount=false` and
+  reads `hasNextPage`, and asks `<root>/count` for the total on its own (`hooks/useListTableTotals`).
+  The count is keyed without page and sort, so paging does not count again, and it never keeps the
+  answer of another request, so a count for old filters never shows. While the total is unknown, the
+  footer has only the previous and next arrows (Next follows `hasNextPage`, and is on until the first
+  rows response); the "N found" text and the footer total wait too. When it arrives, the stock page
+  control (or the page number box above 100 pages) shows, and a page above the total is moved to the
+  last page. If a rows response has `totalItems` and `totalPages`, they are used. If the count request
+  fails, the arrows and the table stay. A page typed in the URL loads its rows at once.
+- **One layout change: the selection bar sits above the table.** In the Site Editor the list fills
+  the window, so the footer with the selection bar is always in view. On Give's pages the list is
+  part of a longer page, and the footer ends up below the last row. `DataViewsListTable` uses the
+  DataViews sub-components to also show the stock `BulkActionToolbar` in place of the search row
+  while rows are selected; the stock footer keeps its own copy next to the pagination.
+- **Version pin.** DataViews is bundled, not provided by WordPress, while the `@wordpress/components`
+  and other `wp-*` packages it uses come from the site. So the pin is the DataViews line the
+  **oldest supported** WordPress ships (`readme.txt` "Requires at least"), currently 10.1.x for 6.9.
+  A newer line needs script handles and components the floor release does not have. Move the pin
+  only when the floor moves. Newer DataViews features that Give does by hand are listed in
+  [DataViews polyfill](#dataviews-polyfill-review-at-every-dataviews-upgrade).
+- **One shared chunk.** Webpack puts DataViews and the shared list code in `build/givewp-list-table.js`
+  (`splitChunks.cacheGroups.listTable`). It has no `.asset.php` dependencies of its own, so
+  `Give\Framework\ListTable\Actions\RegisterListTableAssets` registers the `givewp-list-table`
+  handle and every list screen's script depends on it. `bin/list-table-bundle-size.mjs` checks each
+  screen's JavaScript against the 100 KB gzip budget.
+- **Actions are data.** Screens pass `ListTableRowAction[]`: "Edit" (or "Restore" in a trash view) is
+  the inline action, the rest are in the row menu, and `supportsBulk` makes one action serve rows and
+  selections. DataViews lists every bulk action in each row's menu, so a separate bulk action for the
+  same job would show twice. An action with its own modal uses `Dialog`; the dialog gets the request
+  as a prop and never calls the API itself. Every action and dialog runs through `runListAction`, so
+  results, selection clearing and reloading behave the same everywhere: a snackbar for what changed,
+  an error notice for what failed. Lists with a trash view build their actions with
+  `trashRowActions` and `setStatusRowAction`. Old-style `bulkActions` configs and a row-actions
+  render function still work through the adapters.
+- **Add-on bulk actions.** `window.GiveDonations.addonsBulkActions` (localized as `[]` and filled by
+  add-ons) is read by the Donations screen and passed as its `bulkActions`. The shared page reads no
+  screen's globals.
+- **No preloaded rows.** The list fetches its own first page; do not localize rows into the page (see
+  [pii.md](pii.md)).
+
+## DataViews polyfill (review at every DataViews upgrade)
+
+Give pins `@wordpress/dataviews` at 10.1.7 (the line WordPress 6.9 ships). Newer DataViews (the target
+is WordPress 7.1) does some things by itself or looks different, so the CSS and JS that close the gap live
+in one folder, `ListTable/dataviewsPolyfill/`. Its `README.md` lists every entry, and
+`polyfillVersion.test.ts` fails when the version changes. Go through the list in the same PR that moves
+the pin. The longer removal steps are below.
+
+### Reset view in the View options popover
+
+What it is: `ListTableViewReset` finds the stock "View options" button, waits until it is expanded,
+and portals a stock `Button` into the popover's "Appearance" heading. DataViews 10.1.7 gives
+`DataViews.ViewConfig` no prop or slot for this.
+
+Why it can break: it relies on `aria-controls` being the popover id, on the class
+`.dataviews-settings-section__sidebar`, and on "Appearance" being the first section. If one changes,
+the button is simply missing (nothing crashes). A test with the real `DataViews.ViewConfig` fails
+when that happens.
+
+Switch to native (DataViews 12 or newer, `onReset` prop):
+
+1. In `ListTable/DataViewsListTable/index.tsx`, delete the `ListTableViewReset` import and its line in `viewControls`.
+2. Pass the stock prop on `<DataViews>`: `onReset={isDefaultLayout ? false : onResetLayout}`
+   (`false` shows a disabled button; a function shows an enabled one). Pass it only when
+   `onResetLayout` exists (no `screen` config means no reset). `onResetLayout` and `isDefaultLayout`
+   already come from `useListTableLayoutPreferences`; keep them.
+3. Delete the folder `ListTable/dataviewsPolyfill/ListTableViewReset/` (`index.tsx`, `styles.scss`, `ListTableViewReset.test.tsx`).
+4. In `DataViewsListTable/index.test.tsx`, delete the test that opens the real "View options" popover
+   and looks for "Reset view", and add one test that the stock "Reset view" calls `resetLayout` when
+   the view is not the default.
+5. In `ListTable/dataviewsPolyfill/README.md`, delete the "Reset view" row. In the "Reset view" section of this
+   page, say the button is stock. In `docs/architecture/admin-ui.md`, remove the `ListTableViewReset`
+   name next to the "Reset view" button.
+6. Remove the `@wordpress/a11y` `speak` use (stock has no announcement), if nothing else needs it.
+7. Check by eye: popover on desktop, phone and RTL; reset restores columns, density and page size and
+   clears the saved layout.
+8. Delete this entry.
+
+One thing changes on screen after the switch: newer DataViews also shows a dot on the View options
+gear when the view differs from the default. The button stays the same: disabled, not hidden, while
+the view is the default, with no confirm dialog.
+
+### Side padding of the table, toolbar and footer
+
+What it is: the insets of WordPress 7.0, set by hand. The first and last cells, the footer, the empty and
+loading states and the card grid are 24px from the list edges (10.1.7 uses 48px), and sortable header cells
+have 4px at each side. The list reaches both edges of its white box, like the stock card.
+
+Switch to native (DataViews 12 or newer):
+
+1. In `ListTable/dataviewsPolyfill/_polyfill.scss`, delete the four rules `tr > :first-child`,
+   `tr > :last-child`, `tr > .dataviews-view-table__checkbox-column` and
+   `thead th:has(.dataviews-view-table-header-button):not(:first-child, :last-child)`, with their comment, and
+   the `&.has-compact-density` block under them (its `tr > :last-child` and `thead th:has(...)` rules).
+2. In the same file, delete the rule for `.dataviews-footer`, `.dataviews-loading` and
+   `.dataviews-no-results` (`padding-inline`), and the `.dataviews-view-grid-items` rule in the narrow
+   media query.
+3. Keep `$givewp-list-table-edge` on `.givewp-list-table__toolbar` and `__view-controls-row`: the toolbar is
+   Give's own. Keep the margins in `ListTablePage.module.scss` (`.pageContent`) and the stat tile padding.
+4. Check by eye: LTR and RTL, compact and comfortable density, phone width, empty and loading states.
+5. Delete this entry.
+
+### Column widths: our layout choice, to match the WordPress 7.1 Pages screen
+
+Keep this one after the bump: it is part of the polyfill because it copies the newer look, but newer DataViews
+does not do it for our tables.
+
+What it is: `dataviewsPolyfill/_polyfill.scss` sets `width: 8%` on `col.dataviews-view-table__col-primary` and
+`width: 0.1%` on `col.dataviews-view-table__col-checkbox`. DataViews leaves the first data column out of
+its `1%` rule, so that column takes all the free width and the other columns stay at their minimum. Newer
+DataViews does the same for our tables. The native Pages screen shares the free width only because it
+also loads the older stylesheet. WordPress 7.1 is the screen users compare with, so we look like it, and long
+names wrap more on laptop screens. The checkbox rule stops the checkbox column from taking a share of the free width.
+
+Why it can break: it names DataViews classes. DataViews 11.2 and newer name the first data column
+`col-first-data`. After a bump the `col-primary` rule matches nothing, and the "column widths" test in
+`DataViewsListTable/index.test.tsx` fails to tell you.
+
+At the DataViews bump:
+
+1. In `ListTable/dataviewsPolyfill/_polyfill.scss`, rename `col.dataviews-view-table__col-primary` to
+   `col.dataviews-view-table__col-first-data`. Do not delete the rule. Check in the browser that the
+   `col-checkbox` class still exists.
+2. Update the class names in `dataviewsPolyfill/polyfillStyles.test.ts` and `DataViewsListTable/index.test.tsx`, and the rule
+   name in `ListTable/dataviewsPolyfill/README.md` and in this entry.
+3. Measure Donors, Campaigns, Forms, Donations and the Forms tab of a campaign again at 2220, 1512 and
+   1280 px. Look at the sideways scroll, the width of the first and checkbox columns, and the row
+   heights. Change `8%` if the new stylesheet shares the width in another way.
+4. Check the `min-inline-size` rules and `.givewp-truncated-text` in `DataViewsListTable/_wp-look.scss` again with the new
+   column widths.
+
+## Money and dates
+
+The server writes the money and dates of every list screen, and the browser only shows the text it
+gets. Some money cells follow the browser's language (see below).
+
+- **Two formatters.** `Give\Framework\ListTable\Formatting\MoneyFormatter` writes money through
+  `give_currency_filter(give_format_amount())`, the same helpers receipts and reports use, so the
+  currency settings (symbol, position, separators, decimals) decide the result, unless a column passes the
+  browser's locale and "Auto-format currency" is on.
+  `DateFormatter::dateTime()` uses the site's date format, time format and time zone ("November 29,
+  2025 at 4:16 pm"); `DateFormatter::date()` is the date-only form (Campaign start and end). Every
+  column calls one of them. `tests/Unit/Framework/ListTable/ListTableFormattingCallSitesTest.php`
+  fails when a column formats money or dates another way.
+- **Empty values are a dash.** A missing amount or date renders `Placeholder::dash()`: a "—" hidden
+  from screen readers and a `screen-reader-text` label ("No date", "No amount", "No value"). The
+  client atom `DashPlaceholder` writes the same markup. Never write `-`, "Invalid date" or a 1970
+  date.
+- **`kind` and `rawValues`.** `ModelColumn::getKind()` says what a column holds (`money`, `date`,
+  `count`, `text`, `status`; see `ColumnKind`) and goes out in the column schema. A column can also
+  return `getRawValue()`; rows then carry a `rawValues` key with the unformatted value (money as
+  `{amount: "1331.28", currency: "USD"}`, a date as an ISO 8601 string in UTC). Both keys are
+  optional and additive. The narrow layout uses `kind` to pick card fields; nothing formats from
+  `rawValues` in the browser. A raw value must reuse what the cell already computed, never run a
+  new query.
+- **Stats send text too.** The Donations, Donors and Subscriptions stats endpoints add a
+  `formatted` map next to the numbers: counts through `CountFormatter`, money through
+  `MoneyFormatter`. The tiles show that text as it is.
+- **The browser's language.** Every list request (rows, stats, count) sends `locale=navigator.language`
+  (`browserLocale()` in `formatNumber.ts`). Money cells that followed it before still do (Donations,
+  Subscriptions, Donors, Form levels, Event Tickets sales, the money stat tiles), only when "Auto-format
+  currency" is on and PHP intl exists; campaign revenue, goals and form revenue follow the currency settings.
+  Counts follow it too: `CountFormatter` in PHP and `formatNumber()` in the browser. So a Brazilian browser
+  on a US-dollar site shows `US$ 100,00` in those money cells. Count columns read the locale with
+  `func_get_arg()`, so an add-on subclass that overrides `getCellValue($model)` keeps working. Dates do not
+  follow it. In the client, only `formatNumber.ts` may read the browser language
+  (`listTableClientFormatting.test.ts`).
+- **Two details found on the way.** The intl fallback in `CurrencyFacade::formatToLocale()` passes a
+  `currency` key that `give_currency_filter()` ignores, so a donation in another currency showed the
+  site's symbol. `MoneyFormatter` passes `currency_code`. The facade itself is not changed. With "Auto-format
+  currency" on, the money columns that pass the locale follow the browser's language through PHP intl.
+
+## Notices
+
+Every message above a list renders in one place, `ListTableNoticeArea`, between the stat tiles and
+the toolbar. Nothing renders inside the table: its body holds records only.
+
+- **Order.** Errors of failed actions first, then `system` notices, then
+  the daily recommendation, then the deprecated `productRecommendation` slot.
+- **Config only.** A screen passes `notices` (`ListTableNotice[]`: `id`, `kind` (`system`), `title`, `message`,
+  optional `link` and `onDismiss`) and `recommendations` (`options`, `dismissed`, `apiNonce`). All of
+  it is known when the page loads, so the area has no loading state and does not push the table
+  down after it renders. With nothing to show it renders nothing and takes no space.
+- **One recommendation a day.** `pickDailyRecommendation()` drops dismissed options (or ones whose
+  add-on is active) and picks `available[dayNumber % available.length]` for the site's day. Every
+  reload that day shows the same tip; the next day moves to the next one.
+- **Dismissals are site-wide.** The recommendation dismissals are options
+  (`givewp_donations_*_recommendation_dismissed`), as before, so one admin's dismissal hides the tip
+  for every admin. Dismissing hides it at once; no other tip appears until the next load.
+- **Onboarding tips are notices in the area.** The Campaigns "Campaign List" tip, the "Default campaign
+  form" tip on a campaign's Forms tab and the Donation Forms "upgraded form" tip are `ListTableNotice`
+  entries of kind `onboarding`: dismissible rows in the flow, under the stat tiles and above the table,
+  after the `system` notices. Nothing floats over the list. The upgraded form tip is one notice for the
+  list, shown while a row on the page has the Upgraded status (the page reports its rows through
+  `onItemsChange`). The screen owns the "shown" flag (user meta, or the tip's own request). The
+  campaign details page tips (Settings and Overview tabs) are still floating balloons (`CampaignNotice`).
+- **Accessible.** A notice with a title is a `group` named by its heading; the recommendation is
+  named "Pro tip". Dismiss buttons read "Dismiss notice" or "Dismiss tip", and a link that opens a
+  new tab says so.
+- **No record data.** Notices carry product text only (see [pii.md](pii.md)).
+
+## Stat tiles
+
+`StatTiles` renders one `StatTile` for every key in the screen's `statsConfig`, in order, inside a
+region named after the screen ("Donations statistics"). `ListTablePage` renders it as the band at the
+top of the list sheet, above the notices and the list, on the full page only: an embedded list has no
+tiles.
+
+- **States.** `loading` (a `Skeleton` and "Loading" for screen readers), `ready`, `refreshing` (the
+  old value stays, dimmed, and nothing is announced), `error` (a dash, "Statistic could not be
+  loaded") and `upgrade` (a message and an "Upgrade" link in place of the number when the add-on is
+  missing, with an `AddOnTag` beside the label). `useListTableStats` derives the state from the
+  request. The tiles never unmount, so the row keeps its size and the table does not move when
+  numbers land.
+- **Values are `formatted`.** The tile shows the server's text from the stats `formatted` map and
+  never formats a number itself.
+- **Tiles that filter.** A `StatConfig` with `filter: {filterId, value}` makes the tile a toggle
+  button for that list filter; `filter: {filterId}` with no value is the "Total" tile of the group,
+  pressed when the filter is off. A tile is pressed only because the view's filters say so
+  (`isTilePressed()`), so picking the value from the toolbar chip presses the tile too. Clicking a
+  pressed tile clears the filter; clicking another tile of the group replaces it. A tile whose filter
+  the screen does not declare, or an `upgrade` tile, is plain text. Donations and Donors map their
+  One-Time and Recurring tiles to the "Donation type" and "Donor type" filters, which exist only with
+  Give Recurring active. Subscriptions tiles are plain statistics.
+
+## Narrow screens
+
+There is one layout breakpoint: `(max-width: 782px)`, the same as the WordPress admin. It is defined
+twice, side by side: `NARROW_LAYOUT_QUERY` in `layout/breakpoints.ts` and `$givewp-list-table-narrow`
+in `layout/_breakpoints.scss`, each with a comment pointing at the other. Only the shared shell uses
+it; screens do not add their own media queries.
+
+- **The page stacks.** At 782 px and below the page reads, top to bottom: title (and test badge),
+  header actions, test-mode switch, tiles, notices, toolbar (search, filters, view options), the
+  list, pagination. Nothing makes the page scroll sideways down to 375 px.
+- **Cards.** When `useNarrowLayout` reports 782 px or less, `ListTablePage` switches the list to the
+  stock DataViews `grid` layout with one card per record. Only that layout is in `defaultLayouts`, so there is no layout switcher. Each card
+  shows the primary field, a description, the ID as a badge, the secondary fields with their labels,
+  the row checkbox and the actions menu, all without hover.
+- **Field roles.** A screen picks its card fields in `ListTableScreen.fieldRoles` (`primary`,
+  `description`, `secondary`). `resolveFieldRoles()` drops a role whose column is missing (the
+  Campaign column on a campaign's Forms tab). A screen with no roles gets them from the column
+  kinds: the title, the first money column, the first status and the first date column.
+- **Resizing keeps state.** `toNarrowView()` builds the card view from the wide view, and
+  `fromNarrowView()` maps a change back, taking only the query (page, page size, sort, filters,
+  search). The card view is never stored as the layout and never written to the URL, and the
+  selection is kept.
+- **Scroll edges.** Above 782 px a wide table scrolls sideways inside the list. The Actions column
+  is pinned by stock DataViews, which draws a faint 1px line on its edge only while rows are scrolled
+  under it. Give adds no line or shadow of its own. The pinned DataViews measures the scroll only on
+  mount, scroll and window resize, and 200 ms late, so `useActionsColumnStuck` toggles the stock
+  `--stuck` class at once on scroll, resize and render, as WordPress 7.1 does (in `dataviewsPolyfill/`). Remove the hook when
+  the pinned DataViews does that itself.
+- **Motion.** Any animation in the list sits inside `@media (prefers-reduced-motion: no-preference)`.
+
+### Styling
+
+The look of the list pages is kept in a few places: the color tokens in `layout/_tokens.scss`, Give's
+table-only rules in `DataViewsListTable/_wp-look.scss` (guarded by `wpLookScope.test.ts`), everything
+that only copies the newer WordPress look in `dataviewsPolyfill/` (see
+[DataViews polyfill](#dataviews-polyfill-review-at-every-dataviews-upgrade)), and the status icons and type
+text in `InterweaveSSR/styles.scss` (status is a CSS-mask icon and the word, with color only for Failed,
+Failing, Refunded, Expired and Suspended; type is plain text; the `p` margin is reset). The A+ look adds no
+footer colors, type, sizes or controls, and `_wp-look.scss` may not reach the footer. The overrides were
+written for the pinned `@wordpress/dataviews` version. See "Styling scope" in the
+[React README](../../src/Views/Components/ListTable/README.MD).
+
+## Switch to Legacy View
+
+Donations, Donors, Subscriptions and Donation Forms (with the option-based form editor on) offer
+"Switch to Legacy View". It is no longer a button in the page header: it is the last group of the
+"More view options" menu (`ListTableViewMenu`), right after the stock view options.
+A screen passes `legacyView` to `ListTablePage`; `switchToLegacyView()` calls the domain's `/view`
+route (see [the top of this page](#the-archive-screens-have-two-implementations-and-the-user-picks))
+and reloads. Screens without a legacy screen (Campaigns, Event Tickets, the Forms tab) pass nothing
+and get no menu.
+
+## Filters
+
+### One declaration per entity
+
+Each entity declares its filters once, in a typed file next to its screen (`filters.ts`:
+`campaignFilters`, `donationFormFilters({withCampaign})`, `donationsFilters`, `donorsFilters`,
+`subscriptionFilters`, and the Event Tickets one). The screen passes it to `ListTablePage` as
+`filters`. The shell, the filter bar, the URL code and the request builder all read that one list,
+and no shared code has a branch for one screen. The types are in `ListTable/filters/types.ts`.
+
+| Kind | Control | Value in the view | Sent as |
+|:--|:--|:--|:--|
+| `options` | A fixed list: checkboxes when `multiple`, radios when not. `options: 'statuses'` takes the entity's status vocabulary. | The chosen values | `parameter`, a list when `multiple` |
+| `entity` | Campaigns, forms or donors searched on the server (`source`). | Ids | `parameter`; "No campaign" as `none` |
+| `date` | Six presets and a start and end day. | A preset (`30`, `this-month`) or `start_end` days | `parameters.start` and `parameters.end` as whole days |
+| `search` | The labeled search box with its hint. Never in the bar. | `view.search` | `parameter` |
+
+- **Primary and secondary.** A filter with `isPrimary` always shows as a chip. The others are in the
+  "Add filter" menu and show as a chip once added. With no secondary filter there is no "Add filter".
+- **`whenEmpty`.** Parameters an `options` filter sends while it holds nothing. Campaigns sends
+  `status=any`, which keeps archived campaigns out of the default view.
+- **`exclusiveValues`.** Values that cannot be combined with any other: Trash on the Status filters.
+  Choosing one clears the rest, and choosing another value clears it. An `entity` filter with
+  `allowNone` adds "No campaign", which works the same way.
+- **`legacyUrlKey`.** A bare name that links made before view state used, such as `donor` or
+  `campaignId`. It is read on load, applied, and rewritten to the `give-` name.
+- **Fixed filters (`scope`).** A list inside a details page tab gets fixed request parameters from
+  its host page, such as the campaign of a campaign's "Forms" tab. They are sent with every request
+  and are never a chip, a URL parameter or something Reset clears. That tab also leaves the Campaign
+  filter out of its declaration (`donationFormFilters({withCampaign: false})`).
+- **Link-driven filters.** Some filters are mostly set by a link from another screen, such as Donor
+  on Donations (`?donor=12` from a donor's page). They are ordinary declarations with a
+  `legacyUrlKey`; the link applies them and the chip names the record.
+- **Test mode** is not a declaration. A screen passes `testModeToggle`; the header switch edits the
+  view filter. It has no chip in the filter bar, so the switch is the one place to turn it on or off.
+
+### The filter bar
+
+`ListTableFilters` renders the primary chips, the added secondary chips, "Add filter"
+and Reset, from `FilterChip`, `OptionsFilterControl`, `EntityFilterControl` and
+`DateRangeFilterControl`. `ListTableSearch` is the labeled search box. Its hint, announced with the
+field, is a separate piece (`SearchHint`): `useSearchHint` gives the box and the hint the same ids, so
+the toolbar shows the box, the chips and the view options in one row and the hint under that row. A chip lists up to three names and then says how many are chosen ("Status: 4 selected");
+its accessible name starts with the visible text and then lists the names ("Status: 4 selected.
+Active, Pending, Draft, Archived"), so a voice command that says the visible words still finds it.
+The tooltip shows the same text: newer `@wordpress/components` Tooltips add the tooltip as a
+description when it differs from the name, which would read the list twice.
+
+- **Reset shows only when the filters differ from the screen's defaults.** The defaults are no
+  filters, plus test mode on a site in test mode, plus, on a screen that still passes the old
+  `filterSettings`, a `hidden` setting with an option on its own page. So an untouched list on a test site shows no Reset,
+  and Reset puts test mode back on instead of turning it off. A search term, or a secondary filter
+  added with no value yet, counts as a change. Reset never clears `scope`.
+- **The date range** counts in whole days in the site's time zone. A preset is kept as a preset and
+  worked out again from the site's day, so "Last 30 days" in a bookmark still means the last 30 days.
+  An end day before the start day is explained and cannot be applied.
+- **The result count is announced.** `ResultCountStatus` is one visually hidden polite status region
+  in the shell. After the admin changes the filters, the search, the sort or the page, and the list
+  settles, it says how many records match ("12 donations found"). It says nothing on the first load,
+  nothing while loading, and adds no request.
+
+### Why the filter bar is Give's
+
+The rest of the list is stock DataViews (spec 1, rule R0). The search box and the filter row are the
+exception, because the pinned DataViews cannot do what the filters need: it searches a filter's
+options in the browser (so every option must be loaded first), shows no error or retry when options
+fail to load, joins every value into the chip, prints raw ids for options it has not loaded, has no
+preset-based date range, no exclusive values, and hides the search label. The Give bar is built from
+the same `@wordpress/components` parts, so it looks and works like the stock row. **[Judgement]**
+When a newer DataViews supports server-searched options and custom chip text, swap back to the stock
+row.
+
+### The option route
+
+`givewp/v3/list-table-filter-options/<source>` (`campaign`, `form` or `donor`) feeds the `entity`
+filters (`ListTableFilterOptionsController`).
+
+- **Permissions, in this order:** signed in (401); a known source (403 for any other); with
+  `screen`, a known screen (404) that offers this source (400) and the screen's view capability
+  (403); without `screen`, the source's own view capability (403).
+- **Parameters:** `search` (up to 100 characters; matches the start of any word of the label),
+  `page` (20 options a page, at most page 10000) and `include` (up to 50 ids, whose labels are
+  returned; search and page are ignored). The client asks for labels in chunks of 50.
+- **What it returns:** `{options: [{value, label}], hasMore}`. Each query selects the id and the
+  label column; the form source also selects `post_status`, only to add "(Draft)" to a draft form's
+  label. The donor query reads only the id and the name, so a donor option is never an email or
+  anything else.
+- **Cost.** A word-start match (`LIKE 'term%' OR LIKE '% term%'`) cannot use an index, so a donor or
+  campaign search scans its table. It runs only while someone types, one page at a time, and the
+  Donors list search already scans the same way. The contract accepts this.
+
+### One status vocabulary
+
+Each entity's statuses come from one server source, a `StatusVocabulary` built by the value object
+(`CampaignStatus::vocabulary()` and the others): every value with its translated label, and which of
+them the Status filter offers. `ListTable::toArray()` sends it as `table.statuses`. The status text
+and the Status filter both read it, so they always use the same words. Campaigns offers Active and
+Archived, the two statuses an admin can set in the interface; Inactive, Draft, Pending, Processing and
+Failed show in the table only.
+
+### Parameters the endpoints accept
+
+The changes are additive; old callers get the same results.
+
+- Campaigns: a `statuses` list of stored values, which wins when set. The old `status` stays and is
+  marked deprecated: `status=inactive` still means archived and `status=any` still hides archived.
+- Forms, Donations, Donors and Subscriptions take lists for status, campaign and form where the
+  filter allows several values. Every list with a date filter (all but Event Tickets) takes `start`
+  and `end` days.
+- **Search now respects the other filters on Donors and Campaigns.** Their search was built as
+  `a LIKE … OR b LIKE …` without brackets, so half its matches ignored every other filter. The two
+  `LIKE`s are now grouped. What a search matches has not changed. This is the one exception to "the
+  same results as before" (SC-005), and only when a filter is on together with a search.
+
+### Old filter settings
+
+`filterSettings` (`FilterConfig[]`) is deprecated and kept only so add-ons that pass it keep working.
+No core screen uses it. `filterSettingsToDeclarations()` in `filters/legacyFilterSettings.ts` maps it
+onto declarations, so it renders through the same bar, URL rules and request builder: `select`
+becomes a single `options` filter (its first option is sent while empty), `campaignselect` and
+`formselect` single `entity` filters, `search` the search box, the `toggle` checkbox the test-mode
+switch, and `hidden` fixed scope in a tab or a one-choice filter on by default on its own page. The
+grouped "Filter by" type (`filterby`) is gone and is skipped.
+
+## View state
+
+A screen opts in by passing a `screen` config to `ListTablePage` (`{key, defaults}`, kept next to the
+screen in a `listTableScreen.ts` file). Without one the view lives in memory only, which is what an
+add-on page that never heard of the prop still gets. The one exception: a standalone page without a
+`screen` config applies the filter parameters it recognizes in the address (bare legacy names such as
+`?donor=12`, and `give-` names) to its first view and first request, and never writes them back. The
+code is in `ListTable/state/` and `ListTable/hooks/useListTableUrlState.ts` and
+`useListTableLayoutPreferences.ts`. Most of `state/` is pure functions; three modules are not:
+`listTableHistory` (the `history` entry and the address), `layoutApi` (the
+layout route and the printed bootstrap) and `layoutWriteQueue` (the page view's write queue and its
+error notice).
+
+### One view object, two projections
+
+There is one DataViews view per page, owned by `useListTableView`. Nothing else holds a copy of the
+page, sort, filters or columns. Two things are derived from it:
+
+- **What is shown** (page, page size, sort, search, filters, test mode) is written to the address.
+- **How it is shown** (visible columns and their order, density, page size) is stored per user.
+
+`assembleView` builds the view from, in order of precedence: the screen defaults
+(`resolveScreenDefaults`, from the server column schema plus the config's `hiddenFields`,
+`visibleFields`, `perPage` and `density`, default `balanced`), then the stored layout, then the
+address. Page size is in both projections; the address wins. On back and
+forward to an entry that names no page size, the page size of the user's layout is used (the layout
+hook exposes it as `layoutPerPage`).
+
+Every change records where it came from (`ViewChangeOrigin`): a `user` change adds a history entry
+only when the address query changes (the search is part of it), a `correction` (an invalid address, a page past
+the last one after records were removed) replaces it, `history` (back and forward) writes nothing, and
+`reset` behaves like a user change in the address. A layout-only change (columns, density) adds no
+entry, so Back does not undo it. Only a `user` change to the layout, or a reset, is stored.
+
+### The address
+
+`viewQuery.ts` is the only code that knows the parameter names.
+
+- **Every written parameter has the `give-` prefix**, in kebab case: `give-paged`, `give-per-page`,
+  `give-orderby`, `give-order`, `give-test-mode`, `give-search`, and one per bar filter, named from its declaration
+  id (`parameterName()`: `give-campaign`, `give-donation-type`). The WordPress admin uses the bare names (`page`, `paged`,
+  `s`, `post_type`) itself, and the details pages that embed a list use `page`, `tab` and `id`.
+- **Only what differs from the defaults is written.** A view equal to the defaults leaves the
+  address bare. Test mode is written only when it differs from the site's payment mode, so a link
+  without it follows the site. **Known limit:** a filter that starts with a default value cannot be
+  shown as cleared, because an empty value is not written. Clearing such a filter leaves the address
+  bare (and adds no history entry if nothing else changed), and a reload or a shared link brings the
+  default back. No core filter has a default value today.
+- **Only ids and enumerated values.** Each value must match `[A-Za-z0-9_-]{1,64}` and be one the
+  screen offers (a sortable column, an option or status the filter offers, a page size in
+  `PER_PAGE_SIZES`, a positive id for an `entity` filter, a valid date token). Anything else is
+  dropped, the result is marked `corrected`, and the address is replaced. The writer applies the same
+  pattern. Nothing read from the address is rendered as markup. A date preset keeps its token (`30`,
+  `this-month`) and is turned into days per request, from the site's day.
+- **Legacy bare names are read on load and rewritten.** A declaration's `legacyUrlKey`
+  (`?campaignId=4`, `?donor=12`) is read with the same rules when the `give-` form is missing (the
+  prefixed one wins), and the address is then rewritten with `replaceState`, so no history entry is
+  added. A bare `search` is
+  not read either: it is only removed. A standalone page without a `screen` config reads the same
+  recognized filter parameters (bare and `give-` names) for its first view and first request, but
+  never rewrites the address and ignores the page, sort and page size.
+- **Other parameters are kept as they are,** in their order. The writer replaces only the screen's
+  own keys (`viewQueryKeys`) and the legacy names it read.
+- **Length limit.** The writer keeps the whole address under 2000 characters by dropping filter
+  values from the end.
+
+### The search term is in the address
+
+The search is written as `give-search`, the same way WordPress core writes `?s=` on its own list
+tables. It is the one value that is free text (see "Only ids and enumerated values" above for the
+others): it is trimmed, cut to `MAX_SEARCH_LENGTH` (100 characters) and percent-encoded when written,
+and read back as plain text, never as markup. The cut counts whole characters, so an emoji is never
+split. The list request carries the same trimmed and cut term, so a reload or a copied link returns
+the same rows. An empty term is not written. It is never stored in the layout, and an embedded table
+(`contentMode`) never writes it.
+
+**It is personal data in the address.** The term can be a donor's name or email, so it shows in the
+browser history, in server logs and in a copied link. Core does the same for `?s=`, and WordPress
+sends `Referrer-Policy: strict-origin-when-cross-origin` by default, so the term does not leave the
+site in a referrer. That holds only while the effective policy is unchanged: a site that sets
+`unsafe-url` with the `admin_referrer_policy` filter can send the term to another origin. Someone who opens a copied link needs the same capability as
+the person who made it.
+
+A search-only change within 1.5 seconds of the previous one replaces the history entry instead of
+adding one (`SEARCH_COLLAPSE_MS`), so one typed term is one entry. A new term goes back to page one in
+the same entry. Back and forward read the term from the address like any other parameter.
+
+### The stored layout
+
+`src/Framework/ListTable/Layouts/` stores one record per user, per screen, per site: a user option
+named `give_list_table_layout_<screen>`, which WordPress prefixes with the site's table prefix, so a
+multisite network keeps a separate record on each site.
+
+- **The screens are a closed list.** `ListTableScreens` maps each key to the permission of the admin
+  page that shows it (an embedded table uses its host details page's). There is no filter. The
+  client's `LIST_TABLE_SCREEN_KEYS` in `state/types.ts` must hold the same keys, and
+  `screenKeys.test.ts` checks it. Shared code in `ListTable/` never names a key;
+  `coreScreens.test.ts` checks that too.
+- **The record holds only differences from the defaults** (`toStoredLayout`): the visibility of the
+  columns the user changed, the full order only when it differs, density and page size only when
+  they differ. A column the user never touched keeps following its default, so a later change to the
+  server schema or the config still reaches that user. A layout equal to the defaults deletes the
+  record.
+- **The route** is `givewp/v3/list-table-layouts/<screen>` (GET, PUT, DELETE): signed in (401), a
+  known screen (404), the screen's view capability (403). It only ever reads or writes the signed-in
+  user's own record. `ListTableLayoutValidator` accepts version `1`, at most 50 column ids in `visibility`
+  and at most 50 in `order` (each limit on its own), every id matching `[A-Za-z0-9_-]{1,64}`, one of the three densities, and a page size from 1 to 100.
+- **Writes** for an ordinary layout change wait one second after the last change; a reset sends at
+  once. All writes run one after another. The queue and the
+  once-per-page-view error notice live in `state/layoutWriteQueue.ts`, outside React, so a remounted
+  table shares them. A change is staged in the commit phase, so a `pagehide` right after it already
+  sends it. The exception to the order is the send on `pagehide`: it goes out at once with
+  `keepalive` and skips the queue, so it can overtake an older write that is still in flight. A
+  failed write keeps the change on screen and shows one notice per page view; the next write sends
+  the whole record again.
+- **Locked columns.** The identifying column (the title column, or `id` when there is none) cannot
+  be hidden, and the legacy row-actions column, when a screen uses one, cannot be hidden and stays
+  last (`fieldRules.ts`). A column shown again, or one a stored order does not name, goes before the
+  first column that comes after it in the default order (`fieldOrder.ts`, shared by both cases).
+
+### Embedded tables
+
+A table inside another page (the campaign details "Forms" tab, the subscription details "Donations"
+tab) passes `contentMode`. With `contentMode` the address and the tab state are never read or written
+(`readInitialUrlState()` reads nothing and the URL hook writes nothing), because the host page owns
+the address. Its layout is still
+stored under its own key (`campaign-forms`, `subscription-donations`), separate from the standalone
+screen it reuses.
+
+### The first request already carries the view
+
+`ListTablePage` resolves the defaults inside a `useState` initializer, before the first render, and
+calls `readInitialLayout` (the stored layout) and `readInitialUrlState` (the address and the tab's
+search). The shell holds no storage or address code itself. So the first list request is
+already the URL's view, and there is no request for the default view followed by a second one. The
+stored layout reaches the page the same way: `PrintListTableLayouts` (on `admin_enqueue_scripts`,
+priority 6, right after the `givewp-list-table` handle is registered at 5) prints
+`window.GiveListTableLayouts = {path, layouts}` with `wp_add_inline_script(…, 'before')`. Only the
+signed-in user's own records for the screens they can open are printed, each validated again, and
+WordPress prints inline data only with its handle, so it appears only on list pages. See
+[pii.md](pii.md) for why this is allowed.
+
+### Reset view
+
+`ListTableViewReset` puts a "Reset view" button inside the stock View options popover, at the top
+right of "Appearance". It is disabled while the layout is the default. It asks nothing: one click
+puts the columns, density and page size back to the defaults, deletes the stored record, and says so
+to screen readers. It is a stand-in for the stock `onReset` of newer DataViews (see
+[DataViews polyfill](#dataviews-polyfill-review-at-every-dataviews-upgrade)). Filters, sort and search stay. When the page size
+changes, the page becomes the one that holds the row the current page starts with (page 3 of 50 rows
+becomes page 4 of 30), and that change adds a history entry like any other. Without a `screen`
+config it still resets the layout for the current page view; nothing is stored.
+
+- **[Judgement]** The closed screen list means an add-on's own list page cannot keep its view in
+  the URL or store a layout. Opening the list to add-ons (a filter on the PHP list and a way to
+  register the client key) is a product decision, not something to add as part of a screen change.
+
 ## Checklist for a new column
 
 - Does it need data beyond what the model already loaded? → extend the endpoint's bulk fetch and
@@ -229,10 +1014,22 @@ table.
   the page.
 - Sortable or filterable? → the filter must reach `getWhereConditions()` so the count query sees it
   too.
+- Money or a date? → write it with `MoneyFormatter` or `DateFormatter`, return the matching `kind`,
+  and give a `getRawValue()` from what the cell already has. An empty value is `Placeholder::dash()`.
 
 ## Related
 
 - `src/Framework/ListTable/` — `ListTable`, `ModelColumn`, and the `Columns`, `IsFilterable`,
   `ListTableData` concerns
 - `src/Views/Components/ListTable/` — the React side ([README](../../src/Views/Components/ListTable/README.MD))
+- `src/Framework/ListTable/Actions/RegisterListTableAssets.php` — the shared `givewp-list-table` script handle
+- `src/Framework/ListTable/Layouts/` — the stored layout: screens, store, validator, route and the printed bootstrap
+- `src/Framework/ListTable/FilterOptions/` — the filter option route and its sources
+- `src/Framework/ListTable/StatusVocabulary.php` — the status list a badge and a Status filter share
+- `src/Framework/ListTable/Views/GoalProgress.php`, `GoalLabel.php` — the goal cell the Campaigns and Donation Forms
+  lists share: the target with what it counts ("500 donors"), then the progress. The current amount or count is not in
+  the cell; it is in the Revenue, Donations or Donors column (Donors is hidden by default on the forms list)
+- `src/Framework/ListTable/Formatting/` — `MoneyFormatter`, `CountFormatter` and `DateFormatter`, the one way list cells write money, counts and dates
+- `src/Framework/ListTable/Views/Placeholder.php`, `TruncatedText.php` — the empty-value dash and the one-line clamp with the full text on hover
+- `src/Views/Components/ListTable/layout/` — the 782 px breakpoint and the narrow card view
 - `src/Framework/QueryBuilder/` — what the endpoints build queries with ([README](../../src/Framework/QueryBuilder/README.md))
