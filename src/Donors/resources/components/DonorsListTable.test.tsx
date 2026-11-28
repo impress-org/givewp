@@ -27,7 +27,6 @@ describe('DonorsListTable', () => {
         window.GiveDonors = {
             apiNonce: '',
             apiRoot: '',
-            forms: [],
             table: {columns: []},
             adminUrl: '',
             pluginUrl: '',
@@ -52,7 +51,6 @@ describe('DonorsListTable', () => {
         window.GiveDonors = {
             apiNonce: '',
             apiRoot: '',
-            forms: [],
             table: {columns: []},
             adminUrl: '',
             pluginUrl: '',
@@ -81,7 +79,6 @@ describe('DonorsListTable', () => {
         window.GiveDonors = {
             apiNonce: '',
             apiRoot: '',
-            forms: [],
             table: {columns: []},
             adminUrl: '',
             pluginUrl: '',

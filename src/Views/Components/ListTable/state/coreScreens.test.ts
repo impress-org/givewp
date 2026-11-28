@@ -20,7 +20,6 @@ function stubWindowData() {
         apiNonce: 'nonce',
         pluginUrl: '',
         adminUrl: '',
-        forms: [],
     };
 
     Object.assign(window, {

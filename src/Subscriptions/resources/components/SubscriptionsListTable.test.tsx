@@ -20,7 +20,6 @@ describe('SubscriptionsListTable', () => {
             apiNonce: '',
             apiRoot: '',
             table: {columns: []},
-            forms: [],
             paymentMode: false,
             pluginUrl: '',
             subscriptionStatuses: {},

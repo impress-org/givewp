@@ -12,7 +12,6 @@ declare global {
             apiNonce: string;
             apiRoot: string;
             table: {columns: Array<object>};
-            forms: Array<{value: string; text: string}>;
             paymentMode: boolean;
             pluginUrl: string;
             subscriptionStatuses: {[statusCode: string]: string};

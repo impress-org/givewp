@@ -14,7 +14,6 @@ declare global {
         GiveDonors: {
             apiNonce: string;
             apiRoot: string;
-            forms: Array<{value: string; text: string}>;
             table: {columns: Array<object>};
             adminUrl: string;
             pluginUrl: string;

@@ -3,7 +3,6 @@
 namespace Give\Donors\Actions;
 
 use Give\Donors\ListTable\DonorsListTable;
-use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Actions\RegisterListTableAssets;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
@@ -15,6 +14,7 @@ use Give\Helpers\Utils;
 class LoadDonorsListTableAssets
 {
     /**
+     * @since TBD Stop passing the unused forms list to the localize script
      * @since 4.11.0 add recurringDonations check to the localize script
      * @since 2.27.1 Pass dismissed recommendations to the localize script
      * @since 2.20.0
@@ -35,7 +35,6 @@ class LoadDonorsListTableAssets
         wp_localize_script($handleName, 'GiveDonors', [
             'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/donors')),
             'apiNonce' => wp_create_nonce('wp_rest'),
-            'forms' => $this->getForms(),
             'table' => give(DonorsListTable::class)->toArray(),
             'adminUrl' => admin_url(),
             'pluginUrl' => GIVE_PLUGIN_URL,
@@ -63,30 +62,6 @@ class LoadDonorsListTableAssets
             [],
             $asset['version']
         );
-    }
-
-    /**
-     * Preload initial table data
-     *
-     * @since 2.20.0
-     */
-    private function getForms(): array
-    {
-        $options = DB::table('posts')
-            ->select(
-                ['ID', 'value'],
-                ['post_title', 'text']
-            )
-            ->where('post_type', 'give_forms')
-            ->whereIn('post_status', ['publish', 'draft', 'pending', 'private'])
-            ->getAll(ARRAY_A);
-
-        return array_merge([
-            [
-                'value' => '0',
-                'text' => __('Any', 'give'),
-            ],
-        ], $options);
     }
 
     /**
